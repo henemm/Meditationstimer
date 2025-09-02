@@ -1,18 +1,6 @@
-private func playStrongHaptic() {
-    // Hinweis: watchOS lässt die Intensität nicht direkt steuern.
-    // Wir simulieren "stärker/länger", indem wir eine kurze Sequenz abspielen.
-    let device = WKInterfaceDevice.current()
-    device.play(.notification) // Start-Impuls
-    let intervals: [TimeInterval] = [0.35, 0.70] // zwei Nachklänge
-    for delay in intervals {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-            device.play(.success)
-        }
-    }
-}
-
 import SwiftUI
 import WatchKit
+import WatchConnectivity
 
 struct ContentView: View {
     // Letzte Werte merken
@@ -66,9 +54,9 @@ struct ContentView: View {
             }
         }
         // Reagiere auf Zustandswechsel (für Haptik & Logik)
-        .onChange(of: engine.state) { new in
+        .onChange(of: engine.state) { old, new in
             // Übergang Phase1 -> Phase2: spürbare Haptik, wenn App sichtbar
-            if case .phase1 = lastState, case .phase2 = new {
+            if case .phase1 = old, case .phase2 = new {
                 playStrongHaptic()
             }
 
@@ -146,7 +134,7 @@ struct ContentView: View {
                 )
                 try await notifier.schedulePhaseEndNotification(
                     in: total,
-                    title: "Medititation – fertig",
+                    title: "Meditation – fertig",
                     body: "Sitzung abgeschlossen.",
                     identifier: "phase2-end"
                 )
@@ -209,14 +197,35 @@ struct ContentView: View {
 
     // MARK: - Helpers
 
+    // Sendet Start/Ende an die iPhone‑App; dort wird in HealthKit gespeichert.
+    private func sendMindfulToPhone(start: Date, end: Date) {
+        guard WCSession.isSupported() else { return }
+        let s = WCSession.default
+        if s.activationState != .activated { s.activate() }
+        let payload: [String: Any] = [
+            "start": start.timeIntervalSince1970,
+            "end":   end.timeIntervalSince1970
+        ]
+        if s.isReachable {
+            s.sendMessage(payload, replyHandler: nil, errorHandler: nil)
+        } else {
+            s.transferUserInfo(payload) // wird nachgereicht, sobald erreichbar
+        }
+    }
+
     private func playStrongHaptic() {
-        // System-Haptik ist limitiert; wir simulieren "stärker/länger" mit einer kurzen Sequenz.
+        // System-Haptik: längere, deutlichere 5-Impuls-Sequenz (~1.6s)
         let device = WKInterfaceDevice.current()
-        device.play(.notification) // Start-Impuls
-        let intervals: [TimeInterval] = [0.35, 0.70] // zwei Nachklänge
-        for delay in intervals {
+        let pattern: [(WKHapticType, TimeInterval)] = [
+            (.notification, 0.0),
+            (.success,      0.4),
+            (.success,      0.8),
+            (.success,      1.2),
+            (.success,      1.6)
+        ]
+        for (type, delay) in pattern {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                device.play(.success)
+                device.play(type)
             }
         }
     }

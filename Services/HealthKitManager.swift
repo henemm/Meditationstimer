@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-/// Kapselt HealthKit für das Schreiben von Achtsamkeits-Sitzungen (Mindful Minutes).
+/// Kapselt HealthKit für das Schreiben von Achtsamkeits‑Sitzungen (Mindful Minutes).
 final class HealthKitManager {
 
     enum HealthKitError: Error {
@@ -13,8 +13,8 @@ final class HealthKitManager {
 
     private let healthStore = HKHealthStore()
 
-    /// Fragt die Berechtigung an, Mindfulness-Sitzungen zu SCHREIBEN.
-    /// Aufruf einmalig beim ersten Start sinnvoll.
+    /// Fragt die Berechtigung an, Mindfulness‑Sitzungen zu SCHREIBEN.
+    /// Zusätzlich wird Lesezugriff für Herzfrequenz angefragt (optional).
     @discardableResult
     func requestAuthorization() async throws {
         guard HKHealthStore.isHealthDataAvailable() else {
@@ -23,39 +23,40 @@ final class HealthKitManager {
         guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
             throw HealthKitError.mindfulTypeUnavailable
         }
+        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
 
-        // HealthKit hat (stand heute) keine native async-API auf allen watchOS-Versionen → wir bridgen auf async.
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            healthStore.requestAuthorization(toShare: [mindfulType], read: []) { success, error in
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            self.healthStore.requestAuthorization(toShare: [mindfulType],
+                                                  read: heartRateType != nil ? [heartRateType!] : []) { success, error in
                 if let error = error {
-                    continuation.resume(throwing: error)
+                    cont.resume(throwing: error)
                 } else if success {
-                    continuation.resume()
+                    cont.resume()
                 } else {
-                    continuation.resume(throwing: HealthKitError.authorizationDenied)
+                    cont.resume(throwing: HealthKitError.authorizationDenied)
                 }
             }
         }
     }
 
-    /// Schreibt EINE Mindfulness-Session von `start` bis `end` in Apple Health.
+    /// Schreibt EINE Mindfulness‑Session von `start` bis `end` in Apple Health.
     func logMindfulness(start: Date, end: Date) async throws {
         guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
             throw HealthKitError.mindfulTypeUnavailable
         }
 
-        // Für mindfulSession ist der Category-Wert "notApplicable" korrekt.
+        // Für mindfulSession ist der Category‑Wert "notApplicable" korrekt.
         let value = HKCategoryValue.notApplicable.rawValue
         let sample = HKCategorySample(type: mindfulType, value: value, start: start, end: end)
 
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            healthStore.save(sample) { success, error in
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            self.healthStore.save(sample) { success, error in
                 if let error = error {
-                    continuation.resume(throwing: error)
+                    cont.resume(throwing: error)
                 } else if success {
-                    continuation.resume()
+                    cont.resume()
                 } else {
-                    continuation.resume(throwing: HealthKitError.saveFailed)
+                    cont.resume(throwing: HealthKitError.saveFailed)
                 }
             }
         }

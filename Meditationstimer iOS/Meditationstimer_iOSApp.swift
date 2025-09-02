@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct Meditationstimer_iOSApp: App {
+    let receiver = PhoneMindfulnessReceiver()
     var body: some Scene {
         WindowGroup {
             ContentView()

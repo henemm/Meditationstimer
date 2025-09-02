@@ -11,6 +11,9 @@
 		B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */; };
 		B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
+		B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
+		B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
+		B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +47,7 @@
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
+		B7C5566D2E6609F400EFC1F5 /* Meditationstimer iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meditationstimer iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7E601122E6582C1008AE315 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,10 +57,22 @@
 			path = "Meditationstimer Watch App";
 			sourceTree = "<group>";
 		};
+		B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Meditationstimer iOS";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B737BB552E656A63000AE8C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C5566A2E6609F400EFC1F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -71,6 +87,7 @@
 			children = (
 				B7E601112E6582A7008AE315 /* Services */,
 				B737BB5C2E656A63000AE8C4 /* Meditationstimer Watch App */,
+				B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */,
 				B737BB532E656A63000AE8C4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,6 +97,7 @@
 			children = (
 				B737BB522E656A63000AE8C4 /* Meditationstimer.app */,
 				B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */,
+				B7C5566D2E6609F400EFC1F5 /* Meditationstimer iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,6 +157,28 @@
 			productReference = B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B7C5566C2E6609F400EFC1F5 /* Meditationstimer iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Meditationstimer iOS" */;
+			buildPhases = (
+				B7C556692E6609F400EFC1F5 /* Sources */,
+				B7C5566A2E6609F400EFC1F5 /* Frameworks */,
+				B7C5566B2E6609F400EFC1F5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */,
+			);
+			name = "Meditationstimer iOS";
+			packageProductDependencies = (
+			);
+			productName = "Meditationstimer iOS";
+			productReference = B7C5566D2E6609F400EFC1F5 /* Meditationstimer iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -153,6 +193,9 @@
 						CreatedOnToolsVersion = 16.4;
 					};
 					B737BB572E656A63000AE8C4 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					B7C5566C2E6609F400EFC1F5 = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -173,6 +216,7 @@
 			targets = (
 				B737BB512E656A63000AE8C4 /* Meditationstimer */,
 				B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */,
+				B7C5566C2E6609F400EFC1F5 /* Meditationstimer iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -192,6 +236,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7C5566B2E6609F400EFC1F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -203,6 +254,16 @@
 				B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */,
 				B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */,
 				B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C556692E6609F400EFC1F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */,
+				B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */,
+				B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +404,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Meditationstimer;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App liest Herzfrequenzdaten, um Statistiken zur Sitzung anzuzeigen";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App protokolliert Achtsamkeits-Sitzungen in Apple Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
@@ -374,6 +436,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Meditationstimer;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App liest Herzfrequenzdaten, um Statistiken zur Sitzung anzuzeigen";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App protokolliert Achtsamkeits-Sitzungen in Apple Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
@@ -425,6 +488,73 @@
 			};
 			name = Release;
 		};
+		B7C556752E6609F500EFC1F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Meditationstimer iOS/Meditationstimer iOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XK87E2B3VR;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7C556762E6609F500EFC1F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Meditationstimer iOS/Meditationstimer iOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XK87E2B3VR;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -451,6 +581,15 @@
 			buildConfigurations = (
 				B737BB6A2E656A64000AE8C4 /* Debug */,
 				B737BB6B2E656A64000AE8C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Meditationstimer iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7C556752E6609F500EFC1F5 /* Debug */,
+				B7C556762E6609F500EFC1F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
