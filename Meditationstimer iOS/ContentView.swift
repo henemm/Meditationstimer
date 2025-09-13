@@ -8,6 +8,7 @@
 import SwiftUI
 import AVFoundation
 import HealthKit
+import ActivityKit
 
 // Kleiner, eingebauter Gong-Player: spielt "gong.caf"/"gong.wav", sonst System-Bell.
 fileprivate final class GongPlayer {
@@ -21,8 +22,10 @@ fileprivate final class GongPlayer {
     }
 
     /// Spielt eine Audiodatei ohne Erweiterung; versucht .caf, .wav, .mp3 in dieser Reihenfolge.
-    func play(named name: String) {
+    /// Optional mit Completion, die nach Ende der Wiedergabe aufgerufen wird.
+    func play(named name: String, completion: (() -> Void)? = nil) {
         activateSession()
+        // Versuche nacheinander die unterstützten Endungen
         for ext in ["caf", "wav", "mp3"] {
             if let url = Bundle.main.url(forResource: name, withExtension: ext) {
                 do {
@@ -30,18 +33,29 @@ fileprivate final class GongPlayer {
                     p.prepareToPlay()
                     p.play()
                     self.player = p
+                    if let completion = completion {
+                        // Aufruf nach tatsächlicher Dauer
+                        let delay = max(0.0, p.duration)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                            completion()
+                        }
+                    }
                     return
                 } catch {
                     // Versuche nächste Extension
                 }
             }
         }
+        // Fallback: Systemton und ggf. kurze Completion-Verzögerung
         playDefault()
+        if let completion = completion {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: completion)
+        }
     }
 
     /// Alter Default: spielt "gong" falls vorhanden, sonst Fallback.
     func play() {
-        play(named: "gong")
+        play(named: "gong", completion: nil)
     }
 
     /// System-Fallback
@@ -60,11 +74,14 @@ struct ContentView: View {
     private let notifier = NotificationHelper()
     @StateObject private var engine = TwoPhaseTimerEngine()
     private let gong = GongPlayer()
+    private let bgAudio = BackgroundAudioKeeper()
 
     // UI State
     @State private var showingError: String?
     @State private var askedPermissions = false
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var currentActivity: Activity<MeditationAttributes>?
 
     var body: some View {
         NavigationView {
@@ -105,11 +122,24 @@ struct ContentView: View {
             // Übergang Phase1 -> Phase2: dreifacher Gong
             if case .phase1 = lastState, case .phase2 = new {
                 gong.play(named: "gong-dreimal")
+                Task {
+                    let state = MeditationAttributes.ContentState(
+                        endDate: Date().addingTimeInterval(TimeInterval(phase2Minutes * 60)),
+                        phase: 2
+                    )
+                    await currentActivity?.update(using: state)
+                }
             }
             // Natürliches Ende: End-Gong + Logging
             if new == .finished {
-                gong.play(named: "gong-ende")
-                finishSessionLogPhase1Only()
+                gong.play(named: "gong-ende") {
+                    bgAudio.stop()
+                    finishSessionLogPhase1Only()
+                    Task {
+                        await currentActivity?.end(dismissalPolicy: .immediate)
+                        currentActivity = nil
+                    }
+                }
             }
             lastState = new
         }
@@ -158,6 +188,7 @@ struct ContentView: View {
 
     private func startSession() {
         gong.play(named: "gong-ende")
+        bgAudio.start()
         // Notifications als Backup, falls App in den Hintergrund geht
         let p1 = TimeInterval(max(0, phase1Minutes) * 60)
         let total = TimeInterval(max(0, phase1Minutes + phase2Minutes) * 60)
@@ -184,12 +215,34 @@ struct ContentView: View {
         // Engine starten (UI)
         engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
         lastState = .phase1(remaining: phase1Minutes * 60)
+
+        if ActivityAuthorizationInfo().areActivitiesEnabled {
+            let attributes = MeditationAttributes(title: "Meditation")
+            let state = MeditationAttributes.ContentState(
+                endDate: Date().addingTimeInterval(TimeInterval((phase1Minutes + phase2Minutes) * 60)),
+                phase: 1
+            )
+            do {
+                currentActivity = try Activity<MeditationAttributes>.request(
+                    attributes: attributes,
+                    contentState: state,
+                    pushType: nil
+                )
+            } catch {
+                print("Live Activity request failed: \(error)")
+            }
+        }
     }
 
     private func cancelSession() {
+        bgAudio.stop()
         Task { await notifier.cancelAll() }
         Task { await logPhase1OnCancel() } // immer loggen
         engine.cancel()
+        Task {
+            await currentActivity?.end(dismissalPolicy: .immediate)
+            currentActivity = nil
+        }
         lastState = .idle
     }
 
