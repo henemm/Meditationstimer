@@ -9,6 +9,7 @@ import SwiftUI
 import AVFoundation
 import HealthKit
 import ActivityKit
+import UIKit
 
 // Kleiner, eingebauter Gong-Player: spielt "gong.caf"/"gong.wav", sonst System-Bell.
 fileprivate final class GongPlayer {
@@ -85,25 +86,32 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 16) {
-                switch engine.state {
-                case .idle, .finished:
-                    pickerSection
-                    Button("Start") { startSession() }
-                        .buttonStyle(.borderedProminent)
+            GlassCard {
+                VStack(spacing: 16) {
+                    switch engine.state {
+                    case .idle, .finished:
+                        pickerSection
+                        Button("Start") { startSession() }
+                            .buttonStyle(.borderedProminent)
 
-                case .phase1(let remaining):
-                    phaseView(title: "Meditation", remaining: remaining)
-                    Button("Abbrechen", role: .destructive) { cancelSession() }
+                    case .phase1(let remaining):
+                        phaseView(title: "Meditation", remaining: remaining)
+                        Button("Abbrechen", role: .destructive) { cancelSession() }
 
-                case .phase2(let remaining):
-                    phaseView(title: "Besinnung", remaining: remaining)
-                    Button("Abbrechen", role: .destructive) { cancelSession() }
+                    case .phase2(let remaining):
+                        phaseView(title: "Besinnung", remaining: remaining)
+                        Button("Abbrechen", role: .destructive) { cancelSession() }
+                    }
                 }
             }
             .padding()
             .navigationTitle("Meditationstimer")
         }
+        .background(
+            LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
+                           startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+        )
         .onAppear {
             // Berechtigungen einmalig anfragen
             if !askedPermissions {
@@ -133,6 +141,7 @@ struct ContentView: View {
             // Natürliches Ende: End-Gong + Logging
             if new == .finished {
                 gong.play(named: "gong-ende") {
+                    setIdleTimer(false)
                     bgAudio.stop()
                     finishSessionLogPhase1Only()
                     Task {
@@ -148,30 +157,54 @@ struct ContentView: View {
         }, message: { Text(showingError ?? "") })
     }
 
+    // Bildschirm an/aus verhindern/erlauben
+    private func setIdleTimer(_ disabled: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = disabled
+    }
+
     // MARK: - Subviews
 
     private var pickerSection: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Text("Meditation")
-                Spacer()
+        HStack(alignment: .center, spacing: 20) {
+
+            // Linke Spalte: Emojis + Labels
+            VStack(spacing: 28) {
+                VStack(spacing: 6) {
+                    Text("🧘")
+                        .font(.system(size: 56))
+                    Text("Meditation")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                VStack(spacing: 6) {
+                    Text("🪷")
+                        .font(.system(size: 56))
+                    Text("Besinnung")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .frame(minWidth: 110, alignment: .center)
+
+            // Rechte Spalte: große „Drehräder“ (Wheel-Picker) für Zeiten
+            VStack(spacing: 24) {
                 Picker("Meditation (min)", selection: $phase1Minutes) {
                     ForEach(0..<61) { Text("\($0)") }
                 }
-                .frame(width: 100)
                 .labelsHidden()
                 .pickerStyle(.wheel)
-            }
-            HStack {
-                Text("Besinnung")
-                Spacer()
+                .frame(width: 160, height: 130)
+                .clipped()
+
                 Picker("Besinnung (min)", selection: $phase2Minutes) {
                     ForEach(0..<61) { Text("\($0)") }
                 }
-                .frame(width: 100)
                 .labelsHidden()
                 .pickerStyle(.wheel)
+                .frame(width: 160, height: 130)
+                .clipped()
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
 
@@ -187,6 +220,7 @@ struct ContentView: View {
     // MARK: - Actions
 
     private func startSession() {
+        setIdleTimer(true)
         gong.play(named: "gong-ende")
         bgAudio.start()
         // Notifications als Backup, falls App in den Hintergrund geht
@@ -219,7 +253,7 @@ struct ContentView: View {
         if ActivityAuthorizationInfo().areActivitiesEnabled {
             let attributes = MeditationAttributes(title: "Meditation")
             let state = MeditationAttributes.ContentState(
-                endDate: Date().addingTimeInterval(TimeInterval((phase1Minutes + phase2Minutes) * 60)),
+                endDate: Date().addingTimeInterval(TimeInterval(phase1Minutes * 60)),
                 phase: 1
             )
             do {
@@ -235,6 +269,7 @@ struct ContentView: View {
     }
 
     private func cancelSession() {
+        setIdleTimer(false)
         bgAudio.stop()
         Task { await notifier.cancelAll() }
         Task { await logPhase1OnCancel() } // immer loggen
@@ -271,6 +306,21 @@ struct ContentView: View {
 
     private func format(_ s: Int) -> String {
         String(format: "%02d:%02d", s/60, s%60)
+    }
+}
+
+private struct GlassCard<Content: View>: View {
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        content()
+            .padding(16)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
     }
 }
 

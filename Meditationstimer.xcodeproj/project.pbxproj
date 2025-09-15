@@ -241,6 +241,7 @@
 				B7C556692E6609F400EFC1F5 /* Sources */,
 				B7C5566A2E6609F400EFC1F5 /* Frameworks */,
 				B7C5566B2E6609F400EFC1F5 /* Resources */,
+				B7C556B22E75611D00EFC1F5 /* ShellScript */,
 				B7C556AA2E73E5EC00EFC1F5 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -356,6 +357,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B7C556B22E75611D00EFC1F5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildDate=$(date +\"%Y-%m-%d %H:%M:%S\")\necho \"⏱ Inject BuildTimestamp = $buildDate\"\n\nPlist=\"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :BuildTimestamp '$buildDate'\" \"$Plist\" || \\\n/usr/libexec/PlistBuddy -c \"Add :BuildTimestamp string '$buildDate'\" \"$Plist\"\n\n/usr/libexec/PlistBuddy -c \"Print :BuildTimestamp\" \"$Plist\" || true\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B737BB542E656A63000AE8C4 /* Sources */ = {
@@ -621,7 +642,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Meditationstimer iOS/Meditationstimer iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -656,7 +677,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Meditationstimer iOS/Meditationstimer iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -691,7 +712,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeditationstimerWidget/Info.plist;
@@ -720,7 +741,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeditationstimerWidget/Info.plist;

@@ -18,7 +18,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
         ActivityConfiguration(for: MeditationAttributes.self) { context in
             // Sperrbildschirm / Banner – große, gut lesbare Anzeige
             LockScreenView(title: context.attributes.title,
-                           remaining: context.state.remainingSeconds,
+                           endDate: context.state.endDate,
                            phase: context.state.phase)
             .activityBackgroundTint(.black.opacity(0.2))
             .activitySystemActionForegroundColor(.white)
@@ -30,7 +30,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                     VStack(spacing: 6) {
                         Text(phaseLabel(context.state.phase))
                             .font(.headline)
-                        Text(format(context.state.remainingSeconds))
+                        Text(context.state.endDate, style: .timer)
                             .font(.system(size: 44, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                     }
@@ -42,16 +42,17 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                         .foregroundStyle(.secondary)
                 }
             } compactLeading: {
-                // z. B. Phase
-                Text(context.state.phase == 1 ? "M" : "B")
-                    .font(.caption2)
+                EmptyView()
             } compactTrailing: {
-                // Restsekunden kurz
-                Text(shortFormat(context.state.remainingSeconds))
-                    .font(.caption2).monospacedDigit()
+                HStack(spacing: 4) {
+                    Text(context.state.phase == 1 ? "M" : "B")
+                        .font(.caption2).bold()
+                    Text(context.state.endDate, style: .timer)
+                        .font(.caption2).monospacedDigit()
+                }
             } minimal: {
                 // Nur Sekunden minimal
-                Text(shortFormat(context.state.remainingSeconds))
+                Text(context.state.endDate, style: .timer)
                     .monospacedDigit()
             }
             .keylineTint(.accentColor)
@@ -63,7 +64,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
 private struct LockScreenView: View {
     let title: String
-    let remaining: Int
+    let endDate: Date
     let phase: Int
 
     var body: some View {
@@ -71,11 +72,19 @@ private struct LockScreenView: View {
             Text(title)
                 .font(.headline)
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+
             Text(phaseLabel(phase))
                 .font(.subheadline)
-            Text(format(remaining))
+
+            Text(endDate, style: .timer)
                 .font(.system(size: 56, weight: .bold, design: .rounded))
                 .monospacedDigit()
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            Text("Minuten")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.vertical, 8)
@@ -88,19 +97,7 @@ private func phaseLabel(_ phase: Int) -> String {
     phase == 1 ? "Meditation" : "Besinnung"
 }
 
-private func format(_ s: Int) -> String {
-    let m = s / 60
-    let sec = s % 60
-    return String(format: "%02d:%02d", m, sec)
-}
 
-private func shortFormat(_ s: Int) -> String {
-    if s >= 60 {
-        return "\(s/60)m"
-    } else {
-        return "\(s)s"
-    }
-}
 
 // MARK: - Previews
 
@@ -113,10 +110,10 @@ extension MeditationAttributes {
 
 extension MeditationAttributes.ContentState {
     static var sampleP1: MeditationAttributes.ContentState {
-        .init(remainingSeconds: 75, phase: 1)
+        .init(endDate: Date().addingTimeInterval(75), phase: 1)
     }
     static var sampleP2: MeditationAttributes.ContentState {
-        .init(remainingSeconds: 12, phase: 2)
+        .init(endDate: Date().addingTimeInterval(12), phase: 2)
     }
 }
 

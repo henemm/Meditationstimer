@@ -1,5 +1,6 @@
 import Foundation
 import HealthKit
+import UIKit
 
 /// Kapselt HealthKit für das Schreiben von Achtsamkeits‑Sitzungen (Mindful Minutes).
 final class HealthKitManager {
@@ -13,8 +14,13 @@ final class HealthKitManager {
 
     private let healthStore = HKHealthStore()
 
-    /// Fragt die Berechtigung an, Mindfulness‑Sitzungen zu SCHREIBEN.
-    /// Zusätzlich wird Lesezugriff für Herzfrequenz angefragt (optional).
+    /// Hinweis zu Info.plist:
+    /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
+    /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
+    ///
+    /// Fragt die Berechtigung an (schreiben: mindfulSession, lesen: heartRate).
+    /// Robust: nur wenn App aktiv, und nur wenn noch nötig.
+    @MainActor
     @discardableResult
     func requestAuthorization() async throws {
         guard HKHealthStore.isHealthDataAvailable() else {
@@ -25,9 +31,29 @@ final class HealthKitManager {
         }
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
 
+        let toShare: Set<HKSampleType> = [mindfulType]
+        let toRead: Set<HKObjectType> = heartRateType.map { Set([$0]) } ?? []
+
+        // Prüfen, ob eine Anfrage überhaupt nötig ist
+        let status: HKAuthorizationRequestStatus = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<HKAuthorizationRequestStatus, Error>) in
+            self.healthStore.getRequestStatusForAuthorization(toShare: toShare, read: toRead) { status, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else {
+                    cont.resume(returning: status)
+                }
+            }
+        }
+        if status == .unnecessary { return } // bereits autorisiert
+
+        // Warten, bis die App im Vordergrund ist (sonst kann das Sheet timeouten)
+        guard await waitUntilAppActive(timeout: 5.0) else {
+            throw HealthKitError.authorizationDenied
+        }
+
+        // Anfrage stellen (auf dem MainActor)
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            self.healthStore.requestAuthorization(toShare: [mindfulType],
-                                                  read: heartRateType != nil ? [heartRateType!] : []) { success, error in
+            self.healthStore.requestAuthorization(toShare: toShare, read: toRead) { success, error in
                 if let error = error {
                     cont.resume(throwing: error)
                 } else if success {
@@ -60,5 +86,14 @@ final class HealthKitManager {
                 }
             }
         }
+    }
+    /// Wartet kurz, bis die App „active“ ist (verhindert Timeout beim System‑Sheet).
+    private func waitUntilAppActive(timeout: TimeInterval) async -> Bool {
+        let start = Date()
+        while Date().timeIntervalSince(start) < timeout {
+            if UIApplication.shared.applicationState == .active { return true }
+            try? await Task.sleep(nanoseconds: 150_000_000) // 150 ms
+        }
+        return UIApplication.shared.applicationState == .active
     }
 }
