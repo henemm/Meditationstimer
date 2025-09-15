@@ -85,7 +85,7 @@ struct ContentView: View {
     @State private var currentActivity: Activity<MeditationAttributes>?
     @State private var showSettings = false
 
-    var body: some View {
+    private var offenTab: some View {
         NavigationView {
             GlassCard {
                 VStack(spacing: 16) {
@@ -121,6 +121,19 @@ struct ContentView: View {
                 SettingsSheet()
                     .presentationDetents([.medium, .large])
             }
+        }
+    }
+
+    var body: some View {
+        TabView {
+            offenTab
+                .tabItem { Label("Offen", systemImage: "figure.mind.and.body") }
+
+            AtemView()
+                .tabItem { Label("Atem", systemImage: "wind") }
+
+            WorkoutsView()
+                .tabItem { Label("Workouts", systemImage: "dumbbell") }
         }
         .background(
             LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
@@ -348,10 +361,6 @@ private struct SettingsSheet: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Standard‑Dauern") {
-                    Stepper("Meditation: \(defaultP1) min", value: $defaultP1, in: 0...120)
-                    Stepper("Besinnung: \(defaultP2) min", value: $defaultP2, in: 0...60)
-                }
                 Section("Feedback") {
                     Toggle("Ton (iPhone)", isOn: $soundEnabled)
                     Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
@@ -363,6 +372,40 @@ private struct SettingsSheet: View {
                 }
             }
             .navigationTitle("Einstellungen")
+        }
+    }
+}
+
+private struct AtemView: View {
+    var body: some View {
+        NavigationView {
+            GlassCard {
+                VStack(spacing: 12) {
+                    Text("Atem‑Meditationen")
+                        .font(.headline)
+                    Text("Bald verfügbar")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding()
+            .navigationTitle("Atem")
+        }
+    }
+}
+
+private struct WorkoutsView: View {
+    var body: some View {
+        NavigationView {
+            GlassCard {
+                VStack(spacing: 12) {
+                    Text("Workouts")
+                        .font(.headline)
+                    Text("Bald verfügbar")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding()
+            .navigationTitle("Workouts")
         }
     }
 }
