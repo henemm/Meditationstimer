@@ -83,6 +83,7 @@ struct ContentView: View {
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
     @Environment(\.scenePhase) private var scenePhase
     @State private var currentActivity: Activity<MeditationAttributes>?
+    @State private var showSettings = false
 
     var body: some View {
         NavigationView {
@@ -106,6 +107,20 @@ struct ContentView: View {
             }
             .padding()
             .navigationTitle("Meditationstimer")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                    }
+                    .accessibilityLabel("Einstellungen")
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsSheet()
+                    .presentationDetents([.medium, .large])
+            }
         }
         .background(
             LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
@@ -321,6 +336,34 @@ private struct GlassCard<Content: View>: View {
                     .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
             )
             .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+    }
+}
+
+private struct SettingsSheet: View {
+    @AppStorage("phase1Minutes") private var defaultP1: Int = 15
+    @AppStorage("phase2Minutes") private var defaultP2: Int = 3
+    @AppStorage("soundEnabled")  private var soundEnabled: Bool = true
+    @AppStorage("hapticsEnabled") private var hapticsEnabled: Bool = true
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section("Standard‑Dauern") {
+                    Stepper("Meditation: \(defaultP1) min", value: $defaultP1, in: 0...120)
+                    Stepper("Besinnung: \(defaultP2) min", value: $defaultP2, in: 0...60)
+                }
+                Section("Feedback") {
+                    Toggle("Ton (iPhone)", isOn: $soundEnabled)
+                    Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
+                }
+                Section {
+                    Link(destination: URL(string: UIApplication.openSettingsURLString)!) {
+                        Label("System‑Einstellungen öffnen", systemImage: "gearshape")
+                    }
+                }
+            }
+            .navigationTitle("Einstellungen")
+        }
     }
 }
 
