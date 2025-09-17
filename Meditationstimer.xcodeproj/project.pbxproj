@@ -79,6 +79,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B7AC15882E79CFFC00D0430A /* Exceptions for "Meditationstimer iOS" folder in "Meditationstimer Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ausatmen.caf,
+				"ausgeatmet-halten.caf",
+				einatmen.caf,
+				"eingeatmet-halten.caf",
+			);
+			target = B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */;
+		};
 		B7C556A62E73E5EC00EFC1F5 /* Exceptions for "MeditationstimerWidget" folder in "MeditationstimerWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -104,6 +114,7 @@
 		B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				B7AC15882E79CFFC00D0430A /* Exceptions for "Meditationstimer iOS" folder in "Meditationstimer Watch App" target */,
 				B7C556B12E73E88D00EFC1F5 /* Exceptions for "Meditationstimer iOS" folder in "MeditationstimerWidgetExtension" target */,
 			);
 			path = "Meditationstimer iOS";

@@ -1,3 +1,5 @@
+// probe: second-test
+// probe: work-with-apps
 //
 //  ContentView.swift
 //  Meditationstimer iOS
@@ -93,6 +95,9 @@ struct ContentView: View {
                     case .idle, .finished:
                         pickerSection
                         Button("Start") { startSession() }
+                            .font(.title2.weight(.semibold))
+                            .padding(.horizontal, 84)
+                            .padding(.vertical, 14)
                             .buttonStyle(.borderedProminent)
 
                     case .phase1(let remaining):
@@ -106,8 +111,13 @@ struct ContentView: View {
                 }
             }
             .padding()
-            .navigationTitle("Meditationstimer")
+            .toolbarBackground(.regularMaterial, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Meditationstimer")
+                        .font(.title3)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showSettings = true
@@ -140,6 +150,8 @@ struct ContentView: View {
                            startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea()
         )
+        .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
         .onAppear {
             // Berechtigungen einmalig anfragen
             if !askedPermissions {
@@ -154,9 +166,9 @@ struct ContentView: View {
                 }
             }
         }
-        .onChange(of: engine.state) { new in
+        .onChange(of: engine.state) { oldValue, new in
             // Übergang Phase1 -> Phase2: dreifacher Gong
-            if case .phase1 = lastState, case .phase2 = new {
+            if case .phase1 = oldValue, case .phase2 = new {
                 gong.play(named: "gong-dreimal")
                 Task {
                     let state = MeditationAttributes.ContentState(
@@ -178,7 +190,6 @@ struct ContentView: View {
                     }
                 }
             }
-            lastState = new
         }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }
@@ -199,14 +210,14 @@ struct ContentView: View {
             VStack(spacing: 28) {
                 VStack(spacing: 6) {
                     Text("🧘")
-                        .font(.system(size: 56))
+                        .font(.system(size: 64))
                     Text("Meditation")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
                 VStack(spacing: 6) {
                     Text("🪷")
-                        .font(.system(size: 56))
+                        .font(.system(size: 64))
                     Text("Besinnung")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
