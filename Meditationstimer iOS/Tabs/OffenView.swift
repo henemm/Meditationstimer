@@ -86,13 +86,13 @@ struct OffenView: View {
             ZStack {
                 CircularRing(progress: progress, lineWidth: 30)
                     .aspectRatio(1, contentMode: .fit)
-                    .frame(width: 220, height: 220)
+                    .frame(width: 320, height: 320)
                 Text(format(remaining))
                     .font(.system(size: 44, weight: .semibold, design: .rounded))
                     .monospacedDigit()
             }
         }
-        .frame(maxWidth: 320)
+        .frame(maxWidth: 360)
     }
 
     var body: some View {
@@ -172,4 +172,9 @@ struct OffenView: View {
     private func setIdleTimer(_ disabled: Bool) {
         UIApplication.shared.isIdleTimerDisabled = disabled
     }
+#if DEBUG
+#Preview {
+    OffenView()
+        .environmentObject(TwoPhaseTimerEngine())
 }
+#endif

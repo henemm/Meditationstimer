@@ -54,6 +54,7 @@ struct ContentView: View {
     private let hk = HealthKitManager()
     private let notifier = NotificationHelper()
     @StateObject private var engine = TwoPhaseTimerEngine()
+    @StateObject private var session = SessionManager()
     private let gong = GongPlayer()
     private let bgAudio = BackgroundAudioKeeper()
 
@@ -112,11 +113,10 @@ struct ContentView: View {
             if case .phase1 = oldValue, case .phase2 = newValue {
                 gong.play(named: "gong-dreimal")
                 Task {
-                    let state = MeditationAttributes.ContentState(
-                        endDate: Date().addingTimeInterval(TimeInterval(phase2Minutes * 60)),
-                        phase: 2
+                    await session.updateLiveActivity(
+                        phase: 2,
+                        endDate: Date().addingTimeInterval(TimeInterval(phase2Minutes * 60))
                     )
-                    await liveActivityUpdate(state)
                 }
             }
             // Natürliches Ende: End-Gong + Logging
@@ -126,7 +126,7 @@ struct ContentView: View {
                     bgAudio.stop()
                     finishSessionLogPhase1Only()
                     Task {
-                        await endLiveActivityImmediate()
+                        await session.endLiveActivityImmediate()
                         currentActivity = nil
                     }
                 }
@@ -232,22 +232,10 @@ struct ContentView: View {
         engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
         lastState = TwoPhaseTimerEngine.State.phase1(remaining: phase1Minutes * 60)
 
-        if ActivityAuthorizationInfo().areActivitiesEnabled {
-            let attributes = MeditationAttributes(title: "Meditation")
-            let state = MeditationAttributes.ContentState(
-                endDate: Date().addingTimeInterval(TimeInterval(phase1Minutes * 60)),
-                phase: 1
-            )
-            do {
-                currentActivity = try Activity<MeditationAttributes>.request(
-                    attributes: attributes,
-                    content: ActivityContent(state: state, staleDate: nil),
-                    pushType: nil
-                )
-            } catch {
-                print("Live Activity request failed: \(error)")
-            }
-        }
+        session.requestLiveActivity(
+            phase: 1,
+            endDate: Date().addingTimeInterval(TimeInterval(phase1Minutes * 60))
+        )
     }
 
     private func cancelSession() {
