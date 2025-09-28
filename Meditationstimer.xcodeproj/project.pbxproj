@@ -10,6 +10,10 @@
 		B737BB592E656A63000AE8C4 /* Meditationstimer Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B770C7A72E87BF37008FB9FC /* GongPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */; };
 		B770C7A82E87BF37008FB9FC /* GongPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */; };
+		B770C7B42E87C474008FB9FC /* MeditationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B32E87C473008FB9FC /* MeditationEngine.swift */; };
+		B770C7B52E87C474008FB9FC /* MeditationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B32E87C473008FB9FC /* MeditationEngine.swift */; };
+		B770C7B72E87C482008FB9FC /* BackgroundNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */; };
+		B770C7B82E87C482008FB9FC /* BackgroundNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */; };
 		B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */; };
 		B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
@@ -70,6 +74,8 @@
 		B737BB522E656A63000AE8C4 /* Meditationstimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meditationstimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meditationstimer Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GongPlayer.swift; sourceTree = "<group>"; };
+		B770C7B32E87C473008FB9FC /* MeditationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationEngine.swift; sourceTree = "<group>"; };
+		B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNotifier.swift; sourceTree = "<group>"; };
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
@@ -195,6 +201,8 @@
 		B7E601112E6582A7008AE315 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */,
+				B770C7B32E87C473008FB9FC /* MeditationEngine.swift */,
 				B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */,
 				B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */,
 				B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */,
@@ -398,10 +406,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B770C7B52E87C474008FB9FC /* MeditationEngine.swift in Sources */,
 				B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */,
 				B770C7A82E87BF37008FB9FC /* GongPlayer.swift in Sources */,
 				B7C556852E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */,
 				B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */,
+				B770C7B72E87C482008FB9FC /* BackgroundNotifier.swift in Sources */,
 				B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */,
 				B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */,
 			);
@@ -414,6 +424,8 @@
 				B7C556842E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */,
 				B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */,
 				B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */,
+				B770C7B42E87C474008FB9FC /* MeditationEngine.swift in Sources */,
+				B770C7B82E87C482008FB9FC /* BackgroundNotifier.swift in Sources */,
 				B770C7A72E87BF37008FB9FC /* GongPlayer.swift in Sources */,
 				B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */,
 			);

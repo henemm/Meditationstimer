@@ -1,35 +1,40 @@
-
-//
-//  CircularRing.swift
-//  Meditationstimer
-//
-//  Created by Henning Emmrich on 27.09.25.
-//
-
 import SwiftUI
 
-/// Runder, schrumpfender Fortschrittsring (1.0 → 0.0)
+/// Circular progress ring component.
+/// - Parameters:
+///   - progress: 0.0 ... 1.0
+///   - lineWidth: ring thickness
+///   - foreground: foreground ring color
+///   - background: background ring color
 struct CircularRing: View {
-    var progress: Double      // 0...1 (remaining/total)
-    var lineWidth: CGFloat = 26
-    var trackOpacity: CGFloat = 0.18
+    var progress: Double
+    var lineWidth: CGFloat = 20
+    var foreground: Color = .blue
+    var background: Color = Color.primary.opacity(0.08)
 
     var body: some View {
+        let gradient = LinearGradient(colors: [.blue, .cyan],
+                                      startPoint: .topLeading,
+                                      endPoint: .bottomTrailing)
         ZStack {
+            // Background ring
             Circle()
-                .stroke(Color.primary.opacity(trackOpacity), lineWidth: lineWidth)
+                .stroke(background, lineWidth: lineWidth)
 
+            // Foreground progress ring
             Circle()
-                .trim(from: 0, to: max(0, min(1, progress)))
+                .trim(from: 0, to: CGFloat(min(max(progress, 0), 1)))
                 .stroke(
-                    LinearGradient(colors: [.blue, .cyan],
-                                   startPoint: .topLeading,
-                                   endPoint: .bottomTrailing),
-                    style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
+                    gradient,
+                    style: StrokeStyle(
+                        lineWidth: lineWidth,
+                        lineCap: .round,
+                        lineJoin: .round
+                    )
                 )
-                .rotationEffect(.degrees(-90))   // Start oben
-                .animation(.easeInOut(duration: 0.25), value: progress)
+                .rotationEffect(.degrees(-90)) // start at top
         }
+        // Equal white space around equal to the ring thickness
+        .padding(lineWidth)
     }
 }
-
