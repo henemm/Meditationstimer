@@ -187,7 +187,7 @@ public struct AtemView: View {
 
     public var body: some View {
         ZStack {
-            NavigationView {
+            NavigationStack {
                 List {
                     ForEach(presets) { preset in
                         Row(
@@ -205,26 +205,14 @@ public struct AtemView: View {
                 .navigationTitle("")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        HStack(spacing: 10) {
-                            Button {
-                                showingEditor = Preset(name: "Neues Preset",
-                                                       emoji: randomEmoji(),
-                                                       inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
-                            } label: {
-                                Image(systemName: "plus")
-                                    .imageScale(.large)
-                                    .padding(8)
-                            }
-                            Button {
-                                showSettings = true
-                            } label: {
-                                Image(systemName: "gear")
-                                    .imageScale(.large)
-                                    .padding(8)
-                            }
-                        }
-                        .background(Color.white, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button {
+                            showingEditor = Preset(name: "Neues Preset",
+                                                   emoji: randomEmoji(),
+                                                   inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
+                        } label: { Image(systemName: "plus") }
+
+                        Button { showSettings = true } label: { Image(systemName: "gearshape") }
                     }
                 }
                 .sheet(isPresented: $showSettings) {
@@ -268,36 +256,46 @@ public struct AtemView: View {
 
         var body: some View {
             GlassCard {
-                HStack(alignment: .center, spacing: 12) {
-                    Text(preset.emoji).font(.system(size: 28))
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(preset.name).font(.headline)
+                VStack(alignment: .leading, spacing: 10) {
+                    // TOP ~2/3: Emoji, Title, Play
+                    HStack(alignment: .center, spacing: 14) {
+                        Text(preset.emoji)
+                            .font(.system(size: 42))
+                        Text(preset.name)
+                            .font(.system(size: 22, weight: .bold))
+                        Spacer()
+                        Button(action: play) {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 16, weight: .bold))
+                                .frame(width: 40, height: 40)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.blue)
+                        .clipShape(Circle())
+                        .accessibilityLabel("Start")
+                    }
+
+                    // Spacer to bias layout so bottom feels like lower third
+                    Spacer(minLength: 8)
+
+                    // BOTTOM ~1/3: details left, edit right
+                    HStack(alignment: .center) {
                         Text("\(preset.rhythmString) · \(preset.repetitions)x · ≈ \(preset.totalDurationString)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
                             .truncationMode(.tail)
-                    }
-                    Spacer()
-                    VStack(alignment: .trailing, spacing: 30) {
-                        Button(action: play) {
-                            Image(systemName: "play.circle.fill")
-                                .font(.system(size: 30))
-                                .frame(width: 44, height: 44)
-                                .contentShape(Rectangle())
-                                .padding(4)
-                        }.buttonStyle(.plain)
+                        Spacer()
                         Button(action: edit) {
                             Image(systemName: "ellipsis")
-                                .font(.system(size: 20, weight: .regular))
-                                .frame(width: 36, height: 36)
-                                .contentShape(Rectangle())
-                                .padding(4)
-                        }.buttonStyle(.plain)
+                                .font(.system(size: 18, weight: .regular))
+                                .frame(width: 32, height: 32)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Bearbeiten")
                     }
-                    .frame(maxHeight: .infinity)
                 }
-                .frame(minHeight: 120)
+                .frame(minHeight: 140)
             }
         }
     }
@@ -535,10 +533,11 @@ public struct AtemView: View {
                 .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .strokeBorder(Color.white.opacity(0.25), lineWidth: 1)
+                        .strokeBorder(Color.white.opacity(0.32), lineWidth: 1)
                 )
-                .shadow(color: Color.black.opacity(0.06), radius: 3, x: 0, y: 1)
+                .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 2)
         }
     }
 }
+
 
