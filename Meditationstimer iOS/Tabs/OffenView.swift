@@ -23,6 +23,7 @@ struct OffenView: View {
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
     @State private var didPlayPhase2Gong = false
+    @State private var pendingEndStop: DispatchWorkItem?
 
     private var pickerSection: some View {
         HStack(alignment: .center, spacing: 20) {
@@ -122,32 +123,43 @@ struct OffenView: View {
 
     var body: some View {
         NavigationStack {
-            GlassCard {
-                VStack(spacing: 16) {
-                    switch engine.state {
-                    case .idle, .finished:
-                        pickerSection
-                        startButton
-
-                    case .phase1(let remaining):
-                        phaseView(title: "Meditation", remaining: remaining, total: phase1Minutes * 60)
-                        Button("Abbrechen", role: .destructive) {
-                            setIdleTimer(false)
-                            bgAudio.stop()
-                            engine.cancel()
-                        }
-
-                    case .phase2(let remaining):
-                        phaseView(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60)
-                        Button("Abbrechen", role: .destructive) {
-                            setIdleTimer(false)
-                            bgAudio.stop()
-                            engine.cancel()
+            ZStack {
+                // Base (idle & finished) – same as before
+                VStack {
+                    GlassCard {
+                        VStack(spacing: 16) {
+                            switch engine.state {
+                            case .idle, .finished:
+                                pickerSection
+                                startButton
+                            case .phase1, .phase2:
+                                // The active states are handled by the overlay run card below
+                                EmptyView()
+                            }
                         }
                     }
+                    .padding()
+                }
+
+                // Overlay for active session (phase1/phase2) – styled like Atem's run card
+                if case .phase1(let remaining) = engine.state {
+                    Color.black.opacity(0.08).ignoresSafeArea()
+                    RunCard(title: "Meditation", remaining: remaining, total: phase1Minutes * 60) {
+                        setIdleTimer(false)
+                        bgAudio.stop()
+                        engine.cancel()
+                    }
+                    .padding(.horizontal, 20)
+                } else if case .phase2(let remaining) = engine.state {
+                    Color.black.opacity(0.08).ignoresSafeArea()
+                    RunCard(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60) {
+                        setIdleTimer(false)
+                        bgAudio.stop()
+                        engine.cancel()
+                    }
+                    .padding(.horizontal, 20)
                 }
             }
-            .padding()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { showSettings = true }) {
@@ -183,10 +195,15 @@ struct OffenView: View {
                 // Natürliches Ende
                 if newValue == .finished {
                     gong.play(named: "gong-ende")
-                    // **Delay** stopping the background audio so the end gong can fully play out
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                        bgAudio.stop()
+
+                    // Cancel any previous pending stop and schedule a new, slightly longer delay
+                    pendingEndStop?.cancel()
+                    let work = DispatchWorkItem { [weak bgAudio = self.bgAudio] in
+                        bgAudio?.stop()
                     }
+                    pendingEndStop = work
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.4, execute: work)
+
                     Task {
                         await currentActivity?.end(dismissalPolicy: .immediate)
                         currentActivity = nil
@@ -202,6 +219,8 @@ struct OffenView: View {
                         await currentActivity?.end(dismissalPolicy: .immediate)
                         currentActivity = nil
                     }
+                    pendingEndStop?.cancel()
+                    pendingEndStop = nil
                     didPlayPhase2Gong = false
                 }
                 lastState = newValue
@@ -215,7 +234,9 @@ struct OffenView: View {
                 // Do not cut off audio if a gong is playing or a phase is running
                 switch engine.state {
                 case .idle, .finished:
-                    bgAudio.stop()
+                    if pendingEndStop == nil {
+                        bgAudio.stop()
+                    }
                     setIdleTimer(false)
                 default:
                     break
@@ -236,6 +257,48 @@ struct OffenView: View {
     
     private func setIdleTimer(_ disabled: Bool) {
         UIApplication.shared.isIdleTimerDisabled = disabled
+    }
+}
+
+private struct RunCard: View {
+    let title: String
+    let remaining: Int
+    let total: Int
+    var onEnd: () -> Void
+
+    private func format(_ seconds: Int) -> String {
+        let minutes = seconds / 60
+        let secs = seconds % 60
+        return String(format: "%d:%02d", minutes, secs)
+    }
+
+    var body: some View {
+        GlassCard {
+            VStack(spacing: 16) {
+                // Title
+                Text(title)
+                    .font(.title3.weight(.semibold))
+                // Progress ring + timer (match Offen phaseView sizing)
+                let totalSafe = max(1, total)
+                let progress = Double(remaining) / Double(totalSafe)
+                ZStack {
+                    CircularRing(progress: progress, lineWidth: 30)
+                        .aspectRatio(1, contentMode: .fit)
+                        .frame(width: 320, height: 320)
+                    Text(format(remaining))
+                        .font(.system(size: 44, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                }
+
+                // Centered Beenden button (same look & size as Atem run card)
+                Button("Beenden") { onEnd() }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(.red)
+                    .accessibilityLabel("Sitzung beenden")
+            }
+        }
+        .frame(maxWidth: 420)
     }
 }
 #if DEBUG

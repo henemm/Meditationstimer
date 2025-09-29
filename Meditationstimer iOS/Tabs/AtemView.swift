@@ -238,15 +238,43 @@ public struct AtemView: View {
                     )
                 }
             }
+            .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
+
+            // When overlay is up, dim & blur the background to show depth
+            if runningPreset != nil {
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.black.opacity(0.06), Color.black.opacity(0.28)],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    )
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .zIndex(1)
+            }
 
             if let preset = runningPreset {
-                Color.black.opacity(0.08).ignoresSafeArea()
-                    .onTapGesture { runningPreset = nil }
                 SessionCard(preset: preset) { runningPreset = nil }
+                    .transition(.scale.combined(with: .opacity))
+                    .zIndex(2)
             }
         }
         // removed floating + overlay
     }
+
+// MARK: - OverlayBackgroundEffect (blur/dim background when overlay is shown)
+private struct OverlayBackgroundEffect: ViewModifier {
+    let isDimmed: Bool
+    func body(content: Content) -> some View {
+        content
+            .blur(radius: isDimmed ? 6 : 0)
+            .saturation(isDimmed ? 0.95 : 1)
+            .brightness(isDimmed ? -0.02 : 0)
+            .animation(.easeInOut(duration: 0.2), value: isDimmed)
+            .allowsHitTesting(!isDimmed)
+    }
+}
 
     // MARK: - Row View (list item)
     struct Row: View {
@@ -305,8 +333,9 @@ public struct AtemView: View {
         let preset: Preset
         var close: () -> Void
         @StateObject private var engine = SessionEngine()
-        @State private var stepStart: Date = .now
-        @State private var stepDuration: TimeInterval = 1
+        @State private var sessionStart: Date = .now
+        @State private var sessionTotal: TimeInterval = 1
+        @State private var showDebug: Bool = true
 
         // Helper properties for dual ring progress
         private var cycleSeconds: Int { preset.inhale + preset.holdIn + preset.exhale + preset.holdOut }
@@ -332,26 +361,26 @@ public struct AtemView: View {
                 VStack(spacing: 12) {
                     switch engine.state {
                     case .idle:
-                        ProgressView().onAppear { engine.start(preset: preset) }
+                        ProgressView().onAppear {
+                            // Initialize absolute session timeline before starting
+                            sessionStart = .now
+                            sessionTotal = TimeInterval(preset.totalSeconds)
+                            engine.start(preset: preset)
+                        }
                     case .running(let phase, let remaining, let rep, let total):
                         Text(preset.name).font(.headline)
                         // Continuous dual rings: inner = current phase, outer = full session
-                        let phaseDuration = max(1, duration(for: phase))
-                        // Reset phase timer baseline whenever the phase changes
-                        EmptyView()
-                            .task(id: phase) {
-                                stepStart = .now
-                                stepDuration = TimeInterval(phaseDuration)
-                            }
-
                         TimelineView(.animation) { _ in
-                            let elapsedPhase = Date().timeIntervalSince(stepStart)
-                            let fractionPhase = max(0.0, min(1.0, elapsedPhase / max(0.001, stepDuration))) // 0…1
+                            let now = Date()
+                            let elapsedSession = now.timeIntervalSince(sessionStart)
+                            let total = max(0.001, sessionTotal)
+                            let progressTotal = max(0.0, min(1.0, elapsedSession / total))
 
-                            // Outer total progress uses continuous cycle progress
-                            let prior = Double(priorSum(before: phase))
-                            let progressCycle = cycleSeconds > 0 ? (prior + fractionPhase * Double(phaseDuration)) / Double(cycleSeconds) : 0.0
-                            let progressTotal = (Double(rep - 1) + progressCycle) / Double(max(1, total))
+                            // Phase progress from absolute time: start-of-phase offset within the session
+                            let durationPhase = max(1, duration(for: phase))
+                            let phaseStartOffset = Double((rep - 1) * cycleSeconds + priorSum(before: phase))
+                            let elapsedInPhase = elapsedSession - phaseStartOffset
+                            let fractionPhase = max(0, min(1, elapsedInPhase / Double(durationPhase)))
 
                             ZStack {
                                 // Outer ring: total session progress (continuous)
@@ -368,14 +397,34 @@ public struct AtemView: View {
                             }
                             .frame(width: 320, height: 320)
                             .padding(.top, 6)
+                            .contentShape(Rectangle())
+                            .onTapGesture(count: 2) { showDebug.toggle() }
+
+                            if showDebug {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("phase=\(phase.rawValue)  rep=\(rep)/\(total)  remaining=\(remaining)s")
+                                    Text("cycleSeconds=\(cycleSeconds)  priorSum=\(priorSum(before: phase))")
+                                    Text(String(format: "durationPhase=%.0f  elapsedSession=%.3f", Double(durationPhase), elapsedSession))
+                                    Text(String(format: "phaseStartOffset=%.3f  elapsedInPhase=%.3f", phaseStartOffset, elapsedInPhase))
+                                    Text(String(format: "fractionPhase=%.3f  progressTotal=%.3f", fractionPhase, progressTotal))
+                                }
+                                .font(.caption2.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.top, 4)
+                            }
                         }
 
                         Text("Runde \(rep) / \(total)")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     case .finished:
-                        Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
-                        Text("Fertig").font(.subheadline.weight(.semibold))
+                        VStack {
+                            Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
+                            Text("Fertig").font(.subheadline.weight(.semibold))
+                        }
+                        // Snap outer progress to full on finish
+                        .onAppear { sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart)) }
                     }
                     HStack {
                         Spacer()
@@ -389,6 +438,18 @@ public struct AtemView: View {
                 .frame(minWidth: 280, maxWidth: 360)
             }
             .padding(16)
+            .shadow(color: Color.black.opacity(0.18), radius: 20, x: 0, y: 10)
+            .overlay(alignment: .topTrailing) {
+                Button(action: { engine.cancel(); close() }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .frame(width: 28, height: 28)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.secondary)
+                .clipShape(Circle())
+                .padding(8)
+            }
         }
 
         private func iconName(for phase: Phase) -> String {
@@ -530,7 +591,7 @@ public struct AtemView: View {
         var body: some View {
             content()
                 .padding(16)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(Color.white.opacity(0.32), lineWidth: 1)
