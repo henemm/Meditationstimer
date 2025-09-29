@@ -55,8 +55,7 @@ struct ContentView: View {
     private let notifier = NotificationHelper()
     @StateObject private var engine = TwoPhaseTimerEngine()
     @StateObject private var session = SessionManager()
-    private let gong = GongPlayer()
-    private let bgAudio = BackgroundAudioKeeper()
+    // Removed audio helpers as per instructions
 
     // UI State
     @State private var showingError: String?
@@ -109,9 +108,8 @@ struct ContentView: View {
         .onChange(of: engine.state) { newValue in
             // Drive cross-cutting side effects based on engine state transitions
             let oldValue = lastState
-            // Übergang Phase1 -> Phase2: dreifacher Gong
+            // Übergang Phase1 -> Phase2: Live Activity aktualisieren (Sound wird in Tab-View gehandhabt)
             if case .phase1 = oldValue, case .phase2 = newValue {
-                gong.play(named: "gong-dreimal")
                 Task {
                     await session.updateLiveActivity(
                         phase: 2,
@@ -119,16 +117,13 @@ struct ContentView: View {
                     )
                 }
             }
-            // Natürliches Ende: End-Gong + Logging
+            // Natürliches Ende: nur Systemeffekte (Sound wird in Tab-View gehandhabt)
             if newValue == .finished {
-                gong.play(named: "gong-ende") {
-                    setIdleTimer(false)
-                    bgAudio.stop()
-                    finishSessionLogPhase1Only()
-                    Task {
-                        await session.endLiveActivityImmediate()
-                        currentActivity = nil
-                    }
+                setIdleTimer(false)
+                finishSessionLogPhase1Only()
+                Task {
+                    await session.endLiveActivityImmediate()
+                    currentActivity = nil
                 }
             }
             lastState = newValue
@@ -203,8 +198,7 @@ struct ContentView: View {
 
     private func startSession() {
         setIdleTimer(true)
-        gong.play(named: "gong")
-        bgAudio.start()
+        // Sound & AVAudioSession werden im aktiven Tab (Offen/Atem) gestartet
         // Notifications als Backup, falls App in den Hintergrund geht
         let p1 = TimeInterval(max(0, phase1Minutes) * 60)
         let total = TimeInterval(max(0, phase1Minutes + phase2Minutes) * 60)
@@ -240,7 +234,7 @@ struct ContentView: View {
 
     private func cancelSession() {
         setIdleTimer(false)
-        bgAudio.stop()
+        // Audio-Stopp erfolgt in der jeweiligen Tab-View
         Task { await notifier.cancelAll() }
         Task { await logPhase1OnCancel() } // immer loggen
         engine.cancel()
