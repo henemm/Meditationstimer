@@ -335,7 +335,9 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @StateObject private var engine = SessionEngine()
         @State private var sessionStart: Date = .now
         @State private var sessionTotal: TimeInterval = 1
-        @State private var showDebug: Bool = true
+        @State private var phaseStart: Date? = nil
+        @State private var phaseDuration: Double = 1
+        @State private var lastPhase: Phase? = nil
 
         // Helper properties for dual ring progress
         private var cycleSeconds: Int { preset.inhale + preset.holdIn + preset.exhale + preset.holdOut }
@@ -345,14 +347,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
             case .holdIn: return preset.holdIn
             case .exhale: return preset.exhale
             case .holdOut: return preset.holdOut
-            }
-        }
-        private func priorSum(before phase: Phase) -> Int {
-            switch phase {
-            case .inhale: return 0
-            case .holdIn: return preset.inhale
-            case .exhale: return preset.inhale + preset.holdIn
-            case .holdOut: return preset.inhale + preset.holdIn + preset.exhale
             }
         }
 
@@ -365,32 +359,36 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             // Initialize absolute session timeline before starting
                             sessionStart = .now
                             sessionTotal = TimeInterval(preset.totalSeconds)
+                            lastPhase = nil
+                            phaseStart = nil
                             engine.start(preset: preset)
                         }
                     case .running(let phase, let remaining, let rep, let total):
                         Text(preset.name).font(.headline)
-                        // Continuous dual rings: inner = current phase, outer = full session
-                        TimelineView(.animation) { _ in
-                            let now = Date()
-                            let elapsedSession = now.timeIntervalSince(sessionStart)
+                        // Dual rings: outer = session, inner = per-phase (resets at each phase)
+                        TimelineView(.animation) { timeline in
+                            let now = timeline.date
+
+                            // ---- OUTER (session) PROGRESS: continuous 0→1 over the whole session ----
                             let total = max(0.001, sessionTotal)
+                            let elapsedSession = now.timeIntervalSince(sessionStart)
                             let progressTotal = max(0.0, min(1.0, elapsedSession / total))
 
-                            // Phase progress from absolute time: start-of-phase offset within the session
-                            let durationPhase = max(1, duration(for: phase))
-                            let phaseStartOffset = Double((rep - 1) * cycleSeconds + priorSum(before: phase))
-                            let elapsedInPhase = elapsedSession - phaseStartOffset
-                            let fractionPhase = max(0, min(1, elapsedInPhase / Double(durationPhase)))
+                            // ---- INNER (phase) PROGRESS: reset on phase change, linear 0→1 ----
+                            let dur = max(0.001, phaseDuration)
+                            let start = phaseStart ?? now
+                            let elapsedInPhase = max(0, now.timeIntervalSince(start))
+                            let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
 
                             ZStack {
                                 // Outer ring: total session progress (continuous)
                                 CircularRing(progress: progressTotal, lineWidth: 22)
                                     .foregroundStyle(.tint)
-                                // Inner ring: current phase progress (continuous, scaled)
+                                // Inner ring: current phase progress (resets each phase)
                                 CircularRing(progress: fractionPhase, lineWidth: 14)
                                     .scaleEffect(0.72)
                                     .foregroundStyle(.secondary)
-                                // Center icon: phase direction (no circle)
+                                // Center icon: phase direction
                                 Image(systemName: iconName(for: phase))
                                     .font(.system(size: 64, weight: .regular))
                                     .foregroundStyle(.tint)
@@ -398,21 +396,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             .frame(width: 320, height: 320)
                             .padding(.top, 6)
                             .contentShape(Rectangle())
-                            .onTapGesture(count: 2) { showDebug.toggle() }
-
-                            if showDebug {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text("phase=\(phase.rawValue)  rep=\(rep)/\(total)  remaining=\(remaining)s")
-                                    Text("cycleSeconds=\(cycleSeconds)  priorSum=\(priorSum(before: phase))")
-                                    Text(String(format: "durationPhase=%.0f  elapsedSession=%.3f", Double(durationPhase), elapsedSession))
-                                    Text(String(format: "phaseStartOffset=%.3f  elapsedInPhase=%.3f", phaseStartOffset, elapsedInPhase))
-                                    Text(String(format: "fractionPhase=%.3f  progressTotal=%.3f", fractionPhase, progressTotal))
-                                }
-                                .font(.caption2.monospacedDigit())
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.top, 4)
-                            }
                         }
 
                         Text("Runde \(rep) / \(total)")
@@ -449,6 +432,15 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 .tint(.secondary)
                 .clipShape(Circle())
                 .padding(8)
+            }
+            .onChange(of: engine.state) { newState in
+                if case .running(let ph, _, _, _) = newState {
+                    if ph != lastPhase {
+                        lastPhase = ph
+                        phaseStart = Date()
+                        phaseDuration = Double(duration(for: ph))
+                    }
+                }
             }
         }
 
