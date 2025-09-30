@@ -283,7 +283,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         let edit: () -> Void
 
         var body: some View {
-            GlassCard {
+            AtemGlassCard {
                 VStack(alignment: .leading, spacing: 10) {
                     // TOP ~2/3: Emoji, Title, Play
                     HStack(alignment: .center, spacing: 14) {
@@ -351,7 +351,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
 
         var body: some View {
-            GlassCard {
+            ZStack {
+                Color(.systemGray6).ignoresSafeArea()
                 VStack(spacing: 12) {
                     switch engine.state {
                     case .idle:
@@ -363,44 +364,45 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             phaseStart = nil
                             engine.start(preset: preset)
                         }
-                    case .running(let phase, let remaining, let rep, let total):
+                    case .running(let phase, let remaining, let rep, let totalReps):
                         Text(preset.name).font(.headline)
                         // Dual rings: outer = session, inner = per-phase (resets at each phase)
-                        TimelineView(.animation) { timeline in
-                            let now = timeline.date
+                        TimelineView(.animation, content: { (timeline: TimelineViewDefaultContext) in
+                            VStack(spacing: 8) {
+                                let now = timeline.date
+                                
+                                // ---- OUTER (session) PROGRESS: continuous 0→1 over the whole session ----
+                                let totalDuration = max(0.001, sessionTotal)
+                                let elapsedSession = now.timeIntervalSince(sessionStart)
+                                let progressTotal = max(0.0, min(1.0, elapsedSession / totalDuration))
 
-                            // ---- OUTER (session) PROGRESS: continuous 0→1 over the whole session ----
-                            let total = max(0.001, sessionTotal)
-                            let elapsedSession = now.timeIntervalSince(sessionStart)
-                            let progressTotal = max(0.0, min(1.0, elapsedSession / total))
+                                // ---- INNER (phase) PROGRESS: reset on phase change, linear 0→1 ----
+                                let dur = max(0.001, phaseDuration)
+                                let start = phaseStart ?? now
+                                let elapsedInPhase = max(0, now.timeIntervalSince(start))
+                                let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
 
-                            // ---- INNER (phase) PROGRESS: reset on phase change, linear 0→1 ----
-                            let dur = max(0.001, phaseDuration)
-                            let start = phaseStart ?? now
-                            let elapsedInPhase = max(0, now.timeIntervalSince(start))
-                            let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
-
-                            ZStack {
-                                // Outer ring: total session progress (continuous)
-                                CircularRing(progress: progressTotal, lineWidth: 22)
-                                    .foregroundStyle(.tint)
-                                // Inner ring: current phase progress (resets each phase)
-                                CircularRing(progress: fractionPhase, lineWidth: 14)
-                                    .scaleEffect(0.72)
+                                ZStack {
+                                    // Outer ring: total session progress (continuous)
+                                    CircularRing(progress: progressTotal, lineWidth: 22)
+                                        .foregroundStyle(.tint)
+                                    // Inner ring: current phase progress (resets each phase)
+                                    CircularRing(progress: fractionPhase, lineWidth: 14)
+                                        .scaleEffect(0.72)
+                                        .foregroundStyle(.secondary)
+                                    // Center icon: phase direction
+                                    Image(systemName: SessionCard.iconName(for: phase))
+                                        .font(.system(size: 64, weight: .regular))
+                                        .foregroundStyle(.tint)
+                                }
+                                .frame(width: 320, height: 320)
+                                .padding(.top, 6)
+                                .contentShape(Rectangle())
+                                Text("Runde \(rep) / \(totalReps)")
+                                    .font(.footnote)
                                     .foregroundStyle(.secondary)
-                                // Center icon: phase direction
-                                Image(systemName: iconName(for: phase))
-                                    .font(.system(size: 64, weight: .regular))
-                                    .foregroundStyle(.tint)
                             }
-                            .frame(width: 320, height: 320)
-                            .padding(.top, 6)
-                            .contentShape(Rectangle())
-                        }
-
-                        Text("Runde \(rep) / \(total)")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
+                        })
                     case .finished:
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
@@ -409,19 +411,19 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         // Snap outer progress to full on finish
                         .onAppear { sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart)) }
                     }
-                    HStack {
-                        Spacer()
-                        Button("Beenden") {
-                            engine.cancel()
-                            close()
-                        }
-                        .buttonStyle(.bordered)
+                    Button("Beenden") {
+                        engine.cancel()
+                        close()
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                    .controlSize(.large)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 8)
                 }
                 .frame(minWidth: 280, maxWidth: 360)
+                .padding(16)
             }
-            .padding(16)
-            .shadow(color: Color.black.opacity(0.18), radius: 20, x: 0, y: 10)
             .overlay(alignment: .topTrailing) {
                 Button(action: { engine.cancel(); close() }) {
                     Image(systemName: "xmark")
@@ -444,7 +446,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
         }
 
-        private func iconName(for phase: Phase) -> String {
+        private static func iconName(for phase: Phase) -> String {
             switch phase {
             case .inhale: return "arrow.up"
             case .exhale: return "arrow.down"
@@ -514,7 +516,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         pickerRow(title: "Halten (aus)", value: $draft.holdOut)
                     }
                     Section("Wiederholungen") {
-                        WheelPicker("Runden", selection: $draft.repetitions, range: 1...99)
+                        AtemWheelPicker("Runden", selection: $draft.repetitions, range: 1...99)
                     }
                     Section {
                         HStack {
@@ -550,14 +552,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
             HStack {
                 Text(title)
                 Spacer()
-                WheelPicker("", selection: value, range: 0...60)
+                AtemWheelPicker("", selection: value, range: 0...60)
                     .frame(width: 120, height: 100)
             }
         }
     }
 
     // MARK: - WheelPicker (number wheel)
-    struct WheelPicker: View {
+    struct AtemWheelPicker: View {
         let title: String
         @Binding var selection: Int
         let range: ClosedRange<Int>
@@ -578,7 +580,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
     }
 
     // MARK: - GlassCard (styling container)
-    struct GlassCard<Content: View>: View {
+    struct AtemGlassCard<Content: View>: View {
         @ViewBuilder var content: () -> Content
         var body: some View {
             content()

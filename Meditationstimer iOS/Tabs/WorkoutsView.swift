@@ -8,6 +8,70 @@
 import SwiftUI
 import HealthKit
 
+// MARK: - Shared UI (Offen Look & Feel)
+private struct PlayCircleButton: View {
+    let action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            ZStack {
+                Circle()
+                    .fill(Color.accentColor)
+                    .frame(width: 96, height: 96)
+                Image(systemName: "play.fill")
+                    .font(.system(size: 32, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .center)
+    }
+}
+
+private struct NumberWheel: View {
+    @Binding var selection: Int
+    let range: ClosedRange<Int>
+    let height: CGFloat
+
+    init(selection: Binding<Int>, range: ClosedRange<Int>, height: CGFloat = 84) {
+        self._selection = selection
+        self.range = range
+        self.height = height
+    }
+
+    var body: some View {
+        Picker("", selection: $selection) {
+            ForEach(range, id: \.self) { v in
+                Text("\(v)").tag(v)
+            }
+        }
+        .labelsHidden()
+        .pickerStyle(.wheel)
+        .frame(width: 140, height: height, alignment: .trailing)
+        .background(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(Color(.systemGray5).opacity(0.75))
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+    }
+}
+
+private struct OffenCard<Content: View>: View {
+    @ViewBuilder var content: () -> Content
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.tertiarySystemBackground))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .strokeBorder(Color.black.opacity(0.05), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: 2)
+            content()
+                .padding(4)
+        }
+    }
+}
+
 // MARK: - HealthKit Manager (minimal HIIT start/stop)
 final class HealthKitWorkoutManager: ObservableObject {
     private let healthStore = HKHealthStore()
@@ -71,74 +135,75 @@ private struct WorkoutRunnerView: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.25).ignoresSafeArea()
-            GlassCard {
-                VStack(spacing: 12) {
-                    Text("Intervall-Workout")
-                        .font(.headline)
-                    Text("HIIT • \(repeats) Sätze • \(intervalSec)s / \(restSec)s")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+            Color(.systemGray6).ignoresSafeArea()
+            VStack(spacing: 12) {
+                Text("Intervall-Workout")
+                    .font(.headline)
+                Text("HIIT • \(repeats) Sätze • \(intervalSec)s / \(restSec)s")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
 
-                    if !finished {
-                        TimelineView(.animation, content: { (timeline: TimelineViewDefaultContext) in
-                            let now = timeline.date
+                if !finished {
+                    TimelineView(.animation, content: { (timeline: TimelineViewDefaultContext) in
+                        let now = timeline.date
 
-                            // Outer: session progress
-                            let total = max(0.001, sessionTotal)
-                            let elapsedSession = now.timeIntervalSince(sessionStart)
-                            let progressTotal = max(0.0, min(1.0, elapsedSession / total))
+                        // Outer: session progress
+                        let total = max(0.001, sessionTotal)
+                        let elapsedSession = now.timeIntervalSince(sessionStart)
+                        let progressTotal = max(0.0, min(1.0, elapsedSession / total))
 
-                            // Inner: phase progress (resets each phase)
-                            let dur = max(0.001, phaseDuration)
-                            let start = phaseStart ?? now
-                            let elapsedInPhase = max(0, now.timeIntervalSince(start))
-                            let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
+                        // Inner: phase progress (resets each phase)
+                        let dur = max(0.001, phaseDuration)
+                        let start = phaseStart ?? now
+                        let elapsedInPhase = max(0, now.timeIntervalSince(start))
+                        let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
 
-                            VStack(spacing: 8) {
-                                ZStack {
-                                    CircularRing(progress: progressTotal, lineWidth: 22)
-                                        .foregroundStyle(.tint)
-                                    CircularRing(progress: fractionPhase, lineWidth: 14)
-                                        .scaleEffect(0.72)
-                                        .foregroundStyle(.secondary)
-                                    Image(systemName: iconName(for: phase))
-                                        .font(.system(size: 64, weight: .regular))
-                                        .foregroundStyle(.tint)
-                                }
-                                .frame(width: 320, height: 320)
-                                .padding(.top, 6)
-                                Text("Satz \(rep) / \(repeats) – \(label(for: phase))")
-                                    .font(.footnote)
+                        VStack(spacing: 8) {
+                            ZStack {
+                                CircularRing(progress: progressTotal, lineWidth: 22)
+                                    .foregroundStyle(.tint)
+                                CircularRing(progress: fractionPhase, lineWidth: 14)
+                                    .scaleEffect(0.72)
                                     .foregroundStyle(.secondary)
+                                Image(systemName: iconName(for: phase))
+                                    .font(.system(size: 64, weight: .regular))
+                                    .foregroundStyle(.tint)
                             }
-                            .onChange(of: Int(fractionPhase >= 1.0 ? 1 : 0)) { _ in
+                            .frame(width: 320, height: 320)
+                            .padding(.top, 6)
+                            Text("Satz \(rep) / \(repeats) – \(label(for: phase))")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+                        .onChange(of: Int(fractionPhase >= 1.0 ? 1 : 0)) { newValue in
+                            if newValue == 1 {
                                 advance()
                             }
-                        })
-                    } else {
-                        VStack(spacing: 8) {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 44))
-                            Text("Fertig")
-                                .font(.subheadline.weight(.semibold))
                         }
-                        .onAppear {
-                            hk.end(completed: true)
-                        }
+                    })
+                } else {
+                    VStack(spacing: 8) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 44))
+                        Text("Fertig")
+                            .font(.subheadline.weight(.semibold))
                     }
-
-                    Button("Beenden") {
-                        hk.end(completed: false)
-                        onClose()
+                    .onAppear {
+                        hk.end(completed: true)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 4)
                 }
-                .frame(minWidth: 280, maxWidth: 360)
+
+                Button("Beenden") {
+                    hk.end(completed: false)
+                    onClose()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
+                .controlSize(.large)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, 4)
             }
+            .frame(minWidth: 280, maxWidth: 360)
             .padding(16)
             .overlay(alignment: .topTrailing) {
                 Button {
@@ -188,7 +253,7 @@ private struct WorkoutRunnerView: View {
     private func label(for phase: WorkoutPhase) -> String {
         switch phase {
         case .work: return "Belastung"
-        case .rest: return "Pause"
+        case .rest: return "Erholung"
         }
     }
     private func setPhase(_ p: WorkoutPhase) {
@@ -206,7 +271,6 @@ private struct WorkoutRunnerView: View {
             if restSec > 0 {
                 setPhase(.rest)
             } else {
-                // No rest → immediately go to next rep
                 advanceRepOrFinish()
             }
         } else {
@@ -245,69 +309,65 @@ struct WorkoutsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.clear.ignoresSafeArea()
-                VStack(spacing: 16) {
-                    // Simple controls
-                    Group {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Intervall")
-                                .font(.subheadline).foregroundStyle(.secondary)
-                            Picker("Intervall", selection: $intervalSec) {
-                                ForEach(1...600, id: \.self) { v in
-                                    Text("\(v) Sekunden").tag(v)
-                                }
+                Color(.systemBackground).ignoresSafeArea()
+                OffenCard {
+                    VStack(spacing: 8) {
+                        // Intervall (Belastung)
+                        HStack(spacing: 12) {
+                            VStack(alignment: .center, spacing: 2) {
+                                Text("🔥").font(.system(size: 36))
+                                Text("Belastung")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
                             }
-                            .pickerStyle(.wheel)
-                            .frame(height: 120)
+                            .frame(width: 180, alignment: .center)
+                            Spacer(minLength: 12)
+                            NumberWheel(selection: $intervalSec, range: 1...600)
                         }
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Pause")
-                                .font(.subheadline).foregroundStyle(.secondary)
-                            Picker("Pause", selection: $restSec) {
-                                ForEach(0...600, id: \.self) { v in
-                                    Text("\(v) Sekunden").tag(v)
-                                }
+
+                        // Pause (Erholung)
+                        HStack(spacing: 12) {
+                            VStack(alignment: .center, spacing: 2) {
+                                Text("🧊").font(.system(size: 36))
+                                Text("Erholung")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
                             }
-                            .pickerStyle(.wheel)
-                            .frame(height: 120)
+                            .frame(width: 180, alignment: .center)
+                            Spacer(minLength: 12)
+                            NumberWheel(selection: $restSec, range: 0...600)
                         }
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Wiederholungen")
-                                .font(.subheadline).foregroundStyle(.secondary)
-                            Picker("Wiederholungen", selection: $repeats) {
-                                ForEach(1...200, id: \.self) { v in
-                                    Text("\(v) ×").tag(v)
-                                }
+
+                        // Wiederholungen
+                        HStack(spacing: 12) {
+                            VStack(alignment: .center, spacing: 2) {
+                                Text("🔁").font(.system(size: 36))
+                                Text("Wiederholungen")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
                             }
-                            .pickerStyle(.wheel)
-                            .frame(height: 120)
+                            .frame(width: 180, alignment: .center)
+                            Spacer(minLength: 12)
+                            NumberWheel(selection: $repeats, range: 1...200)
                         }
-                    }
-                    .font(.body)
 
-                    HStack {
-                        Text("Gesamtdauer (\(repeats) Sätze)")
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                        Text(totalString)
-                            .monospacedDigit()
-                    }
+                        // Gesamtdauer
+                        HStack {
+                            Text("Gesamtdauer (\(repeats) Sätze)")
+                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Text(totalString)
+                                .monospacedDigit()
+                        }
+                        .padding(.top, 2)
+                        .padding(.trailing, 12)
 
-                    Button {
-                        showRunner = true
-                    } label: {
-                        Label("Play", systemImage: "play.fill")
-                            .frame(maxWidth: .infinity)
+                        PlayCircleButton { showRunner = true }
+                            .padding(.vertical, 4)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .padding(.top, 8)
-
-                    Spacer()
-                    Text("Workouts – kommt demnächst")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
                 }
-                .padding()
+                .padding(.horizontal, 16)
+                .padding(.vertical, 0)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -333,7 +393,6 @@ struct WorkoutsView: View {
                 }
                 .ignoresSafeArea()
             }
-            .navigationTitle("Workouts")
         }
     }
 }
