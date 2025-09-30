@@ -351,9 +351,12 @@ struct WorkoutsView: View {
                         VStack(spacing: 16) {
                             pickerSection
                             HStack {
-                                Text("Gesamtdauer (\(repeats) Wiederholungen)").foregroundStyle(.secondary)
+                                Text("Gesamtdauer")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
                                 Spacer()
                                 Text(totalString)
+                                    .font(.footnote)
                                     .monospacedDigit()
                                     .foregroundStyle(.secondary)
                             }
