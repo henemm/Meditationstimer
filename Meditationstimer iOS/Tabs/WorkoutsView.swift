@@ -15,12 +15,14 @@ private enum Cue: String {
     case lang       // long tone on phase switch (work→rest)
     case auftakt    // pre-start cue before first work
     case ausklang   // final chime at end of last work
+    case lastRound = "last-round" // announce penultimate→last set
 }
 
 private final class SoundPlayer: ObservableObject {
     private var players: [Cue: AVAudioPlayer] = [:]
     private var prepared = false
     private let speech = AVSpeechSynthesizer()
+    private var roundPlayers: [Int: AVAudioPlayer] = [:] // caches round-1..round-20
 
     func prepare() {
         guard !prepared else { return }
@@ -31,10 +33,10 @@ private final class SoundPlayer: ObservableObject {
         } catch {
             // ignore
         }
-        // Try to load each cue from the app bundle. We look for .caf first, then .wav, then .mp3
-        for cue in [Cue.kurz, .lang, .auftakt, .ausklang] {
+        // Try to load each cue from the app bundle. We look for .caff first, then .caf, then .wav, then .mp3
+        for cue in [Cue.kurz, .lang, .auftakt, .ausklang, .lastRound] {
             let name = cue.rawValue
-            let exts = ["caf", "wav", "mp3", "aiff"]
+            let exts = ["caff", "caf", "wav", "mp3", "aiff"]
             var found: URL? = nil
             for ext in exts {
                 if let url = Bundle.main.url(forResource: name, withExtension: ext) { found = url; break }
@@ -42,6 +44,9 @@ private final class SoundPlayer: ObservableObject {
             if let url = found, let p = try? AVAudioPlayer(contentsOf: url) {
                 p.prepareToPlay()
                 players[cue] = p
+                print("[Sound] loaded \(name): duration=\(p.duration)s")
+            } else {
+                print("[Sound] MISSING \(name).(caff|caf|wav|mp3|aiff)")
             }
         }
         prepared = true
@@ -52,6 +57,35 @@ private final class SoundPlayer: ObservableObject {
         if let p = players[cue] {
             p.currentTime = 0
             p.play()
+            print("[Sound] play \(cue.rawValue)")
+        } else {
+            print("[Sound] cannot play \(cue.rawValue): player missing")
+        }
+    }
+
+    func playRound(_ number: Int) {
+        guard number >= 1 && number <= 20 else { return }
+        prepare()
+        if let p = roundPlayers[number] {
+            p.currentTime = 0
+            p.play()
+            print("[Sound] play round-\(number)")
+            return
+        }
+        let name = "round-\(number)"
+        let exts = ["caff", "caf", "wav", "mp3", "aiff"]
+        var found: URL? = nil
+        for ext in exts {
+            if let url = Bundle.main.url(forResource: name, withExtension: ext) { found = url; break }
+        }
+        if let url = found, let p = try? AVAudioPlayer(contentsOf: url) {
+            p.prepareToPlay()
+            roundPlayers[number] = p
+            p.currentTime = 0
+            p.play()
+            print("[Sound] loaded+play \(name)")
+        } else {
+            print("[Sound] MISSING \(name).(caff|caf|wav|mp3|aiff)")
         }
     }
 
@@ -146,6 +180,7 @@ private struct WorkoutRunnerView: View {
     @State private var phaseDuration: Double = 1
     @State private var phase: WorkoutPhase = .work
     @State private var finished = false
+    @State private var started = false
     @State private var isPaused = false
     @State private var pausedAt: Date? = nil
     @State private var pausedSessionAccum: TimeInterval = 0
@@ -153,6 +188,9 @@ private struct WorkoutRunnerView: View {
     @State private var phaseEndFired = false
     @State private var repIndex: Int = 1  // 1…repeats
     @State private var plannedRepeats: Int = 0 // snapshot at launch for display
+    @State private var cfgRepeats: Int = 0 // frozen repeats for engine logic
+    @State private var cfgInterval: Int = 0 // frozen interval seconds
+    @State private var cfgRest: Int = 0     // frozen rest seconds
 
     var body: some View {
         ZStack {
@@ -173,8 +211,8 @@ private struct WorkoutRunnerView: View {
                         let nowEff = pausedAt ?? nowRaw
 
                         let total = max(0.001, sessionTotal)
-                        let elapsedSession = max(0, nowEff.timeIntervalSince(sessionStart) - pausedSessionAccum)
-                        let progressTotal = max(0.0, min(1.0, elapsedSession / total))
+                        let elapsedSession = started ? max(0, nowEff.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
+                        let progressTotal = started ? max(0.0, min(1.0, elapsedSession / total)) : 0
 
                         let dur = max(0.001, phaseDuration)
                         let start = phaseStart ?? nowEff
@@ -206,21 +244,22 @@ private struct WorkoutRunnerView: View {
                         }
                     }
                 } else {
-                    VStack(spacing: 8) {
-                        Image(systemName: "checkmark.circle.fill").font(.system(size: 44))
-                        Text("Fertig").font(.subheadline.weight(.semibold))
-                    }
-                    .onAppear { hk.end(completed: true) }
+                    Color.clear.frame(height: 1)
+                        .onAppear { hk.end(completed: true) }
                 }
 
-                Button(isPaused ? "Weiter" : "Pause") {
-                    togglePause()
+                Button(finished ? "Fertig" : (isPaused ? "Weiter" : "Pause")) {
+                    if finished {
+                        hk.end(completed: true)
+                        onClose()
+                    } else {
+                        togglePause()
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 4)
-                .disabled(finished)
             }
             .frame(minWidth: 280, maxWidth: 360)
             .padding(16)
@@ -238,21 +277,26 @@ private struct WorkoutRunnerView: View {
             do { try await hk.requestAuthorizationIfNeeded() } catch {}
             sounds.prepare()
             plannedRepeats = max(1, repeats)
+            cfgRepeats = plannedRepeats
+            cfgInterval = intervalSec
+            cfgRest     = restSec
 
             // AUFTAKT: play, then start workout exactly at first work
             let aDur = sounds.duration(of: .auftakt)
             if aDur > 0 {
                 sounds.play(.auftakt)
                 schedule(aDur) {
-                    hk.start()
+                    started = true
                     sessionStart = Date()
+                    hk.start()
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
             } else {
                 // No file present → start immediately
-                hk.start()
+                started = true
                 sessionStart = Date()
+                hk.start()
                 setPhase(.work)
                 scheduleCuesForCurrentPhase()
             }
@@ -275,68 +319,98 @@ private struct WorkoutRunnerView: View {
 
         if p == .work {
             phaseStart = Date()
-            phaseDuration = Double(max(1, intervalSec))
+            phaseDuration = Double(max(1, cfgInterval))
         } else {
             phaseStart = Date()
-            phaseDuration = Double(max(1, restSec))
+            phaseDuration = Double(max(1, cfgRest))
         }
         scheduleCuesForCurrentPhase()
+
+        // Announce round number exactly at the start of WORK (after Auftakt)
+        if p == .work {
+            let current = repIndex
+            if current >= 2 && current < cfgRepeats {
+                schedule(0.05) { sounds.playRound(current) }
+            }
+        }
     }
 
     private func scheduleCuesForCurrentPhase() {
         guard !finished else { return }
         guard let start = phaseStart else { return }
 
-        // Only announce upcoming rest during work, and not in the last rep
-        if phase == .work && repIndex < repeats && restSec > 0 {
-            let dur = max(1, intervalSec)
-            // times relative to now
+        // Announce upcoming REST during work; on the last rep, play the countdown and use AUSKLANG at the end.
+        if phase == .work {
+            let dur = max(1, cfgInterval)
+            let isLast = (repIndex >= cfgRepeats)
+            let willRest = (cfgRest > 0 && !isLast)
+
+            // Only schedule a countdown if either rest follows or this is the final rep.
+            if willRest || isLast {
+                let now = Date()
+                let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
+                func scheduleIfFuture(at targetFromStart: TimeInterval, cue: Cue) {
+                    let delay = targetFromStart - elapsed
+                    if delay > 0.001 { schedule(delay) { sounds.play(cue) } }
+                }
+
+                if dur >= 4 {
+                    scheduleIfFuture(at: TimeInterval(dur - 3), cue: .kurz)
+                    scheduleIfFuture(at: TimeInterval(dur - 2), cue: .kurz)
+                    scheduleIfFuture(at: TimeInterval(dur - 1), cue: .kurz)
+                } else if dur == 3 {
+                    scheduleIfFuture(at: 2, cue: .kurz)
+                } else if dur == 2 {
+                    scheduleIfFuture(at: 1, cue: .kurz)
+                }
+
+            }
+        }
+        else if phase == .rest {
+            // Pre-roll: play Auftakt so that it ENDS exactly at the next work start
+            let aDur = sounds.duration(of: .auftakt)
+            let dur = max(1, cfgRest)
             let now = Date()
             let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
-            func scheduleIfFuture(at targetFromStart: TimeInterval, cue: Cue) {
-                let delay = targetFromStart - elapsed
-                if delay > 0.001 { schedule(delay) { sounds.play(cue) } }
+            let targetFromStart = max(0, Double(dur) - aDur)
+            let delay = targetFromStart - elapsed
+            if aDur > 0, aDur < Double(dur) {
+                if delay > 0.001 { schedule(delay) { sounds.play(.auftakt) } }
             }
-            // 3 × kurz at B-3, B-2, B-1; lang at B
-            if dur >= 4 {
-                scheduleIfFuture(at: TimeInterval(dur - 3), cue: .kurz)
-                scheduleIfFuture(at: TimeInterval(dur - 2), cue: .kurz)
-                scheduleIfFuture(at: TimeInterval(dur - 1), cue: .kurz)
-            } else if dur == 3 {
-                scheduleIfFuture(at: 2, cue: .kurz)
-                scheduleIfFuture(at: 3, cue: .lang)
-                return
-            } else if dur == 2 {
-                scheduleIfFuture(at: 1, cue: .kurz)
-                scheduleIfFuture(at: 2, cue: .lang)
-                return
-            }
-            scheduleIfFuture(at: TimeInterval(dur), cue: .lang)
+            // (Round announcement scheduling removed)
         }
     }
 
     private func advance() {
         if finished { return }
+        // Take a snapshot of plannedRepeats for this advance (frozen at workout start)
+        let cfgRepeats = plannedRepeats
         switch phase {
         case .work:
             // Wenn letzter Satz beendet wurde → Workout fertig
-            if repIndex >= repeats {
+            if repIndex >= cfgRepeats {
                 finished = true
                 cancelScheduled()
                 sounds.play(.ausklang)
                 return
             }
-            // Sonst ggf. in Erholung oder direkt nächste Belastung
-            if restSec > 0 {
+            // Sonst: bei vorhandener Erholung lang.cue auf dem Wechsel spielen
+            if cfgRest > 0 {
+                sounds.play(.lang)
+                let next = repIndex + 1
+                // Vorletzter → letzter Satz: "last-round" kurz nach lang
+                if next == cfgRepeats {
+                    sounds.play(.lastRound, after: 0.15) // untracked delay; won't be cancelled by setPhase
+                }
                 setPhase(.rest)
             } else {
                 // Keine Erholung: direkt auf nächsten Satz schalten
-                repIndex = min(repeats, repIndex + 1)
+                repIndex = min(cfgRepeats, repIndex + 1)
                 setPhase(.work)
             }
         case .rest:
             // Erholung beendet → nächster Satz beginnt
-            repIndex = min(repeats, repIndex + 1)
+            repIndex = min(cfgRepeats, repIndex + 1)
             setPhase(.work)
         }
     }
