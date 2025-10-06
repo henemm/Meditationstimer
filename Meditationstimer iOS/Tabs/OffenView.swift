@@ -339,8 +339,8 @@ private struct RunCard: View {
                         } catch {
                             print("HealthKit logging failed: \(error)")
                         }
+                        await onEnd()
                     }
-                    onEnd()
                 }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
@@ -350,7 +350,23 @@ private struct RunCard: View {
         }
         .frame(maxWidth: 420)
     }
+    
+    /// Stoppt Timer, Live Activity und Audio. Wird von der UI und vom Timer-Engine aufgerufen.
+    private func onEnd() async {
+        setIdleTimer(false)
+        engine.stop()
+        gong.play(named: "gong-ende")
+        bgAudio.stop()
+        didPlayPhase2Gong = false
+        
+        // Beendet die Live Activity
+        if let activity = currentActivity {
+            await activity.end(dismissalPolicy: .immediate)
+            currentActivity = nil
+        }
+    }
 }
+
 #if DEBUG
 #Preview {
     OffenView()

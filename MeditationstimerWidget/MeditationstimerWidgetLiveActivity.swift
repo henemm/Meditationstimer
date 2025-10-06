@@ -27,29 +27,23 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             DynamicIsland {
                 // Expanded – großer Countdown + Phase
                 DynamicIslandExpandedRegion(.center) {
-                    VStack(spacing: 6) {
+                    HStack(spacing: 6) {
                         Text(phaseLabel(context.state.phase))
                             .font(.headline)
                         Text(context.state.endDate, style: .timer)
                             .font(.system(size: 44, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                     }
-                    .frame(maxWidth: .infinity)
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    Text(context.attributes.title)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
                 }
             } compactLeading: {
-                EmptyView()
-            } compactTrailing: {
                 HStack(spacing: 4) {
                     Text(context.state.phase == 1 ? "M" : "B")
                         .font(.caption2).bold()
                     Text(context.state.endDate, style: .timer)
                         .font(.caption2).monospacedDigit()
                 }
+            } compactTrailing: {
+                EmptyView()
             } minimal: {
                 // Nur Sekunden minimal
                 Text(context.state.endDate, style: .timer)
@@ -66,10 +60,15 @@ private struct LockScreenView: View {
     let title: String
     let endDate: Date
     let phase: Int
+    
+    private var showMinutesLabel: Bool {
+        let remaining = endDate.timeIntervalSince(Date())
+        return remaining >= 60
+    }
 
     var body: some View {
         VStack(spacing: 8) {
-            Text(title)
+            Text("Lean Health Timer")
                 .font(.headline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -82,9 +81,11 @@ private struct LockScreenView: View {
                 .monospacedDigit()
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("Minuten")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+            if showMinutesLabel {
+                Text("Minuten")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.vertical, 8)
