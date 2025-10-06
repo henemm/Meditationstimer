@@ -5,6 +5,49 @@
 //  Rebuilt as 1:1 layout copy of OffenView with three wheels (Belastung/Erholung/Wiederholungen)
 //
 
+// MARK: - AI ORIENTATION (Read me first)
+// Purpose:
+//   WorkoutsView manages the "Workouts" tab - a High Intensity Interval Training (HIIT) timer.
+//   Users configure work duration, rest duration, and repetitions for structured interval workouts.
+//   Features audio cues, progress tracking, and HealthKit logging as mindfulness sessions.
+//
+// Files & Responsibilities (where to look next):
+//   • SoundPlayer (local)       – Workout-specific audio system with cues and speech
+//   • WorkoutRunnerView (local) – Full-screen workout execution overlay
+//   • CircularRing.swift        – Dual-ring progress visualization (session + phase)
+//   • HealthKitManager          – Logs completed workouts as mindfulness sessions
+//   • SettingsSheet.swift       – Shared settings UI
+//
+// Control Flow (high level):
+//   1. User sets work/rest/repetitions with three wheel pickers
+//   2. Start button → opens full-screen WorkoutRunnerView
+//   3. Auftakt sound → countdown → first work phase begins
+//   4. Work phase → visual flame icon, countdown cues (3-2-1), round announcements
+//   5. Phase transitions → "lang" sound, optional "last round" announcement
+//   6. Rest phase → pause icon, pre-roll auftakt for next work phase
+//   7. Completion → "ausklang" sound, HealthKit logging, return to main view
+//
+// Audio System (SoundPlayer):
+//   • Supports .caff, .caf, .wav, .mp3, .aiff formats
+//   • Dynamic loading of round-1.caff through round-20.caff
+//   • AVSpeechSynthesizer for German voice announcements
+//   • Comprehensive cue system: kurz, lang, auftakt, ausklang, last-round
+//
+// Progress Visualization:
+//   • Outer ring: total workout progress (continuous)
+//   • Inner ring: current phase progress (resets each work/rest)
+//   • Icons change per phase: flame (work) vs pause (rest)
+//
+// State Management:
+//   • Pause/resume functionality with time accumulation
+//   • Robust scheduling system with DispatchWorkItem cancellation
+//   • Phase transition logic with proper cleanup
+//
+// HealthKit Integration:
+//   • Logs entire workout duration as "Mindfulness" session
+//   • Covers all exit scenarios: natural end, manual finish, X-button cancel
+//   • Graceful error handling without UI interruption
+
 import SwiftUI
 import HealthKit
 import AVFoundation
@@ -120,31 +163,6 @@ private final class SoundPlayer: ObservableObject {
     }
 }
 
-// MARK: - HealthKit Manager (simple; start/end; pause/resume no-ops on iOS)
-final class HealthKitWorkoutManager: ObservableObject {
-    private let healthStore = HKHealthStore()
-    private var startDate: Date?
-
-    func requestAuthorizationIfNeeded() async throws {
-        guard HKHealthStore.isHealthDataAvailable() else { return }
-        let typesToShare: Set<HKSampleType> = [HKObjectType.workoutType()]
-        let typesToRead: Set<HKSampleType> = []
-        try await healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead)
-    }
-
-    func start() { startDate = Date() }
-    func pause() { /* no-op */ }
-    func resume() { /* no-op */ }
-
-    func end(completed: Bool = true) {
-        let endDate = Date()
-        guard completed, let start = startDate else { startDate = nil; return }
-        let workout = HKWorkout(activityType: .highIntensityIntervalTraining, start: start, end: endDate)
-        healthStore.save(workout) { _, _ in }
-        startDate = nil
-    }
-}
-
 // MARK: - Workout Runner (identisch zu vorher; kein Layout-Tuning)
 private enum WorkoutPhase: String { case work, rest }
 
@@ -154,8 +172,9 @@ private struct WorkoutRunnerView: View {
     @Binding var repeats: Int
     let onClose: () -> Void
 
-    @StateObject private var hk = HealthKitWorkoutManager()
     @StateObject private var sounds = SoundPlayer()
+    
+    @State private var workoutStart: Date?
 
     @State private var sessionStart: Date = .now
     @State private var scheduled: [DispatchWorkItem] = []
@@ -245,12 +264,32 @@ private struct WorkoutRunnerView: View {
                     }
                 } else {
                     Color.clear.frame(height: 1)
-                        .onAppear { hk.end(completed: true) }
+                        .onAppear { 
+                            // Log completed workout to HealthKit as mindfulness session
+                            if let start = workoutStart {
+                                Task {
+                                    do {
+                                        try await HealthKitManager.shared.logMindfulness(start: start, end: Date())
+                                    } catch {
+                                        print("HealthKit logging failed: \(error)")
+                                    }
+                                }
+                            }
+                        }
                 }
 
                 Button(finished ? "Fertig" : (isPaused ? "Weiter" : "Pause")) {
                     if finished {
-                        hk.end(completed: true)
+                        // Log completed workout session
+                        if let start = workoutStart {
+                            Task {
+                                do {
+                                    try await HealthKitManager.shared.logMindfulness(start: start, end: Date())
+                                } catch {
+                                    print("HealthKit logging failed: \(error)")
+                                }
+                            }
+                        }
                         onClose()
                     } else {
                         togglePause()
@@ -265,7 +304,16 @@ private struct WorkoutRunnerView: View {
             .padding(16)
             .overlay(alignment: .topTrailing) {
                 Button {
-                    hk.end(completed: false)
+                    // Log partial workout session if started
+                    if let start = workoutStart {
+                        Task {
+                            do {
+                                try await HealthKitManager.shared.logMindfulness(start: start, end: Date())
+                            } catch {
+                                print("HealthKit logging failed: \(error)")
+                            }
+                        }
+                    }
                     onClose()
                 } label: {
                     Image(systemName: "xmark").font(.system(size: 14, weight: .semibold)).frame(width: 28, height: 28)
@@ -274,7 +322,13 @@ private struct WorkoutRunnerView: View {
             }
         }
         .task {
-            do { try await hk.requestAuthorizationIfNeeded() } catch {}
+            // Request HealthKit authorization
+            do { 
+                try await HealthKitManager.shared.requestAuthorization() 
+            } catch {
+                print("HealthKit authorization failed: \(error)")
+            }
+            
             sounds.prepare()
             plannedRepeats = max(1, repeats)
             cfgRepeats = plannedRepeats
@@ -288,7 +342,7 @@ private struct WorkoutRunnerView: View {
                 schedule(aDur) {
                     started = true
                     sessionStart = Date()
-                    hk.start()
+                    workoutStart = sessionStart // Store for HealthKit logging
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
@@ -296,7 +350,7 @@ private struct WorkoutRunnerView: View {
                 // No file present → start immediately
                 started = true
                 sessionStart = Date()
-                hk.start()
+                workoutStart = sessionStart // Store for HealthKit logging
                 setPhase(.work)
                 scheduleCuesForCurrentPhase()
             }
@@ -419,7 +473,6 @@ private struct WorkoutRunnerView: View {
         if !isPaused {
             isPaused = true
             pausedAt = Date()
-            hk.pause()
             sounds.stopAll()
             cancelScheduled()
         } else {
@@ -430,7 +483,6 @@ private struct WorkoutRunnerView: View {
             }
             pausedAt = nil
             isPaused = false
-            hk.resume()
             scheduleCuesForCurrentPhase()
         }
     }

@@ -5,6 +5,39 @@
 //  Created by Henning Emmrich on 27.09.25.
 //
 
+// MARK: - AI ORIENTATION (Read me first)
+// Purpose:
+//   BreathPreset defines the data model for structured breathing exercises in AtemView.
+//   Represents four-phase breathing patterns: inhale → hold → exhale → hold.
+//   Supports custom configurations and provides calculated properties for UI display.
+//
+// Data Model:
+//   • Four timing phases: inhale, holdIn, exhale, holdOut (seconds)
+//   • Repetitions: how many complete cycles to perform
+//   • Metadata: name, emoji for user-friendly identification
+//   • UUID for stable identity in SwiftUI lists
+//
+// Calculated Properties:
+//   • totalDuration: complete session time in seconds
+//   • formattedDuration: human-readable time string ("2:24 min")
+//   • rhythmString: compact notation ("4-0-6-0")
+//
+// Usage in AtemView:
+//   • SessionEngine iterates through phases with preset timings
+//   • UI displays preset metadata and calculated durations
+//   • Editor allows creating/modifying custom presets
+//   • List view shows rhythm patterns and total times
+//
+// Default Presets (in AtemView):
+//   • Box Breathing: 4-4-4-4 (equal timing)
+//   • 4-7-8: Relaxation technique
+//   • Simple patterns: 4-0-6-0, 7-0-5-0
+//   • Rectangle: 6-3-6-3
+//
+// Extension Helpers:
+//   • UI-specific computed properties for display formatting
+//   • Maintains separation between data model and presentation
+
 import Foundation
 
 /// Datenmodell für eine Atem-Übung

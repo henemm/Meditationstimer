@@ -5,6 +5,39 @@
 //  Created by Henning Emmrich on 27.09.25.
 //
 
+// MARK: - AI ORIENTATION (Read me first)
+// Purpose:
+//   GongPlayer is the central audio service for meditation sounds and chimes.
+//   Handles playback of bundled audio files with fallback to system sounds.
+//   Used by OffenView for meditation transitions and AtemView for breathing cues.
+//
+// Audio File Strategy:
+//   • Searches for files in priority order: .caf, .wav, .mp3
+//   • Graceful degradation: falls back to AudioServicesPlaySystemSound(1005)
+//   • Concurrent playback: maintains array of active players
+//   • Automatic cleanup via AVAudioPlayerDelegate
+//
+// Integration Points:
+//   • OffenView: start gong, phase transition (triple gong), end gong
+//   • AtemView: breathing phase cues (einatmen, ausatmen, halten variations)
+//   • WorkoutsView: uses separate SoundPlayer class (different requirements)
+//
+// Audio Session Management:
+//   • Sets .playback category with .mixWithOthers option
+//   • Activates session before each playback
+//   • Allows mixing with other apps (music, podcasts)
+//   • No background audio requirements (foreground-only app)
+//
+// File Organization:
+//   • Audio files stored in main bundle root
+//   • Named descriptively: gong-ende, gong-dreimal, einatmen, ausatmen, etc.
+//   • Supports completion handlers for timing-dependent operations
+//
+// Usage Pattern:
+//   1. Call play(named: "filename") without extension
+//   2. GongPlayer searches available formats automatically
+//   3. Delegate handles cleanup when playback completes
+//   4. Optional completion handlers for sequenced audio
 
 //
 //  GongPlayer.swift

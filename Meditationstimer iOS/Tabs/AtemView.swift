@@ -409,10 +409,28 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             Text("Fertig").font(.subheadline.weight(.semibold))
                         }
                         // Snap outer progress to full on finish
-                        .onAppear { sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart)) }
+                        .onAppear { 
+                            sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart))
+                            // Log completed session to HealthKit
+                            Task {
+                                do {
+                                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                                } catch {
+                                    print("HealthKit logging failed: \(error)")
+                                }
+                            }
+                        }
                     }
                     Button("Beenden") {
                         engine.cancel()
+                        // Log HealthKit session for breathing exercises
+                        Task {
+                            do {
+                                try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                            } catch {
+                                print("HealthKit logging failed: \(error)")
+                            }
+                        }
                         close()
                     }
                     .buttonStyle(.borderedProminent)

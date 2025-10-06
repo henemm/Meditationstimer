@@ -5,6 +5,44 @@
 //  Created by Henning Emmrich on 27.09.25.
 //
 
+// MARK: - AI ORIENTATION (Read me first)
+// Purpose:
+//   OffenView manages the "Offen" tab - a flexible two-phase meditation timer.
+//   Users set custom durations for Phase 1 (Meditation) and Phase 2 (Besinnung/Reflection).
+//   Features Live Activity integration, gong sounds, and HealthKit logging.
+//
+// Files & Responsibilities (where to look next):
+//   • TwoPhaseTimerEngine   – Timer state machine and countdown logic
+//   • CircularRing.swift    – Progress ring visual component
+//   • GongPlayer.swift      – Audio playback system
+//   • BackgroundAudioKeeper – Keeps audio session alive during meditation
+//   • SessionManager.swift  – Live Activity (Dynamic Island) management
+//   • HealthKitManager      – Logs completed sessions to Apple Health
+//   • SettingsSheet.swift   – Shared settings UI
+//
+// Control Flow (high level):
+//   1. User sets phase durations with wheel pickers
+//   2. Start button → plays gong, starts timer engine, creates Live Activity
+//   3. Phase 1 overlay → circular progress, time remaining, manual end option
+//   4. Automatic phase transition → triple gong, updates Live Activity
+//   5. Phase 2 overlay → separate progress ring, different title
+//   6. Natural/manual end → final gong, logs to HealthKit, cleanup
+//
+// State Management:
+//   • @AppStorage: phase1Minutes, phase2Minutes (persistent settings)
+//   • @State: sessionStart, UI states, Live Activity reference
+//   • @EnvironmentObject: TwoPhaseTimerEngine (from ContentView)
+//
+// Audio Strategy:
+//   • BackgroundAudioKeeper: prevents iOS from killing audio during meditation
+//   • GongPlayer: plays start, transition, and end sounds
+//   • Careful timing to avoid audio conflicts with phase transitions
+//
+// HealthKit Integration:
+//   • Logs only Phase 1 duration as "Mindfulness" session
+//   • Both manual end and natural completion trigger logging
+//   • Error handling with graceful fallback (no UI blocking)
+
 import SwiftUI
 import UIKit
 import AVFoundation
@@ -14,6 +52,7 @@ struct OffenView: View {
     @AppStorage("phase1Minutes") private var phase1Minutes: Int = 10
     @AppStorage("phase2Minutes") private var phase2Minutes: Int = 5
 
+    @State private var sessionStart = Date()
     @State private var showSettings = false
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
@@ -30,14 +69,14 @@ struct OffenView: View {
             // Linke Spalte: Emojis + Labels
             VStack(spacing: 28) {
                 VStack(spacing: 6) {
-                    Text("🧘")
+                    Text("律")
                         .font(.system(size: 56))
                     Text("Meditation")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
                 VStack(spacing: 6) {
-                    Text("🪷")
+                    Text("覆")
                         .font(.system(size: 56))
                     Text("Besinnung")
                         .font(.footnote)
@@ -71,6 +110,7 @@ struct OffenView: View {
     private var startButton: some View {
         Button(action: {
             // Align start flow with AtemView: keep screen awake, **activate audio session first**, then play short gong
+            sessionStart = Date()
             setIdleTimer(true)
             bgAudio.start()
             gong.play(named: "gong-ende")
@@ -144,7 +184,7 @@ struct OffenView: View {
                 // Overlay for active session (phase1/phase2) – styled like Atem's run card
                 if case .phase1(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Meditation", remaining: remaining, total: phase1Minutes * 60) {
+                    RunCard(title: "Meditation", remaining: remaining, total: phase1Minutes * 60, sessionStart: sessionStart) {
                         setIdleTimer(false)
                         bgAudio.stop()
                         engine.cancel()
@@ -152,7 +192,7 @@ struct OffenView: View {
                     .padding(.horizontal, 20)
                 } else if case .phase2(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60) {
+                    RunCard(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60, sessionStart: sessionStart) {
                         setIdleTimer(false)
                         bgAudio.stop()
                         engine.cancel()
@@ -264,6 +304,7 @@ private struct RunCard: View {
     let title: String
     let remaining: Int
     let total: Int
+    let sessionStart: Date
     var onEnd: () -> Void
 
     private func format(_ seconds: Int) -> String {
@@ -291,7 +332,16 @@ private struct RunCard: View {
                 }
 
                 // Centered Beenden button (same look & size as Atem run card)
-                Button("Beenden") { onEnd() }
+                Button("Beenden") {
+                    Task {
+                        do {
+                            try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                        } catch {
+                            print("HealthKit logging failed: \(error)")
+                        }
+                    }
+                    onEnd()
+                }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .tint(.red)
@@ -307,3 +357,4 @@ private struct RunCard: View {
         .environmentObject(TwoPhaseTimerEngine())
 }
 #endif
+

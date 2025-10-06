@@ -586,7 +586,7 @@
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Meditationstimer;
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App liest Herzfrequenzdaten, um Statistiken zur Sitzung anzuzeigen";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App protokolliert Achtsamkeits-Sitzungen in Apple Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -618,7 +618,7 @@
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Meditationstimer;
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App liest Herzfrequenzdaten, um Statistiken zur Sitzung anzuzeigen";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App protokolliert Achtsamkeits-Sitzungen in Apple Health";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -647,7 +647,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
-				INFOPLIST_KEY_CFBundleDisplayName = Meditationstimer;
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.dev2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -664,7 +664,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
-				INFOPLIST_KEY_CFBundleDisplayName = Meditationstimer;
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.dev2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -687,6 +687,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Meditationstimer-iOS-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -722,6 +723,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Meditationstimer-iOS-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -756,7 +758,7 @@
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeditationstimerWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MeditationstimerWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -785,7 +787,7 @@
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeditationstimerWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = MeditationstimerWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -19,7 +19,7 @@ import HealthKit
 // Files & Responsibilities (where to look next):
 //   • OffenView.swift       – "Offen" tab UI, including the circular ring overlay.
 //   • AtemView.swift        – Breathing presets list, editor, and run card.
-//   • WorkoutsView.swift    – Placeholder tab (kept minimal by design).
+//   • WorkoutsView.swift    – Workout sessions.
 //   • SettingsSheet.swift   – Shared settings sheet used by all tabs.
 //   • CircularRing.swift    – Reusable progress ring view.
 //   • TwoPhaseTimerEngine   – Timer state machine (model) for Offen tab sessions.
@@ -48,15 +48,26 @@ struct ContentView: View {
     var body: some View {
         // MARK: Tabs & global background
         TabView {
-            OffenView().environmentObject(engine)
-                .tabItem { Label("Offen", systemImage: "figure.mind.and.body") }
+            OffenView()
+                .tabItem {
+                    Label("Offen", systemImage: "circle")
+                }
 
             AtemView()
-                .tabItem { Label("Atem", systemImage: "wind") }
+                .tabItem {
+                    Label("Atem", systemImage: "wind")
+                }
 
             WorkoutsView()
-                .tabItem { Label("Workouts", systemImage: "dumbbell") }
+                .tabItem {
+                    Label("Workouts", systemImage: "figure.walk")
+                }
         }
+        .onAppear {
+                Task {
+                    try? await HealthKitManager.shared.requestAuthorization()
+                }
+            }
         .background(
             LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
                            startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -94,3 +105,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+

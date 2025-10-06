@@ -1,3 +1,32 @@
+// MARK: - AI ORIENTATION (Read me first)
+// Purpose:
+//   CircularRing is a reusable SwiftUI component for displaying progress as a circular ring.
+//   Used throughout the app for meditation timers, breathing exercises, and workout progress.
+//   Supports customizable styling and dual-ring configurations.
+//
+// Usage Patterns:
+//   • OffenView: Single ring for phase progress (meditation/besinnung)
+//   • AtemView: Dual rings - outer (session total), inner (current breathing phase)
+//   • WorkoutsView: Dual rings - outer (workout total), inner (work/rest phase)
+//
+// Customization Options:
+//   • progress: 0.0 to 1.0 (automatically clamped)
+//   • lineWidth: thickness of the ring stroke
+//   • foreground: ring color (supports gradients via default)
+//   • background: track color (subtle by default)
+//
+// Technical Implementation:
+//   • Uses Circle().trim() for progress arc
+//   • Rotated -90° to start at top (12 o'clock position)
+//   • Rounded line caps for polished appearance
+//   • Automatic padding equal to lineWidth for consistent spacing
+//
+// Visual Design:
+//   • Default gradient: blue to cyan for visual appeal
+//   • Semi-transparent background track
+//   • Equal white space padding around ring
+//   • Scales proportionally with frame size
+
 import SwiftUI
 
 /// Circular progress ring component.

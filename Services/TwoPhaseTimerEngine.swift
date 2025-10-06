@@ -1,3 +1,35 @@
+// MARK: - AI ORIENTATION (Read me first)
+// Purpose:
+//   TwoPhaseTimerEngine is the core timer state machine for the OffenView meditation timer.
+//   Manages countdown logic for two sequential phases with precise time tracking.
+//   Designed for foreground-only operation to avoid iOS background execution limits.
+//
+// Architecture Decision:
+//   • Foreground-only timer prevents iOS from killing background execution
+//   • Uses Combine + Timer.publish for reactive UI updates
+//   • Date-based calculations ensure accuracy even with app interruptions
+//   • State machine pattern with clear phase transitions
+//
+// State Flow:
+//   .idle → .phase1(remaining) → .phase2(remaining) → .finished → .idle
+//
+// Integration Points:
+//   • OffenView: Primary consumer, drives UI updates and Live Activity
+//   • Watch App: Uses same engine for consistent behavior across platforms
+//   • Live Activity: Reads startDate, phase1EndDate, endDate for precise timing
+//
+// Technical Implementation:
+//   • Timer.publish(every: 1) for UI refresh rate
+//   • Date arithmetic for remaining time calculations
+//   • Automatic cleanup when reaching .finished state
+//   • Weak self references prevent retain cycles
+//
+// Usage Pattern:
+//   1. Call start(phase1Minutes:, phase2Minutes:) to begin
+//   2. Observe @Published state for UI updates
+//   3. Use date properties for external systems (Live Activity, notifications)
+//   4. Call cancel() for early termination
+
 import Foundation
 import Combine
 
