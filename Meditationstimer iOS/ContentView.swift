@@ -51,7 +51,7 @@ struct ContentView: View {
             OffenView()
                 .environmentObject(engine)
                 .tabItem {
-                    Label("Offen", systemImage: "circle")
+                    Label("Offen", systemImage: "figure.mind.and.body")
                 }
 
             AtemView()
