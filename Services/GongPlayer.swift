@@ -13,7 +13,7 @@
 //
 // Audio File Strategy:
 //   • Searches for files in priority order: .caf, .wav, .mp3
-//   • Graceful degradation: falls back to AudioServicesPlaySystemSound(1005)
+//   • Graceful degradation: silent fallback if audio files are missing
 //   • Concurrent playback: maintains array of active players
 //   • Automatic cleanup via AVAudioPlayerDelegate
 //
@@ -47,7 +47,6 @@
 //
 
 import AVFoundation
-import AudioToolbox
 
 /// Kleiner Gong/Sound-Player: spielt benannte Audio-Dateien (caf/wav/mp3) vollständig aus.
 final class GongPlayer: NSObject, AVAudioPlayerDelegate {
@@ -83,10 +82,10 @@ final class GongPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
         }
-        // Fallback: Systemton
-        AudioServicesPlaySystemSound(1005)
+        // Fallback: Stiller Fallback (kein Sound)
+        print("Audio file '\(name)' not found, no fallback sound played")
         if let completion = completion {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: completion)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: completion)
         }
     }
 

@@ -34,7 +34,9 @@
 
 import Foundation
 import HealthKit
+#if !os(watchOS)
 import UIKit
+#endif
 
 /// Kapselt HealthKit für das Schreiben von Achtsamkeits‑Sitzungen (Mindful Minutes).
 final class HealthKitManager {
@@ -50,8 +52,8 @@ final class HealthKitManager {
     private let healthStore = HKHealthStore()
 
     /// Hinweis zu Info.plist:
-    /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
-    /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
+    /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
+    /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
     ///
     /// Fragt die Berechtigung an (schreiben: mindfulSession, lesen: heartRate).
     /// Robust: nur wenn App aktiv, und nur wenn noch nötig.
@@ -129,14 +131,19 @@ final class HealthKitManager {
             try? await logMindfulness(start: start, end: end)
         }
     }
-    /// Wartet kurz, bis die App „active“ ist (verhindert Timeout beim System‑Sheet).
+    
+    /// Wartet kurz, bis die App „active" ist (verhindert Timeout beim System‑Sheet).
     private func waitUntilAppActive(timeout: TimeInterval) async -> Bool {
+        #if os(watchOS)
+        // Auf watchOS gibt es kein UIApplication, daher immer true zurückgeben
+        return true
+        #else
         let start = Date()
         while Date().timeIntervalSince(start) < timeout {
             if UIApplication.shared.applicationState == .active { return true }
             try? await Task.sleep(nanoseconds: 150_000_000) // 150 ms
         }
         return UIApplication.shared.applicationState == .active
+        #endif
     }
 }
-

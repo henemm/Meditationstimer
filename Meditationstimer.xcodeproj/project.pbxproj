@@ -50,8 +50,8 @@
 		B737BB682E656A64000AE8C4 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
+			dstPath = "";
+			dstSubfolderSpec = 1;
 			files = (
 				B737BB592E656A63000AE8C4 /* Meditationstimer Watch App.app in Embed Watch Content */,
 			);
@@ -81,7 +81,7 @@
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
-		B7C5566D2E6609F400EFC1F5 /* Meditationstimer iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meditationstimer iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lean Health Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateStream.swift; sourceTree = "<group>"; };
 		B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MeditationstimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -186,7 +186,7 @@
 			children = (
 				B737BB522E656A63000AE8C4 /* Meditationstimer.app */,
 				B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */,
-				B7C5566D2E6609F400EFC1F5 /* Meditationstimer iOS.app */,
+				B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */,
 				B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */,
 			);
 			name = Products;
@@ -261,9 +261,9 @@
 			productReference = B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B7C5566C2E6609F400EFC1F5 /* Meditationstimer iOS */ = {
+		B7C5566C2E6609F400EFC1F5 /* Lean Health Timer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Meditationstimer iOS" */;
+			buildConfigurationList = B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Lean Health Timer" */;
 			buildPhases = (
 				B7C556692E6609F400EFC1F5 /* Sources */,
 				B7C5566A2E6609F400EFC1F5 /* Frameworks */,
@@ -279,11 +279,11 @@
 			fileSystemSynchronizedGroups = (
 				B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */,
 			);
-			name = "Meditationstimer iOS";
+			name = "Lean Health Timer";
 			packageProductDependencies = (
 			);
-			productName = "Meditationstimer iOS";
-			productReference = B7C5566D2E6609F400EFC1F5 /* Meditationstimer iOS.app */;
+			productName = "Lean Health Timer";
+			productReference = B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B7C5568E2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension */ = {
@@ -348,7 +348,7 @@
 			targets = (
 				B737BB512E656A63000AE8C4 /* Meditationstimer */,
 				B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */,
-				B7C5566C2E6609F400EFC1F5 /* Meditationstimer iOS */,
+				B7C5566C2E6609F400EFC1F5 /* Lean Health Timer */,
 				B7C5568E2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension */,
 			);
 		};
@@ -596,7 +596,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.watchkitapp.dev1;
+				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.watchapp.dev1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -628,7 +628,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.watchkitapp.dev1;
+				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.watchapp.dev1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -652,7 +652,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.dev2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = watchos;
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -669,7 +669,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = henemm.Meditationstimer.dev2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = watchos;
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -701,7 +701,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -737,7 +737,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -837,7 +837,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Meditationstimer iOS" */ = {
+		B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Lean Health Timer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B7C556752E6609F500EFC1F5 /* Debug */,

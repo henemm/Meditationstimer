@@ -69,14 +69,14 @@ struct OffenView: View {
             // Linke Spalte: Emojis + Labels
             VStack(spacing: 28) {
                 VStack(spacing: 6) {
-                    Text("律")
+                    Text("🧘")
                         .font(.system(size: 56))
                     Text("Meditation")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
                 VStack(spacing: 6) {
-                    Text("覆")
+                    Text("🪷")
                         .font(.system(size: 56))
                     Text("Besinnung")
                         .font(.footnote)

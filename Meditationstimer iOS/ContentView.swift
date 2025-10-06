@@ -49,6 +49,7 @@ struct ContentView: View {
         // MARK: Tabs & global background
         TabView {
             OffenView()
+                .environmentObject(engine)
                 .tabItem {
                     Label("Offen", systemImage: "circle")
                 }

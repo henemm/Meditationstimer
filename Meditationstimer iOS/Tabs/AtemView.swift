@@ -29,7 +29,6 @@
 
 import SwiftUI
 import AVFoundation
-import AudioToolbox
 import UIKit
 
 // MARK: - Atem Tab
@@ -159,7 +158,7 @@ public struct AtemView: View {
                     return
                 }
             }
-            AudioServicesPlaySystemSound(1005) // fallback
+            print("Audio file '\(name)' not found, no fallback sound played") // fallback
         }
         func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
             if let i = active.firstIndex(where: { $0 === player }) { active.remove(at: i) }
