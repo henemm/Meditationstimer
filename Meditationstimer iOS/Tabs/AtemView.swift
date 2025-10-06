@@ -408,29 +408,13 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             Text("Fertig").font(.subheadline.weight(.semibold))
                         }
                         // Snap outer progress to full on finish
-                        .onAppear { 
+                        .onAppear {
                             sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart))
-                            // Log completed session to HealthKit
-                            Task {
-                                do {
-                                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
-                                } catch {
-                                    print("HealthKit logging failed: \(error)")
-                                }
-                            }
+                            Task { await endSession(manual: false) }
                         }
                     }
                     Button("Beenden") {
-                        engine.cancel()
-                        // Log HealthKit session for breathing exercises
-                        Task {
-                            do {
-                                try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
-                            } catch {
-                                print("HealthKit logging failed: \(error)")
-                            }
-                        }
-                        close()
+                        Task { await endSession(manual: true) }
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
@@ -442,7 +426,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 .padding(16)
             }
             .overlay(alignment: .topTrailing) {
-                Button(action: { engine.cancel(); close() }) {
+                Button(action: { Task { await endSession(manual: true) } }) {
                     Image(systemName: "xmark")
                         .font(.system(size: 14, weight: .semibold))
                         .frame(width: 28, height: 28)
@@ -461,6 +445,25 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     }
                 }
             }
+        }
+
+        private func endSession(manual: Bool) async {
+            // 1. Log to HealthKit if session was longer than a few seconds
+            if sessionStart.distance(to: Date()) > 3 {
+                do {
+                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                } catch {
+                    print("HealthKit logging failed: \(error)")
+                }
+            }
+
+            // 2. If ended manually, stop the engine
+            if manual {
+                engine.cancel()
+            }
+
+            // 3. Close the view
+            close()
         }
 
         private static func iconName(for phase: Phase) -> String {

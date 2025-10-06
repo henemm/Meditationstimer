@@ -184,18 +184,14 @@ struct OffenView: View {
                 // Overlay for active session (phase1/phase2) – styled like Atem's run card
                 if case .phase1(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Meditation", remaining: remaining, total: phase1Minutes * 60, sessionStart: sessionStart) {
-                        setIdleTimer(false)
-                        bgAudio.stop()
-                        engine.cancel()
+                    RunCard(title: "Meditation", remaining: remaining, total: phase1Minutes * 60) {
+                        Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
                 } else if case .phase2(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60, sessionStart: sessionStart) {
-                        setIdleTimer(false)
-                        bgAudio.stop()
-                        engine.cancel()
+                    RunCard(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60) {
+                        Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
                 }
@@ -234,27 +230,10 @@ struct OffenView: View {
                 }
                 // Natürliches Ende
                 if newValue == .finished {
-                    gong.play(named: "gong-ende")
-
-                    // Cancel any previous pending stop and schedule a new, slightly longer delay
-                    pendingEndStop?.cancel()
-                    let work = DispatchWorkItem { [weak bgAudio = self.bgAudio] in
-                        bgAudio?.stop()
-                    }
-                    pendingEndStop = work
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.4, execute: work)
-
-                    Task {
-                        await currentActivity?.end(dismissalPolicy: .immediate)
-                        currentActivity = nil
-                    }
-                    setIdleTimer(false)
-                    // Reset phase2 gong guard for next run
-                    didPlayPhase2Gong = false
+                    Task { await endSession(manual: false) }
                 }
-                if case .idle = newValue, case .idle = lastState {
-                    // no-op
-                } else if case .idle = newValue {
+                // Manuelles Ende oder Abbruch
+                if case .idle = newValue, lastState != .idle, lastState != .finished {
                     Task {
                         await currentActivity?.end(dismissalPolicy: .immediate)
                         currentActivity = nil
@@ -298,13 +277,50 @@ struct OffenView: View {
     private func setIdleTimer(_ disabled: Bool) {
         UIApplication.shared.isIdleTimerDisabled = disabled
     }
+    
+    private func endSession(manual: Bool) async {
+        // 1. Logge die Achtsamkeitssitzung
+        // Nur loggen, wenn die Sitzung tatsächlich lief (mehr als ein paar Sekunden)
+        if sessionStart.distance(to: Date()) > 5 {
+            do {
+                try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+            } catch {
+                print("HealthKit logging failed: \(error)")
+            }
+        }
+
+        // 2. Spiele den End-Gong
+        gong.play(named: "gong-ende")
+
+        // 3. Beende die Live Activity
+        await currentActivity?.end(dismissalPolicy: .immediate)
+        currentActivity = nil
+
+        // 4. Stoppe den Timer-Engine, falls manuell beendet
+        if manual {
+            engine.cancel()
+        }
+
+        // 5. Stoppe die Hintergrund-Audio-Session mit einer leichten Verzögerung, damit der Gong ausklingen kann
+        pendingEndStop?.cancel()
+        let work = DispatchWorkItem { [weak bgAudio = self.bgAudio] in
+            bgAudio?.stop()
+        }
+        pendingEndStop = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.4, execute: work)
+
+        // 6. Erlaube dem Bildschirm wieder, sich auszuschalten
+        setIdleTimer(false)
+        
+        // 7. Setze den Status für den nächsten Lauf zurück
+        didPlayPhase2Gong = false
+    }
 }
 
 private struct RunCard: View {
     let title: String
     let remaining: Int
     let total: Int
-    let sessionStart: Date
     var onEnd: () -> Void
 
     private func format(_ seconds: Int) -> String {
@@ -333,14 +349,7 @@ private struct RunCard: View {
 
                 // Centered Beenden button (same look & size as Atem run card)
                 Button("Beenden") {
-                    Task {
-                        do {
-                            try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
-                        } catch {
-                            print("HealthKit logging failed: \(error)")
-                        }
-                        await onEnd()
-                    }
+                    onEnd()
                 }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
@@ -349,21 +358,6 @@ private struct RunCard: View {
             }
         }
         .frame(maxWidth: 420)
-    }
-    
-    /// Stoppt Timer, Live Activity und Audio. Wird von der UI und vom Timer-Engine aufgerufen.
-    private func onEnd() async {
-        setIdleTimer(false)
-        engine.stop()
-        gong.play(named: "gong-ende")
-        bgAudio.stop()
-        didPlayPhase2Gong = false
-        
-        // Beendet die Live Activity
-        if let activity = currentActivity {
-            await activity.end(dismissalPolicy: .immediate)
-            currentActivity = nil
-        }
     }
 }
 

@@ -34,6 +34,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                             .font(.system(size: 44, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                     }
+                    .frame(maxWidth: .infinity) // Stellt sicher, dass der Inhalt zentriert ist
                 }
             } compactLeading: {
                 HStack(spacing: 4) {
@@ -43,7 +44,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                         .font(.caption2).monospacedDigit()
                 }
             } compactTrailing: {
-                EmptyView()
+                Image(systemName: context.state.phase == 1 ? "meditation" : "lotus") // Beispiel-Icons
             } minimal: {
                 // Nur Sekunden minimal
                 Text(context.state.endDate, style: .timer)
@@ -71,23 +72,28 @@ private struct LockScreenView: View {
             Text("Lean Health Timer")
                 .font(.headline)
                 .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
 
             Text(phaseLabel(phase))
                 .font(.subheadline)
 
-            Text(endDate, style: .timer)
-                .font(.system(size: 56, weight: .bold, design: .rounded))
-                .monospacedDigit()
-                .frame(maxWidth: .infinity, alignment: .center)
+            HStack {
+                Spacer()
+                Text(endDate, style: .timer)
+                    .font(.system(size: 56, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                Spacer()
+            }
 
             if showMinutesLabel {
                 Text("Minuten")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
+            } else {
+                // Platzhalter, um Layout-Sprünge zu vermeiden, wenn das Label verschwindet
+                Text(" ")
+                    .font(.footnote)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .center)
         .padding(.vertical, 8)
     }
 }
