@@ -34,13 +34,15 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                         .fixedSize()
                 }
             } compactLeading: {
-                // Leading bewusst leer lassen, damit iOS nur eine kompakte Blase rechts rendert
-                EmptyView()
+                // Kleines, neutrales Icon links – hält die kompakte Breite schlank
+                Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
+                    .font(.caption2)
             } compactTrailing: {
                 // Zeit rechts – monospaced und klein
                 Text(context.state.endDate, style: .timer)
                     .font(.caption2)
                     .monospacedDigit()
+                    .fixedSize()
             } minimal: {
                 // Nur Sekunden minimal
                 Text(context.state.endDate, style: .timer)

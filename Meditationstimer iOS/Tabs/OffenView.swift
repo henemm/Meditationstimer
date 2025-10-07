@@ -47,13 +47,13 @@ import SwiftUI
 #if canImport(UIKit)
 import UIKit
 #endif
-import ActivityKit
+// Dynamic Island / Live Activity removed
 
 #if !os(iOS)
 struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verfügbar.") } }
 #else
 import AVFoundation
-import ActivityKit
+// Dynamic Island / Live Activity removed
 
 struct OffenView: View {
     @AppStorage("phase1Minutes") private var phase1Minutes: Int = 10
@@ -64,7 +64,7 @@ struct OffenView: View {
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
-    @State private var currentActivity: Activity<MeditationAttributes>?
+    // Live Activity removed
     @State private var notifier = BackgroundNotifier()
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
@@ -126,23 +126,7 @@ struct OffenView: View {
             // Start engine
             engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
 
-            // Live Activity
-            let liveEnabled = ActivityAuthorizationInfo().areActivitiesEnabled
-            if liveEnabled {
-                let attributes = MeditationAttributes(title: "Meditation")
-                let state = MeditationAttributes.ContentState(
-                    endDate: Date().addingTimeInterval(TimeInterval(phase1Minutes * 60)),
-                    phase: 1
-                )
-                do {
-                    currentActivity = try Activity<MeditationAttributes>.request(
-                        attributes: attributes,
-                        content: ActivityContent(state: state, staleDate: nil),
-                        pushType: nil
-                    )
-                } catch {
-                }
-            }
+            // Live Activity removed
         }) {
             Image(systemName: "play.circle.fill")
                 .resizable()
@@ -221,15 +205,12 @@ struct OffenView: View {
                 if case .phase1 = lastState, case .phase2 = newValue {
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
-                    // Statt zu beenden: dieselbe Live Activity mit neuem Endzeitpunkt für Phase 2 fortsetzen
-                    let newState = MeditationAttributes.ContentState(
-                        endDate: Date().addingTimeInterval(TimeInterval(phase2Minutes * 60)),
-                        phase: 2
-                    )
-                    Task { try? await currentActivity?.update(ActivityContent(state: newState, staleDate: nil)) }
+                    // Live Activity removed
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal
                 else if case .phase2 = newValue, didPlayPhase2Gong == false {
+                    // Direkter Einstieg in Phase 2 (z. B. wenn phase1Minutes == 0)
+                    // Phase-2-Gong bleibt; Live Activity entfernt
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
                 }
@@ -239,10 +220,6 @@ struct OffenView: View {
                 }
                 // Manuelles Ende oder Abbruch
                 if case .idle = newValue, lastState != .idle, lastState != .finished {
-                    Task {
-                        await currentActivity?.end(dismissalPolicy: .immediate)
-                        currentActivity = nil
-                    }
                     pendingEndStop?.cancel()
                     pendingEndStop = nil
                     didPlayPhase2Gong = false
@@ -264,10 +241,6 @@ struct OffenView: View {
                     setIdleTimer(false)
                 default:
                     break
-                }
-                Task {
-                    await currentActivity?.end(dismissalPolicy: .immediate)
-                    currentActivity = nil
                 }
             }
         }
@@ -303,9 +276,7 @@ struct OffenView: View {
         // 2. Spiele den End-Gong
         gong.play(named: "gong-ende")
 
-        // 3. Beende die Live Activity
-        await currentActivity?.end(dismissalPolicy: .immediate)
-        currentActivity = nil
+        // Live Activity entfernt
 
         // 4. Stoppe den Timer-Engine, falls manuell beendet
         if manual {

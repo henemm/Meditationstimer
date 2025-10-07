@@ -54,9 +54,7 @@ import AVFoundation
 #if canImport(UIKit)
 import UIKit
 #endif
-#if canImport(ActivityKit)
-import ActivityKit
-#endif
+// Dynamic Island / Live Activity removed
 
 #if os(iOS)
 
@@ -188,9 +186,7 @@ private struct WorkoutRunnerView: View {
     @State private var workoutStart: Date?
     @State private var isSaving = false
     @State private var saveFailed = false
-    #if canImport(ActivityKit)
-    @State private var currentActivity: Activity<MeditationAttributes>? = nil
-    #endif
+    // Live Activity removed
 
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
@@ -367,23 +363,7 @@ private struct WorkoutRunnerView: View {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
-                    // Start Live Activity for total workout countdown
-                    #if canImport(ActivityKit)
-                    if ActivityAuthorizationInfo().areActivitiesEnabled {
-                        let attributes = MeditationAttributes(title: "Workout")
-                        let state = MeditationAttributes.ContentState(
-                            endDate: sessionStart.addingTimeInterval(sessionTotal),
-                            phase: 1
-                        )
-                        do {
-                            currentActivity = try Activity<MeditationAttributes>.request(
-                                attributes: attributes,
-                                content: ActivityContent(state: state, staleDate: nil),
-                                pushType: nil
-                            )
-                        } catch {}
-                    }
-                    #endif
+                    // Live Activity removed
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
@@ -392,22 +372,7 @@ private struct WorkoutRunnerView: View {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
-                #if canImport(ActivityKit)
-                if ActivityAuthorizationInfo().areActivitiesEnabled {
-                    let attributes = MeditationAttributes(title: "Workout")
-                    let state = MeditationAttributes.ContentState(
-                        endDate: sessionStart.addingTimeInterval(sessionTotal),
-                        phase: 1
-                    )
-                    do {
-                        currentActivity = try Activity<MeditationAttributes>.request(
-                            attributes: attributes,
-                            content: ActivityContent(state: state, staleDate: nil),
-                            pushType: nil
-                        )
-                    } catch {}
-                }
-                #endif
+                // Live Activity removed
                 setPhase(.work)
                 scheduleCuesForCurrentPhase()
             }
@@ -447,10 +412,7 @@ private struct WorkoutRunnerView: View {
         }
 
         // End Live Activity
-    #if canImport(ActivityKit)
-    await currentActivity?.end(dismissalPolicy: .immediate)
-    currentActivity = nil
-    #endif
+    // Live Activity removed
 
         // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
         try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s

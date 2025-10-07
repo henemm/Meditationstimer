@@ -32,9 +32,7 @@ import AVFoundation
 #if canImport(UIKit)
 import UIKit
 #endif
-#if canImport(ActivityKit)
-import ActivityKit
-#endif
+// Dynamic Island / Live Activity removed
 
 #if !os(iOS)
 public struct AtemView: View {
@@ -355,9 +353,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @State private var phaseStart: Date? = nil
         @State private var phaseDuration: Double = 1
         @State private var lastPhase: Phase? = nil
-    #if canImport(ActivityKit)
-    @State private var currentActivity: Activity<MeditationAttributes>? = nil
-    #endif
+    // Live Activity removed
         @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
         // Helper properties for dual ring progress
@@ -385,24 +381,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             phaseStart = nil
                             engine.start(preset: preset)
 
-                            // Start Live Activity for the total countdown
-                            #if canImport(ActivityKit)
-                            if ActivityAuthorizationInfo().areActivitiesEnabled {
-                                let attributes = MeditationAttributes(title: preset.name)
-                                let state = MeditationAttributes.ContentState(
-                                    endDate: Date().addingTimeInterval(sessionTotal),
-                                    phase: 1
-                                )
-                                do {
-                                    currentActivity = try Activity<MeditationAttributes>.request(
-                                        attributes: attributes,
-                                        content: ActivityContent(state: state, staleDate: nil),
-                                        pushType: nil
-                                    )
-                                } catch {
-                                }
-                            }
-                            #endif
+                            // Live Activity removed
                         }
                     case .running(let phase, let remaining, let rep, let totalReps):
                         Text(preset.name).font(.headline)
@@ -483,16 +462,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         lastPhase = ph
                         phaseStart = Date()
                         phaseDuration = Double(duration(for: ph))
-                        // Optional: update phase in Live Activity (1..4 mapped to 1 for simplicity)
-                        #if canImport(ActivityKit)
-                        Task {
-                            let state = MeditationAttributes.ContentState(
-                                endDate: sessionStart.addingTimeInterval(sessionTotal),
-                                phase: 1
-                            )
-                            await currentActivity?.update(ActivityContent(state: state, staleDate: nil))
-                        }
-                        #endif
+                        // Live Activity removed
                     }
                 }
             }
@@ -519,10 +489,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             // 3. End Live Activity and close the view
-            #if canImport(ActivityKit)
-            await currentActivity?.end(dismissalPolicy: .immediate)
-            currentActivity = nil
-            #endif
+            // Live Activity removed
             close()
         }
 

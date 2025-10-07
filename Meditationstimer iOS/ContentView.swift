@@ -23,7 +23,7 @@ import HealthKit
 //   • SettingsSheet.swift   – Shared settings sheet used by all tabs.
 //   • CircularRing.swift    – Reusable progress ring view.
 //   • TwoPhaseTimerEngine   – Timer state machine (model) for Offen tab sessions.
-//   • MeditationAttributes  – ActivityKit attributes/content for Dynamic Island / Live Activity.
+//   • (Live Activities entfernt)
 //   • NotificationHelper    – Local notifications (backup when app backgrounds).
 //   • HealthKitManager      – Logs mindfulness to Health.
 //   • BackgroundAudioKeeper – Keeps audio session alive so timers/gongs aren’t killed.
