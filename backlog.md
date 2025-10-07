@@ -4,43 +4,67 @@ Dieses Dokument fasst den aktuellen Stand der Entwicklung, abgeschlossene Aufgab
 
 ## Zusammenfassung
 
-Das Hauptziel war die Behebung von zwei Problemen:
-1.  Ein Fehler, bei dem Meditationen und Workouts nicht zuverlässig in Apple HealthKit gespeichert wurden.
-2.  Diverse UI-Fehler in der Live Activity (Sperrbildschirm) und der Dynamic Island.
+Schwerpunkte dieser Iteration:
+1) HealthKit-Race-Conditions zuverlässig beheben (Sitzung erst nach erfolgreichem Speichern schließen).
+2) Live Activity/Dynamic Island und Lock Screen visuell straffen (zentrierter Timer, kompakte Breite, sinnvolle Labels).
 
-Der HealthKit-Fehler wurde als Race Condition identifiziert, bei der die App-Ansicht geschlossen wurde, bevor der asynchrone Speichervorgang abgeschlossen war. Die UI-Fehler betrafen die Zentrierung, die Breite und die bedingte Anzeige von Elementen.
+Zusätzlich: Kleinere UI-/UX-Polish (Icons, Settings) und Fehlerbehebungen (z. B. fehlende `scenePhase`-Deklaration in der Atem‑Preview).
 
 ---
 
 ## ✅ Abgeschlossene Aufgaben
 
-1.  **HealthKit-Bug in `OffenView.swift` behoben**
-    *   **Änderung:** Die Logik zum Beenden der Sitzung wurde in einer zentralen `endSession()`-Funktion zusammengefasst. Diese stellt sicher, dass der HealthKit-Speichervorgang immer vor der Beendigung der Live Activity und dem Schließen der Ansicht abgeschlossen wird.
-    *   **Status:** ✔️ Abgeschlossen
+1.  HealthKit-Race-Condition in Offen/Atem/Workout beseitigt
+    - Zentralisierte End‑Flows (await Speichern → dann Activity beenden/Ansicht schließen).
+    - Dateien: `OffenView.swift` (endSession), `AtemView.swift` (SessionCard.endSession), `WorkoutsView.swift` (WorkoutRunnerView.endSession).
 
-2.  **HealthKit-Bug in `AtemView.swift` behoben**
-    *   **Änderung:** Analog zu `OffenView` wurde die `endSession()`-Logik innerhalb der `SessionCard` zentralisiert, um das korrekte Speichern in HealthKit zu gewährleisten.
-    *   **Status:** ✔️ Abgeschlossen
+2.  Live Activity/Dynamic Island straffer gestaltet
+    - Lock Screen: Timer strikt zentriert; „Minuten“ nur bei Restzeit ≥ 60 s.
+    - Dynamic Island (kompakt): leading leer, trailing nur Timer (monospaced) → schmal.
+    - Dynamic Island (expanded): nur Timer im Center, fixedSize (oder Phase+Timer kompakt – je nach Variante, aktuell Timer‑fokussiert).
+    - Datei: `MeditationstimerWidgetLiveActivity.swift`.
 
-3.  **UI-Fehler in Live Activity & Dynamic Island behoben**
-    *   **Datei:** `MeditationstimerWidgetLiveActivity.swift`
-    *   **Änderungen:**
-        *   Der Timer auf dem Sperrbildschirm wird nun korrekt zentriert.
-        *   Das "Minuten"-Label wird nur noch bei Restzeiten > 59 Sekunden angezeigt.
-        *   Die Breite der Dynamic Island wurde so angepasst, dass sie sich nicht mehr über die volle Bildschirmbreite erstreckt.
-    *   **Status:** ✔️ Abgeschlossen
+3.  Offen: Phase‑Wechsel korrekt in Live Activity
+    - Beim Übergang Phase 1 → Phase 2 wird die bestehende Activity mit neuem `endDate`/`phase` upgedatet (nicht beendet/neu gestartet).
+    - Datei: `OffenView.swift`.
+
+4.  Settings erweitert
+    - „Meditation als Yoga‑Workout loggen“ (Offen/Atem nutzen Yoga statt Mindfulness, optional).
+    - Datei: `SettingsSheet.swift`.
+
+5.  UI‑Feinschliff Workouts
+    - Wiederholungs‑Icon von 🔁/➿ auf neutrales „↻“ umgestellt (weniger „Button‑haft“).
+    - Datei: `WorkoutsView.swift`.
+
+6.  Fehlerbehebung Atem Preview
+    - Fehlende `@Environment(\.scenePhase)`‑Deklaration in `SessionCard` ergänzt (Build‑Fehler behoben).
+    - Datei: `AtemView.swift`.
+
+7.  Falsches Auto‑Beenden beim App‑Wechsel zurückgenommen
+    - Entfernte scenePhase‑Auto‑Ende in Offen/Atem/Workout (verursachte Gong/Abbruch beim normalen App‑Wechsel).
+    - Dateien: `OffenView.swift`, `AtemView.swift`, `WorkoutsView.swift`.
 
 ---
 
 ## ⏳ Offene Aufgaben
 
-1.  **HealthKit-Bug in `WorkoutsView.swift` beheben**
-    *   **Problem:** Der gleiche Race-Condition-Fehler wie in den anderen Ansichten existiert auch hier. Bisherige Korrekturversuche sind an Compiler-Fehlern gescheitert, da dieser Ansicht Abhängigkeiten zu anderen Teilen des Codes fehlen.
-    *   **Nächste Schritte:**
-        *   **1. Abhängigkeiten auflösen (Compiler-Fehler beheben):**
-            *   Die UI-Komponente `GlassCard` muss für `WorkoutsView` verfügbar gemacht werden. Der beste Ansatz ist, die `GlassCard`-Definition in eine eigene, neue Datei (`Meditationstimer iOS/UI/GlassCard.swift`) auszulagern, damit sie global wiederverwendet werden kann.
-            *   Die `SettingsSheet`-Ansicht muss ebenfalls verfügbar gemacht werden.
-        *   **2. HealthKit-Logik korrigieren:**
-            *   Nachdem die Compiler-Fehler behoben sind, wird die Logik zum Beenden des Workouts in der `WorkoutRunnerView` (innerhalb von `WorkoutsView.swift`) zentralisiert.
-            *   Eine `endSession()`-Funktion wird erstellt, die sicherstellt, dass `HealthKitManager.shared.logMindfulness()` immer **vor** dem Schließen der Ansicht (`onClose()`) aufgerufen und abgeschlossen wird.
-    *   **Status:** 🚧 In Arbeit
+1.  Live Preview (Canvas) – Stabilität final prüfen
+    - Ziel: Der frühere, einfache Preview‑Pfad zeigt zuverlässig Inhalt (ohne zusätzliche Fallback‑Previews).
+    - Aktion: Konkrete Canvas‑Fehlermeldung sammeln und gezielt fixen (Availability/Gates), ohne neue Varianten zu bauen.
+
+2.  Dynamic Island – finale Variante festzurren
+    - Aktuell: Kompakt trailing‑Timer, Expanded nur Timer mittig (fixedSize).
+    - Optional: Phase+Timer im Expanded als Alternative; Entscheidung per Review auf Gerät.
+
+3.  Optionaler Debug‑Schalter
+    - „Alle Live Activities beenden“ (nur Debug). Evaluieren, ob sinnvoll – Standardverhalten beim App‑Wechsel bleibt: nichts automatisch beenden.
+
+4.  Nachtests HealthKit
+    - Gerätespezifische Verifikation: Offen/Atem/Workout speichern zuverlässig (Fehlschlag‑Handling/Toast vorhanden).
+
+5.  Kleiner UX‑Polish
+    - Typografie/Abstände Lock Screen und Expanded ggf. minimal justieren.
+
+—
+
+Stand: 07.10.2025

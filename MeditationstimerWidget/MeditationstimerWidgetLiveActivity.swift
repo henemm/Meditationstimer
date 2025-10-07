@@ -25,23 +25,24 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded – kompakt: nur der Timer, mittig
+                // Expanded – kompakt, mittig, ohne künstliche Breite
                 DynamicIslandExpandedRegion(.center) {
+                    // Nur der Timer, mittig, ohne zusätzliche Labels → bleibt schmal
                     Text(context.state.endDate, style: .timer)
                         .font(.system(size: 34, weight: .semibold, design: .rounded))
                         .monospacedDigit()
                         .fixedSize()
                 }
             } compactLeading: {
-                // Leading leer lassen
+                // Leading bewusst leer lassen, damit iOS nur eine kompakte Blase rechts rendert
                 EmptyView()
             } compactTrailing: {
-                // Nur die Restzeit rechts – schlank und klar
+                // Zeit rechts – monospaced und klein
                 Text(context.state.endDate, style: .timer)
                     .font(.caption2)
                     .monospacedDigit()
             } minimal: {
-                // Minimal: ebenfalls nur Zeit
+                // Nur Sekunden minimal
                 Text(context.state.endDate, style: .timer)
                     .monospacedDigit()
             }
@@ -68,12 +69,16 @@ private struct LockScreenView: View {
                 .font(.headline)
                 .foregroundStyle(.secondary)
 
+            // Phase-Bezeichnung, dezent
             Text(phaseLabel(phase))
                 .font(.subheadline)
 
+            // Exakt zentrierter Timer, ohne ungewollte Breitenexpansion
             Text(endDate, style: .timer)
                 .font(.system(size: 54, weight: .bold, design: .rounded))
                 .monospacedDigit()
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
                 .fixedSize()
 
             if showMinutesLabel {
@@ -83,6 +88,7 @@ private struct LockScreenView: View {
             }
         }
         .padding(.vertical, 6)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
@@ -114,10 +120,4 @@ extension MeditationAttributes.ContentState {
 } contentStates: { MeditationAttributes.ContentState.sampleP2 }
 #endif
 
-// Fallback-Preview ohne ActivityKit: zeigt direkt die LockScreenView
-#Preview("Lock Screen – Direkt") {
-    LockScreenView(title: "Meditationstimer",
-                   endDate: Date().addingTimeInterval(95),
-                   phase: 1)
-}
 #endif

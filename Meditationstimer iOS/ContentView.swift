@@ -64,11 +64,6 @@ struct ContentView: View {
                     Label("Workouts", systemImage: "figure.walk")
                 }
         }
-        .onAppear {
-                Task {
-                    try? await HealthKitManager.shared.requestAuthorization()
-                }
-            }
         .background(
             LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
                            startPoint: .topLeading, endPoint: .bottomTrailing)

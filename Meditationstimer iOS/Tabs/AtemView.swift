@@ -38,6 +38,7 @@ import ActivityKit
 
 #if !os(iOS)
 public struct AtemView: View {
+    @Environment(\.scenePhase) private var scenePhase
     public init() {}
     public var body: some View {
         Text("Atem ist nur auf iOS verfügbar.")
@@ -345,6 +346,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
     // MARK: - SessionCard (overlay during run)
     struct SessionCard: View {
+    // scenePhase-Automatik entfernt – führte zu unerwünschten Beendigungen beim App-Wechsel
         let preset: Preset
         var close: () -> Void
         @StateObject private var engine = SessionEngine()
@@ -494,6 +496,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     }
                 }
             }
+            // Keine automatische Beendigung bei App-Wechsel
         }
 
         private func endSession(manual: Bool) async {

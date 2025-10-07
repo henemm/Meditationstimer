@@ -177,6 +177,7 @@ private final class SoundPlayer: ObservableObject {
 private enum WorkoutPhase: String { case work, rest }
 
 private struct WorkoutRunnerView: View {
+    // scenePhase-Automatik entfernt – führte zu unerwünschten Beendigungen beim App-Wechsel
     let intervalSec: Int
     let restSec: Int
     @Binding var repeats: Int
@@ -416,6 +417,7 @@ private struct WorkoutRunnerView: View {
             cancelScheduled()
         }
         .onChange(of: phase) { _ in }
+        // Keine automatische Beendigung bei App-Wechsel
     }
 
     /// Zentraler Beendigungsablauf. completed=true: regulär abgeschlossen; false: abgebrochen.
