@@ -51,6 +51,9 @@
 import SwiftUI
 import HealthKit
 import AVFoundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - Sound Cues for Workout
 private enum Cue: String {
@@ -175,8 +178,11 @@ private struct WorkoutRunnerView: View {
     @StateObject private var sounds = SoundPlayer()
     
     @State private var workoutStart: Date?
+    @State private var isSaving = false
+    @State private var saveFailed = false
 
     @State private var sessionStart: Date = .now
+    @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @State private var scheduled: [DispatchWorkItem] = []
 
     private func cancelScheduled() {
@@ -213,7 +219,11 @@ private struct WorkoutRunnerView: View {
 
     var body: some View {
         ZStack {
-            Color(.systemGray6).ignoresSafeArea()
+            #if canImport(UIKit)
+            Color(UIColor.systemGray6).ignoresSafeArea()
+            #else
+            Color.gray.opacity(0.1).ignoresSafeArea()
+            #endif
             VStack(spacing: 12) {
                 Text("Intervall-Workout").font(.headline)
                 Text("HIIT • \(plannedRepeats) Wiederholungen • \(intervalSec)s / \(restSec)s")
@@ -263,34 +273,13 @@ private struct WorkoutRunnerView: View {
                         }
                     }
                 } else {
+                    // Show completion state; logging is handled by endSession(completed:)
                     Color.clear.frame(height: 1)
-                        .onAppear { 
-                            // Log completed workout to HealthKit as mindfulness session
-                            if let start = workoutStart {
-                                Task {
-                                    do {
-                                        try await HealthKitManager.shared.logMindfulness(start: start, end: Date())
-                                    } catch {
-                                        print("HealthKit logging failed: \(error)")
-                                    }
-                                }
-                            }
-                        }
                 }
 
                 Button(finished ? "Fertig" : (isPaused ? "Weiter" : "Pause")) {
                     if finished {
-                        // Log completed workout session
-                        if let start = workoutStart {
-                            Task {
-                                do {
-                                    try await HealthKitManager.shared.logMindfulness(start: start, end: Date())
-                                } catch {
-                                    print("HealthKit logging failed: \(error)")
-                                }
-                            }
-                        }
-                        onClose()
+                        Task { await endSession(completed: true) }
                     } else {
                         togglePause()
                     }
@@ -299,26 +288,50 @@ private struct WorkoutRunnerView: View {
                 .controlSize(.large)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 4)
+                .disabled(isSaving)
             }
             .frame(minWidth: 280, maxWidth: 360)
             .padding(16)
             .overlay(alignment: .topTrailing) {
                 Button {
-                    // Log partial workout session if started
-                    if let start = workoutStart {
-                        Task {
-                            do {
-                                try await HealthKitManager.shared.logMindfulness(start: start, end: Date())
-                            } catch {
-                                print("HealthKit logging failed: \(error)")
-                            }
-                        }
-                    }
-                    onClose()
+                    Task { await endSession(completed: false) }
                 } label: {
                     Image(systemName: "xmark").font(.system(size: 14, weight: .semibold)).frame(width: 28, height: 28)
                 }
                 .buttonStyle(.borderedProminent).tint(.secondary).clipShape(Circle()).padding(8)
+                .disabled(isSaving)
+            }
+            
+            // Saving overlay
+            if isSaving {
+                ZStack {
+                    Color.black.opacity(0.2).ignoresSafeArea()
+                    ProgressView("Speichern…")
+                        .progressViewStyle(.circular)
+                        .padding(20)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(12)
+                }
+                .transition(.opacity)
+            }
+            // Failure toast (brief)
+            if saveFailed {
+                VStack {
+                    Spacer()
+                    Text("Konnte nicht in Health sichern")
+                        .font(.footnote)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(10)
+                        .padding(.bottom, 24)
+                }
+                .transition(.opacity)
+                .task {
+                    // Auto-hide after 2 seconds
+                    try? await Task.sleep(nanoseconds: 2_000_000_000)
+                    saveFailed = false
+                }
             }
         }
         .task {
@@ -360,6 +373,37 @@ private struct WorkoutRunnerView: View {
             cancelScheduled()
         }
         .onChange(of: phase) { _ in }
+    }
+
+    /// Zentraler Beendigungsablauf. completed=true: regulär abgeschlossen; false: abgebrochen.
+    @MainActor
+    private func endSession(completed: Bool) async {
+        guard !isSaving else { return }
+        isSaving = true
+        defer { isSaving = false }
+
+        sounds.stopAll()
+        cancelScheduled()
+
+        let endDate = Date()
+        if let start = workoutStart {
+            do {
+                if logWorkoutsAsMindfulness {
+                    try await HealthKitManager.shared.logMindfulness(start: start, end: endDate)
+                } else {
+                    // Workouts als echtes HKWorkout
+                    try await HealthKitManager.shared.logWorkout(start: start, end: endDate, activity: HKWorkoutActivityType.highIntensityIntervalTraining)
+                }
+            } catch {
+                print("HealthKit workout logging failed: \(error)")
+                saveFailed = true
+                // UX-Entscheidung: View dennoch schließen, kurzer Hinweis bleibt optional
+            }
+        }
+
+        // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
+        try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
+        onClose()
     }
 
     private func iconName(for phase: WorkoutPhase) -> String { phase == .work ? "flame" : "pause" }
@@ -537,21 +581,36 @@ struct WorkoutsView: View {
                 Picker("Belastung (s)", selection: $intervalSec) {
                     ForEach(0..<601) { v in Text("\(v)").font(.title3).tag(v) }
                 }
-                .labelsHidden().pickerStyle(.wheel)
+                .labelsHidden()
+                #if os(iOS)
+                .pickerStyle(.wheel)
+                #else
+                .pickerStyle(.automatic)
+                #endif
                 .frame(width: 144, height: 90)
                 .clipped()
 
                 Picker("Erholung (s)", selection: $restSec) {
                     ForEach(0..<601) { v in Text("\(v)").font(.title3).tag(v) }
                 }
-                .labelsHidden().pickerStyle(.wheel)
+                .labelsHidden()
+                #if os(iOS)
+                .pickerStyle(.wheel)
+                #else
+                .pickerStyle(.automatic)
+                #endif
                 .frame(width: 144, height: 90)
                 .clipped()
 
                 Picker("Wiederholungen", selection: $repeats) {
                     ForEach(1..<201) { v in Text("\(v)").font(.title3).tag(v) }
                 }
-                .labelsHidden().pickerStyle(.wheel)
+                .labelsHidden()
+                #if os(iOS)
+                .pickerStyle(.wheel)
+                #else
+                .pickerStyle(.automatic)
+                #endif
                 .frame(width: 144, height: 90)
                 .clipped()
             }
@@ -603,7 +662,12 @@ struct WorkoutsView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) { SettingsSheet().presentationDetents([.medium, .large]) }
+            .sheet(isPresented: $showSettings) {
+                SettingsSheet()
+                #if os(iOS)
+                .presentationDetents([.medium, .large])
+                #endif
+            }
             .fullScreenCover(isPresented: $showRunner) {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
                     showRunner = false

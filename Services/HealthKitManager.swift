@@ -55,7 +55,7 @@ final class HealthKitManager {
     /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
     /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
     ///
-    /// Fragt die Berechtigung an (schreiben: mindfulSession, lesen: heartRate).
+    /// Fragt die Berechtigung an (schreiben: mindfulSession & Workout, lesen: heartRate).
     /// Robust: nur wenn App aktiv, und nur wenn noch nötig.
     @MainActor
     @discardableResult
@@ -66,9 +66,10 @@ final class HealthKitManager {
         guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
             throw HealthKitError.mindfulTypeUnavailable
         }
+        let workoutType = HKObjectType.workoutType()
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
 
-        let toShare: Set<HKSampleType> = [mindfulType]
+    let toShare: Set<HKSampleType> = [mindfulType, workoutType]
         let toRead: Set<HKObjectType> = heartRateType.map { Set([$0]) } ?? []
 
         // Prüfen, ob eine Anfrage überhaupt nötig ist
@@ -114,6 +115,24 @@ final class HealthKitManager {
 
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             self.healthStore.save(sample) { success, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else if success {
+                    cont.resume()
+                } else {
+                    cont.resume(throwing: HealthKitError.saveFailed)
+                }
+            }
+        }
+    }
+    
+    /// Schreibt EIN Workout von `start` bis `end` in Apple Health (Trainings‑App).
+    /// Standardaktivität: HIIT (High Intensity Interval Training).
+    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws {
+        let workout = HKWorkout(activityType: activity, start: start, end: end)
+
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            self.healthStore.save(workout) { success, error in
                 if let error = error {
                     cont.resume(throwing: error)
                 } else if success {
