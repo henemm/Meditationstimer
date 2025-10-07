@@ -29,7 +29,21 @@
 
 import SwiftUI
 import AVFoundation
+#if canImport(UIKit)
 import UIKit
+#endif
+#if canImport(ActivityKit)
+import ActivityKit
+#endif
+
+#if !os(iOS)
+public struct AtemView: View {
+    public init() {}
+    public var body: some View {
+        Text("Atem ist nur auf iOS verfügbar.")
+    }
+}
+#else
 
 // MARK: - Atem Tab
 
@@ -275,6 +289,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
     }
 }
 
+// iOS-only code continues below; closing #endif is at the end of file
+
     // MARK: - Row View (list item)
     struct Row: View {
         let preset: Preset
@@ -337,6 +353,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @State private var phaseStart: Date? = nil
         @State private var phaseDuration: Double = 1
         @State private var lastPhase: Phase? = nil
+    #if canImport(ActivityKit)
+    @State private var currentActivity: Activity<MeditationAttributes>? = nil
+    #endif
+        @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
         // Helper properties for dual ring progress
         private var cycleSeconds: Int { preset.inhale + preset.holdIn + preset.exhale + preset.holdOut }
@@ -362,6 +382,25 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             lastPhase = nil
                             phaseStart = nil
                             engine.start(preset: preset)
+
+                            // Start Live Activity for the total countdown
+                            #if canImport(ActivityKit)
+                            if ActivityAuthorizationInfo().areActivitiesEnabled {
+                                let attributes = MeditationAttributes(title: preset.name)
+                                let state = MeditationAttributes.ContentState(
+                                    endDate: Date().addingTimeInterval(sessionTotal),
+                                    phase: 1
+                                )
+                                do {
+                                    currentActivity = try Activity<MeditationAttributes>.request(
+                                        attributes: attributes,
+                                        content: ActivityContent(state: state, staleDate: nil),
+                                        pushType: nil
+                                    )
+                                } catch {
+                                }
+                            }
+                            #endif
                         }
                     case .running(let phase, let remaining, let rep, let totalReps):
                         Text(preset.name).font(.headline)
@@ -442,6 +481,16 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         lastPhase = ph
                         phaseStart = Date()
                         phaseDuration = Double(duration(for: ph))
+                        // Optional: update phase in Live Activity (1..4 mapped to 1 for simplicity)
+                        #if canImport(ActivityKit)
+                        Task {
+                            let state = MeditationAttributes.ContentState(
+                                endDate: sessionStart.addingTimeInterval(sessionTotal),
+                                phase: 1
+                            )
+                            await currentActivity?.update(ActivityContent(state: state, staleDate: nil))
+                        }
+                        #endif
                     }
                 }
             }
@@ -451,7 +500,11 @@ private struct OverlayBackgroundEffect: ViewModifier {
             // 1. Log to HealthKit if session was longer than a few seconds
             if sessionStart.distance(to: Date()) > 3 {
                 do {
-                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                    if logMeditationAsYogaWorkout {
+                        try await HealthKitManager.shared.logWorkout(start: sessionStart, end: Date(), activity: .yoga)
+                    } else {
+                        try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                    }
                 } catch {
                     print("HealthKit logging failed: \(error)")
                 }
@@ -462,7 +515,11 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 engine.cancel()
             }
 
-            // 3. Close the view
+            // 3. End Live Activity and close the view
+            #if canImport(ActivityKit)
+            await currentActivity?.end(dismissalPolicy: .immediate)
+            currentActivity = nil
+            #endif
             close()
         }
 
@@ -614,5 +671,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
     }
 }
+
+// End of iOS-only implementation
+#endif // os(iOS)
 
 

@@ -5,14 +5,16 @@
 //  Created by Henning Emmrich on 12.09.25.
 //
 
-import ActivityKit
 import WidgetKit
 import SwiftUI
+#if os(iOS)
+import ActivityKit
 
 // WICHTIG: Dieses Widget verwendet die im App‑Target definierte Struktur `MeditationAttributes`.
 // Stelle sicher, dass die Datei `MeditationActivityAttributes.swift` auch der Widget‑Extension
 // zugeordnet ist (Target Membership), damit der Typ hier bekannt ist.
 
+@available(iOS 16.1, *)
 struct MeditationstimerWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: MeditationAttributes.self) { context in
@@ -20,40 +22,34 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             LockScreenView(title: context.attributes.title,
                            endDate: context.state.endDate,
                            phase: context.state.phase)
-            .activityBackgroundTint(.black.opacity(0.2))
-            .activitySystemActionForegroundColor(.white)
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded – großer Countdown + Phase
+                // Expanded – kompakt: nur der Timer, mittig
                 DynamicIslandExpandedRegion(.center) {
-                    HStack(spacing: 6) {
-                        Text(phaseLabel(context.state.phase))
-                            .font(.headline)
-                        Text(context.state.endDate, style: .timer)
-                            .font(.system(size: 44, weight: .semibold, design: .rounded))
-                            .monospacedDigit()
-                    }
-                    .frame(maxWidth: .infinity) // Stellt sicher, dass der Inhalt zentriert ist
+                    Text(context.state.endDate, style: .timer)
+                        .font(.system(size: 34, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .fixedSize()
                 }
             } compactLeading: {
-                HStack(spacing: 4) {
-                    Text(context.state.phase == 1 ? "M" : "B")
-                        .font(.caption2).bold()
-                    Text(context.state.endDate, style: .timer)
-                        .font(.caption2).monospacedDigit()
-                }
+                // Leading leer lassen
+                EmptyView()
             } compactTrailing: {
-                Image(systemName: context.state.phase == 1 ? "meditation" : "lotus") // Beispiel-Icons
+                // Nur die Restzeit rechts – schlank und klar
+                Text(context.state.endDate, style: .timer)
+                    .font(.caption2)
+                    .monospacedDigit()
             } minimal: {
-                // Nur Sekunden minimal
+                // Minimal: ebenfalls nur Zeit
                 Text(context.state.endDate, style: .timer)
                     .monospacedDigit()
             }
-            .keylineTint(.accentColor)
+            // Keine explizite keylineTint – Standard reicht und beeinflusst Breite nicht
         }
     }
 }
+#endif // os(iOS)
 
 // MARK: - Lock Screen View
 
@@ -63,38 +59,30 @@ private struct LockScreenView: View {
     let phase: Int
     
     private var showMinutesLabel: Bool {
-        let remaining = endDate.timeIntervalSince(Date())
-        return remaining >= 60
+        endDate.timeIntervalSince(Date()) >= 60
     }
 
     var body: some View {
         VStack(spacing: 8) {
-            Text("Lean Health Timer")
+            Text(title)
                 .font(.headline)
                 .foregroundStyle(.secondary)
 
             Text(phaseLabel(phase))
                 .font(.subheadline)
 
-            HStack {
-                Spacer()
-                Text(endDate, style: .timer)
-                    .font(.system(size: 56, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-                Spacer()
-            }
+            Text(endDate, style: .timer)
+                .font(.system(size: 54, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .fixedSize()
 
             if showMinutesLabel {
                 Text("Minuten")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-            } else {
-                // Platzhalter, um Layout-Sprünge zu vermeiden, wenn das Label verschwindet
-                Text(" ")
-                    .font(.footnote)
             }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 6)
     }
 }
 
@@ -109,30 +97,27 @@ private func phaseLabel(_ phase: Int) -> String {
 // MARK: - Previews
 
 #if DEBUG
+#if os(iOS)
 extension MeditationAttributes {
-    static var preview: MeditationAttributes {
-        MeditationAttributes(title: "Meditationstimer")
-    }
+    static var preview: MeditationAttributes { MeditationAttributes(title: "Meditationstimer") }
 }
-
 extension MeditationAttributes.ContentState {
-    static var sampleP1: MeditationAttributes.ContentState {
-        .init(endDate: Date().addingTimeInterval(75), phase: 1)
-    }
-    static var sampleP2: MeditationAttributes.ContentState {
-        .init(endDate: Date().addingTimeInterval(12), phase: 2)
-    }
+    static var sampleP1: MeditationAttributes.ContentState { .init(endDate: Date().addingTimeInterval(75), phase: 1) }
+    static var sampleP2: MeditationAttributes.ContentState { .init(endDate: Date().addingTimeInterval(12), phase: 2) }
 }
-
 #Preview("Lock Screen – Phase 1", as: .content, using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: {
-    MeditationAttributes.ContentState.sampleP1
-}
+} contentStates: { MeditationAttributes.ContentState.sampleP1 }
 
 #Preview("Lock Screen – Phase 2", as: .content, using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: {
-    MeditationAttributes.ContentState.sampleP2
+} contentStates: { MeditationAttributes.ContentState.sampleP2 }
+#endif
+
+// Fallback-Preview ohne ActivityKit: zeigt direkt die LockScreenView
+#Preview("Lock Screen – Direkt") {
+    LockScreenView(title: "Meditationstimer",
+                   endDate: Date().addingTimeInterval(95),
+                   phase: 1)
 }
 #endif

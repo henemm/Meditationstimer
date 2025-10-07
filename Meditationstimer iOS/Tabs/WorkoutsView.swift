@@ -54,6 +54,11 @@ import AVFoundation
 #if canImport(UIKit)
 import UIKit
 #endif
+#if canImport(ActivityKit)
+import ActivityKit
+#endif
+
+#if os(iOS)
 
 // MARK: - Sound Cues for Workout
 private enum Cue: String {
@@ -72,6 +77,7 @@ private final class SoundPlayer: ObservableObject {
 
     func prepare() {
         guard !prepared else { return }
+        #if os(iOS)
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
@@ -79,6 +85,7 @@ private final class SoundPlayer: ObservableObject {
         } catch {
             // ignore
         }
+        #endif
         // Try to load each cue from the app bundle. We look for .caff first, then .caf, then .wav, then .mp3
         for cue in [Cue.kurz, .lang, .auftakt, .ausklang, .lastRound] {
             let name = cue.rawValue
@@ -180,6 +187,9 @@ private struct WorkoutRunnerView: View {
     @State private var workoutStart: Date?
     @State private var isSaving = false
     @State private var saveFailed = false
+    #if canImport(ActivityKit)
+    @State private var currentActivity: Activity<MeditationAttributes>? = nil
+    #endif
 
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
@@ -356,6 +366,23 @@ private struct WorkoutRunnerView: View {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
+                    // Start Live Activity for total workout countdown
+                    #if canImport(ActivityKit)
+                    if ActivityAuthorizationInfo().areActivitiesEnabled {
+                        let attributes = MeditationAttributes(title: "Workout")
+                        let state = MeditationAttributes.ContentState(
+                            endDate: sessionStart.addingTimeInterval(sessionTotal),
+                            phase: 1
+                        )
+                        do {
+                            currentActivity = try Activity<MeditationAttributes>.request(
+                                attributes: attributes,
+                                content: ActivityContent(state: state, staleDate: nil),
+                                pushType: nil
+                            )
+                        } catch {}
+                    }
+                    #endif
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
@@ -364,6 +391,22 @@ private struct WorkoutRunnerView: View {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
+                #if canImport(ActivityKit)
+                if ActivityAuthorizationInfo().areActivitiesEnabled {
+                    let attributes = MeditationAttributes(title: "Workout")
+                    let state = MeditationAttributes.ContentState(
+                        endDate: sessionStart.addingTimeInterval(sessionTotal),
+                        phase: 1
+                    )
+                    do {
+                        currentActivity = try Activity<MeditationAttributes>.request(
+                            attributes: attributes,
+                            content: ActivityContent(state: state, staleDate: nil),
+                            pushType: nil
+                        )
+                    } catch {}
+                }
+                #endif
                 setPhase(.work)
                 scheduleCuesForCurrentPhase()
             }
@@ -400,6 +443,12 @@ private struct WorkoutRunnerView: View {
                 // UX-Entscheidung: View dennoch schließen, kurzer Hinweis bleibt optional
             }
         }
+
+        // End Live Activity
+    #if canImport(ActivityKit)
+    await currentActivity?.end(dismissalPolicy: .immediate)
+    currentActivity = nil
+    #endif
 
         // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
         try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
@@ -569,7 +618,7 @@ struct WorkoutsView: View {
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
-                    Text("🔁").font(.system(size: 50))
+                    Text("↻").font(.system(size: 50))
                     Text("Wiederholungen").font(.footnote).foregroundStyle(.secondary)
                 }
                 .frame(height: 90, alignment: .center)
@@ -680,4 +729,11 @@ struct WorkoutsView: View {
 
 #if DEBUG
 #Preview { WorkoutsView() }
+#endif
+
+#else
+// Fallback for non-iOS analyzers/targets
+struct WorkoutsView: View {
+    var body: some View { Text("Workouts sind nur auf iOS verfügbar.") }
+}
 #endif

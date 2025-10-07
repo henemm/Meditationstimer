@@ -15,6 +15,7 @@ struct SettingsSheet: View {
     @AppStorage("soundEnabled") private var soundEnabled: Bool = true
     @AppStorage("hapticsEnabled") private var hapticsEnabled: Bool = true
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
+    @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
     var body: some View {
         NavigationView {
@@ -25,6 +26,8 @@ struct SettingsSheet: View {
                 }
                 Section("Entwickler") {
                     Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)
+                        .tint(.blue)
+                    Toggle("Meditation als Yoga-Workout loggen", isOn: $logMeditationAsYogaWorkout)
                         .tint(.blue)
                 }
                 #if os(iOS)

@@ -34,7 +34,7 @@
 
 import Foundation
 import HealthKit
-#if !os(watchOS)
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -58,7 +58,6 @@ final class HealthKitManager {
     /// Fragt die Berechtigung an (schreiben: mindfulSession & Workout, lesen: heartRate).
     /// Robust: nur wenn App aktiv, und nur wenn noch nötig.
     @MainActor
-    @discardableResult
     func requestAuthorization() async throws {
         guard HKHealthStore.isHealthDataAvailable() else {
             throw HealthKitError.healthDataUnavailable
@@ -129,8 +128,8 @@ final class HealthKitManager {
     /// Schreibt EIN Workout von `start` bis `end` in Apple Health (Trainings‑App).
     /// Standardaktivität: HIIT (High Intensity Interval Training).
     func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws {
+        #if os(iOS)
         let workout = HKWorkout(activityType: activity, start: start, end: end)
-
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             self.healthStore.save(workout) { success, error in
                 if let error = error {
@@ -142,6 +141,9 @@ final class HealthKitManager {
                 }
             }
         }
+        #else
+        throw HealthKitError.healthDataUnavailable
+        #endif
     }
     
     /// Legacy wrapper method for compatibility
@@ -153,16 +155,16 @@ final class HealthKitManager {
     
     /// Wartet kurz, bis die App „active" ist (verhindert Timeout beim System‑Sheet).
     private func waitUntilAppActive(timeout: TimeInterval) async -> Bool {
-        #if os(watchOS)
-        // Auf watchOS gibt es kein UIApplication, daher immer true zurückgeben
-        return true
-        #else
+        #if canImport(UIKit)
         let start = Date()
         while Date().timeIntervalSince(start) < timeout {
             if UIApplication.shared.applicationState == .active { return true }
             try? await Task.sleep(nanoseconds: 150_000_000) // 150 ms
         }
         return UIApplication.shared.applicationState == .active
+        #else
+        // Ohne UIApplication (z. B. auf watchOS oder macOS) nicht blockieren
+        return true
         #endif
     }
 }

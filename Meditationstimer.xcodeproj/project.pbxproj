@@ -105,6 +105,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				MeditationActivityAttributes.swift,
 			);
 			target = B7C5568E2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension */;
 		};
@@ -388,10 +389,10 @@
 /* Begin PBXShellScriptBuildPhase section */
 		B7C556B22E75611D00EFC1F5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			alwaysOutOfDate = 1;
 			inputFileListPaths = (
 			);
 			inputPaths = (

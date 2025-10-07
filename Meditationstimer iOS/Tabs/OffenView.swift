@@ -44,7 +44,14 @@
 //   • Error handling with graceful fallback (no UI blocking)
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
+import ActivityKit
+
+#if !os(iOS)
+struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verfügbar.") } }
+#else
 import AVFoundation
 import ActivityKit
 
@@ -63,6 +70,7 @@ struct OffenView: View {
     @State private var bgAudio = BackgroundAudioKeeper()
     @State private var didPlayPhase2Gong = false
     @State private var pendingEndStop: DispatchWorkItem?
+    @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
     private var pickerSection: some View {
         HStack(alignment: .center, spacing: 20) {
@@ -209,19 +217,16 @@ struct OffenView: View {
                     .presentationDetents([.medium, .large])
             }
             .onChange(of: engine.state) { newValue in
-                // Übergang Phase 1 -> Phase 2: dreifacher Gong
+                // Übergang Phase 1 -> Phase 2: dreifacher Gong und Live Activity auf Phase 2 updaten
                 if case .phase1 = lastState, case .phase2 = newValue {
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
-                    if case .phase2(let remaining) = newValue {
-                        Task {
-                            let state = MeditationAttributes.ContentState(
-                                endDate: Date().addingTimeInterval(TimeInterval(remaining)),
-                                phase: 2
-                            )
-                            await currentActivity?.update(ActivityContent(state: state, staleDate: nil))
-                        }
-                    }
+                    // Statt zu beenden: dieselbe Live Activity mit neuem Endzeitpunkt für Phase 2 fortsetzen
+                    let newState = MeditationAttributes.ContentState(
+                        endDate: Date().addingTimeInterval(TimeInterval(phase2Minutes * 60)),
+                        phase: 2
+                    )
+                    Task { try? await currentActivity?.update(ActivityContent(state: newState, staleDate: nil)) }
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal
                 else if case .phase2 = newValue, didPlayPhase2Gong == false {
@@ -275,15 +280,21 @@ struct OffenView: View {
     }
     
     private func setIdleTimer(_ disabled: Bool) {
+        #if canImport(UIKit)
         UIApplication.shared.isIdleTimerDisabled = disabled
+        #endif
     }
     
     private func endSession(manual: Bool) async {
-        // 1. Logge die Achtsamkeitssitzung
-        // Nur loggen, wenn die Sitzung tatsächlich lief (mehr als ein paar Sekunden)
-        if sessionStart.distance(to: Date()) > 5 {
+        // 1. Log Health entry if session was meaningful (> few seconds)
+        let endDate = Date()
+        if sessionStart.distance(to: endDate) > 5 {
             do {
-                try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                if logMeditationAsYogaWorkout {
+                    try await HealthKitManager.shared.logWorkout(start: sessionStart, end: endDate, activity: .yoga)
+                } else {
+                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: endDate)
+                }
             } catch {
                 print("HealthKit logging failed: \(error)")
             }
@@ -367,4 +378,6 @@ private struct RunCard: View {
         .environmentObject(TwoPhaseTimerEngine())
 }
 #endif
+
+#endif // os(iOS)
 
