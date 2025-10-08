@@ -14,7 +14,6 @@
 		B770C7B52E87C474008FB9FC /* MeditationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B32E87C473008FB9FC /* MeditationEngine.swift */; };
 		B770C7B72E87C482008FB9FC /* BackgroundNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */; };
 		B770C7B82E87C482008FB9FC /* BackgroundNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */; };
-
 		B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */; };
 		B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
@@ -27,7 +26,6 @@
 		B7C556942E73E5EA00EFC1F5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */; };
 		B7C556A52E73E5EC00EFC1F5 /* MeditationstimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
-
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +76,6 @@
 		B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GongPlayer.swift; sourceTree = "<group>"; };
 		B770C7B32E87C473008FB9FC /* MeditationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationEngine.swift; sourceTree = "<group>"; };
 		B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNotifier.swift; sourceTree = "<group>"; };
-
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
@@ -88,7 +85,6 @@
 		B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B7E601122E6582C1008AE315 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */

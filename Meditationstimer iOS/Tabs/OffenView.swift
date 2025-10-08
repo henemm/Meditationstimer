@@ -47,13 +47,15 @@ import SwiftUI
 #if canImport(UIKit)
 import UIKit
 #endif
-// Dynamic Island / Live Activity removed
+
+// Live Activity integration for Dynamic Island
+#if os(iOS)
+import AVFoundation
+#endif
 
 #if !os(iOS)
 struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verfügbar.") } }
 #else
-import AVFoundation
-// Dynamic Island / Live Activity removed
 
 struct OffenView: View {
     @AppStorage("phase1Minutes") private var phase1Minutes: Int = 10
@@ -64,7 +66,7 @@ struct OffenView: View {
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
-    // Live Activity removed
+    @StateObject private var liveActivity = LiveActivityController()
     @State private var notifier = BackgroundNotifier()
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
@@ -126,7 +128,10 @@ struct OffenView: View {
             // Start engine
             engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
 
-            // Live Activity removed
+            // Start Live Activity
+            if let phase1End = engine.phase1EndDate {
+                liveActivity.start(title: "Meditation", phase: 1, endDate: phase1End)
+            }
         }) {
             Image(systemName: "play.circle.fill")
                 .resizable()
@@ -205,14 +210,22 @@ struct OffenView: View {
                 if case .phase1 = lastState, case .phase2 = newValue {
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
-                    // Live Activity removed
+                    // Update Live Activity to Phase 2
+                    if let phase2End = engine.endDate {
+                        Task {
+                            await liveActivity.update(phase: 2, endDate: phase2End)
+                        }
+                    }
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal
                 else if case .phase2 = newValue, didPlayPhase2Gong == false {
                     // Direkter Einstieg in Phase 2 (z. B. wenn phase1Minutes == 0)
-                    // Phase-2-Gong bleibt; Live Activity entfernt
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
+                    // Start Live Activity for Phase 2 directly
+                    if let phase2End = engine.endDate {
+                        liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                    }
                 }
                 // Natürliches Ende
                 if newValue == .finished {
@@ -259,14 +272,13 @@ struct OffenView: View {
     }
     
     private func endSession(manual: Bool) async {
-        // 1. Log Health entry if session was meaningful (> few seconds)
-        let endDate = Date()
-        if sessionStart.distance(to: endDate) > 5 {
+        // 1. Log Health entry - nur Phase 1 (Meditation), nicht die Besinnung
+        if let phase1End = engine.phase1EndDate, sessionStart.distance(to: phase1End) > 5 {
             do {
                 if logMeditationAsYogaWorkout {
-                    try await HealthKitManager.shared.logWorkout(start: sessionStart, end: endDate, activity: .yoga)
+                    try await HealthKitManager.shared.logWorkout(start: sessionStart, end: phase1End, activity: .yoga)
                 } else {
-                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: endDate)
+                    try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: phase1End)
                 }
             } catch {
                 print("HealthKit logging failed: \(error)")
@@ -276,7 +288,8 @@ struct OffenView: View {
         // 2. Spiele den End-Gong
         gong.play(named: "gong-ende")
 
-        // Live Activity entfernt
+        // 3. End Live Activity
+        await liveActivity.end()
 
         // 4. Stoppe den Timer-Engine, falls manuell beendet
         if manual {

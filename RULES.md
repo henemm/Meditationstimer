@@ -1,5 +1,8 @@
 # AI Development Rules for Meditationstimer Project
 
+Präambel: Der Nutzer ist Geschäftsführer. Er wünscht sich kurzes, klares Feedback: Was sind die wichtigsten Fakten, was soll er entscheiden, was sind die empfohlenen Entscheidungen?
+Der Nutzer kann nicht programmieren und versteht keinen Code. Sämtlicher Code wurde von AI geschrieben. 
+
 ## Core Development Principles
 
 ### 1. **ASK BEFORE ACTING**

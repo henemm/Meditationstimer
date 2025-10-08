@@ -25,30 +25,55 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded – kompakt, mittig, ohne künstliche Breite
-                DynamicIslandExpandedRegion(.center) {
-                    // Nur der Timer, mittig, ohne zusätzliche Labels → bleibt schmal
+                // Expanded Region für die App-Navigation beim Antippen
+                DynamicIslandExpandedRegion(.leading) {
+                    HStack {
+                        Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                        VStack(alignment: .leading) {
+                            Text(context.attributes.title)
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                            Text(phaseLabel(context.state.phase))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                }
+                DynamicIslandExpandedRegion(.trailing) {
                     Text(context.state.endDate, style: .timer)
-                        .font(.system(size: 34, weight: .semibold, design: .rounded))
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .fontDesign(.rounded)
                         .monospacedDigit()
-                        .fixedSize()
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.trailing)
+                        .padding(.horizontal)
                 }
             } compactLeading: {
-                // Kleines, neutrales Icon links – hält die kompakte Breite schlank
+                // Links: Sehr kleines Icon
                 Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
-                    .font(.caption2)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.white)
             } compactTrailing: {
-                // Zeit rechts – monospaced und klein
-                Text(context.state.endDate, style: .timer)
-                    .font(.caption2)
-                    .monospacedDigit()
-                    .fixedSize()
+                // Rechts: Timer mit OVERLAY-TRICK gegen Width-Bug
+                Text("00:00")
+                    .hidden()
+                    .overlay(alignment: .leading) {
+                        Text(context.state.endDate, style: .timer)
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                    }
             } minimal: {
-                // Nur Sekunden minimal
-                Text(context.state.endDate, style: .timer)
-                    .monospacedDigit()
+                // Minimal: Nur das Icon, sehr klein
+                Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
+                    .font(.system(size: 10))
+                    .foregroundStyle(.white)
             }
-            // Keine explizite keylineTint – Standard reicht und beeinflusst Breite nicht
         }
     }
 }
@@ -104,22 +129,49 @@ private func phaseLabel(_ phase: Int) -> String {
 
 // MARK: - Previews
 
-#if DEBUG
-#if os(iOS)
+#if DEBUG && os(iOS)
 extension MeditationAttributes {
-    static var preview: MeditationAttributes { MeditationAttributes(title: "Meditationstimer") }
+    static var preview: MeditationAttributes { 
+        MeditationAttributes(title: "Meditation Timer") 
+    }
 }
+
 extension MeditationAttributes.ContentState {
-    static var sampleP1: MeditationAttributes.ContentState { .init(endDate: Date().addingTimeInterval(75), phase: 1) }
-    static var sampleP2: MeditationAttributes.ContentState { .init(endDate: Date().addingTimeInterval(12), phase: 2) }
+    static var sampleP1: MeditationAttributes.ContentState { 
+        .init(endDate: Date().addingTimeInterval(300), phase: 1) // 5 Min Meditation
+    }
+    static var sampleP2: MeditationAttributes.ContentState { 
+        .init(endDate: Date().addingTimeInterval(120), phase: 2) // 2 Min Besinnung
+    }
 }
-#Preview("Lock Screen – Phase 1", as: .content, using: MeditationAttributes.preview) {
-    MeditationstimerWidgetLiveActivity()
-} contentStates: { MeditationAttributes.ContentState.sampleP1 }
 
-#Preview("Lock Screen – Phase 2", as: .content, using: MeditationAttributes.preview) {
+#Preview("Lock Screen – Meditation", as: .content, using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: { MeditationAttributes.ContentState.sampleP2 }
-#endif
+} contentStates: { 
+    MeditationAttributes.ContentState.sampleP1 
+}
 
+#Preview("Lock Screen – Besinnung", as: .content, using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: { 
+    MeditationAttributes.ContentState.sampleP2 
+}
+
+#Preview("Dynamic Island Compact", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: { 
+    MeditationAttributes.ContentState.sampleP1 
+}
+
+#Preview("Dynamic Island Expanded", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: { 
+    MeditationAttributes.ContentState.sampleP1 
+}
+
+#Preview("Dynamic Island Minimal", as: .dynamicIsland(.minimal), using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: { 
+    MeditationAttributes.ContentState.sampleP1 
+}
 #endif
