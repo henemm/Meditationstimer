@@ -24,26 +24,47 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded – clean, focused timer
-                DynamicIslandExpandedRegion(.center) {
-                    VStack(spacing: 4) {
-                        Text(phaseLabel(context.state.phase))
-                            .font(.caption.weight(.medium))
-                            .foregroundStyle(.secondary)
-                        Text(context.state.endDate, style: .timer)
-                            .font(.system(size: 32, weight: .semibold, design: .rounded))
-                            .monospacedDigit()
+                // Expanded Region für die App-Navigation beim Antippen
+                DynamicIslandExpandedRegion(.leading) {
+                    HStack {
+                        Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                        VStack(alignment: .leading) {
+                            Text(context.attributes.title)
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                            Text(phaseLabel(context.state.phase))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
                     }
-                    .fixedSize()
+                    .padding(.horizontal)
+                }
+                DynamicIslandExpandedRegion(.trailing) {
+                    Text(context.state.endDate, style: .timer)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .fontDesign(.rounded)
+                        .monospacedDigit()
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.trailing)
+                        .padding(.horizontal)
                 }
             } compactLeading: {
                 Image(systemName: "figure.mind.and.body")
                     .foregroundColor(.blue)
             } compactTrailing: {
-                // Just timer - no phase abbreviation clutter
-                Text(context.state.endDate, style: .timer)
-                    .font(.caption.weight(.medium))
-                    .monospacedDigit()
+                // Rechts: Timer mit OVERLAY-TRICK gegen Width-Bug
+                Text("00:00")
+                    .hidden()
+                    .overlay(alignment: .leading) {
+                        Text(context.state.endDate, style: .timer)
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                    }
             } minimal: {
                 Image(systemName: "figure.mind.and.body")
                     .foregroundColor(.blue)
@@ -61,17 +82,26 @@ private struct LockScreenView: View {
     let phase: Int
 
     var body: some View {
-        VStack(spacing: 12) {
-            // Simple phase indicator - no redundant title
-            Text(phaseLabel(phase))
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.secondary)
-
-            // Centered, prominent timer - main focus
+        HStack {
+            // Links: App-Icon (wie im Vorbild)
+            Image(systemName: "figure.mind.and.body")
+                .font(.title2)
+                .foregroundStyle(.white)
+            
+            Spacer()
+            
+            // Mitte: Nur Timer, groß und schlicht (wie im Vorbild)
             Text(endDate, style: .timer)
-                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .font(.system(size: 40, weight: .semibold, design: .rounded))
                 .monospacedDigit()
-                .foregroundStyle(.primary)
+                .foregroundStyle(.white)
+            
+            Spacer()
+            
+            // Rechts: Kleines Phasen-Icon
+            Image(systemName: phase == 1 ? "figure.mind.and.body" : "leaf")
+                .font(.title3)
+                .foregroundStyle(.white)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
