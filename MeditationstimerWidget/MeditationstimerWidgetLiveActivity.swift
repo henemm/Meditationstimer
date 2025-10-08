@@ -9,10 +9,28 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
-// WICHTIG: Dieses Widget verwendet die im App‑Target definierte Struktur `MeditationAttributes`.
-// Stelle sicher, dass die Datei `MeditationActivityAttributes.swift` auch der Widget‑Extension
-// zugeordnet ist (Target Membership), damit der Typ hier bekannt ist.
+// MARK: - MeditationAttributes (Widget Extension Copy)
+// Define directly in widget extension to avoid target scope issues
+#if os(iOS)
+struct MeditationAttributes: ActivityAttributes {
+    public struct ContentState: Codable, Hashable {
+        var endDate: Date
+        var phase: Int // 1 = Meditation, 2 = Besinnung
+    }
+    var title: String
+}
+#else
+// Fallback for macOS Preview context
+struct MeditationAttributes {
+    public struct ContentState: Codable, Hashable {
+        var endDate: Date
+        var phase: Int
+    }
+    var title: String
+}
+#endif
 
+#if os(iOS)
 struct MeditationstimerWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: MeditationAttributes.self) { context in
@@ -128,4 +146,26 @@ extension MeditationAttributes.ContentState {
 } contentStates: {
     MeditationAttributes.ContentState.sampleP2
 }
+#else
+// Fallback Widget for macOS Preview context
+struct MeditationstimerWidgetLiveActivity: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "MeditationTimer", provider: Provider()) { entry in
+            Text("Live Activities require iOS")
+        }
+        .configurationDisplayName("Meditation Timer")
+        .description("Live Activity for meditation sessions")
+    }
+}
+
+private struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry { SimpleEntry(date: Date()) }
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) { completion(SimpleEntry(date: Date())) }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) { completion(Timeline(entries: [SimpleEntry(date: Date())], policy: .never)) }
+}
+
+private struct SimpleEntry: TimelineEntry {
+    let date: Date
+}
+#endif
 #endif
