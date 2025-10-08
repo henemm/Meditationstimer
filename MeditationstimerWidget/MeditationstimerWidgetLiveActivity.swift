@@ -24,33 +24,33 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded Region für die App-Navigation beim Antippen
+                // Sinnvolle Expanded: App-Info links, Timer rechts
                 DynamicIslandExpandedRegion(.leading) {
-                    HStack {
+                    HStack(spacing: 12) {
+                        // Phase-spezifisches Icon
                         Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
                             .font(.title2)
                             .foregroundStyle(.white)
-                        VStack(alignment: .leading) {
-                            Text(context.attributes.title)
-                                .font(.headline)
+                        
+                        // Phase-Info
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Meditation")
+                                .font(.subheadline.weight(.medium))
                                 .foregroundStyle(.white)
                             Text(phaseLabel(context.state.phase))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
-                        Spacer()
                     }
-                    .padding(.horizontal)
+                    .padding(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
+                    // Timer rechts
                     Text(context.state.endDate, style: .timer)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .fontDesign(.rounded)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(.white)
-                        .multilineTextAlignment(.trailing)
-                        .padding(.horizontal)
+                        .padding(.trailing)
                 }
             } compactLeading: {
                 Image(systemName: "figure.mind.and.body")
@@ -83,10 +83,13 @@ private struct LockScreenView: View {
 
     var body: some View {
         HStack {
-            // Links: App-Icon (wie im Vorbild)
-            Image(systemName: "figure.mind.and.body")
+            // Links: Phase-spezifisches Icon in Kreis
+            Image(systemName: phase == 1 ? "figure.mind.and.body" : "leaf")
                 .font(.title2)
                 .foregroundStyle(.white)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(Color.blue.opacity(0.3)))
+                .padding(.leading, 12)
             
             Spacer()
             
@@ -95,13 +98,15 @@ private struct LockScreenView: View {
                 .font(.system(size: 40, weight: .semibold, design: .rounded))
                 .monospacedDigit()
                 .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .multilineTextAlignment(.center)
             
-            Spacer()
-            
-            // Rechts: Kleines Phasen-Icon
-            Image(systemName: phase == 1 ? "figure.mind.and.body" : "leaf")
-                .font(.title3)
-                .foregroundStyle(.white)
+            // Rechts: Phasen-Emoji in Kreis (unterscheidet sich vom App-Icon)
+            Text(phase == 1 ? "🧘‍♂️" : "🍃")
+                .font(.title2)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(Color.green.opacity(0.3)))
+                .padding(.trailing, 12)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
@@ -113,8 +118,6 @@ private struct LockScreenView: View {
 private func phaseLabel(_ phase: Int) -> String {
     phase == 1 ? "Meditation" : "Besinnung"
 }
-
-
 
 // MARK: - Previews
 
@@ -145,26 +148,18 @@ extension MeditationAttributes.ContentState {
 } contentStates: {
     MeditationAttributes.ContentState.sampleP2
 }
-#else
-// Fallback Widget for macOS Preview context
-struct MeditationstimerWidgetLiveActivity: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "MeditationTimer", provider: Provider()) { entry in
-            Text("Live Activities require iOS")
-        }
-        .configurationDisplayName("Meditation Timer")
-        .description("Live Activity for meditation sessions")
-    }
+
+#Preview("Dynamic Island – Phase 1", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: {
+    MeditationAttributes.ContentState.sampleP1
 }
 
-private struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry { SimpleEntry(date: Date()) }
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) { completion(SimpleEntry(date: Date())) }
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) { completion(Timeline(entries: [SimpleEntry(date: Date())], policy: .never)) }
-}
-
-private struct SimpleEntry: TimelineEntry {
-    let date: Date
+#Preview("Dynamic Island – Phase 2", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: {
+    MeditationAttributes.ContentState.sampleP2
 }
 #endif
+
 #endif

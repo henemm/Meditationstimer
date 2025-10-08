@@ -47,12 +47,22 @@ final class TwoPhaseTimerEngine: ObservableObject {
     @Published private(set) var state: State = .idle
 
     private var ticker: AnyCancellable?
+    private var appTerminateObserver: AnyCancellable?
     private var phase1Length: Int = 0
     private var phase2Length: Int = 0
 
     private(set) var startDate: Date?
     private(set) var phase1EndDate: Date?
     private(set) var endDate: Date?
+
+    init() {
+        // Listen for app termination
+        appTerminateObserver = NotificationCenter.default
+            .publisher(for: NSNotification.Name("app.will.terminate"))
+            .sink { _ in
+                self.cancel()
+            }
+    }
 
     func start(phase1Minutes: Int, phase2Minutes: Int) {
         cancel()
@@ -79,6 +89,7 @@ final class TwoPhaseTimerEngine: ObservableObject {
     func cancel() {
         ticker?.cancel()
         ticker = nil
+        appTerminateObserver?.cancel()
         startDate = nil
         phase1EndDate = nil
         endDate = nil
@@ -88,7 +99,7 @@ final class TwoPhaseTimerEngine: ObservableObject {
     // MARK: - Helpers
 
     private func updateState(at now: Date) {
-        guard let start = startDate,
+        guard let _ = startDate,
               let p1End = phase1EndDate,
               let end = endDate else {
             state = .idle
