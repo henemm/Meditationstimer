@@ -103,7 +103,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				MeditationActivityAttributes.swift,
 			);
 			target = B7C5568E2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension */;
 		};
