@@ -24,35 +24,29 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded – großer Countdown + Phase
+                // Expanded – clean, focused timer
                 DynamicIslandExpandedRegion(.center) {
-                    VStack(spacing: 6) {
+                    VStack(spacing: 4) {
                         Text(phaseLabel(context.state.phase))
-                            .font(.headline)
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.secondary)
                         Text(context.state.endDate, style: .timer)
-                            .font(.system(size: 44, weight: .semibold, design: .rounded))
+                            .font(.system(size: 32, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                     }
-                    .frame(maxWidth: .infinity)
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    Text(context.attributes.title)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                    .fixedSize()
                 }
             } compactLeading: {
-                EmptyView()
+                Image(systemName: "figure.mind.and.body")
+                    .foregroundColor(.blue)
             } compactTrailing: {
-                HStack(spacing: 4) {
-                    Text(context.state.phase == 1 ? "M" : "B")
-                        .font(.caption2).bold()
-                    Text(context.state.endDate, style: .timer)
-                        .font(.caption2).monospacedDigit()
-                }
-            } minimal: {
-                // Nur Sekunden minimal
+                // Just timer - no phase abbreviation clutter
                 Text(context.state.endDate, style: .timer)
+                    .font(.caption.weight(.medium))
                     .monospacedDigit()
+            } minimal: {
+                Image(systemName: "figure.mind.and.body")
+                    .foregroundColor(.blue)
             }
             .keylineTint(.accentColor)
         }
@@ -67,26 +61,20 @@ private struct LockScreenView: View {
     let phase: Int
 
     var body: some View {
-        VStack(spacing: 8) {
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-
+        VStack(spacing: 12) {
+            // Simple phase indicator - no redundant title
             Text(phaseLabel(phase))
-                .font(.subheadline)
-
-            Text(endDate, style: .timer)
-                .font(.system(size: 56, weight: .bold, design: .rounded))
-                .monospacedDigit()
-                .frame(maxWidth: .infinity, alignment: .center)
-
-            Text("Minuten")
-                .font(.footnote)
+                .font(.subheadline.weight(.medium))
                 .foregroundStyle(.secondary)
+
+            // Centered, prominent timer - main focus
+            Text(endDate, style: .timer)
+                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .foregroundStyle(.primary)
         }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
     }
 }
 
