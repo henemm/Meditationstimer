@@ -119,6 +119,8 @@ private func phaseLabel(_ phase: Int) -> String {
     phase == 1 ? "Meditation" : "Besinnung"
 }
 
+
+
 // MARK: - Previews
 
 #if DEBUG
@@ -148,18 +150,26 @@ extension MeditationAttributes.ContentState {
 } contentStates: {
     MeditationAttributes.ContentState.sampleP2
 }
-
-#Preview("Dynamic Island – Phase 1", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
-    MeditationstimerWidgetLiveActivity()
-} contentStates: {
-    MeditationAttributes.ContentState.sampleP1
+#else
+// Fallback Widget for macOS Preview context
+struct MeditationstimerWidgetLiveActivity: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "MeditationTimer", provider: Provider()) { entry in
+            Text("Live Activities require iOS")
+        }
+        .configurationDisplayName("Meditation Timer")
+        .description("Live Activity for meditation sessions")
+    }
 }
 
-#Preview("Dynamic Island – Phase 2", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
-    MeditationstimerWidgetLiveActivity()
-} contentStates: {
-    MeditationAttributes.ContentState.sampleP2
+private struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry { SimpleEntry(date: Date()) }
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) { completion(SimpleEntry(date: Date())) }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) { completion(Timeline(entries: [SimpleEntry(date: Date())], policy: .never)) }
+}
+
+private struct SimpleEntry: TimelineEntry {
+    let date: Date
 }
 #endif
-
 #endif

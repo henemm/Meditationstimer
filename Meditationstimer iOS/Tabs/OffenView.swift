@@ -51,6 +51,7 @@ import UIKit
 // Live Activity integration for Dynamic Island
 #if os(iOS)
 import AVFoundation
+import ActivityKit
 #endif
 
 #if !os(iOS)
@@ -66,7 +67,8 @@ struct OffenView: View {
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
-    @StateObject private var liveActivity = LiveActivityController()
+    // Simple Live Activity state
+    @State private var currentActivity: Activity<MeditationAttributes>?
     @State private var notifier = BackgroundNotifier()
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
@@ -128,10 +130,29 @@ struct OffenView: View {
             // Start engine
             engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
 
-            // Start Live Activity
-            if let phase1End = engine.phase1EndDate {
-                liveActivity.start(title: "Meditation", phase: 1, endDate: phase1End)
+            // Start Live Activity - berechne endDate selbst da engine.phase1EndDate evtl noch nicht gesetzt
+            #if os(iOS)
+            Task {
+                let now = Date()
+                let phase1End = now.addingTimeInterval(TimeInterval(phase1Minutes * 60))
+                
+                let attributes = MeditationAttributes(title: "Meditation")
+                let initialState = MeditationAttributes.ContentState(
+                    endDate: phase1End,
+                    phase: 1
+                )
+                
+                do {
+                    currentActivity = try Activity<MeditationAttributes>.request(
+                        attributes: attributes,
+                        contentState: initialState
+                    )
+                    print("✅ Live Activity gestartet für Phase 1 bis \(phase1End)")
+                } catch {
+                    print("❌ Live Activity Start Fehler: \(error)")
+                }
             }
+            #endif
         }) {
             Image(systemName: "play.circle.fill")
                 .resizable()
@@ -211,11 +232,21 @@ struct OffenView: View {
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
                     // Update Live Activity to Phase 2
+                    #if os(iOS)
                     if let phase2End = engine.endDate {
                         Task {
-                            await liveActivity.update(phase: 2, endDate: phase2End)
+                            if let activity = currentActivity {
+                                let phase2State = MeditationAttributes.ContentState(
+                                    endDate: phase2End,
+                                    phase: 2
+                                )
+                                
+                                await activity.update(using: phase2State)
+                                print("✅ Live Activity updated für Phase 2 bis \(phase2End)")
+                            }
                         }
                     }
+                    #endif
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal
                 else if case .phase2 = newValue, didPlayPhase2Gong == false {
@@ -223,9 +254,27 @@ struct OffenView: View {
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
                     // Start Live Activity for Phase 2 directly
+                    #if os(iOS)
                     if let phase2End = engine.endDate {
-                        liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                        Task {
+                            let attributes = MeditationAttributes(title: "Meditation")
+                            let phase2State = MeditationAttributes.ContentState(
+                                endDate: phase2End,
+                                phase: 2
+                            )
+                            
+                            do {
+                                currentActivity = try Activity<MeditationAttributes>.request(
+                                    attributes: attributes,
+                                    contentState: phase2State
+                                )
+                                print("✅ Live Activity gestartet direkt für Phase 2 bis \(phase2End)")
+                            } catch {
+                                print("❌ Live Activity Phase 2 Start Fehler: \(error)")
+                            }
+                        }
                     }
+                    #endif
                 }
                 // Natürliches Ende
                 if newValue == .finished {
@@ -289,7 +338,12 @@ struct OffenView: View {
         gong.play(named: "gong-ende")
 
         // 3. End Live Activity
-        await liveActivity.end()
+        #if os(iOS)
+        if let activity = currentActivity {
+            await activity.end(dismissalPolicy: .immediate)
+            currentActivity = nil
+        }
+        #endif
 
         // 4. Stoppe den Timer-Engine, falls manuell beendet
         if manual {
