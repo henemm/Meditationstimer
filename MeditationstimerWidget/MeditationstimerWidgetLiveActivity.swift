@@ -1,20 +1,16 @@
 //
-//  MeditationstimerWidgetLiveActivity.swift
-//  MeditationstimerWidget
-//
-//  Created by Henning Emmrich on 12.09.25.
+//  STYLING BACKUP - MeditationstimerWidgetLiveActivity.swift
+//  Sicherung des detaillierten Stylings vor Wiederherstellung
+//  Erstellt am: 9. Oktober 2025
 //
 
+import ActivityKit
 import WidgetKit
 import SwiftUI
+
+// Uses MeditationAttributes from the main app target
+
 #if os(iOS)
-import ActivityKit
-
-// WICHTIG: Dieses Widget verwendet die im App‑Target definierte Struktur `MeditationAttributes`.
-// Stelle sicher, dass die Datei `MeditationActivityAttributes.swift` auch der Widget‑Extension
-// zugeordnet ist (Target Membership), damit der Typ hier bekannt ist.
-
-@available(iOS 16.1, *)
 struct MeditationstimerWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: MeditationAttributes.self) { context in
@@ -22,42 +18,42 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             LockScreenView(title: context.attributes.title,
                            endDate: context.state.endDate,
                            phase: context.state.phase)
+            .activityBackgroundTint(.black.opacity(0.2))
+            .activitySystemActionForegroundColor(.white)
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded Region für die App-Navigation beim Antippen
+                // Sinnvolle Expanded: App-Info links, Timer rechts
                 DynamicIslandExpandedRegion(.leading) {
-                    HStack {
+                    HStack(spacing: 12) {
+                        // Phase-spezifisches Icon
                         Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
                             .font(.title2)
                             .foregroundStyle(.white)
-                        VStack(alignment: .leading) {
-                            Text(context.attributes.title)
-                                .font(.headline)
+                        
+                        // Phase-Info
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Meditation")
+                                .font(.subheadline.weight(.medium))
                                 .foregroundStyle(.white)
                             Text(phaseLabel(context.state.phase))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
-                        Spacer()
                     }
-                    .padding(.horizontal)
+                    .padding(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
+                    // Timer rechts
                     Text(context.state.endDate, style: .timer)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .fontDesign(.rounded)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(.white)
-                        .multilineTextAlignment(.trailing)
-                        .padding(.horizontal)
+                        .padding(.trailing)
                 }
             } compactLeading: {
-                // Links: Sehr kleines Icon
-                Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.white)
+                Image(systemName: "figure.mind.and.body")
+                    .foregroundColor(.blue)
             } compactTrailing: {
                 // Rechts: Timer mit OVERLAY-TRICK gegen Width-Bug
                 Text("00:00")
@@ -69,15 +65,13 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                             .foregroundStyle(.white)
                     }
             } minimal: {
-                // Minimal: Nur das Icon, sehr klein
-                Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
-                    .font(.system(size: 10))
-                    .foregroundStyle(.white)
+                Image(systemName: "figure.mind.and.body")
+                    .foregroundColor(.blue)
             }
+            .keylineTint(.accentColor)
         }
     }
 }
-#endif // os(iOS)
 
 // MARK: - Lock Screen View
 
@@ -85,37 +79,36 @@ private struct LockScreenView: View {
     let title: String
     let endDate: Date
     let phase: Int
-    
-    private var showMinutesLabel: Bool {
-        endDate.timeIntervalSince(Date()) >= 60
-    }
 
     var body: some View {
-        VStack(spacing: 8) {
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(.secondary)
-
-            // Phase-Bezeichnung, dezent
-            Text(phaseLabel(phase))
-                .font(.subheadline)
-
-            // Exakt zentrierter Timer, ohne ungewollte Breitenexpansion
+        HStack {
+            // Links: Phase-spezifisches Icon in Kreis
+            Image(systemName: phase == 1 ? "figure.mind.and.body" : "leaf")
+                .font(.title2)
+                .foregroundStyle(.white)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(Color.blue.opacity(0.3)))
+                .padding(.leading, 12)
+            
+            Spacer()
+            
+            // Mitte: Nur Timer, groß und schlicht (wie im Vorbild)
             Text(endDate, style: .timer)
-                .font(.system(size: 54, weight: .bold, design: .rounded))
+                .font(.system(size: 40, weight: .semibold, design: .rounded))
                 .monospacedDigit()
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .fixedSize()
-
-            if showMinutesLabel {
-                Text("Minuten")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-            }
+            
+            // Rechts: Phasen-Emoji in Kreis (unterscheidet sich vom App-Icon)
+            Text(phase == 1 ? "🧘‍♂️" : "🍃")
+                .font(.title2)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(Color.green.opacity(0.3)))
+                .padding(.trailing, 12)
         }
-        .padding(.vertical, 6)
-        .frame(maxWidth: .infinity, alignment: .center)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
     }
 }
 
@@ -125,53 +118,67 @@ private func phaseLabel(_ phase: Int) -> String {
     phase == 1 ? "Meditation" : "Besinnung"
 }
 
-
-
 // MARK: - Previews
 
-#if DEBUG && os(iOS)
+#if DEBUG
 extension MeditationAttributes {
-    static var preview: MeditationAttributes { 
-        MeditationAttributes(title: "Meditation Timer") 
+    static var preview: MeditationAttributes {
+        MeditationAttributes(title: "Meditationstimer")
     }
 }
 
 extension MeditationAttributes.ContentState {
-    static var sampleP1: MeditationAttributes.ContentState { 
-        .init(endDate: Date().addingTimeInterval(300), phase: 1) // 5 Min Meditation
+    static var sampleP1: MeditationAttributes.ContentState {
+        .init(endDate: Date().addingTimeInterval(75), phase: 1)
     }
-    static var sampleP2: MeditationAttributes.ContentState { 
-        .init(endDate: Date().addingTimeInterval(120), phase: 2) // 2 Min Besinnung
+    static var sampleP2: MeditationAttributes.ContentState {
+        .init(endDate: Date().addingTimeInterval(12), phase: 2)
     }
 }
 
-#Preview("Lock Screen – Meditation", as: .content, using: MeditationAttributes.preview) {
+#Preview("Lock Screen – Phase 1", as: .content, using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: { 
-    MeditationAttributes.ContentState.sampleP1 
+} contentStates: {
+    MeditationAttributes.ContentState.sampleP1
 }
 
-#Preview("Lock Screen – Besinnung", as: .content, using: MeditationAttributes.preview) {
+#Preview("Lock Screen – Phase 2", as: .content, using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: { 
-    MeditationAttributes.ContentState.sampleP2 
+} contentStates: {
+    MeditationAttributes.ContentState.sampleP2
 }
 
-#Preview("Dynamic Island Compact", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
+#Preview("Dynamic Island – Phase 1", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: { 
-    MeditationAttributes.ContentState.sampleP1 
+} contentStates: {
+    MeditationAttributes.ContentState.sampleP1
 }
 
-#Preview("Dynamic Island Expanded", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
+#Preview("Dynamic Island – Phase 2", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
-} contentStates: { 
-    MeditationAttributes.ContentState.sampleP1 
+} contentStates: {
+    MeditationAttributes.ContentState.sampleP2
+}
+#else
+// Fallback Widget for macOS Preview context
+struct MeditationstimerWidgetLiveActivity: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "MeditationTimer", provider: Provider()) { entry in
+            Text("Live Activities require iOS")
+        }
+        .configurationDisplayName("Meditation Timer")
+        .description("Live Activity for meditation sessions")
+    }
 }
 
-#Preview("Dynamic Island Minimal", as: .dynamicIsland(.minimal), using: MeditationAttributes.preview) {
-    MeditationstimerWidgetLiveActivity()
-} contentStates: { 
-    MeditationAttributes.ContentState.sampleP1 
+private struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry { SimpleEntry(date: Date()) }
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) { completion(SimpleEntry(date: Date())) }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) { completion(Timeline(entries: [SimpleEntry(date: Date())], policy: .never)) }
 }
+
+private struct SimpleEntry: TimelineEntry {
+    let date: Date
+}
+#endif
 #endif
