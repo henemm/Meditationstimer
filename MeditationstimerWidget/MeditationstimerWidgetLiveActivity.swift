@@ -23,30 +23,28 @@ struct MeditationstimerWidgetLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Sinnvolle Expanded: App-Info links, Timer rechts
+                // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
                     HStack(spacing: 12) {
-                        // Phase-spezifisches Icon
+                        // Phase-Icon in Kreis
                         Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
                             .font(.title2)
                             .foregroundStyle(.white)
+                            .frame(width: 36, height: 36)
+                            .background(Circle().fill(Color.blue.opacity(0.3)))
                         
-                        // Phase-Info
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Meditation")
-                                .font(.subheadline.weight(.medium))
-                                .foregroundStyle(.white)
-                            Text(phaseLabel(context.state.phase))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
+                        // Emoji in Kreis
+                        Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
+                            .font(.title2)
+                            .frame(width: 36, height: 36)
+                            .background(Circle().fill(Color.green.opacity(0.3)))
                     }
                     .padding(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    // Timer rechts
+                    // Timer rechts - auf gleicher Höhe
                     Text(context.state.endDate, style: .timer)
-                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .font(.system(size: 28, weight: .semibold, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(.white)
                         .padding(.trailing)
