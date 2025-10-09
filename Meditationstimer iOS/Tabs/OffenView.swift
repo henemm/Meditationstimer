@@ -215,6 +215,7 @@ struct OffenView: View {
                         Task {
                             await liveActivity.update(phase: 2, endDate: phase2End)
                         }
+                        print("🔔 [LiveActivity] Phase 2 gestartet: Timer bis \(phase2End), Emoji 🪷")
                     }
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal
@@ -225,6 +226,7 @@ struct OffenView: View {
                     // Start Live Activity for Phase 2 directly
                     if let phase2End = engine.endDate {
                         liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                        print("🔔 [LiveActivity] Direkter Start Phase 2: Timer bis \(phase2End), Emoji 🪷")
                     }
                 }
                 // Natürliches Ende
