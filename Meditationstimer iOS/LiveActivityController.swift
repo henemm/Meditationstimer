@@ -15,6 +15,9 @@ import SwiftUI
 @MainActor
 final class LiveActivityController: ObservableObject {
     private var activity: Activity<MeditationAttributes>?
+    private var watchdogTimer: Timer?
+    private let watchdogInterval: TimeInterval = 30.0 // 30 Sekunden ohne Update = Auto-Stop
+    private var lastUpdateTime: Date = Date()
 
     private var isPreview: Bool {
         #if DEBUG
@@ -37,9 +40,7 @@ final class LiveActivityController: ObservableObject {
                     attributes: attributes,
                     content: ActivityContent(state: state, staleDate: nil)
                 )
-                #if DEBUG
-                print("[LiveActivity] Activity created successfully: \(activity?.id ?? "nil")")
-                #endif
+                startWatchdog()
             } catch {
                 #if DEBUG
                 print("[LiveActivity] start failed: \(error)")
@@ -61,9 +62,11 @@ final class LiveActivityController: ObservableObject {
         if #available(iOS 16.1, *) {
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
             #if DEBUG
-            print("[LiveActivity] update → phase=\(phase), ends=\(endDate)")
+            print("[LiveActivity] update → phase=\(phase), ends=\(endDate), onMain=\(Thread.isMainThread)")
             #endif
             await activity?.update(ActivityContent(state: state, staleDate: nil))
+            // Update Watchdog
+            lastUpdateTime = Date()
         }
     }
 
@@ -71,7 +74,9 @@ final class LiveActivityController: ObservableObject {
         guard !isPreview else { activity = nil; return }
         if #available(iOS 16.1, *) {
             #if DEBUG
-            print("[LiveActivity] end(immediate=\(immediate))")
+            print("[LiveActivity] end(immediate=\(immediate)) called onMain=\(Thread.isMainThread)")
+            // Print simple stack for debugging who called end()
+            Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
             #endif
             if immediate {
                 await activity?.end(dismissalPolicy: .immediate)
@@ -79,6 +84,48 @@ final class LiveActivityController: ObservableObject {
                 await activity?.end()
             }
             activity = nil
+            stopWatchdog()
+        }
+    }
+
+    // MARK: - Watchdog für App Termination Detection
+
+    private func startWatchdog() {
+        stopWatchdog() // Alten Timer stoppen falls vorhanden
+        lastUpdateTime = Date()
+        
+        watchdogTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                await self?.checkWatchdog()
+            }
+        }
+        
+        #if DEBUG
+        print("[LiveActivity] Watchdog started - Auto-Stop nach \(watchdogInterval)s ohne Update")
+        #endif
+    }
+    
+    private func stopWatchdog() {
+        watchdogTimer?.invalidate()
+        watchdogTimer = nil
+        
+        #if DEBUG
+        print("[LiveActivity] Watchdog stopped")
+        #endif
+    }
+    
+    private func checkWatchdog() async {
+        let timeSinceLastUpdate = Date().timeIntervalSince(lastUpdateTime)
+        
+        #if DEBUG
+        print("[LiveActivity] Watchdog check: \(timeSinceLastUpdate)s seit letztem Update")
+        #endif
+        
+        if timeSinceLastUpdate > watchdogInterval {
+            #if DEBUG
+            print("[LiveActivity] Watchdog ausgelöst! Auto-Stop nach \(timeSinceLastUpdate)s")
+            #endif
+            await end(immediate: true)
         }
     }
 }

@@ -62,7 +62,7 @@ final class LiveActivityController: ObservableObject {
         if #available(iOS 16.1, *) {
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
             #if DEBUG
-            print("[LiveActivity] update → phase=\(phase), ends=\(endDate)")
+            print("[LiveActivity] update → phase=\(phase), ends=\(endDate), onMain=\(Thread.isMainThread)")
             #endif
             await activity?.update(ActivityContent(state: state, staleDate: nil))
             // Update Watchdog
@@ -74,7 +74,9 @@ final class LiveActivityController: ObservableObject {
         guard !isPreview else { activity = nil; return }
         if #available(iOS 16.1, *) {
             #if DEBUG
-            print("[LiveActivity] end(immediate=\(immediate))")
+            print("[LiveActivity] end(immediate=\(immediate)) called onMain=\(Thread.isMainThread)")
+            // Print simple stack for debugging who called end()
+            Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
             #endif
             if immediate {
                 await activity?.end(dismissalPolicy: .immediate)
