@@ -210,12 +210,19 @@ struct OffenView: View {
                 if case .phase1 = lastState, case .phase2 = newValue {
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
-                    // Update Live Activity to Phase 2
+                    // Debug: show engine dates at transition
+                    print("DBG TRANSITION: now=\(Date()), phase1End=\(String(describing: engine.phase1EndDate)), engine.endDate=\(String(describing: engine.endDate)), phase2Minutes=\(phase2Minutes)")
+                    // Robust: End existing Live Activity and start a new one for Phase 2
                     if let phase2End = engine.endDate {
                         Task {
-                            await liveActivity.update(phase: 2, endDate: phase2End)
+                            // End old activity first
+                            await liveActivity.end()
+                            // brief pause to avoid ActivityKit race
+                            try? await Task.sleep(nanoseconds: 200_000_000) // 200ms
+                            // Start a fresh Live Activity for Phase 2
+                            liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
                         }
-                        print("🔔 [LiveActivity] Phase 2 gestartet: Timer bis \(phase2End), Emoji 🪷")
+                        print("🔔 [LiveActivity] Phase 2 (restarted): Timer bis \(phase2End), Emoji 🪷")
                     }
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal
@@ -290,8 +297,9 @@ struct OffenView: View {
         // 2. Spiele den End-Gong
         gong.play(named: "gong-ende")
 
-        // 3. End Live Activity
-        await liveActivity.end()
+    // 3. End Live Activity
+    print("DBG endSession: calling liveActivity.end(manual=\(manual)) now; engine.state=\(engine.state)")
+    await liveActivity.end()
 
         // 4. Stoppe den Timer-Engine, falls manuell beendet
         if manual {
