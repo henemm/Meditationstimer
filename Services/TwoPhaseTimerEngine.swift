@@ -32,9 +32,13 @@
 
 import Foundation
 import Combine
+#if os(iOS)
+import UIKit
+#endif
 
 /// Einfache 2-Phasen-Engine für die UI-Anzeige.
 /// Verlasst sich NICHT auf Hintergrund-Timer; weckt die UI nur im Vordergrund.
+/// Stoppt automatisch bei App-Termination (best effort).
 final class TwoPhaseTimerEngine: ObservableObject {
 
     enum State: Equatable {
@@ -47,12 +51,21 @@ final class TwoPhaseTimerEngine: ObservableObject {
     @Published private(set) var state: State = .idle
 
     private var ticker: AnyCancellable?
+    private var terminationDetector: AnyCancellable?
     private var phase1Length: Int = 0
     private var phase2Length: Int = 0
 
     private(set) var startDate: Date?
     private(set) var phase1EndDate: Date?
     private(set) var endDate: Date?
+
+    init() {
+        setupAppTerminationDetection()
+    }
+    
+    deinit {
+        terminationDetector?.cancel()
+    }
 
     func start(phase1Minutes: Int, phase2Minutes: Int) {
         cancel()
@@ -84,11 +97,27 @@ final class TwoPhaseTimerEngine: ObservableObject {
         endDate = nil
         state = .idle
     }
+    
+    // MARK: - App Termination Detection
+    
+    private func setupAppTerminationDetection() {
+        #if os(iOS)
+        terminationDetector = NotificationCenter.default
+            .publisher(for: UIApplication.willTerminateNotification)
+            .sink { [weak self] _ in
+                print("🛑 TwoPhaseTimerEngine: App terminating - stopping timer")
+                self?.cancel()
+            }
+        print("🔔 TwoPhaseTimerEngine: App termination detection enabled")
+        #else
+        print("🔔 TwoPhaseTimerEngine: App termination detection not available on this platform")
+        #endif
+    }
 
     // MARK: - Helpers
 
     private func updateState(at now: Date) {
-        guard let start = startDate,
+        guard let _ = startDate,
               let p1End = phase1EndDate,
               let end = endDate else {
             state = .idle
