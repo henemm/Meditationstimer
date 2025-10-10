@@ -1,4 +1,21 @@
 # Xcode
+.DS_Store
+build/
+DerivedData/
+*.xcuserdatad
+*.xcscmblueprint
+
+# User schemes and local workspace settings
+Meditationstimer.xcodeproj/xcshareddata/xcschemes/Lean Health Timer - NoWidget.xcscheme
+Meditationstimer.xcodeproj/xcuserdata/
+
+# Logs and temporary build artifacts
+*.log
+build_*
+
+# macOS
+Icon\r
+# Xcode
 build/
 *.xcworkspace
 !*.xcworkspace/contents.xcworkspacedata
