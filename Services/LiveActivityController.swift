@@ -60,7 +60,7 @@ final class LiveActivityController: ObservableObject {
         }
         if #available(iOS 16.1, *), ActivityAuthorizationInfo().areActivitiesEnabled {
             let attributes = MeditationAttributes(title: title)
-            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: ownerId)
             // Small retry loop for transient visibility/entitlement errors when requesting an Activity.
             var lastError: Error?
             for attempt in 1...2 {
@@ -111,6 +111,9 @@ final class LiveActivityController: ObservableObject {
     /// The caller (UI) should prompt the user and call `forceStart` if the user confirms.
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
         // If there's an existing active activity owned by someone else, report conflict
+        #if DEBUG
+        print("[LiveActivity] requestStart called by owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
+        #endif
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
@@ -124,7 +127,13 @@ final class LiveActivityController: ObservableObject {
     /// Forcefully end any existing activity and start a new one for `ownerId`.
     func forceStart(title: String, phase: Int, endDate: Date, ownerId: String?) {
         Task { @MainActor in
+            #if DEBUG
+            print("[LiveActivity] forceStart requested by owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
+            #endif
             if let current = self.activity {
+                #if DEBUG
+                print("[LiveActivity] forceStart: ending existing activity owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
+                #endif
                 await current.end(dismissalPolicy: .immediate)
                 self.activity = nil
                 self.ownerId = nil
@@ -144,7 +153,7 @@ final class LiveActivityController: ObservableObject {
                 #endif
                 return
             }
-            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId)
             #if DEBUG
             print("[LiveActivity] update → phase=\(phase), ends=\(endDate)")
             #endif
@@ -158,13 +167,13 @@ final class LiveActivityController: ObservableObject {
             // Avoid double-ending
             guard let currentActivity = activity else {
                 #if DEBUG
-                print("[LiveActivity] end called but no active activity (ignored)")
+                print("[LiveActivity] end called but no active activity (ignored) ownerId=\(self.ownerId ?? "nil") ownerTitle=\(self.ownerTitle ?? "")")
                 #endif
                 return
             }
 
             #if DEBUG
-            print("[LiveActivity] end(immediate=\(immediate)) called")
+            print("[LiveActivity] end(immediate=\(immediate)) called owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
             Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
             #endif
 

@@ -348,6 +348,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
         let preset: Preset
         var close: () -> Void
         @StateObject private var engine = SessionEngine()
+    @StateObject private var liveActivity = LiveActivityController()
+    @State private var showConflictAlert: Bool = false
+    @State private var conflictOwnerId: String? = nil
+    @State private var conflictTitle: String? = nil
         @State private var sessionStart: Date = .now
         @State private var sessionTotal: TimeInterval = 1
         @State private var phaseStart: Date? = nil
@@ -375,13 +379,30 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     case .idle:
                         ProgressView().onAppear {
                             // Initialize absolute session timeline before starting
-                            sessionStart = .now
+                            let now = Date()
+                            sessionStart = now
                             sessionTotal = TimeInterval(preset.totalSeconds)
                             lastPhase = nil
                             phaseStart = nil
-                            engine.start(preset: preset)
 
-                            // Live Activity removed
+                            // Ask Activity controller first
+                            let endDate = sessionStart.addingTimeInterval(sessionTotal)
+                            let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+                            switch result {
+                            case .started:
+                                // proceed with local start
+                                engine.start(preset: preset)
+                            case .conflict(let existingOwner, let existingTitle):
+                                conflictOwnerId = existingOwner
+                                conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                                showConflictAlert = true
+                            case .failed(let error):
+                                // Activity unavailable — log and start local session anyway
+                                #if DEBUG
+                                print("[AtemView] liveActivity.requestStart failed: \(error)")
+                                #endif
+                                engine.start(preset: preset)
+                            }
                         }
                     case .running(let phase, let remaining, let rep, let totalReps):
                         Text(preset.name).font(.headline)
@@ -430,7 +451,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         // Snap outer progress to full on finish
                         .onAppear {
                             sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart))
-                            Task { await endSession(manual: false) }
+                            Task {
+                                await liveActivity.end()
+                                await endSession(manual: false)
+                            }
                         }
                     }
                     Button("Beenden") {
@@ -462,10 +486,35 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         lastPhase = ph
                         phaseStart = Date()
                         phaseDuration = Double(duration(for: ph))
-                        // Live Activity removed
+                        // Update Live Activity to reflect inner-phase change (emoji/icon only)
+                        let phaseNumber: Int
+                        switch ph {
+                        case .inhale: phaseNumber = 1
+                        case .holdIn: phaseNumber = 2
+                        case .exhale: phaseNumber = 3
+                        case .holdOut: phaseNumber = 4
+                        }
+                        // Fire-and-forget: update only the small icon/phase; do not alter endDate
+                        let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
+                        Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd) }
                     }
                 }
             }
+            .alert("Timer läuft bereits", isPresented: $showConflictAlert, actions: {
+                Button("Abbrechen", role: .cancel) {
+                    // user cancelled; just close overlay
+                    close()
+                }
+                Button("Erzwingen", role: .destructive) {
+                    // Force the Live Activity and start local engine regardless (per spec allow local start if force fails)
+                    Task {
+                        liveActivity.forceStart(title: preset.name, phase: 1, endDate: sessionStart.addingTimeInterval(sessionTotal), ownerId: "AtemTab")
+                        engine.start(preset: preset)
+                    }
+                }
+            }, message: {
+                Text(conflictTitle ?? "Ein anderer Timer läuft")
+            })
             // Keine automatische Beendigung bei App-Wechsel
         }
 

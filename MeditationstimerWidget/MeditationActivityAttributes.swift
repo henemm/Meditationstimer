@@ -15,6 +15,7 @@ struct MeditationAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         var endDate: Date
         var phase: Int // 1 = Meditation, 2 = Besinnung
+        var ownerId: String?
     }
     var title: String
 }

@@ -17,7 +17,8 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             // Sperrbildschirm / Banner – große, gut lesbare Anzeige
             LockScreenView(title: context.attributes.title,
                            endDate: context.state.endDate,
-                           phase: context.state.phase)
+                           phase: context.state.phase,
+                           ownerId: context.state.ownerId)
             .activityBackgroundTint(.black.opacity(0.2))
             .activitySystemActionForegroundColor(.white)
 
@@ -25,27 +26,44 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             DynamicIsland {
                 // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
-                    // Show the phase emoji in a circle on the leading side (replace SF app icon)
-                    HStack(spacing: 12) {
-                        ZStack {
-                            Circle()
-                                .fill(Color.green.opacity(0.3))
-                                .frame(width: 36, height: 36)
-                            Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
-                                .font(.title2)
-                        }
+                    // Keep the SF app icon stable in the leading region (match compact/minimal)
+                    ZStack {
+                        Circle()
+                            .fill(Color("AccentColor"))
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "figure.mind.and.body")
+                            .font(.system(size: 14))
+                            .foregroundColor(.white)
                     }
                     .padding(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    // Timer on the right (no emoji here — emoji is shown on the leading side)
-                    Text(context.state.endDate, style: .timer)
-                        .font(.system(size: 28, weight: .semibold, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundStyle(.white)
-                        .lineLimit(1)
-                        .layoutPriority(1)
-                        .padding(.trailing)
+                    // Trailing region: show optional phase icon (AtemTab) and the timer
+                    HStack(spacing: 10) {
+                        if context.state.ownerId == "AtemTab" {
+                            // small phase circle (arrows for Atem)
+                            let iconName: String = {
+                                if context.state.phase == 1 { return "arrow.up" }
+                                if context.state.phase == 3 { return "arrow.down" }
+                                return "arrow.right"
+                            }()
+                            ZStack {
+                                Circle()
+                                    .fill(Color.green.opacity(0.28))
+                                    .frame(width: 28, height: 28)
+                                Image(systemName: iconName)
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        Text(context.state.endDate, style: .timer)
+                            .font(.system(size: 28, weight: .semibold, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                            .layoutPriority(1)
+                    }
+                    .padding(.trailing)
                 }
             } compactLeading: {
                 ZStack {
@@ -87,6 +105,7 @@ private struct LockScreenView: View {
     let title: String
     let endDate: Date
     let phase: Int
+    let ownerId: String?
 
     var body: some View {
         HStack {
@@ -111,13 +130,26 @@ private struct LockScreenView: View {
                 .frame(maxWidth: .infinity)
                 .multilineTextAlignment(.center)
             
-            // Rechts: Phasen-Emoji in Kreis (unterscheidet sich vom App-Icon)
+            // Rechts: Phasen-Icon/Emoji in Kreis — arrows only for AtemTab
             ZStack {
                 Circle()
                     .fill(Color.green.opacity(0.3))
                     .frame(width: 40, height: 40)
-                Text(phase == 1 ? "🧘‍♂️" : "🍃")
-                    .font(.title2)
+                if ownerId == "AtemTab" {
+                    // arrows for Atem
+                    let iconName: String = {
+                        if phase == 1 { return "arrow.up" }
+                        if phase == 3 { return "arrow.down" }
+                        return "arrow.right"
+                    }()
+                    Image(systemName: iconName)
+                        .font(.title2)
+                        .foregroundColor(.white)
+                } else {
+                    // fallback: emoji mapping used previously
+                    Text(phase == 1 ? "🧘‍♂️" : "🍃")
+                        .font(.title2)
+                }
             }
             .padding(.trailing, 12)
         }
@@ -143,10 +175,10 @@ extension MeditationAttributes {
 
 extension MeditationAttributes.ContentState {
     static var sampleP1: MeditationAttributes.ContentState {
-        .init(endDate: Date().addingTimeInterval(75), phase: 1)
+        .init(endDate: Date().addingTimeInterval(75), phase: 1, ownerId: "AtemTab")
     }
     static var sampleP2: MeditationAttributes.ContentState {
-        .init(endDate: Date().addingTimeInterval(12), phase: 2)
+        .init(endDate: Date().addingTimeInterval(12), phase: 2, ownerId: nil)
     }
 }
 

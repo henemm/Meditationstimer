@@ -17,6 +17,8 @@ struct MeditationAttributes: ActivityAttributes {
         var endDate: Date
         /// Phase: 1 = Meditation, 2 = Besinnung
         var phase: Int
+        /// Optional owner identifier (e.g. "AtemTab", "OffenTab") so widgets can render per-tab styles
+        var ownerId: String?
     }
 
     /// Titel oder Bezeichnung der Aktivität
