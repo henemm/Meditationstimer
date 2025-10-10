@@ -19,6 +19,7 @@ final class LiveActivityController: ObservableObject {
     /// If set, the controller will prefer to keep ownership and will log/handle attempts
     /// from a different owner deterministically (end+start).
     private var ownerId: String?
+    private var ownerTitle: String?
 
     /// Whether there is currently an active Live Activity managed by this controller.
     var isActive: Bool {
@@ -41,7 +42,7 @@ final class LiveActivityController: ObservableObject {
 
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
-            return .conflict(existingOwnerId: existingOwner, existingTitle: "")
+            return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
         Task { @MainActor in
             self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
@@ -55,6 +56,7 @@ final class LiveActivityController: ObservableObject {
                 await current.end(dismissalPolicy: .immediate)
                 self.activity = nil
                 self.ownerId = nil
+                self.ownerTitle = nil
             }
             self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
@@ -95,6 +97,7 @@ final class LiveActivityController: ObservableObject {
                     )
                     // record successful owner
                     self.ownerId = ownerId
+                    self.ownerTitle = title
                     lastError = nil
                     break
                 } catch {
@@ -164,6 +167,7 @@ final class LiveActivityController: ObservableObject {
 
             activity = nil
             ownerId = nil
+            ownerTitle = nil
         }
     }
 

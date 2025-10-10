@@ -19,6 +19,8 @@ final class LiveActivityController: ObservableObject {
     /// If set, the controller will prefer to keep ownership and will log/handle attempts
     /// from a different owner deterministically (end+start).
     private var ownerId: String?
+    /// Optional human-readable title for the current activity (e.g. "Meditation").
+    private var ownerTitle: String?
 
     /// Whether there is currently an active Live Activity managed by this controller.
     var isActive: Bool {
@@ -73,8 +75,9 @@ final class LiveActivityController: ObservableObject {
                         attributes: attributes,
                         content: ActivityContent(state: state, staleDate: nil)
                     )
-                    // record successful owner
+                    // record successful owner and title
                     self.ownerId = ownerId
+                    self.ownerTitle = title
                     lastError = nil
                     break
                 } catch {
@@ -109,7 +112,7 @@ final class LiveActivityController: ObservableObject {
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
         // If there's an existing active activity owned by someone else, report conflict
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
-            return .conflict(existingOwnerId: existingOwner, existingTitle: "")
+            return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
         // No conflict — invoke the existing start path asynchronously
         Task { @MainActor in
@@ -125,6 +128,7 @@ final class LiveActivityController: ObservableObject {
                 await current.end(dismissalPolicy: .immediate)
                 self.activity = nil
                 self.ownerId = nil
+                self.ownerTitle = nil
             }
             self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
@@ -173,6 +177,7 @@ final class LiveActivityController: ObservableObject {
 
             activity = nil
             ownerId = nil
+            ownerTitle = nil
         }
     }
     
