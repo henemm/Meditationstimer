@@ -67,6 +67,9 @@ struct OffenView: View {
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
     @StateObject private var liveActivity = LiveActivityController()
+    @State private var showConflictAlert: Bool = false
+    @State private var conflictOwnerId: String? = nil
+    @State private var conflictTitle: String? = nil
     @State private var notifier = BackgroundNotifier()
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
@@ -115,6 +118,9 @@ struct OffenView: View {
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
+        .alert(isPresented: $showConflictAlert) {
+            conflictAlert
+        }
     }
 
     private var startButton: some View {
@@ -128,9 +134,19 @@ struct OffenView: View {
             // Start engine
             engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
 
-            // Start Live Activity
+            // Start Live Activity (use requestStart to detect conflicts)
             if let phase1End = engine.phase1EndDate {
-                liveActivity.start(title: "Meditation", phase: 1, endDate: phase1End)
+                let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                switch result {
+                case .started:
+                    break
+                case .conflict(let existingOwner, let existingTitle):
+                    conflictOwnerId = existingOwner
+                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                    showConflictAlert = true
+                case .failed:
+                    break
+                }
             }
         }) {
             Image(systemName: "play.circle.fill")
@@ -139,6 +155,21 @@ struct OffenView: View {
                 .foregroundStyle(.tint)
         }
         .buttonStyle(.plain)
+    }
+
+    // Alert for existing timer conflict
+    private var conflictAlert: Alert {
+        Alert(
+            title: Text("Anderer Timer läuft"),
+            message: Text("Der Timer ‚\(conflictTitle ?? "Aktiver Timer")‘ läuft bereits. Soll dieser beendet und der neue gestartet werden?"),
+            primaryButton: .destructive(Text("Timer beenden und starten"), action: {
+                // Force start now
+                if let phase1End = engine.phase1EndDate {
+                    liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                }
+            }),
+            secondaryButton: .cancel(Text("Abbrechen"))
+        )
     }
 
     private func phaseView(title: String, remaining: Int, total: Int) -> some View {
@@ -216,14 +247,14 @@ struct OffenView: View {
                     // If no activity exists, end/start as a fallback to ensure a fresh Activity for Phase 2.
                     if let phase2End = engine.endDate {
                         Task {
-                            if liveActivity.isActive {
+                                if liveActivity.isActive {
                                 // Update the current activity in-place
                                 await liveActivity.update(phase: 2, endDate: phase2End)
                                 print("🔔 [LiveActivity] Phase 2 (updated): Timer bis \(phase2End), Emoji 🪷")
                             } else {
                                 // No active activity: just start a fresh one for Phase 2.
                                 // Avoid calling end() here because activity is already nil and that can produce noisy stacks.
-                                liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                                liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
                                 print("🔔 [LiveActivity] Phase 2 (restarted): Timer bis \(phase2End), Emoji 🪷")
                             }
                         }
@@ -236,7 +267,7 @@ struct OffenView: View {
                     didPlayPhase2Gong = true
                     // Start Live Activity for Phase 2 directly
                     if let phase2End = engine.endDate {
-                        liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                        liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
                         print("🔔 [LiveActivity] Direkter Start Phase 2: Timer bis \(phase2End), Emoji 🪷")
                     }
                 }

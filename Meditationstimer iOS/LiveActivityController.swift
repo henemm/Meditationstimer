@@ -15,10 +15,20 @@ import SwiftUI
 @MainActor
 final class LiveActivityController: ObservableObject {
     private var activity: Activity<MeditationAttributes>?
+    /// Optional owner identifier for the current activity (e.g. "OffenTab", "AtemTab").
+    /// If set, the controller will prefer to keep ownership and will log/handle attempts
+    /// from a different owner deterministically (end+start).
+    private var ownerId: String?
 
     /// Whether there is currently an active Live Activity managed by this controller.
     var isActive: Bool {
         return activity != nil
+    }
+
+    enum StartResult {
+        case started
+        case conflict(existingOwnerId: String, existingTitle: String)
+        case failed(Error)
     }
 
     private var isPreview: Bool {
@@ -29,8 +39,43 @@ final class LiveActivityController: ObservableObject {
         #endif
     }
 
-    func start(title: String, phase: Int, endDate: Date) {
+    func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
+        if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
+            return .conflict(existingOwnerId: existingOwner, existingTitle: "")
+        }
+        Task { @MainActor in
+            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+        }
+        return .started
+    }
+
+    func forceStart(title: String, phase: Int, endDate: Date, ownerId: String?) {
+        Task { @MainActor in
+            if let current = self.activity {
+                await current.end(dismissalPolicy: .immediate)
+                self.activity = nil
+                self.ownerId = nil
+            }
+            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+        }
+    }
+
+    /// Start a Live Activity. Pass an optional `ownerId` to identify the caller.
+    /// When another owner already holds the activity, this will end the previous activity and start a new one.
+    func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) {
         guard !isPreview else { return }
+        // Ownership guard: if an activity exists and the owner differs, end it deterministically.
+        if let existing = activity, let existingOwner = self.ownerId, existingOwner != ownerId {
+            #if DEBUG
+            print("[LiveActivity] start requested by owner=\(ownerId ?? "nil") but existing owner=\(existingOwner). Ending previous activity and continuing.")
+            #endif
+            Task { @MainActor in
+                await existing.end(dismissalPolicy: .immediate)
+            }
+            // reset local state — we'll set it again when new request succeeds
+            activity = nil
+            self.ownerId = nil
+        }
         if #available(iOS 16.1, *), ActivityAuthorizationInfo().areActivitiesEnabled {
             let attributes = MeditationAttributes(title: title)
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
@@ -48,6 +93,8 @@ final class LiveActivityController: ObservableObject {
                         attributes: attributes,
                         content: ActivityContent(state: state, staleDate: nil)
                     )
+                    // record successful owner
+                    self.ownerId = ownerId
                     lastError = nil
                     break
                 } catch {
@@ -79,6 +126,13 @@ final class LiveActivityController: ObservableObject {
     func update(phase: Int, endDate: Date) async {
         guard !isPreview else { return }
         if #available(iOS 16.1, *) {
+            // Defensive: only update if we have an active activity
+            guard activity != nil else {
+                #if DEBUG
+                print("[LiveActivity] update called but no active activity (ignored)")
+                #endif
+                return
+            }
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
             #if DEBUG
             print("[LiveActivity] update → phase=\(phase), ends=\(endDate)")
@@ -109,6 +163,7 @@ final class LiveActivityController: ObservableObject {
             }
 
             activity = nil
+            ownerId = nil
         }
     }
 
