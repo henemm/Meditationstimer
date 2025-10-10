@@ -21,6 +21,11 @@ final class LiveActivityController: ObservableObject {
     private var ownerId: String?
     private var ownerTitle: String?
 
+    // Read-only accessors for debug/logging from other files.
+    // Kept separate from the internal storage so we can preserve encapsulation.
+    var publicOwnerId: String? { ownerId }
+    var publicOwnerTitle: String? { ownerTitle }
+
     /// Whether there is currently an active Live Activity managed by this controller.
     var isActive: Bool {
         return activity != nil
@@ -41,6 +46,9 @@ final class LiveActivityController: ObservableObject {
     }
 
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
+        #if DEBUG
+        print("[LiveActivity iOS] requestStart owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
+        #endif
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
@@ -52,7 +60,13 @@ final class LiveActivityController: ObservableObject {
 
     func forceStart(title: String, phase: Int, endDate: Date, ownerId: String?) {
         Task { @MainActor in
+            #if DEBUG
+            print("[LiveActivity iOS] forceStart owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
+            #endif
             if let current = self.activity {
+                #if DEBUG
+                print("[LiveActivity iOS] forceStart: ending existing owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
+                #endif
                 await current.end(dismissalPolicy: .immediate)
                 self.activity = nil
                 self.ownerId = nil
@@ -149,14 +163,14 @@ final class LiveActivityController: ObservableObject {
         if #available(iOS 16.1, *) {
             guard let currentActivity = activity else {
                 #if DEBUG
-                print("[LiveActivity] end called but no active activity (ignored)")
+                print("[LiveActivity iOS] end called but no active activity (ignored) ownerId=\(self.ownerId ?? "nil") ownerTitle=\(self.ownerTitle ?? "")")
                 #endif
                 return
             }
 
             #if DEBUG
-            print("[LiveActivity] end(immediate=\(immediate)) called")
-            Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
+            print("[LiveActivity iOS] end(immediate=\(immediate)) called owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
+            Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity iOS] stack: \($0)") }
             #endif
 
             if immediate {
