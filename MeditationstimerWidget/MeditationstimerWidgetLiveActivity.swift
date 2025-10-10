@@ -29,7 +29,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                         // App SF icon as white glyph on filled AccentColor circle (matches app icon)
                         ZStack {
                             Circle()
-                                .fill(Color.accentColor)
+                                .fill(Color("AccentColor"))
                                 .frame(width: 36, height: 36)
                             Image(systemName: "figure.mind.and.body")
                                 .font(.title2)
@@ -46,16 +46,14 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                             .font(.system(size: 28, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                             .foregroundStyle(.white)
-                            .lineLimit(1)
-                            .layoutPriority(1)
 
-                        // Emoji in Kreis rechts neben dem Timer (slightly smaller to avoid wrapping)
+                        // Emoji in Kreis rechts neben dem Timer
                         ZStack {
                             Circle()
                                 .fill(Color.green.opacity(0.3))
-                                .frame(width: 34, height: 34)
+                                .frame(width: 36, height: 36)
                             Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
-                                .font(.system(size: 18))
+                                .font(.title2)
                         }
                     }
                     .padding(.trailing)
