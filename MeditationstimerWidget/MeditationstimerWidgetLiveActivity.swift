@@ -26,32 +26,47 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                 // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
                     HStack(spacing: 12) {
-                        // App SF icon stays constant; only the emoji changes per phase
-                        Image(systemName: "figure.mind.and.body")
-                            .font(.title2)
-                            .foregroundStyle(.white)
-                            .frame(width: 36, height: 36)
-                            .background(Circle().fill(Color.blue.opacity(0.3)))
-                        
-                        // Emoji in Kreis
-                        Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
-                            .font(.title2)
-                            .frame(width: 36, height: 36)
-                            .background(Circle().fill(Color.green.opacity(0.3)))
+                        // App SF icon as white glyph on filled AccentColor circle (matches app icon)
+                        ZStack {
+                            Circle()
+                                .fill(Color("AccentColor"))
+                                .frame(width: 36, height: 36)
+                            Image(systemName: "figure.mind.and.body")
+                                .font(.title2)
+                                .foregroundColor(.white)
+                        }
+                        // (Emoji moved to the right side next to the timer)
                     }
                     .padding(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    // Timer rechts - auf gleicher Höhe
-                    Text(context.state.endDate, style: .timer)
-                        .font(.system(size: 28, weight: .semibold, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundStyle(.white)
-                        .padding(.trailing)
+                    // Timer rechts - Emoji direkt rechts daneben
+                    HStack(spacing: 10) {
+                        Text(context.state.endDate, style: .timer)
+                            .font(.system(size: 28, weight: .semibold, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+
+                        // Emoji in Kreis rechts neben dem Timer
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.3))
+                                .frame(width: 36, height: 36)
+                            Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
+                                .font(.title2)
+                        }
+                    }
+                    .padding(.trailing)
                 }
             } compactLeading: {
-                Image(systemName: "figure.mind.and.body")
-                    .foregroundColor(.blue)
+                ZStack {
+                    Circle()
+                        .fill(Color("AccentColor"))
+                        .frame(width: 20, height: 20)
+                    Image(systemName: "figure.mind.and.body")
+                        .font(.system(size: 12))
+                        .foregroundColor(.white)
+                }
             } compactTrailing: {
                 // Rechts: Timer mit OVERLAY-TRICK gegen Width-Bug
                 Text("00:00")
@@ -63,8 +78,14 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                             .foregroundStyle(.white)
                     }
             } minimal: {
-                Image(systemName: "figure.mind.and.body")
-                    .foregroundColor(.blue)
+                ZStack {
+                    Circle()
+                        .fill(Color("AccentColor"))
+                        .frame(width: 18, height: 18)
+                    Image(systemName: "figure.mind.and.body")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white)
+                }
             }
             .keylineTint(.accentColor)
         }
@@ -80,14 +101,16 @@ private struct LockScreenView: View {
 
     var body: some View {
         HStack {
-            // Links: Phase-spezifisches Icon in Kreis
-            // App SF icon stays constant; emoji on the right indicates the phase
-            Image(systemName: "figure.mind.and.body")
-                .font(.title2)
-                .foregroundStyle(.white)
-                .frame(width: 40, height: 40)
-                .background(Circle().fill(Color.blue.opacity(0.3)))
-                .padding(.leading, 12)
+            // Links: App SF icon as filled AccentColor with white glyph
+            ZStack {
+                Circle()
+                    .fill(Color("AccentColor"))
+                    .frame(width: 40, height: 40)
+                Image(systemName: "figure.mind.and.body")
+                    .font(.title2)
+                    .foregroundColor(.white)
+            }
+            .padding(.leading, 12)
             
             Spacer()
             
@@ -100,11 +123,14 @@ private struct LockScreenView: View {
                 .multilineTextAlignment(.center)
             
             // Rechts: Phasen-Emoji in Kreis (unterscheidet sich vom App-Icon)
-            Text(phase == 1 ? "🧘‍♂️" : "🍃")
-                .font(.title2)
-                .frame(width: 40, height: 40)
-                .background(Circle().fill(Color.green.opacity(0.3)))
-                .padding(.trailing, 12)
+            ZStack {
+                Circle()
+                    .fill(Color.green.opacity(0.3))
+                    .frame(width: 40, height: 40)
+                Text(phase == 1 ? "🧘‍♂️" : "🍃")
+                    .font(.title2)
+            }
+            .padding(.trailing, 12)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
