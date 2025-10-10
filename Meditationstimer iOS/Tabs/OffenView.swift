@@ -212,17 +212,21 @@ struct OffenView: View {
                     didPlayPhase2Gong = true
                     // Debug: show engine dates at transition
                     print("DBG TRANSITION: now=\(Date()), phase1End=\(String(describing: engine.phase1EndDate)), engine.endDate=\(String(describing: engine.endDate)), phase2Minutes=\(phase2Minutes)")
-                    // Robust: End existing Live Activity and start a new one for Phase 2
+                    // Robust: prefer updating the existing Live Activity to Phase 2.
+                    // If no activity exists, end/start as a fallback to ensure a fresh Activity for Phase 2.
                     if let phase2End = engine.endDate {
                         Task {
-                            // End old activity first
-                            await liveActivity.end()
-                            // brief pause to avoid ActivityKit race
-                            try? await Task.sleep(nanoseconds: 200_000_000) // 200ms
-                            // Start a fresh Live Activity for Phase 2
-                            liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                            if liveActivity.isActive {
+                                // Update the current activity in-place
+                                await liveActivity.update(phase: 2, endDate: phase2End)
+                                print("🔔 [LiveActivity] Phase 2 (updated): Timer bis \(phase2End), Emoji 🪷")
+                            } else {
+                                // No active activity: just start a fresh one for Phase 2.
+                                // Avoid calling end() here because activity is already nil and that can produce noisy stacks.
+                                liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End)
+                                print("🔔 [LiveActivity] Phase 2 (restarted): Timer bis \(phase2End), Emoji 🪷")
+                            }
                         }
-                        print("🔔 [LiveActivity] Phase 2 (restarted): Timer bis \(phase2End), Emoji 🪷")
                     }
                 }
                 // Fallback: Wenn wir ohne vorherige phase1 direkt in phase2 eintreten (z. B. phase1Minutes == 0), trotzdem den Dreifach-Gong spielen – aber nur einmal

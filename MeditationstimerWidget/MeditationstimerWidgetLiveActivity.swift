@@ -26,8 +26,8 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                 // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
                     HStack(spacing: 12) {
-                        // Phase-Icon in Kreis
-                        Image(systemName: context.state.phase == 1 ? "figure.mind.and.body" : "leaf")
+                        // App SF icon stays constant; only the emoji changes per phase
+                        Image(systemName: "figure.mind.and.body")
                             .font(.title2)
                             .foregroundStyle(.white)
                             .frame(width: 36, height: 36)
@@ -81,7 +81,8 @@ private struct LockScreenView: View {
     var body: some View {
         HStack {
             // Links: Phase-spezifisches Icon in Kreis
-            Image(systemName: phase == 1 ? "figure.mind.and.body" : "leaf")
+            // App SF icon stays constant; emoji on the right indicates the phase
+            Image(systemName: "figure.mind.and.body")
                 .font(.title2)
                 .foregroundStyle(.white)
                 .frame(width: 40, height: 40)

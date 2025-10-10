@@ -15,9 +15,11 @@ import SwiftUI
 @MainActor
 final class LiveActivityController: ObservableObject {
     private var activity: Activity<MeditationAttributes>?
-    private var watchdogTimer: Timer?
-    private let watchdogInterval: TimeInterval = 30.0 // 30 Sekunden ohne Update = Auto-Stop
-    private var lastUpdateTime: Date = Date()
+
+    /// Whether there is currently an active Live Activity managed by this controller.
+    var isActive: Bool {
+        return activity != nil
+    }
 
     private var isPreview: Bool {
         #if DEBUG
@@ -32,18 +34,36 @@ final class LiveActivityController: ObservableObject {
         if #available(iOS 16.1, *), ActivityAuthorizationInfo().areActivitiesEnabled {
             let attributes = MeditationAttributes(title: title)
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
-            do {
+            // Small retry loop for transient visibility/entitlement errors when requesting an Activity.
+            var lastError: Error?
+            for attempt in 1...2 {
+                do {
+                    #if DEBUG
+                    print("[LiveActivity] start attempt=\(attempt) → title=\(title), phase=\(phase), ends=\(endDate) enabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)")
+                    if let stateInfo = UIApplication.shared.value(forKeyPath: "applicationState") {
+                        print("[LiveActivity] UIApplication.applicationState=\(stateInfo)")
+                    }
+                    #endif
+                    activity = try Activity.request(
+                        attributes: attributes,
+                        content: ActivityContent(state: state, staleDate: nil)
+                    )
+                    lastError = nil
+                    break
+                } catch {
+                    lastError = error
+                    #if DEBUG
+                    print("[LiveActivity] start attempt=\(attempt) failed: \(error)")
+                    #endif
+                    // short backoff before retry
+                    if attempt < 2 {
+                        Thread.sleep(forTimeInterval: 0.12)
+                    }
+                }
+            }
+            if let err = lastError {
                 #if DEBUG
-                print("[LiveActivity] start → title=\(title), phase=\(phase), ends=\(endDate) enabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)")
-                #endif
-                activity = try Activity.request(
-                    attributes: attributes,
-                    content: ActivityContent(state: state, staleDate: nil)
-                )
-                startWatchdog()
-            } catch {
-                #if DEBUG
-                print("[LiveActivity] start failed: \(error)")
+                print("[LiveActivity] start ultimately failed: \(err)")
                 #endif
             }
         } else {
@@ -62,72 +82,40 @@ final class LiveActivityController: ObservableObject {
         if #available(iOS 16.1, *) {
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase)
             #if DEBUG
-            print("[LiveActivity] update → phase=\(phase), ends=\(endDate), onMain=\(Thread.isMainThread)")
+            print("[LiveActivity] update → phase=\(phase), ends=\(endDate)")
             #endif
             await activity?.update(ActivityContent(state: state, staleDate: nil))
-            // Update Watchdog
-            lastUpdateTime = Date()
         }
     }
 
     func end(immediate: Bool = true) async {
         guard !isPreview else { activity = nil; return }
         if #available(iOS 16.1, *) {
+            // Avoid double-ending
+            guard let currentActivity = activity else {
+                #if DEBUG
+                print("[LiveActivity] end called but no active activity (ignored)")
+                #endif
+                return
+            }
+
             #if DEBUG
-            print("[LiveActivity] end(immediate=\(immediate)) called onMain=\(Thread.isMainThread)")
-            // Print simple stack for debugging who called end()
+            print("[LiveActivity] end(immediate=\(immediate)) called")
             Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
             #endif
+
+            // Use non-deprecated API
             if immediate {
-                await activity?.end(dismissalPolicy: .immediate)
+                await currentActivity.end(dismissalPolicy: .immediate)
             } else {
-                await activity?.end()
+                await currentActivity.end()
             }
+
             activity = nil
-            stopWatchdog()
         }
     }
     
-    // MARK: - Watchdog für App Termination Detection
-    
-    private func startWatchdog() {
-        stopWatchdog() // Alten Timer stoppen falls vorhanden
-        lastUpdateTime = Date()
-        
-        watchdogTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                await self?.checkWatchdog()
-            }
-        }
-        
-        #if DEBUG
-        print("[LiveActivity] Watchdog started - Auto-Stop nach \(watchdogInterval)s ohne Update")
-        #endif
-    }
-    
-    private func stopWatchdog() {
-        watchdogTimer?.invalidate()
-        watchdogTimer = nil
-        
-        #if DEBUG
-        print("[LiveActivity] Watchdog stopped")
-        #endif
-    }
-    
-    private func checkWatchdog() async {
-        let timeSinceLastUpdate = Date().timeIntervalSince(lastUpdateTime)
-        
-        #if DEBUG
-        print("[LiveActivity] Watchdog check: \(timeSinceLastUpdate)s seit letztem Update")
-        #endif
-        
-        if timeSinceLastUpdate > watchdogInterval {
-            #if DEBUG
-            print("[LiveActivity] Watchdog ausgelöst! Auto-Stop nach \(timeSinceLastUpdate)s")
-            #endif
-            await end(immediate: true)
-        }
-    }
+    // Watchdog removed — automatic auto-stop disabled
 }
 
 #else
