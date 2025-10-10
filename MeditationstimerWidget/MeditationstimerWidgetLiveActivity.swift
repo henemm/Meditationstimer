@@ -25,29 +25,8 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             DynamicIsland {
                 // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
+                    // Show the phase emoji in a circle on the leading side (replace SF app icon)
                     HStack(spacing: 12) {
-                        // App SF icon as white glyph on filled AccentColor circle (matches app icon)
-                        ZStack {
-                            Circle()
-                                .fill(Color("AccentColor"))
-                                .frame(width: 36, height: 36)
-                            Image(systemName: "figure.mind.and.body")
-                                .font(.title2)
-                                .foregroundColor(.white)
-                        }
-                        // (Emoji moved to the right side next to the timer)
-                    }
-                    .padding(.leading)
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    // Timer rechts - Emoji direkt rechts daneben
-                    HStack(spacing: 10) {
-                        Text(context.state.endDate, style: .timer)
-                            .font(.system(size: 28, weight: .semibold, design: .rounded))
-                            .monospacedDigit()
-                            .foregroundStyle(.white)
-
-                        // Emoji in Kreis rechts neben dem Timer
                         ZStack {
                             Circle()
                                 .fill(Color.green.opacity(0.3))
@@ -56,7 +35,17 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                                 .font(.title2)
                         }
                     }
-                    .padding(.trailing)
+                    .padding(.leading)
+                }
+                DynamicIslandExpandedRegion(.trailing) {
+                    // Timer on the right (no emoji here — emoji is shown on the leading side)
+                    Text(context.state.endDate, style: .timer)
+                        .font(.system(size: 28, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .layoutPriority(1)
+                        .padding(.trailing)
                 }
             } compactLeading: {
                 ZStack {
