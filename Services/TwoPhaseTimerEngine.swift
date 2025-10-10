@@ -97,6 +97,23 @@ final class TwoPhaseTimerEngine: ObservableObject {
         endDate = nil
         state = .idle
     }
+
+    // MARK: - Safe start API for UI
+    /// Result for an atomic tryStart call.
+    enum TryStartResult {
+        case started
+        case alreadyRunning
+        case failed(Error)
+    }
+
+    /// Atomically attempt to start the engine. Returns immediately with the outcome.
+    /// Marked @MainActor to avoid races with UI code.
+    @MainActor
+    func tryStart(phase1Minutes: Int, phase2Minutes: Int) -> TryStartResult {
+        guard state == .idle else { return .alreadyRunning }
+        start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+        return .started
+    }
     
     // MARK: - App Termination Detection
     

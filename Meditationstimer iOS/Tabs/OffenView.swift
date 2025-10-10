@@ -125,25 +125,34 @@ struct OffenView: View {
 
     private var startButton: some View {
         Button(action: {
-            // Align start flow with AtemView: keep screen awake, **activate audio session first**, then play short gong
-            sessionStart = Date()
-            setIdleTimer(true)
-            bgAudio.start()
-            gong.play(named: "gong-ende")
-
-            // Start engine
-            engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
-
-            // Start Live Activity (use requestStart to detect conflicts)
-            if let phase1End = engine.phase1EndDate {
-                let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+            Task { @MainActor in
+                // Atomically attempt to start the engine
+                let result = engine.tryStart(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 switch result {
                 case .started:
+                    // Align start flow with AtemView: keep screen awake, **activate audio session first**, then play short gong
+                    sessionStart = Date()
+                    setIdleTimer(true)
+                    bgAudio.start()
+                    gong.play(named: "gong-ende")
+
+                    // Start Live Activity (use requestStart to detect conflicts)
+                    if let phase1End = engine.phase1EndDate {
+                        let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                        switch result {
+                        case .started:
+                            break
+                        case .conflict(let existingOwner, let existingTitle):
+                            conflictOwnerId = existingOwner
+                            conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                            showConflictAlert = true
+                        case .failed:
+                            break
+                        }
+                    }
+                case .alreadyRunning:
+                    // no-op: optionally show toast or haptic
                     break
-                case .conflict(let existingOwner, let existingTitle):
-                    conflictOwnerId = existingOwner
-                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
-                    showConflictAlert = true
                 case .failed:
                     break
                 }
@@ -155,6 +164,7 @@ struct OffenView: View {
                 .foregroundStyle(.tint)
         }
         .buttonStyle(.plain)
+        .disabled(engine.state != .idle || liveActivity.isActive)
     }
 
     // Alert for existing timer conflict
