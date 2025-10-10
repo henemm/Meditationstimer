@@ -70,6 +70,7 @@ struct OffenView: View {
     @State private var showConflictAlert: Bool = false
     @State private var conflictOwnerId: String? = nil
     @State private var conflictTitle: String? = nil
+    @State private var showLocalConflictAlert: Bool = false
     @State private var notifier = BackgroundNotifier()
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
@@ -126,35 +127,38 @@ struct OffenView: View {
     private var startButton: some View {
         Button(action: {
             Task { @MainActor in
-                // Atomically attempt to start the engine
-                let result = engine.tryStart(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                // If our engine already runs a session, ask the user whether to stop it and start a new one
+                if engine.state != .idle {
+                    showLocalConflictAlert = true
+                    return
+                }
+
+                // Compute phase end dates locally so we can ask ActivityKit before starting the engine
+                let now = Date()
+                let phase1End = now.addingTimeInterval(TimeInterval(max(0, phase1Minutes) * 60))
+                let phase2End = phase1End.addingTimeInterval(TimeInterval(max(0, phase2Minutes) * 60))
+
+                // Ask the LiveActivity controller if starting now would conflict with an existing Activity
+                let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
                 switch result {
                 case .started:
-                    // Align start flow with AtemView: keep screen awake, **activate audio session first**, then play short gong
-                    sessionStart = Date()
+                    // Proceed to start local engine and audio
+                    sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
                     gong.play(named: "gong-ende")
-
-                    // Start Live Activity (use requestStart to detect conflicts)
-                    if let phase1End = engine.phase1EndDate {
-                        let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
-                        switch result {
-                        case .started:
-                            break
-                        case .conflict(let existingOwner, let existingTitle):
-                            conflictOwnerId = existingOwner
-                            conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
-                            showConflictAlert = true
-                        case .failed:
-                            break
-                        }
-                    }
-                case .alreadyRunning:
-                    // no-op: optionally show toast or haptic
-                    break
+                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                case .conflict(let existingOwner, let existingTitle):
+                    conflictOwnerId = existingOwner
+                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                    showConflictAlert = true
                 case .failed:
-                    break
+                    // If Activity start failed, we still allow the engine to start locally
+                    sessionStart = now
+                    setIdleTimer(true)
+                    bgAudio.start()
+                    gong.play(named: "gong-ende")
+                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 }
             }
         }) {
@@ -164,7 +168,6 @@ struct OffenView: View {
                 .foregroundStyle(.tint)
         }
         .buttonStyle(.plain)
-        .disabled(engine.state != .idle || liveActivity.isActive)
     }
 
     // Alert for existing timer conflict
@@ -176,6 +179,31 @@ struct OffenView: View {
                 // Force start now
                 if let phase1End = engine.phase1EndDate {
                     liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                }
+            }),
+            secondaryButton: .cancel(Text("Abbrechen"))
+        )
+    }
+
+    // Local alert when engine.state != .idle and user presses Start
+    private var localConflictAlert: Alert {
+        Alert(
+            title: Text("Sitzung läuft bereits"),
+            message: Text("Eine Sitzung läuft bereits. Soll diese beendet und die neue gestartet werden?"),
+            primaryButton: .destructive(Text("Beenden & Starten"), action: {
+                Task { @MainActor in
+                    // End current session and start fresh
+                    await liveActivity.end()
+                    engine.cancel()
+                    // Start new one immediately (reuse start flow)
+                    sessionStart = Date()
+                    setIdleTimer(true)
+                    bgAudio.start()
+                    gong.play(named: "gong-ende")
+                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                    if let phase1End = engine.phase1EndDate {
+                        liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                    }
                 }
             }),
             secondaryButton: .cancel(Text("Abbrechen"))
