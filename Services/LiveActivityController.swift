@@ -42,18 +42,28 @@ final class LiveActivityController: ObservableObject {
         #endif
     }
 
+    // Flags to serialize start/end and avoid races where end() is followed immediately by a new start()
+    private var isStarting: Bool = false
+    private var isEnding: Bool = false
+
     /// Start a Live Activity. Pass an optional `ownerId` to identify the caller.
     /// When another owner already holds the activity, this will end the previous activity and start a new one.
-    func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) {
+    func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) async {
         guard !isPreview else { return }
+        if isEnding {
+            #if DEBUG
+            print("[LiveActivity] start() ignored because isEnding=true (services)")
+            #endif
+            return
+        }
+        isStarting = true
+        defer { isStarting = false }
         // Ownership guard: if an activity exists and the owner differs, end it deterministically.
         if let existing = activity, let existingOwner = self.ownerId, existingOwner != ownerId {
             #if DEBUG
             print("[LiveActivity] start requested by owner=\(ownerId ?? "nil") but existing owner=\(existingOwner). Ending previous activity and continuing.")
             #endif
-            Task { @MainActor in
-                await existing.end(dismissalPolicy: .immediate)
-            }
+            await existing.end(dismissalPolicy: .immediate)
             // reset local state — we'll set it again when new request succeeds
             activity = nil
             self.ownerId = nil
@@ -118,8 +128,14 @@ final class LiveActivityController: ObservableObject {
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
         // No conflict — invoke the existing start path asynchronously
+        if isEnding {
+            #if DEBUG
+            print("[LiveActivity] requestStart rejected (services): isEnding=true")
+            #endif
+            return .failed(NSError(domain: "LiveActivityController", code: 1, userInfo: [NSLocalizedDescriptionKey: "Activity is ending"]))
+        }
         Task { @MainActor in
-            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+            await self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
         return .started
     }
@@ -130,6 +146,15 @@ final class LiveActivityController: ObservableObject {
             #if DEBUG
             print("[LiveActivity] forceStart requested by owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
             #endif
+            if isEnding {
+                #if DEBUG
+                print("[LiveActivity] forceStart deferred (services): isEnding=true")
+                #endif
+                return
+            }
+            isStarting = true
+            defer { isStarting = false }
+
             if let current = self.activity {
                 #if DEBUG
                 print("[LiveActivity] forceStart: ending existing activity owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
@@ -139,7 +164,7 @@ final class LiveActivityController: ObservableObject {
                 self.ownerId = nil
                 self.ownerTitle = nil
             }
-            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+            await self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
     }
 
@@ -164,7 +189,22 @@ final class LiveActivityController: ObservableObject {
     func end(immediate: Bool = true) async {
         guard !isPreview else { activity = nil; return }
         if #available(iOS 16.1, *) {
-            // Avoid double-ending
+            if isEnding {
+                #if DEBUG
+                print("[LiveActivity] end called but isEnding already true (services)")
+                #endif
+                return
+            }
+            isEnding = true
+            defer { isEnding = false }
+
+            while isStarting {
+                #if DEBUG
+                print("[LiveActivity] end waiting for in-flight start to finish (services)")
+                #endif
+                try? await Task.sleep(nanoseconds: 50_000_000)
+            }
+
             guard let currentActivity = activity else {
                 #if DEBUG
                 print("[LiveActivity] end called but no active activity (ignored) ownerId=\(self.ownerId ?? "nil") ownerTitle=\(self.ownerTitle ?? "")")
@@ -177,7 +217,6 @@ final class LiveActivityController: ObservableObject {
             Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
             #endif
 
-            // Use non-deprecated API
             if immediate {
                 await currentActivity.end(dismissalPolicy: .immediate)
             } else {

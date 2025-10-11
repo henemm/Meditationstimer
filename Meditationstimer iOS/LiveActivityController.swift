@@ -45,6 +45,10 @@ final class LiveActivityController: ObservableObject {
         #endif
     }
 
+    // Flags to serialize start/end and avoid races where end() is followed immediately by a new start()
+    private var isStarting: Bool = false
+    private var isEnding: Bool = false
+
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
         #if DEBUG
         print("[LiveActivity iOS] requestStart owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
@@ -52,8 +56,15 @@ final class LiveActivityController: ObservableObject {
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
+        // If an end is in progress, refuse to start to avoid immediate restarts
+        if isEnding {
+            #if DEBUG
+            print("[LiveActivity] requestStart rejected: isEnding=true")
+            #endif
+            return .failed(NSError(domain: "LiveActivityController", code: 1, userInfo: [NSLocalizedDescriptionKey: "Activity is ending"]))
+        }
         Task { @MainActor in
-            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+            await self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
         return .started
     }
@@ -63,6 +74,16 @@ final class LiveActivityController: ObservableObject {
             #if DEBUG
             print("[LiveActivity iOS] forceStart owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
             #endif
+            // Prevent concurrent start/ends
+            if isEnding {
+                #if DEBUG
+                print("[LiveActivity iOS] forceStart deferred: isEnding=true")
+                #endif
+                return
+            }
+            isStarting = true
+            defer { isStarting = false }
+
             if let current = self.activity {
                 #if DEBUG
                 print("[LiveActivity iOS] forceStart: ending existing owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
@@ -72,22 +93,30 @@ final class LiveActivityController: ObservableObject {
                 self.ownerId = nil
                 self.ownerTitle = nil
             }
-            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+            await self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
     }
 
     /// Start a Live Activity. Pass an optional `ownerId` to identify the caller.
     /// When another owner already holds the activity, this will end the previous activity and start a new one.
-    func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) {
+    func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) async {
         guard !isPreview else { return }
+        // If an end is in progress, refuse to start
+        if isEnding {
+            #if DEBUG
+            print("[LiveActivity] start() ignored because isEnding=true")
+            #endif
+            return
+        }
+        // mark that we're starting so concurrent end requests wait
+        isStarting = true
+        defer { isStarting = false }
         // Ownership guard: if an activity exists and the owner differs, end it deterministically.
         if let existing = activity, let existingOwner = self.ownerId, existingOwner != ownerId {
             #if DEBUG
             print("[LiveActivity] start requested by owner=\(ownerId ?? "nil") but existing owner=\(existingOwner). Ending previous activity and continuing.")
             #endif
-            Task { @MainActor in
-                await existing.end(dismissalPolicy: .immediate)
-            }
+            await existing.end(dismissalPolicy: .immediate)
             // reset local state — we'll set it again when new request succeeds
             activity = nil
             self.ownerId = nil
@@ -161,6 +190,24 @@ final class LiveActivityController: ObservableObject {
     func end(immediate: Bool = true) async {
         guard !isPreview else { activity = nil; return }
         if #available(iOS 16.1, *) {
+            // mark we are ending so starts are temporarily ignored
+            if isEnding {
+                #if DEBUG
+                print("[LiveActivity iOS] end called but isEnding already true (ignored)")
+                #endif
+                return
+            }
+            isEnding = true
+            defer { isEnding = false }
+
+            // wait for any concurrent start to finish
+            while isStarting {
+                #if DEBUG
+                print("[LiveActivity iOS] end waiting for in-flight start to finish")
+                #endif
+                try? await Task.sleep(nanoseconds: 50_000_000) // 50ms
+            }
+
             guard let currentActivity = activity else {
                 #if DEBUG
                 print("[LiveActivity iOS] end called but no active activity (ignored) ownerId=\(self.ownerId ?? "nil") ownerTitle=\(self.ownerTitle ?? "")")
