@@ -96,11 +96,13 @@ public struct AtemView: View {
         private let gong = GongPlayer()
 
         func start(preset: Preset) {
+            print("[TIMER-BUG][SessionEngine] start called for preset=\(preset.name) id=\(preset.id)")
             cancel()
             advance(preset: preset, rep: 1)
         }
 
         func cancel() {
+            print("[TIMER-BUG][SessionEngine] cancel called")
             timer?.invalidate()
             timer = nil
             state = .idle
@@ -135,12 +137,15 @@ public struct AtemView: View {
                 if case .running(let p, let remaining, let r, let tot) = self.state {
                     let next = remaining - 1
                     if next <= 0 {
+                        print("[TIMER-BUG][SessionEngine] phase finished (\(p)) rep=\(r) moving to next")
                         t.invalidate(); self.timer = nil
                         self.run(steps, index: index + 1, rep: r, total: tot)
                     } else {
                         self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
+                        if next % 5 == 0 { print("[TIMER-BUG][SessionEngine] running phase=\(p) remaining=\(next) rep=\(r)") }
                     }
                 } else {
+                    print("[TIMER-BUG][SessionEngine] timer fired but state not running -> invalidating")
                     t.invalidate(); self.timer = nil
                 }
             }
@@ -190,6 +195,15 @@ public struct AtemView: View {
     @State private var showSettings = false
     @State private var showingEditor: Preset? = nil
     @State private var runningPreset: Preset? = nil
+    @StateObject private var engine = SessionEngine()
+    @StateObject private var liveActivity = LiveActivityController()
+
+    // Central session reset: cancels timers, resets states, audio, LiveActivity, and runningPreset
+    private func resetSession() {
+        runningPreset = nil
+        engine.cancel()
+        // Optionally: reset other states if needed
+    }
 
     private let emojiChoices: [String] = ["🧘","🪷","🌬️","🫁","🌿","🌀","✨","🔷","🔶","💠"]
     private func randomEmoji() -> String { emojiChoices.randomElement() ?? "🧘" }
@@ -267,7 +281,7 @@ public struct AtemView: View {
             }
 
             if let preset = runningPreset {
-                SessionCard(preset: preset) { runningPreset = nil }
+                SessionCard(preset: preset, onEnd: resetSession, engine: engine, liveActivity: liveActivity)
                     .transition(.scale.combined(with: .opacity))
                     .zIndex(2)
             }
@@ -344,20 +358,19 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
     // MARK: - SessionCard (overlay during run)
     struct SessionCard: View {
-    // scenePhase-Automatik entfernt – führte zu unerwünschten Beendigungen beim App-Wechsel
+        // SessionEngine and LiveActivity are injected from the parent to avoid duplicate timers/controllers
         let preset: Preset
         var close: () -> Void
-        @StateObject private var engine = SessionEngine()
-    @StateObject private var liveActivity = LiveActivityController()
-    @State private var showConflictAlert: Bool = false
-    @State private var conflictOwnerId: String? = nil
-    @State private var conflictTitle: String? = nil
+        @ObservedObject var engine: SessionEngine
+        @ObservedObject var liveActivity: LiveActivityController
+        @State private var showConflictAlert: Bool = false
+        @State private var conflictOwnerId: String? = nil
+        @State private var conflictTitle: String? = nil
         @State private var sessionStart: Date = .now
         @State private var sessionTotal: TimeInterval = 1
         @State private var phaseStart: Date? = nil
         @State private var phaseDuration: Double = 1
         @State private var lastPhase: Phase? = nil
-    // Live Activity removed
         @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
         // Helper properties for dual ring progress
@@ -452,7 +465,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         .onAppear {
                             sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart))
                             Task {
-                                await liveActivity.end()
                                 await endSession(manual: false)
                             }
                         }
@@ -516,6 +528,9 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 Text(conflictTitle ?? "Ein anderer Timer läuft")
             })
             // Keine automatische Beendigung bei App-Wechsel
+                .onDisappear {
+                    onEnd()
+                }
         }
 
         private func endSession(manual: Bool) async {
@@ -537,10 +552,12 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 engine.cancel()
             }
 
-            // 3. End Live Activity and close the view
-            // Live Activity removed
+            // 3. End Live Activity and reset session states BEFORE closing the view
+            await liveActivity.end()
+            resetSession()
             close()
         }
+
 
         private static func iconName(for phase: Phase) -> String {
             switch phase {

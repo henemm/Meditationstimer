@@ -47,7 +47,7 @@ final class LiveActivityController: ObservableObject {
 
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
         #if DEBUG
-        print("[LiveActivity iOS] requestStart owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
+        print("[TIMER-BUG][LiveActivity iOS] requestStart owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
         #endif
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
@@ -61,11 +61,11 @@ final class LiveActivityController: ObservableObject {
     func forceStart(title: String, phase: Int, endDate: Date, ownerId: String?) {
         Task { @MainActor in
             #if DEBUG
-            print("[LiveActivity iOS] forceStart owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
+            print("[TIMER-BUG][LiveActivity iOS] forceStart owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
             #endif
             if let current = self.activity {
                 #if DEBUG
-                print("[LiveActivity iOS] forceStart: ending existing owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
+                print("[TIMER-BUG][LiveActivity iOS] forceStart: ending existing owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
                 #endif
                 await current.end(dismissalPolicy: .immediate)
                 self.activity = nil

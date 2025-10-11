@@ -58,6 +58,23 @@ struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verf�
 #else
 
 struct OffenView: View {
+    // Zentrale Reset-Funktion f체r alle States, Timer, WorkItems, Audio, LiveActivity
+    private func resetSession() {
+        engine.cancel()
+        pendingEndStop?.cancel()
+        pendingEndStop = nil
+        didPlayPhase2Gong = false
+        sessionStart = Date()
+        showConflictAlert = false
+        conflictOwnerId = nil
+        conflictTitle = nil
+        showLocalConflictAlert = false
+        bgAudio.stop()
+        setIdleTimer(false)
+        Task { await liveActivity.end() }
+        lastState = .idle
+        print("[DBG] resetSession: alle States und Tasks zur체ckgesetzt")
+    }
     @AppStorage("phase1Minutes") private var phase1Minutes: Int = 10
     @AppStorage("phase2Minutes") private var phase2Minutes: Int = 5
 
@@ -327,16 +344,7 @@ struct OffenView: View {
             }
             .onDisappear {
                 notifier.stop()
-                // Do not cut off audio if a gong is playing or a phase is running
-                switch engine.state {
-                case .idle, .finished:
-                    if pendingEndStop == nil {
-                        bgAudio.stop()
-                    }
-                    setIdleTimer(false)
-                default:
-                    break
-                }
+                resetSession()
             }
         }
     }
@@ -395,6 +403,9 @@ struct OffenView: View {
         
         // 7. Setze den Status f체r den n채chsten Lauf zur체ck
         didPlayPhase2Gong = false
+
+        // 8. Zentrale R체cksetzung
+        resetSession()
     }
 }
 
