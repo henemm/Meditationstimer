@@ -26,42 +26,69 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             DynamicIsland {
                 // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
-                    // Keep the SF app icon stable in the leading region (match compact/minimal)
-                    ZStack {
-                        Circle()
-                            .fill(Color("AccentColor"))
-                            .frame(width: 36, height: 36)
-                        Image(systemName: "figure.mind.and.body")
-                            .font(.system(size: 14))
-                            .foregroundColor(.white)
-                    }
-                    .padding(.leading)
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    // Trailing region: show optional phase icon (AtemTab) and the timer
-                    HStack(spacing: 10) {
-                        if context.state.ownerId == "AtemTab" {
-                            // small phase circle (arrows for Atem)
+                    // Leading region: show the phase icon for the current activity (replaces app icon)
+                    // For AtemTab: use SF arrow mapping. For OffenTab: use emoji mapping. Fallback to app icon.
+                    if let owner = context.state.ownerId {
+                        if owner == "AtemTab" {
                             let iconName: String = {
                                 if context.state.phase == 1 { return "arrow.up" }
+                                if context.state.phase == 2 { return "arrow.left" }
                                 if context.state.phase == 3 { return "arrow.down" }
                                 return "arrow.right"
                             }()
                             ZStack {
                                 Circle()
                                     .fill(Color.green.opacity(0.28))
-                                    .frame(width: 28, height: 28)
+                                    .frame(width: 36, height: 36)
                                 Image(systemName: iconName)
-                                    .font(.system(size: 12, weight: .semibold))
+                                    .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(.white)
                             }
+                            .padding(.leading)
+                        } else if owner == "OffenTab" {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.green.opacity(0.28))
+                                    .frame(width: 36, height: 36)
+                                Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
+                                    .font(.title3)
+                            }
+                            .padding(.leading)
+                        } else {
+                            ZStack {
+                                Circle()
+                                    .fill(Color("AccentColor"))
+                                    .frame(width: 36, height: 36)
+                                Image(systemName: "figure.mind.and.body")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.leading)
                         }
+                    } else {
+                        ZStack {
+                            Circle()
+                                .fill(Color("AccentColor"))
+                                .frame(width: 36, height: 36)
+                            Image(systemName: "figure.mind.and.body")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.leading)
+                    }
+                }
+                DynamicIslandExpandedRegion(.trailing) {
+                    // Trailing region: show the timer (no phase bubble here) — allow font scaling to avoid truncation
+                    HStack {
+                        Spacer(minLength: 6)
                         Text(context.state.endDate, style: .timer)
                             .font(.system(size: 28, weight: .semibold, design: .rounded))
                             .monospacedDigit()
-                            .foregroundStyle(.white)
+                            .minimumScaleFactor(0.6)
                             .lineLimit(1)
+                            .foregroundStyle(.white)
                             .layoutPriority(1)
+                        Spacer(minLength: 6)
                     }
                     .padding(.trailing)
                 }
