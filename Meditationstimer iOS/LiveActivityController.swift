@@ -149,7 +149,7 @@ final class LiveActivityController: ObservableObject {
                     print("[LiveActivity] start attempt=\(attempt) failed: \(error)")
                     #endif
                     if attempt < 2 {
-                        Thread.sleep(forTimeInterval: 0.12)
+                        try? await Task.sleep(nanoseconds: 120_000_000) // 120ms
                     }
                 }
             }

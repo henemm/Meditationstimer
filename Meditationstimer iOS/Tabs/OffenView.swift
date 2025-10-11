@@ -283,7 +283,7 @@ struct OffenView: View {
                     print("DBG TRANSITION: now=\(Date()), phase1End=\(String(describing: engine.phase1EndDate)), engine.endDate=\(String(describing: engine.endDate)), phase2Minutes=\(phase2Minutes)")
                     // Robust: prefer updating the existing Live Activity to Phase 2.
                     // If no activity exists, end/start as a fallback to ensure a fresh Activity for Phase 2.
-                    if let phase2End = engine.endDate {
+                        if let phase2End = engine.endDate {
                         Task {
                                 if liveActivity.isActive {
                                 // Update the current activity in-place
@@ -292,7 +292,7 @@ struct OffenView: View {
                             } else {
                                 // No active activity: just start a fresh one for Phase 2.
                                 // Avoid calling end() here because activity is already nil and that can produce noisy stacks.
-                                liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
+                                await liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
                                 print("🔔 [LiveActivity] Phase 2 (restarted): Timer bis \(phase2End), Emoji 🪷")
                             }
                         }
@@ -305,7 +305,7 @@ struct OffenView: View {
                     didPlayPhase2Gong = true
                     // Start Live Activity for Phase 2 directly
                     if let phase2End = engine.endDate {
-                        liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
+                        Task { await liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab") }
                         print("🔔 [LiveActivity] Direkter Start Phase 2: Timer bis \(phase2End), Emoji 🪷")
                     }
                 }

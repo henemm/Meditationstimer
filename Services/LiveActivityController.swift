@@ -97,7 +97,7 @@ final class LiveActivityController: ObservableObject {
                     #endif
                     // short backoff before retry
                     if attempt < 2 {
-                        Thread.sleep(forTimeInterval: 0.12)
+                        try? await Task.sleep(nanoseconds: 120_000_000) // 120ms
                     }
                 }
             }
