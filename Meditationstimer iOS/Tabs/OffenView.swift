@@ -416,17 +416,21 @@ private struct RunCard: View {
                 // Title
                 Text(title)
                     .font(.title3.weight(.semibold))
-                // Progress ring + timer (match Offen phaseView sizing)
-                let totalSafe = max(1, total)
-                let progress = Double(remaining) / Double(totalSafe)
-                ZStack {
-                    CircularRing(progress: progress, lineWidth: 30)
-                        .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 320, height: 320)
-                    Text(format(remaining))
-                        .font(.system(size: 44, weight: .semibold, design: .rounded))
-                        .monospacedDigit()
-                }
+        // 2. If manual, stop the engine immediately to avoid further ticks
+        if manual {
+            debugPrint("[OffenView] endSession(manual: \(manual)): cancelling engine")
+            engine.cancel()
+        }
+
+        // 3. Play the end gong
+        gong.play(named: "gong-ende")
+
+        // 4. End Live Activity (await on main actor to serialize ActivityKit calls)
+        print("DBG endSession: calling liveActivity.end(manual=\(manual)) now; engine.state=\(engine.state)")
+        await MainActor.run {
+            Task { await liveActivity.end() }
+        }
+        debugPrint("[OffenView] endSession: liveActivity.end() completed")
 
                 // Centered Beenden button (same look & size as Atem run card)
                 Button("Beenden") {

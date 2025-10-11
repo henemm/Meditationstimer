@@ -532,13 +532,21 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 }
             }
 
-            // 2. If ended manually, stop the engine
+            // 2. If ended manually, stop the engine immediately to avoid further ticks
             if manual {
+                debugPrint("[AtemView] endSession(manual: \(manual)): cancelling engine")
                 engine.cancel()
             }
 
-            // 3. End Live Activity and close the view
-            // Live Activity removed
+            // 3. End Live Activity on the main actor to ensure ActivityKit calls are serialized
+            debugPrint("[AtemView] endSession: awaiting liveActivity.end()")
+            await MainActor.run {
+                Task { await liveActivity.end() }
+            }
+            debugPrint("[AtemView] endSession: liveActivity.end() completed")
+
+            // 4. Close the overlay
+            debugPrint("[AtemView] endSession: closing UI")
             close()
         }
 
