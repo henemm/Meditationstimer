@@ -32,6 +32,7 @@ import AVFoundation
 #if canImport(UIKit)
 import UIKit
 #endif
+import os
 // Dynamic Island / Live Activity removed
 
 #if !os(iOS)
@@ -94,15 +95,16 @@ public struct AtemView: View {
         @Published private(set) var state: State = .idle
         private var timer: Timer?
         private let gong = GongPlayer()
+    private let timerLogger = Logger(subsystem: "henemm.Meditationstimer", category: "TIMER-BUG")
 
         func start(preset: Preset) {
-            print("[TIMER-BUG][SessionEngine] start called for preset=\(preset.name) id=\(preset.id)")
+            timerLogger.debug("SessionEngine start called for preset=\(preset.name, privacy: .public) id=\(preset.id.uuidString, privacy: .public)")
             cancel()
             advance(preset: preset, rep: 1)
         }
 
         func cancel() {
-            print("[TIMER-BUG][SessionEngine] cancel called")
+            timerLogger.debug("SessionEngine cancel called")
             timer?.invalidate()
             timer = nil
             state = .idle
@@ -137,12 +139,12 @@ public struct AtemView: View {
                 if case .running(let p, let remaining, let r, let tot) = self.state {
                     let next = remaining - 1
                     if next <= 0 {
-                        print("[TIMER-BUG][SessionEngine] phase finished (\(p)) rep=\(r) moving to next")
+                        timerLogger.debug("phase finished (\(String(describing: p)), rep=\(r)) moving to next")
                         t.invalidate(); self.timer = nil
                         self.run(steps, index: index + 1, rep: r, total: tot)
                     } else {
                         self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
-                        if next % 5 == 0 { print("[TIMER-BUG][SessionEngine] running phase=\(p) remaining=\(next) rep=\(r)") }
+                        if next % 5 == 0 { timerLogger.debug("running phase=\(String(describing: p)) remaining=\(next) rep=\(r)") }
                     }
                 } else {
                     print("[TIMER-BUG][SessionEngine] timer fired but state not running -> invalidating")
@@ -281,7 +283,7 @@ public struct AtemView: View {
             }
 
             if let preset = runningPreset {
-                SessionCard(preset: preset, onEnd: resetSession, engine: engine, liveActivity: liveActivity)
+                SessionCard(preset: preset, close: resetSession, engine: engine, liveActivity: liveActivity)
                     .transition(.scale.combined(with: .opacity))
                     .zIndex(2)
             }
@@ -529,7 +531,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             })
             // Keine automatische Beendigung bei App-Wechsel
                 .onDisappear {
-                    onEnd()
+                    close()
                 }
         }
 
@@ -554,7 +556,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
             // 3. End Live Activity and reset session states BEFORE closing the view
             await liveActivity.end()
-            resetSession()
+            // call parent-provided close() which performs session reset
             close()
         }
 

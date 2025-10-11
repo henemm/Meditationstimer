@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import os
 
 #if os(iOS)
 import ActivityKit
@@ -14,6 +15,7 @@ import SwiftUI
 
 @MainActor
 final class LiveActivityController: ObservableObject {
+    private let timerLogger = Logger(subsystem: "henemm.Meditationstimer", category: "TIMER-BUG")
     private var activity: Activity<MeditationAttributes>?
     /// Optional owner identifier for the current activity (e.g. "OffenTab", "AtemTab").
     /// If set, the controller will prefer to keep ownership and will log/handle attempts
