@@ -223,6 +223,10 @@ private struct WorkoutRunnerView: View {
     @State private var cfgRepeats: Int = 0 // frozen repeats for engine logic
     @State private var cfgInterval: Int = 0 // frozen interval seconds
     @State private var cfgRest: Int = 0     // frozen rest seconds
+    @StateObject private var liveActivity = LiveActivityController()
+    @State private var showConflictAlert: Bool = false
+    @State private var conflictOwnerId: String? = nil
+    @State private var conflictTitle: String? = nil
 
     var body: some View {
         ZStack {
@@ -308,6 +312,25 @@ private struct WorkoutRunnerView: View {
                 .buttonStyle(.borderedProminent).tint(.secondary).clipShape(Circle()).padding(8)
                 .disabled(isSaving)
             }
+            .alert("Timer läuft bereits", isPresented: $showConflictAlert, actions: {
+                Button("Abbrechen", role: .cancel) {
+                    // user cancelled; just close overlay
+                    onClose()
+                }
+                Button("Erzwingen", role: .destructive) {
+                    Task {
+                        liveActivity.forceStart(title: "Workout", phase: 1, endDate: Date().addingTimeInterval(sessionTotal), ownerId: "WorkoutsTab")
+                        // start local engine regardless
+                        started = true
+                        sessionStart = Date()
+                        workoutStart = sessionStart
+                        setPhase(.work)
+                        scheduleCuesForCurrentPhase()
+                    }
+                }
+            }, message: {
+                Text(conflictTitle ?? "Ein anderer Timer läuft")
+            })
             
             // Saving overlay
             if isSaving {
@@ -341,7 +364,7 @@ private struct WorkoutRunnerView: View {
                 }
             }
         }
-        .task {
+            .task {
             // Request HealthKit authorization
             do { 
                 try await HealthKitManager.shared.requestAuthorization() 
@@ -354,27 +377,55 @@ private struct WorkoutRunnerView: View {
             cfgRepeats = plannedRepeats
             cfgInterval = intervalSec
             cfgRest     = restSec
-
             // AUFTAKT: play, then start workout exactly at first work
             let aDur = sounds.duration(of: .auftakt)
-            if aDur > 0 {
-                sounds.play(.auftakt)
-                schedule(aDur) {
+
+            // Prepare to start Live Activity: compute endDate from sessionTotal
+            let computedTotal = sessionTotal
+            let endDate = Date().addingTimeInterval(computedTotal)
+            let requestResult = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
+            switch requestResult {
+            case .started:
+                // proceed with starting sequence
+                if aDur > 0 {
+                    sounds.play(.auftakt)
+                    schedule(aDur) {
+                        started = true
+                        sessionStart = Date()
+                        workoutStart = sessionStart // Store for HealthKit logging
+                        setPhase(.work)
+                        scheduleCuesForCurrentPhase()
+                    }
+                } else {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
-                    // Live Activity removed
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
-            } else {
-                // No file present → start immediately
-                started = true
-                sessionStart = Date()
-                workoutStart = sessionStart // Store for HealthKit logging
-                // Live Activity removed
-                setPhase(.work)
-                scheduleCuesForCurrentPhase()
+            case .conflict(let existingOwner, let existingTitle):
+                conflictOwnerId = existingOwner
+                conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                showConflictAlert = true
+            case .failed:
+                // Fallback: start locally but log
+                print("LiveActivity requestStart failed; starting local workout as fallback")
+                if aDur > 0 {
+                    sounds.play(.auftakt)
+                    schedule(aDur) {
+                        started = true
+                        sessionStart = Date()
+                        workoutStart = sessionStart // Store for HealthKit logging
+                        setPhase(.work)
+                        scheduleCuesForCurrentPhase()
+                    }
+                } else {
+                    started = true
+                    sessionStart = Date()
+                    workoutStart = sessionStart // Store for HealthKit logging
+                    setPhase(.work)
+                    scheduleCuesForCurrentPhase()
+                }
             }
         }
         .onDisappear {
@@ -412,7 +463,7 @@ private struct WorkoutRunnerView: View {
         }
 
         // End Live Activity
-    // Live Activity removed
+        Task { await liveActivity.end() }
 
         // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
         try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
@@ -436,6 +487,11 @@ private struct WorkoutRunnerView: View {
             phaseDuration = Double(max(1, cfgRest))
         }
         scheduleCuesForCurrentPhase()
+
+        // Update Live Activity to reflect phase change (fire-and-forget)
+        let phaseNumber = (p == .work) ? 1 : 2
+        let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
+        Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd) }
 
         // Announce round number exactly at the start of WORK (after Auftakt)
         if p == .work {
@@ -503,6 +559,8 @@ private struct WorkoutRunnerView: View {
                 finished = true
                 cancelScheduled()
                 sounds.play(.ausklang)
+                // End live activity and return
+                Task { await liveActivity.end() }
                 return
             }
             // Sonst: bei vorhandener Erholung lang.cue auf dem Wechsel spielen
