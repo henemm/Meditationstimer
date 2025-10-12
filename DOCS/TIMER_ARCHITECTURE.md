@@ -1,5 +1,7 @@
 # Timer-Architektur (Kurzreferenz)
 
+> STATUS: REVIEWED — updated 2025-10-12 (architecture and ownership rules validated)
+
 Ziel: Klar dokumentieren, dass in der App jeweils nur ein Timer aktiv ist, aber die konkrete Timer‑Implementierung tab‑spezifisch sein darf. Das sorgt für Sicherheit (kein unbeabsichtigtes Überschreiben) und erlaubt es, die Funktionalität pro Tab getrennt weiterzuentwickeln.
 
 Kurzüberblick

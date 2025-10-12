@@ -1,5 +1,7 @@
 # AI Notes (consolidated)
 
+> STATUS: REVIEWED — updated 2025-10-12
+
 This file is a central place for AI-facing hints, annotations and quick context that other chat sessions or automation can read.
 
 Suggested contents:

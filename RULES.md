@@ -1,5 +1,7 @@
 # AI Development Rules for Meditationstimer Project
 
+> STATUS: REVIEWED — updated 2025-10-12 (user prefers concise, direct answers)
+
 Präambel: Der Nutzer ist Geschäftsführer. Er wünscht sich kurzes, klares Feedback: Was sind die wichtigsten Fakten, was soll er entscheiden, was sind die empfohlenen Entscheidungen?
 Der Nutzer kann nicht programmieren und versteht keinen Code. Sämtlicher Code wurde von AI geschrieben. 
 

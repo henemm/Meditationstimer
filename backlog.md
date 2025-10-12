@@ -1,5 +1,7 @@
 # Projekt-Backlog: Meditationstimer
 
+> STATUS: REVIEWED — updated 2025-10-12
+
 Dieses Dokument fasst den aktuellen Stand der Entwicklung, abgeschlossene Aufgaben und die nächsten Schritte zusammen.
 
 ## Zusammenfassung

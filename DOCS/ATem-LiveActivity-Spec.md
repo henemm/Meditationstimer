@@ -1,5 +1,7 @@
 # Atem — Live Activity / Dynamic Island Spec
 
+> STATUS: REVIEWED — updated 2025-10-12 (spec is current for Atem implementation)
+
 Kurz: this is the agreed specification for adding Live Activity support to the Atem tab. Implement only after this file is accepted.
 
 ## Zweck

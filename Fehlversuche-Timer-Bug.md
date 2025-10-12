@@ -1,5 +1,7 @@
 # Chronik der Fehlversuche – Meditationstimer Timer-Bug
 
+> STATUS: REVIEWED (archival) — updated 2025-10-12. This document records previous failed attempts and is kept for audit/history.
+
 Diese Datei dokumentiert alle bisherigen Fehlversuche und Debug-Ansätze zur Lösung des Problems, dass der Timer nach "Beenden" nicht zuverlässig gestoppt wird.
 
 ---

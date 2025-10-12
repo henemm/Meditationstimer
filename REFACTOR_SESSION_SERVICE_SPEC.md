@@ -1,3 +1,10 @@
+# REFACTOR_SESSION_SERVICE_SPEC
+
+> STATUS: REVIEWED — updated 2025-10-12 (refactor plan stands; feature-flagged work)
+
+- No changes to `AtemView` or `OffenView` yet; feature flag `USE_SESSION_SERVICE=false` by default.
+
+----------------------------------------
 # Refactor: Central SessionService (Specification)
 
 Ziel: Einen zentralen SessionService einführen, der Timer, LiveActivity, HealthKit Logging und Audio (AVAudioSession/Gong) verwaltet. UI‑Views (`Atem`, `Offen`, `Workouts`) werden zu thin clients, die nur Session‑Requests an den Service senden und Observable SessionHandles abonnieren.

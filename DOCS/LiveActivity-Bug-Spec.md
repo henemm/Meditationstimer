@@ -1,5 +1,7 @@
 # Live Activity stop bug — spec and reproduction
 
+> STATUS: REVIEWED — updated 2025-10-12 (active investigation document)
+
 Status: captured from user logs; experimental patches rolled back to keep `main` stable.
 
 Summary

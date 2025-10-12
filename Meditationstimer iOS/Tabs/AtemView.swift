@@ -433,7 +433,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             phaseStart = nil
 
                             // Avoid initiating the same session multiple times if this view re-appears rapidly
-                            guard !didInitiateSession else { break }
+                            guard !didInitiateSession else { return }
                             didInitiateSession = true
 
                             // Ask Activity controller first

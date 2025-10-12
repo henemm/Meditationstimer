@@ -1,5 +1,7 @@
 v1.1 — Minor release
 
+> STATUS: REVIEWED — validated 2025-10-12
+
 Highlights
 - OffenView: LivePreview integrated and working with updated UI and controls.
 - Dynamic Island: Expanded Dynamic Island shows phase emoji and a live timer; updated layout for Dynamic Island.

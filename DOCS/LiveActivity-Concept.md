@@ -1,6 +1,8 @@
 # LiveActivity Concept for Meditationstimer
 
-This document captures the agreed concept for per‑tab Live Activity rendering.
+> STATUS: REVIEWED — updated 2025-10-12 (concept validated)
+
+This document captures the agreed concept for pertab Live Activity rendering.
 
 Tabs and phases
 

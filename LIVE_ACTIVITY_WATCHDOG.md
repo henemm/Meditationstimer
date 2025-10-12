@@ -1,5 +1,7 @@
 # Live Activity Watchdog - Force-Quit Lösung
 
+> STATUS: DEPRECATED — as of 2025-10-12 this watchdog approach was removed from the codebase; kept for historical reference.
+
 ## Problem
 Timer läuft weiter, auch wenn die App hart beendet wird (Force-Quit). Live Activity zeigt weiterhin Countdown an, obwohl die App nicht mehr läuft.
 
