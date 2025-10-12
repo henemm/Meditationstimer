@@ -53,6 +53,16 @@ public final class SessionHandle: ObservableObject {
         state = .running(phase: 1, remaining: 0)
     }
 
+    fileprivate func setFailed(_ message: String) {
+        logger.debug("SessionHandle setFailed: \(message, privacy: .public)")
+        state = .failed(message)
+    }
+
+    fileprivate func setPhase(phase: Int, remaining: Int) {
+        logger.debug("SessionHandle setPhase phase=\(phase) remaining=\(remaining)")
+        state = .running(phase: phase, remaining: remaining)
+    }
+
     fileprivate func setFinished() {
         logger.debug("SessionHandle setFinished")
         state = .finished

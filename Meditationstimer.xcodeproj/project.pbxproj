@@ -26,6 +26,9 @@
 		B7C556942E73E5EA00EFC1F5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */; };
 		B7C556A52E73E5EC00EFC1F5 /* MeditationstimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
+		D1F1B0022E73E5EA00D1F1B0 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1B0012E73E5EA00D1F1B0 /* DebugLog.swift */; };
+		D1F1B0122E73E5EA00D1F1B1 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1B0012E73E5EA00D1F1B0 /* DebugLog.swift */; };
+		D1F1B0222E73E5EA00D1F1B2 /* DebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F1B0012E73E5EA00D1F1B0 /* DebugLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,7 @@
 		B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B7E601122E6582C1008AE315 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		D1F1B0012E73E5EA00D1F1B0 /* DebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -208,6 +212,7 @@
 				B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */,
 				B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */,
 				B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */,
+				D1F1B0012E73E5EA00D1F1B0 /* DebugLog.swift */,
 				B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */,
 				B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */,
 				B7E601122E6582C1008AE315 /* HealthKitManager.swift */,
@@ -417,6 +422,7 @@
 				B770C7B72E87C482008FB9FC /* BackgroundNotifier.swift in Sources */,
 				B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */,
 				B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */,
+				D1F1B0022E73E5EA00D1F1B0 /* DebugLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +437,7 @@
 				B770C7B82E87C482008FB9FC /* BackgroundNotifier.swift in Sources */,
 				B770C7A72E87BF37008FB9FC /* GongPlayer.swift in Sources */,
 				B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */,
+				D1F1B0122E73E5EA00D1F1B1 /* DebugLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F1B0222E73E5EA00D1F1B2 /* DebugLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

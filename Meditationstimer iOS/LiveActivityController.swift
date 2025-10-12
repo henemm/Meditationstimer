@@ -48,9 +48,9 @@ final class LiveActivityController: ObservableObject {
     }
 
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
-        #if DEBUG
-        print("[TIMER-BUG][LiveActivity iOS] requestStart owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
-        #endif
+    let ownerStr = ownerId ?? "nil"
+    let currentOwnerStr = self.ownerId ?? "nil"
+    DebugLog.debug("requestStart owner=\(ownerStr) currentOwner=\(currentOwnerStr) isActive=\(activity != nil)", category: "TIMER-BUG")
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
@@ -62,13 +62,12 @@ final class LiveActivityController: ObservableObject {
 
     func forceStart(title: String, phase: Int, endDate: Date, ownerId: String?) {
         Task { @MainActor in
-            #if DEBUG
-            print("[TIMER-BUG][LiveActivity iOS] forceStart owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
-            #endif
+            let ownerStr = ownerId ?? "nil"
+            DebugLog.debug("forceStart owner=\(ownerStr) title=\(title) phase=\(phase)", category: "TIMER-BUG")
             if let current = self.activity {
-                #if DEBUG
-                print("[TIMER-BUG][LiveActivity iOS] forceStart: ending existing owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
-                #endif
+                let existingOwnerStr = self.ownerId ?? "nil"
+                let existingTitleStr = self.ownerTitle ?? ""
+                DebugLog.debug("forceStart: ending existing owner=\(existingOwnerStr) title=\(existingTitleStr)", category: "TIMER-BUG")
                 await current.end(dismissalPolicy: .immediate)
                 self.activity = nil
                 self.ownerId = nil
@@ -84,9 +83,8 @@ final class LiveActivityController: ObservableObject {
         guard !isPreview else { return }
         // Ownership guard: if an activity exists and the owner differs, end it deterministically.
         if let existing = activity, let existingOwner = self.ownerId, existingOwner != ownerId {
-            #if DEBUG
-            print("[LiveActivity] start requested by owner=\(ownerId ?? "nil") but existing owner=\(existingOwner). Ending previous activity and continuing.")
-            #endif
+            let ownerStr = ownerId ?? "nil"
+            DebugLog.debug("start requested by owner=\(ownerStr) but existing owner=\(existingOwner). Ending previous activity and continuing.", category: "TIMER-BUG")
             Task { @MainActor in
                 await existing.end(dismissalPolicy: .immediate)
             }
@@ -101,12 +99,10 @@ final class LiveActivityController: ObservableObject {
             var lastError: Error?
             for attempt in 1...2 {
                 do {
-                    #if DEBUG
-                    print("[LiveActivity] start attempt=\(attempt) → title=\(title), phase=\(phase), ends=\(endDate) enabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)")
+                    DebugLog.debug("start attempt=\(attempt) → title=\(title), phase=\(phase), ends=\(endDate) enabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)", category: "TIMER-BUG")
                     if let stateInfo = UIApplication.shared.value(forKeyPath: "applicationState") {
-                        print("[LiveActivity] UIApplication.applicationState=\(stateInfo)")
+                        DebugLog.debug("UIApplication.applicationState=\(stateInfo)", category: "TIMER-BUG")
                     }
-                    #endif
                     activity = try Activity.request(
                         attributes: attributes,
                         content: ActivityContent(state: state, staleDate: nil)
@@ -118,27 +114,21 @@ final class LiveActivityController: ObservableObject {
                     break
                 } catch {
                     lastError = error
-                    #if DEBUG
-                    print("[LiveActivity] start attempt=\(attempt) failed: \(error)")
-                    #endif
+                    DebugLog.debug("start attempt=\(attempt) failed: \(error)", category: "TIMER-BUG")
                     if attempt < 2 {
                         Thread.sleep(forTimeInterval: 0.12)
                     }
                 }
             }
             if let err = lastError {
-                #if DEBUG
-                print("[LiveActivity] start ultimately failed: \(err)")
-                #endif
+                DebugLog.error("start ultimately failed: \(err)", category: "TIMER-BUG")
             }
         } else {
-            #if DEBUG
             if #available(iOS 16.1, *) {
-                print("[LiveActivity] cannot start: activitiesEnabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)")
+                DebugLog.debug("cannot start: activitiesEnabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)", category: "TIMER-BUG")
             } else {
-                print("[LiveActivity] cannot start: iOS < 16.1")
+                DebugLog.debug("cannot start: iOS < 16.1", category: "TIMER-BUG")
             }
-            #endif
         }
     }
 

@@ -93,9 +93,9 @@ public struct AtemView: View {
         }
 
         @Published private(set) var state: State = .idle
-        private var timer: Timer?
+        private var task: Task<Void, Never>? = nil
         private let gong = GongPlayer()
-    private let timerLogger = Logger(subsystem: "henemm.Meditationstimer", category: "TIMER-BUG")
+        private let timerLogger = Logger(subsystem: "henemm.Meditationstimer", category: "TIMER-BUG")
 
         func start(preset: Preset) {
             timerLogger.debug("SessionEngine start called for preset=\(preset.name, privacy: .public) id=\(preset.id.uuidString, privacy: .public)")
@@ -105,9 +105,9 @@ public struct AtemView: View {
 
         func cancel() {
             timerLogger.debug("SessionEngine cancel called")
-            timer?.invalidate()
-            timer = nil
-            state = .idle
+            task?.cancel()
+            task = nil
+            Task { await MainActor.run { self.state = .idle } }
         }
 
         private func advance(preset: Preset, rep: Int) {
@@ -123,35 +123,58 @@ public struct AtemView: View {
         }
 
         private func run(_ steps: [(Phase, Int, String)], index: Int, rep: Int, total: Int) {
-            if index >= steps.count {
-                if rep >= total { state = .finished; return }
-                run(steps, index: 0, rep: rep + 1, total: total)
-                return
-            }
+            // cancel any previous task
+            task?.cancel()
 
-            let (phase, duration, sound) = steps[index]
-            gong.play(named: sound)
-            state = .running(phase: phase, remaining: duration, rep: rep, totalReps: total)
+            task = Task { [weak self] in
+                guard let self = self else { return }
 
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] t in
-                guard let self else { return }
-                if case .running(let p, let remaining, let r, let tot) = self.state {
-                    let next = remaining - 1
-                    if next <= 0 {
-                        timerLogger.debug("phase finished (\(String(describing: p)), rep=\(r)) moving to next")
-                        t.invalidate(); self.timer = nil
-                        self.run(steps, index: index + 1, rep: r, total: tot)
-                    } else {
-                        self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
-                        if next % 5 == 0 { timerLogger.debug("running phase=\(String(describing: p)) remaining=\(next) rep=\(r)") }
+                var currentIndex = index
+                var currentRep = rep
+
+                while !Task.isCancelled {
+                    if currentIndex >= steps.count {
+                        if currentRep >= total {
+                            await MainActor.run { self.state = .finished }
+                            break
+                        }
+                        currentIndex = 0
+                        currentRep += 1
                     }
-                } else {
-                    print("[TIMER-BUG][SessionEngine] timer fired but state not running -> invalidating")
-                    t.invalidate(); self.timer = nil
+
+                    let (phase, duration, sound) = steps[currentIndex]
+                    // play gong and set state on main actor
+                    await MainActor.run {
+                        self.gong.play(named: sound)
+                        self.state = .running(phase: phase, remaining: duration, rep: currentRep, totalReps: total)
+                    }
+
+                    var remaining = duration
+                    while remaining > 0 && !Task.isCancelled {
+                        try? await Task.sleep(nanoseconds: 1_000_000_000)
+                        remaining -= 1
+                        if Task.isCancelled { break }
+                        await MainActor.run {
+                            self.state = .running(phase: phase, remaining: remaining, rep: currentRep, totalReps: total)
+                        }
+                        if remaining % 5 == 0 {
+                            timerLogger.debug("running phase=\(String(describing: phase)) remaining=\(remaining) rep=\(currentRep)")
+                        }
+                    }
+
+                    if Task.isCancelled { break }
+
+                    timerLogger.debug("phase finished (\(String(describing: phase)), rep=\(currentRep)) moving to next")
+                    currentIndex += 1
+                }
+
+                // cleanup: if we exit while still in running, snap back to idle
+                await MainActor.run {
+                    if case .running = self.state {
+                        self.state = .idle
+                    }
                 }
             }
-            RunLoop.main.add(timer!, forMode: .common)
         }
     }
 
@@ -178,7 +201,7 @@ public struct AtemView: View {
                     return
                 }
             }
-            print("Audio file '\(name)' not found, no fallback sound played") // fallback
+            DebugLog.debug("Audio file '\(name)' not found, no fallback sound played", category: "AUDIO") // fallback
         }
         func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
             if let i = active.firstIndex(where: { $0 === player }) { active.remove(at: i) }
@@ -202,9 +225,17 @@ public struct AtemView: View {
 
     // Central session reset: cancels timers, resets states, audio, LiveActivity, and runningPreset
     private func resetSession() {
-        runningPreset = nil
-        engine.cancel()
-        // Optionally: reset other states if needed
+        // Run cancel + liveActivity.end asynchronously so callers can remain synchronous
+        Task {
+            // stop local engine (invalidate timers)
+            engine.cancel()
+            // ensure Live Activity is ended — safe to call multiple times
+            await liveActivity.end()
+            // update UI on main actor
+            await MainActor.run {
+                runningPreset = nil
+            }
+        }
     }
 
     private let emojiChoices: [String] = ["🧘","🪷","🌬️","🫁","🌿","🌀","✨","🔷","🔶","💠"]
@@ -373,6 +404,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @State private var phaseStart: Date? = nil
         @State private var phaseDuration: Double = 1
         @State private var lastPhase: Phase? = nil
+    @State private var didInitiateSession: Bool = false
         @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
         // Helper properties for dual ring progress
@@ -400,6 +432,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             lastPhase = nil
                             phaseStart = nil
 
+                            // Avoid initiating the same session multiple times if this view re-appears rapidly
+                            guard !didInitiateSession else { break }
+                            didInitiateSession = true
+
                             // Ask Activity controller first
                             let endDate = sessionStart.addingTimeInterval(sessionTotal)
                             let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
@@ -414,7 +450,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             case .failed(let error):
                                 // Activity unavailable — log and start local session anyway
                                 #if DEBUG
-                                print("[AtemView] liveActivity.requestStart failed: \(error)")
+                                DebugLog.error("liveActivity.requestStart failed: \(error)", category: "TIMER-BUG")
                                 #endif
                                 engine.start(preset: preset)
                             }
@@ -545,7 +581,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
                     }
                 } catch {
-                    print("HealthKit logging failed: \(error)")
+                    DebugLog.error("HealthKit logging failed: \(error)", category: "HEALTH")
                 }
             }
 

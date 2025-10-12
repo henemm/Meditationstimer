@@ -192,3 +192,88 @@ If you approve I will:
 2. Implement skeleton `SessionService` + unit tests and open a PR draft for review (1–2h).
 
 Antwort: `Start` (ich beginne Branch + Step1) oder `Patch` (liefern nur Guard‑Patch).
+
+## 12. Measurable Milestones & Definition of Done (checklist)
+Ziel: klare, prüfbare Milestones mit eindeutigen Akzeptanzkriterien, Artefakten und commands zur Verifikation. Jedes Milestone hat:
+- Checkliste (in‑repo tag/commit),
+- Akzeptanzkriterien (logs/tests),
+- Verifikationsschritte (ein bis zwei Terminal‑Commands).
+
+Bitte hake Milestones durch, indem du die angegebenen Tags/Artefakte prüfst oder "Done" in der PR kommentierst.
+
+- [ ] M0 — Prep & Backup (tag: `start/session-service-<date>`)
+    - Zeit: 15 min
+    - Artefakt: Branch `refactor/session-service` existiert, backup bundle `backups/repo-refactor-session-service.bundle` erstellt, tag `start/session-service-YYYYMMDD` vorhanden.
+    - Verifikation:
+        - git branch --list | grep refactor/session-service
+        - ls backups | grep repo-refactor-session-service.bundle
+        - git tag --list | grep start/session-service
+
+- [ ] M1 — Service skeleton + unit tests (tag: `step1-ready`)
+    - Zeit: 1–2 h
+    - Artefakt: `Services/SessionService.swift` compiliert, `Services/SessionHandle.swift` vorhanden, unit tests added under `Tests/SessionServiceTests`.
+    - Akzeptanzkriterien:
+        - `xcodebuild test -scheme "Lean Health Timer" -destination 'platform=iOS Simulator,name=iPhone 17'` passes the new unit tests (or `swift test` if applicable).
+        - Logs contain `SESSION-SVC` initialization entry when service instantiated.
+    - Verifikation:
+        - grep -n "SessionService initialized" -n $(git ls-files) || true
+        - git tag step1-ready && git push --tags (or create tag locally and attach to PR)
+
+- [ ] M2 — Offen migration (POC) (tag: `step2-ready`)
+    - Zeit: 2–4 h
+    - Artefakt: `OffenView` routes start/update/end through `SessionService` behind feature flag `USE_SESSION_SERVICE=true` in dev config; TwoPhaseTimerEngine remains as adapter.
+    - Akzeptanzkriterien:
+        - Manual smoke: start Offen session in Simulator → log shows exactly one `SESSION-SVC requestStart session=<uuid>` and then updates/end for that uuid.
+        - HealthKit logging (stubbed/mocked) invoked at end when enabled.
+    - Verifikation:
+        - Run log stream predicate and confirm single requestStart per uuid:
+            - xcrun simctl spawn <UDID> log stream --predicate 'subsystem == "henemm.Meditationstimer" AND category == "SESSION-SVC"' --style compact
+        - Tag branch: `git tag step2-ready` (commit message details what was tested) + attach smoke log to PR.
+
+- [ ] M3 — Atem migration (tag: `step3-ready`)
+    - Zeit: 4–8 h
+    - Artefakt: `AtemView` uses `SessionService` (via `SessionEngineAdapter`), AudioManager moved/available; visual behaviour parity with previous implementation.
+    - Akzeptanzkriterien:
+        - No Start→Cancel loops: logs for a single Atem run show one `requestStart`, periodic `update` entries and one `end`.
+        - UI overlay functions identical (visual parity verified by manual test and screenshots if needed).
+    - Verifikation:
+        - Collect log for sessionUUID and ensure sequence: requestStart → update* → end.
+        - Create tag `step3-ready` and attach verification notes/screenshots.
+
+- [ ] M4 — Workouts mapping + HealthKit (tag: `step4-ready`)
+    - Zeit: 2–4 h
+    - Artefakt: `SessionSpec.Kind.workout` supported; `SessionService` maps to HealthKit Workout APIs.
+    - Akzeptanzkriterien:
+        - Starting a workout via UI generates a HealthKit workout entry (or a mocked test confirms call).
+    - Verifikation:
+        - Unit/integration test that mocks HealthKit and validates parameters passed (duration, start/end, activity type).
+        - Tag `step4-ready`.
+
+- [ ] M5 — Tests, polish, CI & roll‑out (tag: `step5-ready`)
+    - Zeit: 6–12 h
+    - Artefakt: unit + integration tests, PR review comments resolved, CI green, feature flag removed or set for rollout.
+    - Akzeptanzkriterien:
+        - All tests pass, documented smoke test steps included in PR description, reviewers sign off.
+    - Verifikation:
+        - CI status green, tag `step5-ready` created.
+
+### How to mark a milestone done
+- Create the milestone tag (e.g., `git tag step2-ready`) on the commit that implements the milestone and push the tag locally (or include it in the PR). Add smoke test logs or notes in the PR.
+- Alternatively, add a comment `Milestone stepX-ready verified` in the PR with attached logs; then the maintainer can push the tag.
+
+### Quick status reporting template (for PRs and standups)
+- Milestone: (e.g. M2 Offen migration)
+- Owner: (who implemented)
+- Time spent: (h:mm)
+- Acceptance: (pass/fail + notes)
+- Artifacts: (tag, smoke logs path, screenshots)
+
+----
+
+## 13. After‑Action (retro) checklist
+- After each milestone create a short retro note (1–3 bullets): what worked, what blocked, next micro‑tasks.
+- Keep the REFACTOR_SESSION_SERVICE_SPEC.md updated with status checkboxes and short notes.
+
+----
+
+End of additions.

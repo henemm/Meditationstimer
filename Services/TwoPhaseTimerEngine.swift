@@ -32,19 +32,19 @@
 
 import Foundation
 import Combine
+import os
 #if os(iOS)
 import UIKit
 #endif
 
-/// Einfache 2-Phasen-Engine für die UI-Anzeige.
-/// Verlasst sich NICHT auf Hintergrund-Timer; weckt die UI nur im Vordergrund.
-/// Stoppt automatisch bei App-Termination (best effort).
+/// Two-phase timer engine used by OffenView and other UI.
 final class TwoPhaseTimerEngine: ObservableObject {
+    private let log = Logger(subsystem: "henemm.Meditationstimer", category: "TIMER-SVC")
 
     enum State: Equatable {
         case idle
-        case phase1(remaining: Int) // Sekunden
-        case phase2(remaining: Int) // Sekunden
+        case phase1(remaining: Int) // seconds
+        case phase2(remaining: Int) // seconds
         case finished
     }
 
@@ -62,7 +62,7 @@ final class TwoPhaseTimerEngine: ObservableObject {
     init() {
         setupAppTerminationDetection()
     }
-    
+
     deinit {
         terminationDetector?.cancel()
     }
@@ -78,10 +78,9 @@ final class TwoPhaseTimerEngine: ObservableObject {
         phase1EndDate = now.addingTimeInterval(TimeInterval(phase1Length))
         endDate = phase1EndDate!.addingTimeInterval(TimeInterval(phase2Length))
 
-        // Sofort initialen Zustand setzen
         updateState(at: now)
 
-        // Ticker nur für UI im Vordergrund
+        // UI tick
         ticker = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] t in
@@ -99,44 +98,37 @@ final class TwoPhaseTimerEngine: ObservableObject {
     }
 
     // MARK: - Safe start API for UI
-    /// Result for an atomic tryStart call.
     enum TryStartResult {
         case started
         case alreadyRunning
         case failed(Error)
     }
 
-    /// Atomically attempt to start the engine. Returns immediately with the outcome.
-    /// Marked @MainActor to avoid races with UI code.
     @MainActor
     func tryStart(phase1Minutes: Int, phase2Minutes: Int) -> TryStartResult {
         guard state == .idle else { return .alreadyRunning }
         start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
         return .started
     }
-    
-    // MARK: - App Termination Detection
-    
+
+    // MARK: - App termination detection
     private func setupAppTerminationDetection() {
         #if os(iOS)
         terminationDetector = NotificationCenter.default
             .publisher(for: UIApplication.willTerminateNotification)
             .sink { [weak self] _ in
-                print("🛑 TwoPhaseTimerEngine: App terminating - stopping timer")
+                self?.log.info("TwoPhaseTimerEngine: App terminating - stopping timer")
                 self?.cancel()
             }
-        print("🔔 TwoPhaseTimerEngine: App termination detection enabled")
+        log.debug("TwoPhaseTimerEngine: App termination detection enabled")
         #else
-        print("🔔 TwoPhaseTimerEngine: App termination detection not available on this platform")
+        log.debug("TwoPhaseTimerEngine: App termination detection not available on this platform")
         #endif
     }
 
     // MARK: - Helpers
-
     private func updateState(at now: Date) {
-        guard let _ = startDate,
-              let p1End = phase1EndDate,
-              let end = endDate else {
+        guard let _ = startDate, let p1End = phase1EndDate, let end = endDate else {
             state = .idle
             return
         }
