@@ -186,7 +186,7 @@ private struct WorkoutRunnerView: View {
     @State private var workoutStart: Date?
     @State private var isSaving = false
     @State private var saveFailed = false
-    // Live Activity removed
+    @StateObject private var liveActivity = LiveActivityController()
 
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
@@ -363,7 +363,9 @@ private struct WorkoutRunnerView: View {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
-                    // Live Activity removed
+                    // LiveActivity: Endzeit aus sessionStart + sessionTotal
+                    let endDate = sessionStart.addingTimeInterval(sessionTotal)
+                    let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
@@ -372,7 +374,9 @@ private struct WorkoutRunnerView: View {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
-                // Live Activity removed
+                // LiveActivity: Endzeit aus sessionStart + sessionTotal
+                let endDate = sessionStart.addingTimeInterval(sessionTotal)
+                let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
                 setPhase(.work)
                 scheduleCuesForCurrentPhase()
             }
