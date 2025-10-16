@@ -133,6 +133,7 @@ struct OffenView: View {
                     return
                 }
                 // Engine bestimmt Endzeit, keine lokale Berechnung mehr
+                let now = Date()
                 engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 guard let phase1End = engine.phase1EndDate else { return }
                 let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
