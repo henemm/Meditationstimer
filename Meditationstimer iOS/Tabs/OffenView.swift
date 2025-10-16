@@ -133,12 +133,9 @@ struct OffenView: View {
                     return
                 }
 
-                // Compute phase end dates locally so we can ask ActivityKit before starting the engine
-                let now = Date()
-                let phase1End = now.addingTimeInterval(TimeInterval(max(0, phase1Minutes) * 60))
-                let phase2End = phase1End.addingTimeInterval(TimeInterval(max(0, phase2Minutes) * 60))
-
-                // Ask the LiveActivity controller if starting now would conflict with an existing Activity
+                // Starte Engine zuerst, dann nutze deren Endzeit für LiveActivity
+                engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                guard let phase1End = engine.phase1EndDate else { return }
                 let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
                 switch result {
                 case .started:
