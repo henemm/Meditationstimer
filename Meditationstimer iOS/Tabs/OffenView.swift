@@ -127,13 +127,12 @@ struct OffenView: View {
     private var startButton: some View {
         Button(action: {
             Task { @MainActor in
-                // If our engine already runs a session, ask the user whether to stop it and start a new one
-                if engine.state != .idle {
+                // Wenn Engine läuft, verhindere doppelten Start
+                guard engine.state == .idle else {
                     showLocalConflictAlert = true
                     return
                 }
-
-                // Starte Engine zuerst, dann nutze deren Endzeit für LiveActivity
+                // Engine bestimmt Endzeit, keine lokale Berechnung mehr
                 engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 guard let phase1End = engine.phase1EndDate else { return }
                 let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
