@@ -380,20 +380,12 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         ProgressView().onAppear {
                             // Engine zuerst starten, dann Endzeit aus Engine/Preset verwenden
                             engine.start(preset: preset)
-                            let now = Date()
-                            let endDate = now.addingTimeInterval(TimeInterval(preset.totalDuration))
+                            let endDate = Date().addingTimeInterval(TimeInterval(preset.totalDuration))
                             let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
-                            switch result {
-                            case .started:
-                                break // Engine läuft bereits
-                            case .conflict(let existingOwner, let existingTitle):
+                            if case .conflict(let existingOwner, let existingTitle) = result {
                                 conflictOwnerId = existingOwner
                                 conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
                                 showConflictAlert = true
-                            case .failed(let error):
-                                #if DEBUG
-                                print("[AtemView] liveActivity.requestStart failed: \(error)")
-                                #endif
                             }
                         }
                     case .running(let phase, let remaining, let rep, let totalReps):
