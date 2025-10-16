@@ -282,9 +282,9 @@ struct OffenView: View {
                     // If no activity exists, end/start as a fallback to ensure a fresh Activity for Phase 2.
                     if let phase2End = engine.endDate {
                         Task {
-                                if liveActivity.isActive {
+                            if liveActivity.isActive {
                                 // Update the current activity in-place
-                                await liveActivity.update(phase: 2, endDate: phase2End)
+                                await liveActivity.update(phase: 2, endDate: phase2End, isPaused: false)
                                 print("🔔 [LiveActivity] Phase 2 (updated): Timer bis \(phase2End), Emoji 🪷")
                             } else {
                                 // No active activity: just start a fresh one for Phase 2.

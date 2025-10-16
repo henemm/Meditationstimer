@@ -480,7 +480,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         }
                         // Fire-and-forget: update only the small icon/phase; do not alter endDate
                         let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
-                        Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd) }
+                        Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd, isPaused: false) }
                     }
                 }
             }

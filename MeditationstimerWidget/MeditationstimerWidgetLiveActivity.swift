@@ -202,10 +202,10 @@ extension MeditationAttributes {
 
 extension MeditationAttributes.ContentState {
     static var sampleP1: MeditationAttributes.ContentState {
-        .init(endDate: Date().addingTimeInterval(75), phase: 1, ownerId: "AtemTab")
+        .init(endDate: Date().addingTimeInterval(75), phase: 1, ownerId: "AtemTab", isPaused: false)
     }
     static var sampleP2: MeditationAttributes.ContentState {
-        .init(endDate: Date().addingTimeInterval(12), phase: 2, ownerId: nil)
+        .init(endDate: Date().addingTimeInterval(12), phase: 2, ownerId: nil, isPaused: false)
     }
 }
 

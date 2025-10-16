@@ -94,7 +94,7 @@ final class LiveActivityController: ObservableObject {
         }
         if #available(iOS 16.1, *), ActivityAuthorizationInfo().areActivitiesEnabled {
             let attributes = MeditationAttributes(title: title)
-            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: ownerId)
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: ownerId, isPaused: false)
             // Small retry loop for transient visibility/entitlement errors when requesting an Activity.
             var lastError: Error?
             for attempt in 1...2 {
@@ -140,7 +140,7 @@ final class LiveActivityController: ObservableObject {
         }
     }
 
-    func update(phase: Int, endDate: Date) async {
+    func update(phase: Int, endDate: Date, isPaused: Bool) async {
         guard !isPreview else { return }
         if #available(iOS 16.1, *) {
             // Defensive: only update if we have an active activity
@@ -150,7 +150,7 @@ final class LiveActivityController: ObservableObject {
                 #endif
                 return
             }
-            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId)
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused)
             #if DEBUG
             print("[LiveActivity] update → phase=\(phase), ends=\(endDate)")
             #endif

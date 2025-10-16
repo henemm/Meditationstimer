@@ -416,7 +416,7 @@ private struct WorkoutRunnerView: View {
         }
 
         // End Live Activity
-    // Live Activity removed
+        Task { await liveActivity.end(immediate: true) }
 
         // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
         try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
@@ -536,6 +536,12 @@ private struct WorkoutRunnerView: View {
             pausedAt = Date()
             sounds.stopAll()
             cancelScheduled()
+            // LiveActivity: Pause-Status setzen
+            let now = Date()
+            let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
+            let remaining = max(0, sessionTotal - elapsedSession)
+            let pausedEndDate = now.addingTimeInterval(remaining)
+            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: pausedEndDate, isPaused: true) }
         } else {
             if let p = pausedAt {
                 let delta = Date().timeIntervalSince(p)
@@ -545,6 +551,12 @@ private struct WorkoutRunnerView: View {
             pausedAt = nil
             isPaused = false
             scheduleCuesForCurrentPhase()
+            // LiveActivity: Pause-Status zurücknehmen
+            let now = Date()
+            let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
+            let remaining = max(0, sessionTotal - elapsedSession)
+            let resumedEndDate = now.addingTimeInterval(remaining)
+            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: resumedEndDate, isPaused: false) }
         }
     }
 }
