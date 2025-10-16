@@ -378,30 +378,22 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     switch engine.state {
                     case .idle:
                         ProgressView().onAppear {
-                            // Initialize absolute session timeline before starting
+                            // Engine zuerst starten, dann Endzeit aus Engine/Preset verwenden
+                            engine.start(preset: preset)
                             let now = Date()
-                            sessionStart = now
-                            sessionTotal = TimeInterval(preset.totalSeconds)
-                            lastPhase = nil
-                            phaseStart = nil
-
-                            // Ask Activity controller first
-                            let endDate = sessionStart.addingTimeInterval(sessionTotal)
+                            let endDate = now.addingTimeInterval(TimeInterval(preset.totalDuration))
                             let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
                             switch result {
                             case .started:
-                                // proceed with local start
-                                engine.start(preset: preset)
+                                break // Engine läuft bereits
                             case .conflict(let existingOwner, let existingTitle):
                                 conflictOwnerId = existingOwner
                                 conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
                                 showConflictAlert = true
                             case .failed(let error):
-                                // Activity unavailable — log and start local session anyway
                                 #if DEBUG
                                 print("[AtemView] liveActivity.requestStart failed: \(error)")
                                 #endif
-                                engine.start(preset: preset)
                             }
                         }
                     case .running(let phase, let remaining, let rep, let totalReps):
