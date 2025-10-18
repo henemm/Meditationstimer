@@ -497,25 +497,25 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 .padding(8)
             }
             .onChange(of: engine.state) { newState in
-                // Live Activity entfernt für Debugging
-                // if case .running(let ph, _, _, _) = newState {
-                //     if ph != lastPhase {
-                //         lastPhase = ph
-                //         phaseStart = Date()
-                //         phaseDuration = Double(duration(for: ph))
-                //         // Update Live Activity to reflect inner-phase change (emoji/icon only)
-                //         let phaseNumber: Int
-                //         switch ph {
-                //             case .inhale: phaseNumber = 1
-                //             case .holdIn: phaseNumber = 2
-                //             case .exhale: phaseNumber = 3
-                //             case .holdOut: phaseNumber = 4
-                //         }
-                //         // Fire-and-forget: update only the small icon/phase; do not alter endDate
-                //         let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
-                //         Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd, isPaused: false) }
-                //     }
-                // }
+                if case .running(let ph, _, _, _) = newState {
+                    if ph != lastPhase {
+                        lastPhase = ph
+                        phaseStart = Date()
+                        phaseDuration = Double(duration(for: ph))
+                        // Live Activity entfernt für Debugging
+                        // // Update Live Activity to reflect inner-phase change (emoji/icon only)
+                        // let phaseNumber: Int
+                        // switch ph {
+                        //     case .inhale: phaseNumber = 1
+                        //     case .holdIn: phaseNumber = 2
+                        //     case .exhale: phaseNumber = 3
+                        //     case .holdOut: phaseNumber = 4
+                        // }
+                        // // Fire-and-forget: update only the small icon/phase; do not alter endDate
+                        // let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
+                        // Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd, isPaused: false) }
+                    }
+                }
             }
             // Live Activity entfernt für Debugging
             // .alert("Timer läuft bereits", isPresented: $showConflictAlert, actions: {

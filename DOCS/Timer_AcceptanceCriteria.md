@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – Activity.endAll hinzugefügt:**
-Um die Live Activity zu 100% zu entfernen, Activity.endAll(for: bundleIdentifier) nach dem normalen end() hinzugefügt. Das sollte den Timer auf Lockscreen/Dynamic Island garantiert stoppen. Nächster Schritt: Testen.
+**18.10.2025 – Live Activity Code entfernt:**
+Sämtlicher Live Activity-Code aus AtemView entfernt (start, update, end, alerts). Jetzt wird keine Live Activity mehr gestartet. Teste, ob der Timer auf Lockscreen/Dynamic Island verschwindet – wenn ja, war der Live Activity-Code das Problem. Wenn nein, liegt es woanders.
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
@@ -47,9 +47,9 @@ Um die Live Activity zu 100% zu entfernen, Activity.endAll(for: bundleIdentifier
 - UI muss nach "Beenden" in den konsistenten Idle-State zurückkehren
 
 ## Nächste Schritte
-1. Funktion testen: Live Activity nach "Beenden" entfernen (Timer auf Lockscreen/Dynamic Island stoppen).
-2. Bei Erfolg: Akzeptanzkriterien abschließen.
-3. Bei Fehlschlag: Externes Debugging beauftragen.
+1. Funktion testen: Timer auf Lockscreen/Dynamic Island nach "Beenden" entfernen (sollte jetzt weg sein, da kein Live Activity-Code).
+2. Wenn Timer weg: Live Activity-Code war das Problem – nächsten Schritt: Timer von WorkoutsView übernehmen.
+3. Wenn Timer bleibt: Externes Debugging für anderes System.
 
 ---
 Letzte Aktualisierung: 18.10.2025
