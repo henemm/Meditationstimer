@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – isCancelled-Flag hinzugefügt:**
-Um sicherzustellen, dass countdown-Actions nach cancel() nicht mehr ausgeführt werden, isCancelled-Flag in SessionEngine hinzugefügt. Sollte das Problem endgültig lösen. Nächster Schritt: Testen.
+**18.10.2025 – Prüfung vor schedule hinzugefügt:**
+Wesentlicher Fix: In countdown() wird vor schedule(1, action: countdown) geprüft, ob !isCancelled, um zu verhindern, dass rekursive Actions nach cancel() noch scheduled werden. Das sollte das hartnäckige Problem lösen. Nächster Schritt: Testen.
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
@@ -49,7 +49,7 @@ Um sicherzustellen, dass countdown-Actions nach cancel() nicht mehr ausgeführt 
 ## Nächste Schritte
 1. Funktion testen: Timer nach "Beenden" stoppen und Live Activity entfernen.
 2. Bei Erfolg: Akzeptanzkriterien abschließen.
-3. Bei Fehlschlag: Auf Commit 5af2347 zurückgehen und externes Debugging beauftragen.
+3. Bei Fehlschlag: Auf Commit d9ccd08 zurückgehen und externes Debugging beauftragen.
 
 ---
 Letzte Aktualisierung: 18.10.2025

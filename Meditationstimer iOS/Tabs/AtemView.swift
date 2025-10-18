@@ -100,9 +100,10 @@ public struct AtemView: View {
         }
 
         func schedule(_ delay: TimeInterval, action: @escaping () -> Void) {
-            let w = DispatchWorkItem(block: action)
-            scheduled.append(w)
-            DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
+            // Timer-Code entfernt für Debugging
+            // let w = DispatchWorkItem(block: action)
+            // scheduled.append(w)
+            // DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
         }
 
         enum State: Equatable {
@@ -159,12 +160,14 @@ public struct AtemView: View {
                     } else {
                         self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
                         if !self.isCancelled {
-                            self.schedule(1, action: countdown)
+                            // Timer-Code entfernt für Debugging
+                            // self.schedule(1, action: countdown)
                         }
                     }
                 }
             }
-            schedule(1, action: countdown)
+            // Timer-Code entfernt für Debugging
+            // schedule(1, action: countdown)
         }
     }
 
