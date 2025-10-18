@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – Live Activity Code entfernt:**
-Sämtlicher Live Activity-Code aus AtemView entfernt (start, update, end, alerts). Jetzt wird keine Live Activity mehr gestartet. Teste, ob der Timer auf Lockscreen/Dynamic Island verschwindet – wenn ja, war der Live Activity-Code das Problem. Wenn nein, liegt es woanders.
+**18.10.2025 – onChange reaktiviert:**
+.onChange(of: engine.state) reaktiviert, um phaseStart und phaseDuration für den inneren Ring (Phasen-Anzeige) zu setzen. Live Activity-Teile bleiben auskommentiert.
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
