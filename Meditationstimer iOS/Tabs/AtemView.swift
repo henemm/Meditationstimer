@@ -381,7 +381,20 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 VStack(spacing: 12) {
                     switch engine.state {
                     case .idle:
-                        ProgressView()
+                        ProgressView().onAppear {
+                            // Set sessionStart and sessionTotal at session start
+                            let start = Date()
+                            sessionStart = start
+                            sessionTotal = TimeInterval(preset.totalSeconds)
+                            engine.start(preset: preset)
+                            let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
+                            let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+                            if case .conflict(let existingOwner, let existingTitle) = result {
+                                conflictOwnerId = existingOwner
+                                conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                                showConflictAlert = true
+                            }
+                        }
                     case .running(let phase, let remaining, let rep, let totalReps):
                         Text(preset.name).font(.headline)
                         // Dual rings: outer = session, inner = per-phase (resets at each phase)
