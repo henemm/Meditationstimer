@@ -510,10 +510,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
 
         private func endSession(manual: Bool) async {
+            print("[AtemView] endSession(manual: \(manual)) called, engine.state=\(engine.state)")
             // 1. Stop Engine (immer, nicht nur manuell)
             engine.cancel()
-
-            // 2. Stoppe alle Sounds (falls vorhanden)
+            print("[AtemView] engine.cancel() called, engine.state=\(engine.state)")
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
@@ -531,11 +531,13 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
             // 4. Beende Live Activity garantiert
             await liveActivity.end(immediate: true)
+            print("[AtemView] liveActivity.end(immediate: true) called")
 
             // 5. Optional: kurze Verzögerung für UI-Feedback
             try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
 
             // 6. Schließe die View
+            print("[AtemView] close() called")
             close()
         }
 
