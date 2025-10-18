@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – Timer-Abbruch-Logik portiert & Build validiert:**
-Die cancelScheduled()-Logik aus WorkoutsView wurde in die SessionEngine des Atem-Tabs portiert und wird jetzt beim Beenden der Session aufgerufen. Build läuft erfolgreich durch, keine Compiler-Fehler mehr. Nächster Schritt: Funktionalität im Test prüfen – wird der Timer nach "Beenden" jetzt zuverlässig gestoppt und die Live Activity im Widget entfernt?
+**18.10.2025 – SessionEngine durch DispatchWorkItem-Logik ersetzt:**
+Die komplette SessionEngine in AtemView wurde durch eine vereinfachte Logik mit DispatchWorkItem ersetzt, identisch zu WorkoutsView. Timer.scheduledTimer entfernt, rekursive Closures durch schedule() ersetzt. Sollte das Problem lösen, dass der Timer nach cancel() weiterläuft. Nächster Schritt: Testen, ob der Timer jetzt stoppt und Live Activity entfernt wird.
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
@@ -47,10 +47,9 @@ Die cancelScheduled()-Logik aus WorkoutsView wurde in die SessionEngine des Atem
 - UI muss nach "Beenden" in den konsistenten Idle-State zurückkehren
 
 ## Nächste Schritte
-1. Timer-Logik komplett neu entwickeln oder externes Debugging beauftragen.
-2. Fokus auf einfache Timer-Implementierung ohne rekursive Closures.
-3. Bei Erfolg: Akzeptanzkriterien abschließen.
-4. Projekt pausieren, um Zeit zu sparen.
+1. Funktion testen: Timer nach "Beenden" stoppen und Live Activity entfernen.
+2. Bei Erfolg: Akzeptanzkriterien abschließen.
+3. Bei Fehlschlag: Auf Commit b6dfe13 zurückgehen und anders vorgehen.
 
 ---
 Letzte Aktualisierung: 18.10.2025

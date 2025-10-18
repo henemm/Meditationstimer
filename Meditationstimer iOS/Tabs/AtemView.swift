@@ -112,14 +112,17 @@ public struct AtemView: View {
         }
 
     @Published var state: State = .idle
+    private var isCancelled = false
     public let gong = GongPlayer()
 
         func start(preset: Preset) {
             cancel()
+            isCancelled = false
             advance(preset: preset, rep: 1)
         }
 
         func cancel() {
+            isCancelled = true
             cancelScheduled()
             state = .idle
         }
@@ -148,6 +151,7 @@ public struct AtemView: View {
             state = .running(phase: phase, remaining: duration, rep: rep, totalReps: total)
 
             func countdown() {
+                if isCancelled { return }
                 if case .running(let p, let remaining, let r, let tot) = self.state {
                     let next = remaining - 1
                     if next <= 0 {
