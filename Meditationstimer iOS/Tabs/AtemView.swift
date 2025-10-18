@@ -98,6 +98,13 @@ public struct AtemView: View {
             scheduled.forEach { $0.cancel() }
             scheduled.removeAll()
         }
+
+        func schedule(_ delay: TimeInterval, action: @escaping () -> Void) {
+            let w = DispatchWorkItem(block: action)
+            scheduled.append(w)
+            DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
+        }
+
         enum State: Equatable {
             case idle
             case running(phase: Phase, remaining: Int, rep: Int, totalReps: Int)
@@ -105,7 +112,6 @@ public struct AtemView: View {
         }
 
     @Published var state: State = .idle
-    private var timer: Timer?
     public let gong = GongPlayer()
 
         func start(preset: Preset) {
@@ -114,8 +120,7 @@ public struct AtemView: View {
         }
 
         func cancel() {
-            timer?.invalidate()
-            timer = nil
+            cancelScheduled()
             state = .idle
         }
 
@@ -142,22 +147,18 @@ public struct AtemView: View {
             gong.play(named: sound)
             state = .running(phase: phase, remaining: duration, rep: rep, totalReps: total)
 
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] t in
-                guard let self else { return }
+            func countdown() {
                 if case .running(let p, let remaining, let r, let tot) = self.state {
                     let next = remaining - 1
                     if next <= 0 {
-                        t.invalidate(); self.timer = nil
                         self.run(steps, index: index + 1, rep: r, total: tot)
                     } else {
                         self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
+                        self.schedule(1, action: countdown)
                     }
-                } else {
-                    t.invalidate(); self.timer = nil
                 }
             }
-            RunLoop.main.add(timer!, forMode: .common)
+            schedule(1, action: countdown)
         }
     }
 

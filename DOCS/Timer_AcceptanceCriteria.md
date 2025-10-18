@@ -47,12 +47,10 @@ Die cancelScheduled()-Logik aus WorkoutsView wurde in die SessionEngine des Atem
 - UI muss nach "Beenden" in den konsistenten Idle-State zurückkehren
 
 ## Nächste Schritte
-1. Projekt auf letzten stabilen Commit zurücksetzen
-2. Timer-Reparatur ab stabilem Stand neu beginnen
-3. Erkenntnisse aus dieser Datei und den letzten Debug-Sitzungen berücksichtigen
-4. Nach jedem Schritt Build validieren
-5. Akzeptanzkriterien laufend aktualisieren
-6. **Verbindlicher Prozessschritt für den Agenten:** Vor jedem Test oder jeder Testanweisung an den User wird der Build immer selbst ausgeführt und alle Fehler werden analysiert und dokumentiert. Erst nach erfolgreichem Build und Fehleranalyse erfolgt die Testanweisung an den User.
+1. Timer-Logik komplett neu entwickeln oder externes Debugging beauftragen.
+2. Fokus auf einfache Timer-Implementierung ohne rekursive Closures.
+3. Bei Erfolg: Akzeptanzkriterien abschließen.
+4. Projekt pausieren, um Zeit zu sparen.
 
 ---
 Letzte Aktualisierung: 18.10.2025
