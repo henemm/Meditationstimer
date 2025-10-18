@@ -150,6 +150,10 @@ public struct AtemView: View {
 
     // MARK: - Local GongPlayer (only for AtemView)
     final class GongPlayer: NSObject, AVAudioPlayerDelegate {
+        func stopAll() {
+            for p in active { p.stop() }
+            active.removeAll()
+        }
         private var active: [AVAudioPlayer] = []
 
         private func activateSession() {
@@ -510,7 +514,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             engine.cancel()
 
             // 2. Stoppe alle Sounds (falls vorhanden)
-            if let player = GongPlayer.sharedIfExists { player.stopAll() }
+            gong.stopAll()
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
