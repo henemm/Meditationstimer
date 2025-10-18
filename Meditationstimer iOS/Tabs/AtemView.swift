@@ -514,7 +514,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
             engine.cancel()
 
             // 2. Stoppe alle Sounds (falls vorhanden)
-            gong.stopAll()
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
