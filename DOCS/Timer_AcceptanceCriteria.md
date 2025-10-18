@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – Timer-Code entfernt für Debugging:**
-Sämtlicher Code, der einen Timer startet, aus AtemView entfernt. schedule-Funktion und Aufrufe auskommentiert. Jetzt startet kein Timer mehr. Teste, ob nach "Beenden" keiner läuft – wenn ja, war der Timer-Code das Problem. Wenn nein, liegt es woanders (z.B. Live Activity oder anderes System).
+**18.10.2025 – Activity.endAll hinzugefügt:**
+Um die Live Activity zu 100% zu entfernen, Activity.endAll(for: bundleIdentifier) nach dem normalen end() hinzugefügt. Das sollte den Timer auf Lockscreen/Dynamic Island garantiert stoppen. Nächster Schritt: Testen.
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
@@ -47,9 +47,9 @@ Sämtlicher Code, der einen Timer startet, aus AtemView entfernt. schedule-Funkt
 - UI muss nach "Beenden" in den konsistenten Idle-State zurückkehren
 
 ## Nächste Schritte
-1. Funktion testen: Timer nach "Beenden" stoppen (sollte jetzt trivial sein, da keiner startet).
-2. Wenn kein Timer läuft: Timer-Code war das Problem – reaktiviere mit korrekter Logik.
-3. Wenn Timer trotzdem läuft: Externes Debugging für Live Activity oder anderes System.
+1. Funktion testen: Live Activity nach "Beenden" entfernen (Timer auf Lockscreen/Dynamic Island stoppen).
+2. Bei Erfolg: Akzeptanzkriterien abschließen.
+3. Bei Fehlschlag: Externes Debugging beauftragen.
 
 ---
 Letzte Aktualisierung: 18.10.2025

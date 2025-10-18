@@ -375,10 +375,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
         let preset: Preset
         var close: () -> Void
         @StateObject private var engine = SessionEngine()
-    @StateObject private var liveActivity = LiveActivityController()
-    @State private var showConflictAlert: Bool = false
-    @State private var conflictOwnerId: String? = nil
-    @State private var conflictTitle: String? = nil
+    // Live Activity entfernt für Debugging
+    // @State private var showConflictAlert: Bool = false
+    // @State private var conflictOwnerId: String? = nil
+    // @State private var conflictTitle: String? = nil
         @State private var sessionStart: Date = .now
         @State private var sessionTotal: TimeInterval = 1
         @State private var phaseStart: Date? = nil
@@ -410,13 +410,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             sessionStart = start
                             sessionTotal = TimeInterval(preset.totalSeconds)
                             engine.start(preset: preset)
-                            let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
-                            let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
-                            if case .conflict(let existingOwner, let existingTitle) = result {
-                                conflictOwnerId = existingOwner
-                                conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
-                                showConflictAlert = true
-                            }
+                            // Live Activity entfernt für Debugging
+                            // let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
+                            // let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+                            // if case .conflict(let existingOwner, let existingTitle) = result {
+                            //     conflictOwnerId = existingOwner
+                            //     conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                            //     showConflictAlert = true
+                            // }
                         }
                     case .running(let phase, let remaining, let rep, let totalReps):
                         Text(preset.name).font(.headline)
@@ -465,10 +466,11 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         // Snap outer progress to full on finish
                         .onAppear {
                             sessionTotal = max(sessionTotal, Date().timeIntervalSince(sessionStart))
-                            Task {
-                                await liveActivity.end()
-                                await endSession(manual: false)
-                            }
+                            // Live Activity entfernt für Debugging
+                            // Task {
+                            //     await liveActivity.end()
+                            //     await endSession(manual: false)
+                            // }
                         }
                     }
                     Button("Beenden") {
@@ -495,40 +497,42 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 .padding(8)
             }
             .onChange(of: engine.state) { newState in
-                if case .running(let ph, _, _, _) = newState {
-                    if ph != lastPhase {
-                        lastPhase = ph
-                        phaseStart = Date()
-                        phaseDuration = Double(duration(for: ph))
-                        // Update Live Activity to reflect inner-phase change (emoji/icon only)
-                        let phaseNumber: Int
-                        switch ph {
-                        case .inhale: phaseNumber = 1
-                        case .holdIn: phaseNumber = 2
-                        case .exhale: phaseNumber = 3
-                        case .holdOut: phaseNumber = 4
-                        }
-                        // Fire-and-forget: update only the small icon/phase; do not alter endDate
-                        let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
-                        Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd, isPaused: false) }
-                    }
-                }
+                // Live Activity entfernt für Debugging
+                // if case .running(let ph, _, _, _) = newState {
+                //     if ph != lastPhase {
+                //         lastPhase = ph
+                //         phaseStart = Date()
+                //         phaseDuration = Double(duration(for: ph))
+                //         // Update Live Activity to reflect inner-phase change (emoji/icon only)
+                //         let phaseNumber: Int
+                //         switch ph {
+                //             case .inhale: phaseNumber = 1
+                //             case .holdIn: phaseNumber = 2
+                //             case .exhale: phaseNumber = 3
+                //             case .holdOut: phaseNumber = 4
+                //         }
+                //         // Fire-and-forget: update only the small icon/phase; do not alter endDate
+                //         let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
+                //         Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd, isPaused: false) }
+                //     }
+                // }
             }
-            .alert("Timer läuft bereits", isPresented: $showConflictAlert, actions: {
-                Button("Abbrechen", role: .cancel) {
-                    // user cancelled; just close overlay
-                    close()
-                }
-                Button("Erzwingen", role: .destructive) {
-                    // Force the Live Activity and start local engine regardless (per spec allow local start if force fails)
-                    Task {
-                        liveActivity.forceStart(title: preset.name, phase: 1, endDate: sessionStart.addingTimeInterval(sessionTotal), ownerId: "AtemTab")
-                        engine.start(preset: preset)
-                    }
-                }
-            }, message: {
-                Text(conflictTitle ?? "Ein anderer Timer läuft")
-            })
+            // Live Activity entfernt für Debugging
+            // .alert("Timer läuft bereits", isPresented: $showConflictAlert, actions: {
+            //     Button("Abbrechen", role: .cancel) {
+            //         // user cancelled; just close overlay
+            //         close()
+            //     }
+            //     Button("Erzwingen", role: .destructive) {
+            //         // Force the Live Activity and start local engine regardless (per spec allow local start if force fails)
+            //         Task {
+            //             liveActivity.forceStart(title: preset.name, phase: 1, endDate: sessionStart.addingTimeInterval(sessionTotal), ownerId: "AtemTab")
+            //             engine.start(preset: preset)
+            //         }
+            //     }
+            // }, message: {
+            //     Text(conflictTitle ?? "Ein anderer Timer läuft")
+            // })
             // Keine automatische Beendigung bei App-Wechsel
         }
 
@@ -562,8 +566,9 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             // 4. Beende Live Activity garantiert
-            await liveActivity.end(immediate: true)
-            print("[AtemView] liveActivity.end(immediate: true) called")
+            // Live Activity entfernt für Debugging
+            // await liveActivity.end(immediate: true)
+            // print("[AtemView] liveActivity.end(immediate: true) called")
 
             // 5. Optional: kurze Verzögerung für UI-Feedback
             try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
