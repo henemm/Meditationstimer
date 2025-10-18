@@ -506,26 +506,33 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
 
         private func endSession(manual: Bool) async {
-            // 1. Log to HealthKit if session was longer than a few seconds
-            if sessionStart.distance(to: Date()) > 3 {
+            // 1. Stop Engine (immer, nicht nur manuell)
+            engine.cancel()
+
+            // 2. Stoppe alle Sounds (falls vorhanden)
+            if let player = GongPlayer.sharedIfExists { player.stopAll() }
+
+            // 3. HealthKit Logging, wenn Session > 3s
+            let endDate = Date()
+            if sessionStart.distance(to: endDate) > 3 {
                 do {
                     if logMeditationAsYogaWorkout {
-                        try await HealthKitManager.shared.logWorkout(start: sessionStart, end: Date(), activity: .yoga)
+                        try await HealthKitManager.shared.logWorkout(start: sessionStart, end: endDate, activity: .yoga)
                     } else {
-                        try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: Date())
+                        try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: endDate)
                     }
                 } catch {
                     print("HealthKit logging failed: \(error)")
                 }
             }
 
-            // 2. If ended manually, stop the engine
-            if manual {
-                engine.cancel()
-            }
+            // 4. Beende Live Activity garantiert
+            await liveActivity.end(immediate: true)
 
-            // 3. End Live Activity and close the view
-            // Live Activity removed
+            // 5. Optional: kurze Verzögerung für UI-Feedback
+            try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
+
+            // 6. Schließe die View
             close()
         }
 
