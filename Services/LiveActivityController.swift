@@ -184,6 +184,11 @@ final class LiveActivityController: ObservableObject {
                 await currentActivity.end()
             }
 
+            // Ensure complete removal by ending all activities for this app
+            if #available(iOS 16.1, *) {
+                await Activity<MeditationAttributes>.endAll(for: Bundle.main.bundleIdentifier)
+            }
+
             activity = nil
             ownerId = nil
             ownerTitle = nil

@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – Prüfung vor schedule hinzugefügt:**
-Wesentlicher Fix: In countdown() wird vor schedule(1, action: countdown) geprüft, ob !isCancelled, um zu verhindern, dass rekursive Actions nach cancel() noch scheduled werden. Das sollte das hartnäckige Problem lösen. Nächster Schritt: Testen.
+**18.10.2025 – Timer-Code entfernt für Debugging:**
+Sämtlicher Code, der einen Timer startet, aus AtemView entfernt. schedule-Funktion und Aufrufe auskommentiert. Jetzt startet kein Timer mehr. Teste, ob nach "Beenden" keiner läuft – wenn ja, war der Timer-Code das Problem. Wenn nein, liegt es woanders (z.B. Live Activity oder anderes System).
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
@@ -47,9 +47,9 @@ Wesentlicher Fix: In countdown() wird vor schedule(1, action: countdown) geprüf
 - UI muss nach "Beenden" in den konsistenten Idle-State zurückkehren
 
 ## Nächste Schritte
-1. Funktion testen: Timer nach "Beenden" stoppen und Live Activity entfernen.
-2. Bei Erfolg: Akzeptanzkriterien abschließen.
-3. Bei Fehlschlag: Auf Commit d9ccd08 zurückgehen und externes Debugging beauftragen.
+1. Funktion testen: Timer nach "Beenden" stoppen (sollte jetzt trivial sein, da keiner startet).
+2. Wenn kein Timer läuft: Timer-Code war das Problem – reaktiviere mit korrekter Logik.
+3. Wenn Timer trotzdem läuft: Externes Debugging für Live Activity oder anderes System.
 
 ---
 Letzte Aktualisierung: 18.10.2025
