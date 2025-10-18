@@ -517,8 +517,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
             // 2. Stoppe Engine und Sounds
             engine.cancel()
-            GongPlayer.shared.stopAll()
-            print("[AtemView] engine.cancel() & GongPlayer.shared.stopAll() called")
+            engine.gong.stopAll()
+            print("[AtemView] engine.cancel() & engine.gong.stopAll() called")
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
