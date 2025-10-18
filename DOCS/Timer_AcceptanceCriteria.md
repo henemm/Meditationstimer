@@ -1,3 +1,18 @@
+**18.10.2025 – Debug-Analyse nach Build:**
+Die EndSession-Logik und die LiveActivityController-Aufrufe werden korrekt ausgeführt (siehe Debug-Ausgabe):
+• engine.cancel() und engine.gong.stopAll() werden aufgerufen
+• liveActivity.end(immediate: true) wird ausgeführt
+• Session wechselt in den .finished-State
+
+Trotzdem wird nach "Beenden" die Live Activity im Widget nicht entfernt und der Timer läuft weiter. Das Problem tritt immer auf, obwohl die cancelScheduled()-Logik jetzt wie im Workouts-Tab portiert ist und der Build fehlerfrei ist.
+
+**Erkenntnis:**
+Das Problem liegt tiefer im Zusammenspiel von State, Timer und Live Activity. Die EndSession- und Timer-Abbruch-Logik ist jetzt identisch mit WorkoutsView, aber das Widget/Live Activity wird nicht gestoppt. Es gibt keine offensichtlichen Build- oder Swift-Fehler mehr.
+
+**Nächster Schritt:**
+Weitere Analyse der LiveActivityController-Logik und des State-Managements im Atem-Tab. Prüfen, ob nach dem Aufruf von liveActivity.end(immediate: true) noch Timer- oder State-Updates ausgelöst werden, die die Live Activity reaktivieren.
+### 18.10.2025
+- Build erfolgreich, aber Fehler im AtemView immer vorhanden: Timer/Live Activity werden nach "Beenden" nicht gestoppt. Fehler tritt trotz korrekter EndSession-Logik und Build-Erfolg immer auf. Weitere Analyse und Debugging erforderlich.
 # Timer Reparatur – Akzeptanzkriterien & Erkenntnisse
 
 
@@ -10,19 +25,21 @@
 - Die GUI darf nicht verändert werden (kein Layout-, Button-, oder Flow-Change)
 - Jede Codeübergabe ist build-validiert
 
-## Erfolgreiche Ansätze
-- Portierung der robusten Timer- und EndSession-Logik aus WorkoutsView nach AtemView
-- Entfernen von GongPlayer.stopAll() aus SessionCard, stattdessen engine.cancel() verwenden
-- Entfernen des automatischen Session-Starts im Idle-State, stattdessen expliziter Start-Button
-- Dual-Ring-UI im Idle-State wiederhergestellt
-- Build-Fehler durch falsche CircularRing-Parameter behoben
+## Versuche & Erkenntnisse
+	- Portierung der EndSession-Logik aus WorkoutsView nach AtemView
+	- Build-Validierung nach jedem Schritt
+	- Entfernen/Ändern von GongPlayer.stopAll(), engine.cancel(), Session-Start-Logik
+	- Dual-Ring-UI und CircularRing-Parameter angepasst
+	- Rücksetzung auf letzte stabile Commits
 
-
- Erneuter Versuch mit stopAllSounds()-Methode, Build erfolgreich, aber nicht gewünscht – wurde wieder entfernt
-- Entfernen des automatischen Timer-Starts im Atem-Tab (.idle-State): GUI zerstört, Änderung rückgängig gemacht
-- Wiederholtes automatisches Starten der Session im Idle-State nach "Beenden" (Live Activity Bug)
-- Falsche Parameter für CircularRing (Build-Fehler)
-- Rücksetzung auf letzten Commit: Timer läuft nach "Beenden" weiterhin weiter, Problem besteht trotz Rücksetzung und Build-Validierung
+**18.10.2025 – Timer-Abbruch-Logik portiert & Build validiert:**
+Die cancelScheduled()-Logik aus WorkoutsView wurde in die SessionEngine des Atem-Tabs portiert und wird jetzt beim Beenden der Session aufgerufen. Build läuft erfolgreich durch, keine Compiler-Fehler mehr. Nächster Schritt: Funktionalität im Test prüfen – wird der Timer nach "Beenden" jetzt zuverlässig gestoppt und die Live Activity im Widget entfernt?
+- Rücksetzung auf letzte stabile Commits:
+	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
+	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
+	Ergebnis: Fehlerbild bleibt bestehen – nach "Beenden" läuft der Timer weiter und/oder die Live Activity bleibt aktiv. Keine Verbesserung gegenüber vorherigem Stand.
+	Erkenntnis: Der Fehler ist nicht durch einen einzelnen Commit entstanden, sondern steckt tiefer in der Logik oder im Zusammenspiel von State, Timer und Live Activity.
+- Bisher konnte keiner dieser Ansätze das Problem lösen: Timer/Live Activity werden nach "Beenden" nicht gestoppt.
 
 ## Offene Probleme
 - Timer im Atem-Tab muss nach "Beenden" garantiert gestoppt sein und die Live Activity entfernt werden
@@ -35,6 +52,7 @@
 3. Erkenntnisse aus dieser Datei und den letzten Debug-Sitzungen berücksichtigen
 4. Nach jedem Schritt Build validieren
 5. Akzeptanzkriterien laufend aktualisieren
+6. **Verbindlicher Prozessschritt für den Agenten:** Vor jedem Test oder jeder Testanweisung an den User wird der Build immer selbst ausgeführt und alle Fehler werden analysiert und dokumentiert. Erst nach erfolgreichem Build und Fehleranalyse erfolgt die Testanweisung an den User.
 
 ---
 Letzte Aktualisierung: 18.10.2025

@@ -36,6 +36,13 @@ import UIKit
 
 #if !os(iOS)
 public struct AtemView: View {
+    // MARK: - Scheduled WorkItems für Timer-Abbruch
+    private var scheduled: [DispatchWorkItem] = []
+
+    private func cancelScheduled() {
+        scheduled.forEach { $0.cancel() }
+        scheduled.removeAll()
+    }
     @Environment(\.scenePhase) private var scenePhase
     public init() {}
     public var body: some View {
@@ -85,15 +92,21 @@ public struct AtemView: View {
 
     // MARK: - Session Engine
     final class SessionEngine: ObservableObject {
+        private var scheduled: [DispatchWorkItem] = []
+
+        func cancelScheduled() {
+            scheduled.forEach { $0.cancel() }
+            scheduled.removeAll()
+        }
         enum State: Equatable {
             case idle
             case running(phase: Phase, remaining: Int, rep: Int, totalReps: Int)
             case finished
         }
 
-        @Published private(set) var state: State = .idle
-        private var timer: Timer?
-        private let gong = GongPlayer()
+    @Published var state: State = .idle
+    private var timer: Timer?
+    public let gong = GongPlayer()
 
         func start(preset: Preset) {
             cancel()
@@ -511,11 +524,15 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
         private func endSession(manual: Bool) async {
             print("[AtemView] endSession(manual: \(manual)) called, engine.state=\(engine.state)")
-            // 1. Setze State explizit auf .ended
-            engine.state = .ended
-            print("[AtemView] engine.state = .ended")
 
-            // 2. Stoppe Engine und Sounds
+            // 1. Stoppe alle geplanten Timer/WorkItems
+            engine.cancelScheduled()
+
+            // 2. Setze State explizit auf .finished
+            engine.state = .finished
+            print("[AtemView] engine.state = .finished")
+
+            // 3. Stoppe Engine und Sounds
             engine.cancel()
             engine.gong.stopAll()
             print("[AtemView] engine.cancel() & engine.gong.stopAll() called")
