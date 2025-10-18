@@ -90,85 +90,6 @@ public struct AtemView: View {
     // MARK: - Session Phase
     enum Phase: String { case inhale = "Einatmen", holdIn = "Halten (ein)", exhale = "Ausatmen", holdOut = "Halten (aus)" }
 
-    // MARK: - Session Engine
-    final class SessionEngine: ObservableObject {
-        private var scheduled: [DispatchWorkItem] = []
-
-        func cancelScheduled() {
-            scheduled.forEach { $0.cancel() }
-            scheduled.removeAll()
-        }
-
-        func schedule(_ delay: TimeInterval, action: @escaping () -> Void) {
-            let w = DispatchWorkItem(block: action)
-            scheduled.append(w)
-            DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
-        }
-
-        enum State: Equatable {
-            case idle
-            case running(phase: Phase, remaining: Int, rep: Int, totalReps: Int)
-            case finished
-        }
-
-    @Published var state: State = .idle
-    private var isCancelled = false
-    public let gong = GongPlayer()
-
-        func start(preset: Preset) {
-            cancel()
-            isCancelled = false
-            advance(preset: preset, rep: 1)
-        }
-
-        func cancel() {
-            isCancelled = true
-            cancelScheduled()
-            state = .idle
-        }
-
-        private func advance(preset: Preset, rep: Int) {
-            let steps: [(Phase, Int, String)] = [
-                (.inhale, preset.inhale, "einatmen"),
-                (.holdIn, preset.holdIn, "eingeatmet-halten"),
-                (.exhale, preset.exhale, "ausatmen"),
-                (.holdOut, preset.holdOut, "ausgeatmet-halten")
-            ].filter { $0.1 > 0 }
-
-            guard !steps.isEmpty else { state = .finished; return }
-            run(steps, index: 0, rep: rep, total: preset.repetitions)
-        }
-
-        private func run(_ steps: [(Phase, Int, String)], index: Int, rep: Int, total: Int) {
-            if index >= steps.count {
-                if rep >= total { state = .finished; return }
-                run(steps, index: 0, rep: rep + 1, total: total)
-                return
-            }
-
-            let (phase, duration, sound) = steps[index]
-            gong.play(named: sound)
-            state = .running(phase: phase, remaining: duration, rep: rep, totalReps: total)
-
-            func countdown() {
-                if isCancelled { return }
-                if case .running(let p, let remaining, let r, let tot) = self.state {
-                    let next = remaining - 1
-                    if next <= 0 {
-                        self.run(steps, index: index + 1, rep: r, total: tot)
-                    } else {
-                        self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
-                        if !self.isCancelled {
-                            self.schedule(1, action: countdown)
-                        }
-                    }
-                }
-            }
-            // Timer-Code entfernt für Debugging
-            schedule(1, action: countdown)
-        }
-    }
-
     // MARK: - Local GongPlayer (only for AtemView)
     final class GongPlayer: NSObject, AVAudioPlayerDelegate {
         func stopAll() {
@@ -372,18 +293,27 @@ private struct OverlayBackgroundEffect: ViewModifier {
     // scenePhase-Automatik entfernt – führte zu unerwünschten Beendigungen beim App-Wechsel
         let preset: Preset
         var close: () -> Void
-        @StateObject private var engine = SessionEngine()
-    // Live Activity entfernt für Debugging
-    // @State private var showConflictAlert: Bool = false
-    // @State private var conflictOwnerId: String? = nil
-    // @State private var conflictTitle: String? = nil
+    // @StateObject private var engine = SessionEngine() entfernt
+        @StateObject private var liveActivity = LiveActivityController()
+        @State private var showConflictAlert: Bool = false
+        @State private var conflictOwnerId: String? = nil
+        @State private var conflictTitle: String? = nil
         @State private var sessionStart: Date = .now
         @State private var sessionTotal: TimeInterval = 1
         @State private var phaseStart: Date? = nil
         @State private var phaseDuration: Double = 1
         @State private var lastPhase: Phase? = nil
-    // Live Activity removed
         @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
+
+        // Neue State Variablen wie in WorkoutsView
+        @State private var phase: Phase = .inhale
+        @State private var repIndex: Int = 1
+        @State private var phaseEndFired = false
+        @State private var finished = false
+        @State private var started = false
+
+        // GongPlayer instance
+        @State private var gong = GongPlayer()
 
         // Helper properties for dual ring progress
         private var cycleSeconds: Int { preset.inhale + preset.holdIn + preset.exhale + preset.holdOut }
@@ -396,67 +326,61 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
         }
 
+        func soundName(for phase: Phase) -> String {
+            switch phase {
+            case .inhale: return "einatmen"
+            case .holdIn: return "eingeatmet-halten"
+            case .exhale: return "ausatmen"
+            case .holdOut: return "ausgeatmet-halten"
+            }
+        }
+
+        func setPhase(_ p: Phase) {
+            phase = p
+            phaseStart = Date()
+            phaseDuration = Double(duration(for: p))
+            gong.play(named: soundName(for: p))
+        }
+
+        func advance() {
+            switch phase {
+            case .inhale:
+                if preset.holdIn > 0 {
+                    setPhase(.holdIn)
+                } else {
+                    setPhase(.exhale)
+                }
+            case .holdIn:
+                setPhase(.exhale)
+            case .exhale:
+                if preset.holdOut > 0 {
+                    setPhase(.holdOut)
+                } else {
+                    if repIndex >= preset.repetitions {
+                        finished = true
+                    } else {
+                        repIndex += 1
+                        setPhase(.inhale)
+                    }
+                }
+            case .holdOut:
+                if repIndex >= preset.repetitions {
+                    finished = true
+                } else {
+                    repIndex += 1
+                    setPhase(.inhale)
+                }
+            }
+        }
+
         var body: some View {
             ZStack {
                 Color(.systemGray6).ignoresSafeArea()
                 VStack(spacing: 12) {
-                    switch engine.state {
-                    case .idle:
-                        ProgressView().onAppear {
-                            // Set sessionStart and sessionTotal at session start
-                            let start = Date()
-                            sessionStart = start
-                            sessionTotal = TimeInterval(preset.totalSeconds)
-                            engine.start(preset: preset)
-                            // Live Activity entfernt für Debugging
-                            // let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
-                            // let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
-                            // if case .conflict(let existingOwner, let existingTitle) = result {
-                            //     conflictOwnerId = existingOwner
-                            //     conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
-                            //     showConflictAlert = true
-                            // }
-                        }
-                    case .running(let phase, let remaining, let rep, let totalReps):
+                    if !finished {
                         Text(preset.name).font(.headline)
-                        // Dual rings: outer = session, inner = per-phase (resets at each phase)
-                        TimelineView(.animation, content: { (timeline: TimelineViewDefaultContext) in
-                            VStack(spacing: 8) {
-                                let now = timeline.date
-                                
-                                // ---- OUTER (session) PROGRESS: continuous 0→1 over the whole session ----
-                                let totalDuration = max(0.001, sessionTotal)
-                                let elapsedSession = now.timeIntervalSince(sessionStart)
-                                let progressTotal = max(0.0, min(1.0, elapsedSession / totalDuration))
-
-                                // ---- INNER (phase) PROGRESS: reset on phase change, linear 0→1 ----
-                                let dur = max(0.001, phaseDuration)
-                                let start = phaseStart ?? now
-                                let elapsedInPhase = max(0, now.timeIntervalSince(start))
-                                let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
-
-                                ZStack {
-                                    // Outer ring: total session progress (continuous)
-                                    CircularRing(progress: progressTotal, lineWidth: 22)
-                                        .foregroundStyle(.tint)
-                                    // Inner ring: current phase progress (resets each phase)
-                                    CircularRing(progress: fractionPhase, lineWidth: 14)
-                                        .scaleEffect(0.72)
-                                        .foregroundStyle(.secondary)
-                                    // Center icon: phase direction
-                                    Image(systemName: SessionCard.iconName(for: phase))
-                                        .font(.system(size: 64, weight: .regular))
-                                        .foregroundStyle(.tint)
-                                }
-                                .frame(width: 320, height: 320)
-                                .padding(.top, 6)
-                                .contentShape(Rectangle())
-                                Text("Runde \(rep) / \(totalReps)")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
-                        })
-                    case .finished:
+                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, sessionStart: sessionStart, sessionTotal: sessionTotal)
+                    } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
                             Text("Fertig").font(.subheadline.weight(.semibold))
@@ -494,60 +418,173 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 .clipShape(Circle())
                 .padding(8)
             }
-            .onChange(of: engine.state) { newState in
-                if case .running(let ph, _, _, _) = newState {
-                    if ph != lastPhase {
-                        lastPhase = ph
-                        phaseStart = Date()
-                        phaseDuration = Double(duration(for: ph))
-                        // Live Activity entfernt für Debugging
-                        // // Update Live Activity to reflect inner-phase change (emoji/icon only)
-                        // let phaseNumber: Int
-                        // switch ph {
-                        //     case .inhale: phaseNumber = 1
-                        //     case .holdIn: phaseNumber = 2
-                        //     case .exhale: phaseNumber = 3
-                        //     case .holdOut: phaseNumber = 4
-                        // }
-                        // // Fire-and-forget: update only the small icon/phase; do not alter endDate
-                        // let sessionEnd = sessionStart.addingTimeInterval(sessionTotal)
-                        // Task { await liveActivity.update(phase: phaseNumber, endDate: sessionEnd, isPaused: false) }
+            .task {
+                // Start the session
+                let start = Date()
+                sessionStart = start
+                sessionTotal = TimeInterval(preset.totalSeconds)
+                started = true
+                setPhase(.inhale)
+                // Live Activity starten
+                let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
+                let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+                if case .conflict(let existingOwner, let existingTitle) = result {
+                    conflictOwnerId = existingOwner
+                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                    showConflictAlert = true
+                }
+            }
+            // Keine automatische Beendigung bei App-Wechsel
+            .alert(isPresented: $showConflictAlert) {
+                conflictAlert
+            }
+            .onChange(of: finished) { newValue in
+                if newValue {
+                    Task { await endSession(manual: false) }
+                }
+            }
+        }
+
+        // MARK: - PhaseProgressView (handles timeline and phase advancement)
+        struct PhaseProgressView: View {
+            let preset: Preset
+            @Binding var phase: Phase
+            @Binding var repIndex: Int
+            @Binding var phaseEndFired: Bool
+            @Binding var finished: Bool
+            @Binding var phaseStart: Date?
+            @Binding var phaseDuration: Double
+            let gong: GongPlayer
+            let sessionStart: Date
+            let sessionTotal: TimeInterval
+
+            @State private var currentTime: Date = Date()
+            @State private var timer: Timer?
+
+            var body: some View {
+                VStack(spacing: 8) {
+                    let now = currentTime
+                    
+                    // ---- OUTER (session) PROGRESS: continuous 0→1 over the whole session ----
+                    let totalDuration = max(0.001, sessionTotal)
+                    let elapsedSession = now.timeIntervalSince(sessionStart)
+                    let progressTotal = max(0.0, min(1.0, elapsedSession / totalDuration))
+
+                    // ---- INNER (phase) PROGRESS: reset on phase change, linear 0→1 ----
+                    let dur = max(0.001, phaseDuration)
+                    let start = phaseStart ?? now
+                    let elapsedInPhase = max(0, now.timeIntervalSince(start))
+                    let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
+
+                    ZStack {
+                        // Outer ring: total session progress (continuous)
+                        CircularRing(progress: progressTotal, lineWidth: 22)
+                            .foregroundStyle(.tint)
+                        // Inner ring: current phase progress (resets each phase)
+                        CircularRing(progress: fractionPhase, lineWidth: 14)
+                            .scaleEffect(0.72)
+                            .foregroundStyle(.secondary)
+                        // Center icon: phase direction
+                        Image(systemName: SessionCard.iconName(for: phase))
+                            .font(.system(size: 64, weight: .regular))
+                            .foregroundStyle(.tint)
+                    }
+                    .frame(width: 320, height: 320)
+                    .padding(.top, 6)
+                    .contentShape(Rectangle())
+                    Text("Runde \(repIndex) / \(preset.repetitions)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                .onAppear {
+                    startTimer()
+                }
+                .onDisappear {
+                    stopTimer()
+                }
+            }
+
+            private func startTimer() {
+                timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                    currentTime = Date()
+                    checkPhaseProgress()
+                }
+            }
+
+            private func stopTimer() {
+                timer?.invalidate()
+                timer = nil
+            }
+
+            private func checkPhaseProgress() {
+                let now = currentTime
+                let dur = max(0.001, phaseDuration)
+                let start = phaseStart ?? now
+                let elapsedInPhase = max(0, now.timeIntervalSince(start))
+                let fractionPhase = max(0.0, min(1.0, elapsedInPhase / dur))
+                
+                if fractionPhase >= 1.0 && !phaseEndFired {
+                    phaseEndFired = true
+                    advance()
+                } else if fractionPhase < 1.0 {
+                    phaseEndFired = false
+                }
+            }
+
+            func soundName(for phase: Phase) -> String {
+                switch phase {
+                case .inhale: return "einatmen"
+                case .holdIn: return "eingeatmet-halten"
+                case .exhale: return "ausatmen"
+                case .holdOut: return "ausgeatmet-halten"
+                }
+            }
+
+            func setPhase(_ p: Phase) {
+                phase = p
+                phaseStart = Date()
+                phaseDuration = Double(SessionCard(preset: preset, close: {}).duration(for: p))
+                gong.play(named: soundName(for: p))
+            }
+
+            func advance() {
+                switch phase {
+                case .inhale:
+                    if preset.holdIn > 0 {
+                        setPhase(.holdIn)
+                    } else {
+                        setPhase(.exhale)
+                    }
+                case .holdIn:
+                    setPhase(.exhale)
+                case .exhale:
+                    if preset.holdOut > 0 {
+                        setPhase(.holdOut)
+                    } else {
+                        if repIndex >= preset.repetitions {
+                            finished = true
+                        } else {
+                            repIndex += 1
+                            setPhase(.inhale)
+                        }
+                    }
+                case .holdOut:
+                    if repIndex >= preset.repetitions {
+                        finished = true
+                    } else {
+                        repIndex += 1
+                        setPhase(.inhale)
                     }
                 }
             }
-            // Live Activity entfernt für Debugging
-            // .alert("Timer läuft bereits", isPresented: $showConflictAlert, actions: {
-            //     Button("Abbrechen", role: .cancel) {
-            //         // user cancelled; just close overlay
-            //         close()
-            //     }
-            //     Button("Erzwingen", role: .destructive) {
-            //         // Force the Live Activity and start local engine regardless (per spec allow local start if force fails)
-            //         Task {
-            //             liveActivity.forceStart(title: preset.name, phase: 1, endDate: sessionStart.addingTimeInterval(sessionTotal), ownerId: "AtemTab")
-            //             engine.start(preset: preset)
-            //         }
-            //     }
-            // }, message: {
-            //     Text(conflictTitle ?? "Ein anderer Timer läuft")
-            // })
-            // Keine automatische Beendigung bei App-Wechsel
         }
 
-        private func endSession(manual: Bool) async {
-            print("[AtemView] endSession(manual: \(manual)) called, engine.state=\(engine.state)")
+        func endSession(manual: Bool) async {
+            print("[AtemView] endSession(manual: \(manual)) called")
 
-            // 1. Stoppe alle geplanten Timer/WorkItems
-            engine.cancelScheduled()
-
-            // 2. Setze State explizit auf .finished
-            engine.state = .finished
-            print("[AtemView] engine.state = .finished")
-
-            // 3. Stoppe Engine und Sounds
-            engine.cancel()
-            engine.gong.stopAll()
-            print("[AtemView] engine.cancel() & engine.gong.stopAll() called")
+            // 1. Stoppe alle Sounds
+            gong.stopAll()
+            print("[AtemView] gong.stopAll() called")
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
@@ -564,9 +601,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             // 4. Beende Live Activity garantiert
-            // Live Activity entfernt für Debugging
-            // await liveActivity.end(immediate: true)
-            // print("[AtemView] liveActivity.end(immediate: true) called")
+            await liveActivity.end(immediate: true)
+            print("[AtemView] liveActivity.end(immediate: true) called")
 
             // 5. Optional: kurze Verzögerung für UI-Feedback
             try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
@@ -576,12 +612,26 @@ private struct OverlayBackgroundEffect: ViewModifier {
             close()
         }
 
-        private static func iconName(for phase: Phase) -> String {
+        static func iconName(for phase: Phase) -> String {
             switch phase {
             case .inhale: return "arrow.up"
             case .exhale: return "arrow.down"
             case .holdIn, .holdOut: return "arrow.right"
             }
+        }
+
+        // Alert for existing timer conflict
+        private var conflictAlert: Alert {
+            Alert(
+                title: Text("Anderer Timer läuft"),
+                message: Text("Der Timer ‚\(conflictTitle ?? "Aktiver Timer")‘ läuft bereits. Soll dieser beendet und der neue gestartet werden?"),
+                primaryButton: .destructive(Text("Timer beenden und starten"), action: {
+                    // Force start now
+                    let endDate = sessionStart.addingTimeInterval(TimeInterval(preset.totalSeconds))
+                    liveActivity.forceStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+                }),
+                secondaryButton: .cancel(Text("Abbrechen"))
+            )
         }
     }
 
