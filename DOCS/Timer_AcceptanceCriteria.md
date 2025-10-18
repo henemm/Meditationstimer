@@ -32,8 +32,8 @@ Weitere Analyse der LiveActivityController-Logik und des State-Managements im At
 	- Dual-Ring-UI und CircularRing-Parameter angepasst
 	- Rücksetzung auf letzte stabile Commits
 
-**18.10.2025 – SessionEngine durch DispatchWorkItem-Logik ersetzt:**
-Die komplette SessionEngine in AtemView wurde durch eine vereinfachte Logik mit DispatchWorkItem ersetzt, identisch zu WorkoutsView. Timer.scheduledTimer entfernt, rekursive Closures durch schedule() ersetzt. Sollte das Problem lösen, dass der Timer nach cancel() weiterläuft. Nächster Schritt: Testen, ob der Timer jetzt stoppt und Live Activity entfernt wird.
+**18.10.2025 – isCancelled-Flag hinzugefügt:**
+Um sicherzustellen, dass countdown-Actions nach cancel() nicht mehr ausgeführt werden, isCancelled-Flag in SessionEngine hinzugefügt. Sollte das Problem endgültig lösen. Nächster Schritt: Testen.
 - Rücksetzung auf letzte stabile Commits:
 	Erwartung: Timer- und Live Activity-Fehler werden durch Rückkehr zum letzten funktionierenden Stand behoben.
 	Vorgehen: Mit Git auf Commit <SHA> zurückgesetzt, Build validiert, keine neuen Features oder Logikänderungen übernommen.
@@ -49,7 +49,7 @@ Die komplette SessionEngine in AtemView wurde durch eine vereinfachte Logik mit 
 ## Nächste Schritte
 1. Funktion testen: Timer nach "Beenden" stoppen und Live Activity entfernen.
 2. Bei Erfolg: Akzeptanzkriterien abschließen.
-3. Bei Fehlschlag: Auf Commit b6dfe13 zurückgehen und anders vorgehen.
+3. Bei Fehlschlag: Auf Commit 5af2347 zurückgehen und externes Debugging beauftragen.
 
 ---
 Letzte Aktualisierung: 18.10.2025

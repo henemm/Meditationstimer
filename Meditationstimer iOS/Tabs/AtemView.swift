@@ -158,7 +158,9 @@ public struct AtemView: View {
                         self.run(steps, index: index + 1, rep: r, total: tot)
                     } else {
                         self.state = .running(phase: p, remaining: next, rep: r, totalReps: tot)
-                        self.schedule(1, action: countdown)
+                        if !self.isCancelled {
+                            self.schedule(1, action: countdown)
+                        }
                     }
                 }
             }
