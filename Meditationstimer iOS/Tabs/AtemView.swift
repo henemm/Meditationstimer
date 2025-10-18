@@ -511,9 +511,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
         private func endSession(manual: Bool) async {
             print("[AtemView] endSession(manual: \(manual)) called, engine.state=\(engine.state)")
-            // 1. Stop Engine (immer, nicht nur manuell)
+            // 1. Setze State explizit auf .ended
+            engine.state = .ended
+            print("[AtemView] engine.state = .ended")
+
+            // 2. Stoppe Engine und Sounds
             engine.cancel()
-            print("[AtemView] engine.cancel() called, engine.state=\(engine.state)")
+            GongPlayer.shared.stopAll()
+            print("[AtemView] engine.cancel() & GongPlayer.shared.stopAll() called")
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
