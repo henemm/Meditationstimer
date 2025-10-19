@@ -65,6 +65,20 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                                     .font(.title3)
                             }
                             .padding(.leading)
+                        } else if owner == "WorkoutsTab" {
+                            let iconName: String = {
+                                if context.state.phase == 1 { return "flame" } // work phase
+                                return "pause" // rest phase or default
+                            }()
+                            ZStack {
+                                Circle()
+                                    .fill(Color.orange.opacity(0.28))
+                                    .frame(width: 36, height: 36)
+                                Image(systemName: iconName)
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.leading)
                         } else {
                             ZStack {
                                 Circle()
@@ -139,6 +153,19 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                             Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
                                 .font(.system(size: 8))
                         }
+                    } else if owner == "WorkoutsTab" {
+                        let iconName: String = {
+                            if context.state.phase == 1 { return "flame" } // work phase
+                            return "pause" // rest phase or default
+                        }()
+                        ZStack {
+                            Circle()
+                                .fill(Color.orange.opacity(0.28))
+                                .frame(width: 20, height: 20)
+                            Image(systemName: iconName)
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
                     } else {
                         ZStack {
                             Circle()
@@ -202,6 +229,19 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                             Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
                                 .font(.system(size: 6))
                         }
+                    } else if owner == "WorkoutsTab" {
+                        let iconName: String = {
+                            if context.state.phase == 1 { return "flame" } // work phase
+                            return "pause" // rest phase or default
+                        }()
+                        ZStack {
+                            Circle()
+                                .fill(Color.orange.opacity(0.28))
+                                .frame(width: 18, height: 18)
+                            Image(systemName: iconName)
+                                .font(.system(size: 8, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
                     } else {
                         ZStack {
                             Circle()
@@ -264,6 +304,20 @@ private struct LockScreenView: View {
                             .frame(width: 40, height: 40)
                         Text(phase == 1 ? "🧘‍♂️" : "🍃")
                             .font(.title2)
+                    }
+                    .padding(.leading)
+                } else if owner == "WorkoutsTab" {
+                    let iconName: String = {
+                        if phase == 1 { return "flame" } // work phase
+                        return "pause" // rest phase or default
+                    }()
+                    ZStack {
+                        Circle()
+                            .fill(Color.orange.opacity(0.28))
+                            .frame(width: 40, height: 40)
+                        Image(systemName: iconName)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white)
                     }
                     .padding(.leading)
                 } else {
