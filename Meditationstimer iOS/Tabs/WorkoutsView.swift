@@ -186,7 +186,7 @@ private struct WorkoutRunnerView: View {
     @State private var workoutStart: Date?
     @State private var isSaving = false
     @State private var saveFailed = false
-    @StateObject private var liveActivity = LiveActivityController()
+    @EnvironmentObject private var liveActivity: LiveActivityController
 
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false

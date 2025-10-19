@@ -6,16 +6,21 @@
 //
 
 import SwiftUI
+import HealthKit
 // Dynamic Island / Live Activity removed
 
 @main
 struct Meditationstimer_iOSApp: App {
     let receiver = PhoneMindfulnessReceiver()
     @Environment(\.scenePhase) private var scenePhase
-    // Live Activity removed: endActivityOnBackground flag unused
+    
+    // Shared Live Activity Controller for all tabs
+    @StateObject private var sharedLiveActivity = LiveActivityController()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(sharedLiveActivity)
         }
         // Live Activity background cleanup removed
     }

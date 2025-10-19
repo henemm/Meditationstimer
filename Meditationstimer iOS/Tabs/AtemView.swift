@@ -288,13 +288,13 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
     }
 
-    // MARK: - SessionCard (overlay during run)
+        // MARK: - SessionCard (overlay during run)
     struct SessionCard: View {
     // scenePhase-Automatik entfernt – führte zu unerwünschten Beendigungen beim App-Wechsel
         let preset: Preset
         var close: () -> Void
     // @StateObject private var engine = SessionEngine() entfernt
-        @StateObject private var liveActivity = LiveActivityController()
+        @EnvironmentObject private var liveActivity: LiveActivityController
         @State private var showConflictAlert: Bool = false
         @State private var conflictOwnerId: String? = nil
         @State private var conflictTitle: String? = nil
@@ -323,6 +323,25 @@ private struct OverlayBackgroundEffect: ViewModifier {
             case .holdIn: return preset.holdIn
             case .exhale: return preset.exhale
             case .holdOut: return preset.holdOut
+            }
+        }
+
+        // Callback for phase changes to update Live Activity
+        private func onPhaseChanged(to newPhase: Phase) {
+            let phaseNumber: Int
+            switch newPhase {
+            case .inhale: phaseNumber = 1  // ↑
+            case .holdIn: phaseNumber = 2  // →
+            case .exhale: phaseNumber = 3  // ↓
+            case .holdOut: phaseNumber = 4 // →
+            }
+            
+            print("🫁 [AtemView] PHASE CHANGED: \(newPhase.rawValue) → phaseNumber=\(phaseNumber)")
+            
+            Task {
+                let endDate = sessionStart.addingTimeInterval(TimeInterval(preset.totalSeconds))
+                await liveActivity.update(phase: phaseNumber, endDate: endDate, isPaused: false)
+                print("🫁 [AtemView] Live Activity UPDATE called for phase \(phaseNumber)")
             }
         }
 
@@ -379,7 +398,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 VStack(spacing: 12) {
                     if !finished {
                         Text(preset.name).font(.headline)
-                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, sessionStart: sessionStart, sessionTotal: sessionTotal)
+                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, sessionStart: sessionStart, sessionTotal: sessionTotal, onPhaseChanged: onPhaseChanged)
                     } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
@@ -428,10 +447,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 // Live Activity starten
                 let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
                 let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+                print("🫁 [AtemView] REQUESTING Live Activity start: title='\(preset.name)', ownerId='AtemTab'")
                 if case .conflict(let existingOwner, let existingTitle) = result {
+                    print("🫁 [AtemView] Live Activity CONFLICT: existingOwner='\(existingOwner)', existingTitle='\(existingTitle)'")
                     conflictOwnerId = existingOwner
                     conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
                     showConflictAlert = true
+                } else {
+                    print("🫁 [AtemView] Live Activity request submitted (no immediate conflict)")
                 }
             }
             // Keine automatische Beendigung bei App-Wechsel
@@ -457,6 +480,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             let gong: GongPlayer
             let sessionStart: Date
             let sessionTotal: TimeInterval
+            let onPhaseChanged: (Phase) -> Void
 
             @State private var currentTime: Date = Date()
             @State private var timer: Timer?
@@ -548,6 +572,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             func advance() {
+                let oldPhase = phase
                 switch phase {
                 case .inhale:
                     if preset.holdIn > 0 {
@@ -575,6 +600,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         repIndex += 1
                         setPhase(.inhale)
                     }
+                }
+                // Notify about phase change for Live Activity update
+                if phase != oldPhase {
+                    onPhaseChanged(phase)
                 }
             }
         }

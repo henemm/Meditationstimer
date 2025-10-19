@@ -43,7 +43,7 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                         if owner == "AtemTab" {
                             let iconName: String = {
                                 if context.state.phase == 1 { return "arrow.up" }
-                                if context.state.phase == 2 { return "arrow.left" }
+                                if context.state.phase == 2 { return "arrow.right" }
                                 if context.state.phase == 3 { return "arrow.down" }
                                 return "arrow.right"
                             }()
@@ -114,13 +114,50 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                     .padding(.trailing)
                 }
             } compactLeading: {
-                ZStack {
-                    Circle()
-                        .fill(Color("AccentColor"))
-                        .frame(width: 20, height: 20)
-                    Image(systemName: "figure.mind.and.body")
-                        .font(.system(size: 12))
-                        .foregroundColor(.white)
+                // Compact Leading: show phase icon instead of static app icon
+                if let owner = context.state.ownerId {
+                    if owner == "AtemTab" {
+                        let iconName: String = {
+                            if context.state.phase == 1 { return "arrow.up" }
+                            if context.state.phase == 2 { return "arrow.right" }
+                            if context.state.phase == 3 { return "arrow.down" }
+                            return "arrow.right" // Phase 4: hold out
+                        }()
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.28))
+                                .frame(width: 20, height: 20)
+                            Image(systemName: iconName)
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                    } else if owner == "OffenTab" {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.28))
+                                .frame(width: 20, height: 20)
+                            Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
+                                .font(.system(size: 8))
+                        }
+                    } else {
+                        ZStack {
+                            Circle()
+                                .fill(Color("AccentColor"))
+                                .frame(width: 20, height: 20)
+                            Image(systemName: "figure.mind.and.body")
+                                .font(.system(size: 10))
+                                .foregroundColor(.white)
+                        }
+                    }
+                } else {
+                    ZStack {
+                        Circle()
+                            .fill(Color("AccentColor"))
+                            .frame(width: 20, height: 20)
+                        Image(systemName: "figure.mind.and.body")
+                            .font(.system(size: 10))
+                            .foregroundColor(.white)
+                    }
                 }
             } compactTrailing: {
                 // Rechts: Timer mit OVERLAY-TRICK gegen Width-Bug
@@ -140,13 +177,50 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                         }
                     }
             } minimal: {
-                ZStack {
-                    Circle()
-                        .fill(Color("AccentColor"))
-                        .frame(width: 18, height: 18)
-                    Image(systemName: "figure.mind.and.body")
-                        .font(.system(size: 10))
-                        .foregroundColor(.white)
+                // Minimal: show phase icon instead of static app icon
+                if let owner = context.state.ownerId {
+                    if owner == "AtemTab" {
+                        let iconName: String = {
+                            if context.state.phase == 1 { return "arrow.up" }
+                            if context.state.phase == 2 { return "arrow.right" }
+                            if context.state.phase == 3 { return "arrow.down" }
+                            return "arrow.right" // Phase 4: hold out
+                        }()
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.28))
+                                .frame(width: 18, height: 18)
+                            Image(systemName: iconName)
+                                .font(.system(size: 8, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                    } else if owner == "OffenTab" {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.28))
+                                .frame(width: 18, height: 18)
+                            Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
+                                .font(.system(size: 6))
+                        }
+                    } else {
+                        ZStack {
+                            Circle()
+                                .fill(Color("AccentColor"))
+                                .frame(width: 18, height: 18)
+                            Image(systemName: "figure.mind.and.body")
+                                .font(.system(size: 8))
+                                .foregroundColor(.white)
+                        }
+                    }
+                } else {
+                    ZStack {
+                        Circle()
+                            .fill(Color("AccentColor"))
+                            .frame(width: 18, height: 18)
+                        Image(systemName: "figure.mind.and.body")
+                            .font(.system(size: 8))
+                            .foregroundColor(.white)
+                    }
                 }
             }
             .keylineTint(.accentColor)
@@ -165,7 +239,56 @@ private struct LockScreenView: View {
 
     var body: some View {
         HStack {
-            // ...existing code...
+            // Links: Phase-Icon für AtemTab
+            if let owner = ownerId {
+                if owner == "AtemTab" {
+                    let iconName: String = {
+                        if phase == 1 { return "arrow.up" }
+                        if phase == 2 { return "arrow.right" }
+                        if phase == 3 { return "arrow.down" }
+                        return "arrow.right" // Phase 4: hold out
+                    }()
+                    ZStack {
+                        Circle()
+                            .fill(Color.green.opacity(0.28))
+                            .frame(width: 40, height: 40)
+                        Image(systemName: iconName)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white)
+                    }
+                    .padding(.leading)
+                } else if owner == "OffenTab" {
+                    ZStack {
+                        Circle()
+                            .fill(Color.green.opacity(0.28))
+                            .frame(width: 40, height: 40)
+                        Text(phase == 1 ? "🧘‍♂️" : "🍃")
+                            .font(.title2)
+                    }
+                    .padding(.leading)
+                } else {
+                    ZStack {
+                        Circle()
+                            .fill(Color("AccentColor"))
+                            .frame(width: 40, height: 40)
+                        Image(systemName: "figure.mind.and.body")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white)
+                    }
+                    .padding(.leading)
+                }
+            } else {
+                ZStack {
+                    Circle()
+                        .fill(Color("AccentColor"))
+                        .frame(width: 40, height: 40)
+                    Image(systemName: "figure.mind.and.body")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white)
+                }
+                .padding(.leading)
+            }
+            
             Spacer()
             // Mitte: Timer oder statische Restzeit
             if isPaused {
@@ -183,7 +306,7 @@ private struct LockScreenView: View {
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
             }
-            // ...existing code...
+            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)

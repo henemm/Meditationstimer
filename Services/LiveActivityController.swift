@@ -45,12 +45,13 @@ final class LiveActivityController: ObservableObject {
     /// Start a Live Activity. Pass an optional `ownerId` to identify the caller.
     /// When another owner already holds the activity, this will end the previous activity and start a new one.
     func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) {
-        guard !isPreview else { return }
+        guard !isPreview else { 
+            print("🔍 [LiveActivity] PREVIEW MODE - start skipped")
+            return 
+        }
         // Ownership guard: if an activity exists and the owner differs, end it deterministically.
         if let existing = activity, let existingOwner = self.ownerId, existingOwner != ownerId {
-            #if DEBUG
-            print("[LiveActivity] start requested by owner=\(ownerId ?? "nil") but existing owner=\(existingOwner). Ending previous activity and continuing.")
-            #endif
+            print("🔄 [LiveActivity] CONFLICT: \(ownerId ?? "nil") wants to start, but \(existingOwner) owns current activity. Ending previous...")
             Task { @MainActor in
                 await existing.end(dismissalPolicy: .immediate)
             }
@@ -65,12 +66,7 @@ final class LiveActivityController: ObservableObject {
             var lastError: Error?
             for attempt in 1...2 {
                 do {
-                    #if DEBUG
-                    print("[LiveActivity] start attempt=\(attempt) → title=\(title), phase=\(phase), ends=\(endDate) enabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)")
-                    if let stateInfo = UIApplication.shared.value(forKeyPath: "applicationState") {
-                        print("[LiveActivity] UIApplication.applicationState=\(stateInfo)")
-                    }
-                    #endif
+                    print("🚀 [LiveActivity] START attempt \(attempt): owner=\(ownerId ?? "nil"), title='\(title)', phase=\(phase), ends=\(endDate)")
                     activity = try Activity.request(
                         attributes: attributes,
                         content: ActivityContent(state: state, staleDate: nil)
@@ -79,12 +75,11 @@ final class LiveActivityController: ObservableObject {
                     self.ownerId = ownerId
                     self.ownerTitle = title
                     lastError = nil
+                    print("✅ [LiveActivity] START SUCCESS: owner=\(ownerId ?? "nil") now owns activity")
                     break
                 } catch {
                     lastError = error
-                    #if DEBUG
-                    print("[LiveActivity] start attempt=\(attempt) failed: \(error)")
-                    #endif
+                    print("❌ [LiveActivity] START attempt \(attempt) FAILED: \(error)")
                     // short backoff before retry
                     if attempt < 2 {
                         Thread.sleep(forTimeInterval: 0.12)
@@ -92,32 +87,24 @@ final class LiveActivityController: ObservableObject {
                 }
             }
             if let err = lastError {
-                #if DEBUG
-                print("[LiveActivity] start ultimately failed: \(err)")
-                #endif
+                print("💥 [LiveActivity] START ULTIMATE FAILURE: \(err)")
             }
         } else {
-            #if DEBUG
-            if #available(iOS 16.1, *) {
-                print("[LiveActivity] cannot start: activitiesEnabled=\(ActivityAuthorizationInfo().areActivitiesEnabled)")
-            } else {
-                print("[LiveActivity] cannot start: iOS < 16.1")
-            }
-            #endif
+            print("🚫 [LiveActivity] CANNOT START: iOS version or activities not enabled")
         }
     }
 
     /// Request to start a Live Activity. If another owner holds the activity, returns `.conflict`.
     /// The caller (UI) should prompt the user and call `forceStart` if the user confirms.
     func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
+        print("📋 [LiveActivity] REQUEST START: owner=\(ownerId ?? "nil"), currentOwner=\(self.ownerId ?? "nil"), hasActivity=\(activity != nil)")
         // If there's an existing active activity owned by someone else, report conflict
-        #if DEBUG
-        print("[LiveActivity] requestStart called by owner=\(ownerId ?? "nil") currentOwner=\(self.ownerId ?? "nil") isActive=\(activity != nil)")
-        #endif
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
+            print("⚠️ [LiveActivity] CONFLICT DETECTED: \(existingOwner) owns activity, \(ownerId ?? "nil") wants to start")
             return .conflict(existingOwnerId: existingOwner, existingTitle: self.ownerTitle ?? "")
         }
         // No conflict — invoke the existing start path asynchronously
+        print("✅ [LiveActivity] NO CONFLICT: starting activity for owner=\(ownerId ?? "nil")")
         Task { @MainActor in
             self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
         }
@@ -144,38 +131,37 @@ final class LiveActivityController: ObservableObject {
     }
 
     func update(phase: Int, endDate: Date, isPaused: Bool = false) async {
-        guard !isPreview else { return }
+        guard !isPreview else { 
+            print("🔍 [LiveActivity] PREVIEW MODE - update skipped")
+            return 
+        }
         if #available(iOS 16.1, *) {
             // Defensive: only update if we have an active activity
             guard activity != nil else {
-                #if DEBUG
-                print("[LiveActivity] update called but no active activity (ignored)")
-                #endif
+                print("⚠️ [LiveActivity] UPDATE called but NO ACTIVE ACTIVITY (ignored)")
                 return
             }
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused)
-            #if DEBUG
-            print("[LiveActivity] update → phase=\(phase), ends=\(endDate), paused=\(isPaused)")
-            #endif
+            print("🔄 [LiveActivity] UPDATE: phase=\(phase), ends=\(endDate), paused=\(isPaused), owner=\(self.ownerId ?? "nil")")
             await activity?.update(ActivityContent(state: state, staleDate: nil))
         }
     }
 
     func end(immediate: Bool = true) async {
-        guard !isPreview else { activity = nil; return }
+        guard !isPreview else { 
+            activity = nil
+            print("🔍 [LiveActivity] PREVIEW MODE - end skipped, reset local state")
+            return 
+        }
         if #available(iOS 16.1, *) {
             // Avoid double-ending
             guard let currentActivity = activity else {
-                #if DEBUG
-                print("[LiveActivity] end called but no active activity (ignored) ownerId=\(self.ownerId ?? "nil") ownerTitle=\(self.ownerTitle ?? "")")
-                #endif
+                print("⚠️ [LiveActivity] END called but NO ACTIVE ACTIVITY (ignored), owner=\(self.ownerId ?? "nil")")
                 return
             }
 
-            #if DEBUG
-            print("[LiveActivity] end(immediate=\(immediate)) called owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
-            Thread.callStackSymbols.prefix(8).forEach { print("[LiveActivity] stack: \($0)") }
-            #endif
+            print("🛑 [LiveActivity] END(immediate=\(immediate)) called, owner=\(self.ownerId ?? "nil"), title='\(self.ownerTitle ?? "nil")'")
+            Thread.callStackSymbols.prefix(8).forEach { print("📍 [LiveActivity] stack: \($0)") }
 
             // Use non-deprecated API
             if immediate {
@@ -192,6 +178,7 @@ final class LiveActivityController: ObservableObject {
             activity = nil
             ownerId = nil
             ownerTitle = nil
+            print("✅ [LiveActivity] END COMPLETE: activity cleaned up")
         }
     }
     

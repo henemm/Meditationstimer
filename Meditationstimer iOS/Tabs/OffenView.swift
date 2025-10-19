@@ -83,7 +83,7 @@ struct OffenView: View {
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
-    @StateObject private var liveActivity = LiveActivityController()
+    @EnvironmentObject private var liveActivity: LiveActivityController
     @State private var showConflictAlert: Bool = false
     @State private var conflictOwnerId: String? = nil
     @State private var conflictTitle: String? = nil
