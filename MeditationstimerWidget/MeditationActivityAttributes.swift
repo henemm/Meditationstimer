@@ -13,9 +13,10 @@ import Foundation
 #if canImport(ActivityKit)
 struct MeditationAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
-        var endDate: Date
-        var phase: Int // 1 = Meditation, 2 = Besinnung
-        var ownerId: String?
+    var endDate: Date
+    var phase: Int // 1 = Meditation, 2 = Besinnung
+    var ownerId: String?
+    var isPaused: Bool
     }
     var title: String
 }

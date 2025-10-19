@@ -144,18 +144,15 @@ struct OffenView: View {
     private var startButton: some View {
         Button(action: {
             Task { @MainActor in
-                // If our engine already runs a session, ask the user whether to stop it and start a new one
-                if engine.state != .idle {
+                // Wenn Engine läuft, verhindere doppelten Start
+                guard engine.state == .idle else {
                     showLocalConflictAlert = true
                     return
                 }
-
-                // Compute phase end dates locally so we can ask ActivityKit before starting the engine
+                // Engine bestimmt Endzeit, keine lokale Berechnung mehr
                 let now = Date()
-                let phase1End = now.addingTimeInterval(TimeInterval(max(0, phase1Minutes) * 60))
-                let phase2End = phase1End.addingTimeInterval(TimeInterval(max(0, phase2Minutes) * 60))
-
-                // Ask the LiveActivity controller if starting now would conflict with an existing Activity
+                engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                guard let phase1End = engine.phase1EndDate else { return }
                 let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
                 switch result {
                 case .started:
@@ -302,9 +299,9 @@ struct OffenView: View {
                     // If no activity exists, end/start as a fallback to ensure a fresh Activity for Phase 2.
                     if let phase2End = engine.endDate {
                         Task {
-                                if liveActivity.isActive {
+                            if liveActivity.isActive {
                                 // Update the current activity in-place
-                                await liveActivity.update(phase: 2, endDate: phase2End)
+                                await liveActivity.update(phase: 2, endDate: phase2End, isPaused: false)
                                 print("🔔 [LiveActivity] Phase 2 (updated): Timer bis \(phase2End), Emoji 🪷")
                             } else {
                                 // No active activity: just start a fresh one for Phase 2.

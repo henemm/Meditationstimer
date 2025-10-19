@@ -335,40 +335,51 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
         }
 
+        static func phaseToInt(_ phase: Phase) -> Int {
+            switch phase {
+            case .inhale: return 1
+            case .holdIn: return 2
+            case .exhale: return 3
+            case .holdOut: return 4
+            }
+        }
+
         func setPhase(_ p: Phase) {
             phase = p
             phaseStart = Date()
             phaseDuration = Double(duration(for: p))
             gong.play(named: soundName(for: p))
+            // Live Activity is now handled in PhaseProgressView
         }
 
-        func advance() {
-            switch phase {
-            case .inhale:
-                if preset.holdIn > 0 {
-                    setPhase(.holdIn)
-                } else {
+            func advance() {
+                switch phase {
+                case .inhale:
+                    if preset.holdIn > 0 {
+                        setPhase(.holdIn)
+                    } else {
+                        setPhase(.exhale)
+                    }
+                case .holdIn:
                     setPhase(.exhale)
-                }
-            case .holdIn:
-                setPhase(.exhale)
-            case .exhale:
-                if preset.holdOut > 0 {
-                    setPhase(.holdOut)
-                } else {
+                case .exhale:
+                    if preset.holdOut > 0 {
+                        setPhase(.holdOut)
+                    } else {
+                        if repIndex >= preset.repetitions {
+                            finished = true
+                        } else {
+                            repIndex += 1
+                            setPhase(.inhale)
+                        }
+                    }
+                case .holdOut:
                     if repIndex >= preset.repetitions {
                         finished = true
                     } else {
                         repIndex += 1
                         setPhase(.inhale)
                     }
-                }
-            case .holdOut:
-                if repIndex >= preset.repetitions {
-                    finished = true
-                } else {
-                    repIndex += 1
-                    setPhase(.inhale)
                 }
             }
         }
@@ -379,7 +390,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 VStack(spacing: 12) {
                     if !finished {
                         Text(preset.name).font(.headline)
-                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, sessionStart: sessionStart, sessionTotal: sessionTotal)
+                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, sessionStart: sessionStart, sessionTotal: sessionTotal, liveActivity: liveActivity)
                     } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
@@ -425,14 +436,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 sessionTotal = TimeInterval(preset.totalSeconds)
                 started = true
                 setPhase(.inhale)
-                // Live Activity starten
-                let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
-                let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
-                if case .conflict(let existingOwner, let existingTitle) = result {
-                    conflictOwnerId = existingOwner
-                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
-                    showConflictAlert = true
-                }
             }
             // Keine automatische Beendigung bei App-Wechsel
             .alert(isPresented: $showConflictAlert) {
@@ -457,6 +460,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             let gong: GongPlayer
             let sessionStart: Date
             let sessionTotal: TimeInterval
+            let liveActivity: LiveActivityController
 
             @State private var currentTime: Date = Date()
             @State private var timer: Timer?
@@ -545,6 +549,19 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 phaseStart = Date()
                 phaseDuration = Double(SessionCard(preset: preset, close: {}).duration(for: p))
                 gong.play(named: soundName(for: p))
+                // Handle Live Activity like OffenView: start if not active, update if active
+                let sessionEndDate = sessionStart.addingTimeInterval(sessionTotal)
+                Task {
+                    if liveActivity.isActive {
+                        // Update existing activity
+                        await liveActivity.update(phase: SessionCard.phaseToInt(p), endDate: sessionEndDate, isPaused: false)
+                        print("🔔 [AtemView] Live Activity updated to phase \(SessionCard.phaseToInt(p)): \(p)")
+                    } else {
+                        // Start new activity for this phase
+                        liveActivity.start(title: preset.name, phase: SessionCard.phaseToInt(p), endDate: sessionEndDate, ownerId: "AtemTab")
+                        print("🔔 [AtemView] Live Activity started for AtemTab phase \(SessionCard.phaseToInt(p)): \(p)")
+                    }
+                }
             }
 
             func advance() {
@@ -770,7 +787,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(Color.white.opacity(0.32), lineWidth: 1)
                 )
-                .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 2)
+                                .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 2)
         }
     }
 }

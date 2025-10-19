@@ -186,7 +186,7 @@ private struct WorkoutRunnerView: View {
     @State private var workoutStart: Date?
     @State private var isSaving = false
     @State private var saveFailed = false
-    // Live Activity removed
+    @StateObject private var liveActivity = LiveActivityController()
 
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
@@ -363,7 +363,9 @@ private struct WorkoutRunnerView: View {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
-                    // Live Activity removed
+                    // LiveActivity: Endzeit aus sessionStart + sessionTotal
+                    let endDate = sessionStart.addingTimeInterval(sessionTotal)
+                    let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
                     setPhase(.work)
                     scheduleCuesForCurrentPhase()
                 }
@@ -372,7 +374,9 @@ private struct WorkoutRunnerView: View {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
-                // Live Activity removed
+                // LiveActivity: Endzeit aus sessionStart + sessionTotal
+                let endDate = sessionStart.addingTimeInterval(sessionTotal)
+                let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
                 setPhase(.work)
                 scheduleCuesForCurrentPhase()
             }
@@ -412,7 +416,7 @@ private struct WorkoutRunnerView: View {
         }
 
         // End Live Activity
-    // Live Activity removed
+        Task { await liveActivity.end(immediate: true) }
 
         // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
         try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
@@ -532,6 +536,12 @@ private struct WorkoutRunnerView: View {
             pausedAt = Date()
             sounds.stopAll()
             cancelScheduled()
+            // LiveActivity: Pause-Status setzen
+            let now = Date()
+            let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
+            let remaining = max(0, sessionTotal - elapsedSession)
+            let pausedEndDate = now.addingTimeInterval(remaining)
+            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: pausedEndDate, isPaused: true) }
         } else {
             if let p = pausedAt {
                 let delta = Date().timeIntervalSince(p)
@@ -541,6 +551,12 @@ private struct WorkoutRunnerView: View {
             pausedAt = nil
             isPaused = false
             scheduleCuesForCurrentPhase()
+            // LiveActivity: Pause-Status zurücknehmen
+            let now = Date()
+            let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
+            let remaining = max(0, sessionTotal - elapsedSession)
+            let resumedEndDate = now.addingTimeInterval(remaining)
+            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: resumedEndDate, isPaused: false) }
         }
     }
 }
