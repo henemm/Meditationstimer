@@ -136,9 +136,12 @@ struct OffenView: View {
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .alert(isPresented: $showConflictAlert) {
-            conflictAlert
-        }
+                    .alert(isPresented: $showConflictAlert) {
+                conflictAlert
+            }
+            .alert(isPresented: $showLocalConflictAlert) {
+                localConflictAlert
+            }
     }
 
     private var startButton: some View {
@@ -215,8 +218,8 @@ struct OffenView: View {
                     bgAudio.start()
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
-                    if let phase1End = engine.phase1EndDate {
-                        liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                    if let sessionEnd = engine.endDate {
+                        liveActivity.forceStart(title: "Meditation", phase: 1, endDate: sessionEnd, ownerId: "OffenTab")
                     }
                 }
             }),
@@ -295,20 +298,11 @@ struct OffenView: View {
                     didPlayPhase2Gong = true
                     // Debug: show engine dates at transition
                     print("DBG TRANSITION: now=\(Date()), phase1End=\(String(describing: engine.phase1EndDate)), engine.endDate=\(String(describing: engine.endDate)), phase2Minutes=\(phase2Minutes)")
-                    // Robust: prefer updating the existing Live Activity to Phase 2.
-                    // If no activity exists, end/start as a fallback to ensure a fresh Activity for Phase 2.
+                    // Update Live Activity for Phase 2 (don't end/start, just update)
                     if let phase2End = engine.endDate {
                         Task {
-                            if liveActivity.isActive {
-                                // Update the current activity in-place
-                                await liveActivity.update(phase: 2, endDate: phase2End, isPaused: false)
-                                print("🔔 [LiveActivity] Phase 2 (updated): Timer bis \(phase2End), Emoji 🪷")
-                            } else {
-                                // No active activity: just start a fresh one for Phase 2.
-                                // Avoid calling end() here because activity is already nil and that can produce noisy stacks.
-                                liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
-                                print("🔔 [LiveActivity] Phase 2 (restarted): Timer bis \(phase2End), Emoji 🪷")
-                            }
+                            await liveActivity.update(phase: 2, endDate: phase2End, isPaused: false)
+                            print("🔔 [OffenView] Live Activity UPDATE: Phase 2, endDate=\(phase2End)")
                         }
                     }
                 }
@@ -317,10 +311,12 @@ struct OffenView: View {
                     // Direkter Einstieg in Phase 2 (z. B. wenn phase1Minutes == 0)
                     gong.play(named: "gong-dreimal")
                     didPlayPhase2Gong = true
-                    // Start Live Activity for Phase 2 directly
+                    // Update Live Activity for Phase 2 directly
                     if let phase2End = engine.endDate {
-                        liveActivity.start(title: "Besinnung", phase: 2, endDate: phase2End, ownerId: "OffenTab")
-                        print("🔔 [LiveActivity] Direkter Start Phase 2: Timer bis \(phase2End), Emoji 🪷")
+                        Task {
+                            await liveActivity.update(phase: 2, endDate: phase2End, isPaused: false)
+                            print("🔔 [OffenView] Live Activity UPDATE: Direct Phase 2, endDate=\(phase2End)")
+                        }
                     }
                 }
                 // Natürliches Ende

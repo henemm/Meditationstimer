@@ -9,7 +9,13 @@ Der Nutzer kann nicht programmieren und versteht keinen Code. Sämtlicher Code w
 - **Never automatically make code changes without explicit permission**
 - When user asks "what should I change?", provide the information/code snippet only
 - Only use editing tools when user explicitly says "make this change" or "fix this"
-- Exception: Emergency fixes for build-breaking errors may be applied with clear explanation
+- **Exception: Emergency fixes for build-breaking errors may be applied with clear explanation**
+- **Exception: File operations (delete, move, rename) need explicit confirmation after explanation**
+
+### 1a. **Explicit Confirmation Required**
+- **Always get explicit "yes" or "do it" before any file operation**
+- "ok" or silence is NOT sufficient confirmation
+- Explain what will happen, then ask "Should I proceed?"
 
 ### 2. **File Editing Safety**
 - **ALWAYS include 3-5 lines of context** before and after when using `replace_string_in_file`

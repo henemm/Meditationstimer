@@ -441,6 +441,15 @@ private struct WorkoutRunnerView: View {
         }
         scheduleCuesForCurrentPhase()
 
+        // Live Activity Update bei Phasenwechsel
+        let phaseNumber = p == .work ? 1 : 2
+        let now = Date()
+        let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
+        let remaining = max(0, sessionTotal - elapsedSession)
+        let updatedEndDate = now.addingTimeInterval(remaining)
+        print("🏋️ [WorkoutsView] PHASE CHANGED: \(p.rawValue) → phaseNumber=\(phaseNumber)")
+        Task { await liveActivity.update(phase: phaseNumber, endDate: updatedEndDate, isPaused: isPaused) }
+
         // Announce round number exactly at the start of WORK (after Auftakt)
         if p == .work {
             let current = repIndex
