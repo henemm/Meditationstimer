@@ -298,7 +298,7 @@ struct OffenView: View {
                     didPlayPhase2Gong = true
                     // Debug: show engine dates at transition
                     print("DBG TRANSITION: now=\(Date()), phase1End=\(String(describing: engine.phase1EndDate)), engine.endDate=\(String(describing: engine.endDate)), phase2Minutes=\(phase2Minutes)")
-                    // Update Live Activity for Phase 2 (don't end/start, just update)
+                    // Update Live Activity for Phase 2 with staleDate to ensure background updates work
                     if let phase2End = engine.endDate {
                         Task {
                             await liveActivity.update(phase: 2, endDate: phase2End, isPaused: false)

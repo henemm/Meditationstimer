@@ -142,8 +142,11 @@ final class LiveActivityController: ObservableObject {
                 return
             }
             let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused)
-            print("🔄 [LiveActivity] UPDATE: phase=\(phase), ends=\(endDate), paused=\(isPaused), owner=\(self.ownerId ?? "nil")")
-            await activity?.update(ActivityContent(state: state, staleDate: nil))
+            // For background updates, set staleDate to ensure the update is processed
+            // staleDate tells the system when this content becomes stale and needs updating
+            let staleDate = Date().addingTimeInterval(30) // 30 seconds from now
+            print("🔄 [LiveActivity] UPDATE: phase=\(phase), ends=\(endDate), paused=\(isPaused), owner=\(self.ownerId ?? "nil"), staleDate=\(staleDate)")
+            await activity?.update(ActivityContent(state: state, staleDate: staleDate))
         }
     }
 
