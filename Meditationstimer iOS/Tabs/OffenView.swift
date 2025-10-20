@@ -389,7 +389,7 @@ struct OffenView: View {
             bgAudio?.stop()
         }
         pendingEndStop = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.4, execute: work)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 7.4, execute: work)
 
         // 6. Erlaube dem Bildschirm wieder, sich auszuschalten
         setIdleTimer(false)
