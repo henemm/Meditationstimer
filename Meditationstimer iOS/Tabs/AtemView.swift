@@ -55,7 +55,7 @@ public struct AtemView: View {
 
 public struct AtemView: View {
     // MARK: - Preset Model
-    struct Preset: Identifiable, Hashable {
+    struct Preset: Identifiable, Hashable, Codable {
         let id: UUID
         var name: String
         var emoji: String
@@ -137,6 +137,20 @@ public struct AtemView: View {
     @State private var showingEditor: Preset? = nil
     @State private var runningPreset: Preset? = nil
 
+    private let presetsKey = "atemPresets"
+
+    private func loadPresets() {
+        if let data = UserDefaults.standard.data(forKey: presetsKey),
+           let decoded = try? JSONDecoder().decode([Preset].self, from: data) {
+            presets = decoded
+        }
+    }
+
+    private func savePresets() {
+        if let data = try? JSONEncoder().encode(presets) {
+            UserDefaults.standard.set(data, forKey: presetsKey)
+        }
+    }
     private let emojiChoices: [String] = ["🧘","🪷","🌬️","🫁","🌿","🌀","✨","🔷","🔶","💠"]
     private func randomEmoji() -> String { emojiChoices.randomElement() ?? "🧘" }
 
@@ -156,7 +170,7 @@ public struct AtemView: View {
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                     }
-                    .onDelete { presets.remove(atOffsets: $0) }
+                    .onDelete { presets.remove(atOffsets: $0); savePresets() }
                 }
                 .listStyle(.plain)
                 .padding(.horizontal, 4)
@@ -187,14 +201,17 @@ public struct AtemView: View {
                             } else {
                                 presets.append(edited)
                             }
+                            savePresets()
                         },
                         onDelete: { id in
                             if let i = presets.firstIndex(where: { $0.id == id }) {
                                 presets.remove(at: i)
                             }
+                            savePresets()
                         }
                     )
                 }
+                .onAppear { loadPresets() }
             }
             .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
 

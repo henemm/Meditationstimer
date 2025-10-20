@@ -576,9 +576,9 @@ struct WorkoutsView: View {
     @State private var showSettings = false
     @State private var showRunner = false
 
-    @State private var intervalSec: Int = 30
-    @State private var restSec: Int = 10
-    @State private var repeats: Int = 10
+    @AppStorage("intervalSec") private var intervalSec: Int = 30
+    @AppStorage("restSec") private var restSec: Int = 10
+    @AppStorage("repeats") private var repeats: Int = 10
 
     // TODO: compute total duration once repetition logic is re-added
     private var totalSeconds: Int {
