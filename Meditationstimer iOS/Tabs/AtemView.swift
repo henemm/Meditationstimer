@@ -546,7 +546,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             private func startTimer() {
-                timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
                     currentTime = Date()
                     checkPhaseProgress()
                 }

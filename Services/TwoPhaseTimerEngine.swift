@@ -82,7 +82,7 @@ final class TwoPhaseTimerEngine: ObservableObject {
         updateState(at: now)
 
         // Ticker nur für UI im Vordergrund
-        ticker = Timer.publish(every: 1, on: .main, in: .common)
+        ticker = Timer.publish(every: 0.05, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] t in
                 self?.updateState(at: t)
