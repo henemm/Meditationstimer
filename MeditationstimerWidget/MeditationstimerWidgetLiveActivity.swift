@@ -37,95 +37,95 @@ struct MeditationstimerWidgetLiveActivity: Widget {
             DynamicIsland {
                 // Expanded: Links Icons, rechts Timer - alles auf einer Höhe
                 DynamicIslandExpandedRegion(.leading) {
-                    // Leading region: show the phase icon for the current activity (replaces app icon)
-                    // For AtemTab: use SF arrow mapping. For OffenTab: use emoji mapping. Fallback to app icon.
-                    if let owner = context.state.ownerId {
-                        if owner == "AtemTab" {
-                            let iconName: String = {
-                                if context.state.phase == 1 { return "arrow.up" }
-                                if context.state.phase == 2 { return "arrow.right" }
-                                if context.state.phase == 3 { return "arrow.down" }
-                                return "arrow.right"
-                            }()
-                            ZStack {
-                                Circle()
-                                    .fill(Color.green.opacity(0.28))
-                                    .frame(width: 36, height: 36)
-                                Image(systemName: iconName)
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(.white)
+                    VStack {
+                        if let owner = context.state.ownerId {
+                            if owner == "AtemTab" {
+                                let iconName: String = {
+                                    if context.state.phase == 1 { return "arrow.up" }
+                                    if context.state.phase == 2 { return "arrow.right" }
+                                    if context.state.phase == 3 { return "arrow.down" }
+                                    return "arrow.right"
+                                }()
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.green.opacity(0.28))
+                                        .frame(width: 52, height: 52)
+                                    Image(systemName: iconName)
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                            } else if owner == "OffenTab" {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.green.opacity(0.28))
+                                        .frame(width: 52, height: 52)
+                                    Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
+                                        .font(.title3)
+                                }
+                            } else if owner == "WorkoutsTab" {
+                                let iconName: String = {
+                                    if context.state.phase == 1 { return "flame" } // work phase
+                                    return "pause" // rest phase or default
+                                }()
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.orange.opacity(0.28))
+                                        .frame(width: 52, height: 52)
+                                    Image(systemName: iconName)
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                            } else {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color("AccentColor"))
+                                        .frame(width: 52, height: 52)
+                                    Image(systemName: "figure.mind.and.body")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.white)
+                                }
                             }
-                            .padding(.leading)
-                        } else if owner == "OffenTab" {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.green.opacity(0.28))
-                                    .frame(width: 36, height: 36)
-                                Text(context.state.phase == 1 ? "🧘‍♂️" : "🍃")
-                                    .font(.title3)
-                            }
-                            .padding(.leading)
-                        } else if owner == "WorkoutsTab" {
-                            let iconName: String = {
-                                if context.state.phase == 1 { return "flame" } // work phase
-                                return "pause" // rest phase or default
-                            }()
-                            ZStack {
-                                Circle()
-                                    .fill(Color.orange.opacity(0.28))
-                                    .frame(width: 36, height: 36)
-                                Image(systemName: iconName)
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(.white)
-                            }
-                            .padding(.leading)
                         } else {
                             ZStack {
                                 Circle()
                                     .fill(Color("AccentColor"))
-                                    .frame(width: 36, height: 36)
+                                    .frame(width: 52, height: 52)
                                 Image(systemName: "figure.mind.and.body")
                                     .font(.system(size: 14))
                                     .foregroundColor(.white)
                             }
-                            .padding(.leading)
                         }
-                    } else {
-                        ZStack {
-                            Circle()
-                                .fill(Color("AccentColor"))
-                                .frame(width: 36, height: 36)
-                            Image(systemName: "figure.mind.and.body")
-                                .font(.system(size: 14))
-                                .foregroundColor(.white)
-                        }
-                        .padding(.leading)
                     }
+                    .padding(.leading, 16)
+                    .padding(.vertical, 12)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    // Trailing region: show the timer (no phase bubble here) — allow font scaling to avoid truncation
-                    HStack {
-                        Spacer(minLength: 6)
+                    VStack {
                         if context.state.isPaused {
                             Text(timeString(from: context.state.endDate))
-                                .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                .font(.system(size: 36, weight: .semibold, design: .rounded))
                                 .monospacedDigit()
                                 .minimumScaleFactor(0.6)
                                 .lineLimit(1)
                                 .foregroundStyle(.white)
                                 .layoutPriority(1)
+                                .padding(.top, 4)
+                                .padding(.trailing, 16)
                         } else {
                             Text(context.state.endDate, style: .timer)
-                                .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                .font(.system(size: 36, weight: .semibold, design: .rounded))
                                 .monospacedDigit()
                                 .minimumScaleFactor(0.6)
                                 .lineLimit(1)
                                 .foregroundStyle(.white)
                                 .layoutPriority(1)
+                                .padding(.top, 4)
+                                .padding(.trailing, 16)
                         }
-                        Spacer(minLength: 6)
                     }
-                    .padding(.trailing)
+                    .padding(.trailing, 16)
+                    .padding(.vertical, 12)
+                    .padding(.top, 4)
                 }
             } compactLeading: {
                 // Compact Leading: show phase icon instead of static app icon
