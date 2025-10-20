@@ -424,25 +424,6 @@ extension MeditationAttributes.ContentState {
     MeditationAttributes.ContentState.sampleP2
 }
 #else
-// Fallback Widget for macOS Preview context
-struct MeditationstimerWidgetLiveActivity: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "MeditationTimer", provider: Provider()) { entry in
-            Text("Live Activities require iOS")
-        }
-        .configurationDisplayName("Meditation Timer")
-        .description("Live Activity for meditation sessions")
-    }
-}
-
-private struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry { SimpleEntry(date: Date()) }
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) { completion(SimpleEntry(date: Date())) }
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) { completion(Timeline(entries: [SimpleEntry(date: Date())], policy: .never)) }
-}
-
-private struct SimpleEntry: TimelineEntry {
-    let date: Date
-}
+// Live Activities are not supported on non-iOS platforms
 #endif
 #endif

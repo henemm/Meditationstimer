@@ -43,6 +43,7 @@ struct ContentView: View {
     @StateObject private var engine = TwoPhaseTimerEngine()
     @State private var showingError: String?
     @State private var askedPermissions = false
+    @State private var showingCalendar = false
 
 
     var body: some View {
@@ -71,6 +72,17 @@ struct ContentView: View {
         )
         .toolbarBackground(.ultraThinMaterial, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: { showingCalendar = true }) {
+                    Image(systemName: "calendar")
+                        .foregroundColor(.primary)
+                }
+            }
+        }
+        .sheet(isPresented: $showingCalendar) {
+            CalendarView()
+        }
         .onAppear {
             // Permissions are now requested on-demand in each tab when needed
             #if DEBUG

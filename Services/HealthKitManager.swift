@@ -55,7 +55,7 @@ final class HealthKitManager {
     /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
     /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
     ///
-    /// Fragt die Berechtigung an (schreiben: mindfulSession & Workout, lesen: heartRate).
+    /// Fragt die Berechtigung an (schreiben: mindfulSession & Workout, lesen: heartRate, mindfulSession, Workout).
     /// Robust: nur wenn App aktiv, und nur wenn noch nötig.
     @MainActor
     func requestAuthorization() async throws {
@@ -68,8 +68,13 @@ final class HealthKitManager {
         let workoutType = HKObjectType.workoutType()
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
 
-    let toShare: Set<HKSampleType> = [mindfulType, workoutType]
-        let toRead: Set<HKObjectType> = heartRateType.map { Set([$0]) } ?? []
+        let toShare: Set<HKSampleType> = [mindfulType, workoutType]
+        var toRead = Set<HKObjectType>()
+        toRead.insert(mindfulType)
+        toRead.insert(workoutType)
+        if let heartRateType = heartRateType {
+            toRead.insert(heartRateType)
+        }
 
         // Prüfen, ob eine Anfrage überhaupt nötig ist
         let status: HKAuthorizationRequestStatus = try await withCheckedThrowingContinuation { (cont: CheckedContinuation<HKAuthorizationRequestStatus, Error>) in
@@ -176,7 +181,12 @@ final class HealthKitManager {
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
 
         let toShare: Set<HKSampleType> = [mindfulType, workoutType]
-        let toRead: Set<HKObjectType> = heartRateType.map { Set([$0]) } ?? []
+        var toRead = Set<HKObjectType>()
+        toRead.insert(mindfulType)
+        toRead.insert(workoutType)
+        if let heartRateType = heartRateType {
+            toRead.insert(heartRateType)
+        }
 
         do {
             let status: HKAuthorizationRequestStatus = try await withCheckedThrowingContinuation { cont in
@@ -192,5 +202,62 @@ final class HealthKitManager {
         } catch {
             return false
         }
+    }
+
+    /// Holt die Tage eines Monats, an denen Mindfulness-Sessions oder Workouts stattgefunden haben.
+    func fetchActivityDays(forMonth date: Date) async throws -> Set<Date> {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw HealthKitError.healthDataUnavailable
+        }
+        guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+            throw HealthKitError.mindfulTypeUnavailable
+        }
+        let workoutType = HKObjectType.workoutType()
+
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+
+        var activityDays = Set<Date>()
+
+        // Mindfulness-Sessions abfragen
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: mindfulType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples {
+                    for sample in samples {
+                        let day = calendar.startOfDay(for: sample.startDate)
+                        activityDays.insert(day)
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        // Workouts abfragen
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: workoutType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples {
+                    for sample in samples {
+                        let day = calendar.startOfDay(for: sample.startDate)
+                        activityDays.insert(day)
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        return activityDays
     }
 }
