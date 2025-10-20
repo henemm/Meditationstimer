@@ -700,6 +700,9 @@ struct WorkoutsView: View {
                     }
                 }
             }
+            .onAppear {
+                if repeats < 1 { repeats = 10 }
+            }
             .sheet(isPresented: $showSettings) {
                 SettingsSheet()
                 #if os(iOS)
