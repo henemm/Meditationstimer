@@ -232,14 +232,9 @@ private struct WorkoutRunnerView: View {
             Color.gray.opacity(0.1).ignoresSafeArea()
             #endif
             VStack(spacing: 12) {
-                Text("Intervall-Workout").font(.headline)
+                Text("\(plannedRepeats) Wiederholungen: \(intervalSec)s/\(restSec)s").font(.headline)
                 Text("HIIT • \(plannedRepeats) Wiederholungen • \(intervalSec)s / \(restSec)s")
                     .font(.footnote).foregroundStyle(.secondary)
-                #if DEBUG
-                Text("DBG repeats(binding)=\(repeats) • snapshot=\(plannedRepeats)")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-                #endif
 
                 if !finished {
                     TimelineView(.animation) { ctx in
