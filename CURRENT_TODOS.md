@@ -32,6 +32,24 @@
   - Teste komplette Atem-Session mit Live Activity im Simulator
   - *Status: Offen*
 
+## 🚀 Zukünftige Feature-Ideen
+
+- **Erinnerungen**
+  - Benachrichtigungen für regelmäßige Meditation/Atem-Sessions
+  - *Status: Idee - Noch nicht priorisiert*
+
+- **Statistiken**
+  - Übersicht über Sitzungen, Dauer, Häufigkeit
+  - *Status: Idee - Noch nicht priorisiert*
+
+- **Streaks**
+  - Verfolgung von aufeinanderfolgenden Tagen mit Meditation
+  - *Status: Idee - Noch nicht priorisiert*
+
+- **Fokusmode**
+  - Do-Not-Disturb Modus während Sessions
+  - *Status: Idee - Noch nicht priorisiert*
+
 ## 📝 Notizen
 
 - Letzte Aktualisierung: 20. Oktober 2025
