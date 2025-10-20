@@ -575,6 +575,7 @@ struct WorkoutsView: View {
 
     @State private var showSettings = false
     @State private var showRunner = false
+    @State private var showHealthAlert = false
 
     @AppStorage("intervalSec") private var intervalSec: Int = 30
     @AppStorage("restSec") private var restSec: Int = 10
@@ -658,7 +659,13 @@ struct WorkoutsView: View {
 
     private var startButton: some View {
         Button(action: {
-            showRunner = true
+            Task {
+                if await HealthKitManager.shared.isAuthorized() {
+                    showRunner = true
+                } else {
+                    showHealthAlert = true
+                }
+            }
         }) {
             Image(systemName: "play.circle.fill")
                 .resizable()
@@ -714,6 +721,22 @@ struct WorkoutsView: View {
                     showRunner = false
                 }
                 .ignoresSafeArea()
+            }
+            .alert("Health-Zugang", isPresented: $showHealthAlert) {
+                Button("Abbrechen", role: .cancel) {}
+                Button("Erlauben") {
+                    Task {
+                        do {
+                            try await HealthKitManager.shared.requestAuthorization()
+                            showRunner = true
+                        } catch {
+                            // Optional: Show error alert
+                            print("HealthKit authorization failed: \(error)")
+                        }
+                    }
+                }
+            } message: {
+                Text("Diese App kann deine Workouts in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?")
             }
         }
     }

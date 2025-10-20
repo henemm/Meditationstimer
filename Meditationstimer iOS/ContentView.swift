@@ -72,24 +72,12 @@ struct ContentView: View {
         .toolbarBackground(.ultraThinMaterial, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
         .onAppear {
-            // One-time permission requests (Notifications, Health)
+            // Permissions are now requested on-demand in each tab when needed
             #if DEBUG
             let isPreview = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
             #else
             let isPreview = false
             #endif
-            // Berechtigungen einmalig anfragen
-            if !askedPermissions && !isPreview {
-                askedPermissions = true
-                Task {
-                    do {
-                        try await notifier.requestAuthorization()
-                        try await hk.requestAuthorization()
-                    } catch {
-                        showingError = "Berechtigungen eingeschränkt: \(error.localizedDescription)"
-                    }
-                }
-            }
         }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }

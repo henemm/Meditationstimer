@@ -93,6 +93,7 @@ struct OffenView: View {
     @State private var bgAudio = BackgroundAudioKeeper()
     @State private var didPlayPhase2Gong = false
     @State private var pendingEndStop: DispatchWorkItem?
+    @State private var showHealthAlert = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
 
     private var pickerSection: some View {
@@ -142,11 +143,59 @@ struct OffenView: View {
             .alert(isPresented: $showLocalConflictAlert) {
                 localConflictAlert
             }
+            .alert("Health-Zugang", isPresented: $showHealthAlert) {
+                Button("Abbrechen", role: .cancel) {}
+                Button("Erlauben") {
+                    Task {
+                        do {
+                            try await HealthKitManager.shared.requestAuthorization()
+                            // After authorization, proceed with start
+                            Task { @MainActor in
+                                // Copy the start logic here
+                                guard engine.state == .idle else {
+                                    showLocalConflictAlert = true
+                                    return
+                                }
+                                let now = Date()
+                                engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                                guard let phase1End = engine.phase1EndDate else { return }
+                                let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+                                switch result {
+                                case .started:
+                                    sessionStart = now
+                                    setIdleTimer(true)
+                                    bgAudio.start()
+                                    gong.play(named: "gong-ende")
+                                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                                case .conflict(let existingOwner, let existingTitle):
+                                    conflictOwnerId = existingOwner
+                                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                                    showConflictAlert = true
+                                case .failed:
+                                    sessionStart = now
+                                    setIdleTimer(true)
+                                    bgAudio.start()
+                                    gong.play(named: "gong-ende")
+                                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                                }
+                            }
+                        } catch {
+                            print("HealthKit authorization failed: \(error)")
+                        }
+                    }
+                }
+            } message: {
+                Text("Diese App kann deine Meditationen in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?")
+            }
     }
 
     private var startButton: some View {
         Button(action: {
             Task { @MainActor in
+                if !(await HealthKitManager.shared.isAuthorized()) {
+                    showHealthAlert = true
+                    return
+                }
                 // Wenn Engine läuft, verhindere doppelten Start
                 guard engine.state == .idle else {
                     showLocalConflictAlert = true

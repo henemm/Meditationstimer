@@ -167,4 +167,30 @@ final class HealthKitManager {
         return true
         #endif
     }
+    
+    /// Prüft, ob HealthKit bereits autorisiert ist (für schreiben: mindfulSession & Workout).
+    func isAuthorized() async -> Bool {
+        guard HKHealthStore.isHealthDataAvailable() else { return false }
+        guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else { return false }
+        let workoutType = HKObjectType.workoutType()
+        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
+
+        let toShare: Set<HKSampleType> = [mindfulType, workoutType]
+        let toRead: Set<HKObjectType> = heartRateType.map { Set([$0]) } ?? []
+
+        do {
+            let status: HKAuthorizationRequestStatus = try await withCheckedThrowingContinuation { cont in
+                self.healthStore.getRequestStatusForAuthorization(toShare: toShare, read: toRead) { status, error in
+                    if let error = error {
+                        cont.resume(throwing: error)
+                    } else {
+                        cont.resume(returning: status)
+                    }
+                }
+            }
+            return status == .unnecessary
+        } catch {
+            return false
+        }
+    }
 }
