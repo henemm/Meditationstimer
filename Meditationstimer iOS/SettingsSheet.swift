@@ -39,7 +39,6 @@ struct SettingsSheet: View {
                         .pickerStyle(.wheel)
                         #endif
                         .frame(width: 80)
-                        Text("Min")
                     }
                     HStack {
                         Text("Workouts")
@@ -53,7 +52,6 @@ struct SettingsSheet: View {
                         .pickerStyle(.wheel)
                         #endif
                         .frame(width: 80)
-                        Text("Min")
                     }
                 }
                 Section("Entwickler") {
