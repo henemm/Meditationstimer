@@ -27,8 +27,16 @@ struct SettingsSheet: View {
                     Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
                 }
                 Section("Ziele") {
-                    Stepper("Tägliches Meditation-Ziel: \(meditationGoalMinutes) Min", value: $meditationGoalMinutes, in: 1...120)
-                    Stepper("Tägliches Workout-Ziel: \(workoutGoalMinutes) Min", value: $workoutGoalMinutes, in: 1...120)
+                    Picker("Tägliches Meditation-Ziel", selection: $meditationGoalMinutes) {
+                        ForEach(1...120, id: \.self) { minutes in
+                            Text("\(minutes) Min").tag(minutes)
+                        }
+                    }
+                    Picker("Tägliches Workout-Ziel", selection: $workoutGoalMinutes) {
+                        ForEach(1...120, id: \.self) { minutes in
+                            Text("\(minutes) Min").tag(minutes)
+                        }
+                    }
                 }
                 Section("Entwickler") {
                     Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)
