@@ -287,6 +287,7 @@ private struct WorkoutRunnerView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(Color(red: 0.58, green: 0.31, blue: 0.73)) // same violet
                 .controlSize(.large)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 4)
@@ -667,6 +668,7 @@ struct WorkoutsView: View {
                 .resizable()
                 .frame(width: 86, height: 86)
                 .foregroundStyle(.tint)
+                .tint(Color(red: 0.58, green: 0.31, blue: 0.73)) // violet for workouts
         }
         .buttonStyle(.plain)
     }

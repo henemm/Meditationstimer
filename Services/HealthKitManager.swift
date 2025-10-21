@@ -49,6 +49,12 @@ final class HealthKitManager {
         case saveFailed
     }
 
+    enum ActivityType {
+        case mindfulness
+        case workout
+        case both
+    }
+
     private let healthStore = HKHealthStore()
 
     /// Hinweis zu Info.plist:
@@ -204,8 +210,8 @@ final class HealthKitManager {
         }
     }
 
-    /// Holt die Tage eines Monats, an denen Mindfulness-Sessions oder Workouts stattgefunden haben.
-    func fetchActivityDays(forMonth date: Date) async throws -> Set<Date> {
+    /// Holt die Tage eines Monats mit verschiedenen Aktivitätstypen.
+    func fetchActivityDaysDetailed(forMonth date: Date) async throws -> [Date: ActivityType] {
         guard HKHealthStore.isHealthDataAvailable() else {
             throw HealthKitError.healthDataUnavailable
         }
@@ -220,7 +226,7 @@ final class HealthKitManager {
 
         let predicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
 
-        var activityDays = Set<Date>()
+        var activityDays = [Date: ActivityType]()
 
         // Mindfulness-Sessions abfragen
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
@@ -232,7 +238,7 @@ final class HealthKitManager {
                 if let samples = samples {
                     for sample in samples {
                         let day = calendar.startOfDay(for: sample.startDate)
-                        activityDays.insert(day)
+                        activityDays[day] = .mindfulness
                     }
                 }
                 cont.resume()
@@ -250,7 +256,12 @@ final class HealthKitManager {
                 if let samples = samples {
                     for sample in samples {
                         let day = calendar.startOfDay(for: sample.startDate)
-                        activityDays.insert(day)
+                        // Wenn bereits Mindfulness an diesem Tag, dann beide
+                        if activityDays[day] == .mindfulness {
+                            activityDays[day] = .both
+                        } else {
+                            activityDays[day] = .workout
+                        }
                     }
                 }
                 cont.resume()
@@ -259,5 +270,11 @@ final class HealthKitManager {
         }
 
         return activityDays
+    }
+
+    /// Legacy-Methode für Abwärtskompatibilität
+    func fetchActivityDays(forMonth date: Date) async throws -> Set<Date> {
+        let detailed = try await fetchActivityDaysDetailed(forMonth: date)
+        return Set(detailed.keys)
     }
 }

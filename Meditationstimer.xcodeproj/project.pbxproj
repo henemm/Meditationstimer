@@ -266,7 +266,6 @@
 				B7C556692E6609F400EFC1F5 /* Sources */,
 				B7C5566A2E6609F400EFC1F5 /* Frameworks */,
 				B7C5566B2E6609F400EFC1F5 /* Resources */,
-				B7C556B22E75611D00EFC1F5 /* ShellScript */,
 				B7C556AA2E73E5EC00EFC1F5 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -382,27 +381,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		B7C556B22E75611D00EFC1F5 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "buildDate=$(date +\"%Y-%m-%d %H:%M:%S\")\necho \"⏱ Inject BuildTimestamp = $buildDate\"\n\nPlist=\"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :BuildTimestamp '$buildDate'\" \"$Plist\" || \\\n/usr/libexec/PlistBuddy -c \"Add :BuildTimestamp string '$buildDate'\" \"$Plist\"\n\n/usr/libexec/PlistBuddy -c \"Print :BuildTimestamp\" \"$Plist\" || true\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B737BB542E656A63000AE8C4 /* Sources */ = {
@@ -764,7 +742,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS.MeditationstimerWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -793,7 +771,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS.MeditationstimerWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
