@@ -40,6 +40,7 @@ struct SettingsSheet: View {
                         .pickerStyle(.wheel)
                         #endif
                         .frame(width: 80, height: 120)
+                        .help("Wähle dein tägliches Meditation-Ziel in Minuten.")
                     }
                     HStack {
                         Text("Workouts")
@@ -54,6 +55,7 @@ struct SettingsSheet: View {
                         .pickerStyle(.wheel)
                         #endif
                         .frame(width: 80, height: 120)
+                        .help("Wähle dein tägliches Workout-Ziel in Minuten.")
                     }
                 }
                 Section("Entwickler") {
