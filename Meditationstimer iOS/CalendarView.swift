@@ -297,12 +297,10 @@ struct MonthView: View {
     private func helpText(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> String {
         var texts: [String] = []
         if mins.mindfulnessMinutes > 0 {
-            let progress = Int((mins.mindfulnessMinutes / meditationGoalMinutes) * 100)
-            texts.append("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min (\(progress)% - blauer Kreis)")
+            texts.append("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min")
         }
         if mins.workoutMinutes > 0 {
-            let progress = Int((mins.workoutMinutes / workoutGoalMinutes) * 100)
-            texts.append("Workout: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min (\(progress)% - violetter Kreis)")
+            texts.append("Workouts: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min")
         }
         return texts.joined(separator: "\n")
     }
