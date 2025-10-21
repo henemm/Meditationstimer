@@ -310,10 +310,10 @@ struct MonthView: View {
     private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> AnyView? {
         var texts: [Text] = []
         if mins.mindfulnessMinutes > 0 {
-            texts.append(Text("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
+            texts.append(Text("Med: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
         }
         if mins.workoutMinutes > 0 {
-            texts.append(Text("Workouts: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
+            texts.append(Text("Work: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
         if texts.isEmpty { return nil }
         return AnyView(VStack(alignment: .leading, spacing: 2) {
@@ -321,10 +321,10 @@ struct MonthView: View {
                 texts[index]
             }
         }
-        .padding(8)
-        .background(Color.white.opacity(0.9))
-        .cornerRadius(8)
-        .shadow(radius: 4)
-        .frame(maxWidth: 140))
+        .padding(6)
+        .background(Color.white.opacity(0.95))
+        .cornerRadius(6)
+        .shadow(radius: 3)
+        .fixedSize(horizontal: true, vertical: false))
     }
 }
