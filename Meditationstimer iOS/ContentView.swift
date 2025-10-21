@@ -41,6 +41,7 @@ struct ContentView: View {
     private let hk = HealthKitManager()
     private let notifier = NotificationHelper()
     @StateObject private var engine = TwoPhaseTimerEngine()
+    @StateObject private var streakManager = StreakManager()
     @State private var showingError: String?
     @State private var askedPermissions = false
     @State private var showingCalendar = false
@@ -52,6 +53,7 @@ struct ContentView: View {
             TabView {
                 OffenView()
                     .environmentObject(engine)
+                    .environmentObject(streakManager)
                     .tabItem {
                         Label("Offen", systemImage: "figure.mind.and.body")
                     }

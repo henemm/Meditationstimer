@@ -334,6 +334,65 @@ final class HealthKitManager {
 
         return dailyMinutes
     }
+    
+    /// Holt tägliche Minuten für Mindfulness und Workouts in einem Zeitraum.
+    func fetchDailyMinutes(from startDate: Date, to endDate: Date) async throws -> [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw HealthKitError.healthDataUnavailable
+        }
+        guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+            throw HealthKitError.mindfulTypeUnavailable
+        }
+        let workoutType = HKObjectType.workoutType()
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+
+        var dailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
+
+        // Mindfulness-Sessions abfragen und Minuten summieren
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: mindfulType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples {
+                    for sample in samples {
+                        let day = Calendar.current.startOfDay(for: sample.startDate)
+                        let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
+                        var current = dailyMinutes[day] ?? (0, 0)
+                        current.mindfulnessMinutes += duration
+                        dailyMinutes[day] = current
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        // Workouts abfragen und Minuten summieren
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: workoutType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let workouts = samples as? [HKWorkout] {
+                    for workout in workouts {
+                        let day = Calendar.current.startOfDay(for: workout.startDate)
+                        let duration = workout.duration / 60.0 // in Minuten
+                        var current = dailyMinutes[day] ?? (0, 0)
+                        current.workoutMinutes += duration
+                        dailyMinutes[day] = current
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        return dailyMinutes
+    }
 
     /// Legacy-Methode für Abwärtskompatibilität
     func fetchActivityDays(forMonth date: Date) async throws -> Set<Date> {

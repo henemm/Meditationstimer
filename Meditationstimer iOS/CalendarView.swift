@@ -26,6 +26,11 @@ struct CalendarView: View {
 
     private let hk = HealthKitManager.shared
     private let calendar = Calendar.current
+    
+    @EnvironmentObject var streakManager: StreakManager
+    
+    @State private var showMeditationInfo = false
+    @State private var showWorkoutInfo = false
 
     var body: some View {
         VStack {
@@ -40,6 +45,8 @@ struct CalendarView: View {
                 .padding(.trailing)
                 .padding(.top, 20) // Mehr Abstand oben
             }
+            .background(Color.white.opacity(0.1))
+            .cornerRadius(10)
 
             // Scrollbare Monatsliste
             ScrollViewReader { proxy in
@@ -59,6 +66,51 @@ struct CalendarView: View {
                 }
             }
 
+            // Streaks Footer
+            VStack(spacing: 12) {
+                // Meditation Streaks
+                HStack {
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.secondary)
+                        .onTapGesture {
+                            showMeditationInfo = true
+                        }
+                    Text("Meditation: Streak \(streakManager.meditationStreak.currentStreakDays) Days")
+                        .font(.subheadline)
+                    Spacer()
+                    rewardsView(for: streakManager.meditationStreak.rewardsEarned, icon: "leaf.fill", color: .blue)
+                }
+                .popover(isPresented: $showMeditationInfo) {
+                    Text("Get a reward every 7 days in a row of meditation (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
+                        .padding()
+                        .frame(maxWidth: 280)
+                        .font(.footnote)
+                }
+                
+                // Workout Streaks
+                HStack {
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.secondary)
+                        .onTapGesture {
+                            showWorkoutInfo = true
+                        }
+                    Text("Workouts: Streak \(streakManager.workoutStreak.currentStreakDays) Days")
+                        .font(.subheadline)
+                    Spacer()
+                    rewardsView(for: streakManager.workoutStreak.rewardsEarned, icon: "flame.fill", color: .purple)
+                }
+                .popover(isPresented: $showWorkoutInfo) {
+                    Text("Get a reward every 7 days in a row of workouts (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
+                        .padding()
+                        .frame(maxWidth: 280)
+                        .font(.footnote)
+                }
+            }
+            .padding()
+            .background(Color.white.opacity(0.1))
+            .cornerRadius(10)
+            .padding(.top)
+
             if isLoading {
                 ProgressView("Lade Daten...")
             }
@@ -68,12 +120,6 @@ struct CalendarView: View {
                     .foregroundColor(.red)
                     .padding()
             }
-
-            // Debug-Info
-            Text("Aktive Tage: \(activityDays.count)")
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .padding(.top)
         }
         .onAppear {
             Task {
@@ -92,21 +138,21 @@ struct CalendarView: View {
         }
     }
 
-    private func dayView(for date: Date) -> some View {
-        let isToday = calendar.isDateInToday(date)
-        let hasActivity = activityDays[calendar.startOfDay(for: date)] != nil
-        let dayNumber = calendar.component(.day, from: date)
-
-        return ZStack {
-            Circle()
-                .fill(hasActivity ? Color.green.opacity(0.3) : Color.clear)
-                .frame(width: 35, height: 35)
-
-            Text("\(dayNumber)")
-                .font(.system(size: 16))
-                .foregroundColor(isToday ? .blue : .primary)
+    private func rewardsView(for count: Int, icon: String, color: Color) -> some View {
+        HStack(spacing: 2) {
+            if count == 0 {
+                Text("0")
+                    .font(.subheadline)
+                    .foregroundColor(color)
+                Image(systemName: icon)
+                    .foregroundColor(color)
+            } else {
+                ForEach(0..<count, id: \.self) { _ in
+                    Image(systemName: icon)
+                        .foregroundColor(color)
+                }
+            }
         }
-        .frame(height: 40)
     }
 
     private func generateDays(for month: Date) -> [Date?] {
@@ -178,6 +224,11 @@ struct CalendarView: View {
             activityDays = allActivityDays
             dailyMinutes = allDailyMinutes
             isLoading = false
+            
+            // Update streaks after loading data
+            Task {
+                await streakManager.updateStreaks()
+            }
         }
     }
 }
@@ -231,24 +282,22 @@ struct MonthView: View {
         let dayNumber = calendar.component(.day, from: date)
         let dayKey = calendar.startOfDay(for: date)
         let mins = dailyMinutes[dayKey] ?? (0, 0)
-        let mindfulnessProgress = min(mins.mindfulnessMinutes / meditationGoalMinutes, 1.0)
+        let _ = min(mins.mindfulnessMinutes / meditationGoalMinutes, 1.0)
         let workoutProgress = min(mins.workoutMinutes / workoutGoalMinutes, 1.0)
 
         return ZStack {
-            // Mindfulness circle (blue, partial fill)
+            // Mindfulness circle (light blue, filled)
             if mins.mindfulnessMinutes > 0 {
                 Circle()
-                    .trim(from: 0, to: mindfulnessProgress)
-                    .stroke(Color.mindfulnessBlue, lineWidth: 3)
-                    .rotationEffect(.degrees(-90)) // Start from top
+                    .fill(Color.blue.opacity(0.3))
                     .frame(width: 35, height: 35)
             }
 
-            // Workout circle (violet, partial fill, offset slightly)
+            // Workout circle (purple, ring based on progress)
             if mins.workoutMinutes > 0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
-                    .stroke(Color.workoutViolet, lineWidth: 3)
+                    .stroke(Color.purple.opacity(0.8), lineWidth: 3)
                     .rotationEffect(.degrees(-90))
                     .frame(width: 37, height: 37)
             }

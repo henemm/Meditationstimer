@@ -38,22 +38,25 @@ Dieses Dokument fasst die geplanten Features für die Meditationstimer-App zusam
 **Risiken:** HealthKit-Berechtigungen, Performance bei vielen Daten.
 
 ### 2. Streaks (Priorität: Hoch)
-**Beschreibung:** Verfolgung von aufeinanderfolgenden Tagen mit Meditation oder Workout. Belohnungssystem mit Herzen und Meilensteinen.
+**Beschreibung:** Verfolgung von aufeinanderfolgenden Tagen mit Meditation oder Workout. Belohnungssystem mit Flammen und Lotus-Blüten, um zuverlässige User einen "Freischuss" für verpasste Tage zu geben.
 
 **Details:**
-- **Definition:** Mindestens eine Session pro Tag (User wählt: Meditation oder Workout).
-- **Belohnungen:** Kudos für 7 Tage, 1 Monat, 10 Monate etc. (Badges, Animationen).
-- **Herz-System:** Ab 7 Tagen sammelt man Herzen; bei Unterbrechung verliert man ein Herz, aber Streak bleibt (z.B. Flamme-Icon).
-- **UI:** Streak-Counter in der App, Herzen-Icon, Badge-Popups.
+- **Mindestdauer:** 2 Minuten pro Session (Atem/Offen zählt als Meditation).
+- **Consecutive Days:** Kalendertage (Zeitzonen-Wechsel: Pech gehabt).
+- **Workout Streaks**: 7 aufeinanderfolgende Tage mit Workout → 1 lila Flamme verdienen (max 3 Flammen)
+- **Meditation Streaks**: 7 aufeinanderfolgende Tage mit Meditation → 1 hellblaue Lotus-Blüte verdienen (max 3 Blüten)
+- **Decay:** Fehlender Tag entfernt 1 Flamme/Blüte (von rechts wegnehmen in UI), aber Streak bleibt erhalten. Separat für Workouts/Meditation.
+- **Reset:** Streak bricht, es sei denn eine Belohnung vorhanden – dann Belohnung weg, Streak bleibt (gängige Implementierung für "Freischuss").
+- **UI:** Calendar Footer mit zwei Zeilen (Meditation/Workouts). Zeigt Tage in Folge + Icons (links starten, rechts hinzufügen). Hinweis (i) erklärt Belohnungen und Erhalt.
 
 **User Stories:**
 - Als User möchte ich meine Streaks sehen, um dranzubleiben.
-- Als User möchte ich Belohnungen für Meilensteine, um Spaß zu haben.
+- Als User möchte ich einen "Freischuss" für verpasste Tage, um langfristige Motivation zu erhalten.
 
 **Technik:**
-- Streak-Logik basierend auf Statistik-Daten
-- @AppStorage für Herzen/Streaks
-- SwiftUI-Animationen
+- Streak-Logik basierend auf HealthKit-Daten (min. 2 Min pro Tag)
+- @AppStorage für Streaks/Belohnungen (einfach, persistent)
+- SwiftUI-Animationen für Belohnungen
 
 **Aufwand:** Mittel (1-2 Wochen)  
 **Risiken:** Kreative UI-Ideen brauchen Iterationen.

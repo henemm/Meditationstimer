@@ -16,6 +16,7 @@ struct Meditationstimer_iOSApp: App {
     
     // Shared Live Activity Controller for all tabs
     @StateObject private var sharedLiveActivity = LiveActivityController()
+    @StateObject private var streakManager = StreakManager()
     
     var body: some Scene {
         WindowGroup {
