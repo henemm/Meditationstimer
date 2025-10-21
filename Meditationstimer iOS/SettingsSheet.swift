@@ -16,6 +16,8 @@ struct SettingsSheet: View {
     @AppStorage("hapticsEnabled") private var hapticsEnabled: Bool = true
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
+    @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
+    @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
 
     var body: some View {
         NavigationView {
@@ -23,6 +25,10 @@ struct SettingsSheet: View {
                 Section("Feedback") {
                     Toggle("Ton (iPhone)", isOn: $soundEnabled)
                     Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
+                }
+                Section("Ziele") {
+                    Stepper("Tägliches Meditation-Ziel: \(meditationGoalMinutes) Min", value: $meditationGoalMinutes, in: 1...120)
+                    Stepper("Tägliches Workout-Ziel: \(workoutGoalMinutes) Min", value: $workoutGoalMinutes, in: 1...120)
                 }
                 Section("Entwickler") {
                     Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)

@@ -1,8 +1,8 @@
 //
 //  Colors.swift
-//  Meditationstimer
+//  Meditationstimer iOS
 //
-//  Shared color definitions for consistent theming across the app.
+//  Created by Henning Emmrich on 21.10.25.
 //
 
 import SwiftUI

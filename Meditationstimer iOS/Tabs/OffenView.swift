@@ -317,13 +317,13 @@ struct OffenView: View {
                 // Overlay for active session (phase1/phase2) – styled like Atem's run card
                 if case .phase1(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Meditation", endDate: phase1End, totalSeconds: phase1Minutes * 60) {
+                    RunCard(title: "Meditation", endDate: engine.phase1EndDate ?? Date(), totalSeconds: phase1Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
                 } else if case .phase2(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Besinnung", endDate: phase2End, totalSeconds: phase2Minutes * 60) {
+                    RunCard(title: "Besinnung", endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)

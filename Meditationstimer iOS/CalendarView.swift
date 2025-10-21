@@ -8,17 +8,6 @@
 import SwiftUI
 import HealthKit
 
-extension Color {
-    /// Light blue color used for mindfulness activities in calendar
-    static let mindfulnessBlue = Color(red: 0.67, green: 0.86, blue: 0.98)
-    
-    /// Violet color used for workout activities and buttons
-    static let workoutViolet = Color(red: 0.58, green: 0.31, blue: 0.73)
-    
-    /// Red color used for today's indicator in calendar
-    static let todayRed = Color.red
-}
-
 struct CalendarView: View {
     enum ActivityType {
         case mindfulness
@@ -27,9 +16,13 @@ struct CalendarView: View {
     }
     
     @State private var activityDays: [Date: ActivityType] = [:]
+    @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
     @State private var isLoading = false
     @State private var errorMessage: String?
     @Environment(\.dismiss) private var dismiss
+
+    @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Double = 10.0
+    @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Double = 30.0
 
     private let hk = HealthKitManager.shared
     private let calendar = Calendar.current
@@ -54,7 +47,7 @@ struct CalendarView: View {
                     LazyVStack(spacing: 20) {
                         ForEach(-6...6, id: \.self) { monthOffset in
                             let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
-                            MonthView(month: monthDate, activityDays: activityDays)
+                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes)
                                 .id(monthOffset) // Für ScrollViewReader
                         }
                     }
@@ -145,10 +138,12 @@ struct CalendarView: View {
         errorMessage = nil
         Task {
             var allActivityDays = [Date: ActivityType]()
+            var allDailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
             for monthOffset in -6...6 {
                 let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
                 do {
                     let days = try await hk.fetchActivityDaysDetailed(forMonth: monthDate)
+                    let minutes = try await hk.fetchDailyMinutes(forMonth: monthDate)
                     // Merge dictionaries, preferring .both if both types exist
                     for (date, type) in days {
                         let calendarType: ActivityType
@@ -168,12 +163,20 @@ struct CalendarView: View {
                             allActivityDays[date] = calendarType
                         }
                     }
+                    // Merge minutes
+                    for (date, mins) in minutes {
+                        var current = allDailyMinutes[date] ?? (0, 0)
+                        current.mindfulnessMinutes += mins.mindfulnessMinutes
+                        current.workoutMinutes += mins.workoutMinutes
+                        allDailyMinutes[date] = current
+                    }
                 } catch {
                     errorMessage = error.localizedDescription
                     break
                 }
             }
             activityDays = allActivityDays
+            dailyMinutes = allDailyMinutes
             isLoading = false
         }
     }
@@ -182,6 +185,9 @@ struct CalendarView: View {
 struct MonthView: View {
     let month: Date
     let activityDays: [Date: CalendarView.ActivityType]
+    let dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]
+    let meditationGoalMinutes: Double
+    let workoutGoalMinutes: Double
     private let calendar = Calendar.current
 
     var body: some View {
@@ -221,34 +227,35 @@ struct MonthView: View {
         let isToday = calendar.isDateInToday(date)
         let activityType = activityDays[calendar.startOfDay(for: date)]
         let dayNumber = calendar.component(.day, from: date)
+        let dayKey = calendar.startOfDay(for: date)
+        let mins = dailyMinutes[dayKey] ?? (0, 0)
+        let mindfulnessProgress = min(mins.mindfulnessMinutes / meditationGoalMinutes, 1.0)
+        let workoutProgress = min(mins.workoutMinutes / workoutGoalMinutes, 1.0)
 
         return ZStack {
-            // Basis: filled circle for mindfulness (or when any activity exists and includes mindfulness)
-            if let type = activityType {
-                if type == .mindfulness || type == .both {
-                    Circle()
-                        .fill(Color.mindfulnessBlue)
-                        .frame(width: 35, height: 35)
-                } else {
-                    // If only workout, draw an empty background so the number remains readable
-                    Circle()
-                        .fill(Color.clear)
-                        .frame(width: 35, height: 35)
-                }
+            // Mindfulness circle (blue, partial fill)
+            if mins.mindfulnessMinutes > 0 {
+                Circle()
+                    .trim(from: 0, to: mindfulnessProgress)
+                    .stroke(Color.mindfulnessBlue, lineWidth: 3)
+                    .rotationEffect(.degrees(-90)) // Start from top
+                    .frame(width: 35, height: 35)
             }
 
-            // Violet ring for workout
-            if let type = activityType {
-                if type == .workout || type == .both {
-                    Circle()
-                        .stroke(Color.workoutViolet, lineWidth: 2)
-                        .frame(width: 37, height: 37)
-                }
+            // Workout circle (violet, partial fill, offset slightly)
+            if mins.workoutMinutes > 0 {
+                Circle()
+                    .trim(from: 0, to: workoutProgress)
+                    .stroke(Color.workoutViolet, lineWidth: 3)
+                    .rotationEffect(.degrees(-90))
+                    .frame(width: 37, height: 37)
             }
+
+            // If both, maybe a combined indicator, but for now separate
 
             Text("\(dayNumber)")
                 .font(.system(size: 16, weight: activityType != nil ? .semibold : .regular))
-                .foregroundColor(activityType != nil ? .white : .primary)
+                .foregroundColor(.primary)
         }
         .frame(height: 40)
         // Red tiny dot in the bottom-right to indicate TODAY
@@ -257,7 +264,7 @@ struct MonthView: View {
                 Circle()
                     .fill(Color.red)
                     .frame(width: 6, height: 6)
-                    .offset(x: -4, y: -4)
+                    .offset(x: 4, y: 4)
             }
         }
     }
