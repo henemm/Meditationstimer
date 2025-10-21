@@ -275,10 +275,9 @@ struct MonthView: View {
                 showTooltipFor = nil
             }
         }
-        .overlay {
-            if showTooltipFor == dayKey, let tooltip = tooltipView(for: mins) {
+        .popover(isPresented: Binding(get: { showTooltipFor == dayKey }, set: { if !$0 { showTooltipFor = nil } })) {
+            if let tooltip = tooltipView(for: mins) {
                 tooltip
-                    .offset(y: -40)
             }
         }
     }
@@ -321,8 +320,7 @@ struct MonthView: View {
                 .padding(6)
                 .background(Color.white.opacity(0.95))
                 .cornerRadius(6)
-                .shadow(radius: 3)
-                .frame(width: 120, height: 30))
+                .shadow(radius: 3))
         } else {
             return AnyView(VStack(alignment: .leading, spacing: 2) {
                 texts[0]
@@ -331,8 +329,7 @@ struct MonthView: View {
             .padding(6)
             .background(Color.white.opacity(0.95))
             .cornerRadius(6)
-            .shadow(radius: 3)
-            .frame(width: 120, height: 50))
+            .shadow(radius: 3))
         }
     }
 }
