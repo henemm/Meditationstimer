@@ -16,7 +16,6 @@ struct SettingsSheet: View {
     @AppStorage("hapticsEnabled") private var hapticsEnabled: Bool = true
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
-    @AppStorage("endActivityOnBackground") private var endActivityOnBackground: Bool = false
 
     var body: some View {
         NavigationView {
@@ -24,10 +23,6 @@ struct SettingsSheet: View {
                 Section("Feedback") {
                     Toggle("Ton (iPhone)", isOn: $soundEnabled)
                     Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
-                }
-                Section("Verhalten") {
-                    Toggle("Live Activity beim Verlassen der App beenden", isOn: $endActivityOnBackground)
-                        .tint(.blue)
                 }
                 Section("Entwickler") {
                     Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)
