@@ -571,6 +571,7 @@ struct WorkoutsView: View {
     @State private var showSettings = false
     @State private var showRunner = false
     @State private var showHealthAlert = false
+    @State private var showingCalendar = false
 
     @AppStorage("intervalSec") private var intervalSec: Int = 30
     @AppStorage("restSec") private var restSec: Int = 10
@@ -696,7 +697,8 @@ struct WorkoutsView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button { showingCalendar = true } label: { Image(systemName: "calendar") }
                     Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape").accessibilityLabel("Einstellungen")
                     }
@@ -710,6 +712,10 @@ struct WorkoutsView: View {
                 #if os(iOS)
                 .presentationDetents([.medium, .large])
                 #endif
+            }
+            .sheet(isPresented: $showingCalendar) {
+                CalendarView()
+                    .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
             }
             .fullScreenCover(isPresented: $showRunner) {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {

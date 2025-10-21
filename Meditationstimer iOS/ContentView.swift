@@ -48,40 +48,32 @@ struct ContentView: View {
 
     var body: some View {
         // MARK: Tabs & global background
-        TabView {
-            OffenView()
-                .environmentObject(engine)
-                .tabItem {
-                    Label("Offen", systemImage: "figure.mind.and.body")
-                }
+        NavigationView {
+            TabView {
+                OffenView()
+                    .environmentObject(engine)
+                    .tabItem {
+                        Label("Offen", systemImage: "figure.mind.and.body")
+                    }
 
-            AtemView()
-                .tabItem {
-                    Label("Atem", systemImage: "wind")
-                }
+                AtemView()
+                    .tabItem {
+                        Label("Atem", systemImage: "wind")
+                    }
 
-            WorkoutsView()
-                .tabItem {
-                    Label("Workouts", systemImage: "figure.walk")
-                }
-        }
-        .background(
-            LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
-                           startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
-        )
-        .toolbarBackground(.ultraThinMaterial, for: .tabBar)
-        .toolbarBackground(.visible, for: .tabBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: { showingCalendar = true }) {
-                    Image(systemName: "calendar")
-                        .foregroundColor(.primary)
-                }
+                WorkoutsView()
+                    .tabItem {
+                        Label("Workouts", systemImage: "figure.walk")
+                    }
             }
-        }
-        .sheet(isPresented: $showingCalendar) {
-            CalendarView()
+            .background(
+                LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
+                               startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
+            )
+            .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
+            .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
             // Permissions are now requested on-demand in each tab when needed

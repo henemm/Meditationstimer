@@ -56,7 +56,7 @@ public struct AtemView: View {
 public struct AtemView: View {
     // MARK: - Preset Model
     struct Preset: Identifiable, Hashable, Codable {
-        let id: UUID
+        var id: UUID
         var name: String
         var emoji: String
         var inhale: Int
@@ -134,6 +134,7 @@ public struct AtemView: View {
     ]
 
     @State private var showSettings = false
+    @State private var showingCalendar = false
     @State private var showingEditor: Preset? = nil
     @State private var runningPreset: Preset? = nil
 
@@ -184,11 +185,17 @@ public struct AtemView: View {
                                                    inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
                         } label: { Image(systemName: "plus") }
 
+                        Button { showingCalendar = true } label: { Image(systemName: "calendar") }
+
                         Button { showSettings = true } label: { Image(systemName: "gearshape") }
                     }
                 }
                 .sheet(isPresented: $showSettings) {
                     SettingsSheet()
+                        .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
+                }
+                .sheet(isPresented: $showingCalendar) {
+                    CalendarView()
                         .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
                 }
                 .sheet(item: $showingEditor) { preset in
