@@ -190,6 +190,8 @@ struct MonthView: View {
     let workoutGoalMinutes: Double
     private let calendar = Calendar.current
 
+    @State private var showTooltipFor: Date? = nil
+
     var body: some View {
         VStack {
             Text(monthYearString(from: month))
@@ -267,7 +269,18 @@ struct MonthView: View {
                     .offset(x: 4, y: 4)
             }
         }
-        .help(helpText(for: mins))
+        .onLongPressGesture {
+            showTooltipFor = dayKey
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                showTooltipFor = nil
+            }
+        }
+        .overlay {
+            if showTooltipFor == dayKey, let tooltip = tooltipView(for: mins) {
+                tooltip
+                    .offset(y: -50)
+            }
+        }
     }
     
     private func generateDays(for month: Date) -> [Date?] {
@@ -294,14 +307,23 @@ struct MonthView: View {
         return formatter.string(from: date)
     }
 
-    private func helpText(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> String {
-        var texts: [String] = []
+    private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> AnyView? {
+        var texts: [Text] = []
         if mins.mindfulnessMinutes > 0 {
-            texts.append("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min")
+            texts.append(Text("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
         }
         if mins.workoutMinutes > 0 {
-            texts.append("Workouts: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min")
+            texts.append(Text("Workouts: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
-        return texts.joined(separator: "\n")
+        if texts.isEmpty { return nil }
+        return AnyView(VStack(alignment: .leading, spacing: 2) {
+            ForEach(0..<texts.count, id: \.self) { index in
+                texts[index]
+            }
+        }
+        .padding(8)
+        .background(Color.white.opacity(0.9))
+        .cornerRadius(8)
+        .shadow(radius: 4))
     }
 }
