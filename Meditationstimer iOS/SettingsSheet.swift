@@ -12,8 +12,6 @@ import UIKit
 
 /// Gemeinsames Einstellungs‑Sheet für alle Tabs.
 struct SettingsSheet: View {
-    @AppStorage("soundEnabled") private var soundEnabled: Bool = true
-    @AppStorage("hapticsEnabled") private var hapticsEnabled: Bool = true
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
@@ -22,10 +20,6 @@ struct SettingsSheet: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Feedback") {
-                    Toggle("Ton (iPhone)", isOn: $soundEnabled)
-                    Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
-                }
                 Section(header: Text("Tägliche Ziele in Minuten")) {
                     HStack {
                         Text("Meditation")
