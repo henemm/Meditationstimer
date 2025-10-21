@@ -32,11 +32,17 @@ struct SettingsSheet: View {
                             Text("\(minutes) Min").tag(minutes)
                         }
                     }
+                    #if os(iOS)
+                    .pickerStyle(.wheel)
+                    #endif
                     Picker("Tägliches Workout-Ziel", selection: $workoutGoalMinutes) {
                         ForEach(1...120, id: \.self) { minutes in
                             Text("\(minutes) Min").tag(minutes)
                         }
                     }
+                    #if os(iOS)
+                    .pickerStyle(.wheel)
+                    #endif
                 }
                 Section("Entwickler") {
                     Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)
