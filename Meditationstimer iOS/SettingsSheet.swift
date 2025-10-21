@@ -26,23 +26,35 @@ struct SettingsSheet: View {
                     Toggle("Ton (iPhone)", isOn: $soundEnabled)
                     Toggle("Haptik (Watch)", isOn: $hapticsEnabled)
                 }
-                Section("Ziele") {
-                    Picker("Tägliches Meditation-Ziel", selection: $meditationGoalMinutes) {
-                        ForEach(1...120, id: \.self) { minutes in
-                            Text("\(minutes) Min").tag(minutes)
+                Section(header: Text("Tägliche Ziele in Minuten")) {
+                    HStack {
+                        Text("Meditation")
+                        Spacer()
+                        Picker("", selection: $meditationGoalMinutes) {
+                            ForEach(1...120, id: \.self) { minutes in
+                                Text("\(minutes)").tag(minutes)
+                            }
                         }
+                        #if os(iOS)
+                        .pickerStyle(.wheel)
+                        #endif
+                        .frame(width: 80)
+                        Text("Min")
                     }
-                    #if os(iOS)
-                    .pickerStyle(.wheel)
-                    #endif
-                    Picker("Tägliches Workout-Ziel", selection: $workoutGoalMinutes) {
-                        ForEach(1...120, id: \.self) { minutes in
-                            Text("\(minutes) Min").tag(minutes)
+                    HStack {
+                        Text("Workouts")
+                        Spacer()
+                        Picker("", selection: $workoutGoalMinutes) {
+                            ForEach(1...120, id: \.self) { minutes in
+                                Text("\(minutes)").tag(minutes)
+                            }
                         }
+                        #if os(iOS)
+                        .pickerStyle(.wheel)
+                        #endif
+                        .frame(width: 80)
+                        Text("Min")
                     }
-                    #if os(iOS)
-                    .pickerStyle(.wheel)
-                    #endif
                 }
                 Section("Entwickler") {
                     Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)
