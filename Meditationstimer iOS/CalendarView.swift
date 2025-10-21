@@ -313,6 +313,7 @@ struct MonthView: View {
             .padding(6)
             .background(Color.white.opacity(0.95))
             .cornerRadius(6)
-            .shadow(radius: 3))
+            .shadow(radius: 3)
+            .frame(width: 60, height: 30))
     }
 }
