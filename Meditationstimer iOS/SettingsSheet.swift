@@ -38,7 +38,7 @@ struct SettingsSheet: View {
                         #if os(iOS)
                         .pickerStyle(.wheel)
                         #endif
-                        .frame(width: 80)
+                        .frame(width: 80, height: 120)
                     }
                     HStack {
                         Text("Workouts")
@@ -51,7 +51,7 @@ struct SettingsSheet: View {
                         #if os(iOS)
                         .pickerStyle(.wheel)
                         #endif
-                        .frame(width: 80)
+                        .frame(width: 80, height: 120)
                     }
                 }
                 Section("Entwickler") {
