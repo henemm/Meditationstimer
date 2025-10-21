@@ -309,10 +309,10 @@ struct MonthView: View {
     private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> AnyView? {
         var texts: [Text] = []
         if mins.mindfulnessMinutes > 0 {
-            texts.append(Text("Med: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
+            texts.append(Text("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
         }
         if mins.workoutMinutes > 0 {
-            texts.append(Text("Work: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
+            texts.append(Text("Workouts: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
         if texts.isEmpty { return nil }
         if texts.count == 1 {
