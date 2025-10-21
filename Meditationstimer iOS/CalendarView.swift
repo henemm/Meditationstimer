@@ -269,7 +269,7 @@ struct MonthView: View {
                     .offset(x: 4, y: 4)
             }
         }
-        .onLongPressGesture {
+        .onTapGesture {
             showTooltipFor = dayKey
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 showTooltipFor = nil
@@ -278,7 +278,7 @@ struct MonthView: View {
         .overlay {
             if showTooltipFor == dayKey, let tooltip = tooltipView(for: mins) {
                 tooltip
-                    .offset(y: -50)
+                    .offset(y: -40)
             }
         }
     }
