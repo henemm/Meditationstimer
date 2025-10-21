@@ -29,6 +29,7 @@ struct SettingsSheet: View {
                 Section(header: Text("Tägliche Ziele in Minuten")) {
                     HStack {
                         Text("Meditation")
+                            .help("Setze dein tägliches Meditation-Ziel. Der Fortschritt wird als teilgefüllter blauer Kreis im Kalender angezeigt.")
                         Spacer()
                         Picker("", selection: $meditationGoalMinutes) {
                             ForEach(1...120, id: \.self) { minutes in
@@ -42,6 +43,7 @@ struct SettingsSheet: View {
                     }
                     HStack {
                         Text("Workouts")
+                            .help("Setze dein tägliches Workout-Ziel. Der Fortschritt wird als teilgefüllter violetter Kreis im Kalender angezeigt.")
                         Spacer()
                         Picker("", selection: $workoutGoalMinutes) {
                             ForEach(1...120, id: \.self) { minutes in

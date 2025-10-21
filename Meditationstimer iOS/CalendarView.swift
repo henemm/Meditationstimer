@@ -267,6 +267,7 @@ struct MonthView: View {
                     .offset(x: 4, y: 4)
             }
         }
+        .help(helpText(for: mins))
     }
     
     private func generateDays(for month: Date) -> [Date?] {
@@ -291,5 +292,18 @@ struct MonthView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
         return formatter.string(from: date)
+    }
+
+    private func helpText(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> String {
+        var texts: [String] = []
+        if mins.mindfulnessMinutes > 0 {
+            let progress = Int((mins.mindfulnessMinutes / meditationGoalMinutes) * 100)
+            texts.append("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min (\(progress)% - blauer Kreis)")
+        }
+        if mins.workoutMinutes > 0 {
+            let progress = Int((mins.workoutMinutes / workoutGoalMinutes) * 100)
+            texts.append("Workout: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min (\(progress)% - violetter Kreis)")
+        }
+        return texts.joined(separator: "\n")
     }
 }
