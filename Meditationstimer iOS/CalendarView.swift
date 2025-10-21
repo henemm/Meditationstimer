@@ -8,15 +8,23 @@
 import SwiftUI
 import HealthKit
 
+extension Color {
+    /// Light blue color used for mindfulness activities in calendar
+    static let mindfulnessBlue = Color(red: 0.67, green: 0.86, blue: 0.98)
+    
+    /// Violet color used for workout activities and buttons
+    static let workoutViolet = Color(red: 0.58, green: 0.31, blue: 0.73)
+    
+    /// Red color used for today's indicator in calendar
+    static let todayRed = Color.red
+}
+
 struct CalendarView: View {
     enum ActivityType {
         case mindfulness
         case workout
         case both
     }
-    // Colors used by the calendar UI
-    private let mindfulnessColor = Color(red: 0.67, green: 0.86, blue: 0.98)
-    private let workoutViolet = Color(red: 0.58, green: 0.31, blue: 0.73)
     
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var isLoading = false
@@ -219,7 +227,7 @@ struct MonthView: View {
             if let type = activityType {
                 if type == .mindfulness || type == .both {
                     Circle()
-                        .fill(mindfulnessColor)
+                        .fill(Color.mindfulnessBlue)
                         .frame(width: 35, height: 35)
                 } else {
                     // If only workout, draw an empty background so the number remains readable
@@ -233,7 +241,7 @@ struct MonthView: View {
             if let type = activityType {
                 if type == .workout || type == .both {
                     Circle()
-                        .stroke(workoutViolet, lineWidth: 2)
+                        .stroke(Color.workoutViolet, lineWidth: 2)
                         .frame(width: 37, height: 37)
                 }
             }

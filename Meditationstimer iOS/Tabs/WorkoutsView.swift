@@ -49,6 +49,17 @@
 //   • Graceful error handling without UI interruption
 
 import SwiftUI
+
+extension Color {
+    /// Light blue color used for mindfulness activities in calendar
+    static let mindfulnessBlue = Color(red: 0.67, green: 0.86, blue: 0.98)
+    
+    /// Violet color used for workout activities and buttons
+    static let workoutViolet = Color(red: 0.58, green: 0.31, blue: 0.73)
+    
+    /// Red color used for today's indicator in calendar
+    static let todayRed = Color.red
+}
 import HealthKit
 import AVFoundation
 #if canImport(UIKit)
@@ -287,7 +298,7 @@ private struct WorkoutRunnerView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.58, green: 0.31, blue: 0.73)) // same violet
+                .tint(Color.workoutViolet) // same violet
                 .controlSize(.large)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 4)
@@ -668,7 +679,7 @@ struct WorkoutsView: View {
                 .resizable()
                 .frame(width: 86, height: 86)
                 .foregroundStyle(.tint)
-                .tint(Color(red: 0.58, green: 0.31, blue: 0.73)) // violet for workouts
+                .tint(Color.workoutViolet) // violet for workouts
         }
         .buttonStyle(.plain)
     }

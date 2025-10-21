@@ -317,13 +317,13 @@ struct OffenView: View {
                 // Overlay for active session (phase1/phase2) – styled like Atem's run card
                 if case .phase1(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Meditation", remaining: remaining, total: phase1Minutes * 60) {
+                    RunCard(title: "Meditation", endDate: phase1End, totalSeconds: phase1Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
                 } else if case .phase2(let remaining) = engine.state {
                     Color.black.opacity(0.08).ignoresSafeArea()
-                    RunCard(title: "Besinnung", remaining: remaining, total: phase2Minutes * 60) {
+                    RunCard(title: "Besinnung", endDate: phase2End, totalSeconds: phase2Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
@@ -459,15 +459,12 @@ struct OffenView: View {
 
 private struct RunCard: View {
     let title: String
-    let remaining: Int
-    let total: Int
+    let endDate: Date
+    let totalSeconds: Int
     var onEnd: () -> Void
 
-    private func format(_ seconds: Int) -> String {
-        let minutes = seconds / 60
-        let secs = seconds % 60
-        return String(format: "%d:%02d", minutes, secs)
-    }
+    @State private var currentTime = Date()
+    @State private var timer: Timer?
 
     var body: some View {
         GlassCard {
@@ -475,16 +472,19 @@ private struct RunCard: View {
                 // Title
                 Text(title)
                     .font(.title3.weight(.semibold))
-                // Progress ring + timer (match Offen phaseView sizing)
-                let totalSafe = max(1, total)
-                let progress = Double(remaining) / Double(totalSafe)
+                // Progress ring + icon
+                let progress = max(0, min(1, (endDate.timeIntervalSince(currentTime)) / Double(totalSeconds)))
                 ZStack {
                     CircularRing(progress: progress, lineWidth: 30)
                         .aspectRatio(1, contentMode: .fit)
                         .frame(width: 320, height: 320)
-                    Text(format(remaining))
-                        .font(.system(size: 44, weight: .semibold, design: .rounded))
-                        .monospacedDigit()
+                    if title == "Meditation" {
+                        Text("🧘")
+                            .font(.system(size: 64, weight: .semibold))
+                    } else {
+                        Text("🪷")
+                            .font(.system(size: 64, weight: .semibold))
+                    }
                 }
 
                 // Centered Beenden button (same look & size as Atem run card)
@@ -498,6 +498,15 @@ private struct RunCard: View {
             }
         }
         .frame(maxWidth: 420)
+        .onAppear {
+            timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+                currentTime = Date()
+            }
+        }
+        .onDisappear {
+            timer?.invalidate()
+            timer = nil
+        }
     }
 }
 
