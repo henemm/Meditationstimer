@@ -316,15 +316,21 @@ struct MonthView: View {
             texts.append(Text("Work: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
         if texts.isEmpty { return nil }
-        return AnyView(VStack(alignment: .leading, spacing: 2) {
-            ForEach(0..<texts.count, id: \.self) { index in
-                texts[index]
+        if texts.count == 1 {
+            return AnyView(texts[0]
+                .padding(6)
+                .background(Color.white.opacity(0.95))
+                .cornerRadius(6)
+                .shadow(radius: 3))
+        } else {
+            return AnyView(VStack(alignment: .leading, spacing: 2) {
+                texts[0]
+                texts[1]
             }
+            .padding(6)
+            .background(Color.white.opacity(0.95))
+            .cornerRadius(6)
+            .shadow(radius: 3))
         }
-        .padding(6)
-        .background(Color.white.opacity(0.95))
-        .cornerRadius(6)
-        .shadow(radius: 3)
-        .fixedSize(horizontal: true, vertical: false))
     }
 }
