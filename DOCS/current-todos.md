@@ -34,13 +34,9 @@
   - Teste komplette Atem-Session mit Live Activity im Simulator
   - *Status: Abgeschlossen*
 
-
-
-## 🔄 Offene Todos
-
 - **Streaks**
-  - Verfolgung von aufeinanderfolgenden Tagen mit Meditation
-  - *Status: In Entwicklung*
+  - Verfolgung von aufeinanderfolgenden Tagen mit Meditation und Workouts mit Belohnungssystem
+  - *Status: Abgeschlossen*
 
 ## 🚀 Zukünftige Feature-Ideen
 
