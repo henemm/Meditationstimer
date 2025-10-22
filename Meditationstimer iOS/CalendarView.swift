@@ -85,23 +85,27 @@ struct CalendarView: View {
                     rewardsView(for: streakManager.meditationStreak.rewardsEarned, icon: "leaf.fill", color: .blue)
                 }
                 .popover(isPresented: $showMeditationInfo) {
-                    ZStack(alignment: .topTrailing) {
+                    VStack(spacing: 0) {
+                        HStack {
+                            Spacer()
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 30, height: 30)
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.primary)
+                            }
+                            .onTapGesture {
+                                showMeditationInfo = false
+                            }
+                        }
+                        .padding(.top, 8)
+                        .padding(.trailing, 8)
                         Text("Get a reward every 7 days in a row of meditation (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
                             .padding()
                             .frame(maxWidth: 280)
                             .font(.footnote)
-                        ZStack {
-                            Circle()
-                                .fill(.ultraThinMaterial)
-                                .frame(width: 30, height: 30)
-                            Image(systemName: "xmark")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.primary)
-                        }
-                        .padding(8)
-                        .onTapGesture {
-                            showMeditationInfo = false
-                        }
                     }
                 }
                 
@@ -118,23 +122,27 @@ struct CalendarView: View {
                     rewardsView(for: streakManager.workoutStreak.rewardsEarned, icon: "flame.fill", color: .purple)
                 }
                 .popover(isPresented: $showWorkoutInfo) {
-                    ZStack(alignment: .topTrailing) {
+                    VStack(spacing: 0) {
+                        HStack {
+                            Spacer()
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 30, height: 30)
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.primary)
+                            }
+                            .onTapGesture {
+                                showWorkoutInfo = false
+                            }
+                        }
+                        .padding(.top, 8)
+                        .padding(.trailing, 8)
                         Text("Get a reward every 7 days in a row of workouts (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
                             .padding()
                             .frame(maxWidth: 280)
                             .font(.footnote)
-                        ZStack {
-                            Circle()
-                                .fill(.ultraThinMaterial)
-                                .frame(width: 30, height: 30)
-                            Image(systemName: "xmark")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.primary)
-                        }
-                        .padding(8)
-                        .onTapGesture {
-                            showWorkoutInfo = false
-                        }
                     }
                 }
             }
