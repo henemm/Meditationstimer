@@ -90,12 +90,18 @@ struct CalendarView: View {
                             .padding()
                             .frame(maxWidth: 280)
                             .font(.footnote)
-                        Button(action: { showMeditationInfo = false }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.gray)
-                                .font(.title3)
+                        ZStack {
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                                .frame(width: 30, height: 30)
+                            Image(systemName: "xmark")
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(.primary)
                         }
                         .padding(8)
+                        .onTapGesture {
+                            showMeditationInfo = false
+                        }
                     }
                 }
                 
@@ -117,12 +123,18 @@ struct CalendarView: View {
                             .padding()
                             .frame(maxWidth: 280)
                             .font(.footnote)
-                        Button(action: { showWorkoutInfo = false }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundColor(.gray)
-                                .font(.title3)
+                        ZStack {
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                                .frame(width: 30, height: 30)
+                            Image(systemName: "xmark")
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(.primary)
                         }
                         .padding(8)
+                        .onTapGesture {
+                            showWorkoutInfo = false
+                        }
                     }
                 }
             }
