@@ -34,6 +34,24 @@ struct CalendarView: View {
 
     var body: some View {
         VStack {
+            // Close Button
+            HStack {
+                Spacer()
+                ZStack {
+                    Circle()
+                        .fill(.ultraThinMaterial)
+                        .frame(width: 40, height: 40)
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(.primary)
+                }
+                .onTapGesture {
+                    dismiss()
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top, 10)
+
             // Scrollbare Monatsliste
             ScrollViewReader { proxy in
                 ScrollView {
