@@ -329,22 +329,22 @@ struct MonthView: View {
         let workoutProgress = min(roundedWorkout / workoutGoalMinutes, 1.0)
 
         return ZStack {
-            // Workout circle (purple, outer ring)
+            // Workout circle (purple, inner ring)
             if mins.workoutMinutes > 0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
                     .stroke(Color.purple.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 37, height: 37)
+                    .frame(width: 28, height: 28)
             }
 
-            // Mindfulness circle (hellblau, inner ring, continuous)
+            // Mindfulness circle (hellblau, outer ring, continuous)
             if mins.mindfulnessMinutes > 0 {
                 Circle()
                     .trim(from: 0, to: mindfulnessProgress)
                     .stroke(Color.blue.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 28, height: 28)
+                    .frame(width: 37, height: 37)
             }
 
             Text("\(dayNumber)")
