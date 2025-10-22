@@ -237,8 +237,11 @@ final class HealthKitManager {
                 }
                 if let samples = samples {
                     for sample in samples {
-                        let day = calendar.startOfDay(for: sample.startDate)
-                        activityDays[day] = .mindfulness
+                        let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = calendar.startOfDay(for: sample.startDate)
+                            activityDays[day] = .mindfulness
+                        }
                     }
                 }
                 cont.resume()
@@ -253,14 +256,17 @@ final class HealthKitManager {
                     cont.resume(throwing: error)
                     return
                 }
-                if let samples = samples {
-                    for sample in samples {
-                        let day = calendar.startOfDay(for: sample.startDate)
-                        // Wenn bereits Mindfulness an diesem Tag, dann beide
-                        if activityDays[day] == .mindfulness {
-                            activityDays[day] = .both
-                        } else {
-                            activityDays[day] = .workout
+                if let workouts = samples as? [HKWorkout] {
+                    for workout in workouts {
+                        let duration = workout.duration / 60.0 // in Minuten
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = calendar.startOfDay(for: workout.startDate)
+                            // Wenn bereits Mindfulness an diesem Tag, dann beide
+                            if activityDays[day] == .mindfulness {
+                                activityDays[day] = .both
+                            } else {
+                                activityDays[day] = .workout
+                            }
                         }
                     }
                 }
@@ -299,11 +305,13 @@ final class HealthKitManager {
                 }
                 if let samples = samples {
                     for sample in samples {
-                        let day = calendar.startOfDay(for: sample.startDate)
                         let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
-                        var current = dailyMinutes[day] ?? (0, 0)
-                        current.mindfulnessMinutes += duration
-                        dailyMinutes[day] = current
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = calendar.startOfDay(for: sample.startDate)
+                            var current = dailyMinutes[day] ?? (0, 0)
+                            current.mindfulnessMinutes += duration
+                            dailyMinutes[day] = current
+                        }
                     }
                 }
                 cont.resume()
@@ -320,11 +328,13 @@ final class HealthKitManager {
                 }
                 if let workouts = samples as? [HKWorkout] {
                     for workout in workouts {
-                        let day = calendar.startOfDay(for: workout.startDate)
                         let duration = workout.duration / 60.0 // in Minuten
-                        var current = dailyMinutes[day] ?? (0, 0)
-                        current.workoutMinutes += duration
-                        dailyMinutes[day] = current
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = calendar.startOfDay(for: workout.startDate)
+                            var current = dailyMinutes[day] ?? (0, 0)
+                            current.workoutMinutes += duration
+                            dailyMinutes[day] = current
+                        }
                     }
                 }
                 cont.resume()
@@ -358,11 +368,13 @@ final class HealthKitManager {
                 }
                 if let samples = samples {
                     for sample in samples {
-                        let day = Calendar.current.startOfDay(for: sample.startDate)
                         let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
-                        var current = dailyMinutes[day] ?? (0, 0)
-                        current.mindfulnessMinutes += duration
-                        dailyMinutes[day] = current
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = Calendar.current.startOfDay(for: sample.startDate)
+                            var current = dailyMinutes[day] ?? (0, 0)
+                            current.mindfulnessMinutes += duration
+                            dailyMinutes[day] = current
+                        }
                     }
                 }
                 cont.resume()
@@ -379,11 +391,13 @@ final class HealthKitManager {
                 }
                 if let workouts = samples as? [HKWorkout] {
                     for workout in workouts {
-                        let day = Calendar.current.startOfDay(for: workout.startDate)
                         let duration = workout.duration / 60.0 // in Minuten
-                        var current = dailyMinutes[day] ?? (0, 0)
-                        current.workoutMinutes += duration
-                        dailyMinutes[day] = current
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = Calendar.current.startOfDay(for: workout.startDate)
+                            var current = dailyMinutes[day] ?? (0, 0)
+                            current.workoutMinutes += duration
+                            dailyMinutes[day] = current
+                        }
                     }
                 }
                 cont.resume()
