@@ -16,6 +16,7 @@ struct SettingsSheet: View {
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
+    @AppStorage("calendarFilterEnabled") private var calendarFilterEnabled: Bool = false
 
     var body: some View {
         NavigationView {
@@ -52,10 +53,8 @@ struct SettingsSheet: View {
                         .help("Wähle dein tägliches Workout-Ziel in Minuten.")
                     }
                 }
-                Section("Entwickler") {
-                    Toggle("Workouts als Mindfulness loggen (Debug)", isOn: $logWorkoutsAsMindfulness)
-                        .tint(.blue)
-                    Toggle("Meditation als Yoga-Workout loggen", isOn: $logMeditationAsYogaWorkout)
+                Section("Kalender") {
+                    Toggle("Nur Aktivitäten >= 2 Minuten anzeigen", isOn: $calendarFilterEnabled)
                         .tint(.blue)
                 }
                 #if os(iOS)

@@ -23,6 +23,7 @@ struct CalendarView: View {
 
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Double = 10.0
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Double = 30.0
+    @AppStorage("calendarFilterEnabled") private var calendarFilterEnabled: Bool = false
 
     private let hk = HealthKitManager.shared
     private let calendar = Calendar.current
@@ -264,6 +265,24 @@ struct CalendarView: View {
             activityDays = allActivityDays
             dailyMinutes = allDailyMinutes
             isLoading = false
+            
+            // Filter if enabled
+            if calendarFilterEnabled {
+                var filteredActivityDays = [Date: ActivityType]()
+                var filteredDailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
+                for (date, type) in allActivityDays {
+                    let mins = allDailyMinutes[date] ?? (0, 0)
+                    var hasValid = false
+                    if mins.mindfulnessMinutes >= 2.0 { hasValid = true }
+                    if mins.workoutMinutes >= 2.0 { hasValid = true }
+                    if hasValid {
+                        filteredActivityDays[date] = type
+                        filteredDailyMinutes[date] = mins
+                    }
+                }
+                activityDays = filteredActivityDays
+                dailyMinutes = filteredDailyMinutes
+            }
             
             // Scrolle zum aktuellen Monat nach dem Laden der Daten
             DispatchQueue.main.async {
