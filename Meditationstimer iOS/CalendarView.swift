@@ -121,6 +121,7 @@ struct CalendarView: View {
                     .padding()
             }
         }
+        .background(.ultraThinMaterial)
         .onAppear {
             Task {
                 let authorized = await hk.isAuthorized()
