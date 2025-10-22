@@ -323,8 +323,10 @@ struct MonthView: View {
         let dayNumber = calendar.component(.day, from: date)
         let dayKey = calendar.startOfDay(for: date)
         let mins = dailyMinutes[dayKey] ?? (0, 0)
-        let mindfulnessProgress = min(mins.mindfulnessMinutes / meditationGoalMinutes, 1.0)
-        let workoutProgress = min(mins.workoutMinutes / workoutGoalMinutes, 1.0)
+        let roundedMindfulness = round(mins.mindfulnessMinutes)
+        let mindfulnessProgress = min(roundedMindfulness / meditationGoalMinutes, 1.0)
+        let roundedWorkout = round(mins.workoutMinutes)
+        let workoutProgress = min(roundedWorkout / workoutGoalMinutes, 1.0)
 
         return ZStack {
             // Workout circle (purple, outer ring)
@@ -399,10 +401,12 @@ struct MonthView: View {
     private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> AnyView? {
         var texts: [Text] = []
         if mins.mindfulnessMinutes > 0 {
-            texts.append(Text("Meditation: \(Int(mins.mindfulnessMinutes))/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
+            let rounded = Int(round(mins.mindfulnessMinutes))
+            texts.append(Text("Meditation: \(rounded)/\(Int(meditationGoalMinutes)) Min").foregroundColor(Color.blue.opacity(0.8)))
         }
         if mins.workoutMinutes > 0 {
-            texts.append(Text("Workouts: \(Int(mins.workoutMinutes))/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
+            let rounded = Int(round(mins.workoutMinutes))
+            texts.append(Text("Workouts: \(rounded)/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
         if texts.isEmpty { return nil }
         if texts.count == 1 {
