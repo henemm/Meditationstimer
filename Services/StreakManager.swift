@@ -42,13 +42,15 @@ class StreakManager: ObservableObject {
         do {
             let dailyMinutes = try await healthKitManager.fetchDailyMinutes(from: startDate, to: date)
             
-            // Update meditation streak
-            updateStreak(&meditationStreak, dailyMinutes: dailyMinutes.mapValues { $0.mindfulnessMinutes })
-            
-            // Update workout streak
-            updateStreak(&workoutStreak, dailyMinutes: dailyMinutes.mapValues { $0.workoutMinutes })
-            
-            saveStreaks()
+            await MainActor.run {
+                // Update meditation streak
+                updateStreak(&meditationStreak, dailyMinutes: dailyMinutes.mapValues { $0.mindfulnessMinutes })
+                
+                // Update workout streak
+                updateStreak(&workoutStreak, dailyMinutes: dailyMinutes.mapValues { $0.workoutMinutes })
+                
+                saveStreaks()
+            }
         } catch {
             print("Error updating streaks: \(error)")
         }
@@ -64,7 +66,7 @@ class StreakManager: ObservableObject {
         
         while true {
             let minutes = dailyMinutes[checkDate] ?? 0
-            if minutes >= Double(minMinutes) {
+            if round(minutes) >= Double(minMinutes) {
                 currentStreak += 1
                 checkDate = calendar.date(byAdding: .day, value: -1, to: checkDate)!
             } else {
@@ -77,7 +79,7 @@ class StreakManager: ObservableObject {
         
         // Check if today has activity
         let todayMinutes = dailyMinutes[today] ?? 0
-        let hasActivityToday = todayMinutes >= Double(minMinutes)
+        let hasActivityToday = round(todayMinutes) >= Double(minMinutes)
         
         if hasActivityToday {
             // Update streak and rewards

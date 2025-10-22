@@ -163,7 +163,6 @@ struct CalendarView: View {
             }
         }
         .onAppear {
-            print("CalendarView onAppear triggered")
             Task {
                 let authorized = await hk.isAuthorized()
                 if !authorized {
@@ -222,7 +221,6 @@ struct CalendarView: View {
     }
 
     private func loadActivityDays() {
-        print("CalendarView: loadActivityDays called")
         isLoading = true
         errorMessage = nil
         Task {
@@ -295,7 +293,6 @@ struct CalendarView: View {
             
             // Update streaks after loading data
             Task {
-                print("CalendarView: About to update streaks")
                 await streakManager.updateStreaks()
             }
         }
