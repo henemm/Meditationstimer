@@ -715,9 +715,8 @@ struct WorkoutsView: View {
                 .presentationDetents([.medium, .large])
                 #endif
             }
-            .sheet(isPresented: $showingCalendar) {
+            .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
-                    .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
             }
             .fullScreenCover(isPresented: $showRunner) {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {

@@ -194,9 +194,8 @@ public struct AtemView: View {
                     SettingsSheet()
                         .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
                 }
-                .sheet(isPresented: $showingCalendar) {
+                .fullScreenCover(isPresented: $showingCalendar) {
                     CalendarView()
-                        .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
                 }
                 .sheet(item: $showingEditor) { preset in
                     EditorView(

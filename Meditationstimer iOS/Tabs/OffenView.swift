@@ -343,10 +343,9 @@ struct OffenView: View {
                 SettingsSheet()
                     .presentationDetents([.medium, .large])
             }
-            .sheet(isPresented: $showingCalendar) {
+            .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
                     .environmentObject(streakManager)
-                    .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
             }
             .onChange(of: engine.state) { newValue in
                 // Übergang Phase 1 -> Phase 2: dreifacher Gong und Live Activity auf Phase 2 updaten
