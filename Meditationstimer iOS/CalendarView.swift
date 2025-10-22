@@ -163,6 +163,7 @@ struct CalendarView: View {
             }
         }
         .onAppear {
+            print("CalendarView onAppear triggered")
             Task {
                 let authorized = await hk.isAuthorized()
                 if !authorized {
@@ -221,6 +222,7 @@ struct CalendarView: View {
     }
 
     private func loadActivityDays() {
+        print("CalendarView: loadActivityDays called")
         isLoading = true
         errorMessage = nil
         Task {
@@ -293,6 +295,7 @@ struct CalendarView: View {
             
             // Update streaks after loading data
             Task {
+                print("CalendarView: About to update streaks")
                 await streakManager.updateStreaks()
             }
         }
@@ -343,8 +346,8 @@ struct MonthView: View {
             // Kalender-Grid
             let days = generateDays(for: month)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
-                ForEach(days, id: \.self) { date in
-                    if let date = date {
+                ForEach(days.indices, id: \.self) { index in
+                    if let date = days[index] {
                         dayView(for: date)
                     } else {
                         Color.clear
@@ -369,7 +372,7 @@ struct MonthView: View {
 
         return ZStack {
             // Workout circle (purple, inner ring)
-            if mins.workoutMinutes > 0 {
+            if mins.workoutMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
                     .stroke(Color.purple.opacity(0.8), lineWidth: 5)
@@ -378,7 +381,7 @@ struct MonthView: View {
             }
 
             // Mindfulness circle (hellblau, outer ring, continuous)
-            if mins.mindfulnessMinutes > 0 {
+            if mins.mindfulnessMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: mindfulnessProgress)
                     .stroke(Color.blue.opacity(0.8), lineWidth: 5)
