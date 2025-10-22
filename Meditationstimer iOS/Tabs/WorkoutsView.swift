@@ -233,8 +233,6 @@ private struct WorkoutRunnerView: View {
             #endif
             VStack(spacing: 12) {
                 Text("\(plannedRepeats) Wiederholungen: \(intervalSec)s/\(restSec)s").font(.headline)
-                Text("HIIT • \(plannedRepeats) Wiederholungen • \(intervalSec)s / \(restSec)s")
-                    .font(.footnote).foregroundStyle(.secondary)
 
                 if !finished {
                     TimelineView(.animation) { ctx in
