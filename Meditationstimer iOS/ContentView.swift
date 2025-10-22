@@ -59,11 +59,13 @@ struct ContentView: View {
                     }
 
                 AtemView()
+                    .environmentObject(streakManager)
                     .tabItem {
                         Label("Atem", systemImage: "wind")
                     }
 
                 WorkoutsView()
+                    .environmentObject(streakManager)
                     .tabItem {
                         Label("Workouts", systemImage: "figure.walk")
                     }
