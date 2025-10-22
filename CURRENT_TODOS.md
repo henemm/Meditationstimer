@@ -18,12 +18,14 @@
   - Alle Ringe auf 0.05s Updates für sanfte Animationen
   - *Status: Abgeschlossen*
 
-- **Live Activity Atem-Phasen synchronisieren**
-  - Implementiere Live Activity Synchronisation mit Atem-Phasen (Einatmen/Halten/Ausatmen Icons)
-  - *Status: Abgeschlossen*
-
 - **Statistiken**
   - Übersicht über Sitzungen, Dauer, Häufigkeit
+  - *Status: Abgeschlossen*
+
+
+
+- **Live Activity Atem-Phasen synchronisieren**
+  - Implementiere Live Activity Synchronisation mit Atem-Phasen (Einatmen/Halten/Ausatmen Icons)
   - *Status: Abgeschlossen*
 
 - **Live Activity Ownership prüfen**
@@ -34,13 +36,12 @@
   - Teste komplette Atem-Session mit Live Activity im Simulator
   - *Status: Abgeschlossen*
 
-
-
 ## 🔄 Offene Todos
 
 - **Streaks**
   - Verfolgung von aufeinanderfolgenden Tagen mit Meditation
   - *Status: In Entwicklung*
+
 
 ## 🚀 Zukünftige Feature-Ideen
 
@@ -48,10 +49,16 @@
   - Benachrichtigungen für regelmäßige Meditation/Atem-Sessions
   - *Status: Idee - Noch nicht priorisiert*
 
+
+
 - **Fokusmode**
   - Do-Not-Disturb Modus während Sessions
   - *Status: Idee - Noch nicht priorisiert*
 
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 22. Oktober 2025
+- Letzte Aktualisierung: 20. Oktober 2025
+- Live Activity Atem-Phasen Synchronisation wurde zurückgesetzt, da die Swift-Datei beschädigt wurde
+- Timer Stopp nach Beenden wurde erfolgreich implementiert und getestet
+- Persistente Einstellungen für Workouts und Atem implementiert
+- Ring-Animationen auf 0.05s vereinheitlicht für sanfte Darstellung
