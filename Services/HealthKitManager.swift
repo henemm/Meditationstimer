@@ -56,7 +56,6 @@ final class HealthKitManager {
     }
 
     private let healthStore = HKHealthStore()
-    @AppStorage("calendarFilterEnabled") private var calendarFilterEnabled: Bool = false
 
     /// Hinweis zu Info.plist:
     /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
