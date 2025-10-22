@@ -327,42 +327,23 @@ struct MonthView: View {
         let workoutProgress = min(mins.workoutMinutes / workoutGoalMinutes, 1.0)
 
         return ZStack {
-            // Mindfulness quarters (hellbraun, filled sectors)
-            if mins.mindfulnessMinutes > 0 {
-                let quarters = Int(mindfulnessProgress * 4)
-                let color = Color(red: 0.8, green: 0.6, blue: 0.4).opacity(0.8)
-                if quarters > 0 {
-                    Sector(startAngle: .degrees(-90), endAngle: .degrees(0))
-                        .fill(color)
-                        .frame(width: 35, height: 35)
-                }
-                if quarters > 1 {
-                    Sector(startAngle: .degrees(0), endAngle: .degrees(90))
-                        .fill(color)
-                        .frame(width: 35, height: 35)
-                }
-                if quarters > 2 {
-                    Sector(startAngle: .degrees(90), endAngle: .degrees(180))
-                        .fill(color)
-                        .frame(width: 35, height: 35)
-                }
-                if quarters > 3 {
-                    Sector(startAngle: .degrees(180), endAngle: .degrees(270))
-                        .fill(color)
-                        .frame(width: 35, height: 35)
-                }
-            }
-
-            // Workout circle (purple, ring based on progress)
+            // Workout circle (purple, outer ring)
             if mins.workoutMinutes > 0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
-                    .stroke(Color.purple.opacity(0.8), lineWidth: 3)
+                    .stroke(Color.purple.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
                     .frame(width: 37, height: 37)
             }
 
-            // If both, maybe a combined indicator, but for now separate
+            // Mindfulness circle (hellblau, inner ring, continuous)
+            if mins.mindfulnessMinutes > 0 {
+                Circle()
+                    .trim(from: 0, to: mindfulnessProgress)
+                    .stroke(Color.blue.opacity(0.8), lineWidth: 5)
+                    .rotationEffect(.degrees(-90))
+                    .frame(width: 28, height: 28)
+            }
 
             Text("\(dayNumber)")
                 .font(.system(size: 16, weight: activityType != nil ? .semibold : .regular))
