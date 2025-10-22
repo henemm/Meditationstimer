@@ -14,9 +14,7 @@ Suggested contents:
 
 If you want, I can scan the repository for all `AI ORIENTATION` sections and append them here.
 
-## Lessons Learned from Timer Bug
 
-Based on failed attempts documented in Fehlversuche-Timer-Bug.md and Fehlversuche-Timer-Bug-Entry-2025-10-11.md:
 
 ### Core Timer Issues
 - **Timer not reliably stopped after "Beenden"**: The timer continues running in background even after user presses stop button
