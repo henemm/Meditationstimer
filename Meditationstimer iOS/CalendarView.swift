@@ -31,6 +31,7 @@ struct CalendarView: View {
     
     @State private var showMeditationInfo = false
     @State private var showWorkoutInfo = false
+    @State private var scrollProxy: ScrollViewProxy?
 
     var body: some View {
         VStack {
@@ -65,8 +66,7 @@ struct CalendarView: View {
                     .padding(.horizontal)
                 }
                 .onAppear {
-                    // Scrolle zum aktuellen Monat (offset 0)
-                    proxy.scrollTo(0, anchor: .center)
+                    scrollProxy = proxy
                 }
             }
 
@@ -244,6 +244,13 @@ struct CalendarView: View {
             activityDays = allActivityDays
             dailyMinutes = allDailyMinutes
             isLoading = false
+            
+            // Scrolle zum aktuellen Monat nach dem Laden der Daten
+            DispatchQueue.main.async {
+                withAnimation {
+                    scrollProxy?.scrollTo(0, anchor: .center)
+                }
+            }
             
             // Update streaks after loading data
             Task {
