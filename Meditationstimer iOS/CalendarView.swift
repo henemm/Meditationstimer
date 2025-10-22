@@ -85,10 +85,18 @@ struct CalendarView: View {
                     rewardsView(for: streakManager.meditationStreak.rewardsEarned, icon: "leaf.fill", color: .blue)
                 }
                 .popover(isPresented: $showMeditationInfo) {
-                    Text("Get a reward every 7 days in a row of meditation (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
-                        .padding()
-                        .frame(maxWidth: 280)
-                        .font(.footnote)
+                    ZStack(alignment: .topTrailing) {
+                        Text("Get a reward every 7 days in a row of meditation (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
+                            .padding()
+                            .frame(maxWidth: 280)
+                            .font(.footnote)
+                        Button(action: { showMeditationInfo = false }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                                .font(.title3)
+                        }
+                        .padding(8)
+                    }
                 }
                 
                 // Workout Streaks
@@ -104,10 +112,18 @@ struct CalendarView: View {
                     rewardsView(for: streakManager.workoutStreak.rewardsEarned, icon: "flame.fill", color: .purple)
                 }
                 .popover(isPresented: $showWorkoutInfo) {
-                    Text("Get a reward every 7 days in a row of workouts (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
-                        .padding()
-                        .frame(maxWidth: 280)
-                        .font(.footnote)
+                    ZStack(alignment: .topTrailing) {
+                        Text("Get a reward every 7 days in a row of workouts (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
+                            .padding()
+                            .frame(maxWidth: 280)
+                            .font(.footnote)
+                        Button(action: { showWorkoutInfo = false }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                                .font(.title3)
+                        }
+                        .padding(8)
+                    }
                 }
             }
             .padding()
