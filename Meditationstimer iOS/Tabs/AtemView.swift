@@ -140,6 +140,8 @@ public struct AtemView: View {
 
     private let presetsKey = "atemPresets"
 
+    @EnvironmentObject private var streakManager: StreakManager
+
     private func loadPresets() {
         if let data = UserDefaults.standard.data(forKey: presetsKey),
            let decoded = try? JSONDecoder().decode([Preset].self, from: data) {
@@ -196,6 +198,7 @@ public struct AtemView: View {
                 }
                 .fullScreenCover(isPresented: $showingCalendar) {
                     CalendarView()
+                        .environmentObject(streakManager)
                 }
                 .sheet(item: $showingEditor) { preset in
                     EditorView(

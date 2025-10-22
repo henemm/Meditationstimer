@@ -578,6 +578,8 @@ struct WorkoutsView: View {
     @AppStorage("restSec") private var restSec: Int = 10
     @AppStorage("repeats") private var repeats: Int = 10
 
+    @EnvironmentObject private var streakManager: StreakManager
+
     // TODO: compute total duration once repetition logic is re-added
     private var totalSeconds: Int {
         // Gesamtdauer ohne Ausklang/Auftakt: (Belastung * Wdh) + (Erholung * (Wdh-1))
@@ -717,6 +719,7 @@ struct WorkoutsView: View {
             }
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
+                    .environmentObject(streakManager)
             }
             .fullScreenCover(isPresented: $showRunner) {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
