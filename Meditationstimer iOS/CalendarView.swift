@@ -43,6 +43,7 @@ struct CalendarView: View {
                         .font(.title2)
                 }
                 .background(.ultraThinMaterial)
+                .padding(8)
                 .padding(.trailing)
                 .padding(.top, 20) // Mehr Abstand oben
             }
