@@ -34,20 +34,6 @@ struct CalendarView: View {
 
     var body: some View {
         VStack {
-            // Header mit Close-Button
-            HStack {
-                Spacer()
-                Button(action: { dismiss() }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
-                        .font(.title2)
-                }
-                .background(.ultraThinMaterial)
-                .padding(8)
-                .padding(.trailing)
-                .padding(.top, 20) // Mehr Abstand oben
-            }
-
             // Scrollbare Monatsliste
             ScrollViewReader { proxy in
                 ScrollView {
@@ -121,7 +107,6 @@ struct CalendarView: View {
                     .padding()
             }
         }
-        .background(.ultraThinMaterial)
         .onAppear {
             Task {
                 let authorized = await hk.isAuthorized()
