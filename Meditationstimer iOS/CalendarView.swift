@@ -42,11 +42,10 @@ struct CalendarView: View {
                         .foregroundColor(.gray)
                         .font(.title2)
                 }
+                .background(.ultraThinMaterial)
                 .padding(.trailing)
                 .padding(.top, 20) // Mehr Abstand oben
             }
-            .background(Color.white.opacity(0.1))
-            .cornerRadius(10)
 
             // Scrollbare Monatsliste
             ScrollViewReader { proxy in
