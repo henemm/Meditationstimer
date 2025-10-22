@@ -237,11 +237,11 @@ final class HealthKitManager {
                 }
                 if let samples = samples {
                     for sample in samples {
-                        let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
-                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                        // let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
                             let day = calendar.startOfDay(for: sample.startDate)
                             activityDays[day] = .mindfulness
-                        }
+                        // }
                     }
                 }
                 cont.resume()
@@ -258,8 +258,8 @@ final class HealthKitManager {
                 }
                 if let workouts = samples as? [HKWorkout] {
                     for workout in workouts {
-                        let duration = workout.duration / 60.0 // in Minuten
-                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                        // let duration = workout.duration / 60.0 // in Minuten
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
                             let day = calendar.startOfDay(for: workout.startDate)
                             // Wenn bereits Mindfulness an diesem Tag, dann beide
                             if activityDays[day] == .mindfulness {
@@ -267,7 +267,7 @@ final class HealthKitManager {
                             } else {
                                 activityDays[day] = .workout
                             }
-                        }
+                        // }
                     }
                 }
                 cont.resume()
@@ -306,12 +306,12 @@ final class HealthKitManager {
                 if let samples = samples {
                     for sample in samples {
                         let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
-                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
                             let day = calendar.startOfDay(for: sample.startDate)
                             var current = dailyMinutes[day] ?? (0, 0)
                             current.mindfulnessMinutes += duration
                             dailyMinutes[day] = current
-                        }
+                        // }
                     }
                 }
                 cont.resume()
@@ -329,12 +329,12 @@ final class HealthKitManager {
                 if let workouts = samples as? [HKWorkout] {
                     for workout in workouts {
                         let duration = workout.duration / 60.0 // in Minuten
-                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
                             let day = calendar.startOfDay(for: workout.startDate)
                             var current = dailyMinutes[day] ?? (0, 0)
                             current.workoutMinutes += duration
                             dailyMinutes[day] = current
-                        }
+                        // }
                     }
                 }
                 cont.resume()
@@ -369,12 +369,12 @@ final class HealthKitManager {
                 if let samples = samples {
                     for sample in samples {
                         let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
-                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
                             let day = Calendar.current.startOfDay(for: sample.startDate)
                             var current = dailyMinutes[day] ?? (0, 0)
                             current.mindfulnessMinutes += duration
                             dailyMinutes[day] = current
-                        }
+                        // }
                     }
                 }
                 cont.resume()
@@ -392,12 +392,12 @@ final class HealthKitManager {
                 if let workouts = samples as? [HKWorkout] {
                     for workout in workouts {
                         let duration = workout.duration / 60.0 // in Minuten
-                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
                             let day = Calendar.current.startOfDay(for: workout.startDate)
                             var current = dailyMinutes[day] ?? (0, 0)
                             current.workoutMinutes += duration
                             dailyMinutes[day] = current
-                        }
+                        // }
                     }
                 }
                 cont.resume()

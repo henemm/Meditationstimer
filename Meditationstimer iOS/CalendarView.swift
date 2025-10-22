@@ -270,6 +270,20 @@ struct MonthView: View {
 
     @State private var showTooltipFor: Date? = nil
 
+    // Custom shape for filled sectors (quarters)
+    struct Sector: Shape {
+        let startAngle: Angle
+        let endAngle: Angle
+        
+        func path(in rect: CGRect) -> Path {
+            var path = Path()
+            let center = CGPoint(x: rect.midX, y: rect.midY)
+            path.move(to: center)
+            path.addArc(center: center, radius: rect.width / 2, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+            return path
+        }
+    }
+
     var body: some View {
         VStack {
             Text(monthYearString(from: month))
@@ -309,15 +323,34 @@ struct MonthView: View {
         let dayNumber = calendar.component(.day, from: date)
         let dayKey = calendar.startOfDay(for: date)
         let mins = dailyMinutes[dayKey] ?? (0, 0)
-        let _ = min(mins.mindfulnessMinutes / meditationGoalMinutes, 1.0)
+        let mindfulnessProgress = min(mins.mindfulnessMinutes / meditationGoalMinutes, 1.0)
         let workoutProgress = min(mins.workoutMinutes / workoutGoalMinutes, 1.0)
 
         return ZStack {
-            // Mindfulness circle (light blue, filled)
+            // Mindfulness quarters (hellbraun, filled sectors)
             if mins.mindfulnessMinutes > 0 {
-                Circle()
-                    .fill(Color.blue.opacity(0.3))
-                    .frame(width: 35, height: 35)
+                let quarters = Int(mindfulnessProgress * 4)
+                let color = Color(red: 0.8, green: 0.6, blue: 0.4).opacity(0.8)
+                if quarters > 0 {
+                    Sector(startAngle: .degrees(-90), endAngle: .degrees(0))
+                        .fill(color)
+                        .frame(width: 35, height: 35)
+                }
+                if quarters > 1 {
+                    Sector(startAngle: .degrees(0), endAngle: .degrees(90))
+                        .fill(color)
+                        .frame(width: 35, height: 35)
+                }
+                if quarters > 2 {
+                    Sector(startAngle: .degrees(90), endAngle: .degrees(180))
+                        .fill(color)
+                        .frame(width: 35, height: 35)
+                }
+                if quarters > 3 {
+                    Sector(startAngle: .degrees(180), endAngle: .degrees(270))
+                        .fill(color)
+                        .frame(width: 35, height: 35)
+                }
             }
 
             // Workout circle (purple, ring based on progress)
