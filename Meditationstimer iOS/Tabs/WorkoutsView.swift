@@ -357,6 +357,14 @@ private struct WorkoutRunnerView: View {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
+                    
+                    // Fokusmode aktivieren, falls konfiguriert
+                    let userDefaults = UserDefaults.standard
+                    let selectedMode = userDefaults.string(forKey: "selectedFocusMode") ?? "Do Not Disturb"
+                    if userDefaults.bool(forKey: "focusModeWorkout") {
+                        FocusManager.shared.activateFocusMode(selectedMode)
+                    }
+                    
                     // LiveActivity: Endzeit aus sessionStart + sessionTotal
                     let endDate = sessionStart.addingTimeInterval(sessionTotal)
                     let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
@@ -368,6 +376,14 @@ private struct WorkoutRunnerView: View {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
+                
+                // Fokusmode aktivieren, falls konfiguriert
+                let userDefaults = UserDefaults.standard
+                let selectedMode = userDefaults.string(forKey: "selectedFocusMode") ?? "Do Not Disturb"
+                if userDefaults.bool(forKey: "focusModeWorkout") {
+                    FocusManager.shared.activateFocusMode(selectedMode)
+                }
+                
                 // LiveActivity: Endzeit aus sessionStart + sessionTotal
                 let endDate = sessionStart.addingTimeInterval(sessionTotal)
                 let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
@@ -378,6 +394,9 @@ private struct WorkoutRunnerView: View {
         .onDisappear {
             sounds.stopAll()
             cancelScheduled()
+            
+            // Fokusmode deaktivieren
+            FocusManager.shared.deactivateFocusMode()
         }
         .onChange(of: phase) { _ in }
         // Keine automatische Beendigung bei App-Wechsel
@@ -392,6 +411,9 @@ private struct WorkoutRunnerView: View {
 
         sounds.stopAll()
         cancelScheduled()
+
+        // Fokusmode deaktivieren
+        FocusManager.shared.deactivateFocusMode()
 
         let endDate = Date()
         if let start = workoutStart {
