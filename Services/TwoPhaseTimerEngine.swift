@@ -101,7 +101,9 @@ final class TwoPhaseTimerEngine: ObservableObject {
         state = .idle
         
         // Fokusmode deaktivieren
+        #if os(iOS)
         FocusManager.shared.deactivateFocusMode()
+        #endif
     }
 
     // MARK: - Safe start API for UI
@@ -161,6 +163,7 @@ final class TwoPhaseTimerEngine: ObservableObject {
     }
     
     private func activateFocusModeIfNeeded(for sessionType: String) {
+        #if os(iOS)
         let userDefaults = UserDefaults.standard
         let selectedMode = userDefaults.string(forKey: "selectedFocusMode") ?? "Do Not Disturb"
         
@@ -174,5 +177,6 @@ final class TwoPhaseTimerEngine: ObservableObject {
         if shouldActivate {
             FocusManager.shared.activateFocusMode(selectedMode)
         }
+        #endif
     }
 }
