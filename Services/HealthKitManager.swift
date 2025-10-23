@@ -166,7 +166,7 @@ final class HealthKitManager {
     
     /// Wartet kurz, bis die App „active" ist (verhindert Timeout beim System‑Sheet).
     private func waitUntilAppActive(timeout: TimeInterval) async -> Bool {
-        #if canImport(UIKit)
+        #if os(iOS)
         let start = Date()
         while Date().timeIntervalSince(start) < timeout {
             if UIApplication.shared.applicationState == .active { return true }
