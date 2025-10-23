@@ -5,6 +5,7 @@
 //  Created by AI on 23.10.2025.
 //
 
+#if os(iOS)
 import Foundation
 #if canImport(ActivityKit)
 import ActivityKit
@@ -19,7 +20,7 @@ class FocusManager {
     /// Aktiviert den angegebenen Focus Modus.
     /// - Parameter mode: Der Name des Focus Modus (z.B. "Do Not Disturb").
     func activateFocusMode(_ mode: String) {
-        #if os(iOS) && canImport(ActivityKit)
+        #if canImport(ActivityKit)
         if #available(iOS 16.0, *) {
             do {
                 // Versuche, den Modus zu aktivieren
@@ -39,7 +40,7 @@ class FocusManager {
     
     /// Deaktiviert den aktuellen Focus Modus und kehrt zum vorherigen zurück.
     func deactivateFocusMode() {
-        #if os(iOS) && canImport(ActivityKit)
+        #if canImport(ActivityKit)
         if #available(iOS 16.0, *) {
             // Kehre zum vorherigen Modus zurück oder deaktiviere
             if let previous = previousFocusMode {
@@ -70,3 +71,4 @@ class FocusManager {
         print("Fallback: Deaktiviere Do Not Disturb")
     }
 }
+#endif
