@@ -4,9 +4,9 @@ This file is a central place for AI-facing hints, annotations and quick context 
 
 Suggested contents:
 - Projektname/Scheme für Build und Tests: **Lean Health Timer**
-- Regel: Vor jedem Hinweis zum Testen wird ein Compiler-Test (Build) per Kommandozeile durchgeführt und das Ergebnis dokumentiert.
+- Regel: Vor jedem Hinweis zum Testen oder Commit wird ein Compiler-Test (xcodebuild) durchgeführt und dokumentiert. Stelle sicher, dass der Code kompiliert, bevor du etwas übergibst.
 - Where to look first for Live Activity issues: `Meditationstimer iOS/Tabs/OffenView.swift`, `Services/LiveActivityController.swift`, `Services/TwoPhaseTimerEngine.swift`.
-- Owner convention for LiveActivity: callers should pass `ownerId` (e.g. `"OffenTab"`).
+- Owner convention for LiveActivity: callers should pass `ownerId` (e.g. `"OffenTab"`, `"AtemTab"`, `"WorkoutsTab"`) to prevent conflicts and ensure only one active Live Activity per tab.
 - Files with AI orientation comments: `OffenView.swift`, `AtemView.swift`, `WorkoutsView.swift` (each contains a short AI ORIENTATION block).
 - Local notes:
   - Tag `v1.1` and branch `stable/v1.1` were created on 2025-10-10 as a safe rollback point.
@@ -60,13 +60,6 @@ Based on backlog.md (as of 07.10.2025):
 - UI refinements in Workouts (neutral repeat icon)
 - Atem preview bug fixed (added missing @Environment(.scenePhase))
 - Removed incorrect auto-end on app switch
-
-### Open Tasks
-- Live Preview (Canvas) stability final check
-- Dynamic Island final variant decision
-- Optional debug switch for ending all Live Activities
-- HealthKit re-testing on device
-- Minor UX polish for lock screen and expanded views
 
 ## Technical Solutions
 

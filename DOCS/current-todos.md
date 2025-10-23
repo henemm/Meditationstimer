@@ -38,16 +38,26 @@
   - Verfolgung von aufeinanderfolgenden Tagen mit Meditation und Workouts mit Belohnungssystem
   - *Status: Abgeschlossen*
 
-## 🚀 Zukünftige Feature-Ideen
+- **Live Preview (Canvas) stability final check**
+  - *Status: Erledigt*
 
-- **Erinnerungen**
-  - Benachrichtigungen für regelmäßige Meditation/Atem-Sessions
-  - *Status: Idee - Noch nicht priorisiert*
+- **Dynamic Island final variant decision**
+  - *Status: Erledigt*
 
-- **Fokusmode**
-  - Do-Not-Disturb Modus während Sessions
-  - *Status: Idee - Noch nicht priorisiert*
+- **Optional debug switch for ending all Live Activities**
+  - *Status: Erledigt*
+
+- **Minor UX polish for lock screen and expanded views**
+  - *Status: Erledigt*
+
+
+## 🔧 Open Todos
+
+
+- **HealthKit re-testing on device**
+  - *Status: Offen*
+
 
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 22. Oktober 2025
+- Letzte Aktualisierung: 23. Oktober 2025

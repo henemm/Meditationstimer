@@ -37,27 +37,39 @@ Dieses Dokument fasst die geplanten Features für die Meditationstimer-App zusam
 **Risiken:** iOS Notification-Berechtigungen, Batterie-Impact.
 
 ### 4. Fokusmode (Priorität: Niedrig)
-**Beschreibung:** Automatische Aktivierung eines konfigurierten iOS Focus Modes während Sessions.
+**Beschreibung:** Automatische Aktivierung eines konfigurierten iOS Focus Modes während Sessions, um ungestörte Meditation oder Workouts zu ermöglichen.
 
 **Details:**
-- **Konfiguration:** User wählt iOS Focus Mode (z.B. Do Not Disturb) für Meditation/Workout.
-- **Aktivierung:** Automatisch bei Session-Start; zurück zum vorherigen Modus am Ende.
-- **Technik:** iOS Focus Modes API (FocusStatus).
+- **Konfiguration:** User wählt im Settings-Tab einen iOS Focus Mode (z.B. Do Not Disturb, Work, Sleep) für Meditation- und Workout-Sessions separat. Optionale Toggle für automatische Aktivierung.
+- **Aktivierung:** Automatisch bei Session-Start (z.B. über TimerEngine); zurück zum vorherigen Modus am Ende der Session oder bei Abbruch. Fallback auf Do-Not-Disturb, wenn der gewählte Modus nicht verfügbar ist.
+- **Verfügbare Modi:** Abhängig von iOS-Version – typischerweise Do Not Disturb, Driving, Work, Sleep, Personal. Nicht alle Modi sind programmatisch steuerbar (z.B. Custom Modi mit Filtern).
+- **UI-Integration:** Neue Sektion im Settings-Tab mit Picker für Modi und Toggles pro Session-Typ.
 
 **User Stories:**
 - Als User möchte ich Fokus während Sessions, um ungestört zu bleiben.
-- Als User möchte ich automatische Aktivierung/Deaktivierung.
+- Als User möchte ich automatische Aktivierung/Deaktivierung, ohne manuell den Modus zu wechseln.
+- Als User möchte ich den Modus pro Session-Typ konfigurieren, um Flexibilität zu haben.
+- Als User möchte ich einen Fallback, falls mein gewählter Modus nicht funktioniert.
 
 **Technik:**
-- FocusStatus API (iOS 15+)
-- Fallback: Do-Not-Disturb
+- FocusStatus API (iOS 15+): Verwende ActivityManager für Aktivierung/Deaktivierung von Focus Modi.
+- Berechtigungen: Erfordert Focus-Status-Berechtigung (Info.plist: NSFocusStatusUsageDescription).
+- Fallback: Do-Not-Disturb via UIApplication.shared (ältere API).
+- Integration: Hook in MeditationEngine/TwoPhaseTimerEngine für Start/Ende-Events.
+- Background-Handling: Stelle sicher, dass Modus bei App-Terminierung zurückgesetzt wird.
 
-**Aufwand:** Hoch (3-4 Wochen)  
-**Risiken:** iOS-API-Beschränkungen, Berechtigungen.
+**Implementierungsschritte:**
+1. Berechtigungen in Info.plist hinzufügen.
+2. Settings-UI erweitern (neue View mit Picker und Toggles).
+3. FocusManager-Klasse erstellen für API-Interaktion.
+4. Integration in Timer-Engines (onStart: activate Modus; onEnd: deactivate).
+5. Fallback-Logik implementieren.
+6. Tests: Simulator-Unterstützung prüfen, Berechtigungen testen.
 
-## 📋 Roadmap-Zeitplan
-1. **Q1 2026:** Erinnerungen integrieren (Routine-Unterstützung)
-2. **Q2 2026:** Fokusmode testen und freigeben (nice-to-have)
+**Aufwand:** Niedrig (1 Woche)  
+**Risiken:** iOS-API-Beschränkungen (nicht alle Modi steuerbar, abhängig von iOS-Version), Berechtigungen (User muss zustimmen), Kompatibilität mit älteren iOS-Versionen (Fallback erforderlich).
+
+(nice-to-have)
 
 ## 💡 Offene Fragen
 - Grafische Umsetzung der Kreise: Ein oder zwei pro Tag?
