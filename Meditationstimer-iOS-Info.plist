@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSFocusStatusUsageDescription</key>
+	<string>Diese App aktiviert automatisch Focus Modi während Meditation- oder Workout-Sessions, um ungestörte Sessions zu ermöglichen.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>UIBackgroundModes</key>

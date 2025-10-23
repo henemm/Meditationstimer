@@ -67,8 +67,11 @@ final class TwoPhaseTimerEngine: ObservableObject {
         terminationDetector?.cancel()
     }
 
-    func start(phase1Minutes: Int, phase2Minutes: Int) {
+    func start(phase1Minutes: Int, phase2Minutes: Int, sessionType: String = "Meditation") {
         cancel()
+
+        // Fokusmode aktivieren, falls konfiguriert
+        activateFocusModeIfNeeded(for: sessionType)
 
         phase1Length = max(0, phase1Minutes) * 60
         phase2Length = max(0, phase2Minutes) * 60
@@ -96,6 +99,9 @@ final class TwoPhaseTimerEngine: ObservableObject {
         phase1EndDate = nil
         endDate = nil
         state = .idle
+        
+        // Fokusmode deaktivieren
+        FocusManager.shared.deactivateFocusMode()
     }
 
     // MARK: - Safe start API for UI
@@ -151,6 +157,22 @@ final class TwoPhaseTimerEngine: ObservableObject {
             state = .finished
             ticker?.cancel()
             ticker = nil
+        }
+    }
+    
+    private func activateFocusModeIfNeeded(for sessionType: String) {
+        let userDefaults = UserDefaults.standard
+        let selectedMode = userDefaults.string(forKey: "selectedFocusMode") ?? "Do Not Disturb"
+        
+        var shouldActivate = false
+        if sessionType == "Meditation" {
+            shouldActivate = userDefaults.bool(forKey: "focusModeMeditation")
+        } else if sessionType == "Workout" {
+            shouldActivate = userDefaults.bool(forKey: "focusModeWorkout")
+        }
+        
+        if shouldActivate {
+            FocusManager.shared.activateFocusMode(selectedMode)
         }
     }
 }

@@ -16,6 +16,9 @@ struct SettingsSheet: View {
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
+    @AppStorage("focusModeMeditation") private var focusModeMeditation: Bool = false
+    @AppStorage("focusModeWorkout") private var focusModeWorkout: Bool = false
+    @AppStorage("selectedFocusMode") private var selectedFocusMode: String = "Do Not Disturb"
 
     var body: some View {
         NavigationView {
@@ -51,6 +54,19 @@ struct SettingsSheet: View {
                         .frame(width: 80, height: 120)
                         .help("Wähle dein tägliches Workout-Ziel in Minuten.")
                     }
+                }
+                Section(header: Text("Fokusmode")) {
+                    Picker("Focus Modus", selection: $selectedFocusMode) {
+                        Text("Do Not Disturb").tag("Do Not Disturb")
+                        Text("Work").tag("Work")
+                        Text("Sleep").tag("Sleep")
+                        Text("Personal").tag("Personal")
+                    }
+                    .help("Wähle den Focus Modus, der während Sessions aktiviert wird.")
+                    Toggle("Für Meditation aktivieren", isOn: $focusModeMeditation)
+                        .help("Aktiviert den gewählten Focus Modus automatisch während Meditation-Sessions.")
+                    Toggle("Für Workouts aktivieren", isOn: $focusModeWorkout)
+                        .help("Aktiviert den gewählten Focus Modus automatisch während Workout-Sessions.")
                 }
                 #if os(iOS)
                 Section {
