@@ -412,7 +412,7 @@ struct OffenView: View {
     
     private func endSession(manual: Bool) async {
     #if DEBUG
-    print("DBG endSession: invoked manual=\(manual) engine.state=\(engine.state) owner=\(liveActivity.publicOwnerId ?? "nil") ownerTitle=\(liveActivity.publicOwnerTitle ?? "")")
+    print("DBG endSession: invoked manual=\(manual) engine.state=\(engine.state) owner=\(liveActivity.ownerId ?? "nil") ownerTitle=\(liveActivity.ownerTitle ?? "")")
     #endif
         // 1. Log Health entry - nur Phase 1 (Meditation), nicht die Besinnung
         if let phase1End = engine.phase1EndDate, sessionStart.distance(to: phase1End) > 5 {

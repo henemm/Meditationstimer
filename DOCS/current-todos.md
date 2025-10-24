@@ -50,6 +50,12 @@
 - **Minor UX polish for lock screen and expanded views**
   - *Status: Erledigt*
 
+- **Konsolidierung von Duplikaten (Technische Schulden)**
+  - LiveActivityController und CalendarView Duplikate entfernt, Single Source of Truth etabliert
+  - API-Deprecations behoben (Activity.endAll() → Activity.activities Loop)
+  - Build-Stabilität wiederhergestellt
+  - *Status: Abgeschlossen*
+
 
 ## 🔧 Open Todos
 

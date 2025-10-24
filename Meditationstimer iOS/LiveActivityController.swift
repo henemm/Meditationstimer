@@ -18,9 +18,9 @@ final class LiveActivityController: ObservableObject {
     /// Optional owner identifier for the current activity (e.g. "OffenTab", "AtemTab").
     /// If set, the controller will prefer to keep ownership and will log/handle attempts
     /// from a different owner deterministically (end+start).
-    private var ownerId: String?
+    private(set) var ownerId: String?
     /// Optional human-readable title for the current activity (e.g. "Meditation").
-    private var ownerTitle: String?
+    private(set) var ownerTitle: String?
 
     /// Whether there is currently an active Live Activity managed by this controller.
     var isActive: Bool {
@@ -175,7 +175,9 @@ final class LiveActivityController: ObservableObject {
 
             // Ensure complete removal by ending all activities for this app
             if #available(iOS 16.1, *) {
-                await Activity<MeditationAttributes>.endAll(for: Bundle.main.bundleIdentifier)
+                for activity in Activity<MeditationAttributes>.activities {
+                    await activity.end(dismissalPolicy: .immediate)
+                }
             }
 
             activity = nil
