@@ -3,7 +3,7 @@
 This file is a central place for AI-facing hints, annotations and quick context that other chat sessions or automation can read.
 
 Suggested contents:
-- Projektname/Scheme für Build und Tests: **Lean Health Timer**
+- Xcode Build Scheme Name (use this for all builds and tests): **Lean Health Timer**
 - Regel: Vor jedem Hinweis zum Testen oder Commit wird ein Compiler-Test (xcodebuild) durchgeführt und dokumentiert. Stelle sicher, dass der Code kompiliert, bevor du etwas übergibst.
 - Where to look first for Live Activity issues: `Meditationstimer iOS/Tabs/OffenView.swift`, `Services/LiveActivityController.swift`, `Services/TwoPhaseTimerEngine.swift`.
 - Owner convention for LiveActivity: callers should pass `ownerId` (e.g. `"OffenTab"`, `"AtemTab"`, `"WorkoutsTab"`) to prevent conflicts and ensure only one active Live Activity per tab.

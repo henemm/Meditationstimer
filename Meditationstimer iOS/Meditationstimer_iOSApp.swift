@@ -7,6 +7,7 @@
 
 import SwiftUI
 import HealthKit
+import BackgroundTasks
 // Dynamic Island / Live Activity removed
 
 @main
@@ -18,6 +19,12 @@ struct Meditationstimer_iOSApp: App {
     @StateObject private var sharedLiveActivity = LiveActivityController()
     @StateObject private var streakManager = StreakManager()
     
+    init() {
+        #if os(iOS)
+        registerBackgroundTasks()
+        #endif
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -25,6 +32,17 @@ struct Meditationstimer_iOSApp: App {
         }
         // Live Activity background cleanup removed
     }
+    
+    #if os(iOS)
+    private func registerBackgroundTasks() {
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: "com.henemm.smartreminders.check",
+            using: nil
+        ) { task in
+            SmartReminderEngine.shared.handleReminderCheck(task: task as! BGAppRefreshTask)
+        }
+    }
+    #endif
 }
 
 // MARK: - Live Activity cleanup

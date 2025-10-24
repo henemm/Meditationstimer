@@ -413,4 +413,44 @@ final class HealthKitManager {
         let detailed = try await fetchActivityDaysDetailed(forMonth: date)
         return Set(detailed.keys)
     }
+    
+    /// Prüft, ob Aktivitäten eines bestimmten Typs im gegebenen Zeitraum vorhanden sind.
+    func hasActivity(ofType type: String, inRange start: Date, end: Date) async throws -> Bool {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw HealthKitError.healthDataUnavailable
+        }
+
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+
+        switch type {
+        case "meditation":
+            guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+                throw HealthKitError.mindfulTypeUnavailable
+            }
+            return try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Bool, Error>) in
+                let query = HKSampleQuery(sampleType: mindfulType, predicate: predicate, limit: 1, sortDescriptors: nil) { _, samples, error in
+                    if let error = error {
+                        cont.resume(throwing: error)
+                        return
+                    }
+                    cont.resume(returning: !(samples?.isEmpty ?? true))
+                }
+                self.healthStore.execute(query)
+            }
+        case "workout":
+            let workoutType = HKObjectType.workoutType()
+            return try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Bool, Error>) in
+                let query = HKSampleQuery(sampleType: workoutType, predicate: predicate, limit: 1, sortDescriptors: nil) { _, samples, error in
+                    if let error = error {
+                        cont.resume(throwing: error)
+                        return
+                    }
+                    cont.resume(returning: !(samples?.isEmpty ?? true))
+                }
+                self.healthStore.execute(query)
+            }
+        default:
+            return false
+        }
+    }
 }

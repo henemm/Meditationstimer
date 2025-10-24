@@ -555,13 +555,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             private func startTimer() {
-                // Fokusmode aktivieren, falls konfiguriert
-                let userDefaults = UserDefaults.standard
-                let selectedMode = userDefaults.string(forKey: "selectedFocusMode") ?? "Do Not Disturb"
-                if userDefaults.bool(forKey: "focusModeMeditation") {
-                    FocusManager.shared.activateFocusMode(selectedMode)
-                }
-                
                 timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
                     currentTime = Date()
                     checkPhaseProgress()
@@ -569,9 +562,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             private func stopTimer() {
-                // Fokusmode deaktivieren
-                FocusManager.shared.deactivateFocusMode()
-                
                 timer?.invalidate()
                 timer = nil
             }
