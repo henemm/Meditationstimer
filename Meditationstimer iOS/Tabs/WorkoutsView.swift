@@ -580,7 +580,6 @@ struct WorkoutsView: View {
 
     @EnvironmentObject private var streakManager: StreakManager
 
-    // TODO: compute total duration once repetition logic is re-added
     private var totalSeconds: Int {
         // Gesamtdauer ohne Ausklang/Auftakt: (Belastung * Wdh) + (Erholung * (Wdh-1))
         max(0, repeats) * max(0, intervalSec) + max(0, repeats - 1) * max(0, restSec)

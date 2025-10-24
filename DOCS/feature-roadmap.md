@@ -50,6 +50,17 @@ Dieses Dokument fasst die geplanten Features für die Meditationstimer-App zusam
 **Aufwand:** Niedrig (wenige Tage)  
 **Risiken:** Lokalisierung, UI-Anpassungen
 
+### 4. Lokalisierung (Priorität: Mittel)
+**Beschreibung:** Vollständige Lokalisierung der App für mehrere Sprachen hinzufügen.
+
+**Details:**
+- **Sprachen:** Englisch als primäre zusätzliche Sprache
+- **Umfang:** Alle UI-Texte, Beschreibungen, Notifications
+- **Tools:** SwiftUI LocalizedStringKey verwenden
+
+**Aufwand:** Mittel  
+**Risiken:** Konsistente Übersetzungen, Testing
+
 ## 💡 Offene Fragen
 - Grafische Umsetzung der Kreise: Ein oder zwei pro Tag?
 - Streak-Definition: Mindestdauer pro Session?

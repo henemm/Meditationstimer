@@ -53,8 +53,8 @@
 
 ## 🔧 Open Todos
 
-- **Upload zu App Store Connect**
-  - Archive für v2.6 zu App Store Connect hochladen und zur Veröffentlichung einreichen
+- **Unit-Tests hinzufügen**
+  - Unit-Tests für kritische Komponenten wie Timer-Logik, HealthKit-Integration und Datenmodelle implementieren
   - *Status: Offen*
 
 - **HealthKit re-testing on device**
