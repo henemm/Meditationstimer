@@ -39,6 +39,17 @@ Dieses Dokument fasst die geplanten Features für die Meditationstimer-App zusam
 **Aufwand:** Hoch  
 **Risiken:** Komplexe UI, Timer-Logik
 
+### 3. Beschreibungstexte für Atem-Meditationen (Priorität: Niedrig)
+**Beschreibung:** Kurze, inspirierende Beschreibungstexte zu den Atem-Meditationen hinzufügen, um die Nutzererfahrung zu verbessern.
+
+**Details:**
+- **Texte:** Lokalisierte Beschreibungen für jede Atem-Übung
+- **UI:** Anzeige in der Atem-View oder Preset-Auswahl
+- **Inhalt:** Kurze Anleitungen oder Benefits der Übung
+
+**Aufwand:** Niedrig (wenige Tage)  
+**Risiken:** Lokalisierung, UI-Anpassungen
+
 ## 💡 Offene Fragen
 - Grafische Umsetzung der Kreise: Ein oder zwei pro Tag?
 - Streak-Definition: Mindestdauer pro Session?
