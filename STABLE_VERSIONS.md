@@ -4,6 +4,13 @@ This file records stable tags and branches you can use to quickly and safely rol
 
 ## Current stable entries
 
+- Name: v2.6
+  - Tag: `v2.6`
+  - Commit: `a5f05c828361aa1744f285ad43c327c2e9d1d9d4`
+  - Branch: `main`
+  - Release: https://github.com/henemm/Meditationstimer/releases/tag/v2.6
+  - Created: 2025-10-24
+
 - Name: v1.1
   - Tag: `v1.1`
   - Commit: `000e0fe218a2d53af6b26dfdc08a6c6da18307a4`

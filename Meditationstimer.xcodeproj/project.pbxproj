@@ -658,12 +658,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Meditationstimer iOS/Meditationstimer iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Meditationstimer-iOS-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -677,7 +678,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -694,12 +695,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Meditationstimer iOS/Meditationstimer iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XK87E2B3VR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Meditationstimer-iOS-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -713,7 +715,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

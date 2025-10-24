@@ -53,11 +53,13 @@
 
 ## 🔧 Open Todos
 
+- **Upload zu App Store Connect**
+  - Archive für v2.6 zu App Store Connect hochladen und zur Veröffentlichung einreichen
+  - *Status: Offen*
 
 - **HealthKit re-testing on device**
   - *Status: Offen*
 
-
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 23. Oktober 2025
+- Letzte Aktualisierung: 24. Oktober 2025

@@ -12,64 +12,32 @@ Dieses Dokument fasst die geplanten Features für die Meditationstimer-App zusam
 - Vereinheitlichte Ring-Animationen (0.05s Updates)
 - Statistiken: Monatskalender mit visueller Darstellung des täglichen Fortschritts
 - Streaks: Verfolgung von aufeinanderfolgenden Tagen mit Meditation und Workouts mit Belohnungssystem
+- Smart Reminders: Intelligente Erinnerungen basierend auf HealthKit-Inaktivität für Meditation und Workouts
+- Fokusmode: Automatische Aktivierung von iOS Focus Modes während Sessions
 
 ## 🚀 Geplante Features
 
-### 1. Erinnerungen (Priorität: Mittel)
-**Beschreibung:** Tägliche Push-Notifications für Meditation und Atemübungen, konfigurierbar vom User.
+### 1. Erweiterte Statistiken (Priorität: Mittel)
+**Beschreibung:** Detailliertere Analysen und Visualisierungen der Meditation- und Workout-Daten.
 
 **Details:**
-- **Art:** Push-Notifications für Meditation (Offen + Atem) und Atemübungen separat.
-- **Konfiguration:** User wählt Uhrzeit und Häufigkeit (z.B. täglich 8:00 Uhr).
-- **Intelligenz:** Keine Erinnerung, wenn bereits am Tag trainiert wurde.
-- **UI:** Settings-Tab mit Time-Picker und Toggles.
+- **Trends:** Langzeit-Trends über Wochen/Monate
+- **Vergleiche:** Vergleich mit Vorperioden
+- **Export:** Datenexport für externe Analyse
 
-**User Stories:**
-- Als User möchte ich tägliche Erinnerungen, um meine Routine nicht zu vergessen.
-- Als User möchte ich konfigurierbare Zeiten, um flexibel zu sein.
+**Aufwand:** Mittel  
+**Risiken:** HealthKit-Datenverfügbarkeit
 
-**Technik:**
-- UNUserNotificationCenter
-- HealthKit-Prüfung vor Senden
-- Background-Tasks für Scheduling
-
-**Aufwand:** Mittel (2 Wochen)  
-**Risiken:** iOS Notification-Berechtigungen, Batterie-Impact.
-
-### 4. Fokusmode (Priorität: Niedrig)
-**Beschreibung:** Automatische Aktivierung eines konfigurierten iOS Focus Modes während Sessions, um ungestörte Meditation oder Workouts zu ermöglichen.
+### 2. Benutzerdefinierte Atem-Pattern (Priorität: Niedrig)
+**Beschreibung:** Erweiterte Atem-Übungen mit benutzerdefinierten Mustern.
 
 **Details:**
-- **Konfiguration:** User wählt im Settings-Tab einen iOS Focus Mode (z.B. Do Not Disturb, Work, Sleep) für Meditation- und Workout-Sessions separat. Optionale Toggle für automatische Aktivierung.
-- **Aktivierung:** Automatisch bei Session-Start (z.B. über TimerEngine); zurück zum vorherigen Modus am Ende der Session oder bei Abbruch. Fallback auf Do-Not-Disturb, wenn der gewählte Modus nicht verfügbar ist.
-- **Verfügbare Modi:** Abhängig von iOS-Version – typischerweise Do Not Disturb, Driving, Work, Sleep, Personal. Nicht alle Modi sind programmatisch steuerbar (z.B. Custom Modi mit Filtern).
-- **UI-Integration:** Neue Sektion im Settings-Tab mit Picker für Modi und Toggles pro Session-Typ.
+- **Editor:** UI zum Erstellen eigener Atem-Sequenzen
+- **Presets:** Mehr vordefinierte Muster
+- **Integration:** Mit Live Activity und Fokusmode
 
-**User Stories:**
-- Als User möchte ich Fokus während Sessions, um ungestört zu bleiben.
-- Als User möchte ich automatische Aktivierung/Deaktivierung, ohne manuell den Modus zu wechseln.
-- Als User möchte ich den Modus pro Session-Typ konfigurieren, um Flexibilität zu haben.
-- Als User möchte ich einen Fallback, falls mein gewählter Modus nicht funktioniert.
-
-**Technik:**
-- FocusStatus API (iOS 15+): Verwende ActivityManager für Aktivierung/Deaktivierung von Focus Modi.
-- Berechtigungen: Erfordert Focus-Status-Berechtigung (Info.plist: NSFocusStatusUsageDescription).
-- Fallback: Do-Not-Disturb via UIApplication.shared (ältere API).
-- Integration: Hook in MeditationEngine/TwoPhaseTimerEngine für Start/Ende-Events.
-- Background-Handling: Stelle sicher, dass Modus bei App-Terminierung zurückgesetzt wird.
-
-**Implementierungsschritte:**
-1. Berechtigungen in Info.plist hinzufügen.
-2. Settings-UI erweitern (neue View mit Picker und Toggles).
-3. FocusManager-Klasse erstellen für API-Interaktion.
-4. Integration in Timer-Engines (onStart: activate Modus; onEnd: deactivate).
-5. Fallback-Logik implementieren.
-6. Tests: Simulator-Unterstützung prüfen, Berechtigungen testen.
-
-**Aufwand:** Niedrig (1 Woche)  
-**Risiken:** iOS-API-Beschränkungen (nicht alle Modi steuerbar, abhängig von iOS-Version), Berechtigungen (User muss zustimmen), Kompatibilität mit älteren iOS-Versionen (Fallback erforderlich).
-
-(nice-to-have)
+**Aufwand:** Hoch  
+**Risiken:** Komplexe UI, Timer-Logik
 
 ## 💡 Offene Fragen
 - Grafische Umsetzung der Kreise: Ein oder zwei pro Tag?
