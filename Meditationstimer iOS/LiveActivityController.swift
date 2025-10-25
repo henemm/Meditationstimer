@@ -144,24 +144,13 @@ final class LiveActivityController: ObservableObject {
                 print("⚠️ [LiveActivity] UPDATE called but NO ACTIVE ACTIVITY (ignored)")
                 return
             }
-            
-            // Use serial queue to ensure updates are processed sequentially
-            await withCheckedContinuation { continuation in
-                updateQueue.async {
-                    Task { @MainActor in
-                        let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused)
-                        // For background updates, set staleDate to ensure the update is processed
-                        // staleDate tells the system when this content becomes stale and needs updating
-                        // Use shorter staleDate for Atem phase updates to prevent conflicts
-                        let staleDate = Date().addingTimeInterval(5) // 5 seconds from now for Atem phase updates
-                        let timestamp = Date().timeIntervalSince1970
-                        print("🔄 [LiveActivity] UPDATE: phase=\(phase), ends=\(endDate), paused=\(isPaused), owner=\(self.ownerId ?? "nil"), staleDate=\(staleDate), timestamp=\(String(format: "%.3f", timestamp))")
-                        await self.activity?.update(ActivityContent(state: state, staleDate: staleDate))
-                        print("✅ [LiveActivity] UPDATE completed for phase=\(phase)")
-                        continuation.resume()
-                    }
-                }
-            }
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused)
+            // For background updates, set staleDate to ensure the update is processed
+            // staleDate tells the system when this content becomes stale and needs updating
+            // Use reasonable staleDate for Atem phase updates
+            let staleDate = Date().addingTimeInterval(15) // 15 seconds from now
+            print("🔄 [LiveActivity] UPDATE: phase=\(phase), ends=\(endDate), paused=\(isPaused), owner=\(self.ownerId ?? "nil"), staleDate=\(staleDate)")
+            await activity?.update(ActivityContent(state: state, staleDate: staleDate))
         }
     }
 
