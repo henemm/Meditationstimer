@@ -169,11 +169,13 @@ struct CalendarView: View {
                     do {
                         try await hk.requestAuthorization()
                         loadActivityDays()
+                        await streakManager.updateStreaks()
                     } catch {
                         errorMessage = "HealthKit-Berechtigung erforderlich: \(error.localizedDescription)"
                     }
                 } else {
                     loadActivityDays()
+                    await streakManager.updateStreaks()
                 }
             }
         }
@@ -229,8 +231,8 @@ struct CalendarView: View {
             for monthOffset in -6...6 {
                 let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
                 do {
-                    let days = try await hk.fetchActivityDaysDetailed(forMonth: monthDate)
-                    let minutes = try await hk.fetchDailyMinutes(forMonth: monthDate)
+                    let days = try await hk.fetchActivityDaysDetailedFiltered(forMonth: monthDate)
+                    let minutes = try await hk.fetchDailyMinutesFiltered(forMonth: monthDate)
                     // Merge dictionaries, preferring .both if both types exist
                     for (date, type) in days {
                         let calendarType: ActivityType

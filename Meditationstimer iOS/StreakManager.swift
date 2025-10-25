@@ -21,7 +21,7 @@ struct StreakData: Codable {
 }
 
 class StreakManager: ObservableObject {
-    private let healthKitManager = HealthKitManager()
+    private let healthKitManager = HealthKitManager.shared
     
     // Separate streaks for meditation and workout
     @Published var meditationStreak = StreakData()
@@ -40,7 +40,7 @@ class StreakManager: ObservableObject {
         let startDate = calendar.date(byAdding: .day, value: -30, to: date)!
         
         do {
-            let dailyMinutes = try await healthKitManager.fetchDailyMinutes(from: startDate, to: date)
+            let dailyMinutes = try await healthKitManager.fetchDailyMinutesFiltered(from: startDate, to: date)
             
             await MainActor.run {
                 // Update meditation streak

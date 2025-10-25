@@ -86,6 +86,23 @@ struct ContentView: View {
             #else
             let isPreview = false
             #endif
+            
+            // Reset stored streaks to force recalculation with new filtering logic
+            let defaults = UserDefaults.standard
+            defaults.removeObject(forKey: "meditationStreak")
+            defaults.removeObject(forKey: "workoutStreak")
+            
+            // Update streaks with new filtered data
+            Task {
+                await streakManager.updateStreaks()
+                // Force UI update by reassigning the published properties
+                await MainActor.run {
+                    let medStreak = streakManager.meditationStreak
+                    let workStreak = streakManager.workoutStreak
+                    streakManager.meditationStreak = medStreak
+                    streakManager.workoutStreak = workStreak
+                }
+            }
         }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }

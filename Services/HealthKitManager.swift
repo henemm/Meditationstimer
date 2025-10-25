@@ -284,6 +284,77 @@ final class HealthKitManager {
         return activityDays
     }
 
+    /// Holt Aktivitätstage (gefiltert nach App-Quelle) für Mindfulness und Workouts in einem Monat.
+    func fetchActivityDaysDetailedFiltered(forMonth date: Date) async throws -> [Date: ActivityType] {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw HealthKitError.healthDataUnavailable
+        }
+        guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+            throw HealthKitError.mindfulTypeUnavailable
+        }
+        let workoutType = HKObjectType.workoutType()
+
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+
+        let timePredicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+        let sourcePredicate = HKQuery.predicateForObjects(from: Set([appSource].compactMap { $0 }))
+
+        var activityDays = [Date: ActivityType]()
+
+        // Mindfulness-Sessions abfragen (app-spezifisch gefiltert)
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let mindfulPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, sourcePredicate])
+            let query = HKSampleQuery(sampleType: mindfulType, predicate: mindfulPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples {
+                    for sample in samples {
+                        let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = calendar.startOfDay(for: sample.startDate)
+                            activityDays[day] = .mindfulness
+                        }
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        // Workouts abfragen (app-spezifisch gefiltert)
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let workoutPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, sourcePredicate])
+            let query = HKSampleQuery(sampleType: workoutType, predicate: workoutPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let workouts = samples as? [HKWorkout] {
+                    for workout in workouts {
+                        let duration = workout.duration / 60.0 // in Minuten
+                        if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = calendar.startOfDay(for: workout.startDate)
+                            // Wenn bereits Mindfulness an diesem Tag, dann beide
+                            if activityDays[day] == .mindfulness {
+                                activityDays[day] = .both
+                            } else {
+                                activityDays[day] = .workout
+                            }
+                        }
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        return activityDays
+    }
+
     /// Holt tägliche Minuten für Mindfulness und Workouts in einem Monat.
     func fetchDailyMinutes(forMonth date: Date) async throws -> [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] {
         guard HKHealthStore.isHealthDataAvailable() else {
