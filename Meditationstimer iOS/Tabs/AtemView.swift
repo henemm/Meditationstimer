@@ -362,12 +362,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
             case .holdOut: phaseNumber = 4 // →
             }
             
-            print("🫁 [AtemView] PHASE CHANGED: \(newPhase.rawValue) → phaseNumber=\(phaseNumber)")
+            let timestamp = Date().timeIntervalSince1970
+            print("🫁 [AtemView] PHASE CHANGED: \(newPhase.rawValue) → phaseNumber=\(phaseNumber), round=\(repIndex), timestamp=\(String(format: "%.3f", timestamp))")
             
             Task {
                 let endDate = sessionStart.addingTimeInterval(TimeInterval(preset.totalSeconds))
+                print("🫁 [AtemView] SENDING Live Activity update: phase=\(phaseNumber), round=\(repIndex)")
                 await liveActivity.update(phase: phaseNumber, endDate: endDate, isPaused: false)
-                print("🫁 [AtemView] Live Activity UPDATE called for phase \(phaseNumber)")
+                print("🫁 [AtemView] Live Activity update COMPLETED for phase \(phaseNumber)")
             }
         }
 
