@@ -121,7 +121,8 @@ final class HealthKitManager {
 
         // Für mindfulSession ist der Category‑Wert "notApplicable" korrekt.
         let value = HKCategoryValue.notApplicable.rawValue
-        let sample = HKCategorySample(type: mindfulType, value: value, start: start, end: end)
+        let metadata = ["appSource": "Meditationstimer"]
+        let sample = HKCategorySample(type: mindfulType, value: value, start: start, end: end, metadata: metadata)
 
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             self.healthStore.save(sample) { success, error in
@@ -140,6 +141,7 @@ final class HealthKitManager {
     /// Standardaktivität: HIIT (High Intensity Interval Training).
     func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws {
         #if os(iOS)
+        let metadata = ["appSource": "Meditationstimer"]
         let workout = HKWorkout(activityType: activity, start: start, end: end)
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             self.healthStore.save(workout) { success, error in
@@ -407,7 +409,80 @@ final class HealthKitManager {
 
         return dailyMinutes
     }
+    
+    /// Holt tägliche Minuten für Mindfulness und Workouts in einem Zeitraum (nur app-spezifische Sessions).
+    func fetchDailyMinutesFiltered(from startDate: Date, to endDate: Date) async throws -> [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw HealthKitError.healthDataUnavailable
+        }
+        guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+            throw HealthKitError.mindfulTypeUnavailable
+        }
+        let workoutType = HKObjectType.workoutType()
 
+        let timePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let metadataPredicate = HKQuery.predicateForObjects(withMetadataKey: "appSource", allowedValues: ["Meditationstimer"])
+
+        var dailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
+
+        // Mindfulness-Sessions abfragen und Minuten summieren
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let mindfulPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, metadataPredicate])
+            let query = HKSampleQuery(sampleType: mindfulType, predicate: mindfulPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples {
+                    for sample in samples {
+                        let duration = sample.endDate.timeIntervalSince(sample.startDate) / 60.0 // in Minuten
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = Calendar.current.startOfDay(for: sample.startDate)
+                            var current = dailyMinutes[day] ?? (0, 0)
+                            current.mindfulnessMinutes += duration
+                            dailyMinutes[day] = current
+                        // }
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        // Workouts abfragen und Minuten summieren (keine Metadaten-Filterung möglich)
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: workoutType, predicate: timePredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let workouts = samples as? [HKWorkout] {
+                    for workout in workouts {
+                        let duration = workout.duration / 60.0 // in Minuten
+                        // if duration >= 2.0 { // Nur zählen wenn >= 2 Minuten (konsistent mit Streak)
+                            let day = Calendar.current.startOfDay(for: workout.startDate)
+                            var current = dailyMinutes[day] ?? (0, 0)
+                            current.workoutMinutes += duration
+                            dailyMinutes[day] = current
+                        // }
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        return dailyMinutes
+    }
+
+    /// Holt tägliche Minuten für Mindfulness und Workouts in einem Monat (nur app-spezifische Sessions).
+    func fetchDailyMinutesFiltered(forMonth date: Date) async throws -> [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] {
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+        return try await fetchDailyMinutesFiltered(from: startOfMonth, to: endOfMonth)
+    }
+    
     /// Legacy-Methode für Abwärtskompatibilität
     func fetchActivityDays(forMonth date: Date) async throws -> Set<Date> {
         let detailed = try await fetchActivityDaysDetailed(forMonth: date)
