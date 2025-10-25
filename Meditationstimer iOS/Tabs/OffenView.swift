@@ -428,24 +428,15 @@ struct OffenView: View {
         }
 
         // 2. Spiele den End-Gong
-        gong.play(named: "gong-ende")
-
-    // 3. End Live Activity
-    print("DBG endSession: calling liveActivity.end(manual=\(manual)) now; engine.state=\(engine.state)")
-    await liveActivity.end()
-
-        // 4. Stoppe den Timer-Engine, falls manuell beendet
-        if manual {
-            engine.cancel()
+        gong.play(named: "gong-ende") {
+            // 5. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
+            self.pendingEndStop?.cancel()
+            let work = DispatchWorkItem { [weak bgAudio = self.bgAudio] in
+                bgAudio?.stop()
+            }
+            self.pendingEndStop = work
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // kleine Extra-Verzögerung
         }
-
-        // 5. Stoppe die Hintergrund-Audio-Session mit einer leichten Verzögerung, damit der Gong ausklingen kann
-        pendingEndStop?.cancel()
-        let work = DispatchWorkItem { [weak bgAudio = self.bgAudio] in
-            bgAudio?.stop()
-        }
-        pendingEndStop = work
-    DispatchQueue.main.asyncAfter(deadline: .now() + 10.0, execute: work)
 
         // 6. Erlaube dem Bildschirm wieder, sich auszuschalten
         setIdleTimer(false)
