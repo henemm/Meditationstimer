@@ -67,7 +67,7 @@ struct ContentView: View {
                 WorkoutsView()
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Workouts", systemImage: "figure.walk")
+                        Label("Workouts", systemImage: "flame")
                     }
             }
             .background(
