@@ -57,6 +57,11 @@ final class HealthKitManager {
 
     private let healthStore = HKHealthStore()
 
+    /// Gets the HKSource for this app to filter queries to app-specific data.
+    private var appSource: HKSource? {
+        return HKSource.default()
+    }
+
     /// Hinweis zu Info.plist:
     /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
     /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
@@ -121,8 +126,7 @@ final class HealthKitManager {
 
         // Für mindfulSession ist der Category‑Wert "notApplicable" korrekt.
         let value = HKCategoryValue.notApplicable.rawValue
-        let metadata = ["appSource": "Meditationstimer"]
-        let sample = HKCategorySample(type: mindfulType, value: value, start: start, end: end, metadata: metadata)
+        let sample = HKCategorySample(type: mindfulType, value: value, start: start, end: end)
 
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             self.healthStore.save(sample) { success, error in
@@ -421,13 +425,13 @@ final class HealthKitManager {
         let workoutType = HKObjectType.workoutType()
 
         let timePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
-        let metadataPredicate = HKQuery.predicateForObjects(withMetadataKey: "appSource", allowedValues: ["Meditationstimer"])
+        let sourcePredicate = HKQuery.predicateForObjects(from: Set([appSource].compactMap { $0 }))
 
         var dailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
 
         // Mindfulness-Sessions abfragen und Minuten summieren
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            let mindfulPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, metadataPredicate])
+            let mindfulPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, sourcePredicate])
             let query = HKSampleQuery(sampleType: mindfulType, predicate: mindfulPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
                 if let error = error {
                     cont.resume(throwing: error)
@@ -449,9 +453,10 @@ final class HealthKitManager {
             self.healthStore.execute(query)
         }
 
-        // Workouts abfragen und Minuten summieren (keine Metadaten-Filterung möglich)
+        // Workouts abfragen und Minuten summieren (app-spezifisch gefiltert)
         try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            let query = HKSampleQuery(sampleType: workoutType, predicate: timePredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+            let workoutPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, sourcePredicate])
+            let query = HKSampleQuery(sampleType: workoutType, predicate: workoutPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
                 if let error = error {
                     cont.resume(throwing: error)
                     return

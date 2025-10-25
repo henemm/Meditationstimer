@@ -40,7 +40,7 @@ class StreakManager: ObservableObject {
         let startDate = calendar.date(byAdding: .day, value: -30, to: date)!
         
         do {
-            let dailyMinutes = try await healthKitManager.fetchDailyMinutes(from: startDate, to: date)
+            let dailyMinutes = try await healthKitManager.fetchDailyMinutesFiltered(from: startDate, to: date)
             
             await MainActor.run {
                 // Update meditation streak
