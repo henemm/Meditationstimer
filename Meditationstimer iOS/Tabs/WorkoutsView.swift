@@ -80,11 +80,12 @@ private final class SoundPlayer: ObservableObject {
         do {
             try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try session.setActive(true)
+            print("[Sound] Audio session configured successfully")
         } catch {
-            // ignore
+            print("[Sound] Audio session configuration failed: \(error)")
         }
         #endif
-        // Try to load each cue from the app bundle. We look for .caff first, then .caf, then .wav, then .mp3
+        // Try to load each cue from the app bundle. We look for .caff first, then .caf, then .wav, then .mp3, then .aiff
         for cue in [Cue.kurz, .lang, .auftakt, .ausklang, .lastRound] {
             let name = cue.rawValue
             let exts = ["caff", "caf", "wav", "mp3", "aiff"]
