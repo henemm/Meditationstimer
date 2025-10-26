@@ -14,6 +14,7 @@ struct SmartRemindersView: View {
     @State private var reminders: [SmartReminder] = []
     @State private var showingAddReminder = false
     @State private var editingReminder: SmartReminder?
+    @State private var showingPermissionAlert = false
 
     private let engine = SmartReminderEngine.shared
 
@@ -22,6 +23,11 @@ struct SmartRemindersView: View {
             Section {
                 Toggle("Smart Reminders aktivieren", isOn: $smartRemindersEnabled)
                     .help("Aktiviert intelligente Erinnerungen basierend auf deiner Aktivität.")
+                    .onChange(of: smartRemindersEnabled) { _, newValue in
+                        if newValue {
+                            requestNotificationPermissions()
+                        }
+                    }
             }
 
             if smartRemindersEnabled {
@@ -32,17 +38,24 @@ struct SmartRemindersView: View {
                             .italic()
                     } else {
                         ForEach(reminders) { reminder in
+                        VStack(alignment: .leading, spacing: 0) {
                             ReminderRow(reminder: reminder) {
                                 editingReminder = reminder
                             }
-                            .swipeActions {
-                                Button(role: .destructive) {
-                                    deleteReminder(reminder)
-                                } label: {
-                                    Label("Löschen", systemImage: "trash")
-                                }
+                            #if DEBUG
+                            DebugReminderTestButton(reminder: reminder)
+                                .padding(.leading, 16)
+                                .padding(.bottom, 8)
+                            #endif
+                        }
+                        .swipeActions {
+                            Button(role: .destructive) {
+                                deleteReminder(reminder)
+                            } label: {
+                                Label("Löschen", systemImage: "trash")
                             }
                         }
+                    }
                     }
 
                     Button(action: {
@@ -78,6 +91,11 @@ struct SmartRemindersView: View {
                 editingReminder = nil
             }
         }
+        .alert("Benachrichtigungen erforderlich", isPresented: $showingPermissionAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Bitte erlaube Benachrichtigungen in den iOS-Einstellungen, um Smart Reminders zu nutzen.")
+        }
     }
 
     private func loadReminders() {
@@ -111,7 +129,40 @@ struct SmartRemindersView: View {
         engine.removeReminder(withId: reminder.id)
         loadReminders() // UI aktualisieren
     }
+
+    private func requestNotificationPermissions() {
+        Task {
+            let helper = NotificationHelper()
+            do {
+                try await helper.requestAuthorization()
+            } catch {
+                await MainActor.run {
+                    showingPermissionAlert = true
+                }
+            }
+        }
+    }
 }
+
+// MARK: - Debug Test Button (nur in Debug Builds)
+
+#if DEBUG
+struct DebugReminderTestButton: View {
+    let reminder: SmartReminder
+
+    var body: some View {
+        Button(action: {
+            Task {
+                await SmartReminderEngine.shared.testReminder(reminder)
+            }
+        }) {
+            Label("Test Notification", systemImage: "bell.badge")
+                .font(.caption)
+                .foregroundColor(.orange)
+        }
+    }
+}
+#endif
 
 /// Zeile für einen einzelnen Reminder in der Liste
 struct ReminderRow: View {

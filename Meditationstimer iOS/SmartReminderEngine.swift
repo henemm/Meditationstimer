@@ -20,6 +20,10 @@ public final class SmartReminderEngine {
 
     private init() {
         loadReminders()
+        #if os(iOS)
+        // Initial scheduling beim App-Start
+        scheduleNextCheck()
+        #endif
     }
 
     /// Lädt Reminders aus AppStorage.
