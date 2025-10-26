@@ -65,7 +65,7 @@
 
 ## 🐛 Bugs (gefunden am 25. Oktober 2025)
 
-- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)** ✅
+- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)**
   - **Wo:** OffenView, finaler End-Gong ("gong-ende")
   - **Problem:** Der End-Gong wird vorzeitig abgebrochen, klingt nicht vollständig aus
   - **Ursache:** `resetSession()` wurde sofort nach Gong-Start aufgerufen und hat `bgAudio.stop()` sofort ausgeführt, obwohl der Gong noch spielte
@@ -77,7 +77,7 @@
     - `endSession()` ruft `resetSession(stopAudio: false)` auf
     - Gong-Completion-Handler stoppt Audio nach Gong-Duration + 0.5s Safety-Delay
   - *Priorität: Mittel*
-  - *Status: Code implementiert, Build erfolgreich, wartet auf User-Test* (26.10.2025)
+  - *Status: Fix-Versuch implementiert, Build erfolgreich, NICHT GETESTET* (26.10.2025)
 
 - **Bug 2: Smart Reminder Zeit lässt sich nicht ändern** ✅
   - **Wo:** Smart Reminders Settings
@@ -112,7 +112,7 @@
   - *Priorität: Hoch*
   - *Status: Code implementiert, wartet auf User-Test* (26.10.2025)
 
-- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)** ✅
+- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
   - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1x hörbar
   - **Ursache:** `SoundPlayer` verwendete nur **einen** `AVAudioPlayer` pro Cue-Typ. Beim zweiten `play(.kurz)` Aufruf wurde `currentTime = 0` gesetzt und der laufende Sound zurückgesetzt/abgebrochen
@@ -127,7 +127,7 @@
     - `audioPlayerDidFinishPlaying()` Delegate entfernt finished players
     - `stopAll()` und `duration()` an neue Architektur angepasst
   - *Priorität: Mittel*
-  - *Status: Code implementiert, Build erfolgreich, wartet auf User-Test* (26.10.2025)
+  - *Status: Fix-Versuch implementiert, Build erfolgreich, NICHT GETESTET* (26.10.2025)
 
 ## 🎨 Design & UX
 
