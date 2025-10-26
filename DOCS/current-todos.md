@@ -103,14 +103,14 @@
   - *Priorität: Hoch*
   - *Status: Code implementiert, Build erfolgreich, wartet auf Device-Test* (26.10.2025)
 
-- **Bug 4: Display schaltet sich bei Workouts aus**
+- **Bug 4: Display schaltet sich bei Workouts aus** ✅
   - **Wo:** Workouts-Tab (und Atem-Tab)
   - **Problem:** Das Display schaltet sich während eines Workouts aus (Idle Timer ist aktiv)
   - **Ursache:** WorkoutsView und AtemView setzen `UIApplication.shared.isIdleTimerDisabled` nicht, nur OffenView macht das
   - **Location:** `WorkoutsView.swift` (fehlt), `AtemView.swift` (fehlt), `OffenView.swift:407-410` (funktioniert)
   - **Lösung:** Idle Timer in WorkoutsView und AtemView deaktivieren während Session läuft
   - *Priorität: Hoch*
-  - *Status: Code implementiert, wartet auf User-Test* (26.10.2025)
+  - *Status: Behoben durch User-Test* (26.10.2025)
 
 - **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
