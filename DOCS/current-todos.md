@@ -112,14 +112,22 @@
   - *Priorität: Hoch*
   - *Status: Code implementiert, wartet auf User-Test* (26.10.2025)
 
-- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
+- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)** ✅
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
   - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1x hörbar
-  - **Ursache:** `SoundPlayer` verwendet nur **einen** `AVAudioPlayer` pro Cue-Typ. Beim zweiten `play(.kurz)` Aufruf wird `currentTime = 0` gesetzt und der laufende Sound zurückgesetzt/abgebrochen
-  - **Location:** `WorkoutsView.swift:107-116` (SoundPlayer.play Methode)
-  - **Lösung:** Für parallele Wiedergabe: Erstelle neue AVAudioPlayer-Instanzen statt gleichen Player wiederzuverwenden, oder halte Pool von Playern vor
+  - **Ursache:** `SoundPlayer` verwendete nur **einen** `AVAudioPlayer` pro Cue-Typ. Beim zweiten `play(.kurz)` Aufruf wurde `currentTime = 0` gesetzt und der laufende Sound zurückgesetzt/abgebrochen
+  - **Root Cause:** Dictionary `players: [Cue: AVAudioPlayer]` enthielt genau einen Player pro Sound-Typ. Parallel-Playback nicht möglich.
+  - **Location:** `WorkoutsView.swift:70-136` (SoundPlayer class)
+  - **Lösung:** Gleiche Pattern wie GongPlayer: URLs cachen, neue Player-Instanzen pro Playback erstellen
+  - **Änderungen:**
+    - SoundPlayer erbt von NSObject und implementiert AVAudioPlayerDelegate
+    - `players` Dictionary ersetzt durch `urls` und `roundUrls` (URL-Caching)
+    - `activePlayers` Array hinzugefügt (hält Referenzen auf spielende Sounds)
+    - `play()` erstellt neue AVAudioPlayer-Instanz pro Aufruf
+    - `audioPlayerDidFinishPlaying()` Delegate entfernt finished players
+    - `stopAll()` und `duration()` an neue Architektur angepasst
   - *Priorität: Mittel*
-  - *Status: Offen*
+  - *Status: Code implementiert, Build erfolgreich, wartet auf User-Test* (26.10.2025)
 
 ## 🎨 Design & UX
 

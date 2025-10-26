@@ -67,11 +67,12 @@ private enum Cue: String {
     case lastRound = "last-round" // announce penultimate→last set
 }
 
-private final class SoundPlayer: ObservableObject {
-    private var players: [Cue: AVAudioPlayer] = [:]
+private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
+    private var urls: [Cue: URL] = [:]  // Cache URLs, not players
+    private var activePlayers: [AVAudioPlayer] = []  // Currently playing sounds
     private var prepared = false
     private let speech = AVSpeechSynthesizer()
-    private var roundPlayers: [Int: AVAudioPlayer] = [:] // caches round-1..round-20
+    private var roundUrls: [Int: URL] = [:]  // Cache URLs for round-1..round-20
 
     func prepare() {
         guard !prepared else { return }
@@ -85,18 +86,20 @@ private final class SoundPlayer: ObservableObject {
             print("[Sound] Audio session configuration failed: \(error)")
         }
         #endif
-        // Try to load each cue from the app bundle. We look for .caff first, then .caf, then .wav, then .mp3, then .aiff
+        // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
         for cue in [Cue.kurz, .lang, .auftakt, .ausklang, .lastRound] {
             let name = cue.rawValue
             let exts = ["caff", "caf", "wav", "mp3", "aiff"]
             var found: URL? = nil
             for ext in exts {
-                if let url = Bundle.main.url(forResource: name, withExtension: ext) { found = url; break }
+                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
+                    found = url
+                    break
+                }
             }
-            if let url = found, let p = try? AVAudioPlayer(contentsOf: url) {
-                p.prepareToPlay()
-                players[cue] = p
-                print("[Sound] loaded \(name): duration=\(p.duration)s")
+            if let url = found {
+                urls[cue] = url
+                print("[Sound] found \(name)")
             } else {
                 print("[Sound] MISSING \(name).(caff|caf|wav|mp3|aiff)")
             }
@@ -106,38 +109,64 @@ private final class SoundPlayer: ObservableObject {
 
     func play(_ cue: Cue) {
         prepare()
-        if let p = players[cue] {
-            p.currentTime = 0
+        guard let url = urls[cue] else {
+            print("[Sound] cannot play \(cue.rawValue): URL not found")
+            return
+        }
+
+        // Create NEW player for each playback (allows parallel sounds)
+        do {
+            let p = try AVAudioPlayer(contentsOf: url)
+            p.delegate = self
+            p.prepareToPlay()
             p.play()
-            print("[Sound] play \(cue.rawValue)")
-        } else {
-            print("[Sound] cannot play \(cue.rawValue): player missing")
+            activePlayers.append(p)
+            print("[Sound] play \(cue.rawValue) (active players: \(activePlayers.count))")
+        } catch {
+            print("[Sound] failed to create player for \(cue.rawValue): \(error)")
+        }
+    }
+
+    // MARK: - AVAudioPlayerDelegate
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if let idx = activePlayers.firstIndex(where: { $0 === player }) {
+            activePlayers.remove(at: idx)
+            print("[Sound] removed finished player (remaining: \(activePlayers.count))")
         }
     }
 
     func playRound(_ number: Int) {
         guard number >= 1 && number <= 20 else { return }
         prepare()
-        if let p = roundPlayers[number] {
-            p.currentTime = 0
-            p.play()
-            print("[Sound] play round-\(number)")
+
+        // Cache URL if not already cached
+        if roundUrls[number] == nil {
+            let name = "round-\(number)"
+            let exts = ["caff", "caf", "wav", "mp3", "aiff"]
+            for ext in exts {
+                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
+                    roundUrls[number] = url
+                    print("[Sound] found \(name)")
+                    break
+                }
+            }
+        }
+
+        guard let url = roundUrls[number] else {
+            print("[Sound] MISSING round-\(number).(caff|caf|wav|mp3|aiff)")
             return
         }
-        let name = "round-\(number)"
-        let exts = ["caff", "caf", "wav", "mp3", "aiff"]
-        var found: URL? = nil
-        for ext in exts {
-            if let url = Bundle.main.url(forResource: name, withExtension: ext) { found = url; break }
-        }
-        if let url = found, let p = try? AVAudioPlayer(contentsOf: url) {
+
+        // Create NEW player for each playback (allows parallel sounds)
+        do {
+            let p = try AVAudioPlayer(contentsOf: url)
+            p.delegate = self
             p.prepareToPlay()
-            roundPlayers[number] = p
-            p.currentTime = 0
             p.play()
-            print("[Sound] loaded+play \(name)")
-        } else {
-            print("[Sound] MISSING \(name).(caff|caf|wav|mp3|aiff)")
+            activePlayers.append(p)
+            print("[Sound] play round-\(number) (active players: \(activePlayers.count))")
+        } catch {
+            print("[Sound] failed to create player for round-\(number): \(error)")
         }
     }
 
@@ -162,13 +191,19 @@ private final class SoundPlayer: ObservableObject {
     }
 
     func stopAll() {
-        for (_, p) in players { p.stop() }
+        for p in activePlayers {
+            p.stop()
+        }
+        activePlayers.removeAll()
         speech.stopSpeaking(at: .immediate)
     }
 
     func duration(of cue: Cue) -> TimeInterval {
         prepare()
-        return players[cue]?.duration ?? 0
+        guard let url = urls[cue] else { return 0 }
+        // Create temporary player to get duration
+        guard let p = try? AVAudioPlayer(contentsOf: url) else { return 0 }
+        return p.duration
     }
 }
 
