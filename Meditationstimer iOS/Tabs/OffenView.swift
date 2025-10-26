@@ -59,7 +59,8 @@ struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verf�
 
 struct OffenView: View {
     // Zentrale Reset-Funktion für alle States, Timer, WorkItems, Audio, LiveActivity
-    private func resetSession() {
+    // stopAudio: false wenn Audio bereits extern gestoppt wurde (z.B. nach End-Gong)
+    private func resetSession(stopAudio: Bool = true) {
         engine.cancel()
         pendingEndStop?.cancel()
         pendingEndStop = nil
@@ -69,11 +70,13 @@ struct OffenView: View {
         conflictOwnerId = nil
         conflictTitle = nil
         showLocalConflictAlert = false
-        bgAudio.stop()
+        if stopAudio {
+            bgAudio.stop()
+        }
         setIdleTimer(false)
         Task { await liveActivity.end() }
         lastState = .idle
-        print("[DBG] resetSession: alle States und Tasks zurückgesetzt")
+        print("[DBG] resetSession: alle States und Tasks zurückgesetzt (stopAudio=\(stopAudio))")
     }
     @AppStorage("phase1Minutes") private var phase1Minutes: Int = 10
     @AppStorage("phase2Minutes") private var phase2Minutes: Int = 5
@@ -429,23 +432,17 @@ struct OffenView: View {
 
         // 2. Spiele den End-Gong
         gong.play(named: "gong-ende") {
-            // 5. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
+            // 3. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
             self.pendingEndStop?.cancel()
-            let work = DispatchWorkItem { [weak bgAudio = self.bgAudio] in
-                bgAudio?.stop()
+            let work = DispatchWorkItem { [bgAudio = self.bgAudio] in
+                bgAudio.stop()
             }
             self.pendingEndStop = work
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // kleine Extra-Verzögerung
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra-Verzögerung für Safety
         }
 
-        // 6. Erlaube dem Bildschirm wieder, sich auszuschalten
-        setIdleTimer(false)
-        
-        // 7. Setze den Status für den nächsten Lauf zurück
-        didPlayPhase2Gong = false
-
-        // 8. Zentrale Rücksetzung
-        resetSession()
+        // 4. Setze Session-State zurück OHNE Audio zu stoppen (Audio wird vom Gong-Completion gestoppt)
+        resetSession(stopAudio: false)
     }
 }
 

@@ -65,14 +65,19 @@
 
 ## 🐛 Bugs (gefunden am 25. Oktober 2025)
 
-- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)**
+- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)** ✅
   - **Wo:** OffenView, finaler End-Gong ("gong-ende")
   - **Problem:** Der End-Gong wird vorzeitig abgebrochen, klingt nicht vollständig aus
-  - **Ursache:** `BackgroundAudioKeeper.stop()` deaktiviert die Audio-Session (`AVAudioSession.setActive(false)`) nur 0.5s nach Gong-Start, während der Gong noch spielt
-  - **Location:** `OffenView.swift:431-438`, `BackgroundAudioKeeper.swift:41-44`
-  - **Lösung:** Warte bis Gong-Duration vollständig abgelaufen ist, bevor Audio-Session deaktiviert wird
+  - **Ursache:** `resetSession()` wurde sofort nach Gong-Start aufgerufen und hat `bgAudio.stop()` sofort ausgeführt, obwohl der Gong noch spielte
+  - **Root Cause:** In `endSession()` wurde `resetSession()` am Ende aufgerufen, während der Gong-Completion-Handler bereits eine verzögerte Audio-Stop-Aufgabe schedulte. Die sofortige resetSession()-Ausführung hat die verzögerte Aufgabe überschrieben und Audio gestoppt.
+  - **Location:** `OffenView.swift:endSession()`
+  - **Lösung:** `resetSession(stopAudio: false)` aufrufen, damit Audio vom Gong-Completion-Handler gestoppt wird
+  - **Änderungen:**
+    - `resetSession()` erhält Parameter `stopAudio: Bool = true`
+    - `endSession()` ruft `resetSession(stopAudio: false)` auf
+    - Gong-Completion-Handler stoppt Audio nach Gong-Duration + 0.5s Safety-Delay
   - *Priorität: Mittel*
-  - *Status: Offen*
+  - *Status: Code implementiert, Build erfolgreich, wartet auf User-Test* (26.10.2025)
 
 - **Bug 2: Smart Reminder Zeit lässt sich nicht ändern** ✅
   - **Wo:** Smart Reminders Settings
