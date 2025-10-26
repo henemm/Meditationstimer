@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// View für die Verwaltung von Smart Reminders
 struct SmartRemindersView: View {
@@ -15,6 +18,7 @@ struct SmartRemindersView: View {
     @State private var showingAddReminder = false
     @State private var editingReminder: SmartReminder?
     @State private var showingPermissionAlert = false
+    @State private var backgroundRefreshEnabled: Bool = true
 
     private let engine = SmartReminderEngine.shared
 
@@ -28,6 +32,34 @@ struct SmartRemindersView: View {
                             requestNotificationPermissions()
                         }
                     }
+            }
+
+            if smartRemindersEnabled && !backgroundRefreshEnabled {
+                Section {
+                    HStack(alignment: .top, spacing: 12) {
+                        Image(systemName: "info.circle.fill")
+                            .foregroundColor(.orange)
+                            .font(.title3)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Hintergrundaktualisierung erforderlich")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                            Text("Für zuverlässige Erinnerungen aktiviere bitte Hintergrundaktualisierung in den iOS-Einstellungen.")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    .padding(.vertical, 4)
+
+                    Button(action: openSettings) {
+                        HStack {
+                            Text("Einstellungen öffnen")
+                            Spacer()
+                            Image(systemName: "arrow.up.forward.app")
+                        }
+                    }
+                }
             }
 
             if smartRemindersEnabled {
@@ -78,6 +110,7 @@ struct SmartRemindersView: View {
         #endif
         .onAppear {
             loadReminders()
+            checkBackgroundRefreshStatus()
         }
         .sheet(isPresented: $showingAddReminder) {
             ReminderEditorView { newReminder in
@@ -141,6 +174,22 @@ struct SmartRemindersView: View {
                 }
             }
         }
+    }
+
+    private func checkBackgroundRefreshStatus() {
+        #if os(iOS)
+        backgroundRefreshEnabled = UIApplication.shared.backgroundRefreshStatus == .available
+        #else
+        backgroundRefreshEnabled = true
+        #endif
+    }
+
+    private func openSettings() {
+        #if os(iOS)
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+        #endif
     }
 }
 
