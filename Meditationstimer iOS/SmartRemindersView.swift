@@ -82,9 +82,14 @@ struct SmartRemindersView: View {
 
     private func loadReminders() {
         reminders = engine.getReminders()
+
+        // Beim ersten Start: Beispieldaten in Engine speichern (nicht nur UI!)
         if reminders.isEmpty {
-            // Lade Beispieldaten falls keine gespeicherten Daten vorhanden
-            reminders = SmartReminder.sampleData()
+            let samples = SmartReminder.sampleData()
+            for sample in samples {
+                engine.addReminder(sample)
+            }
+            reminders = engine.getReminders()
         }
     }
 
