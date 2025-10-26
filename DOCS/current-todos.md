@@ -83,23 +83,29 @@
   - *Priorität: Hoch*
   - *Status: Behoben* (25.10.2025)
 
-- **Bug 3: Beispiel-Reminders verschwinden beim Hinzufügen eigener** ✅
-  - **Wo:** Smart Reminders Liste
-  - **Problem:** Initial werden 2 Beispiel-Reminders angezeigt. Sobald man einen eigenen Reminder hinzufügt, verschwinden die Beispiele
-  - **Ursache:** Beispiele werden nur geladen wenn `reminders.isEmpty` ist. Nach Hinzufügen eines eigenen Reminders ist die Liste nicht mehr leer → Beispiele werden nicht mehr geladen
-  - **Location:** `SmartRemindersView.swift:83-94`
-  - **Lösung:** Gleiche wie Bug 2 - Beispieldaten initial in Engine speichern
+- **Bug 3: Smart Reminders komplett neu implementiert** ✅
+  - **Was wurde gemacht:**
+    - Komplettes Redesign von SmartReminderEngine mit korrekter Scheduling-Logik
+    - Wochentage-Prüfung hinzugefügt
+    - Look-back Berechnung von NOW (nicht triggerStart) korrigiert
+    - Permission-Handling (Notifications, Background Refresh, HealthKit)
+    - Toggle disabled wenn Permissions fehlen
+    - Test-Button entfernt (wie gewünscht)
+    - Beispieldaten werden jetzt persistent in Engine gespeichert
+  - **Änderungen:**
+    - `SmartReminderEngine.swift` - Komplett neu geschrieben (350 Zeilen)
+    - `SmartRemindersView.swift` - Permission-Handling UI hinzugefügt
   - *Priorität: Hoch*
-  - *Status: Behoben* (25.10.2025)
+  - *Status: Code implementiert, Build erfolgreich, wartet auf Device-Test* (26.10.2025)
 
-- **Bug 4: Display schaltet sich bei Workouts aus** ✅
+- **Bug 4: Display schaltet sich bei Workouts aus**
   - **Wo:** Workouts-Tab (und Atem-Tab)
   - **Problem:** Das Display schaltet sich während eines Workouts aus (Idle Timer ist aktiv)
   - **Ursache:** WorkoutsView und AtemView setzen `UIApplication.shared.isIdleTimerDisabled` nicht, nur OffenView macht das
   - **Location:** `WorkoutsView.swift` (fehlt), `AtemView.swift` (fehlt), `OffenView.swift:407-410` (funktioniert)
   - **Lösung:** Idle Timer in WorkoutsView und AtemView deaktivieren während Session läuft
   - *Priorität: Hoch*
-  - *Status: Behoben* (26.10.2025)
+  - *Status: Code implementiert, wartet auf User-Test* (26.10.2025)
 
 - **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase

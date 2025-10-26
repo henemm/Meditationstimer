@@ -6,26 +6,35 @@
 //
 
 import SwiftUI
+import UserNotifications
+import HealthKit
 #if canImport(UIKit)
 import UIKit
 #endif
 
-/// View für die Verwaltung von Smart Reminders
+/// View für die Verwaltung von Smart Reminders mit Permission-Handling
 struct SmartRemindersView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @AppStorage("smartRemindersEnabled") private var smartRemindersEnabled: Bool = false
 
     @State private var reminders: [SmartReminder] = []
     @State private var showingAddReminder = false
     @State private var editingReminder: SmartReminder?
-    @State private var showingPermissionAlert = false
-    @State private var backgroundRefreshEnabled: Bool = true
+
+    // Permission States
+    @State private var notificationsGranted: Bool = false
+    @State private var backgroundRefreshEnabled: Bool = false
+    @State private var healthKitGranted: Bool = false
+    @State private var allPermissionsGranted: Bool = false
 
     private let engine = SmartReminderEngine.shared
 
     var body: some View {
         List {
+            // Toggle Section (disabled wenn Permissions fehlen)
             Section {
                 Toggle("Smart Reminders aktivieren", isOn: $smartRemindersEnabled)
+                    .disabled(!allPermissionsGranted)
                     .help("Aktiviert intelligente Erinnerungen basierend auf deiner Aktivität.")
                     .onChange(of: smartRemindersEnabled) { _, newValue in
                         if newValue {
@@ -34,35 +43,67 @@ struct SmartRemindersView: View {
                     }
             }
 
-            if smartRemindersEnabled && !backgroundRefreshEnabled {
+            // Permission Warning Banner
+            if !allPermissionsGranted {
                 Section {
-                    HStack(alignment: .top, spacing: 12) {
-                        Image(systemName: "info.circle.fill")
-                            .foregroundColor(.orange)
-                            .font(.title3)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Hintergrundaktualisierung erforderlich")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            Text("Für zuverlässige Erinnerungen aktiviere bitte Hintergrundaktualisierung in den iOS-Einstellungen.")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(alignment: .top, spacing: 12) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.orange)
+                                .font(.title2)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Fehlende Berechtigungen")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                Text("Smart Reminders benötigen alle folgenden Berechtigungen:")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
                         }
-                    }
-                    .padding(.vertical, 4)
 
-                    Button(action: openSettings) {
-                        HStack {
-                            Text("Einstellungen öffnen")
-                            Spacer()
-                            Image(systemName: "arrow.up.forward.app")
+                        // Permission Checklist
+                        VStack(alignment: .leading, spacing: 8) {
+                            PermissionRow(
+                                icon: "bell.fill",
+                                title: "Benachrichtigungen",
+                                granted: notificationsGranted
+                            )
+                            PermissionRow(
+                                icon: "arrow.clockwise",
+                                title: "Hintergrundaktualisierung",
+                                granted: backgroundRefreshEnabled
+                            )
+                            PermissionRow(
+                                icon: "heart.fill",
+                                title: "HealthKit (Achtsamkeit lesen)",
+                                granted: healthKitGranted
+                            )
                         }
+                        .padding(.top, 4)
+
+                        Button(action: openSettings) {
+                            HStack {
+                                Text("Einstellungen öffnen")
+                                    .fontWeight(.medium)
+                                Spacer()
+                                Image(systemName: "arrow.up.forward.app")
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.regular)
                     }
+                    .padding(.vertical, 8)
+                } header: {
+                    Text("")
+                } footer: {
+                    Text("Gehe zu: Einstellungen → Lean Health Timer\n• Benachrichtigungen: Erlauben\n• Hintergrundaktualisierung: Aktivieren\n• Health → Achtsamkeit: Lesen erlauben")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
             }
 
-            if smartRemindersEnabled {
+            // Reminders List (nur wenn aktiviert)
+            if smartRemindersEnabled && allPermissionsGranted {
                 Section(header: Text("Erinnerungen")) {
                     if reminders.isEmpty {
                         Text("Keine Smart Reminders konfiguriert")
@@ -70,24 +111,17 @@ struct SmartRemindersView: View {
                             .italic()
                     } else {
                         ForEach(reminders) { reminder in
-                        VStack(alignment: .leading, spacing: 0) {
                             ReminderRow(reminder: reminder) {
                                 editingReminder = reminder
                             }
-                            #if DEBUG
-                            DebugReminderTestButton(reminder: reminder)
-                                .padding(.leading, 16)
-                                .padding(.bottom, 8)
-                            #endif
-                        }
-                        .swipeActions {
-                            Button(role: .destructive) {
-                                deleteReminder(reminder)
-                            } label: {
-                                Label("Löschen", systemImage: "trash")
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    deleteReminder(reminder)
+                                } label: {
+                                    Label("Löschen", systemImage: "trash")
+                                }
                             }
                         }
-                    }
                     }
 
                     Button(action: {
@@ -110,7 +144,13 @@ struct SmartRemindersView: View {
         #endif
         .onAppear {
             loadReminders()
-            checkBackgroundRefreshStatus()
+            checkAllPermissions()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            // User kommt aus Settings zurück → Permissions neu prüfen
+            if newPhase == .active {
+                checkAllPermissions()
+            }
         }
         .sheet(isPresented: $showingAddReminder) {
             ReminderEditorView { newReminder in
@@ -124,17 +164,14 @@ struct SmartRemindersView: View {
                 editingReminder = nil
             }
         }
-        .alert("Benachrichtigungen erforderlich", isPresented: $showingPermissionAlert) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text("Bitte erlaube Benachrichtigungen in den iOS-Einstellungen, um Smart Reminders zu nutzen.")
-        }
     }
+
+    // MARK: - Reminders Management
 
     private func loadReminders() {
         reminders = engine.getReminders()
 
-        // Beim ersten Start: Beispieldaten in Engine speichern (nicht nur UI!)
+        // Beim ersten Start: Beispieldaten in Engine speichern
         if reminders.isEmpty {
             let samples = SmartReminder.sampleData()
             for sample in samples {
@@ -144,23 +181,54 @@ struct SmartRemindersView: View {
         }
     }
 
-    private func saveReminders() {
-        // Nicht mehr nötig - der Engine speichert automatisch
-    }
-
     private func addReminder(_ reminder: SmartReminder) {
         engine.addReminder(reminder)
-        loadReminders() // UI aktualisieren
+        loadReminders()
     }
 
     private func updateReminder(_ updatedReminder: SmartReminder) {
         engine.updateReminder(updatedReminder)
-        loadReminders() // UI aktualisieren
+        loadReminders()
     }
 
     private func deleteReminder(_ reminder: SmartReminder) {
         engine.removeReminder(withId: reminder.id)
-        loadReminders() // UI aktualisieren
+        loadReminders()
+    }
+
+    // MARK: - Permission Checks
+
+    /// Prüft alle 3 erforderlichen Permissions
+    private func checkAllPermissions() {
+        Task {
+            // 1. Notifications
+            let notificationSettings = await UNUserNotificationCenter.current().notificationSettings()
+            let notificationsOK = notificationSettings.authorizationStatus == .authorized
+
+            // 2. Background Refresh
+            #if os(iOS)
+            let backgroundOK = UIApplication.shared.backgroundRefreshStatus == .available
+            #else
+            let backgroundOK = true
+            #endif
+
+            // 3. HealthKit (Mindfulness Read)
+            let healthStore = HKHealthStore()
+            let mindfulnessType = HKObjectType.categoryType(forIdentifier: .mindfulSession)!
+            let healthOK = healthStore.authorizationStatus(for: mindfulnessType) == .sharingAuthorized
+
+            await MainActor.run {
+                notificationsGranted = notificationsOK
+                backgroundRefreshEnabled = backgroundOK
+                healthKitGranted = healthOK
+                allPermissionsGranted = notificationsOK && backgroundOK && healthOK
+
+                // Toggle automatisch ausschalten wenn Permissions fehlen
+                if !allPermissionsGranted && smartRemindersEnabled {
+                    smartRemindersEnabled = false
+                }
+            }
+        }
     }
 
     private func requestNotificationPermissions() {
@@ -168,20 +236,14 @@ struct SmartRemindersView: View {
             let helper = NotificationHelper()
             do {
                 try await helper.requestAuthorization()
+                // HealthKit Authorization auch anfordern
+                try await HealthKitManager.shared.requestAuthorization()
+                // Neu checken nach Authorization
+                checkAllPermissions()
             } catch {
-                await MainActor.run {
-                    showingPermissionAlert = true
-                }
+                print("Permission request failed: \(error.localizedDescription)")
             }
         }
-    }
-
-    private func checkBackgroundRefreshStatus() {
-        #if os(iOS)
-        backgroundRefreshEnabled = UIApplication.shared.backgroundRefreshStatus == .available
-        #else
-        backgroundRefreshEnabled = true
-        #endif
     }
 
     private func openSettings() {
@@ -193,25 +255,32 @@ struct SmartRemindersView: View {
     }
 }
 
-// MARK: - Debug Test Button (nur in Debug Builds)
+// MARK: - Permission Row Component
 
-#if DEBUG
-struct DebugReminderTestButton: View {
-    let reminder: SmartReminder
+struct PermissionRow: View {
+    let icon: String
+    let title: String
+    let granted: Bool
 
     var body: some View {
-        Button(action: {
-            Task {
-                await SmartReminderEngine.shared.testReminder(reminder)
-            }
-        }) {
-            Label("Test Notification", systemImage: "bell.badge")
-                .font(.caption)
-                .foregroundColor(.orange)
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.body)
+                .foregroundColor(granted ? .green : .secondary)
+                .frame(width: 24)
+
+            Text(title)
+                .font(.subheadline)
+
+            Spacer()
+
+            Image(systemName: granted ? "checkmark.circle.fill" : "xmark.circle.fill")
+                .foregroundColor(granted ? .green : .red)
         }
     }
 }
-#endif
+
+// MARK: - Reminder Row
 
 /// Zeile für einen einzelnen Reminder in der Liste
 struct ReminderRow: View {
@@ -254,6 +323,8 @@ struct ReminderRow: View {
     }
 }
 
+// MARK: - Reminder Editor
+
 /// Editor-View für das Hinzufügen/Bearbeiten von Reminders
 struct ReminderEditorView: View {
     @Environment(\.dismiss) private var dismiss
@@ -295,7 +366,7 @@ struct ReminderEditorView: View {
 
                 Section(header: Text("Zeitplan")) {
                     Picker("Stunden ohne Aktivität", selection: $hoursInactive) {
-                        ForEach(1...24, id: \.self) { hours in
+                        ForEach(1...48, id: \.self) { hours in
                             Text("\(hours)").tag(hours)
                         }
                     }
@@ -348,7 +419,7 @@ struct ReminderEditorView: View {
                         onSave(newReminder)
                         dismiss()
                     }
-                    .disabled(title.isEmpty || message.isEmpty)
+                    .disabled(title.isEmpty || message.isEmpty || selectedDays.isEmpty)
                 }
             }
         }
