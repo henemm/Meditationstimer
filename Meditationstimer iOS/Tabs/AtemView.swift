@@ -466,6 +466,9 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 .padding(8)
             }
             .task {
+                // Disable idle timer to keep display on during session
+                setIdleTimer(true)
+
                 // Start the session
                 let start = Date()
                 sessionStart = start
@@ -636,12 +639,21 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
         }
 
+        private func setIdleTimer(_ disabled: Bool) {
+            #if canImport(UIKit)
+            UIApplication.shared.isIdleTimerDisabled = disabled
+            #endif
+        }
+
         func endSession(manual: Bool) async {
             print("[AtemView] endSession(manual: \(manual)) called")
 
             // 1. Stoppe alle Sounds
             gong.stopAll()
             print("[AtemView] gong.stopAll() called")
+
+            // 2. Re-enable idle timer
+            setIdleTimer(false)
 
             // 3. HealthKit Logging, wenn Session > 3s
             let endDate = Date()

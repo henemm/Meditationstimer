@@ -350,6 +350,9 @@ private struct WorkoutRunnerView: View {
             cfgInterval = intervalSec
             cfgRest     = restSec
 
+            // Disable idle timer to keep display on during workout
+            setIdleTimer(true)
+
             // AUFTAKT: play, then start workout exactly at first work
             let aDur = sounds.duration(of: .auftakt)
             if aDur > 0 {
@@ -358,7 +361,7 @@ private struct WorkoutRunnerView: View {
                     started = true
                     sessionStart = Date()
                     workoutStart = sessionStart // Store for HealthKit logging
-                    
+
                     // LiveActivity: Endzeit aus sessionStart + sessionTotal
                     let endDate = sessionStart.addingTimeInterval(sessionTotal)
                     let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
@@ -370,7 +373,7 @@ private struct WorkoutRunnerView: View {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
-                
+
                 // LiveActivity: Endzeit aus sessionStart + sessionTotal
                 let endDate = sessionStart.addingTimeInterval(sessionTotal)
                 let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
@@ -381,9 +384,16 @@ private struct WorkoutRunnerView: View {
         .onDisappear {
             sounds.stopAll()
             cancelScheduled()
+            setIdleTimer(false) // Re-enable idle timer
         }
         .onChange(of: phase) { _ in }
         // Keine automatische Beendigung bei App-Wechsel
+    }
+
+    private func setIdleTimer(_ disabled: Bool) {
+        #if canImport(UIKit)
+        UIApplication.shared.isIdleTimerDisabled = disabled
+        #endif
     }
 
     /// Zentraler Beendigungsablauf. completed=true: regulär abgeschlossen; false: abgebrochen.
@@ -395,6 +405,7 @@ private struct WorkoutRunnerView: View {
 
         sounds.stopAll()
         cancelScheduled()
+        setIdleTimer(false) // Re-enable idle timer
 
         let endDate = Date()
         if let start = workoutStart {

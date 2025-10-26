@@ -74,32 +74,32 @@
   - *Priorität: Mittel*
   - *Status: Offen*
 
-- **Bug 2: Smart Reminder Zeit lässt sich nicht ändern**
+- **Bug 2: Smart Reminder Zeit lässt sich nicht ändern** ✅
   - **Wo:** Smart Reminders Settings
   - **Problem:** Wenn man die Uhrzeit eines Beispiel-Reminders ändert, springt sie sofort zurück
   - **Ursache:** Beispiel-Reminders werden nur in der UI geladen (`SmartRemindersView.swift:87`), aber **nicht** in die Engine gespeichert. `updateReminder()` versucht, einen nicht-existenten Reminder in der Engine zu updaten
-  - **Location:** `SmartRemindersView.swift:83-88`, `SmartReminderEngine.swift:69-77`
-  - **Lösung:** Beim ersten App-Start Beispieldaten in die Engine speichern, nicht nur in UI laden
+  - **Location:** `SmartRemindersView.swift:83-94`
+  - **Lösung:** Beim ersten App-Start Beispieldaten in die Engine speichern (for-loop in loadReminders)
   - *Priorität: Hoch*
-  - *Status: Offen*
+  - *Status: Behoben* (25.10.2025)
 
-- **Bug 3: Beispiel-Reminders verschwinden beim Hinzufügen eigener**
+- **Bug 3: Beispiel-Reminders verschwinden beim Hinzufügen eigener** ✅
   - **Wo:** Smart Reminders Liste
   - **Problem:** Initial werden 2 Beispiel-Reminders angezeigt. Sobald man einen eigenen Reminder hinzufügt, verschwinden die Beispiele
   - **Ursache:** Beispiele werden nur geladen wenn `reminders.isEmpty` ist. Nach Hinzufügen eines eigenen Reminders ist die Liste nicht mehr leer → Beispiele werden nicht mehr geladen
-  - **Location:** `SmartRemindersView.swift:83-88`, `SmartReminder.swift:55-78`
+  - **Location:** `SmartRemindersView.swift:83-94`
   - **Lösung:** Gleiche wie Bug 2 - Beispieldaten initial in Engine speichern
   - *Priorität: Hoch*
-  - *Status: Offen*
+  - *Status: Behoben* (25.10.2025)
 
-- **Bug 4: Display schaltet sich bei Workouts aus**
+- **Bug 4: Display schaltet sich bei Workouts aus** ✅
   - **Wo:** Workouts-Tab (und Atem-Tab)
   - **Problem:** Das Display schaltet sich während eines Workouts aus (Idle Timer ist aktiv)
   - **Ursache:** WorkoutsView und AtemView setzen `UIApplication.shared.isIdleTimerDisabled` nicht, nur OffenView macht das
   - **Location:** `WorkoutsView.swift` (fehlt), `AtemView.swift` (fehlt), `OffenView.swift:407-410` (funktioniert)
   - **Lösung:** Idle Timer in WorkoutsView und AtemView deaktivieren während Session läuft
   - *Priorität: Hoch*
-  - *Status: Offen*
+  - *Status: Behoben* (26.10.2025)
 
 - **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
