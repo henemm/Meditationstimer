@@ -56,11 +56,79 @@
   - Build-Stabilität wiederhergestellt
   - *Status: Abgeschlossen*
 
-
-## 🔧 Open Todos
-
 - **Unit-Tests hinzufügen**
   - Unit-Tests für kritische Komponenten wie Timer-Logik, HealthKit-Integration und Datenmodelle implementieren
+  - 58+ Test-Fälle erstellt für TwoPhaseTimerEngine, StreakManager, HealthKitManager
+  - Test-Dateien in `Tests/` Verzeichnis, müssen noch zum Xcode Test-Target hinzugefügt werden
+  - *Status: Abgeschlossen* ✅
+
+
+## 🐛 Bugs (gefunden am 25. Oktober 2025)
+
+- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)**
+  - **Wo:** OffenView, finaler End-Gong ("gong-ende")
+  - **Problem:** Der End-Gong wird vorzeitig abgebrochen, klingt nicht vollständig aus
+  - **Ursache:** `BackgroundAudioKeeper.stop()` deaktiviert die Audio-Session (`AVAudioSession.setActive(false)`) nur 0.5s nach Gong-Start, während der Gong noch spielt
+  - **Location:** `OffenView.swift:431-438`, `BackgroundAudioKeeper.swift:41-44`
+  - **Lösung:** Warte bis Gong-Duration vollständig abgelaufen ist, bevor Audio-Session deaktiviert wird
+  - *Priorität: Mittel*
+  - *Status: Offen*
+
+- **Bug 2: Smart Reminder Zeit lässt sich nicht ändern**
+  - **Wo:** Smart Reminders Settings
+  - **Problem:** Wenn man die Uhrzeit eines Beispiel-Reminders ändert, springt sie sofort zurück
+  - **Ursache:** Beispiel-Reminders werden nur in der UI geladen (`SmartRemindersView.swift:87`), aber **nicht** in die Engine gespeichert. `updateReminder()` versucht, einen nicht-existenten Reminder in der Engine zu updaten
+  - **Location:** `SmartRemindersView.swift:83-88`, `SmartReminderEngine.swift:69-77`
+  - **Lösung:** Beim ersten App-Start Beispieldaten in die Engine speichern, nicht nur in UI laden
+  - *Priorität: Hoch*
+  - *Status: Offen*
+
+- **Bug 3: Beispiel-Reminders verschwinden beim Hinzufügen eigener**
+  - **Wo:** Smart Reminders Liste
+  - **Problem:** Initial werden 2 Beispiel-Reminders angezeigt. Sobald man einen eigenen Reminder hinzufügt, verschwinden die Beispiele
+  - **Ursache:** Beispiele werden nur geladen wenn `reminders.isEmpty` ist. Nach Hinzufügen eines eigenen Reminders ist die Liste nicht mehr leer → Beispiele werden nicht mehr geladen
+  - **Location:** `SmartRemindersView.swift:83-88`, `SmartReminder.swift:55-78`
+  - **Lösung:** Gleiche wie Bug 2 - Beispieldaten initial in Engine speichern
+  - *Priorität: Hoch*
+  - *Status: Offen*
+
+- **Bug 4: Display schaltet sich bei Workouts aus**
+  - **Wo:** Workouts-Tab (und Atem-Tab)
+  - **Problem:** Das Display schaltet sich während eines Workouts aus (Idle Timer ist aktiv)
+  - **Ursache:** WorkoutsView und AtemView setzen `UIApplication.shared.isIdleTimerDisabled` nicht, nur OffenView macht das
+  - **Location:** `WorkoutsView.swift` (fehlt), `AtemView.swift` (fehlt), `OffenView.swift:407-410` (funktioniert)
+  - **Lösung:** Idle Timer in WorkoutsView und AtemView deaktivieren während Session läuft
+  - *Priorität: Hoch*
+  - *Status: Offen*
+
+- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
+  - **Wo:** Workouts-Tab, Ende der Belastungsphase
+  - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1x hörbar
+  - **Ursache:** `SoundPlayer` verwendet nur **einen** `AVAudioPlayer` pro Cue-Typ. Beim zweiten `play(.kurz)` Aufruf wird `currentTime = 0` gesetzt und der laufende Sound zurückgesetzt/abgebrochen
+  - **Location:** `WorkoutsView.swift:107-116` (SoundPlayer.play Methode)
+  - **Lösung:** Für parallele Wiedergabe: Erstelle neue AVAudioPlayer-Instanzen statt gleichen Player wiederzuverwenden, oder halte Pool von Playern vor
+  - *Priorität: Mittel*
+  - *Status: Offen*
+
+## 🎨 Design & UX
+
+- **Liquid Glass Design-Audit durchführen**
+  - App analysieren auf iOS 18+ "Liquid Glass" Design Language
+  - Bereiche identifizieren, die modernisiert werden können:
+    - Ultra-thin materials & Glassmorphismus
+    - Smooth spring animations
+    - Vibrancy & Depth-Effekte
+    - Spatial Design
+  - Konkrete Verbesserungsvorschläge ausarbeiten
+  - *Priorität: Niedrig*
+  - *Status: Backlog*
+
+## 🔧 Sonstige Todos
+
+- **Test-Target in Xcode einrichten**
+  - Neues iOS Unit Testing Bundle erstellen (MeditationstimerTests)
+  - Test-Dateien aus Tests/ zum Target hinzufügen
+  - Tests ausführen und verifizieren
   - *Status: Offen*
 
 - **HealthKit re-testing on device**
@@ -68,4 +136,8 @@
 
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 24. Oktober 2025
+- Letzte Aktualisierung: 25. Oktober 2025
+- Test-Suite mit 58+ Tests erstellt am 25. Oktober 2025
+- Test-Dateien: TwoPhaseTimerEngineTests.swift, StreakManagerTests.swift, HealthKitManagerTests.swift
+- Siehe CLAUDE.md für Details zur Test-Einrichtung und Ausführung
+- 5 Bugs analysiert und dokumentiert am 25. Oktober 2025
