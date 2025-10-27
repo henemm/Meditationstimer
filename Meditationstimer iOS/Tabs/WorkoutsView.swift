@@ -530,12 +530,13 @@ private struct WorkoutRunnerView: View {
                 let now = Date()
                 let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
 
-                // Schedule 5s before phase end (3 beeps + long tone starts earlier)
-                let targetFromStart = Double(dur) - 5.0
+                // Compensate for onChange drift: ~1.5% per second of phase duration
+                let estimatedDrift = Double(dur) * 0.015
+                let targetFromStart = Double(dur) - 3.0 - estimatedDrift
                 let delay = targetFromStart - elapsed
 
                 if delay > 0.001 {
-                    print("[Workout] Scheduling countdown-transition in \(delay)s (starts at T-5s)")
+                    print("[Workout] Scheduling countdown-transition in \(delay)s (dur=\(dur)s, drift=\(estimatedDrift)s)")
                     scheduleCountdown(delay) { sounds.play(.countdownTransition) }
                 } else {
                     print("[Workout] SKIPPED countdown-transition - delay too short: \(delay)s")
