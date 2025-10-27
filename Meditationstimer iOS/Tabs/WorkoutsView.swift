@@ -355,21 +355,7 @@ private struct WorkoutRunnerView: View {
             }
             .frame(minWidth: 280, maxWidth: 360)
             .padding(16)
-            .overlay(alignment: .topTrailing) {
-                Button {
-                    Task { await endSession(completed: false) }
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 14, weight: .semibold))
-                        .frame(width: 28, height: 28)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.secondary)
-                .clipShape(Circle())
-                .padding(8)
-                .disabled(isSaving)
-            }
-            
+
             // Saving overlay
             if isSaving {
                 ZStack {
@@ -401,6 +387,20 @@ private struct WorkoutRunnerView: View {
                     saveFailed = false
                 }
             }
+        }
+        .overlay(alignment: .topTrailing) {
+            Button {
+                Task { await endSession(completed: false) }
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 14, weight: .semibold))
+                    .frame(width: 28, height: 28)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.secondary)
+            .clipShape(Circle())
+            .padding(8)
+            .disabled(isSaving)
         }
         .task {
             // Request HealthKit authorization
