@@ -14,6 +14,7 @@
 		B770C7B52E87C474008FB9FC /* MeditationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B32E87C473008FB9FC /* MeditationEngine.swift */; };
 		B770C7B72E87C482008FB9FC /* BackgroundNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */; };
 		B770C7B82E87C482008FB9FC /* BackgroundNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */; };
+		B78712B72EB00C06002DA82E /* AmbientSoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78712B62EB00C06002DA82E /* AmbientSoundPlayer.swift */; };
 		B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */; };
 		B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
@@ -76,6 +77,7 @@
 		B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GongPlayer.swift; sourceTree = "<group>"; };
 		B770C7B32E87C473008FB9FC /* MeditationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationEngine.swift; sourceTree = "<group>"; };
 		B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNotifier.swift; sourceTree = "<group>"; };
+		B78712B62EB00C06002DA82E /* AmbientSoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientSoundPlayer.swift; sourceTree = "<group>"; };
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */,
 				B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */,
 				B7E601122E6582C1008AE315 /* HealthKitManager.swift */,
+				B78712B62EB00C06002DA82E /* AmbientSoundPlayer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */,
 				B770C7B42E87C474008FB9FC /* MeditationEngine.swift in Sources */,
 				B770C7B82E87C482008FB9FC /* BackgroundNotifier.swift in Sources */,
+				B78712B72EB00C06002DA82E /* AmbientSoundPlayer.swift in Sources */,
 				B770C7A72E87BF37008FB9FC /* GongPlayer.swift in Sources */,
 				B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */,
 			);

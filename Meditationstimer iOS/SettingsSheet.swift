@@ -93,6 +93,7 @@ struct SettingsSheet: View {
             .navigationTitle("Einstellungen")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.hidden, for: .tabBar)
             #endif
         }
     }
