@@ -65,7 +65,7 @@
 
 ## 🐛 Bugs (gefunden am 25. Oktober 2025)
 
-- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)**
+- **Bug 1: Gong wird am Ende der Session abgeschnitten (Offen-Tab)** ✅
   - **Wo:** OffenView, finaler End-Gong ("gong-ende")
   - **Problem:** Der End-Gong wird vorzeitig abgebrochen, klingt nicht vollständig aus
   - **Ursache:** `resetSession()` wurde sofort nach Gong-Start aufgerufen und hat `bgAudio.stop()` sofort ausgeführt, obwohl der Gong noch spielte
@@ -77,7 +77,7 @@
     - `endSession()` ruft `resetSession(stopAudio: false)` auf
     - Gong-Completion-Handler stoppt Audio nach Gong-Duration + 0.5s Safety-Delay
   - *Priorität: Mittel*
-  - *Status: Fix-Versuch implementiert, Build erfolgreich, NICHT GETESTET* (26.10.2025)
+  - *Status: Behoben durch User-Test* (26.10.2025)
 
 - **Bug 2: Smart Reminder Zeit lässt sich nicht ändern** ✅
   - **Wo:** Smart Reminders Settings
@@ -88,7 +88,7 @@
   - *Priorität: Hoch*
   - *Status: Behoben* (25.10.2025)
 
-- **Bug 3: Smart Reminders komplett neu implementiert** ✅
+- **Bug 3: Smart Reminders komplett neu implementiert**
   - **Was wurde gemacht:**
     - Komplettes Redesign von SmartReminderEngine mit korrekter Scheduling-Logik
     - Wochentage-Prüfung hinzugefügt
@@ -100,8 +100,16 @@
   - **Änderungen:**
     - `SmartReminderEngine.swift` - Komplett neu geschrieben (350 Zeilen)
     - `SmartRemindersView.swift` - Permission-Handling UI hinzugefügt
+  - **User-Test-Ergebnis (26.10.2025):**
+    - ❌ App erscheint NICHT in iOS Settings → Hintergrundaktualisierung
+    - ❌ Permission-Check zeigt fälschlicherweise grünes Häkchen
+    - **Root Cause:** Background Modes NICHT in Xcode-Projekt konfiguriert
+  - **Fehlendes Setup:**
+    - UIBackgroundModes fehlt in Info.plist/Build Settings
+    - BGTaskSchedulerPermittedIdentifiers fehlt
+    - App kann BGAppRefreshTask nicht registrieren
   - *Priorität: Hoch*
-  - *Status: Code implementiert, Build erfolgreich, wartet auf Device-Test* (26.10.2025)
+  - *Status: BLOCKIERT - Xcode-Konfiguration erforderlich* (26.10.2025)
 
 - **Bug 4: Display schaltet sich bei Workouts aus** ✅
   - **Wo:** Workouts-Tab (und Atem-Tab)
@@ -114,20 +122,31 @@
 
 - **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
-  - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1x hörbar
-  - **Ursache:** `SoundPlayer` verwendete nur **einen** `AVAudioPlayer` pro Cue-Typ. Beim zweiten `play(.kurz)` Aufruf wurde `currentTime = 0` gesetzt und der laufende Sound zurückgesetzt/abgebrochen
-  - **Root Cause:** Dictionary `players: [Cue: AVAudioPlayer]` enthielt genau einen Player pro Sound-Typ. Parallel-Playback nicht möglich.
-  - **Location:** `WorkoutsView.swift:70-136` (SoundPlayer class)
-  - **Lösung:** Gleiche Pattern wie GongPlayer: URLs cachen, neue Player-Instanzen pro Playback erstellen
-  - **Änderungen:**
-    - SoundPlayer erbt von NSObject und implementiert AVAudioPlayerDelegate
-    - `players` Dictionary ersetzt durch `urls` und `roundUrls` (URL-Caching)
-    - `activePlayers` Array hinzugefügt (hält Referenzen auf spielende Sounds)
-    - `play()` erstellt neue AVAudioPlayer-Instanz pro Aufruf
-    - `audioPlayerDidFinishPlaying()` Delegate entfernt finished players
-    - `stopAll()` und `duration()` an neue Architektur angepasst
+  - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1-2x hörbar (je länger die Phase, desto weniger Beeps)
+  - **Root Cause (Final):** UI (`onChange(fractionPhase)`) triggerte Business-Logik → TimelineView-Drift akkumuliert über Zeit → längere Phasen = schlechteres Timing
+  - **Location:** `WorkoutsView.swift:313-322` (onChange Trigger - jetzt entfernt)
+  - **Fix-Versuch 1 (FEHLGESCHLAGEN):**
+    - SoundPlayer mit URL-Caching und activePlayers Array
+    - **User-Test:** Nur 1 Beep hörbar
+  - **Fix-Versuch 2 (FEHLGESCHLAGEN):**
+    - Separate `countdownSounds` Array (nicht mit scheduled gekoppelt)
+    - **User-Test:** Bei 20s/30s nur 1-2 Beeps statt 3
+    - **Console Logs:** Dritter Beep spielt NACH `.lang` (falsches Timing)
+  - **Fix-Versuch 3 (gebastelt, verworfen):**
+    - Countdown-Beeps 1 Sekunde früher schedulen
+    - Problem: Symptom-basiert, funktioniert nicht proportional zu Phase-Länge
+  - **Fix-Versuch 4 (IMPLEMENTIERT - Architektur-Fix):**
+    - **Best Practice:** UI-Trigger von Business-Logik getrennt
+    - `onChange(fractionPhase)` entfernt
+    - Phase-Ende via `DispatchQueue.asyncAfter` gescheduled (wie TwoPhaseTimerEngine)
+    - Sounds UND Phase-Ende im gleichen präzisen Timing-System
+    - TimelineView nur noch für UI-Anzeige (Date-based calculation)
+    - **Changes:**
+      - `WorkoutsView.swift:313-322` - onChange Block entfernt
+      - `WorkoutsView.swift:565-579` - Phase-End-Scheduling in scheduleCuesForCurrentPhase()
+      - `WorkoutsView.swift:542-545` - Countdown zurück zu T-3, T-2, T-1 (kein Drift mehr)
   - *Priorität: Mittel*
-  - *Status: Fix-Versuch implementiert, Build erfolgreich, NICHT GETESTET* (26.10.2025)
+  - *Status: Fix-Versuch 4 implementiert, compiliert, NICHT GETESTET* (27.10.2025)
 
 ## 🎨 Design & UX
 

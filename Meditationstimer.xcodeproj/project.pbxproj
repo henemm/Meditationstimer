@@ -665,6 +665,7 @@
 				INFOPLIST_FILE = "Meditationstimer-iOS-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSFocusStatusUsageDescription = "Diese App aktiviert automatisch Focus Modi während Meditation- oder Workout-Sessions, um ungestörte Sessions zu ermöglichen.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -702,6 +703,7 @@
 				INFOPLIST_FILE = "Meditationstimer-iOS-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Lean Health Timer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSFocusStatusUsageDescription = "Diese App aktiviert automatisch Focus Modi während Meditation- oder Workout-Sessions, um ungestörte Sessions zu ermöglichen.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Die App speichert Achtsamkeitssitzungen in Apple Health";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Die App schreibt Achtsamkeitssitzungen in Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;

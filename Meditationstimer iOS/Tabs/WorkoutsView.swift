@@ -227,15 +227,28 @@ private struct WorkoutRunnerView: View {
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @State private var scheduled: [DispatchWorkItem] = []
+    @State private var countdownSounds: [DispatchWorkItem] = []  // Separate from scheduled
 
     private func cancelScheduled() {
         scheduled.forEach { $0.cancel() }
         scheduled.removeAll()
+        // Countdown sounds are NOT cancelled - they must play!
+    }
+
+    private func cancelCountdownSounds() {
+        countdownSounds.forEach { $0.cancel() }
+        countdownSounds.removeAll()
     }
 
     private func schedule(_ delay: TimeInterval, action: @escaping () -> Void) {
         let w = DispatchWorkItem(block: action)
         scheduled.append(w)
+        DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
+    }
+
+    private func scheduleCountdown(_ delay: TimeInterval, action: @escaping () -> Void) {
+        let w = DispatchWorkItem(block: action)
+        countdownSounds.append(w)
         DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
     }
     private var sessionTotal: TimeInterval {
@@ -268,7 +281,7 @@ private struct WorkoutRunnerView: View {
             Color.gray.opacity(0.1).ignoresSafeArea()
             #endif
             VStack(spacing: 12) {
-                Text("\(plannedRepeats) Wiederholungen: \(intervalSec)s/\(restSec)s").font(.headline)
+                Text("\(plannedRepeats) x \(intervalSec)s/\(restSec)s").font(.headline)
 
                 if !finished {
                     TimelineView(.animation) { ctx in
@@ -296,16 +309,6 @@ private struct WorkoutRunnerView: View {
                                 .font(.subheadline)
                                 .monospacedDigit()
                                 .foregroundStyle(.secondary)
-                        }
-                        .onChange(of: fractionPhase) { newVal in
-                            if newVal >= 1.0 {
-                                if !phaseEndFired {
-                                    phaseEndFired = true
-                                    advance()
-                                }
-                            } else {
-                                phaseEndFired = false
-                            }
                         }
                     }
                 } else {
@@ -401,7 +404,7 @@ private struct WorkoutRunnerView: View {
                     let endDate = sessionStart.addingTimeInterval(sessionTotal)
                     let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
                     setPhase(.work)
-                    scheduleCuesForCurrentPhase()
+                    // scheduleCuesForCurrentPhase() wird bereits in setPhase() aufgerufen
                 }
             } else {
                 // No file present → start immediately
@@ -413,12 +416,13 @@ private struct WorkoutRunnerView: View {
                 let endDate = sessionStart.addingTimeInterval(sessionTotal)
                 let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
                 setPhase(.work)
-                scheduleCuesForCurrentPhase()
+                // scheduleCuesForCurrentPhase() wird bereits in setPhase() aufgerufen
             }
         }
         .onDisappear {
             sounds.stopAll()
             cancelScheduled()
+            cancelCountdownSounds()
             setIdleTimer(false) // Re-enable idle timer
         }
         .onChange(of: phase) { _ in }
@@ -440,6 +444,7 @@ private struct WorkoutRunnerView: View {
 
         sounds.stopAll()
         cancelScheduled()
+        cancelCountdownSounds()
         setIdleTimer(false) // Re-enable idle timer
 
         let endDate = Date()
@@ -518,16 +523,26 @@ private struct WorkoutRunnerView: View {
                 let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
                 func scheduleIfFuture(at targetFromStart: TimeInterval, cue: Cue) {
                     let delay = targetFromStart - elapsed
-                    if delay > 0.001 { schedule(delay) { sounds.play(cue) } }
+                    if delay > 0.001 {
+                        print("[Workout] Scheduling \(cue.rawValue) in \(delay)s")
+                        scheduleCountdown(delay) { sounds.play(cue) }  // Use countdown scheduler
+                    } else {
+                        print("[Workout] SKIPPED \(cue.rawValue) - delay too short: \(delay)s")
+                    }
                 }
 
+                print("[Workout] Scheduling countdown: dur=\(dur), elapsed=\(elapsed)")
                 if dur >= 4 {
+                    print("[Workout] Will schedule 3x kurz at: \(dur-3)s, \(dur-2)s, \(dur-1)s")
                     scheduleIfFuture(at: TimeInterval(dur - 3), cue: .kurz)
                     scheduleIfFuture(at: TimeInterval(dur - 2), cue: .kurz)
                     scheduleIfFuture(at: TimeInterval(dur - 1), cue: .kurz)
                 } else if dur == 3 {
+                    print("[Workout] Will schedule 2x kurz at: 1s, 2s")
+                    scheduleIfFuture(at: 1, cue: .kurz)
                     scheduleIfFuture(at: 2, cue: .kurz)
                 } else if dur == 2 {
+                    print("[Workout] Will schedule 1x kurz at: 1s")
                     scheduleIfFuture(at: 1, cue: .kurz)
                 }
 
@@ -545,6 +560,21 @@ private struct WorkoutRunnerView: View {
                 if delay > 0.001 { schedule(delay) { sounds.play(.auftakt) } }
             }
             // (Round announcement scheduling removed)
+        }
+
+        // Schedule phase end via DispatchQueue (precise timing, no UI drift!)
+        let dur = phaseDuration
+        let now = Date()
+        let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
+        let delay = dur - elapsed
+        if delay > 0.001 {
+            print("[Workout] Scheduling phase end in \(delay)s")
+            schedule(delay) {
+                advance()
+            }
+        } else {
+            print("[Workout] Phase already over, advancing immediately")
+            advance()
         }
     }
 
@@ -588,6 +618,7 @@ private struct WorkoutRunnerView: View {
             pausedAt = Date()
             sounds.stopAll()
             cancelScheduled()
+            cancelCountdownSounds()
             // LiveActivity: Pause-Status setzen
             let now = Date()
             let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
