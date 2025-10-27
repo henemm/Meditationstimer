@@ -176,10 +176,42 @@
 - **HealthKit re-testing on device**
   - *Status: Offen*
 
+## 🎨 UI-Verbesserungen (27. Oktober 2025)
+
+- **Settings Navigation Modernisierung** ✅
+  - Settings von `.navigationDestination` zu `.fullScreenCover` geändert (alle 3 Tabs)
+  - "Fertig"-Button oben rechts hinzugefügt
+  - Settings liegen jetzt vollflächig über TabBar
+  - *Status: Abgeschlossen* (27.10.2025)
+
+- **X-Button Position WorkoutsView** ✅
+  - Overlay von VStack auf ZStack verschoben (konsistent mit AtemView)
+  - Button jetzt ganz oben rechts positioniert
+  - *Status: Abgeschlossen* (27.10.2025)
+
+- **WorkoutRunnerView Safe Area** ✅
+  - `.ignoresSafeArea()` entfernt von WorkoutRunnerView
+  - X-Button jetzt klickbar (nicht mehr unter Dynamic Island)
+  - Nur Background ignoriert Safe Area (konsistent mit AtemView)
+  - *Status: Abgeschlossen* (27.10.2025)
+
+- **Toolbar/TabBar Hiding während Sessions** ✅
+  - TabBar versteckt während Sessions (alle 3 Tabs)
+  - Kalender/Settings Buttons konditionell angezeigt (nicht mehr .toolbar(.hidden))
+  - Verhindert Tab-Wechsel während aktiver Session
+  - *Status: Abgeschlossen* (27.10.2025)
+
+- **WorkoutsView Ringe Farbe** ✅
+  - CircularRing: Neuer optionaler `gradient` Parameter hinzugefügt
+  - WorkoutsView: Ringe jetzt korrekt in workoutViolet
+  - OffenView/AtemView: Unverändert (blue/cyan default)
+  - *Status: Abgeschlossen* (27.10.2025)
+
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 25. Oktober 2025
+- Letzte Aktualisierung: 27. Oktober 2025
 - Test-Suite mit 58+ Tests erstellt am 25. Oktober 2025
 - Test-Dateien: TwoPhaseTimerEngineTests.swift, StreakManagerTests.swift, HealthKitManagerTests.swift
 - Siehe CLAUDE.md für Details zur Test-Einrichtung und Ausführung
 - 5 Bugs analysiert und dokumentiert am 25. Oktober 2025
+- UI-Verbesserungen und Konsistenz-Fixes am 27. Oktober 2025
