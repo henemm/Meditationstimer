@@ -297,9 +297,24 @@ private struct WorkoutRunnerView: View {
 
                         VStack(spacing: 8) {
                             ZStack {
-                                CircularRing(progress: progressTotal, lineWidth: 22).foregroundStyle(.tint)
-                                CircularRing(progress: fractionPhase, lineWidth: 14).scaleEffect(0.72).foregroundStyle(.secondary)
-                                Image(systemName: iconName(for: phase)).font(.system(size: 64)).foregroundStyle(.tint)
+                                CircularRing(progress: progressTotal, lineWidth: 22)
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [Color.workoutViolet.opacity(0.8), Color.workoutViolet],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                CircularRing(progress: fractionPhase, lineWidth: 14).scaleEffect(0.72)
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [Color.workoutViolet.opacity(0.5), Color.workoutViolet.opacity(0.7)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                Image(systemName: iconName(for: phase)).font(.system(size: 64))
+                                    .foregroundStyle(Color.workoutViolet)
                             }
                             .frame(width: 320, height: 320)
                             .padding(.top, 6)
@@ -332,7 +347,7 @@ private struct WorkoutRunnerView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color.workoutViolet) // same violet
+                .tint(.red)
                 .controlSize(.large)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.top, 4)
@@ -720,8 +735,7 @@ struct WorkoutsView: View {
             Image(systemName: "play.circle.fill")
                 .resizable()
                 .frame(width: 86, height: 86)
-                .foregroundStyle(.tint)
-                .tint(Color.workoutViolet) // violet for workouts
+                .foregroundStyle(.red)
         }
         .buttonStyle(.plain)
     }
