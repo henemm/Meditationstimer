@@ -33,18 +33,19 @@ import SwiftUI
 /// - Parameters:
 ///   - progress: 0.0 ... 1.0
 ///   - lineWidth: ring thickness
-///   - foreground: foreground ring color
+///   - gradient: optional custom gradient (defaults to blue/cyan)
 ///   - background: background ring color
 struct CircularRing: View {
     var progress: Double
     var lineWidth: CGFloat = 20
-    var foreground: Color = .blue
+    var gradient: LinearGradient? = nil
     var background: Color = Color.primary.opacity(0.08)
 
     var body: some View {
-        let gradient = LinearGradient(colors: [.blue, .cyan],
-                                      startPoint: .topLeading,
-                                      endPoint: .bottomTrailing)
+        let defaultGradient = LinearGradient(colors: [.blue, .cyan],
+                                              startPoint: .topLeading,
+                                              endPoint: .bottomTrailing)
+        let effectiveGradient = gradient ?? defaultGradient
         ZStack {
             // Background ring
             Circle()
@@ -54,7 +55,7 @@ struct CircularRing: View {
             Circle()
                 .trim(from: 0, to: CGFloat(min(max(progress, 0), 1)))
                 .stroke(
-                    gradient,
+                    effectiveGradient,
                     style: StrokeStyle(
                         lineWidth: lineWidth,
                         lineCap: .round,

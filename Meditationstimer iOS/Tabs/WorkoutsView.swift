@@ -297,22 +297,25 @@ private struct WorkoutRunnerView: View {
 
                         VStack(spacing: 8) {
                             ZStack {
-                                CircularRing(progress: progressTotal, lineWidth: 22)
-                                    .foregroundStyle(
-                                        LinearGradient(
-                                            colors: [Color.workoutViolet.opacity(0.8), Color.workoutViolet],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
+                                CircularRing(
+                                    progress: progressTotal,
+                                    lineWidth: 22,
+                                    gradient: LinearGradient(
+                                        colors: [Color.workoutViolet.opacity(0.8), Color.workoutViolet],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
                                     )
-                                CircularRing(progress: fractionPhase, lineWidth: 14).scaleEffect(0.72)
-                                    .foregroundStyle(
-                                        LinearGradient(
-                                            colors: [Color.workoutViolet.opacity(0.5), Color.workoutViolet.opacity(0.7)],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
+                                )
+                                CircularRing(
+                                    progress: fractionPhase,
+                                    lineWidth: 14,
+                                    gradient: LinearGradient(
+                                        colors: [Color.workoutViolet.opacity(0.5), Color.workoutViolet.opacity(0.7)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
                                     )
+                                )
+                                .scaleEffect(0.72)
                                 Image(systemName: iconName(for: phase)).font(.system(size: 64))
                                     .foregroundStyle(Color.workoutViolet)
                             }
