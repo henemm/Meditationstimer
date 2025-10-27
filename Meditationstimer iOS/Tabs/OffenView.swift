@@ -342,9 +342,8 @@ struct OffenView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) {
+            .navigationDestination(isPresented: $showSettings) {
                 SettingsSheet()
-                    .presentationDetents([.medium, .large])
             }
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()

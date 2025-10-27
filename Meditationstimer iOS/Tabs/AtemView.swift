@@ -192,9 +192,8 @@ public struct AtemView: View {
                         Button { showSettings = true } label: { Image(systemName: "gearshape") }
                     }
                 }
-                .sheet(isPresented: $showSettings) {
+                .navigationDestination(isPresented: $showSettings) {
                     SettingsSheet()
-                        .presentationDetents([PresentationDetent.medium, PresentationDetent.large])
                 }
                 .fullScreenCover(isPresented: $showingCalendar) {
                     CalendarView()

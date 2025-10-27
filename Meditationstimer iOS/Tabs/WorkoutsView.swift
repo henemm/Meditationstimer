@@ -762,11 +762,8 @@ struct WorkoutsView: View {
             .onAppear {
                 if repeats < 1 { repeats = 10 }
             }
-            .sheet(isPresented: $showSettings) {
+            .navigationDestination(isPresented: $showSettings) {
                 SettingsSheet()
-                #if os(iOS)
-                .presentationDetents([.medium, .large])
-                #endif
             }
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
