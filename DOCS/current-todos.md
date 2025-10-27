@@ -123,8 +123,8 @@
 - **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
   - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1-2x hörbar (je länger die Phase, desto weniger Beeps)
-  - **Root Cause (Final):** UI (`onChange(fractionPhase)`) triggerte Business-Logik → TimelineView-Drift akkumuliert über Zeit → längere Phasen = schlechteres Timing
-  - **Location:** `WorkoutsView.swift:313-322` (onChange Trigger - jetzt entfernt)
+  - **Hypothese:** UI (`onChange(fractionPhase)`) triggert Business-Logik → TimelineView-Drift akkumuliert → längere Phasen = schlechteres Timing
+  - **Location:** `WorkoutsView.swift:313-322` (onChange Trigger)
   - **Fix-Versuch 1 (FEHLGESCHLAGEN):**
     - SoundPlayer mit URL-Caching und activePlayers Array
     - **User-Test:** Nur 1 Beep hörbar
@@ -135,18 +135,15 @@
   - **Fix-Versuch 3 (gebastelt, verworfen):**
     - Countdown-Beeps 1 Sekunde früher schedulen
     - Problem: Symptom-basiert, funktioniert nicht proportional zu Phase-Länge
-  - **Fix-Versuch 4 (IMPLEMENTIERT - Architektur-Fix):**
-    - **Best Practice:** UI-Trigger von Business-Logik getrennt
-    - `onChange(fractionPhase)` entfernt
-    - Phase-Ende via `DispatchQueue.asyncAfter` gescheduled (wie TwoPhaseTimerEngine)
-    - Sounds UND Phase-Ende im gleichen präzisen Timing-System
-    - TimelineView nur noch für UI-Anzeige (Date-based calculation)
-    - **Changes:**
-      - `WorkoutsView.swift:313-322` - onChange Block entfernt
-      - `WorkoutsView.swift:565-579` - Phase-End-Scheduling in scheduleCuesForCurrentPhase()
-      - `WorkoutsView.swift:542-545` - Countdown zurück zu T-3, T-2, T-1 (kein Drift mehr)
+  - **Fix-Versuch 4 (FEHLGESCHLAGEN):**
+    - **Ansatz:** UI-Trigger von Business-Logik getrennt (Best Practice)
+    - `onChange(fractionPhase)` entfernt, Phase-Ende via `DispatchQueue.asyncAfter`
+    - **Console Logs:** Alle 3 Sounds feuern korrekt
+    - **User-Test (30s):** KEINE VERBESSERUNG, immer noch genauso falsch
+    - **Revert:** onChange wieder eingefügt, DispatchQueue-Scheduling entfernt
+    - **Behalten:** UI-Text "10 x 20s/10s" (war separate Anforderung)
   - *Priorität: Mittel*
-  - *Status: Fix-Versuch 4 implementiert, compiliert, NICHT GETESTET* (27.10.2025)
+  - *Status: Alle 4 Fix-Versuche fehlgeschlagen* (27.10.2025)
 
 ## 🎨 Design & UX
 

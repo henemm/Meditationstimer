@@ -310,6 +310,16 @@ private struct WorkoutRunnerView: View {
                                 .monospacedDigit()
                                 .foregroundStyle(.secondary)
                         }
+                        .onChange(of: fractionPhase) { newVal in
+                            if newVal >= 1.0 {
+                                if !phaseEndFired {
+                                    phaseEndFired = true
+                                    advance()
+                                }
+                            } else {
+                                phaseEndFired = false
+                            }
+                        }
                     }
                 } else {
                     // Show completion state; logging is handled by endSession(completed:)
@@ -560,21 +570,6 @@ private struct WorkoutRunnerView: View {
                 if delay > 0.001 { schedule(delay) { sounds.play(.auftakt) } }
             }
             // (Round announcement scheduling removed)
-        }
-
-        // Schedule phase end via DispatchQueue (precise timing, no UI drift!)
-        let dur = phaseDuration
-        let now = Date()
-        let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
-        let delay = dur - elapsed
-        if delay > 0.001 {
-            print("[Workout] Scheduling phase end in \(delay)s")
-            schedule(delay) {
-                advance()
-            }
-        } else {
-            print("[Workout] Phase already over, advancing immediately")
-            advance()
         }
     }
 
