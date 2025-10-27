@@ -529,14 +529,13 @@ private struct WorkoutRunnerView: View {
             if willRest || isLast {
                 let now = Date()
                 let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
-                let transitionDuration = sounds.duration(of: .countdownTransition)
 
-                // Schedule countdown-transition so the long tone hits exactly at phase end
-                let targetFromStart = Double(dur) - transitionDuration
+                // Schedule 3s before phase end (3 beeps at T-3s, long tone starts at phase end)
+                let targetFromStart = Double(dur) - 3.0
                 let delay = targetFromStart - elapsed
 
                 if delay > 0.001 {
-                    print("[Workout] Scheduling countdown-transition (dur=\(transitionDuration)s) in \(delay)s")
+                    print("[Workout] Scheduling countdown-transition in \(delay)s (starts at T-3s)")
                     scheduleCountdown(delay) { sounds.play(.countdownTransition) }
                 } else {
                     print("[Workout] SKIPPED countdown-transition - delay too short: \(delay)s")
