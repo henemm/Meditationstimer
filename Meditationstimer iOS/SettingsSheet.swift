@@ -12,6 +12,7 @@ import UIKit
 
 /// Gemeinsames Einstellungs‑Sheet für alle Tabs.
 struct SettingsSheet: View {
+    @Environment(\.dismiss) private var dismiss
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
@@ -94,6 +95,13 @@ struct SettingsSheet: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .tabBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Fertig") {
+                        dismiss()
+                    }
+                }
+            }
             #endif
         }
     }
