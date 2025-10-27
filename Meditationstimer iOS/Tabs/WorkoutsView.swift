@@ -60,11 +60,9 @@ import UIKit
 
 // MARK: - Sound Cues for Workout
 private enum Cue: String {
-    case kurz       // short tick for countdown (3, 2, 1s before)
-    case lang       // long tone on phase switch (work→rest)
+    case countdownTransition = "countdown-transition" // 3x beep + long tone (combined)
     case auftakt    // pre-start cue before first work
     case ausklang   // final chime at end of last work
-    case lastRound = "last-round" // announce penultimate→last set
 }
 
 private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
@@ -87,7 +85,7 @@ private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelega
         }
         #endif
         // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
-        for cue in [Cue.kurz, .lang, .auftakt, .ausklang, .lastRound] {
+        for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
             let name = cue.rawValue
             let exts = ["caff", "caf", "wav", "mp3", "aiff"]
             var found: URL? = nil
@@ -527,36 +525,22 @@ private struct WorkoutRunnerView: View {
             let isLast = (repIndex >= cfgRepeats)
             let willRest = (cfgRest > 0 && !isLast)
 
-            // Only schedule a countdown if either rest follows or this is the final rep.
+            // Schedule countdown transition (3 beeps + long tone) if rest follows or final rep
             if willRest || isLast {
                 let now = Date()
                 let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
-                func scheduleIfFuture(at targetFromStart: TimeInterval, cue: Cue) {
-                    let delay = targetFromStart - elapsed
-                    if delay > 0.001 {
-                        print("[Workout] Scheduling \(cue.rawValue) in \(delay)s")
-                        scheduleCountdown(delay) { sounds.play(cue) }  // Use countdown scheduler
-                    } else {
-                        print("[Workout] SKIPPED \(cue.rawValue) - delay too short: \(delay)s")
-                    }
-                }
+                let transitionDuration = sounds.duration(of: .countdownTransition)
 
-                print("[Workout] Scheduling countdown: dur=\(dur), elapsed=\(elapsed)")
-                if dur >= 5 {
-                    // Schedule 1s earlier to compensate for onChange drift
-                    print("[Workout] Will schedule 3x kurz at: \(dur-4)s, \(dur-3)s, \(dur-2)s")
-                    scheduleIfFuture(at: TimeInterval(dur - 4), cue: .kurz)
-                    scheduleIfFuture(at: TimeInterval(dur - 3), cue: .kurz)
-                    scheduleIfFuture(at: TimeInterval(dur - 2), cue: .kurz)
-                } else if dur == 4 {
-                    print("[Workout] Will schedule 2x kurz at: 2s, 3s")
-                    scheduleIfFuture(at: 2, cue: .kurz)
-                    scheduleIfFuture(at: 3, cue: .kurz)
-                } else if dur == 3 {
-                    print("[Workout] Will schedule 1x kurz at: 2s")
-                    scheduleIfFuture(at: 2, cue: .kurz)
-                }
+                // Schedule countdown-transition so the long tone hits exactly at phase end
+                let targetFromStart = Double(dur) - transitionDuration
+                let delay = targetFromStart - elapsed
 
+                if delay > 0.001 {
+                    print("[Workout] Scheduling countdown-transition (dur=\(transitionDuration)s) in \(delay)s")
+                    scheduleCountdown(delay) { sounds.play(.countdownTransition) }
+                } else {
+                    print("[Workout] SKIPPED countdown-transition - delay too short: \(delay)s")
+                }
             }
         }
         else if phase == .rest {
@@ -587,14 +571,8 @@ private struct WorkoutRunnerView: View {
                 sounds.play(.ausklang)
                 return
             }
-            // Sonst: bei vorhandener Erholung lang.cue auf dem Wechsel spielen
+            // Sonst: bei vorhandener Erholung zur Rest-Phase wechseln
             if cfgRest > 0 {
-                sounds.play(.lang)
-                let next = repIndex + 1
-                // Vorletzter → letzter Satz: "last-round" kurz nach lang
-                if next == cfgRepeats {
-                    sounds.play(.lastRound, after: 0.15) // untracked delay; won't be cancelled by setPhase
-                }
                 setPhase(.rest)
             } else {
                 // Keine Erholung: direkt auf nächsten Satz schalten
