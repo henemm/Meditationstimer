@@ -359,9 +359,13 @@ private struct WorkoutRunnerView: View {
                 Button {
                     Task { await endSession(completed: false) }
                 } label: {
-                    Image(systemName: "xmark").font(.system(size: 14, weight: .semibold)).frame(width: 28, height: 28)
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .frame(width: 28, height: 28)
                 }
-                .buttonStyle(.borderedProminent).tint(.secondary).clipShape(Circle()).padding(8)
+                .buttonStyle(.borderedProminent)
+                .tint(.secondary)
+                .clipShape(Circle())
                 .disabled(isSaving)
             }
             
@@ -735,7 +739,7 @@ struct WorkoutsView: View {
             Image(systemName: "play.circle.fill")
                 .resizable()
                 .frame(width: 86, height: 86)
-                .foregroundStyle(.red)
+                .foregroundStyle(.tint)
         }
         .buttonStyle(.plain)
     }
