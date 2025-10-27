@@ -788,6 +788,7 @@ struct WorkoutsView: View {
                     .environmentObject(streakManager)
             }
             .toolbar(showRunner ? .hidden : .visible, for: .tabBar)
+            .toolbar(showRunner ? .hidden : .visible, for: .navigationBar)
             .fullScreenCover(isPresented: $showRunner) {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
                     showRunner = false

@@ -223,6 +223,7 @@ public struct AtemView: View {
             }
             .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
             .toolbar(runningPreset != nil ? .hidden : .visible, for: .tabBar)
+            .toolbar(runningPreset != nil ? .hidden : .visible, for: .navigationBar)
 
             // When overlay is up, dim & blur the background to show depth
             if runningPreset != nil {
