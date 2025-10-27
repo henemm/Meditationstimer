@@ -542,18 +542,19 @@ private struct WorkoutRunnerView: View {
                 }
 
                 print("[Workout] Scheduling countdown: dur=\(dur), elapsed=\(elapsed)")
-                if dur >= 4 {
-                    print("[Workout] Will schedule 3x kurz at: \(dur-3)s, \(dur-2)s, \(dur-1)s")
+                if dur >= 5 {
+                    // Schedule 1s earlier to compensate for onChange drift
+                    print("[Workout] Will schedule 3x kurz at: \(dur-4)s, \(dur-3)s, \(dur-2)s")
+                    scheduleIfFuture(at: TimeInterval(dur - 4), cue: .kurz)
                     scheduleIfFuture(at: TimeInterval(dur - 3), cue: .kurz)
                     scheduleIfFuture(at: TimeInterval(dur - 2), cue: .kurz)
-                    scheduleIfFuture(at: TimeInterval(dur - 1), cue: .kurz)
-                } else if dur == 3 {
-                    print("[Workout] Will schedule 2x kurz at: 1s, 2s")
-                    scheduleIfFuture(at: 1, cue: .kurz)
+                } else if dur == 4 {
+                    print("[Workout] Will schedule 2x kurz at: 2s, 3s")
                     scheduleIfFuture(at: 2, cue: .kurz)
-                } else if dur == 2 {
-                    print("[Workout] Will schedule 1x kurz at: 1s")
-                    scheduleIfFuture(at: 1, cue: .kurz)
+                    scheduleIfFuture(at: 3, cue: .kurz)
+                } else if dur == 3 {
+                    print("[Workout] Will schedule 1x kurz at: 2s")
+                    scheduleIfFuture(at: 2, cue: .kurz)
                 }
 
             }

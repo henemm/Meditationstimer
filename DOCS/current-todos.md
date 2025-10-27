@@ -123,8 +123,11 @@
 - **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
   - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1-2x hörbar (je länger die Phase, desto weniger Beeps)
-  - **Hypothese:** UI (`onChange(fractionPhase)`) triggert Business-Logik → TimelineView-Drift akkumuliert → längere Phasen = schlechteres Timing
-  - **Location:** `WorkoutsView.swift:313-322` (onChange Trigger)
+  - **Root Cause (GEFUNDEN):** `onChange(fractionPhase >= 1.0)` akkumuliert TimelineView-Drift proportional zur Phase-Dauer
+    - 10s Phase: ~200 Updates × 1-5ms = ~0.2s Drift → Trigger bei T+10.2s → Beep 3 (T+9s) fertig ✅
+    - 30s Phase: ~600 Updates × 1-5ms = ~0.6s Drift → Trigger bei T+29.4s → Beep 3 (T+29s) noch nicht gefeuert ❌
+    - **Console-Logs beweisen:** Dritter Beep wird NACH `.lang` gescheduled (Race Condition)
+  - **Location:** `WorkoutsView.swift:313-322` (onChange Trigger), `WorkoutsView.swift:545-558` (Countdown-Scheduling)
   - **Fix-Versuch 1 (FEHLGESCHLAGEN):**
     - SoundPlayer mit URL-Caching und activePlayers Array
     - **User-Test:** Nur 1 Beep hörbar
@@ -132,18 +135,22 @@
     - Separate `countdownSounds` Array (nicht mit scheduled gekoppelt)
     - **User-Test:** Bei 20s/30s nur 1-2 Beeps statt 3
     - **Console Logs:** Dritter Beep spielt NACH `.lang` (falsches Timing)
-  - **Fix-Versuch 3 (gebastelt, verworfen):**
+  - **Fix-Versuch 3 (verworfen):**
     - Countdown-Beeps 1 Sekunde früher schedulen
-    - Problem: Symptom-basiert, funktioniert nicht proportional zu Phase-Länge
+    - Problem: Als "gebastelt" verworfen, aber richtige Idee
   - **Fix-Versuch 4 (FEHLGESCHLAGEN):**
     - **Ansatz:** UI-Trigger von Business-Logik getrennt (Best Practice)
     - `onChange(fractionPhase)` entfernt, Phase-Ende via `DispatchQueue.asyncAfter`
     - **Console Logs:** Alle 3 Sounds feuern korrekt
-    - **User-Test (30s):** KEINE VERBESSERUNG, immer noch genauso falsch
+    - **User-Test (30s):** KEINE VERBESSERUNG - Audio-Problem lag woanders
     - **Revert:** onChange wieder eingefügt, DispatchQueue-Scheduling entfernt
-    - **Behalten:** UI-Text "10 x 20s/10s" (war separate Anforderung)
+  - **Fix-Versuch 5 (IMPLEMENTIERT - Drift-Kompensation):**
+    - **Ansatz:** Beeps 1 Sekunde früher schedulen (T-4, T-3, T-2 statt T-3, T-2, T-1)
+    - **Rationale:** Kompensiert onChange-Drift, dritter Beep feuert VOR frühem advance() Trigger
+    - **Constraints:** Nur bei dur>=5s (sonst nicht genug Zeit für 3 Beeps)
+    - **Changes:** `WorkoutsView.swift:545-558` - Countdown-Logik angepasst
   - *Priorität: Mittel*
-  - *Status: Alle 4 Fix-Versuche fehlgeschlagen* (27.10.2025)
+  - *Status: Fix-Versuch 5 implementiert, compiliert, NICHT GETESTET* (27.10.2025)
 
 ## 🎨 Design & UX
 
