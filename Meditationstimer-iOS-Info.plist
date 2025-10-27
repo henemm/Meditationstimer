@@ -6,13 +6,11 @@
 	<array>
 		<string>com.henemm.smartreminders.check</string>
 	</array>
-	<key>NSFocusStatusUsageDescription</key>
-	<string>Diese App aktiviert automatisch Focus Modi während Meditation- oder Workout-Sessions, um ungestörte Sessions zu ermöglichen.</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>processing</string>
+		<string>fetch</string>
 	</array>
 </dict>
 </plist>
