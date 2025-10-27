@@ -366,6 +366,7 @@ private struct WorkoutRunnerView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(.secondary)
                 .clipShape(Circle())
+                .padding(8)
                 .disabled(isSaving)
             }
             
@@ -770,17 +771,19 @@ struct WorkoutsView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button { showingCalendar = true } label: { Image(systemName: "calendar") }
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape").accessibilityLabel("Einstellungen")
+                if !showRunner {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button { showingCalendar = true } label: { Image(systemName: "calendar") }
+                        Button(action: { showSettings = true }) {
+                            Image(systemName: "gearshape").accessibilityLabel("Einstellungen")
+                        }
                     }
                 }
             }
             .onAppear {
                 if repeats < 1 { repeats = 10 }
             }
-            .navigationDestination(isPresented: $showSettings) {
+            .fullScreenCover(isPresented: $showSettings) {
                 SettingsSheet()
             }
             .fullScreenCover(isPresented: $showingCalendar) {
@@ -788,7 +791,6 @@ struct WorkoutsView: View {
                     .environmentObject(streakManager)
             }
             .toolbar(showRunner ? .hidden : .visible, for: .tabBar)
-            .toolbar(showRunner ? .hidden : .visible, for: .navigationBar)
             .fullScreenCover(isPresented: $showRunner) {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
                     showRunner = false

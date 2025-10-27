@@ -180,19 +180,21 @@ public struct AtemView: View {
                 .navigationTitle("")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button {
-                            showingEditor = Preset(name: "Neues Preset",
-                                                   emoji: randomEmoji(),
-                                                   inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
-                        } label: { Image(systemName: "plus") }
+                    if runningPreset == nil {
+                        ToolbarItemGroup(placement: .topBarTrailing) {
+                            Button {
+                                showingEditor = Preset(name: "Neues Preset",
+                                                       emoji: randomEmoji(),
+                                                       inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
+                            } label: { Image(systemName: "plus") }
 
-                        Button { showingCalendar = true } label: { Image(systemName: "calendar") }
+                            Button { showingCalendar = true } label: { Image(systemName: "calendar") }
 
-                        Button { showSettings = true } label: { Image(systemName: "gearshape") }
+                            Button { showSettings = true } label: { Image(systemName: "gearshape") }
+                        }
                     }
                 }
-                .navigationDestination(isPresented: $showSettings) {
+                .fullScreenCover(isPresented: $showSettings) {
                     SettingsSheet()
                 }
                 .fullScreenCover(isPresented: $showingCalendar) {
@@ -223,7 +225,6 @@ public struct AtemView: View {
             }
             .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
             .toolbar(runningPreset != nil ? .hidden : .visible, for: .tabBar)
-            .toolbar(runningPreset != nil ? .hidden : .visible, for: .navigationBar)
 
             // When overlay is up, dim & blur the background to show depth
             if runningPreset != nil {

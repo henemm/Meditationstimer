@@ -346,17 +346,18 @@ struct OffenView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button { showingCalendar = true } label: { Image(systemName: "calendar") }
-                    Button(action: { showSettings = true }) {
-                        Image(systemName: "gearshape")
-                            .accessibilityLabel("Einstellungen")
+                if engine.state == .idle || engine.state == .finished {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button { showingCalendar = true } label: { Image(systemName: "calendar") }
+                        Button(action: { showSettings = true }) {
+                            Image(systemName: "gearshape")
+                                .accessibilityLabel("Einstellungen")
+                        }
                     }
                 }
             }
             .toolbar(engine.state != .idle && engine.state != .finished ? .hidden : .visible, for: .tabBar)
-            .toolbar(engine.state != .idle && engine.state != .finished ? .hidden : .visible, for: .navigationBar)
-            .navigationDestination(isPresented: $showSettings) {
+            .fullScreenCover(isPresented: $showSettings) {
                 SettingsSheet()
             }
             .fullScreenCover(isPresented: $showingCalendar) {
