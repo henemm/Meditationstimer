@@ -339,6 +339,12 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
         // GongPlayer instance
         @State private var gong = GongPlayer()
+        @State private var ambientPlayer = AmbientSoundPlayer()
+        @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+
+        private var ambientSound: AmbientSound {
+            AmbientSound(rawValue: ambientSoundRaw) ?? .none
+        }
 
         // Helper properties for dual ring progress
         private var cycleSeconds: Int { preset.inhale + preset.holdIn + preset.exhale + preset.holdOut }
@@ -467,6 +473,9 @@ private struct OverlayBackgroundEffect: ViewModifier {
             .task {
                 // Disable idle timer to keep display on during session
                 setIdleTimer(true)
+
+                // Start ambient sound
+                ambientPlayer.start(sound: ambientSound)
 
                 // Start the session
                 let start = Date()
@@ -649,7 +658,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
             // 1. Stoppe alle Sounds
             gong.stopAll()
-            print("[AtemView] gong.stopAll() called")
+            ambientPlayer.stop()
+            print("[AtemView] gong.stopAll() and ambientPlayer.stop() called")
 
             // 2. Re-enable idle timer
             setIdleTimer(false)

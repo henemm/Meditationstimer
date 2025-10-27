@@ -72,6 +72,7 @@ struct OffenView: View {
         showLocalConflictAlert = false
         if stopAudio {
             bgAudio.stop()
+            ambientPlayer.stop()
         }
         setIdleTimer(false)
         Task { await liveActivity.end() }
@@ -96,10 +97,16 @@ struct OffenView: View {
     @State private var notifier = BackgroundNotifier()
     @State private var gong = GongPlayer()
     @State private var bgAudio = BackgroundAudioKeeper()
+    @State private var ambientPlayer = AmbientSoundPlayer()
     @State private var didPlayPhase2Gong = false
     @State private var pendingEndStop: DispatchWorkItem?
     @State private var showHealthAlert = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
+    @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+
+    private var ambientSound: AmbientSound {
+        AmbientSound(rawValue: ambientSoundRaw) ?? .none
+    }
 
     private var pickerSection: some View {
         HStack(alignment: .center, spacing: 20) {
@@ -170,6 +177,7 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
+                                    ambientPlayer.start(sound: ambientSound)
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                                 case .conflict(let existingOwner, let existingTitle):
@@ -180,6 +188,7 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
+                                    ambientPlayer.start(sound: ambientSound)
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                                 }
@@ -217,6 +226,7 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 case .conflict(let existingOwner, let existingTitle):
@@ -228,6 +238,7 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 }
@@ -270,6 +281,7 @@ struct OffenView: View {
                     sessionStart = Date()
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                     if let sessionEnd = engine.endDate {

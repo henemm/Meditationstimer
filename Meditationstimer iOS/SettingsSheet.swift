@@ -16,6 +16,14 @@ struct SettingsSheet: View {
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
+    @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+
+    private var ambientSound: Binding<AmbientSound> {
+        Binding(
+            get: { AmbientSound(rawValue: ambientSoundRaw) ?? .none },
+            set: { ambientSoundRaw = $0.rawValue }
+        )
+    }
 
     var body: some View {
         NavigationView {
@@ -52,6 +60,21 @@ struct SettingsSheet: View {
                         .help("Wähle dein tägliches Workout-Ziel in Minuten.")
                     }
                 }
+
+                Section(header: Text("Hintergrundsounds")) {
+                    Picker("Ambient-Sound", selection: ambientSound) {
+                        ForEach(AmbientSound.allCases) { sound in
+                            Text(sound.rawValue).tag(sound)
+                        }
+                    }
+                    #if os(iOS)
+                    .pickerStyle(.menu)
+                    #endif
+                    Text("Wird während Offen und Atem Meditationen abgespielt.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
                 Section {
                     NavigationLink(destination: SmartRemindersView()) {
                         Label("Smart Reminders", systemImage: "bell.badge")
