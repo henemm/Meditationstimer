@@ -795,7 +795,6 @@ struct WorkoutsView: View {
                 WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
                     showRunner = false
                 }
-                .ignoresSafeArea()
             }
             .alert("Health-Zugang", isPresented: $showHealthAlert) {
                 Button("Abbrechen", role: .cancel) {}
