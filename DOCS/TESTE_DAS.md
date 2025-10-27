@@ -1,73 +1,91 @@
-# Was Du testen musst
+# Test-Dokumentation - Bug-Fixing Session (25.-27. Oktober 2025)
 
-## 🔴 KRITISCH - Muss funktionieren:
+## ✅ ALLE TESTS ERFOLGREICH ABGESCHLOSSEN
 
-### 1. End-Gong (Bug 1)
+Alle kritischen Bugs wurden behoben und auf echtem Device getestet.
+
+---
+
+## Getestete Bugs
+
+### 1. End-Gong (Bug 1) ✅ BEHOBEN
 - **Offen-Tab:** Phase 1 = 1min, Phase 2 = 1min
-- **Starte** die Session
-- **Warte** 2 Minuten bis Ende
-- **Hörst du den kompletten End-Gong?** (nicht abgeschnitten)
+- **Test:** Session gestartet, 2 Minuten gewartet
+- **Ergebnis:** End-Gong spielt vollständig aus (nicht abgeschnitten)
+- **Status:** ✅ User-Test erfolgreich (26.10.2025)
 
 ---
 
-### 2. Countdown-Sounds (Bug 5)
+### 2. Countdown-Sounds (Bug 5) ✅ BEHOBEN
 - **Workouts-Tab:** Belastung = 10s, Erholung = 5s, Wiederholungen = 2
-- **Starte** das Workout
-- **Letzte 3 Sekunden der Belastung:** Hörst du **3 separate Beeps** (3-2-1)?
+- **Test:** Workout gestartet, auf Countdown-Sounds geachtet
+- **Ergebnis:** Alle 3 Beeps hörbar (3-2-1) vor Phase-Ende
+- **Status:** ✅ User-Test erfolgreich (27.10.2025)
+- **Fix:** Drift-Kompensation durch 1s früheres Scheduling
 
 ---
 
-### 3. Smart Reminders - Permissions (Bug 3)
-1. **Deaktiviere in iOS Settings:**
-   - Benachrichtigungen: AUS
-   - Hintergrundaktualisierung: AUS
-   - Health → Achtsamkeit → Lesen: VERWEIGERN
+### 3. Smart Reminders - Permissions (Bug 3) ✅ BEHOBEN
+**Test-Schritte:**
+1. iOS Settings → Permissions deaktiviert (Notifications, Background Refresh, HealthKit)
+2. App öffnen → Smart Reminders
+3. Toggle grau/disabled + Orange Warning-Banner sichtbar ✅
+4. Permissions wieder aktiviert
+5. Zurück zur App → Toggle enabled, Banner weg ✅
 
-2. **App öffnen → Smart Reminders:**
-   - Ist Toggle **grau/disabled**?
-   - Siehst du **Orange Warning-Banner**?
-
-3. **Aktiviere alle Permissions wieder**
-
-4. **Zurück zur App:**
-   - Ist Toggle jetzt **enabled**?
-   - Banner **weg**?
+**Status:** ✅ User-Test erfolgreich (27.10.2025)
 
 ---
 
-### 4. Smart Reminders - Scheduling Logs (Bug 3)
-- **Erstelle Reminder:** Morgen 9:00 Uhr, nur morgigen Tag
-- **Speichern**
-- **Xcode Console:** Steht da "📅 Next check scheduled at [MORGEN] 08:55:00"?
-  - Datum = morgen?
-  - Uhrzeit = 08:55 (5min vor 9:00)?
+### 4. Smart Reminders - Scheduling Logs (Bug 3) ✅ BEHOBEN
+- **Test:** Reminder für morgen 9:00 Uhr erstellt
+- **Console Log:** "📅 Next check scheduled at [MORGEN] 08:55:00" ✅
+- **Ergebnis:** Datum = morgen, Uhrzeit = 08:55 (5min vor 9:00)
+- **Status:** ✅ User-Test erfolgreich (27.10.2025)
 
 ---
 
-## ⚪ OPTIONAL:
-
-### 5. Smart Reminders - Overnight Test
-- Reminder für morgen 7:00 Uhr erstellen
-- App schließen, iPhone laden lassen
-- Morgen: Kommt Notification?
-  - **Wenn JA:** Super!
-  - **Wenn NEIN:** Normal, kein Problem (iOS ist unzuverlässig)
+### 5. Display Idle Timer (Bug 4) ✅ BEHOBEN
+- **Test:** Workout/Atem-Session gestartet, Device nicht berührt
+- **Ergebnis:** Display bleibt während Session an
+- **Status:** ✅ User-Test erfolgreich (26.10.2025)
 
 ---
 
-## ✅ Erfolgskriterien:
+## Optional: Smart Reminders - Overnight Test
 
-| Test | Muss funktionieren |
-|------|-------------------|
-| 1. End-Gong komplett | ✅ JA |
-| 2. 3x Countdown-Sounds | ✅ JA |
-| 3. Permission UI | ✅ JA |
-| 4. Scheduling Logs | ✅ JA |
-| 5. Overnight (optional) | ⚪ Nice-to-have |
+**Status:** ⚪ Nicht durchgeführt (nicht kritisch)
+
+iOS Background Refresh ist notorisch unzuverlässig für Zeitpunkt-genaue Notifications. Die Scheduling-Logik funktioniert korrekt (siehe Test 4), aber tatsächliche Notification-Delivery hängt von iOS Background Task Scheduler ab.
 
 ---
 
-**Bei Fehler sag mir:**
-- Welcher Test
-- Was ist passiert
-- (Optional: Console Logs / Screenshot)
+## Zusammenfassung
+
+| Bug | Status | User-Test Datum |
+|-----|--------|----------------|
+| **Bug 1: End-Gong** | ✅ Behoben | 26.10.2025 |
+| **Bug 2: Smart Reminder Zeit** | ✅ Behoben | 25.10.2025 |
+| **Bug 3: Smart Reminders Permissions** | ✅ Behoben | 27.10.2025 |
+| **Bug 4: Display Idle Timer** | ✅ Behoben | 26.10.2025 |
+| **Bug 5: Countdown-Sounds** | ✅ Behoben | 27.10.2025 |
+
+**Alle kritischen Funktionen arbeiten wie erwartet.**
+
+---
+
+## Für zukünftige Tests
+
+Falls neue Bugs auftauchen, verwende dieses Template:
+
+**Test-Schritte:**
+1. [Genaue Beschreibung wie Bug reproduziert wird]
+2. [Erwartetes Verhalten]
+3. [Tatsächliches Verhalten]
+
+**Console Logs:** (falls relevant)
+```
+[Relevante Log-Ausgaben hier einfügen]
+```
+
+**Screenshot/Video:** (falls hilfreich)

@@ -88,7 +88,7 @@
   - *Priorität: Hoch*
   - *Status: Behoben* (25.10.2025)
 
-- **Bug 3: Smart Reminders komplett neu implementiert**
+- **Bug 3: Smart Reminders komplett neu implementiert** ✅
   - **Was wurde gemacht:**
     - Komplettes Redesign von SmartReminderEngine mit korrekter Scheduling-Logik
     - Wochentage-Prüfung hinzugefügt
@@ -103,13 +103,13 @@
   - **User-Test-Ergebnis (26.10.2025):**
     - ❌ App erscheint NICHT in iOS Settings → Hintergrundaktualisierung
     - ❌ Permission-Check zeigt fälschlicherweise grünes Häkchen
-    - **Root Cause:** Background Modes NICHT in Xcode-Projekt konfiguriert
-  - **Fehlendes Setup:**
-    - UIBackgroundModes fehlt in Info.plist/Build Settings
-    - BGTaskSchedulerPermittedIdentifiers fehlt
-    - App kann BGAppRefreshTask nicht registrieren
+    - **Root Cause:** Background Modes NICHT in Xcode Capabilities konfiguriert
+  - **Lösung:**
+    - Background Modes in Xcode Target → Signing & Capabilities aktiviert
+    - UIBackgroundModes und BGTaskSchedulerPermittedIdentifiers waren bereits in Info.plist vorhanden
+    - App erscheint jetzt korrekt in iOS Settings → Hintergrundaktualisierung
   - *Priorität: Hoch*
-  - *Status: BLOCKIERT - Xcode-Konfiguration erforderlich* (26.10.2025)
+  - *Status: Behoben* (27.10.2025)
 
 - **Bug 4: Display schaltet sich bei Workouts aus** ✅
   - **Wo:** Workouts-Tab (und Atem-Tab)
@@ -120,7 +120,7 @@
   - *Priorität: Hoch*
   - *Status: Behoben durch User-Test* (26.10.2025)
 
-- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)**
+- **Bug 5: Countdown-Sounds am Ende der Belastung fehlen (Workouts)** ✅
   - **Wo:** Workouts-Tab, Ende der Belastungsphase
   - **Problem:** Soll 3x "kurz" Sound im Sekundentakt (bei -3s, -2s, -1s), aber nur 1-2x hörbar (je länger die Phase, desto weniger Beeps)
   - **Root Cause (GEFUNDEN):** `onChange(fractionPhase >= 1.0)` akkumuliert TimelineView-Drift proportional zur Phase-Dauer
@@ -144,13 +144,13 @@
     - **Console Logs:** Alle 3 Sounds feuern korrekt
     - **User-Test (30s):** KEINE VERBESSERUNG - Audio-Problem lag woanders
     - **Revert:** onChange wieder eingefügt, DispatchQueue-Scheduling entfernt
-  - **Fix-Versuch 5 (IMPLEMENTIERT - Drift-Kompensation):**
+  - **Fix-Versuch 5 (ERFOLGREICH - Drift-Kompensation):**
     - **Ansatz:** Beeps 1 Sekunde früher schedulen (T-4, T-3, T-2 statt T-3, T-2, T-1)
     - **Rationale:** Kompensiert onChange-Drift, dritter Beep feuert VOR frühem advance() Trigger
     - **Constraints:** Nur bei dur>=5s (sonst nicht genug Zeit für 3 Beeps)
     - **Changes:** `WorkoutsView.swift:545-558` - Countdown-Logik angepasst
   - *Priorität: Mittel*
-  - *Status: Fix-Versuch 5 implementiert, compiliert, NICHT GETESTET* (27.10.2025)
+  - *Status: Behoben durch User-Test* (27.10.2025)
 
 ## 🎨 Design & UX
 
