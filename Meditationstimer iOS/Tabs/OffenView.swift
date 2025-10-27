@@ -354,6 +354,7 @@ struct OffenView: View {
                     }
                 }
             }
+            .toolbar(engine.state != .idle && engine.state != .finished ? .hidden : .visible, for: .tabBar)
             .navigationDestination(isPresented: $showSettings) {
                 SettingsSheet()
             }
