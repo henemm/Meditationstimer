@@ -530,12 +530,12 @@ private struct WorkoutRunnerView: View {
                 let now = Date()
                 let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
 
-                // Schedule 3s before phase end (3 beeps at T-3s, long tone starts at phase end)
-                let targetFromStart = Double(dur) - 3.0
+                // Schedule 5s before phase end (3 beeps + long tone starts earlier)
+                let targetFromStart = Double(dur) - 5.0
                 let delay = targetFromStart - elapsed
 
                 if delay > 0.001 {
-                    print("[Workout] Scheduling countdown-transition in \(delay)s (starts at T-3s)")
+                    print("[Workout] Scheduling countdown-transition in \(delay)s (starts at T-5s)")
                     scheduleCountdown(delay) { sounds.play(.countdownTransition) }
                 } else {
                     print("[Workout] SKIPPED countdown-transition - delay too short: \(delay)s")
@@ -563,11 +563,11 @@ private struct WorkoutRunnerView: View {
         let cfgRepeats = plannedRepeats
         switch phase {
         case .work:
-            // Wenn letzter Satz beendet wurde → Workout fertig
+            // Wenn letzter Satz beendet wurde → Workout fertig, direkt schließen
             if repIndex >= cfgRepeats {
-                finished = true
                 cancelScheduled()
                 sounds.play(.ausklang)
+                Task { await endSession(completed: true) }
                 return
             }
             // Sonst: bei vorhandener Erholung zur Rest-Phase wechseln
