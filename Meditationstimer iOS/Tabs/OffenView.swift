@@ -60,7 +60,30 @@ struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verf�
 struct OffenView: View {
     // Zentrale Reset-Funktion f체r alle States, Timer, WorkItems, Audio, LiveActivity
     // stopAudio: false wenn Audio bereits extern gestoppt wurde (z.B. nach End-Gong)
-    private func resetSession(stopAudio: Bool = true) {
+    // logPartialSession: true wenn abgebrochene Session trotzdem geloggt werden soll (min 60s Phase 1)
+    private func resetSession(stopAudio: Bool = true, logPartialSession: Bool = false) {
+        // 1. HealthKit Logging bei vorzeitigem Abbruch (wenn gew체nscht)
+        if logPartialSession, let phase1End = engine.phase1EndDate {
+            let elapsed = sessionStart.distance(to: phase1End)
+            if elapsed >= 60 { // Min 1 Minute f체r Logging
+                Task {
+                    do {
+                        if logMeditationAsYogaWorkout {
+                            try await HealthKitManager.shared.logWorkout(start: sessionStart, end: phase1End, activity: .yoga)
+                        } else {
+                            try await HealthKitManager.shared.logMindfulness(start: sessionStart, end: phase1End)
+                        }
+                        print("[OffenView] Partial session logged: \(Int(elapsed))s")
+                    } catch {
+                        print("[OffenView] Partial session logging failed: \(error)")
+                    }
+                }
+            } else {
+                print("[OffenView] Partial session too short for logging: \(Int(elapsed))s")
+            }
+        }
+
+        // 2. Cleanup (wie bisher)
         engine.cancel()
         pendingEndStop?.cancel()
         pendingEndStop = nil
@@ -77,7 +100,7 @@ struct OffenView: View {
         setIdleTimer(false)
         Task { await liveActivity.end() }
         lastState = .idle
-        print("[DBG] resetSession: alle States und Tasks zur체ckgesetzt (stopAudio=\(stopAudio))")
+        print("[DBG] resetSession: alle States und Tasks zur체ckgesetzt (stopAudio=\(stopAudio), logPartialSession=\(logPartialSession))")
     }
     @AppStorage("phase1Minutes") private var phase1Minutes: Int = 10
     @AppStorage("phase2Minutes") private var phase2Minutes: Int = 5
@@ -410,7 +433,7 @@ struct OffenView: View {
             }
             .onDisappear {
                 notifier.stop()
-                resetSession()
+                resetSession(logPartialSession: true)
             }
         }
     }
