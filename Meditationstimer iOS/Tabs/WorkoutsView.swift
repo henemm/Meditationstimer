@@ -751,6 +751,7 @@ struct WorkoutsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                // Base content
                 VStack {
                     GlassCard {
                         VStack(spacing: 16) {
@@ -771,6 +772,36 @@ struct WorkoutsView: View {
                         }
                     }
                     .padding()
+                }
+                .modifier(OverlayBackgroundEffect(isDimmed: showRunner))
+
+                // Dim gradient (only when session active)
+                if showRunner {
+                    Rectangle()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.black.opacity(0.06),
+                                    Color.black.opacity(0.28)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                        .animation(.smooth(duration: 0.3), value: showRunner)
+                        .zIndex(1)
+                }
+
+                // Workout runner overlay
+                if showRunner {
+                    WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
+                        showRunner = false
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                    .animation(.smooth(duration: 0.3), value: showRunner)
+                    .zIndex(2)
                 }
             }
             .toolbar {
@@ -794,11 +825,6 @@ struct WorkoutsView: View {
                     .environmentObject(streakManager)
             }
             .toolbar(showRunner ? .hidden : .visible, for: .tabBar)
-            .fullScreenCover(isPresented: $showRunner) {
-                WorkoutRunnerView(intervalSec: intervalSec, restSec: restSec, repeats: $repeats) {
-                    showRunner = false
-                }
-            }
             .alert("Health-Zugang", isPresented: $showHealthAlert) {
                 Button("Abbrechen", role: .cancel) {}
                 Button("Erlauben") {
@@ -816,6 +842,19 @@ struct WorkoutsView: View {
                 Text("Diese App kann deine Workouts in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?")
             }
         }
+    }
+}
+
+// MARK: - OverlayBackgroundEffect (blur/dim background when overlay is shown)
+private struct OverlayBackgroundEffect: ViewModifier {
+    let isDimmed: Bool
+    func body(content: Content) -> some View {
+        content
+            .blur(radius: isDimmed ? 6 : 0)
+            .saturation(isDimmed ? 0.95 : 1)
+            .brightness(isDimmed ? -0.02 : 0)
+            .animation(.smooth(duration: 0.3), value: isDimmed)
+            .allowsHitTesting(!isDimmed)
     }
 }
 

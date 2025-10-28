@@ -257,7 +257,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             .blur(radius: isDimmed ? 6 : 0)
             .saturation(isDimmed ? 0.95 : 1)
             .brightness(isDimmed ? -0.02 : 0)
-            .animation(.easeInOut(duration: 0.2), value: isDimmed)
+            .animation(.smooth(duration: 0.3), value: isDimmed)
             .allowsHitTesting(!isDimmed)
     }
 }

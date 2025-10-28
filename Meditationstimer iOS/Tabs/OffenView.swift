@@ -131,6 +131,12 @@ struct OffenView: View {
         AmbientSound(rawValue: ambientSoundRaw) ?? .none
     }
 
+    private var isSessionActive: Bool {
+        if case .phase1 = engine.state { return true }
+        if case .phase2 = engine.state { return true }
+        return false
+    }
+
     private var pickerSection: some View {
         HStack(alignment: .center, spacing: 20) {
             // Linke Spalte: Emojis + Labels
@@ -336,7 +342,7 @@ struct OffenView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Base (idle & finished) – same as before
+                // Base (idle & finished)
                 VStack {
                     GlassCard {
                         VStack(spacing: 16) {
@@ -352,20 +358,44 @@ struct OffenView: View {
                     }
                     .padding()
                 }
+                .modifier(OverlayBackgroundEffect(isDimmed: isSessionActive))
 
-                // Overlay for active session (phase1/phase2) – styled like Atem's run card
+                // Dim gradient (only when session active)
+                if isSessionActive {
+                    Rectangle()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.black.opacity(0.06),
+                                    Color.black.opacity(0.28)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                        .animation(.smooth(duration: 0.3), value: isSessionActive)
+                        .zIndex(1)
+                }
+
+                // Overlay for active session (phase1/phase2)
                 if case .phase1(let remaining) = engine.state {
-                    Color.black.opacity(0.08).ignoresSafeArea()
                     RunCard(title: "Meditation", endDate: engine.phase1EndDate ?? Date(), totalSeconds: phase1Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
+                    .transition(.scale.combined(with: .opacity))
+                    .animation(.smooth(duration: 0.3), value: engine.state)
+                    .zIndex(2)
                 } else if case .phase2(let remaining) = engine.state {
-                    Color.black.opacity(0.08).ignoresSafeArea()
                     RunCard(title: "Besinnung", endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
+                    .transition(.scale.combined(with: .opacity))
+                    .animation(.smooth(duration: 0.3), value: engine.state)
+                    .zIndex(2)
                 }
             }
             .toolbar {
@@ -533,6 +563,19 @@ private struct RunCard: View {
             timer?.invalidate()
             timer = nil
         }
+    }
+}
+
+// MARK: - OverlayBackgroundEffect (blur/dim background when overlay is shown)
+private struct OverlayBackgroundEffect: ViewModifier {
+    let isDimmed: Bool
+    func body(content: Content) -> some View {
+        content
+            .blur(radius: isDimmed ? 6 : 0)
+            .saturation(isDimmed ? 0.95 : 1)
+            .brightness(isDimmed ? -0.02 : 0)
+            .animation(.smooth(duration: 0.3), value: isDimmed)
+            .allowsHitTesting(!isDimmed)
     }
 }
 
