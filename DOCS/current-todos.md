@@ -250,11 +250,30 @@
   - OffenView/AtemView: Unverändert (blue/cyan default)
   - *Status: Abgeschlossen* (27.10.2025)
 
+## 🐛 Bugs (gefunden am 28. Oktober 2025)
+
+- **Bug 6: Partial Session Logging bei vorzeitigem Abbruch** ✅
+  - **Wo:** OffenView (Meditation 2-Phasen Timer)
+  - **Problem:** Bei vorzeitigem Abbruch (z.B. App-Wechsel) wurde keine Session in HealthKit geloggt
+  - **Ursache:** `.onDisappear` rief `resetSession()` ohne HealthKit Logging auf
+  - **Location:** `OffenView.swift:resetSession()`, `OffenView.swift:436` (onDisappear)
+  - **Lösung:**
+    - `resetSession()` erhält Parameter `logPartialSession: Bool = false`
+    - Bei `logPartialSession=true` wird Phase 1 Duration bei min 60s in HealthKit geloggt
+    - `.onDisappear` ruft nun `resetSession(logPartialSession: true)` auf
+  - **Änderungen:**
+    - `OffenView.swift:resetSession()` – Parameter + Logging-Logik (~26 LOC)
+    - `OffenView.swift:onDisappear` – Mit logPartialSession=true (~1 LOC)
+  - **Hinweis:** AtemView & WorkoutsView hatten bereits korrektes Partial Logging
+  - *Priorität: Mittel*
+  - *Status: Behoben* (28.10.2025)
+
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 27. Oktober 2025
+- Letzte Aktualisierung: 28. Oktober 2025
 - Test-Suite mit 58+ Tests erstellt am 25. Oktober 2025
 - Test-Dateien: TwoPhaseTimerEngineTests.swift, StreakManagerTests.swift, HealthKitManagerTests.swift
 - Siehe CLAUDE.md für Details zur Test-Einrichtung und Ausführung
 - 5 Bugs analysiert und dokumentiert am 25. Oktober 2025
 - UI-Verbesserungen und Konsistenz-Fixes am 27. Oktober 2025
+- Bug 6 (Partial Session Logging) behoben am 28. Oktober 2025
