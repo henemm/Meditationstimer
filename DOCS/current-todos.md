@@ -165,6 +165,49 @@
   - *Priorität: Niedrig*
   - *Status: Backlog*
 
+## 🎨 UI/UX Modernisierung - Liquid Glass Design
+
+- **Einheitliche View-Transitions implementieren** (iOS 18 Liquid Glass)
+  - **Analyse abgeschlossen:** Siehe `DOCS/view-transitions-analysis.md`
+  - **Hauptproblem:** Drei verschiedene Präsentations-Patterns für Session-Runner
+  - **Ziel:** Einheitliches Verhalten nach Liquid Glass Guidelines
+
+  **Kategorien definiert:**
+  1. **Play-Views** (Session-Runner): Offen, Atem, Workouts
+  2. **Modal Sheets**: Settings, Calendar
+  3. **Sub-Sheets**: Editors (Presets, Reminders)
+
+  **Kritische Inkonsistenzen:**
+  - ❌ WorkoutsView: Verwendet `.fullScreenCover` statt Overlay-Pattern
+  - ❌ OffenView: Overlay ohne Transition-Animation
+  - ✅ AtemView: **Best Practice** - Custom overlay mit `.scale+.opacity`
+
+  **High Priority Fixes:**
+  1. WorkoutsView → Replace `.fullScreenCover` mit Overlay-Pattern (~80 LOC)
+  2. OffenView → Add `.scale+.opacity` transition animation (~30 LOC)
+  3. Alle `NavigationView` → `NavigationStack` (3 Stellen, ~20 LOC)
+  4. AtemView Animation → `.easeInOut` zu `.smooth` (~2 LOC)
+
+  **Medium Priority:**
+  5. OffenView Background → Blur + Saturation wie AtemView
+  6. Presentation Backgrounds → `.ultraThinMaterial` für Sheets
+
+  **Standard-Pattern (AtemView-Basis):**
+  ```swift
+  // Overlay transition
+  .scale.combined(with: .opacity)
+  .animation(.smooth(duration: 0.3))
+
+  // Background effect
+  .blur(radius: 6)
+  .saturation(0.95)
+  .brightness(-0.02)
+  ```
+
+  - *Priorität: Hoch*
+  - *Status: Analysiert, bereit zur Implementation*
+  - *Geschätzte Änderungen: ~137 LOC über 7 Dateien*
+
 ## 🔧 Sonstige Todos
 
 - **Test-Target in Xcode einrichten**
