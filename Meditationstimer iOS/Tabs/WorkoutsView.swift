@@ -604,11 +604,18 @@ private struct WorkoutRunnerView: View {
         let cfgRepeats = plannedRepeats
         switch phase {
         case .work:
-            // Wenn letzter Satz beendet wurde → Workout fertig, direkt schließen
+            // Wenn letzter Satz beendet wurde → Workout fertig
             if repIndex >= cfgRepeats {
                 cancelScheduled()
+                finished = true
+
+                // Play ausklang, then close after sound duration
                 sounds.play(.ausklang)
-                Task { await endSession(completed: true) }
+                let ausklangDuration = sounds.duration(of: .ausklang)
+                let delay = max(0.5, ausklangDuration)  // Minimum 0.5s delay
+                schedule(delay) {
+                    Task { await self.endSession(completed: true) }
+                }
                 return
             }
             // Sonst: bei vorhandener Erholung zur Rest-Phase wechseln
