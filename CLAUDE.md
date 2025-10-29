@@ -17,7 +17,7 @@
 - Live Activities / Dynamic Island support
 - Apple Watch companion app with heart rate monitoring
 
-**Current Version:** 2.5.3
+**Current Version:** 2.5.4
 
 ---
 
@@ -275,7 +275,7 @@ For in-depth information, see `/DOCS/`:
 
 ## Quick Reference
 
-**Version:** 2.5.3
+**Version:** 2.5.4
 
 **Main Schemes:**
 - "Lean Health Timer" – iOS + Watch + Widget
