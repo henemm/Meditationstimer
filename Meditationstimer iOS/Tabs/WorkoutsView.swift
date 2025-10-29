@@ -247,8 +247,8 @@ private struct WorkoutRunnerView: View {
 
         guard phase == .work else { return }  // Only monitor during work phase
 
-        let soundDuration = sounds.duration(of: .countdownTransition)
-        let triggerThreshold = soundDuration + 0.05  // 50ms buffer
+        // Fixed 3.0s threshold: Sound starts so the long tone (at end) hits the phase change
+        let triggerThreshold = 3.0
 
         soundCheckTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             guard !self.countdownSoundTriggered else { return }
@@ -258,7 +258,7 @@ private struct WorkoutRunnerView: View {
             let elapsed = now.timeIntervalSince(start) - self.pausedPhaseAccum
             let remaining = self.phaseDuration - elapsed
 
-            // Trigger sound when remaining time <= sound duration + buffer
+            // Trigger sound when remaining time <= 3.0s
             if remaining <= triggerThreshold && remaining > 0 {
                 self.countdownSoundTriggered = true
                 self.sounds.play(.countdownTransition)
@@ -550,14 +550,6 @@ private struct WorkoutRunnerView: View {
         let updatedEndDate = now.addingTimeInterval(remaining)
         print("🏋️ [WorkoutsView] PHASE CHANGED: \(p.rawValue) → phaseNumber=\(phaseNumber)")
         Task { await liveActivity.update(phase: phaseNumber, endDate: updatedEndDate, isPaused: isPaused) }
-
-        // Announce round number exactly at the start of WORK (after Auftakt)
-        if p == .work {
-            let current = repIndex
-            if current >= 2 && current < cfgRepeats {
-                schedule(0.05) { sounds.playRound(current) }
-            }
-        }
     }
 
     private func scheduleCuesForCurrentPhase() {
