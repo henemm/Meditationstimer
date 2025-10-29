@@ -208,6 +208,31 @@
   - *Status: Analysiert, bereit zur Implementation*
   - *Geschätzte Änderungen: ~137 LOC über 7 Dateien*
 
+## 💳 Technische Schulden
+
+- **Deprecated APIs beheben**
+  - **Wo:** Mehrere Views (WorkoutsView, OffenView, AtemView, LiveActivityController, HealthKitManager)
+  - **Problem:** Verwendung veralteter APIs führt zu Build-Warnings
+  - **Warnings (40+):**
+    - `onChange(of:perform:)` deprecated in iOS 17.0 → Neue Syntax mit 2-Parameter Closure
+    - `end(using:dismissalPolicy:)` deprecated in iOS 16.2 → `end(content:dismissalPolicy:)`
+    - `HKWorkout.init(activityType:start:end:)` deprecated in iOS 17.0 → HKWorkoutBuilder verwenden
+    - Ungenutzte Variablen (`remaining`, `metadata`, `volumeStep`)
+    - Missing `await` markierungen (Swift 6 mode)
+  - **Locations:**
+    - `WorkoutsView.swift:351, 481` (onChange)
+    - `OffenView.swift:420, 383, 391` (onChange, unused vars)
+    - `AtemView.swift:506` (onChange)
+    - `LiveActivityController.swift:59, 127, 175, 177, 183` (end API)
+    - `HealthKitManager.swift:149, 178, 181` (HKWorkout init, await)
+    - `NotificationHelper.swift:56, 57` (await)
+    - `AmbientSoundPlayer.swift:262` (unused var)
+  - **Umfang:** ~40 Warnings über 8 Dateien
+  - **Aufwand:** ~2-3h (separate Commits pro Kategorie)
+  - **Kontext:** Alle Code-Warnings stammen aus früheren AI-Sessions
+  - *Priorität: Mittel*
+  - *Status: Backlog* (29.10.2025)
+
 ## 🔧 Sonstige Todos
 
 - **Test-Target in Xcode einrichten**
@@ -270,10 +295,12 @@
 
 ## 📝 Notizen
 
-- Letzte Aktualisierung: 28. Oktober 2025
+- Letzte Aktualisierung: 29. Oktober 2025
 - Test-Suite mit 58+ Tests erstellt am 25. Oktober 2025
 - Test-Dateien: TwoPhaseTimerEngineTests.swift, StreakManagerTests.swift, HealthKitManagerTests.swift
 - Siehe CLAUDE.md für Details zur Test-Einrichtung und Ausführung
 - 5 Bugs analysiert und dokumentiert am 25. Oktober 2025
 - UI-Verbesserungen und Konsistenz-Fixes am 27. Oktober 2025
 - Bug 6 (Partial Session Logging) behoben am 28. Oktober 2025
+- Workout Timer Audio Timing behoben am 29. Oktober 2025 (v2.5.4)
+- Technische Schulden (Deprecated APIs) dokumentiert am 29. Oktober 2025
