@@ -63,6 +63,7 @@ private enum Cue: String {
     case countdownTransition = "countdown-transition" // 3x beep + long tone (combined)
     case auftakt    // pre-start cue before first work
     case ausklang   // final chime at end of last work
+    case lastRound = "last-round"  // announcement for final round
 }
 
 private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
@@ -85,7 +86,7 @@ private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelega
         }
         #endif
         // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
-        for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
+        for cue in [Cue.countdownTransition, .auftakt, .ausklang, .lastRound] {
             let name = cue.rawValue
             let exts = ["caff", "caf", "wav", "mp3", "aiff"]
             var found: URL? = nil
@@ -225,17 +226,12 @@ private struct WorkoutRunnerView: View {
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @State private var scheduled: [DispatchWorkItem] = []
-    @State private var countdownSounds: [DispatchWorkItem] = []  // Separate from scheduled
+    @State private var soundCheckTimer: Timer?  // NEW: Continuous monitoring timer
+    @State private var countdownSoundTriggered = false  // NEW: Flag to prevent double-trigger
 
     private func cancelScheduled() {
         scheduled.forEach { $0.cancel() }
         scheduled.removeAll()
-        // Countdown sounds are NOT cancelled - they must play!
-    }
-
-    private func cancelCountdownSounds() {
-        countdownSounds.forEach { $0.cancel() }
-        countdownSounds.removeAll()
     }
 
     private func schedule(_ delay: TimeInterval, action: @escaping () -> Void) {
@@ -244,10 +240,36 @@ private struct WorkoutRunnerView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
     }
 
-    private func scheduleCountdown(_ delay: TimeInterval, action: @escaping () -> Void) {
-        let w = DispatchWorkItem(block: action)
-        countdownSounds.append(w)
-        DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
+    // NEW: Continuous monitoring for countdown-transition timing
+    private func startSoundMonitoring() {
+        stopSoundMonitoring()  // Clean up any existing timer
+        countdownSoundTriggered = false
+
+        guard phase == .work else { return }  // Only monitor during work phase
+
+        let soundDuration = sounds.duration(of: .countdownTransition)
+        let triggerThreshold = soundDuration + 0.05  // 50ms buffer
+
+        soundCheckTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            guard !self.countdownSoundTriggered else { return }
+            guard let start = self.phaseStart else { return }
+
+            let now = Date()
+            let elapsed = now.timeIntervalSince(start) - self.pausedPhaseAccum
+            let remaining = self.phaseDuration - elapsed
+
+            // Trigger sound when remaining time <= sound duration + buffer
+            if remaining <= triggerThreshold && remaining > 0 {
+                self.countdownSoundTriggered = true
+                self.sounds.play(.countdownTransition)
+                print("[Workout] countdown-transition triggered (remaining: \(String(format: "%.2f", remaining))s)")
+            }
+        }
+    }
+
+    private func stopSoundMonitoring() {
+        soundCheckTimer?.invalidate()
+        soundCheckTimer = nil
     }
     private var sessionTotal: TimeInterval {
         let work = intervalSec * repeats
@@ -453,7 +475,7 @@ private struct WorkoutRunnerView: View {
         .onDisappear {
             sounds.stopAll()
             cancelScheduled()
-            cancelCountdownSounds()
+            stopSoundMonitoring()  // NEW: Stop continuous monitoring
             setIdleTimer(false) // Re-enable idle timer
         }
         .onChange(of: phase) { _ in }
@@ -475,7 +497,7 @@ private struct WorkoutRunnerView: View {
 
         sounds.stopAll()
         cancelScheduled()
-        cancelCountdownSounds()
+        stopSoundMonitoring()  // NEW: Stop continuous monitoring
         setIdleTimer(false) // Re-enable idle timer
 
         let endDate = Date()
@@ -542,29 +564,9 @@ private struct WorkoutRunnerView: View {
         guard !finished else { return }
         guard let start = phaseStart else { return }
 
-        // Announce upcoming REST during work; on the last rep, play the countdown and use AUSKLANG at the end.
         if phase == .work {
-            let dur = max(1, cfgInterval)
-            let isLast = (repIndex >= cfgRepeats)
-            let willRest = (cfgRest > 0 && !isLast)
-
-            // Schedule countdown transition (3 beeps + long tone) if rest follows or final rep
-            if willRest || isLast {
-                let now = Date()
-                let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
-
-                // Compensate for onChange drift: ~1.5% per second of phase duration
-                let estimatedDrift = Double(dur) * 0.015
-                let targetFromStart = Double(dur) - 3.0 - estimatedDrift
-                let delay = targetFromStart - elapsed
-
-                if delay > 0.001 {
-                    print("[Workout] Scheduling countdown-transition in \(delay)s (dur=\(dur)s, drift=\(estimatedDrift)s)")
-                    scheduleCountdown(delay) { sounds.play(.countdownTransition) }
-                } else {
-                    print("[Workout] SKIPPED countdown-transition - delay too short: \(delay)s")
-                }
-            }
+            // NEW: Start continuous monitoring for countdown-transition
+            startSoundMonitoring()
         }
         else if phase == .rest {
             // Pre-roll: play Auftakt so that it ENDS exactly at the next work start
@@ -575,9 +577,32 @@ private struct WorkoutRunnerView: View {
             let targetFromStart = max(0, Double(dur) - aDur)
             let delay = targetFromStart - elapsed
             if aDur > 0, aDur < Double(dur) {
-                if delay > 0.001 { schedule(delay) { sounds.play(.auftakt) } }
+                if delay > 0.001 {
+                    schedule(delay) {
+                        self.sounds.play(.auftakt)
+                        print("[Workout] Auftakt triggered (delay was: \(String(format: "%.2f", delay))s)")
+                    }
+                }
             }
-            // (Round announcement scheduling removed)
+
+            // Round announcement during rest phase (before next work)
+            let nextRound = repIndex + 1
+            if nextRound >= 2 && nextRound <= cfgRepeats {
+                let announceDelay = max(0, Double(dur) * 0.2)  // Early in rest phase
+                if announceDelay > 0.001 {
+                    schedule(announceDelay) {
+                        if nextRound == self.cfgRepeats {
+                            // Last round announcement
+                            self.sounds.play(.lastRound)
+                            print("[Workout] Last round announcement (round \(nextRound))")
+                        } else {
+                            // Normal round announcement
+                            self.sounds.playRound(nextRound)
+                            print("[Workout] Round announcement: \(nextRound)")
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -615,7 +640,7 @@ private struct WorkoutRunnerView: View {
             pausedAt = Date()
             sounds.stopAll()
             cancelScheduled()
-            cancelCountdownSounds()
+            stopSoundMonitoring()  // NEW: Stop continuous monitoring during pause
             // LiveActivity: Pause-Status setzen
             let now = Date()
             let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
@@ -630,7 +655,7 @@ private struct WorkoutRunnerView: View {
             }
             pausedAt = nil
             isPaused = false
-            scheduleCuesForCurrentPhase()
+            scheduleCuesForCurrentPhase()  // NEW: This will restart sound monitoring if needed
             // LiveActivity: Pause-Status zurücknehmen
             let now = Date()
             let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
