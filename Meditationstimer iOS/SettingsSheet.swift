@@ -110,15 +110,15 @@ struct SettingsSheet: View {
                                 ), in: 0...100, step: 5)
                             }
 
-                            // 3. Preview control (toggle button: play OR stop)
+                            // 3. Preview control (toggle button: play OR stop ambient sound only)
                             HStack {
                                 if isPreviewPlaying {
                                     Button(action: stopPreview) {
-                                        Label("Stop", systemImage: "stop.fill")
+                                        Label("Stop Hintergrundsound", systemImage: "stop.fill")
                                     }
                                 } else {
                                     Button(action: startPreview) {
-                                        Label("Play", systemImage: "play.fill")
+                                        Label("Play Hintergrundsound", systemImage: "play.fill")
                                     }
                                 }
                                 Spacer()
