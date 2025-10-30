@@ -7,7 +7,65 @@
 
 ## 🚀 Geplante Features
 
-### 1. Erweiterte Statistiken
+### 1. NoAlk Streak (Alcohol Tracking)
+**Priorität:** Hoch
+**Aufwand:** Mittel
+**Status:** Spec fehlt - muss neu erstellt werden
+
+**Beschreibung:**
+Passives Alcohol-Tracking mit NoAlk-Streak-System analog zu Meditation/Workout Streaks.
+
+**Details:**
+- Unterschwelliges Feature (nicht aufdringlich)
+- Smart Notifications als Haupt-Interaktion
+- NoAlk Streak: Belohnung für alkoholfreie Tage
+- HealthKit Integration (numberOfAlcoholicBeverages)
+- Minimale UI (kein Manual-Entry im Vordergrund)
+
+**Risiken:** Feature-Spec verloren gegangen, muss neu definiert werden
+
+**Hinweis:** Erste Implementation wurde revertiert (falsche Annahmen ohne Spec)
+
+---
+
+### 2. Klangpakete/-Presets
+**Priorität:** Mittel
+**Aufwand:** Mittel
+**Status:** Planungsphase
+
+**Beschreibung:**
+Auswahl verschiedener Klangpakete/Soundpresets für Offen, Atem und Workouts.
+
+**Details:**
+- Mehrere Gong-Varianten (klassisch, Klangschale, modern)
+- Unterschiedliche Atem-Cue Sounds
+- Workout-Countdown Varianten
+- Settings-Integration: Sound-Theme Auswahl
+- Beibehaltung aktueller Sounds als "Standard"-Preset
+
+**Risiken:** Audio-Assets Größe, Lokalisierung der Sound-Namen
+
+---
+
+### 3. Mehrsprachigkeit (Deutsch/Englisch)
+**Priorität:** Mittel
+**Aufwand:** Mittel
+**Status:** Planungsphase
+
+**Beschreibung:**
+Vollständige Lokalisierung der App für Deutsch und Englisch.
+
+**Details:**
+- Alle UI-Texte, Beschreibungen, Notifications
+- SwiftUI LocalizedStringKey verwenden
+- String-Katalog erstellen (Localizable.xcstrings)
+- Automatische Spracherkennung (System-Sprache)
+
+**Risiken:** Konsistente Übersetzungen, Testing auf beiden Sprachen
+
+---
+
+### 4. Erweiterte Statistiken
 **Priorität:** Mittel
 **Aufwand:** Mittel
 **Status:** Planungsphase
@@ -24,24 +82,7 @@ Detailliertere Analysen und Visualisierungen der Meditation- und Workout-Daten.
 
 ---
 
-### 2. Lokalisierung (Englisch)
-**Priorität:** Mittel
-**Aufwand:** Mittel
-**Status:** Planungsphase
-
-**Beschreibung:**
-Vollständige Lokalisierung der App für Englisch.
-
-**Details:**
-- Alle UI-Texte, Beschreibungen, Notifications
-- SwiftUI LocalizedStringKey verwenden
-- String-Katalog erstellen
-
-**Risiken:** Konsistente Übersetzungen, Testing
-
----
-
-### 3. Beschreibungstexte für Atem-Meditationen
+### 5. Beschreibungstexte für Atem-Meditationen
 **Priorität:** Niedrig
 **Aufwand:** Niedrig (wenige Tage)
 **Status:** Planungsphase
@@ -58,7 +99,7 @@ Kurze, inspirierende Beschreibungstexte zu den Atem-Meditationen hinzufügen.
 
 ---
 
-### 4. Benutzerdefinierte Atem-Pattern
+### 6. Benutzerdefinierte Atem-Pattern
 **Priorität:** Niedrig
 **Aufwand:** Hoch
 **Status:** Planungsphase
