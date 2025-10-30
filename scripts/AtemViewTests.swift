@@ -1,5 +1,5 @@
 import XCTest
-@testable import Meditationstimer
+@testable import Lean_Health_Timer
 
 final class AtemViewTests: XCTestCase {
     /// Tests for Atem tab logic including phase transitions and Live Activity updates

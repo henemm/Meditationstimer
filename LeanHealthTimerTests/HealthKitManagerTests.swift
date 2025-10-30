@@ -1,6 +1,6 @@
 import XCTest
 import HealthKit
-@testable import Meditationstimer
+@testable import Lean_Health_Timer
 
 final class HealthKitManagerTests: XCTestCase {
 

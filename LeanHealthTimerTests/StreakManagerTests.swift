@@ -1,5 +1,5 @@
 import XCTest
-@testable import Meditationstimer
+@testable import Lean_Health_Timer
 
 final class StreakManagerTests: XCTestCase {
 

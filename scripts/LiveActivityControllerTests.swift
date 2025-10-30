@@ -1,5 +1,5 @@
 import XCTest
-@testable import Meditationstimer
+@testable import Lean_Health_Timer
 
 final class LiveActivityControllerTests: XCTestCase {
     /// NOTE: This file is intended to be added to an iOS XCTest target in Xcode (MeditationstimerTests).
