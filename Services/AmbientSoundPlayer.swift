@@ -69,7 +69,7 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
     private let targetVolume: Float = 0.45  // 45% volume (balance with gongs)
     private let fadeInDuration: TimeInterval = 3.0
     private let fadeOutDuration: TimeInterval = 3.0
-    private let crossFadeDuration: TimeInterval = 7.0  // Overlap duration for seamless loop
+    private let crossFadeDuration: TimeInterval = 9.0  // Overlap duration for seamless loop (increased by 2s)
 
     // MARK: - State
 
