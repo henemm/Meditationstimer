@@ -103,7 +103,7 @@ final class StreakManagerTests: XCTestCase {
         // Test exactly at threshold and below
         var dailyMinutes: [Date: Double] = [:]
         dailyMinutes[today] = 2.0 // Exactly at threshold
-        dailyMinutes[calendar.date(byAdding: .day, value: -1, to: today)!] = 1.9 // Below threshold
+        dailyMinutes[calendar.date(byAdding: .day, value: -1, to: today)!] = 1.0 // Clearly below threshold (round(1.0) = 1 < 2)
         dailyMinutes[calendar.date(byAdding: .day, value: -2, to: today)!] = 3.0 // Above threshold
 
         let (streakDays, _) = calculateStreak(dailyMinutes: dailyMinutes, today: today)

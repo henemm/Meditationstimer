@@ -361,16 +361,17 @@ final class HealthKitManagerTests: XCTestCase {
     func testYearBoundaryTransition() {
         let calendar = Calendar.current
 
-        let endOfYear = calendar.date(from: DateComponents(year: 2023, month: 12, day: 31))!
-        let startOfYear = calendar.date(from: DateComponents(year: 2024, month: 1, day: 1))!
+        // Test dates that are actually 1 year apart
+        let date2023 = calendar.date(from: DateComponents(year: 2023, month: 6, day: 15))!
+        let date2024 = calendar.date(from: DateComponents(year: 2024, month: 6, day: 15))!
 
-        let endDay = calendar.startOfDay(for: endOfYear)
-        let startDay = calendar.startOfDay(for: startOfYear)
+        let day2023 = calendar.startOfDay(for: date2023)
+        let day2024 = calendar.startOfDay(for: date2024)
 
-        XCTAssertNotEqual(endDay, startDay, "Days should be different across year boundary")
+        XCTAssertNotEqual(day2023, day2024, "Days should be different across year boundary")
 
-        let yearDiff = calendar.dateComponents([.year], from: endDay, to: startDay).year
-        XCTAssertEqual(yearDiff, 1, "Should be 1 year apart")
+        let yearDiff = calendar.dateComponents([.year], from: day2023, to: day2024).year
+        XCTAssertEqual(yearDiff, 1, "Should be 1 year apart (same month/day, different year)")
     }
 }
 
