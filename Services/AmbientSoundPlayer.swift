@@ -228,7 +228,7 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
 
-    /// Schedules cross-fade before current player ends
+    /// Schedules cross-fade before current player ends (continuous monitoring)
     private func scheduleCrossFade() {
         crossFadeTimer?.invalidate()
 
@@ -236,10 +236,27 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
         guard let player = activePlayer else { return }
 
         let duration = player.duration
-        let triggerTime = max(0, duration - crossFadeDuration)
+        let startTime = player.deviceCurrentTime
+        var crossFadeTriggered = false
 
-        crossFadeTimer = Timer.scheduledTimer(withTimeInterval: triggerTime, repeats: false) { [weak self] _ in
-            self?.startCrossFade()
+        // Continuous monitoring every 0.1s (prevents timing gaps)
+        crossFadeTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self, weak player] timer in
+            guard let self = self, let player = player, self.isPlaying else {
+                timer.invalidate()
+                return
+            }
+
+            guard !crossFadeTriggered else { return }
+
+            let elapsed = player.deviceCurrentTime - startTime
+            let remaining = duration - elapsed
+
+            // Trigger cross-fade when remaining time <= crossFadeDuration (+ 0.5s buffer)
+            if remaining <= self.crossFadeDuration + 0.5 {
+                crossFadeTriggered = true
+                timer.invalidate()
+                self.startCrossFade()
+            }
         }
     }
 
