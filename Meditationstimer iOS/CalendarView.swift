@@ -420,12 +420,15 @@ struct MonthView: View {
         let workoutProgress = min(roundedWorkout / workoutGoalMinutes, 1.0)
         let alcoholLevel = alcoholDays[dayKey]
 
+        // Determine if day has any activity (for bold number)
+        let hasActivity = mins.mindfulnessMinutes >= 2.0 || mins.workoutMinutes >= 2.0 || alcoholLevel != nil
+
         return ZStack {
             // NoAlc background fill (moderately transparent)
             if let level = alcoholLevel {
                 Circle()
                     .fill(alcoholColor(for: level).opacity(0.35))
-                    .frame(width: 40, height: 40)
+                    .frame(width: 37, height: 37)
             }
 
             // Workout circle (inner ring)
@@ -447,7 +450,7 @@ struct MonthView: View {
             }
 
             Text("\(dayNumber)")
-                .font(.system(size: 16, weight: activityType != nil ? .semibold : .regular))
+                .font(.system(size: 16, weight: hasActivity ? .semibold : .regular))
                 .foregroundColor(.primary)
         }
         .frame(height: 40)
@@ -500,11 +503,11 @@ struct MonthView: View {
     private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
         switch level {
         case .steady:
-            return Color(hex: "#2E7D32")  // Dark forest green (Material Green 800)
+            return Color(hex: "#030303")  // Almost black
         case .easy:
-            return Color(hex: "#4CAF50")  // Strong grass green (Material Green 500)
+            return Color(hex: "#c0e3c2")  // Light green
         case .wild:
-            return Color(hex: "#81C784")  // Medium light green (Material Green 300)
+            return Color(hex: "#d3ebd4")  // Very light green
         }
     }
 
