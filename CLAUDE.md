@@ -296,4 +296,82 @@ For in-depth information, see `/DOCS/`:
 
 ---
 
+## Critical Lessons Learned (October 2025)
+
+### Git Merge Safety Protocol
+
+**Problem:** Feature specifications and documentation can be lost during git merges, especially when files exist only in feature branches.
+
+**Mandatory Post-Merge Checklist:**
+1. **Immediately after any merge**: Run `git status` and verify no important files are missing
+2. **Check for deleted files**: `git log -1 --stat` to see what was added/removed
+3. **Verify DOCS/ directory**: Ensure all spec files, todo lists, and feature documentation are present
+4. **If files are missing**: Check `git log --diff-filter=D` to find deleted files and restore them
+
+**Example from alcohol-tracking feature:**
+- Created feature spec, todo list, and implementation
+- Merged main branch (v2.5.5 bug fixes) into feature branch
+- Merge silently dropped DOCS files that only existed in feature branch
+- Continued implementation without spec → built wrong feature
+
+**Prevention:**
+- Always check `git diff --name-status HEAD@{1} HEAD` after merge
+- Keep critical specs in DOCS/ committed on main branch, not just feature branches
+- Use `git merge --no-commit` to review changes before finalizing merge
+
+### Spec-First Implementation Rule
+
+**CRITICAL:** Never implement features without complete written specification.
+
+**If spec is missing:**
+1. ❌ **DO NOT** speculate or build "what seems right"
+2. ❌ **DO NOT** infer requirements from existing code alone
+3. ✅ **STOP immediately** and ask user for complete spec
+4. ✅ **Document spec** in DOCS/ before writing any code
+
+**Why this matters:**
+- User has specific vision that may not match "obvious" implementation
+- Breaking changes to existing UX (e.g., Calendar tap behavior) have serious consequences
+- Wasted time building wrong feature that must be reverted
+
+**Example failure (alcohol-tracking):**
+- Found AlcoholEntry model with color levels → assumed manual color-coded UI
+- Saw Calendar tap → repurposed it for alcohol logging
+- Built "Walking Skeleton" without understanding user wanted "passive, notification-driven feature"
+- Result: Broke existing Calendar tooltip, built aufdringliches UI instead of unterschwelliges feature
+
+### Understanding Existing UI Behavior
+
+**Before modifying ANY user interaction:**
+1. Read the CURRENT code to understand what it does
+2. Test the CURRENT behavior yourself (or ask user)
+3. Document WHY the change is needed
+4. Get explicit approval for breaking changes
+
+**Calendar Tap Example:**
+- **Original behavior:** Tap → show tooltip with meditation/workout minutes
+- **My change:** Tap → open AlcoholLogSheet (breaking change!)
+- **Correct approach:** Should have asked: "Calendar tap shows tooltip - should I change this or add different interaction?"
+
+### Feature Philosophy Alignment
+
+**This app has different feature categories:**
+1. **Primary Features:** Meditation, Breathing, Workouts (prominent UI, explicit interaction)
+2. **Support Features:** Streaks, Calendar, Statistics (visible but secondary)
+3. **Passive Features:** Smart Notifications, background tracking (unterschwellig, notification-driven)
+
+**Critical:** Ask which category before designing UI. "Passive" features should NOT have prominent manual-entry UI.
+
+### Clean Rollback Strategy
+
+**When implementation is wrong:**
+1. Don't try to "fix forward" - this compounds errors
+2. Use `git reset --hard <commit>` to clean rollback point
+3. Start fresh with correct specification
+4. Document what went wrong (this section!)
+
+**Example:** `git reset --hard 9a0e459` removed all incorrect alcohol-tracking work cleanly.
+
+---
+
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**
