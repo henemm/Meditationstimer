@@ -85,7 +85,10 @@ struct SettingsSheet: View {
                     if ambientSound.wrappedValue != .none {
                         VStack(spacing: 12) {
                             // 1. Gong test button (first step: adjust system volume with gong)
-                            Button(action: testGong) {
+                            Button {
+                                print("[SettingsSheet] GONG BUTTON PRESSED - calling gongPlayer.play")
+                                gongPlayer.play(named: "gong-ende") {}
+                            } label: {
                                 Label("Gong testen", systemImage: "bell.fill")
                             }
 
@@ -113,11 +116,21 @@ struct SettingsSheet: View {
                             // 3. Preview control (toggle button: play OR stop ambient sound only)
                             HStack {
                                 if isPreviewPlaying {
-                                    Button(action: stopPreview) {
+                                    Button {
+                                        print("[SettingsSheet] STOP BUTTON PRESSED - stopping ambient sound")
+                                        previewPlayer.stop()
+                                        isPreviewPlaying = false
+                                    } label: {
                                         Label("Stop Hintergrundsound", systemImage: "stop.fill")
                                     }
                                 } else {
-                                    Button(action: startPreview) {
+                                    Button {
+                                        print("[SettingsSheet] PLAY BUTTON PRESSED - starting ambient sound")
+                                        guard ambientSound.wrappedValue != .none else { return }
+                                        previewPlayer.setVolume(percent: ambientSoundVolume)
+                                        previewPlayer.start(sound: ambientSound.wrappedValue)
+                                        isPreviewPlaying = true
+                                    } label: {
                                         Label("Play Hintergrundsound", systemImage: "play.fill")
                                     }
                                 }
@@ -165,24 +178,4 @@ struct SettingsSheet: View {
         }
     }
 
-    // MARK: - Preview Controls
-
-    private func startPreview() {
-        print("[SettingsSheet] startPreview() called - playing ambient sound: \(ambientSound.wrappedValue.rawValue)")
-        guard ambientSound.wrappedValue != .none else { return }
-        previewPlayer.setVolume(percent: ambientSoundVolume)
-        previewPlayer.start(sound: ambientSound.wrappedValue)
-        isPreviewPlaying = true
-    }
-
-    private func stopPreview() {
-        print("[SettingsSheet] stopPreview() called - stopping ambient sound")
-        previewPlayer.stop()
-        isPreviewPlaying = false
-    }
-
-    private func testGong() {
-        print("[SettingsSheet] testGong() called - playing gong-ende")
-        gongPlayer.play(named: "gong-ende") {}
-    }
 }
