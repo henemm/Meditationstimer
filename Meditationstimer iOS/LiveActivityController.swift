@@ -56,7 +56,7 @@ final class LiveActivityController: ObservableObject {
         if let existing = activity, let existingOwner = self.ownerId, existingOwner != ownerId {
             print("🔄 [LiveActivity] CONFLICT: \(ownerId ?? "nil") wants to start, but \(existingOwner) owns current activity. Ending previous...")
             Task { @MainActor in
-                await existing.end(dismissalPolicy: .immediate)
+                await existing.end(nil, dismissalPolicy: .immediate)
             }
             // reset local state — we'll set it again when new request succeeds
             activity = nil
@@ -124,7 +124,7 @@ final class LiveActivityController: ObservableObject {
                 #if DEBUG
                 print("[LiveActivity] forceStart: ending existing activity owner=\(self.ownerId ?? "nil") title=\(self.ownerTitle ?? "")")
                 #endif
-                await current.end(dismissalPolicy: .immediate)
+                await current.end(nil, dismissalPolicy: .immediate)
                 self.activity = nil
                 self.ownerId = nil
                 self.ownerTitle = nil
@@ -172,15 +172,15 @@ final class LiveActivityController: ObservableObject {
 
             // Use non-deprecated API
             if immediate {
-                await currentActivity.end(dismissalPolicy: .immediate)
+                await currentActivity.end(nil, dismissalPolicy: .immediate)
             } else {
-                await currentActivity.end()
+                await currentActivity.end(nil, dismissalPolicy: .default)
             }
 
             // Ensure complete removal by ending all activities for this app
             if #available(iOS 16.1, *) {
                 for activity in Activity<MeditationAttributes>.activities {
-                    await activity.end(dismissalPolicy: .immediate)
+                    await activity.end(nil, dismissalPolicy: .immediate)
                 }
             }
 
