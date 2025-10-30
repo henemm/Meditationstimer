@@ -20,7 +20,7 @@
 **Current Version:** 2.5.4
 
 **Development Target:**
-- **Xcode 16+ / Swift 6.0** (target iOS 26 SDK features)
+- **Xcode 26.0.1 / Swift 6.2** (iOS 26.0 SDK)
 - **Minimum Deployment:** iOS 18.5, watchOS 9.0
 - **Testing:** 44 Unit Tests (StreakManager + HealthKit) in LeanHealthTimerTests/
 
