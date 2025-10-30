@@ -503,11 +503,11 @@ struct MonthView: View {
     private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
         switch level {
         case .steady:
-            return Color(hex: "#030303")  // Almost black
+            return Color(hex: "#0CB15E")  // Vibrant green
         case .easy:
-            return Color(hex: "#c0e3c2")  // Light green
+            return Color(hex: "#37F194")  // Bright light green
         case .wild:
-            return Color(hex: "#d3ebd4")  // Very light green
+            return Color(hex: "#97CEB3")  // Muted teal green
         }
     }
 
