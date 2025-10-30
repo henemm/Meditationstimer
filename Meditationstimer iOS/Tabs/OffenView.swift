@@ -523,35 +523,33 @@ private struct RunCard: View {
     @State private var timer: Timer?
 
     var body: some View {
-        GlassCard {
-            VStack(spacing: 16) {
-                // Title
-                Text(title)
-                    .font(.title3.weight(.semibold))
-                // Progress ring + icon
-                let progress = max(0, min(1, (endDate.timeIntervalSince(currentTime)) / Double(totalSeconds)))
-                ZStack {
-                    CircularRing(progress: progress, lineWidth: 30)
-                        .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 320, height: 320)
-                    if title == "Meditation" {
-                        Text("🧘")
-                            .font(.system(size: 64, weight: .semibold))
-                    } else {
-                        Text("🪷")
-                            .font(.system(size: 64, weight: .semibold))
-                    }
+        VStack(spacing: 16) {
+            // Title
+            Text(title)
+                .font(.title3.weight(.semibold))
+            // Progress ring + icon
+            let progress = max(0, min(1, (endDate.timeIntervalSince(currentTime)) / Double(totalSeconds)))
+            ZStack {
+                CircularRing(progress: progress, lineWidth: 30)
+                    .aspectRatio(1, contentMode: .fit)
+                    .frame(width: 320, height: 320)
+                if title == "Meditation" {
+                    Text("🧘")
+                        .font(.system(size: 64, weight: .semibold))
+                } else {
+                    Text("🪷")
+                        .font(.system(size: 64, weight: .semibold))
                 }
-
-                // Centered Beenden button (same look & size as Atem run card)
-                Button("Beenden") {
-                    onEnd()
-                }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .tint(.red)
-                    .accessibilityLabel("Sitzung beenden")
             }
+
+            // Centered Beenden button (same look & size as Atem run card)
+            Button("Beenden") {
+                onEnd()
+            }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(.red)
+                .accessibilityLabel("Sitzung beenden")
         }
         .frame(maxWidth: 420)
         .onAppear {
