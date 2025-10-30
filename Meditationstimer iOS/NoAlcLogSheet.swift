@@ -12,119 +12,144 @@ struct NoAlcLogSheet: View {
     @State private var isExpanded = false
     @State private var selectedDate = Date()
     @State private var isLogging = false
-    @State private var showSuccess = false
     @State private var errorMessage: String?
 
     private let noAlc = NoAlcManager.shared
 
     var body: some View {
-        NavigationView {
-            VStack(spacing: 24) {
-                // Header
-                VStack(spacing: 8) {
-                    Image(systemName: "drop.fill")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.blue)
-                    Text(titleText)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Text(subtitleText)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.top, 20)
-
-                // Quick Log Buttons (Always visible)
+        VStack(spacing: 0) {
+            if !isExpanded {
+                // Compact Tooltip Mode
                 VStack(spacing: 16) {
-                    Text("How was it?")
-                        .font(.headline)
+                    // Header
+                    VStack(spacing: 4) {
+                        Text(titleText)
+                            .font(.headline)
+                        Text(subtitleText)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.top, 16)
 
+                    // Quick Log Buttons
                     HStack(spacing: 12) {
                         ConsumptionButton(
                             level: .steady,
                             isLogging: isLogging,
-                            action: { await logConsumption(.steady) }
+                            action: { await logConsumption(.steady, dismissImmediately: true) }
                         )
 
                         ConsumptionButton(
                             level: .easy,
                             isLogging: isLogging,
-                            action: { await logConsumption(.easy) }
+                            action: { await logConsumption(.easy, dismissImmediately: true) }
                         )
 
                         ConsumptionButton(
                             level: .wild,
                             isLogging: isLogging,
-                            action: { await logConsumption(.wild) }
+                            action: { await logConsumption(.wild, dismissImmediately: true) }
                         )
                     }
-                }
-                .padding(.horizontal)
+                    .padding(.horizontal, 16)
 
-                // Expandable Date Picker
-                VStack(spacing: 12) {
+                    // Erweitert Button
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            isExpanded.toggle()
+                            isExpanded = true
                         }
                     } label: {
-                        HStack {
-                            Image(systemName: "calendar")
-                            Text(isExpanded ? "Hide Date Picker" : "📅 Other Date")
-                            Spacer()
-                            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        }
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(12)
+                        Text("Erweitert")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
                     }
-                    .foregroundColor(.primary)
+                    .padding(.bottom, 16)
 
-                    if isExpanded {
+                    if let error = errorMessage {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
+                    }
+                }
+            } else {
+                // Extended Mode with DatePicker
+                NavigationView {
+                    VStack(spacing: 20) {
+                        // Header
+                        VStack(spacing: 8) {
+                            Image(systemName: "drop.fill")
+                                .font(.system(size: 48))
+                                .foregroundStyle(.blue)
+                            Text("Datum wählen")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                        }
+                        .padding(.top, 20)
+
+                        // Date Picker
                         DatePicker(
-                            "Select Date",
+                            "Datum",
                             selection: $selectedDate,
                             displayedComponents: .date
                         )
                         .datePickerStyle(.graphical)
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(12)
+                        .padding(.horizontal)
+
+                        // Consumption Buttons
+                        VStack(spacing: 12) {
+                            Text("Wie war es?")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+
+                            HStack(spacing: 12) {
+                                ConsumptionButton(
+                                    level: .steady,
+                                    isLogging: isLogging,
+                                    action: { await logConsumption(.steady, dismissImmediately: false) }
+                                )
+
+                                ConsumptionButton(
+                                    level: .easy,
+                                    isLogging: isLogging,
+                                    action: { await logConsumption(.easy, dismissImmediately: false) }
+                                )
+
+                                ConsumptionButton(
+                                    level: .wild,
+                                    isLogging: isLogging,
+                                    action: { await logConsumption(.wild, dismissImmediately: false) }
+                                )
+                            }
+                        }
+                        .padding(.horizontal)
+
+                        if let error = errorMessage {
+                            Text(error)
+                                .foregroundColor(.red)
+                                .font(.caption)
+                                .padding(.horizontal)
+                        }
+
+                        Spacer()
                     }
-                }
-                .padding(.horizontal)
-
-                Spacer()
-
-                // Success/Error Messages
-                if showSuccess {
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.green)
-                        Text("Logged successfully!")
-                    }
-                    .padding()
-                    .background(.green.opacity(0.1))
-                    .cornerRadius(8)
-                }
-
-                if let error = errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .font(.footnote)
-                        .padding()
-                }
-            }
-            .navigationTitle("Log Drinks")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
-                        dismiss()
+                    .navigationTitle("Log Drinks")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Abbrechen") {
+                                withAnimation {
+                                    isExpanded = false
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+        .presentationDetents(isExpanded ? [.large] : [.height(200)])
+        .presentationDragIndicator(.visible)
     }
 
     private var titleText: String {
@@ -144,10 +169,9 @@ struct NoAlcLogSheet: View {
     }
 
     @MainActor
-    private func logConsumption(_ level: NoAlcManager.ConsumptionLevel) async {
+    private func logConsumption(_ level: NoAlcManager.ConsumptionLevel, dismissImmediately: Bool) async {
         isLogging = true
         errorMessage = nil
-        showSuccess = false
 
         do {
             // Request authorization if needed
@@ -159,14 +183,15 @@ struct NoAlcLogSheet: View {
             // Log consumption
             try await noAlc.logConsumption(level, for: dateToLog)
 
-            // Show success
-            showSuccess = true
-
-            // Dismiss after short delay
-            try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
-            dismiss()
+            // Dismiss immediately (quick mode) or after delay (extended mode)
+            if dismissImmediately {
+                dismiss()
+            } else {
+                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                dismiss()
+            }
         } catch {
-            errorMessage = "Failed to log: \(error.localizedDescription)"
+            errorMessage = "Fehler: \(error.localizedDescription)"
             isLogging = false
         }
     }
@@ -194,38 +219,12 @@ struct ConsumptionButton: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(backgroundColor)
+            .background(.ultraThinMaterial)
             .cornerRadius(16)
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(borderColor, lineWidth: 2)
-            )
         }
         .disabled(isLogging)
         .scaleEffect(isLogging ? 0.95 : 1.0)
         .animation(.spring(response: 0.3), value: isLogging)
-    }
-
-    private var backgroundColor: Color {
-        switch level {
-        case .steady:
-            return Color(hex: "#00C853").opacity(0.1)
-        case .easy:
-            return Color(hex: "#A5D6A7").opacity(0.1)
-        case .wild:
-            return Color(hex: "#E8F5E9").opacity(0.1)
-        }
-    }
-
-    private var borderColor: Color {
-        switch level {
-        case .steady:
-            return Color(hex: "#00C853")
-        case .easy:
-            return Color(hex: "#A5D6A7")
-        case .wild:
-            return Color(hex: "#E8F5E9")
-        }
     }
 }
 

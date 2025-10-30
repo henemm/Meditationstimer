@@ -147,6 +147,15 @@ struct CalendarView: View {
                             .font(.footnote)
                     }
                 }
+
+                // NoAlc Display
+                HStack {
+                    Image(systemName: "drop.fill")
+                        .foregroundColor(.green)
+                    Text("NoAlc: \(alcoholDays.count) Tage geloggt")
+                        .font(.subheadline)
+                    Spacer()
+                }
             }
             .padding()
             .background(Color.white.opacity(0.1))
@@ -462,11 +471,11 @@ struct MonthView: View {
     private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
         switch level {
         case .steady:
-            return Color(hex: "#00C853").opacity(0.3)
+            return Color(hex: "#00C853").opacity(0.6)
         case .easy:
-            return Color(hex: "#A5D6A7").opacity(0.3)
+            return Color(hex: "#A5D6A7").opacity(0.5)
         case .wild:
-            return Color(hex: "#E8F5E9").opacity(0.5)
+            return Color(hex: "#E8F5E9").opacity(0.7)
         }
     }
 
