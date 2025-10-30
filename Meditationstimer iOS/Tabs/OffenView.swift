@@ -343,7 +343,7 @@ struct OffenView: View {
         NavigationStack {
             ZStack {
                 // Background color (same as Atem/Workouts)
-                Color(.systemGray6).ignoresSafeArea()
+                Color.white.ignoresSafeArea()
 
                 // Base (idle & finished)
                 VStack {
