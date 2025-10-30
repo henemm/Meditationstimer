@@ -84,24 +84,20 @@ struct SettingsSheet: View {
                     // Volume controls (only visible when sound is selected)
                     if ambientSound.wrappedValue != .none {
                         VStack(spacing: 12) {
-                            // Preview controls
-                            HStack(spacing: 12) {
-                                Button(action: startPreview) {
-                                    Label("Play", systemImage: "play.fill")
-                                }
-                                .disabled(isPreviewPlaying)
-
-                                Button(action: stopPreview) {
-                                    Label("Stop", systemImage: "stop.fill")
-                                }
-                                .disabled(!isPreviewPlaying)
-
-                                Spacer()
+                            // 1. Gong test button (first step: adjust system volume with gong)
+                            Button(action: testGong) {
+                                Label("Gong testen", systemImage: "bell.fill")
                             }
 
-                            // Volume slider
+                            // Explanation text
+                            Text("Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+
+                            // 2. Volume slider (second step: adjust ambient sound relative to gong)
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Lautstärke: \(ambientSoundVolume)%")
+                                Text("relative Lautstärke: \(ambientSoundVolume)%")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
 
@@ -114,9 +110,18 @@ struct SettingsSheet: View {
                                 ), in: 0...100, step: 5)
                             }
 
-                            // Gong test button
-                            Button(action: testGong) {
-                                Label("Gong testen", systemImage: "bell.fill")
+                            // 3. Preview control (toggle button: play OR stop)
+                            HStack {
+                                if isPreviewPlaying {
+                                    Button(action: stopPreview) {
+                                        Label("Stop", systemImage: "stop.fill")
+                                    }
+                                } else {
+                                    Button(action: startPreview) {
+                                        Label("Play", systemImage: "play.fill")
+                                    }
+                                }
+                                Spacer()
                             }
                         }
                         .padding(.top, 8)
