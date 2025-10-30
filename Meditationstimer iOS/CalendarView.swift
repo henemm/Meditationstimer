@@ -17,6 +17,7 @@ struct CalendarView: View {
     
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
+    @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
     @State private var isLoading = false
     @State private var errorMessage: String?
     @Environment(\.dismiss) private var dismiss
@@ -60,7 +61,7 @@ struct CalendarView: View {
                     LazyVStack(spacing: 20) {
                         ForEach(-6...6, id: \.self) { monthOffset in
                             let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
-                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes)
+                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, alcoholDays: alcoholDays, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes)
                                 .id(monthOffset) // Für ScrollViewReader
                         }
                     }
@@ -228,6 +229,7 @@ struct CalendarView: View {
         Task {
             var allActivityDays = [Date: ActivityType]()
             var allDailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
+            var allAlcoholDays = [Date: NoAlcManager.ConsumptionLevel]()
             for monthOffset in -6...6 {
                 let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
                 do {
@@ -259,6 +261,14 @@ struct CalendarView: View {
                         current.workoutMinutes += mins.workoutMinutes
                         allDailyMinutes[date] = current
                     }
+
+                    // Fetch NoAlc data for each day in the month
+                    let monthDays = generateDays(for: monthDate).compactMap { $0 }
+                    for day in monthDays {
+                        if let level = try? await NoAlcManager.shared.fetchConsumption(for: day) {
+                            allAlcoholDays[calendar.startOfDay(for: day)] = level
+                        }
+                    }
                 } catch {
                     errorMessage = error.localizedDescription
                     break
@@ -266,6 +276,7 @@ struct CalendarView: View {
             }
             activityDays = allActivityDays
             dailyMinutes = allDailyMinutes
+            alcoholDays = allAlcoholDays
             isLoading = false
             
             // Filter if enabled
@@ -305,6 +316,7 @@ struct MonthView: View {
     let month: Date
     let activityDays: [Date: CalendarView.ActivityType]
     let dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]
+    let alcoholDays: [Date: NoAlcManager.ConsumptionLevel]
     let meditationGoalMinutes: Double
     let workoutGoalMinutes: Double
     private let calendar = Calendar.current
@@ -368,8 +380,16 @@ struct MonthView: View {
         let mindfulnessProgress = min(roundedMindfulness / meditationGoalMinutes, 1.0)
         let roundedWorkout = round(mins.workoutMinutes)
         let workoutProgress = min(roundedWorkout / workoutGoalMinutes, 1.0)
+        let alcoholLevel = alcoholDays[dayKey]
 
         return ZStack {
+            // NoAlc background fill (colored circle, full fill)
+            if let level = alcoholLevel {
+                Circle()
+                    .fill(alcoholColor(for: level))
+                    .frame(width: 37, height: 37)
+            }
+
             // Workout circle (purple, inner ring)
             if mins.workoutMinutes >= 2.0 {
                 Circle()
@@ -437,6 +457,17 @@ struct MonthView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
         return formatter.string(from: date)
+    }
+
+    private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
+        switch level {
+        case .steady:
+            return Color(hex: "#00C853").opacity(0.3)
+        case .easy:
+            return Color(hex: "#A5D6A7").opacity(0.3)
+        case .wild:
+            return Color(hex: "#E8F5E9").opacity(0.5)
+        }
     }
 
     private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> AnyView? {
