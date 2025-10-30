@@ -424,10 +424,10 @@ struct MonthView: View {
         let hasActivity = mins.mindfulnessMinutes >= 2.0 || mins.workoutMinutes >= 2.0 || alcoholLevel != nil
 
         return ZStack {
-            // NoAlc background fill (moderately transparent)
+            // NoAlc background fill
             if let level = alcoholLevel {
                 Circle()
-                    .fill(alcoholColor(for: level).opacity(0.35))
+                    .fill(alcoholColor(for: level))
                     .frame(width: 37, height: 37)
             }
 
