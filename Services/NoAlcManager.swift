@@ -43,6 +43,17 @@ final class NoAlcManager {
         static func fromHealthKitValue(_ value: Int) -> ConsumptionLevel? {
             return ConsumptionLevel(rawValue: value)
         }
+
+        static func fromDrinkCount(_ count: Int) -> ConsumptionLevel {
+            switch count {
+            case 0...1:
+                return .steady
+            case 2...5:
+                return .easy
+            default:  // 6+
+                return .wild
+            }
+        }
     }
 
     private init() {}
@@ -117,7 +128,9 @@ final class NoAlcManager {
                 }
 
                 let value = Int(sample.quantity.doubleValue(for: .count()))
-                continuation.resume(returning: ConsumptionLevel.fromHealthKitValue(value))
+                // Try our encoded values first (0, 4, 6), fallback to drink count mapping
+                let level = ConsumptionLevel.fromHealthKitValue(value) ?? ConsumptionLevel.fromDrinkCount(value)
+                continuation.resume(returning: level)
             }
 
             healthStore.execute(query)

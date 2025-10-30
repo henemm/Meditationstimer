@@ -156,7 +156,7 @@ struct CalendarView: View {
                         .onTapGesture {
                             showNoAlcInfo = true
                         }
-                    Text("NoAlc: \(alcoholDays.count) Tage geloggt")
+                    Text("NoAlc: Streak 0 Days")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: 0, icon: "drop.fill", color: .green)
@@ -421,23 +421,23 @@ struct MonthView: View {
         let alcoholLevel = alcoholDays[dayKey]
 
         return ZStack {
-            // NoAlc background fill (colored circle, full fill)
+            // NoAlc ring (innermost, full ring)
             if let level = alcoholLevel {
                 Circle()
-                    .fill(alcoholColor(for: level))
-                    .frame(width: 37, height: 37)
+                    .stroke(alcoholColor(for: level), lineWidth: 5)
+                    .frame(width: 28, height: 28)
             }
 
-            // Workout circle (purple, inner ring)
+            // Workout circle (middle ring)
             if mins.workoutMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
                     .stroke(Color.purple.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 28, height: 28)
+                    .frame(width: 33, height: 33)
             }
 
-            // Mindfulness circle (hellblau, outer ring, continuous)
+            // Mindfulness circle (outermost ring)
             if mins.mindfulnessMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: mindfulnessProgress)
@@ -448,7 +448,7 @@ struct MonthView: View {
 
             Text("\(dayNumber)")
                 .font(.system(size: 16, weight: activityType != nil ? .semibold : .regular))
-                .foregroundColor(alcoholLevel == .steady ? .white : .primary)
+                .foregroundColor(.primary)
         }
         .frame(height: 40)
         // Red tiny dot in the bottom-right to indicate TODAY
