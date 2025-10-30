@@ -20,6 +20,7 @@
 		B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
 		B7BF2D1B2EB3D2FC009C1636 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */; };
 		B7BF2D1C2EB3D304009C1636 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */; };
+		B7BF30832EB3F06A009C1636 /* NoAlcManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */; };
 		B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
 		B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
 		B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
@@ -89,6 +90,7 @@
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
 		B7BF2D012EB3D1B5009C1636 /* LeanHealthTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanHealthTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAlcManager.swift; sourceTree = "<group>"; };
 		B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lean Health Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateStream.swift; sourceTree = "<group>"; };
 		B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MeditationstimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +244,7 @@
 				B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */,
 				B7E601122E6582C1008AE315 /* HealthKitManager.swift */,
 				B78712B62EB00C06002DA82E /* AmbientSoundPlayer.swift */,
+				B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7BF30832EB3F06A009C1636 /* NoAlcManager.swift in Sources */,
 				B7C556842E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */,
 				B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */,
 				B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */,

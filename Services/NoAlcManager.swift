@@ -1,0 +1,126 @@
+//
+//  NoAlcManager.swift
+//  Lean Health Timer
+//
+//  Created by Claude on 30.10.2025.
+//
+
+import Foundation
+import HealthKit
+
+/// Manages alcohol consumption tracking via HealthKit
+final class NoAlcManager {
+    static let shared = NoAlcManager()
+
+    private let healthStore = HKHealthStore()
+    private let calendar = Calendar.current
+
+    enum ConsumptionLevel: Int, CaseIterable {
+        case steady = 0  // 0-1 drinks
+        case easy = 4    // 2-5 drinks
+        case wild = 6    // 6+ drinks
+
+        var healthKitValue: Int {
+            return self.rawValue
+        }
+
+        var label: String {
+            switch self {
+            case .steady: return "Steady"
+            case .easy: return "Easy"
+            case .wild: return "Wild"
+            }
+        }
+
+        var emoji: String {
+            switch self {
+            case .steady: return "💧"
+            case .easy: return "✨"
+            case .wild: return "💥"
+            }
+        }
+
+        static func fromHealthKitValue(_ value: Int) -> ConsumptionLevel? {
+            return ConsumptionLevel(rawValue: value)
+        }
+    }
+
+    private init() {}
+
+    // MARK: - Day Assignment Logic
+
+    /// Determines target day based on current time
+    /// - Rule: < 18:00 = yesterday, >= 18:00 = today
+    func targetDay(for date: Date = Date()) -> Date {
+        let hour = calendar.component(.hour, from: date)
+        let today = calendar.startOfDay(for: date)
+
+        if hour < 18 {
+            // Before 18:00 → reference yesterday
+            return calendar.date(byAdding: .day, value: -1, to: today)!
+        } else {
+            // At/after 18:00 → reference today
+            return today
+        }
+    }
+
+    // MARK: - HealthKit Integration
+
+    /// Requests authorization for alcohol tracking
+    func requestAuthorization() async throws {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw NSError(domain: "NoAlcManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "HealthKit not available"])
+        }
+
+        guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            throw NSError(domain: "NoAlcManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "Alcohol type unavailable"])
+        }
+
+        try await healthStore.requestAuthorization(toShare: [alcoholType], read: [alcoholType])
+    }
+
+    /// Logs alcohol consumption for a specific day
+    func logConsumption(_ level: ConsumptionLevel, for date: Date) async throws {
+        guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            throw NSError(domain: "NoAlcManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "Alcohol type unavailable"])
+        }
+
+        let targetDay = calendar.startOfDay(for: date)
+        let quantity = HKQuantity(unit: .count(), doubleValue: Double(level.healthKitValue))
+        let sample = HKQuantitySample(type: alcoholType, quantity: quantity, start: targetDay, end: targetDay)
+
+        try await healthStore.save(sample)
+    }
+
+    /// Fetches alcohol data for a specific day
+    func fetchConsumption(for date: Date) async throws -> ConsumptionLevel? {
+        guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            return nil
+        }
+
+        let targetDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: targetDay)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: targetDay, end: endOfDay, options: .strictStartDate)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(sampleType: alcoholType, predicate: predicate, limit: 1, sortDescriptors: [sortDescriptor]) { _, samples, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                guard let sample = samples?.first as? HKQuantitySample else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                let value = Int(sample.quantity.doubleValue(for: .count()))
+                continuation.resume(returning: ConsumptionLevel.fromHealthKitValue(value))
+            }
+
+            healthStore.execute(query)
+        }
+    }
+}
