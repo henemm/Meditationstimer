@@ -505,9 +505,9 @@ struct MonthView: View {
         case .steady:
             return Color(hex: "#1FCF7E")  // Bright green
         case .easy:
-            return Color(hex: "#89D6B2")  // Medium green
+            return Color(hex: "#37F194")  // Light bright green
         case .wild:
-            return Color(hex: "#B6B6B6")  // Gray
+            return Color(hex: "#97CEB3")  // Muted teal
         }
     }
 
