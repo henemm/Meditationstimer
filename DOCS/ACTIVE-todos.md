@@ -73,11 +73,30 @@ Es existieren 58+ Unit Tests im Verzeichnis `/Tests/`:
 Diese Tests sind NICHT in Xcode integriert und werden nicht ausgeführt.
 
 **Was zu tun ist:**
-1. In Xcode: File → New → Target → iOS Unit Testing Bundle
-2. Target-Name: "MeditationstimerTests"
-3. Alle `.swift` Dateien aus `/Tests/` zum neuen Target hinzufügen
-4. Im Terminal: `xcodebuild test -scheme MeditationstimerTests -destination 'platform=iOS Simulator,name=iPhone 16 Pro'`
-5. Verifizieren dass alle Tests grün sind
+
+**Schritt 1: Test Target erstellen**
+1. Xcode öffnen → Meditationstimer.xcodeproj
+2. File → New → Target
+3. iOS → Unit Testing Bundle auswählen
+4. Product Name: "MeditationstimerTests"
+5. Finish klicken
+
+**Schritt 2: Test-Dateien zum Target hinzufügen**
+1. Im Project Navigator (links): Ordner `/Tests/` finden
+2. Für JEDE `.swift` Datei in `/Tests/`:
+   - Datei im Navigator anklicken
+   - File Inspector öffnen (Rechte Sidebar, Datei-Symbol)
+   - Unter "Target Membership": Häkchen bei "MeditationstimerTests" setzen
+3. Alternativ: Alle 3 Dateien markieren → Rechtsklick → "Show File Inspector" → Target Membership
+
+**Schritt 3: Tests ausführen**
+- In Xcode: Product → Test (⌘U)
+- Oder Terminal: `xcodebuild test -scheme MeditationstimerTests -destination 'platform=iOS Simulator,name=iPhone 16 Pro'`
+
+**Schritt 4: Verifizieren**
+- Test Navigator (⌘6) öffnen
+- Alle 58+ Tests sollten sichtbar sein
+- Grüne Häkchen = Tests passed
 
 **Warum wichtig:**
 - Regression Testing bei Code-Änderungen
