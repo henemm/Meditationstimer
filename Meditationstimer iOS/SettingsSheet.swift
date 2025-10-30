@@ -81,63 +81,40 @@ struct SettingsSheet: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    // Volume controls (only visible when sound is selected)
                     if ambientSound.wrappedValue != .none {
-                        VStack(spacing: 12) {
-                            // 1. Gong test button (first step: adjust system volume with gong)
-                            Button {
-                                print("[SettingsSheet] GONG BUTTON PRESSED - calling gongPlayer.play")
-                                gongPlayer.play(named: "gong-ende") {}
-                            } label: {
-                                Label("Gong testen", systemImage: "bell.fill")
+                        // GONG TEST - spielt NUR den Gong
+                        Button("Gong testen") {
+                            gongPlayer.play(named: "gong-ende") {}
+                        }
+
+                        Text("Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        // VOLUME SLIDER
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("relative Lautstärke: \(ambientSoundVolume)%")
+                                .font(.subheadline)
+
+                            Slider(value: Binding(
+                                get: { Double(ambientSoundVolume) },
+                                set: { ambientSoundVolume = Int($0); previewPlayer.setVolume(percent: ambientSoundVolume) }
+                            ), in: 0...100, step: 5)
+                        }
+
+                        // PREVIEW - spielt NUR den Ambient Sound
+                        if isPreviewPlaying {
+                            Button("Stop Hintergrundsound") {
+                                previewPlayer.stop()
+                                isPreviewPlaying = false
                             }
-
-                            // Explanation text
-                            Text("Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong.")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-
-                            // 2. Volume slider (second step: adjust ambient sound relative to gong)
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("relative Lautstärke: \(ambientSoundVolume)%")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-
-                                Slider(value: Binding(
-                                    get: { Double(ambientSoundVolume) },
-                                    set: { newValue in
-                                        ambientSoundVolume = Int(newValue)
-                                        previewPlayer.setVolume(percent: ambientSoundVolume)
-                                    }
-                                ), in: 0...100, step: 5)
-                            }
-
-                            // 3. Preview control (toggle button: play OR stop ambient sound only)
-                            HStack {
-                                if isPreviewPlaying {
-                                    Button {
-                                        print("[SettingsSheet] STOP BUTTON PRESSED - stopping ambient sound")
-                                        previewPlayer.stop()
-                                        isPreviewPlaying = false
-                                    } label: {
-                                        Label("Stop Hintergrundsound", systemImage: "stop.fill")
-                                    }
-                                } else {
-                                    Button {
-                                        print("[SettingsSheet] PLAY BUTTON PRESSED - starting ambient sound")
-                                        guard ambientSound.wrappedValue != .none else { return }
-                                        previewPlayer.setVolume(percent: ambientSoundVolume)
-                                        previewPlayer.start(sound: ambientSound.wrappedValue)
-                                        isPreviewPlaying = true
-                                    } label: {
-                                        Label("Play Hintergrundsound", systemImage: "play.fill")
-                                    }
-                                }
-                                Spacer()
+                        } else {
+                            Button("Play Hintergrundsound") {
+                                previewPlayer.setVolume(percent: ambientSoundVolume)
+                                previewPlayer.start(sound: ambientSound.wrappedValue)
+                                isPreviewPlaying = true
                             }
                         }
-                        .padding(.top, 8)
                     }
                 }
 
