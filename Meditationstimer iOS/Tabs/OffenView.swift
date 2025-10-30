@@ -126,6 +126,7 @@ struct OffenView: View {
     @State private var showHealthAlert = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
 
     private var ambientSound: AmbientSound {
         AmbientSound(rawValue: ambientSoundRaw) ?? .none
@@ -206,6 +207,7 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
+                                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                                     ambientPlayer.start(sound: ambientSound)
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -217,6 +219,7 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
+                                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                                     ambientPlayer.start(sound: ambientSound)
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -255,6 +258,7 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -267,6 +271,7 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -310,6 +315,7 @@ struct OffenView: View {
                     sessionStart = Date()
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -342,9 +348,6 @@ struct OffenView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background color (same as Atem/Workouts)
-                Color(.systemGray6).ignoresSafeArea()
-
                 // Base (idle & finished)
                 VStack {
                     GlassCard {
@@ -362,25 +365,6 @@ struct OffenView: View {
                     .padding()
                 }
                 .modifier(OverlayBackgroundEffect(isDimmed: isSessionActive))
-
-                // Dim gradient (only when session active)
-                if isSessionActive {
-                    Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    Color.black.opacity(0.06),
-                                    Color.black.opacity(0.28)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                        .ignoresSafeArea()
-                        .transition(.opacity)
-                        .animation(.smooth(duration: 0.3), value: isSessionActive)
-                        .zIndex(1)
-                }
 
                 // Overlay for active session (phase1/phase2)
                 if case .phase1(let remaining) = engine.state {
@@ -500,19 +484,26 @@ struct OffenView: View {
             }
         }
 
-        // 2. Spiele den End-Gong
-        gong.play(named: "gong-ende") {
-            // 3. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
-            self.pendingEndStop?.cancel()
-            let work = DispatchWorkItem { [bgAudio = self.bgAudio] in
-                bgAudio.stop()
+        // 2. End-Gong nur bei natürlichem Ende (nicht beim manuellen Abbrechen)
+        if !manual {
+            gong.play(named: "gong-ende") {
+                // 3. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
+                self.pendingEndStop?.cancel()
+                let work = DispatchWorkItem { [bgAudio = self.bgAudio, ambientPlayer = self.ambientPlayer] in
+                    bgAudio.stop()
+                    ambientPlayer.stop()  // Fade-out ambient sound
+                }
+                self.pendingEndStop = work
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra-Verzögerung für Safety
             }
-            self.pendingEndStop = work
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra-Verzögerung für Safety
+            // Session-State wird nach Gong zurückgesetzt
+            resetSession(stopAudio: false)
+        } else {
+            // Bei manuellem Abbruch: sofort stoppen ohne Gong
+            bgAudio.stop()
+            ambientPlayer.stop()
+            resetSession(stopAudio: false)
         }
-
-        // 4. Setze Session-State zurück OHNE Audio zu stoppen (Audio wird vom Gong-Completion gestoppt)
-        resetSession(stopAudio: false)
     }
 }
 

@@ -66,7 +66,7 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
 
     // MARK: - Configuration
 
-    private let targetVolume: Float = 0.45  // 45% volume (balance with gongs)
+    private var targetVolume: Float = 0.45  // Default 45% volume (balance with gongs)
     private let fadeInDuration: TimeInterval = 3.0
     private let fadeOutDuration: TimeInterval = 3.0
     private let crossFadeDuration: TimeInterval = 9.0  // Overlap duration for seamless loop (increased by 2s)
@@ -81,6 +81,21 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
     private var isPlayerAActive = true  // Tracks which player is primary
 
     private(set) var isPlaying: Bool = false
+
+    // MARK: - Volume Control
+
+    /// Sets the target volume (relative to gong, 0-100%)
+    /// - Parameter percent: Volume percentage (0-100)
+    func setVolume(percent: Int) {
+        let clampedPercent = max(0, min(100, percent))
+        targetVolume = Float(clampedPercent) / 100.0
+
+        // Update active players immediately if playing
+        if isPlaying {
+            playerA?.volume = targetVolume
+            playerB?.volume = targetVolume
+        }
+    }
 
     // MARK: - Public API
 
