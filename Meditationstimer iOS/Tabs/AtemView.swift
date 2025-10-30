@@ -505,7 +505,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             .alert(isPresented: $showConflictAlert) {
                 conflictAlert
             }
-            .onChange(of: finished) { newValue in
+            .onChange(of: finished) { _, newValue in
                 if newValue {
                     Task { await endSession(manual: false) }
                 }

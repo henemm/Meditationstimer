@@ -404,7 +404,7 @@ struct OffenView: View {
                 CalendarView()
                     .environmentObject(streakManager)
             }
-            .onChange(of: engine.state) { newValue in
+            .onChange(of: engine.state) { _, newValue in
                 // Übergang Phase 1 -> Phase 2: dreifacher Gong und Live Activity auf Phase 2 updaten
                 if case .phase1 = lastState, case .phase2 = newValue {
                     gong.play(named: "gong-dreimal")

@@ -348,7 +348,7 @@ private struct WorkoutRunnerView: View {
                                 .monospacedDigit()
                                 .foregroundStyle(.secondary)
                         }
-                        .onChange(of: fractionPhase) { newVal in
+                        .onChange(of: fractionPhase) { _, newVal in
                             if newVal >= 1.0 {
                                 if !phaseEndFired {
                                     phaseEndFired = true
@@ -478,7 +478,7 @@ private struct WorkoutRunnerView: View {
             stopSoundMonitoring()  // NEW: Stop continuous monitoring
             setIdleTimer(false) // Re-enable idle timer
         }
-        .onChange(of: phase) { _ in }
+        .onChange(of: phase) { _, _ in }
         // Keine automatische Beendigung bei App-Wechsel
     }
 
