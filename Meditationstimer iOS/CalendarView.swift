@@ -421,10 +421,10 @@ struct MonthView: View {
         let alcoholLevel = alcoholDays[dayKey]
 
         return ZStack {
-            // NoAlc background fill (very transparent)
+            // NoAlc background fill (moderately transparent)
             if let level = alcoholLevel {
                 Circle()
-                    .fill(alcoholColor(for: level).opacity(0.15))
+                    .fill(alcoholColor(for: level).opacity(0.35))
                     .frame(width: 40, height: 40)
             }
 
