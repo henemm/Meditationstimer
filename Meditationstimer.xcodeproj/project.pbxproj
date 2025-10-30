@@ -18,13 +18,13 @@
 		B7A881752E658C96003FC2F0 /* RuntimeSessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */; };
 		B7A881772E658DA0003FC2F0 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7A881792E658DDA003FC2F0 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
+		B7BF2D1B2EB3D2FC009C1636 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */; };
+		B7BF2D1C2EB3D304009C1636 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */; };
 		B7C556792E660A7800EFC1F5 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
 		B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */; };
 		B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */; };
 		B7C556842E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */; };
 		B7C556852E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */; };
-		B7C556922E73E5EA00EFC1F5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */; };
-		B7C556942E73E5EA00EFC1F5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */; };
 		B7C556A52E73E5EC00EFC1F5 /* MeditationstimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +36,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B737BB572E656A63000AE8C4;
 			remoteInfo = "Meditationstimer Watch App";
+		};
+		B7BF2D052EB3D1B5009C1636 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B737BB4C2E656A63000AE8C4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7C5566C2E6609F400EFC1F5;
+			remoteInfo = "Lean Health Timer";
 		};
 		B7C556A32E73E5EC00EFC1F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -81,6 +88,7 @@
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
+		B7BF2D012EB3D1B5009C1636 /* LeanHealthTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanHealthTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lean Health Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateStream.swift; sourceTree = "<group>"; };
 		B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MeditationstimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +132,16 @@
 			path = "Meditationstimer Watch App";
 			sourceTree = "<group>";
 		};
+		B7BF2D022EB3D1B5009C1636 /* LeanHealthTimerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LeanHealthTimerTests;
+			sourceTree = "<group>";
+		};
+		B7BF2D122EB3D2CD009C1636 /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -151,6 +169,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7BF2CFE2EB3D1B5009C1636 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7BF2D1C2EB3D304009C1636 /* SwiftUI.framework in Frameworks */,
+				B7BF2D1B2EB3D2FC009C1636 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7C5566A2E6609F400EFC1F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,8 +189,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7C556942E73E5EA00EFC1F5 /* SwiftUI.framework in Frameworks */,
-				B7C556922E73E5EA00EFC1F5 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +202,7 @@
 				B737BB5C2E656A63000AE8C4 /* Meditationstimer Watch App */,
 				B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */,
 				B7C556952E73E5EA00EFC1F5 /* MeditationstimerWidget */,
+				B7BF2D022EB3D1B5009C1636 /* LeanHealthTimerTests */,
 				B7C556902E73E5EA00EFC1F5 /* Frameworks */,
 				B737BB532E656A63000AE8C4 /* Products */,
 			);
@@ -189,6 +215,7 @@
 				B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */,
 				B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */,
 				B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */,
+				B7BF2D012EB3D1B5009C1636 /* LeanHealthTimerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,6 +223,7 @@
 		B7C556902E73E5EA00EFC1F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B7BF2D122EB3D2CD009C1636 /* Tests */,
 				B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */,
 				B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */,
 			);
@@ -262,6 +290,29 @@
 			productReference = B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B7BF2D002EB3D1B5009C1636 /* LeanHealthTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7BF2D072EB3D1B5009C1636 /* Build configuration list for PBXNativeTarget "LeanHealthTimerTests" */;
+			buildPhases = (
+				B7BF2CFD2EB3D1B5009C1636 /* Sources */,
+				B7BF2CFE2EB3D1B5009C1636 /* Frameworks */,
+				B7BF2CFF2EB3D1B5009C1636 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7BF2D062EB3D1B5009C1636 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B7BF2D022EB3D1B5009C1636 /* LeanHealthTimerTests */,
+			);
+			name = LeanHealthTimerTests;
+			packageProductDependencies = (
+			);
+			productName = LeanHealthTimerTests;
+			productReference = B7BF2D012EB3D1B5009C1636 /* LeanHealthTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B7C5566C2E6609F400EFC1F5 /* Lean Health Timer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B7C556772E6609F500EFC1F5 /* Build configuration list for PBXNativeTarget "Lean Health Timer" */;
@@ -277,6 +328,7 @@
 				B7C556A42E73E5EC00EFC1F5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				B7BF2D122EB3D2CD009C1636 /* Tests */,
 				B7C5566E2E6609F400EFC1F5 /* Meditationstimer iOS */,
 			);
 			name = "Lean Health Timer";
@@ -315,7 +367,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					B737BB512E656A63000AE8C4 = {
@@ -323,6 +375,10 @@
 					};
 					B737BB572E656A63000AE8C4 = {
 						CreatedOnToolsVersion = 16.4;
+					};
+					B7BF2D002EB3D1B5009C1636 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = B7C5566C2E6609F400EFC1F5;
 					};
 					B7C5566C2E6609F400EFC1F5 = {
 						CreatedOnToolsVersion = 16.4;
@@ -350,6 +406,7 @@
 				B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */,
 				B7C5566C2E6609F400EFC1F5 /* Lean Health Timer */,
 				B7C5568E2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension */,
+				B7BF2D002EB3D1B5009C1636 /* LeanHealthTimerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -363,6 +420,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B737BB562E656A63000AE8C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7BF2CFF2EB3D1B5009C1636 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -401,6 +465,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7BF2CFD2EB3D1B5009C1636 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7C556692E6609F400EFC1F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -430,6 +501,11 @@
 			isa = PBXTargetDependency;
 			target = B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */;
 			targetProxy = B737BB5A2E656A63000AE8C4 /* PBXContainerItemProxy */;
+		};
+		B7BF2D062EB3D1B5009C1636 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7C5566C2E6609F400EFC1F5 /* Lean Health Timer */;
+			targetProxy = B7BF2D052EB3D1B5009C1636 /* PBXContainerItemProxy */;
 		};
 		B7C556A42E73E5EC00EFC1F5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -655,6 +731,53 @@
 			};
 			name = Release;
 		};
+		B7BF2D082EB3D1B5009C1636 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XK87E2B3VR;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = henemm.LeanHealthTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lean Health Timer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lean Health Timer";
+			};
+			name = Debug;
+		};
+		B7BF2D092EB3D1B5009C1636 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XK87E2B3VR;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = henemm.LeanHealthTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lean Health Timer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lean Health Timer";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		B7C556752E6609F500EFC1F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -817,6 +940,15 @@
 			buildConfigurations = (
 				B737BB6A2E656A64000AE8C4 /* Debug */,
 				B737BB6B2E656A64000AE8C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7BF2D072EB3D1B5009C1636 /* Build configuration list for PBXNativeTarget "LeanHealthTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7BF2D082EB3D1B5009C1636 /* Debug */,
+				B7BF2D092EB3D1B5009C1636 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
