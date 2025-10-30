@@ -180,6 +180,6 @@ struct SettingsSheet: View {
     }
 
     private func testGong() {
-        gongPlayer.play(named: "gong-start") {}
+        gongPlayer.play(named: "gong-ende") {}
     }
 }
