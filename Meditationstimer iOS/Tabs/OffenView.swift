@@ -342,28 +342,20 @@ struct OffenView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background color (same as Atem/Workouts)
-                Color.white.ignoresSafeArea()
-
                 // Base (idle & finished)
                 VStack {
-                    VStack(spacing: 16) {
-                        switch engine.state {
-                        case .idle, .finished:
-                            pickerSection
-                            startButton
-                        case .phase1, .phase2:
-                            // The active states are handled by the overlay run card below
-                            EmptyView()
+                    GlassCard {
+                        VStack(spacing: 16) {
+                            switch engine.state {
+                            case .idle, .finished:
+                                pickerSection
+                                startButton
+                            case .phase1, .phase2:
+                                // The active states are handled by the overlay run card below
+                                EmptyView()
+                            }
                         }
                     }
-                    .padding(16)
-                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                            .strokeBorder(Color.white.opacity(0.32), lineWidth: 1)
-                    )
-                    .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 2)
                     .padding()
                 }
                 .modifier(OverlayBackgroundEffect(isDimmed: isSessionActive))
