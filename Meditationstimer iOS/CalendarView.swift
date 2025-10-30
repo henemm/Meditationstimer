@@ -421,29 +421,29 @@ struct MonthView: View {
         let alcoholLevel = alcoholDays[dayKey]
 
         return ZStack {
-            // NoAlc ring (innermost, full ring)
+            // NoAlc background fill (very transparent)
             if let level = alcoholLevel {
                 Circle()
-                    .stroke(alcoholColor(for: level), lineWidth: 3)
-                    .frame(width: 22, height: 22)
+                    .fill(alcoholColor(for: level).opacity(0.15))
+                    .frame(width: 40, height: 40)
             }
 
-            // Workout circle (middle ring)
+            // Workout circle (inner ring)
             if mins.workoutMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
-                    .stroke(Color.purple.opacity(0.8), lineWidth: 3)
+                    .stroke(Color.purple.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 30, height: 30)
+                    .frame(width: 28, height: 28)
             }
 
-            // Mindfulness circle (outermost ring)
+            // Mindfulness circle (outer ring)
             if mins.mindfulnessMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: mindfulnessProgress)
-                    .stroke(Color.blue.opacity(0.8), lineWidth: 3)
+                    .stroke(Color.blue.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 38, height: 38)
+                    .frame(width: 37, height: 37)
             }
 
             Text("\(dayNumber)")
