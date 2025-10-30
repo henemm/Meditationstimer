@@ -33,6 +33,7 @@ struct CalendarView: View {
     
     @State private var showMeditationInfo = false
     @State private var showWorkoutInfo = false
+    @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
 
     var body: some View {
@@ -148,13 +149,41 @@ struct CalendarView: View {
                     }
                 }
 
-                // NoAlc Display
+                // NoAlc Streak
                 HStack {
-                    Image(systemName: "drop.fill")
-                        .foregroundColor(.green)
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.secondary)
+                        .onTapGesture {
+                            showNoAlcInfo = true
+                        }
                     Text("NoAlc: \(alcoholDays.count) Tage geloggt")
                         .font(.subheadline)
                     Spacer()
+                    rewardsView(for: 0, icon: "drop.fill", color: .green)
+                }
+                .popover(isPresented: $showNoAlcInfo) {
+                    VStack(spacing: 0) {
+                        HStack {
+                            Spacer()
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 30, height: 30)
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.primary)
+                            }
+                            .onTapGesture {
+                                showNoAlcInfo = false
+                            }
+                        }
+                        .padding(.top, 8)
+                        .padding(.trailing, 8)
+                        Text("Track your alcohol consumption daily.\n\n• Steady (💧): 0-1 drinks\n• Easy (✨): 2-5 drinks\n• Wild (💥): 6+ drinks\n\nStreak tracking coming soon!")
+                            .padding()
+                            .frame(maxWidth: 280)
+                            .font(.footnote)
+                    }
                 }
             }
             .padding()
@@ -419,7 +448,7 @@ struct MonthView: View {
 
             Text("\(dayNumber)")
                 .font(.system(size: 16, weight: activityType != nil ? .semibold : .regular))
-                .foregroundColor(.primary)
+                .foregroundColor(alcoholLevel == .steady ? .white : .primary)
         }
         .frame(height: 40)
         // Red tiny dot in the bottom-right to indicate TODAY
@@ -438,7 +467,7 @@ struct MonthView: View {
             }
         }
         .popover(isPresented: Binding(get: { showTooltipFor == dayKey }, set: { if !$0 { showTooltipFor = nil } })) {
-            if let tooltip = tooltipView(for: mins) {
+            if let tooltip = tooltipView(for: mins, date: dayKey) {
                 tooltip
             }
         }
@@ -471,15 +500,15 @@ struct MonthView: View {
     private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
         switch level {
         case .steady:
-            return Color(hex: "#00C853").opacity(0.6)
+            return Color(hex: "#00A843")  // Dark green (was #00C853)
         case .easy:
-            return Color(hex: "#A5D6A7").opacity(0.5)
+            return Color(hex: "#66BB6A")  // Medium green (was #A5D6A7)
         case .wild:
-            return Color(hex: "#E8F5E9").opacity(0.7)
+            return Color(hex: "#A5D6A7")  // Light green (was #E8F5E9)
         }
     }
 
-    private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double)) -> AnyView? {
+    private func tooltipView(for mins: (mindfulnessMinutes: Double, workoutMinutes: Double), date: Date) -> AnyView? {
         var texts: [Text] = []
         if mins.mindfulnessMinutes > 0 {
             let rounded = Int(round(mins.mindfulnessMinutes))
@@ -489,22 +518,19 @@ struct MonthView: View {
             let rounded = Int(round(mins.workoutMinutes))
             texts.append(Text("Workouts: \(rounded)/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
-        if texts.isEmpty { return nil }
-        if texts.count == 1 {
-            return AnyView(texts[0]
-                .padding(6)
-                .background(Color.white.opacity(0.95))
-                .cornerRadius(6)
-                .shadow(radius: 3))
-        } else {
-            return AnyView(VStack(alignment: .leading, spacing: 2) {
-                texts[0]
-                texts[1]
-            }
-            .padding(6)
-            .background(Color.white.opacity(0.95))
-            .cornerRadius(6)
-            .shadow(radius: 3))
+        if let alcoholLevel = alcoholDays[date] {
+            let label = "\(alcoholLevel.emoji) \(alcoholLevel.label)"
+            texts.append(Text("NoAlc: \(label)").foregroundColor(.green))
         }
+        if texts.isEmpty { return nil }
+        return AnyView(VStack(alignment: .leading, spacing: 2) {
+            ForEach(0..<texts.count, id: \.self) { index in
+                texts[index]
+            }
+        }
+        .padding(6)
+        .background(Color.white.opacity(0.95))
+        .cornerRadius(6)
+        .shadow(radius: 3))
     }
 }
