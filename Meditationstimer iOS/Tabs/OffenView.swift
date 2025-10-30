@@ -478,20 +478,26 @@ struct OffenView: View {
             }
         }
 
-        // 2. Spiele den End-Gong
-        gong.play(named: "gong-ende") {
-            // 3. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
-            self.pendingEndStop?.cancel()
-            let work = DispatchWorkItem { [bgAudio = self.bgAudio, ambientPlayer = self.ambientPlayer] in
-                bgAudio.stop()
-                ambientPlayer.stop()  // Fade-out ambient sound
+        // 2. End-Gong nur bei natürlichem Ende (nicht beim manuellen Abbrechen)
+        if !manual {
+            gong.play(named: "gong-ende") {
+                // 3. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
+                self.pendingEndStop?.cancel()
+                let work = DispatchWorkItem { [bgAudio = self.bgAudio, ambientPlayer = self.ambientPlayer] in
+                    bgAudio.stop()
+                    ambientPlayer.stop()  // Fade-out ambient sound
+                }
+                self.pendingEndStop = work
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra-Verzögerung für Safety
             }
-            self.pendingEndStop = work
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra-Verzögerung für Safety
+            // Session-State wird nach Gong zurückgesetzt
+            resetSession(stopAudio: false)
+        } else {
+            // Bei manuellem Abbruch: sofort stoppen ohne Gong
+            bgAudio.stop()
+            ambientPlayer.stop()
+            resetSession(stopAudio: false)
         }
-
-        // 4. Setze Session-State zurück OHNE Audio zu stoppen (Audio wird vom Gong-Completion gestoppt)
-        resetSession(stopAudio: false)
     }
 }
 
