@@ -69,7 +69,7 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
     private let targetVolume: Float = 0.45  // 45% volume (balance with gongs)
     private let fadeInDuration: TimeInterval = 3.0
     private let fadeOutDuration: TimeInterval = 3.0
-    private let crossFadeDuration: TimeInterval = 7.0  // Overlap duration for seamless loop
+    private let crossFadeDuration: TimeInterval = 9.0  // Overlap duration for seamless loop (increased by 2s)
 
     // MARK: - State
 
@@ -228,18 +228,33 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
 
-    /// Schedules cross-fade before current player ends
+    /// Schedules cross-fade before current player ends (continuous monitoring)
     private func scheduleCrossFade() {
         crossFadeTimer?.invalidate()
 
         let activePlayer = isPlayerAActive ? playerA : playerB
         guard let player = activePlayer else { return }
 
-        let duration = player.duration
-        let triggerTime = max(0, duration - crossFadeDuration)
+        var crossFadeTriggered = false
 
-        crossFadeTimer = Timer.scheduledTimer(withTimeInterval: triggerTime, repeats: false) { [weak self] _ in
-            self?.startCrossFade()
+        // Continuous monitoring every 0.1s (prevents timing gaps)
+        crossFadeTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self, weak player] timer in
+            guard let self = self, let player = player, self.isPlaying else {
+                timer.invalidate()
+                return
+            }
+
+            guard !crossFadeTriggered else { return }
+
+            // Use player.currentTime (playback position) NOT deviceCurrentTime (system uptime)!
+            let remaining = player.duration - player.currentTime
+
+            // Trigger cross-fade when remaining time <= crossFadeDuration (+ 0.2s safety buffer)
+            if remaining <= self.crossFadeDuration + 0.2 {
+                crossFadeTriggered = true
+                timer.invalidate()
+                self.startCrossFade()
+            }
         }
     }
 
