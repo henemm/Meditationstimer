@@ -19,12 +19,20 @@ extension Color {
 
     // MARK: - Alcohol Tracking Colors
 
-    /// Deep green for 0-1 drinks (best - NoAlk streak eligible)
-    static let alcoholLow = Color(red: 0.20, green: 0.70, blue: 0.45)
+    /// Bright green for 0-1 drinks (Steady)
+    static let alcoholSteady = Color(hex: "#1FCF7E")
 
-    /// Medium green for 2-6 drinks (moderate consumption)
-    static let alcoholMedium = Color(red: 0.55, green: 0.78, blue: 0.55)
+    /// Medium green for 2-5 drinks (Easy)
+    static let alcoholEasy = Color(hex: "#89D6B2")
 
-    /// Light green for 7+ drinks (heavy consumption)
-    static let alcoholHigh = Color(red: 0.75, green: 0.85, blue: 0.75)
+    /// Gray for 6+ drinks (Wild)
+    static let alcoholWild = Color(hex: "#B6B6B6")
+
+    // MARK: - Alcohol Text Colors
+
+    /// White text for Steady background
+    static let alcoholSteadyText = Color.white
+
+    /// Black text for Easy/Wild backgrounds
+    static let alcoholEasyWildText = Color.black
 }
