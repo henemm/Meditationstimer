@@ -66,7 +66,7 @@ final class HealthKitManager {
     /// - NSHealthShareUsageDescription  → Begründung für das LESEN von Health‑Daten (z. B. Herzfrequenz)
     /// - NSHealthUpdateUsageDescription → Begründung für das SCHREIBEN von Health‑Daten (z. B. Achtsamkeit)
     ///
-    /// Fragt die Berechtigung an (schreiben: mindfulSession & Workout, lesen: heartRate, mindfulSession, Workout).
+    /// Fragt die Berechtigung an (schreiben: mindfulSession, Workout, alcohol; lesen: heartRate, mindfulSession, Workout, alcohol).
     /// Robust: nur wenn App aktiv, und nur wenn noch nötig.
     @MainActor
     func requestAuthorization() async throws {
@@ -78,13 +78,23 @@ final class HealthKitManager {
         }
         let workoutType = HKObjectType.workoutType()
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
+        let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages)
 
-        let toShare: Set<HKSampleType> = [mindfulType, workoutType]
+        var toShare = Set<HKSampleType>()
+        toShare.insert(mindfulType)
+        toShare.insert(workoutType)
+        if let alcoholType = alcoholType {
+            toShare.insert(alcoholType)
+        }
+
         var toRead = Set<HKObjectType>()
         toRead.insert(mindfulType)
         toRead.insert(workoutType)
         if let heartRateType = heartRateType {
             toRead.insert(heartRateType)
+        }
+        if let alcoholType = alcoholType {
+            toRead.insert(alcoholType)
         }
 
         // Prüfen, ob eine Anfrage überhaupt nötig ist
@@ -603,5 +613,116 @@ final class HealthKitManager {
         default:
             return false
         }
+    }
+
+    // MARK: - Alcohol Tracking
+
+    /// Schreibt EINEN Alkoholkonsum-Eintrag (Anzahl Drinks) für ein bestimmtes Datum in Apple Health.
+    /// - Parameters:
+    ///   - drinks: Anzahl der Standard-Drinks (1 Drink = 14g reiner Alkohol)
+    ///   - date: Datum des Konsums (wird auf startOfDay normalisiert)
+    func logAlcohol(drinks: Int, date: Date) async throws {
+        guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            throw HealthKitError.healthDataUnavailable
+        }
+
+        // Normalisiere auf Start of Day
+        let calendar = Calendar.current
+        let normalizedDate = calendar.startOfDay(for: date)
+
+        // Erstelle Quantity (Anzahl Drinks)
+        let quantity = HKQuantity(unit: HKUnit.count(), doubleValue: Double(drinks))
+
+        // Erstelle Sample (1-Sekunden-Zeitraum am Start of Day)
+        let endDate = calendar.date(byAdding: .second, value: 1, to: normalizedDate) ?? normalizedDate
+        let sample = HKQuantitySample(type: alcoholType, quantity: quantity, start: normalizedDate, end: endDate)
+
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            self.healthStore.save(sample) { success, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                } else if success {
+                    cont.resume()
+                } else {
+                    cont.resume(throwing: HealthKitError.saveFailed)
+                }
+            }
+        }
+    }
+
+    /// Holt Alkoholkonsum-Einträge für einen Monat aus Apple Health.
+    /// - Parameter date: Beliebiges Datum im gewünschten Monat
+    /// - Returns: Dictionary [Date: Int] mit startOfDay als Key und Anzahl Drinks als Value
+    func fetchAlcoholEntries(forMonth date: Date) async throws -> [Date: Int] {
+        guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            throw HealthKitError.healthDataUnavailable
+        }
+
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+
+        var alcoholDays = [Date: Int]()
+
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: alcoholType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples as? [HKQuantitySample] {
+                    for sample in samples {
+                        let drinks = Int(sample.quantity.doubleValue(for: HKUnit.count()))
+                        let day = calendar.startOfDay(for: sample.startDate)
+
+                        // Summiere Drinks pro Tag (falls mehrere Einträge)
+                        alcoholDays[day, default: 0] += drinks
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        return alcoholDays
+    }
+
+    /// Holt Alkoholkonsum-Einträge für einen Zeitraum aus Apple Health (app-spezifisch gefiltert).
+    /// - Parameters:
+    ///   - startDate: Beginn des Zeitraums
+    ///   - endDate: Ende des Zeitraums
+    /// - Returns: Dictionary [Date: Int] mit startOfDay als Key und Anzahl Drinks als Value
+    func fetchAlcoholEntriesFiltered(from startDate: Date, to endDate: Date) async throws -> [Date: Int] {
+        guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            throw HealthKitError.healthDataUnavailable
+        }
+
+        let timePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let sourcePredicate = HKQuery.predicateForObjects(from: Set([appSource].compactMap { $0 }))
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [timePredicate, sourcePredicate])
+
+        var alcoholDays = [Date: Int]()
+
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            let query = HKSampleQuery(sampleType: alcoholType, predicate: compoundPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                if let error = error {
+                    cont.resume(throwing: error)
+                    return
+                }
+                if let samples = samples as? [HKQuantitySample] {
+                    for sample in samples {
+                        let drinks = Int(sample.quantity.doubleValue(for: HKUnit.count()))
+                        let day = Calendar.current.startOfDay(for: sample.startDate)
+                        alcoholDays[day, default: 0] += drinks
+                    }
+                }
+                cont.resume()
+            }
+            self.healthStore.execute(query)
+        }
+
+        return alcoholDays
     }
 }
