@@ -424,26 +424,26 @@ struct MonthView: View {
             // NoAlc ring (innermost, full ring)
             if let level = alcoholLevel {
                 Circle()
-                    .stroke(alcoholColor(for: level), lineWidth: 5)
-                    .frame(width: 28, height: 28)
+                    .stroke(alcoholColor(for: level), lineWidth: 3)
+                    .frame(width: 22, height: 22)
             }
 
             // Workout circle (middle ring)
             if mins.workoutMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: workoutProgress)
-                    .stroke(Color.purple.opacity(0.8), lineWidth: 5)
+                    .stroke(Color.purple.opacity(0.8), lineWidth: 3)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 33, height: 33)
+                    .frame(width: 30, height: 30)
             }
 
             // Mindfulness circle (outermost ring)
             if mins.mindfulnessMinutes >= 2.0 {
                 Circle()
                     .trim(from: 0, to: mindfulnessProgress)
-                    .stroke(Color.blue.opacity(0.8), lineWidth: 5)
+                    .stroke(Color.blue.opacity(0.8), lineWidth: 3)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 37, height: 37)
+                    .frame(width: 38, height: 38)
             }
 
             Text("\(dayNumber)")
@@ -500,11 +500,11 @@ struct MonthView: View {
     private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
         switch level {
         case .steady:
-            return Color(hex: "#00A843")  // Dark green (was #00C853)
+            return Color(hex: "#2E7D32")  // Dark forest green (Material Green 800)
         case .easy:
-            return Color(hex: "#66BB6A")  // Medium green (was #A5D6A7)
+            return Color(hex: "#4CAF50")  // Strong grass green (Material Green 500)
         case .wild:
-            return Color(hex: "#A5D6A7")  // Light green (was #E8F5E9)
+            return Color(hex: "#81C784")  // Medium light green (Material Green 300)
         }
     }
 
