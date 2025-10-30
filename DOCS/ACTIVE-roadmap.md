@@ -65,24 +65,7 @@ Vollständige Lokalisierung der App für Deutsch und Englisch.
 
 ---
 
-### 4. Erweiterte Statistiken
-**Priorität:** Mittel
-**Aufwand:** Mittel
-**Status:** Planungsphase
-
-**Beschreibung:**
-Detailliertere Analysen und Visualisierungen der Meditation- und Workout-Daten.
-
-**Details:**
-- Langzeit-Trends über Wochen/Monate
-- Vergleich mit Vorperioden
-- Datenexport für externe Analyse
-
-**Risiken:** HealthKit-Datenverfügbarkeit
-
----
-
-### 5. Beschreibungstexte für Atem-Meditationen
+### 4. Beschreibungstexte für Atem-Meditationen
 **Priorität:** Niedrig
 **Aufwand:** Niedrig (wenige Tage)
 **Status:** Planungsphase
@@ -96,23 +79,6 @@ Kurze, inspirierende Beschreibungstexte zu den Atem-Meditationen hinzufügen.
 - Kurze Anleitungen oder Benefits der Übung
 
 **Risiken:** Lokalisierung, UI-Anpassungen
-
----
-
-### 6. Benutzerdefinierte Atem-Pattern
-**Priorität:** Niedrig
-**Aufwand:** Hoch
-**Status:** Planungsphase
-
-**Beschreibung:**
-Erweiterte Atem-Übungen mit benutzerdefinierten Mustern.
-
-**Details:**
-- Editor: UI zum Erstellen eigener Atem-Sequenzen
-- Mehr vordefinierte Presets
-- Integration: Mit Live Activity und Fokusmode
-
-**Risiken:** Komplexe UI, Timer-Logik
 
 ---
 
