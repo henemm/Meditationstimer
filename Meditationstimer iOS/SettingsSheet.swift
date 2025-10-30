@@ -168,6 +168,7 @@ struct SettingsSheet: View {
     // MARK: - Preview Controls
 
     private func startPreview() {
+        print("[SettingsSheet] startPreview() called - playing ambient sound: \(ambientSound.wrappedValue.rawValue)")
         guard ambientSound.wrappedValue != .none else { return }
         previewPlayer.setVolume(percent: ambientSoundVolume)
         previewPlayer.start(sound: ambientSound.wrappedValue)
@@ -175,11 +176,13 @@ struct SettingsSheet: View {
     }
 
     private func stopPreview() {
+        print("[SettingsSheet] stopPreview() called - stopping ambient sound")
         previewPlayer.stop()
         isPreviewPlaying = false
     }
 
     private func testGong() {
+        print("[SettingsSheet] testGong() called - playing gong-ende")
         gongPlayer.play(named: "gong-ende") {}
     }
 }
