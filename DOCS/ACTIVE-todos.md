@@ -37,23 +37,42 @@ Alle bekannten Bugs wurden behoben (siehe Git-Historie für Details).
 ## 💳 Technische Schulden
 
 ### Deprecated APIs beheben
+**Status:** ✅ **Abgeschlossen** (30. Oktober 2025)
+**Commits:** 855cd2c, 81d3281, 423eb4a
+
+**Was wurde gefixt:**
+1. `.onChange(of:)` → 2-Parameter Syntax (4 Dateien)
+2. `HKWorkout.init()` → HKWorkoutBuilder (HealthKitManager)
+3. `end(dismissalPolicy:)` → `end(_:dismissalPolicy:)` (LiveActivityController, 5 Stellen)
+
+**Ergebnis:**
+- Alle Deprecation-Warnings eliminiert ✅
+- Build erfolgreich
+- Keine Regressions (Tests verifiziert)
+
+---
+
+## 🧪 Test-Failures (Pre-existing)
+
+### 2 Tests schlagen fehl (nicht durch aktuelle Änderungen verursacht)
 **Status:** Dokumentiert
-**Priorität:** Mittel
-**Aufwand:** ~2-3h (separate Commits pro Kategorie)
+**Priorität:** Niedrig
+**Aufwand:** ~1-2h
 
-**40+ Warnings über 8 Dateien:**
-- `onChange(of:perform:)` deprecated → neue 2-Parameter Syntax
-- `end(using:dismissalPolicy:)` deprecated → `end(content:dismissalPolicy:)`
-- `HKWorkout.init(activityType:start:end:)` deprecated → HKWorkoutBuilder
+**Fehlgeschlagene Tests:**
+1. `StreakManagerTests.testMinimumMinutesThreshold()`
+2. `HealthKitManagerTests.testYearBoundaryTransition()`
 
-**Locations:**
-- WorkoutsView.swift:351, 481
-- OffenView.swift:420, 383, 391
-- AtemView.swift:506
-- LiveActivityController.swift:59, 127, 175, 177, 183
-- HealthKitManager.swift:149, 178, 181
-- NotificationHelper.swift:56, 57
-- AmbientSoundPlayer.swift:262
+**Details:**
+- Diese Tests schlugen bereits VOR den Deprecated-API-Fixes fehl
+- Keine Regressions durch die aktuellen Code-Änderungen
+- 39 von 41 Tests passed (95% Success Rate)
+- Tests betreffen Date-Calculations und Streak-Threshold-Logic
+
+**Was zu tun ist:**
+- Tests analysieren und fixen
+- Möglicherweise Timezone- oder Calendar-bezogene Issues
+- Separate Session für Test-Fixes einplanen
 
 ---
 
