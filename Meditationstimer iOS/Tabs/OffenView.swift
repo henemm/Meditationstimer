@@ -108,6 +108,7 @@ struct OffenView: View {
     @State private var sessionStart = Date()
     @State private var showSettings = false
     @State private var showingCalendar = false
+    @State private var showingNoAlcLog = false
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
@@ -388,6 +389,7 @@ struct OffenView: View {
             .toolbar {
                 if engine.state == .idle || engine.state == .finished {
                     ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button { showingNoAlcLog = true } label: { Image(systemName: "drop.fill") }
                         Button { showingCalendar = true } label: { Image(systemName: "calendar") }
                         Button(action: { showSettings = true }) {
                             Image(systemName: "gearshape")
@@ -403,6 +405,9 @@ struct OffenView: View {
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
                     .environmentObject(streakManager)
+            }
+            .sheet(isPresented: $showingNoAlcLog) {
+                NoAlcLogSheet()
             }
             .onChange(of: engine.state) { _, newValue in
                 // Übergang Phase 1 -> Phase 2: dreifacher Gong und Live Activity auf Phase 2 updaten
