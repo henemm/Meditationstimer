@@ -344,6 +344,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @State private var gong = GongPlayer()
         @State private var ambientPlayer = AmbientSoundPlayer()
         @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+        @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
 
         private var ambientSound: AmbientSound {
             AmbientSound(rawValue: ambientSoundRaw) ?? .none
@@ -478,6 +479,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 setIdleTimer(true)
 
                 // Start ambient sound
+                ambientPlayer.setVolume(percent: ambientSoundVolume)
                 ambientPlayer.start(sound: ambientSound)
 
                 // Start the session

@@ -18,6 +18,11 @@ struct SettingsSheet: View {
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
     @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
+
+    @State private var previewPlayer = AmbientSoundPlayer()
+    @State private var gongPlayer = GongPlayer()
+    @State private var isPreviewPlaying = false
 
     private var ambientSound: Binding<AmbientSound> {
         Binding(
@@ -71,9 +76,51 @@ struct SettingsSheet: View {
                     #if os(iOS)
                     .pickerStyle(.menu)
                     #endif
+
                     Text("Wird während Offen und Atem Meditationen abgespielt.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+
+                    // Volume controls (only visible when sound is selected)
+                    if ambientSound.wrappedValue != .none {
+                        VStack(spacing: 12) {
+                            // Preview controls
+                            HStack(spacing: 12) {
+                                Button(action: startPreview) {
+                                    Label("Play", systemImage: "play.fill")
+                                }
+                                .disabled(isPreviewPlaying)
+
+                                Button(action: stopPreview) {
+                                    Label("Stop", systemImage: "stop.fill")
+                                }
+                                .disabled(!isPreviewPlaying)
+
+                                Spacer()
+                            }
+
+                            // Volume slider
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Lautstärke: \(ambientSoundVolume)%")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+
+                                Slider(value: Binding(
+                                    get: { Double(ambientSoundVolume) },
+                                    set: { newValue in
+                                        ambientSoundVolume = Int(newValue)
+                                        previewPlayer.setVolume(percent: ambientSoundVolume)
+                                    }
+                                ), in: 0...100, step: 5)
+                            }
+
+                            // Gong test button
+                            Button(action: testGong) {
+                                Label("Gong testen", systemImage: "bell.fill")
+                            }
+                        }
+                        .padding(.top, 8)
+                    }
                 }
 
                 Section {
@@ -103,6 +150,31 @@ struct SettingsSheet: View {
                 }
             }
             #endif
+            .onDisappear {
+                // Stop preview if playing when sheet is dismissed
+                if isPreviewPlaying {
+                    previewPlayer.stop()
+                    isPreviewPlaying = false
+                }
+            }
         }
+    }
+
+    // MARK: - Preview Controls
+
+    private func startPreview() {
+        guard ambientSound.wrappedValue != .none else { return }
+        previewPlayer.setVolume(percent: ambientSoundVolume)
+        previewPlayer.start(sound: ambientSound.wrappedValue)
+        isPreviewPlaying = true
+    }
+
+    private func stopPreview() {
+        previewPlayer.stop()
+        isPreviewPlaying = false
+    }
+
+    private func testGong() {
+        gongPlayer.play(named: "gong-start") {}
     }
 }

@@ -126,6 +126,7 @@ struct OffenView: View {
     @State private var showHealthAlert = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
 
     private var ambientSound: AmbientSound {
         AmbientSound(rawValue: ambientSoundRaw) ?? .none
@@ -206,6 +207,7 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
+                                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                                     ambientPlayer.start(sound: ambientSound)
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -217,6 +219,7 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
+                                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                                     ambientPlayer.start(sound: ambientSound)
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -255,6 +258,7 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -267,6 +271,7 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
@@ -310,6 +315,7 @@ struct OffenView: View {
                     sessionStart = Date()
                     setIdleTimer(true)
                     bgAudio.start()
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
