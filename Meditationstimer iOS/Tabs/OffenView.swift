@@ -482,8 +482,9 @@ struct OffenView: View {
         gong.play(named: "gong-ende") {
             // 3. Stoppe die Hintergrund-Audio-Session nachdem der Gong fertig ist
             self.pendingEndStop?.cancel()
-            let work = DispatchWorkItem { [bgAudio = self.bgAudio] in
+            let work = DispatchWorkItem { [bgAudio = self.bgAudio, ambientPlayer = self.ambientPlayer] in
                 bgAudio.stop()
+                ambientPlayer.stop()  // Fade-out ambient sound
             }
             self.pendingEndStop = work
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra-Verzögerung für Safety
