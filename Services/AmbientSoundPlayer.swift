@@ -235,8 +235,6 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
         let activePlayer = isPlayerAActive ? playerA : playerB
         guard let player = activePlayer else { return }
 
-        let duration = player.duration
-        let startTime = player.deviceCurrentTime
         var crossFadeTriggered = false
 
         // Continuous monitoring every 0.1s (prevents timing gaps)
@@ -248,11 +246,11 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
 
             guard !crossFadeTriggered else { return }
 
-            let elapsed = player.deviceCurrentTime - startTime
-            let remaining = duration - elapsed
+            // Use player.currentTime (playback position) NOT deviceCurrentTime (system uptime)!
+            let remaining = player.duration - player.currentTime
 
-            // Trigger cross-fade when remaining time <= crossFadeDuration (+ 0.5s buffer)
-            if remaining <= self.crossFadeDuration + 0.5 {
+            // Trigger cross-fade when remaining time <= crossFadeDuration (+ 0.2s safety buffer)
+            if remaining <= self.crossFadeDuration + 0.2 {
                 crossFadeTriggered = true
                 timer.invalidate()
                 self.startCrossFade()
