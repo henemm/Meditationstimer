@@ -672,6 +672,7 @@ struct WorkoutsView: View {
     @State private var showRunner = false
     @State private var showHealthAlert = false
     @State private var showingCalendar = false
+    @State private var showingNoAlcLog = false
 
     @AppStorage("intervalSec") private var intervalSec: Int = 30
     @AppStorage("restSec") private var restSec: Int = 10
@@ -831,6 +832,8 @@ struct WorkoutsView: View {
             .toolbar {
                 if !showRunner {
                     ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button { showingNoAlcLog = true } label: { Image(systemName: "drop.fill") }
+
                         Button { showingCalendar = true } label: { Image(systemName: "calendar") }
                         Button(action: { showSettings = true }) {
                             Image(systemName: "gearshape").accessibilityLabel("Einstellungen")
@@ -847,6 +850,9 @@ struct WorkoutsView: View {
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
                     .environmentObject(streakManager)
+            }
+            .sheet(isPresented: $showingNoAlcLog) {
+                NoAlcLogSheet()
             }
             .toolbar(showRunner ? .hidden : .visible, for: .tabBar)
             .alert("Health-Zugang", isPresented: $showHealthAlert) {
