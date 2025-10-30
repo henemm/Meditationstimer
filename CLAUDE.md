@@ -19,6 +19,11 @@
 
 **Current Version:** 2.5.4
 
+**Development Target:**
+- **Xcode 16+ / Swift 6.0** (target iOS 26 SDK features)
+- **Minimum Deployment:** iOS 18.5, watchOS 9.0
+- **Testing:** 44 Unit Tests (StreakManager + HealthKit) in LeanHealthTimerTests/
+
 ---
 
 ## Architecture Overview
@@ -371,6 +376,33 @@ For in-depth information, see `/DOCS/`:
 4. Document what went wrong (this section!)
 
 **Example:** `git reset --hard 9a0e459` removed all incorrect alcohol-tracking work cleanly.
+
+### Automated Testing Protocol
+
+**MANDATORY:** Run tests before every commit that touches business logic (Services/, Models/).
+
+**When to run tests:**
+1. ✅ **Always** before committing changes to Services/ (HealthKitManager, StreakManager, TwoPhaseTimerEngine)
+2. ✅ **Always** after fixing deprecated APIs or refactoring
+3. ✅ **Optional** for pure UI changes (but recommended)
+
+**How to run:**
+```bash
+xcodebuild test -project Meditationstimer.xcodeproj \
+  -scheme "Lean Health Timer" \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+```
+
+**What to expect:**
+- **44 passing tests** (StreakManager + HealthKit)
+- Tests in LeanHealthTimerTests/: StreakManagerTests.swift, HealthKitManagerTests.swift
+- Build + Test time: ~30-60 seconds
+- **Zero tolerance:** All tests MUST pass before commit
+
+**If tests fail:**
+- ❌ **DO NOT** commit broken code
+- Fix the regression immediately
+- Re-run tests until green
 
 ---
 
