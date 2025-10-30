@@ -153,21 +153,28 @@ final class HealthKitManager {
     
     /// Schreibt EIN Workout von `start` bis `end` in Apple Health (Trainings‑App).
     /// Standardaktivität: HIIT (High Intensity Interval Training).
+    /// Verwendet HKWorkoutBuilder (moderne API seit iOS 17.0).
     func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws {
         #if os(iOS)
-        let metadata = ["appSource": "Meditationstimer"]
-        let workout = HKWorkout(activityType: activity, start: start, end: end)
-        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            self.healthStore.save(workout) { success, error in
-                if let error = error {
-                    cont.resume(throwing: error)
-                } else if success {
-                    cont.resume()
-                } else {
-                    cont.resume(throwing: HealthKitError.saveFailed)
-                }
-            }
-        }
+        // Create workout configuration
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = activity
+
+        // Create workout builder with local device
+        let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: .local())
+
+        // Begin collection at start time (retrospective workout)
+        try await builder.beginCollection(at: start)
+
+        // End collection at end time
+        try await builder.endCollection(at: end)
+
+        // Add metadata before finishing
+        let metadata: [String: Any] = ["appSource": "Meditationstimer"]
+        try await builder.addMetadata(metadata)
+
+        // Finalize workout (saves to HealthKit automatically)
+        _ = try await builder.finishWorkout()
         #else
         throw HealthKitError.healthDataUnavailable
         #endif
