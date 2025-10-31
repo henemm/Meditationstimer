@@ -368,7 +368,7 @@ struct OffenView: View {
                 .modifier(OverlayBackgroundEffect(isDimmed: isSessionActive))
 
                 // Overlay for active session (phase1/phase2)
-                if case .phase1(let remaining) = engine.state {
+                if case .phase1 = engine.state {
                     RunCard(title: "Meditation", endDate: engine.phase1EndDate ?? Date(), totalSeconds: phase1Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
@@ -376,7 +376,7 @@ struct OffenView: View {
                     .transition(.scale.combined(with: .opacity))
                     .animation(.smooth(duration: 0.3), value: engine.state)
                     .zIndex(2)
-                } else if case .phase2(let remaining) = engine.state {
+                } else if case .phase2 = engine.state {
                     RunCard(title: "Besinnung", endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }

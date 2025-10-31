@@ -465,7 +465,6 @@ struct MonthView: View {
 
     private func dayView(for date: Date) -> some View {
         let isToday = calendar.isDateInToday(date)
-        let activityType = activityDays[calendar.startOfDay(for: date)]
         let dayNumber = calendar.component(.day, from: date)
         let dayKey = calendar.startOfDay(for: date)
         let mins = dailyMinutes[dayKey] ?? (0, 0)

@@ -232,6 +232,7 @@ final class HealthKitManager {
     }
     
     /// Wartet kurz, bis die App „active" ist (verhindert Timeout beim System‑Sheet).
+    @MainActor
     private func waitUntilAppActive(timeout: TimeInterval) async -> Bool {
         #if os(iOS)
         let start = Date()
