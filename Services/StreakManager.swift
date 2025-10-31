@@ -38,17 +38,31 @@ class StreakManager: ObservableObject {
         // Get daily minutes for the past 30 days or so
         let calendar = Calendar.current
         let startDate = calendar.date(byAdding: .day, value: -30, to: date)!
-        
+
         do {
             let dailyMinutes = try await healthKitManager.fetchDailyMinutesFiltered(from: startDate, to: date)
-            
+
+            print("🔍 StreakManager.updateStreaks() - Fetched dailyMinutes count: \(dailyMinutes.count)")
+
+            // Debug: Print meditation minutes
+            let meditationMinutes = dailyMinutes.mapValues { $0.mindfulnessMinutes }
+            let meditationDaysWithData = meditationMinutes.filter { $0.value >= Double(minMinutes) }
+            print("🔍 Meditation days with >= \(minMinutes) min: \(meditationDaysWithData.count)")
+            for (date, mins) in meditationDaysWithData.sorted(by: { $0.key > $1.key }).prefix(5) {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .short
+                print("   \(formatter.string(from: date)): \(mins) min")
+            }
+
             await MainActor.run {
                 // Update meditation streak
                 updateStreak(&meditationStreak, dailyMinutes: dailyMinutes.mapValues { $0.mindfulnessMinutes })
-                
+                print("🔍 After update - Meditation streak: \(meditationStreak.currentStreakDays) days")
+
                 // Update workout streak
                 updateStreak(&workoutStreak, dailyMinutes: dailyMinutes.mapValues { $0.workoutMinutes })
-                
+                print("🔍 After update - Workout streak: \(workoutStreak.currentStreakDays) days")
+
                 saveStreaks()
             }
         } catch {
@@ -64,21 +78,31 @@ class StreakManager: ObservableObject {
         let todayMinutes = dailyMinutes[today] ?? 0
         let hasDataToday = round(todayMinutes) >= Double(minMinutes)
 
+        print("🔍 updateStreak() - today: \(today), todayMinutes: \(todayMinutes), hasDataToday: \(hasDataToday)")
+
         // Calculate current streak: consecutive days with at least minMinutes
         // Start from yesterday if today has no data (don't break streak for incomplete today)
         var currentStreak = 0
         var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
 
+        print("🔍 Starting streak calculation from: \(checkDate)")
+
         while true {
             let minutes = dailyMinutes[checkDate] ?? 0
+            print("🔍   Checking \(checkDate): \(minutes) min (rounded: \(round(minutes)))")
             if round(minutes) >= Double(minMinutes) {
                 currentStreak += 1
-                checkDate = calendar.date(byAdding: .day, value: -1, to: checkDate)!
+                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else {
+                    print("🔍   Reached beginning of calendar, stopping")
+                    break
+                }
+                checkDate = previousDate
             } else {
+                print("🔍   Day has < \(minMinutes) min, stopping. Final streak: \(currentStreak)")
                 break
             }
         }
-        
+
         // Calculate rewards based on streak
         let newRewards = min(3, currentStreak / streakThreshold)
 
