@@ -29,7 +29,7 @@ struct NoAlcLogSheet: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
-                    .padding(.top, 16)
+                    .padding(.top, 21)
 
                     // Quick Log Buttons
                     HStack(spacing: 12) {
