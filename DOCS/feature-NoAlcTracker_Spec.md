@@ -3,7 +3,22 @@
 **Autor:** Henning
 **Version:** 1.1
 **Datum:** 2025-10-30
-**Letzte Änderung:** 2025-10-30 (Klarstellungen: TabView, Notification-Regel, HealthKit Type)
+**Letzte Änderung:** 2025-10-31 (Calendar Visualization ✅ Complete)
+
+---
+
+## 📊 Implementation Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| **Calendar Visualization** | ✅ Complete | Inner fill circles with color-coded consumption levels |
+| **NoAlc Streak Calculation** | ✅ Complete | Uses same `dailyMinutes` dictionary as calendar rings |
+| **HealthKit Integration** | ✅ Complete | `NoAlcManager` reads/writes `numberOfAlcoholicBeverages` |
+| **Color System** | ✅ Complete | Steady: #0EBF6E, Easy: #89D6B2, Wild: #B6B6B6 (white text) |
+| **Ring Sizing** | ✅ Complete | NoAlc: 28x28, Workout: 32x32, Mindfulness: 42x42 (no gaps) |
+| **Workout Calorie Tracking** | ✅ Complete | MET-based estimation for Apple Health MOVE ring |
+| **Smart Notifications** | ⏳ Pending | Daily notification with actionable buttons |
+| **Manual Entry Tab** | ⏳ Pending | 4th tab for quick logging |
 
 ---
 
@@ -101,9 +116,11 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 | Layer | Function |
 |--------|-----------|
 | Outer circles | Meditation / Workout (existing rings) |
-| Inner fill | NoAlc status color (solid fill) |
-| Tap on day | Shows existing detail sheet → now includes `drinks` value |
-| Colors | `#00C853` (Steady) → `#A5D6A7` (Easy) → `#E8F5E9` (Wild) → `#FFFFFF` (no data) |
+| Inner fill | NoAlc status color (solid circle, 28x28) |
+| Text color | White for all NoAlc entries (better contrast) |
+| Tap on day | Shows existing tooltip → includes NoAlc emoji + label |
+| Colors | `#0EBF6E` (Steady) → `#89D6B2` (Easy) → `#B6B6B6` (Wild) |
+| Ring sizes | NoAlc 28x28 → Workout 32x32 → Mindfulness 42x42 (no gaps) |
 
 **Accessibility Note:**
 - Inner fill colors **must maintain sufficient contrast** with calendar date numbers
@@ -157,8 +174,9 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 | **Notification Day Rule** | < 18:00 = yesterday, >= 18:00 = today |
 | **HealthKit Type** | `numberOfAlcoholicBeverages` (native, integer count) |
 | **HealthKit Values** | 0 (Steady), 4 (Easy), 6 (Wild) |
-| **Calendar Integration** | Inner fill color (maintains contrast with date numbers) |
-| **Colors** | `#00C853` → `#A5D6A7` → `#E8F5E9` → `#FFFFFF` |
-| **Streak Logic** | Identical to Meditation / Workout (7 days = 1 reward) |
+| **Calendar Integration** | ✅ Inner fill circle (28x28, white text on all backgrounds) |
+| **Colors** | ✅ `#0EBF6E` (Steady) → `#89D6B2` (Easy) → `#B6B6B6` (Wild) |
+| **Streak Logic** | ✅ Computed property using same data as calendar rings |
+| **Ring Sizing** | ✅ NoAlc 28, Workout 32, Mindfulness 42 (no visible gaps) |
 
 ---
