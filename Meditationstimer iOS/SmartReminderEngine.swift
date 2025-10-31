@@ -118,10 +118,10 @@ public final class SmartReminderEngine {
     private func scheduleNotification(for reminder: SmartReminder) {
         let calendar = Calendar.current
 
-        // Create DateComponents for trigger time
+        // Create DateComponents for trigger time - extract BOTH hour AND minute from triggerTime
         var dateComponents = DateComponents()
-        dateComponents.hour = reminder.triggerHour
-        dateComponents.minute = 0
+        dateComponents.hour = calendar.component(.hour, from: reminder.triggerTime)
+        dateComponents.minute = calendar.component(.minute, from: reminder.triggerTime)
 
         // Create calendar trigger (repeats daily)
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
