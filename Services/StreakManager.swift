@@ -59,11 +59,16 @@ class StreakManager: ObservableObject {
     private func updateStreak(_ streak: inout StreakData, dailyMinutes: [Date: Double]) {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        
+
+        // Check if today has data
+        let todayMinutes = dailyMinutes[today] ?? 0
+        let hasDataToday = round(todayMinutes) >= Double(minMinutes)
+
         // Calculate current streak: consecutive days with at least minMinutes
+        // Start from yesterday if today has no data (don't break streak for incomplete today)
         var currentStreak = 0
-        var checkDate = today
-        
+        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
         while true {
             let minutes = dailyMinutes[checkDate] ?? 0
             if round(minutes) >= Double(minMinutes) {
@@ -76,26 +81,17 @@ class StreakManager: ObservableObject {
         
         // Calculate rewards based on streak
         let newRewards = min(3, currentStreak / streakThreshold)
-        
-        // Check if today has activity
-        let todayMinutes = dailyMinutes[today] ?? 0
-        let hasActivityToday = round(todayMinutes) >= Double(minMinutes)
-        
-        if hasActivityToday {
+
+        if hasDataToday {
             // Update streak and rewards
             streak.currentStreakDays = currentStreak
             streak.rewardsEarned = newRewards
             streak.lastActivityDate = today
         } else {
-            // No activity today: apply decay
-            if streak.rewardsEarned > 0 {
-                streak.rewardsEarned -= 1
-                // Streak remains
-            } else {
-                // No rewards left, reset streak
-                streak.currentStreakDays = 0
-                streak.lastActivityDate = nil
-            }
+            // No data today: show streak from yesterday (don't penalize for incomplete day)
+            streak.currentStreakDays = currentStreak
+            streak.rewardsEarned = newRewards
+            // Keep lastActivityDate as is (don't update)
         }
     }
     
