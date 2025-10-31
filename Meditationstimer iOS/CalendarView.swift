@@ -483,7 +483,7 @@ struct MonthView: View {
             if let level = alcoholLevel {
                 Circle()
                     .fill(alcoholColor(for: level))
-                    .frame(width: 24, height: 24)
+                    .frame(width: 28, height: 28)
             }
 
             // Workout circle (inner ring)
@@ -492,7 +492,7 @@ struct MonthView: View {
                     .trim(from: 0, to: workoutProgress)
                     .stroke(Color.purple.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 28, height: 28)
+                    .frame(width: 32, height: 32)
             }
 
             // Mindfulness circle (outer ring)
@@ -501,7 +501,7 @@ struct MonthView: View {
                     .trim(from: 0, to: mindfulnessProgress)
                     .stroke(Color.blue.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 37, height: 37)
+                    .frame(width: 43, height: 43)
             }
 
             Text("\(dayNumber)")

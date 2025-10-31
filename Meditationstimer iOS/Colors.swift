@@ -50,7 +50,7 @@ extension Color {
     // MARK: - Alcohol Tracking Colors
 
     /// Bright green for 0-1 drinks (Steady)
-    static let alcoholSteady = Color(hex: "#1FCF7E")
+    static let alcoholSteady = Color(hex: "#0EBF6E")
 
     /// Medium green for 2-5 drinks (Easy)
     static let alcoholEasy = Color(hex: "#89D6B2")
