@@ -5,9 +5,9 @@
 
 ---
 
-## 🐛 Keine aktiven Bugs
+## 🐛 aktive Bugs
 
-Alle bekannten Bugs wurden behoben (siehe Git-Historie für Details).
+keine
 
 ---
 
