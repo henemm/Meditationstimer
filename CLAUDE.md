@@ -404,6 +404,160 @@ xcodebuild test -project Meditationstimer.xcodeproj \
 - Fix the regression immediately
 - Re-run tests until green
 
+### Data Source Consistency (October 2025 - NoAlc Tracker)
+
+**CRITICAL:** When displaying data AND using it for calculations, both MUST use the SAME data source.
+
+**Problem (Streak Calculation Bug):**
+- CalendarView displayed rings based on `dailyMinutes` dictionary
+- StreakManager calculated streaks using SEPARATE HealthKit query
+- Different data sources → **Inconsistent results!**
+- User saw filled rings in calendar, but streak count was wrong
+
+**User Insight (Key Learning):**
+> "Als User erwarte ich, dass es eine Überdeckung zwischen dem Kalender und der Anzeige der Street Days gibt. Wenn ich im Kalender sehe, dass es einen Ring oder einen gefüllten Kreis gibt, dann ist meine Erwartung, dass dieser Tag gezählt wird."
+
+**Translation:** **What you see = What gets counted**
+
+**Solution:**
+- Removed StreakManager dependency from CalendarView
+- Added computed properties (`meditationStreak`, `workoutStreak`) that use the SAME `dailyMinutes` dictionary
+- Guaranteed 100% consistency: visualization and calculation use identical data
+
+**Lesson:**
+```
+✅ DO: Use same data for visualization AND calculation
+❌ DON'T: Query HealthKit separately for display vs. calculation
+```
+
+**Example (CalendarView.swift:59-77):**
+```swift
+private var meditationStreak: Int {
+    let today = calendar.startOfDay(for: Date())
+    let todayMinutes = dailyMinutes[today]?.mindfulnessMinutes ?? 0
+    let hasDataToday = round(todayMinutes) >= 2.0
+
+    var currentStreak = 0
+    var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+    while true {
+        let minutes = dailyMinutes[checkDate]?.mindfulnessMinutes ?? 0
+        if round(minutes) >= 2.0 {  // Same threshold as ring display!
+            currentStreak += 1
+            // ...
+        }
+    }
+    return currentStreak
+}
+```
+
+### HealthKit .strictStartDate Date Range Bug
+
+**Problem:** Today's data not showing in calendar despite being saved to HealthKit.
+
+**Root Cause:**
+```swift
+// ❌ WRONG: Using end of current month
+let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+// Example: October 31, 2025 at 00:00:00
+
+let predicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+// .strictStartDate = samples must start BEFORE endDate (exclusive)
+// Samples from Oct 31 after 00:00:00 are EXCLUDED!
+```
+
+**Fix:**
+```swift
+// ✅ CORRECT: Use start of NEXT month
+let startOfNextMonth = calendar.date(byAdding: DateComponents(month: 1), to: startOfMonth)!
+// Example: November 1, 2025 at 00:00:00
+
+let predicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: startOfNextMonth, options: .strictStartDate)
+// Now samples from entire October (including Oct 31) are included!
+```
+
+**Affected Functions:**
+- `HealthKitManager.fetchDailyMinutesFiltered(forMonth:)` – Lines 633-640
+- `HealthKitManager.fetchActivityDaysDetailedFiltered(forMonth:)` – Lines 375-381
+
+**Lesson:**
+```
+.strictStartDate endDate is EXCLUSIVE
+→ Use "start of NEXT period" not "end of CURRENT period"
+```
+
+### Analysis-First Principle Violation
+
+**Problem:** Multiple failed attempts at fixing streak calculation (trial-and-error approach).
+
+**User Feedback:**
+> "Die Streaks sind IMMER NOCH NICHT gefixt. Analysiere das Thema gründlich und grundsätzlich. Das sind schon wieder viel zu viele Versuche!"
+
+**What went wrong:**
+1. Added debug logging to StreakManager (wrong approach)
+2. Modified date range in HealthKit query (partial fix)
+3. Tried multiple speculative fixes before understanding root cause
+4. Violated "Analysis-First Principle" from global CLAUDE.md
+
+**Correct Approach (Should Have Done):**
+1. **Full Problem Analysis:**
+   - What data does CalendarView use? (dailyMinutes dictionary)
+   - What data does StreakManager use? (separate HealthKit query)
+   - Why are they different? (different code paths!)
+2. **Identify Root Cause:**
+   - Two different data sources = inconsistency guaranteed
+3. **Then implement fix:**
+   - Use same data source for both
+
+**Lesson:**
+```
+❌ DON'T: Try multiple fixes hoping one works (trial-and-error)
+✅ DO: Identify root cause with certainty, THEN implement targeted fix
+```
+
+**Reference:** See global CLAUDE.md "Analysis-First Prinzip" section.
+
+### Workout Calorie Tracking for Apple Health
+
+**Requirement:** Workouts must log calories to Apple Health for MOVE ring integration.
+
+**Implementation:**
+```swift
+// Calculate estimated calories (MET-based)
+let caloriesPerMinute: Double
+switch activity {
+case .highIntensityIntervalTraining:
+    caloriesPerMinute = 12.0  // ~12 kcal/min for HIIT
+case .yoga:
+    caloriesPerMinute = 4.0   // ~4 kcal/min for Yoga
+default:
+    caloriesPerMinute = 8.0   // Generic fallback
+}
+
+let estimatedCalories = durationMinutes * caloriesPerMinute
+
+// CRITICAL: Create HKQuantitySample with .activeEnergyBurned type
+let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+let energyQuantity = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: estimatedCalories)
+let energySample = HKQuantitySample(
+    type: energyType,
+    quantity: energyQuantity,
+    start: start,
+    end: end,
+    device: .local(),
+    metadata: ["appSource": "Meditationstimer"]
+)
+
+// Add to workout builder
+try await builder.addSamples([energySample])
+```
+
+**HealthKit Permissions:**
+- Added `.activeEnergyBurned` to `requestAuthorization()` and `isAuthorized()`
+- Required for writing calorie data to Apple Health
+
+**Reference:** `HealthKitManager.logWorkout()` lines 158-218
+
 ---
 
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**
