@@ -428,7 +428,7 @@ struct MonthView: View {
             if let level = alcoholLevel {
                 Circle()
                     .fill(alcoholColor(for: level))
-                    .frame(width: 37, height: 37)
+                    .frame(width: 24, height: 24)
             }
 
             // Workout circle (inner ring)
