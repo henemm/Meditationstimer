@@ -554,6 +554,45 @@ Reference: `HealthKitManager.logWorkout()` lines 158-218
 4. ✅ Ask user: "I see [existing system X], should I extend that or build new?"
 5. ✅ ONLY proceed after confirming approach
 
+---
+
+### CRITICAL: Never Simplify Away the Feature Intent (October 2025)
+
+**Problem:** When facing implementation challenges, I suggested "simplifying" the feature by removing its core value proposition.
+
+**Example - Smart Reminder Bug:**
+1. Feature: **SMART** Reminders (only notify if no activity detected via HealthKit)
+2. Implementation: BGTaskScheduler not firing reliably
+3. **MY ERROR:** "Let's use UNCalendarNotificationTrigger instead, user can dismiss if not relevant"
+4. **WHAT I DID WRONG:** Removed the "SMART" (conditional) aspect, making it a dumb timer
+5. **USER FEEDBACK:** "Was ist denn dann noch smart?"
+
+**The Rule:**
+```
+❌ DON'T: Change feature goal to simplify implementation
+❌ DON'T: Remove core value to avoid technical challenges
+✅ DO: Research how successful apps solve the SAME problem
+✅ DO: Ask user if feature goal can be adjusted (don't decide alone)
+```
+
+**Why this is CRITICAL:**
+- Implementation complexity is MY problem, not the user's
+- User wants the FEATURE, not "whatever is easiest to build"
+- "Simple notifications" already exist - user asked for SMART for a reason
+- Removing smartness = deleting the feature entirely
+
+**The Right Approach:**
+1. **Verify Feature Intent:** What is the core value? (here: conditional notifications)
+2. **Research Best Practices:** How do successful apps (Strava, MyFitnessPal) solve this?
+3. **Propose Solutions:** "Option A: X, Option B: Y" - let USER choose tradeoffs
+4. **NEVER decide alone** to remove core functionality
+
+**What I SHOULD have said:**
+"BGTaskScheduler is unreliable. Let me research how fitness apps handle conditional notifications. I'll come back with 2-3 options that preserve the 'smart' aspect."
+
+**NOT:**
+"Let's just send notifications always, user can dismiss."
+
 **Example - Correct Approach:**
 ```
 User: "Add NoAlc smart notifications"
