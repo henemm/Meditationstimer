@@ -36,6 +36,26 @@ struct CalendarView: View {
     @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
 
+    private var noAlcStreak: Int {
+        let today = calendar.startOfDay(for: Date())
+        let hasDataToday = alcoholDays[today] != nil
+
+        var currentStreak = 0
+        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        while true {
+            if alcoholDays[checkDate] != nil {
+                currentStreak += 1
+                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                checkDate = previousDate
+            } else {
+                break
+            }
+        }
+
+        return currentStreak
+    }
+
     var body: some View {
         VStack {
             // Close Button
@@ -156,10 +176,10 @@ struct CalendarView: View {
                         .onTapGesture {
                             showNoAlcInfo = true
                         }
-                    Text("NoAlc: Streak 0 Days")
+                    Text("NoAlc: Streak \(noAlcStreak) Day\(noAlcStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
-                    rewardsView(for: 0, icon: "drop.fill", color: .green)
+                    rewardsView(for: min(3, noAlcStreak / 7), icon: "drop.fill", color: .green)
                 }
                 .popover(isPresented: $showNoAlcInfo) {
                     VStack(spacing: 0) {
