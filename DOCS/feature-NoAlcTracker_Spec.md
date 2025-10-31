@@ -1,9 +1,9 @@
 # NoAlc Tracker – Feature Specification
 **Projekt:** Lean Health Timer
 **Autor:** Henning
-**Version:** 1.1
+**Version:** 1.2
 **Datum:** 2025-10-30
-**Letzte Änderung:** 2025-10-31 (Calendar Visualization ✅ Complete)
+**Letzte Änderung:** 2025-10-31 (✅ ALL FEATURES COMPLETE)
 
 ---
 
@@ -17,8 +17,8 @@
 | **Color System** | ✅ Complete | Steady: #0EBF6E, Easy: #89D6B2, Wild: #B6B6B6 (white text) |
 | **Ring Sizing** | ✅ Complete | NoAlc: 28x28, Workout: 32x32, Mindfulness: 42x42 (no gaps) |
 | **Workout Calorie Tracking** | ✅ Complete | MET-based estimation for Apple Health MOVE ring |
-| **Smart Notifications** | ⏳ Pending | Daily notification with actionable buttons |
-| **Manual Entry Tab** | ⏳ Pending | 4th tab for quick logging |
+| **Smart Notifications** | ✅ Complete | Daily notification with 3 direct action buttons (Steady/Easy/Wild) |
+| **Manual Entry** | ✅ Complete | NoAlcLogSheet available from all tabs (compact + extended mode) |
 
 ---
 
