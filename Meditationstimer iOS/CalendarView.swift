@@ -506,7 +506,7 @@ struct MonthView: View {
 
             Text("\(dayNumber)")
                 .font(.system(size: 16, weight: hasActivity ? .semibold : .regular))
-                .foregroundColor(alcoholLevel != nil ? alcoholTextColor(for: alcoholLevel!) : .primary)
+                .foregroundColor(alcoholLevel != nil ? .alcoholText : .primary)
         }
         .frame(height: 40)
         // Red tiny dot in the bottom-right to indicate TODAY
@@ -563,15 +563,6 @@ struct MonthView: View {
             return .alcoholEasy
         case .wild:
             return .alcoholWild
-        }
-    }
-
-    private func alcoholTextColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
-        switch level {
-        case .steady:
-            return .alcoholSteadyText
-        case .easy, .wild:
-            return .alcoholEasyWildText
         }
     }
 

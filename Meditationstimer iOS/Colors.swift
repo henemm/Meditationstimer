@@ -60,9 +60,6 @@ extension Color {
 
     // MARK: - Alcohol Text Colors
 
-    /// White text for Steady background
-    static let alcoholSteadyText = Color.white
-
-    /// Black text for Easy/Wild backgrounds
-    static let alcoholEasyWildText = Color.black
+    /// White text for ALL alcohol tracking backgrounds (Steady, Easy, Wild)
+    static let alcoholText = Color.white
 }
