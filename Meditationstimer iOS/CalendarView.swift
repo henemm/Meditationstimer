@@ -501,7 +501,7 @@ struct MonthView: View {
                     .trim(from: 0, to: mindfulnessProgress)
                     .stroke(Color.blue.opacity(0.8), lineWidth: 5)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: 43, height: 43)
+                    .frame(width: 42, height: 42)
             }
 
             Text("\(dayNumber)")
