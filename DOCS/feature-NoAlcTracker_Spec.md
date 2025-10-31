@@ -1,9 +1,9 @@
 # NoAlc Tracker – Feature Specification
 **Projekt:** Lean Health Timer
 **Autor:** Henning
-**Version:** 1.2
+**Version:** 1.3
 **Datum:** 2025-10-30
-**Letzte Änderung:** 2025-10-31 (✅ ALL FEATURES COMPLETE)
+**Letzte Änderung:** 2025-10-31 (Activity Reminders: BGTaskScheduler → UNCalendarNotificationTrigger)
 
 ---
 
@@ -11,21 +11,21 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| **Calendar Visualization** | ✅ Complete | Inner fill circles with color-coded consumption levels |
-| **NoAlc Streak Calculation** | ✅ Complete | Uses same `dailyMinutes` dictionary as calendar rings |
-| **HealthKit Integration** | ✅ Complete | `NoAlcManager` reads/writes `numberOfAlcoholicBeverages` |
-| **Color System** | ✅ Complete | Steady: #0EBF6E, Easy: #89D6B2, Wild: #B6B6B6 (white text) |
-| **Ring Sizing** | ✅ Complete | NoAlc: 28x28, Workout: 32x32, Mindfulness: 42x42 (no gaps) |
-| **Workout Calorie Tracking** | ✅ Complete | MET-based estimation for Apple Health MOVE ring |
-| **Smart Notifications** | ✅ Complete | Daily notification with 3 direct action buttons (Steady/Easy/Wild) |
-| **Manual Entry** | ✅ Complete | NoAlcLogSheet available from all tabs (compact + extended mode) |
+| **Calendar Visualization** | Implemented | Inner fill circles with color-coded consumption levels |
+| **NoAlc Streak Calculation** | Implemented | Uses same `dailyMinutes` dictionary as calendar rings |
+| **HealthKit Integration** | Implemented | `NoAlcManager` reads/writes `numberOfAlcoholicBeverages` |
+| **Color System** | Implemented | Steady: #0EBF6E, Easy: #89D6B2, Wild: #B6B6B6 (white text) |
+| **Ring Sizing** | Implemented | NoAlc: 28x28, Workout: 32x32, Mindfulness: 42x42 (no gaps) |
+| **Workout Calorie Tracking** | Implemented | MET-based estimation for Apple Health MOVE ring |
+| **Activity Reminders** | In Progress | UNCalendarNotificationTrigger-based (reliable delivery) |
+| **Manual Entry** | Implemented | NoAlcLogSheet available from all tabs (compact + extended mode) |
 
 ---
 
 ## 🧭 Overview
 The **NoAlc Tracker** extends the existing Lean Health Timer ecosystem (Meditation / Workout / Breathing) by adding a fourth dimension: **alcohol consumption tracking**.
 Data is stored in **Apple HealthKit** (`numberOfAlcoholicBeverages`) and visualized directly in the **calendar view** through color-coded inner fills.
-Interaction happens primarily via **Smart Notifications** and a **dedicated Tab** in the app, so users rarely need manual logging.
+Interaction happens primarily via **Activity Reminders** and a **dedicated Tab** in the app, enabling consistent daily logging.
 
 ---
 
@@ -35,7 +35,7 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 |--------|--------------|
 | **Goal** | Encourage alcohol-free (or low-consumption) streaks using the same mechanism as Meditation / Workout / Breathing. |
 | **Storage** | Native HealthKit Type: `HKQuantityTypeIdentifier.numberOfAlcoholicBeverages` (integers). |
-| **Reminder Logic** | Daily Smart Notification (default 09:00) checks if target day has a recorded value. If not, prompts user to log. **Day Assignment Rule:** Notifications before 18:00 reference "yesterday", notifications at/after 18:00 reference "today". |
+| **Reminder Logic** | Daily Activity Reminder (default 09:00) prompts user to log consumption. Uses UNCalendarNotificationTrigger for reliable delivery. **Day Assignment Rule:** Notifications before 18:00 reference "yesterday", notifications at/after 18:00 reference "today". |
 | **Quick Interaction** | User can log directly from the notification by choosing one of three buttons. |
 | **Manual Entry** | 4th Tab in TabView (`drop.fill` icon) shows quick-log buttons and date picker. |
 
@@ -68,8 +68,9 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 
 ## 🔹 UI Specification
 
-### A. Smart Notification
-- **Trigger:** Daily at configured time (default 09:00) if no NoAlc entry for target day.
+### A. Activity Reminder (Notifications)
+- **Trigger:** Daily at configured time (default 09:00) using UNCalendarNotificationTrigger.
+- **Reliability:** System-guaranteed delivery (unlike BGTaskScheduler).
 - **Day Assignment Rule:**
   - **Notification time < 18:00** → References "yesterday" (Rückblick-Modus)
   - **Notification time >= 18:00** → References "today" (Aktuell-Modus)
@@ -77,7 +78,9 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
   - Before 18:00: `How was your evening yesterday?`
   - At/After 18:00: `How's your evening going?`
 - **Body:** `Log your drinks to keep your streak going 💧`
-- **Buttons (Actionable):**
+- **Implementation Note:** User dismisses notification if already logged. Optional: App cancels notification if entry exists when app is running.
+
+**Notification Actions (Future):**
 
 | Label | Emoji | SF Symbol | HealthKit Value | Color |
 |--------|-------|-----------|----------------|-------|
@@ -85,7 +88,7 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 | **Easy** | ✨ | `bubbles.and.sparkles` | `4` | `#A5D6A7` (medium green) |
 | **Wild** | 💥 | `burst.fill` | `6` | `#E8F5E9` (light green) |
 
-→ Tap = immediate write to HealthKit + confirmation toast.
+→ Direct action buttons require UNNotificationCategory implementation (not yet implemented).
 
 ---
 
@@ -159,10 +162,30 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 
 ---
 
+## 🔹 Implementation Notes
+
+### Reminder Architecture Decision (2025-10-31)
+
+**Original Design:** BGTaskScheduler + conditional HealthKit checks ("smart" reminders)
+- Only trigger if no activity detected in HealthKit
+- Problem: BGTaskScheduler unreliable (0% execution rate observed)
+- iOS does not guarantee background task execution
+
+**Current Design:** UNCalendarNotificationTrigger (reliable, time-based)
+- System-guaranteed delivery at configured time
+- User dismisses if already logged
+- Optional: App cancels notification when running and entry exists
+- Trade-off: Notification always fires, but delivery is reliable
+
+**Why "Activity Reminders" not "Smart Reminders":**
+- "Smart" implies conditional logic based on data
+- UNCalendarNotificationTrigger cannot check HealthKit before firing
+- Honest naming: reminds user to log activity (not conditionally smart)
+
 ## 🔹 Future Extensions
-- Configurable reminder time (Smart Reminder Settings).  
-- Visualization of consumption trends over weeks.  
-- Optional correlation views with Sleep / Heart Rate data.
+- Direct action buttons in notifications (UNNotificationCategory)
+- Visualization of consumption trends over weeks
+- Optional correlation views with Sleep / Heart Rate data
 
 ---
 
@@ -174,9 +197,10 @@ Interaction happens primarily via **Smart Notifications** and a **dedicated Tab*
 | **Notification Day Rule** | < 18:00 = yesterday, >= 18:00 = today |
 | **HealthKit Type** | `numberOfAlcoholicBeverages` (native, integer count) |
 | **HealthKit Values** | 0 (Steady), 4 (Easy), 6 (Wild) |
-| **Calendar Integration** | ✅ Inner fill circle (28x28, white text on all backgrounds) |
-| **Colors** | ✅ `#0EBF6E` (Steady) → `#89D6B2` (Easy) → `#B6B6B6` (Wild) |
-| **Streak Logic** | ✅ Computed property using same data as calendar rings |
-| **Ring Sizing** | ✅ NoAlc 28, Workout 32, Mindfulness 42 (no visible gaps) |
+| **Calendar Integration** | Inner fill circle (28x28, white text on all backgrounds) |
+| **Colors** | `#0EBF6E` (Steady) → `#89D6B2` (Easy) → `#B6B6B6` (Wild) |
+| **Streak Logic** | Computed property using same data as calendar rings |
+| **Ring Sizing** | NoAlc 28, Workout 32, Mindfulness 42 (no visible gaps) |
+| **Reminder System** | UNCalendarNotificationTrigger (reliable, time-based) |
 
 ---

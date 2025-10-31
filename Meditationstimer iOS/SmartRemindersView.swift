@@ -12,7 +12,7 @@ import HealthKit
 import UIKit
 #endif
 
-/// View für die Verwaltung von Smart Reminders mit Permission-Handling
+/// View für die Verwaltung von Activity Reminders mit Permission-Handling
 struct SmartRemindersView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("smartRemindersEnabled") private var smartRemindersEnabled: Bool = false
@@ -33,9 +33,9 @@ struct SmartRemindersView: View {
         List {
             // Toggle Section (disabled wenn Permissions fehlen)
             Section {
-                Toggle("Smart Reminders aktivieren", isOn: $smartRemindersEnabled)
+                Toggle("Activity Reminders aktivieren", isOn: $smartRemindersEnabled)
                     .disabled(!allPermissionsGranted)
-                    .help("Aktiviert intelligente Erinnerungen basierend auf deiner Aktivität.")
+                    .help("Aktiviert tägliche Erinnerungen zur Aktivitäts-Protokollierung.")
                     .onChange(of: smartRemindersEnabled) { _, newValue in
                         if newValue {
                             requestNotificationPermissions()
@@ -55,7 +55,7 @@ struct SmartRemindersView: View {
                                 Text("Fehlende Berechtigungen")
                                     .font(.headline)
                                     .fontWeight(.semibold)
-                                Text("Smart Reminders benötigen alle folgenden Berechtigungen:")
+                                Text("Activity Reminders benötigen alle folgenden Berechtigungen:")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
@@ -106,7 +106,7 @@ struct SmartRemindersView: View {
             if smartRemindersEnabled && allPermissionsGranted {
                 Section(header: Text("Erinnerungen")) {
                     if reminders.isEmpty {
-                        Text("Keine Smart Reminders konfiguriert")
+                        Text("Keine Activity Reminders konfiguriert")
                             .foregroundColor(.secondary)
                             .italic()
                     } else {
@@ -132,13 +132,13 @@ struct SmartRemindersView: View {
                 }
 
                 Section(header: Text("Info")) {
-                    Text("Smart Reminders senden Benachrichtigungen, wenn du länger als die eingestellte Zeit keine Meditation oder Workouts durchgeführt hast.")
+                    Text("Activity Reminders senden tägliche Benachrichtigungen zur konfigurierten Uhrzeit, um dich an die Aktivitäts-Protokollierung zu erinnern.")
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
             }
         }
-        .navigationTitle("Smart Reminders")
+        .navigationTitle("Activity Reminders")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
