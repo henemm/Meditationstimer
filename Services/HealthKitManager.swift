@@ -374,9 +374,11 @@ final class HealthKitManager {
 
         let calendar = Calendar.current
         let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
-        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+        // Use start of NEXT month as endDate to include ALL samples from current month
+        // With .strictStartDate, samples must start BEFORE endDate (exclusive)
+        let startOfNextMonth = calendar.date(byAdding: DateComponents(month: 1), to: startOfMonth)!
 
-        let timePredicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: endOfMonth, options: .strictStartDate)
+        let timePredicate = HKQuery.predicateForSamples(withStart: startOfMonth, end: startOfNextMonth, options: .strictStartDate)
         let sourcePredicate = HKQuery.predicateForObjects(from: Set([appSource].compactMap { $0 }))
 
         var activityDays = [Date: ActivityType]()
@@ -633,8 +635,10 @@ final class HealthKitManager {
     func fetchDailyMinutesFiltered(forMonth date: Date) async throws -> [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] {
         let calendar = Calendar.current
         let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
-        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
-        return try await fetchDailyMinutesFiltered(from: startOfMonth, to: endOfMonth)
+        // Use start of NEXT month as endDate to include ALL samples from current month
+        // With .strictStartDate, samples must start BEFORE endDate (exclusive)
+        let startOfNextMonth = calendar.date(byAdding: DateComponents(month: 1), to: startOfMonth)!
+        return try await fetchDailyMinutesFiltered(from: startOfMonth, to: startOfNextMonth)
     }
     
     /// Legacy-Methode für Abwärtskompatibilität
