@@ -14,7 +14,6 @@ public final class SmartReminderEngine {
 
     @AppStorage("smartReminders") private var remindersData: Data = Data()
     @AppStorage("smartRemindersPaused") var isPaused: Bool = false
-    @AppStorage("lastReminderTrigger") private var lastTrigger: Date?
 
     private var reminders: [SmartReminder] = []
 
@@ -87,14 +86,15 @@ public final class SmartReminderEngine {
         }
     }
 
-    // MARK: - Notification Scheduling
+    // MARK: - Notification Scheduling (KOMPLETT NEU - basierend auf funktionierendem Debug-Code)
 
     #if os(iOS)
     /// Schedules UNCalendarNotificationTrigger for each enabled reminder.
+    /// SIMPLIFIED - exactly like working debug code!
     func scheduleNotifications() {
         logger.info("📅 Scheduling activity reminders...")
 
-        // Cancel all existing activity reminder notifications
+        // 1. Cancel all existing activity reminder notifications
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
             let reminderIdentifiers = requests
                 .filter { $0.identifier.hasPrefix("activity-reminder-") }
@@ -104,24 +104,29 @@ public final class SmartReminderEngine {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: reminderIdentifiers)
                 self.logger.info("🗑️ Removed \(reminderIdentifiers.count) pending activity reminder(s)")
             }
-        }
 
-        // Schedule notifications for each enabled reminder
-        for reminder in reminders where reminder.isEnabled {
-            scheduleNotification(for: reminder)
-        }
+            // 2. Schedule notifications for each enabled reminder
+            for reminder in self.reminders where reminder.isEnabled {
+                self.scheduleNotification(for: reminder)
+            }
 
-        logger.info("✅ Activity reminder scheduling complete")
+            self.logger.info("✅ Activity reminder scheduling complete")
+        }
     }
 
     /// Schedules a single UNNotificationRequest for a reminder.
+    /// SIMPLIFIED - exactly like working debug code!
     private func scheduleNotification(for reminder: SmartReminder) {
         let calendar = Calendar.current
 
-        // Create DateComponents for trigger time - extract BOTH hour AND minute from triggerTime
+        // Extract hour and minute from triggerTime
+        let hour = calendar.component(.hour, from: reminder.triggerTime)
+        let minute = calendar.component(.minute, from: reminder.triggerTime)
+
+        // Create DateComponents for trigger
         var dateComponents = DateComponents()
-        dateComponents.hour = calendar.component(.hour, from: reminder.triggerTime)
-        dateComponents.minute = calendar.component(.minute, from: reminder.triggerTime)
+        dateComponents.hour = hour
+        dateComponents.minute = minute
 
         // Create calendar trigger (repeats daily)
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -141,120 +146,9 @@ public final class SmartReminderEngine {
             if let error = error {
                 self.logger.error("❌ Failed to schedule notification for '\(reminder.title)': \(error.localizedDescription)")
             } else {
-                let hour = calendar.component(.hour, from: reminder.triggerTime)
-                let minute = calendar.component(.minute, from: reminder.triggerTime)
                 self.logger.info("✅ Scheduled notification for '\(reminder.title)' at \(String(format: "%02d:%02d", hour, minute))")
             }
         }
     }
     #endif
-
-    // MARK: - Trigger Logic
-
-    /// Prüft, ob ein Reminder getriggert werden sollte.
-    /// Testbar: Alle Bedingungen in separater Funktion.
-    private func shouldTriggerReminder(_ reminder: SmartReminder) async -> Bool {
-        guard reminder.isEnabled else {
-            logger.debug("❌ Reminder '\(reminder.title)' is disabled")
-            return false
-        }
-
-        let now = Date()
-        let calendar = Calendar.current
-
-        // 1. Wochentage-Prüfung (NEU!)
-        let todayWeekday = calendar.component(.weekday, from: now)
-        let today = Weekday.from(calendarWeekday: todayWeekday)
-
-        guard reminder.selectedDays.contains(today) else {
-            logger.debug("❌ Reminder '\(reminder.title)' not active on \(today.displayName)")
-            return false
-        }
-
-        // 2. Zeitfenster-Prüfung
-        guard let triggerStart = calendar.date(bySettingHour: reminder.triggerHour, minute: 0, second: 0, of: now),
-              let triggerEnd = calendar.date(byAdding: .minute, value: reminder.windowMinutes, to: triggerStart) else {
-            logger.error("❌ Failed to calculate trigger window for '\(reminder.title)'")
-            return false
-        }
-
-        guard now >= triggerStart && now <= triggerEnd else {
-            logger.debug("❌ Reminder '\(reminder.title)' outside time window (\(triggerStart) - \(triggerEnd))")
-            return false
-        }
-
-        // 3. HealthKit-Prüfung (KORRIGIERT: von NOW, nicht triggerStart!)
-        guard let lookbackStart = calendar.date(byAdding: .hour, value: -reminder.lookbackHours, to: now) else {
-            logger.error("❌ Failed to calculate lookback start for '\(reminder.title)'")
-            return false
-        }
-
-        do {
-            let hasActivity = try await HealthKitManager.shared.hasActivity(
-                ofType: reminder.checkType.rawValue,
-                inRange: lookbackStart,
-                end: now  // ← KORRIGIERT: von NOW, nicht triggerStart!
-            )
-
-            if hasActivity {
-                logger.info("✅ Reminder '\(reminder.title)' skipped: activity found in last \(reminder.lookbackHours)h")
-                return false
-            } else {
-                logger.info("🔔 Reminder '\(reminder.title)' will trigger: no activity in last \(reminder.lookbackHours)h")
-                return true
-            }
-
-        } catch {
-            logger.error("❌ HealthKit check failed for '\(reminder.title)': \(error.localizedDescription)")
-            return false // Bei HealthKit-Fehler: keine Notification
-        }
-    }
-
-    /// Trigert eine Notification für einen Reminder.
-    private func triggerNotification(for reminder: SmartReminder) async {
-        do {
-            let helper = NotificationHelper()
-            try await helper.requestAuthorization()
-
-            // Sofortige Notification (timeInterval: 1)
-            try await helper.schedulePhaseEndNotification(
-                in: 1,
-                title: reminder.title,
-                body: reminder.message,
-                identifier: "smart-reminder-\(reminder.id.uuidString)"
-            )
-
-            logger.info("📬 Triggered notification for reminder: \(reminder.title)")
-        } catch {
-            logger.error("❌ Failed to trigger notification for '\(reminder.title)': \(error.localizedDescription)")
-        }
-    }
-
-
-    // MARK: - Helpers
-
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return formatter.string(from: date)
-    }
-}
-
-// MARK: - Weekday Extension
-
-extension Weekday {
-    /// Konvertiert Calendar.component(.weekday) zu Weekday enum.
-    /// Calendar.weekday: 1=Sunday, 2=Monday, ..., 7=Saturday
-    static func from(calendarWeekday: Int) -> Weekday {
-        switch calendarWeekday {
-        case 1: return .sunday
-        case 2: return .monday
-        case 3: return .tuesday
-        case 4: return .wednesday
-        case 5: return .thursday
-        case 6: return .friday
-        case 7: return .saturday
-        default: return .sunday // Fallback
-        }
-    }
 }
