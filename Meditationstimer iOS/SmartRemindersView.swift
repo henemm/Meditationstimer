@@ -317,10 +317,6 @@ struct ReminderRow: View {
                 .foregroundColor(.secondary)
 
             HStack {
-                Text("Nach \(reminder.hoursInactive) Stunden")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Spacer()
                 Text(reminder.triggerTime.formatted(date: .omitted, time: .shortened))
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -375,12 +371,6 @@ struct ReminderEditorView: View {
                 }
 
                 Section(header: Text("Zeitplan")) {
-                    Picker("Stunden ohne Aktivität", selection: $hoursInactive) {
-                        ForEach(1...48, id: \.self) { hours in
-                            Text("\(hours)").tag(hours)
-                        }
-                    }
-
                     Picker("Aktivitätstyp", selection: $activityType) {
                         Text("Meditation").tag(ActivityType.mindfulness)
                         Text("Workout").tag(ActivityType.workout)
