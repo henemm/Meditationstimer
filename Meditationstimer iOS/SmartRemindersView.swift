@@ -178,6 +178,16 @@ struct SmartRemindersView: View {
                 engine.addReminder(sample)
             }
             reminders = engine.getReminders()
+        } else {
+            // Migration: NoAlc Reminder hinzufügen falls nicht vorhanden
+            let hasNoAlcReminder = reminders.contains { $0.activityType == .noalc }
+            if !hasNoAlcReminder {
+                let samples = SmartReminder.sampleData()
+                if let noAlcSample = samples.first(where: { $0.activityType == .noalc }) {
+                    engine.addReminder(noAlcSample)
+                    reminders = engine.getReminders()
+                }
+            }
         }
     }
 
@@ -374,6 +384,7 @@ struct ReminderEditorView: View {
                     Picker("Aktivitätstyp", selection: $activityType) {
                         Text("Meditation").tag(ActivityType.mindfulness)
                         Text("Workout").tag(ActivityType.workout)
+                        Text("NoAlc").tag(ActivityType.noalc)
                     }
 
                     DatePicker("Uhrzeit", selection: $triggerTime, displayedComponents: .hourAndMinute)
