@@ -79,12 +79,16 @@ final class HealthKitManager {
         let workoutType = HKObjectType.workoutType()
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
         let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages)
+        let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)
 
         var toShare = Set<HKSampleType>()
         toShare.insert(mindfulType)
         toShare.insert(workoutType)
         if let alcoholType = alcoholType {
             toShare.insert(alcoholType)
+        }
+        if let energyType = energyType {
+            toShare.insert(energyType)  // Required for logging workout calories
         }
 
         var toRead = Set<HKObjectType>()
@@ -95,6 +99,9 @@ final class HealthKitManager {
         }
         if let alcoholType = alcoholType {
             toRead.insert(alcoholType)
+        }
+        if let energyType = energyType {
+            toRead.insert(energyType)  // Optional: for reading calorie data later
         }
 
         // Prüfen, ob eine Anfrage überhaupt nötig ist
@@ -154,8 +161,26 @@ final class HealthKitManager {
     /// Schreibt EIN Workout von `start` bis `end` in Apple Health (Trainings‑App).
     /// Standardaktivität: HIIT (High Intensity Interval Training).
     /// Verwendet HKWorkoutBuilder (moderne API seit iOS 17.0).
+    /// WICHTIG: Fügt activeEnergyBurned hinzu für MOVE Ring und Fitness App Integration.
     func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws {
         #if os(iOS)
+        // Calculate workout duration in minutes
+        let durationMinutes = end.timeIntervalSince(start) / 60.0
+
+        // Estimate calories based on activity type (MET-based approximation)
+        // HIIT: ~12 kcal/min, Yoga: ~4 kcal/min (conservative estimates)
+        let caloriesPerMinute: Double
+        switch activity {
+        case .highIntensityIntervalTraining:
+            caloriesPerMinute = 12.0
+        case .yoga:
+            caloriesPerMinute = 4.0
+        default:
+            caloriesPerMinute = 8.0  // Generic moderate activity
+        }
+
+        let estimatedCalories = durationMinutes * caloriesPerMinute
+
         // Create workout configuration
         let configuration = HKWorkoutConfiguration()
         configuration.activityType = activity
@@ -172,6 +197,25 @@ final class HealthKitManager {
         // Add metadata before finishing
         let metadata: [String: Any] = ["appSource": "Meditationstimer"]
         try await builder.addMetadata(metadata)
+
+        // CRITICAL: Add activeEnergyBurned sample for MOVE ring / Fitness app integration
+        // This is required for calories to show up in iOS Fitness app and affect MOVE ring
+        guard let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else {
+            throw HealthKitError.saveFailed
+        }
+
+        let energyQuantity = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: estimatedCalories)
+        let energySample = HKQuantitySample(
+            type: energyType,
+            quantity: energyQuantity,
+            start: start,
+            end: end,
+            device: .local(),
+            metadata: ["appSource": "Meditationstimer"]
+        )
+
+        // Add the energy sample to the workout
+        try await builder.addSamples([energySample])
 
         // Finalize workout (saves to HealthKit automatically)
         _ = try await builder.finishWorkout()
@@ -202,19 +246,36 @@ final class HealthKitManager {
         #endif
     }
     
-    /// Prüft, ob HealthKit bereits autorisiert ist (für schreiben: mindfulSession & Workout).
+    /// Prüft, ob HealthKit bereits autorisiert ist (für schreiben: mindfulSession, Workout, Energy, Alcohol).
     func isAuthorized() async -> Bool {
         guard HKHealthStore.isHealthDataAvailable() else { return false }
         guard let mindfulType = HKObjectType.categoryType(forIdentifier: .mindfulSession) else { return false }
         let workoutType = HKObjectType.workoutType()
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)
+        let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages)
+        let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)
 
-        let toShare: Set<HKSampleType> = [mindfulType, workoutType]
+        var toShare = Set<HKSampleType>()
+        toShare.insert(mindfulType)
+        toShare.insert(workoutType)
+        if let alcoholType = alcoholType {
+            toShare.insert(alcoholType)
+        }
+        if let energyType = energyType {
+            toShare.insert(energyType)
+        }
+
         var toRead = Set<HKObjectType>()
         toRead.insert(mindfulType)
         toRead.insert(workoutType)
         if let heartRateType = heartRateType {
             toRead.insert(heartRateType)
+        }
+        if let alcoholType = alcoholType {
+            toRead.insert(alcoholType)
+        }
+        if let energyType = energyType {
+            toRead.insert(energyType)
         }
 
         do {
