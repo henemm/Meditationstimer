@@ -497,10 +497,55 @@ Reference: `HealthKitManager.logWorkout()` lines 158-218
 ```
 
 **Why this is CRITICAL:**
-- Wastes time building wrong solution
-- Creates technical debt (parallel systems doing same thing)
-- Breaks user expectations (no Settings UI integration)
-- Violates "Analysis-First Principle"
+- Duplicate systems = double maintenance burden
+- User expects integration with existing UI/Settings
+- Wasted time building wrong architecture that must be deleted
+
+**Checklist before building ANY new system:**
+1. ✅ Grep for keywords related to the feature
+2. ✅ Read existing architecture documentation
+3. ✅ Check if Models/ or Services/ already have related code
+4. ✅ Ask user: "I see [existing system X], should I extend that or build new?"
+5. ✅ ONLY proceed after confirming approach
+
+---
+
+### CRITICAL: Never Use ✅ Checkmarks Without User Verification (October 2025)
+
+**Problem:** Repeatedly marked features as "✅ Complete" when they were incomplete or architecturally wrong.
+
+**Examples:**
+1. Claimed "Smart Notifications ✅ Complete" → No SmartReminder integration
+2. Claimed "SmartReminder Integration ✅ Complete" → UI Picker missing
+3. Multiple green checkmarks without full end-to-end verification
+
+**User Feedback:** *"ich kann diese Grünen Häkchen nicht mehr sehen! Die sind zu 80% phantasie!"*
+
+**The Rule:**
+```
+❌ NEVER: Use ✅ or "Complete" for implementation status
+✅ ALWAYS: Describe what was DONE, not what is "finished"
+✅ ALWAYS: Only USER can declare something "complete" after device testing
+```
+
+**What I CAN say:**
+- "Implemented X in file Y"
+- "Added X functionality"
+- "Built successfully"
+- "Unit tests passing"
+
+**What I CANNOT say:**
+- "✅ Complete"
+- "✅ Feature X done"
+- "✅ Working"
+- Any green checkmarks implying completeness
+
+**Why this matters:**
+- False "Complete" status wastes user's time (they assume it works)
+- Breaks trust (user sees feature "done" → tests → doesn't work)
+- I can only verify: builds, compiles, unit tests pass
+- I CANNOT verify: full integration, UI correctness, device behavior
+- Only USER can verify end-to-end functionality on real device
 
 **Checklist before building ANY new system:**
 1. ✅ Grep for keywords related to the feature (e.g., "Reminder", "Notification", "Activity")
