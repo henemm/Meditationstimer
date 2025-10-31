@@ -50,7 +50,33 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
     }
 
     public var description: String {
-        "Erinnert dich, wenn du länger als \(hoursInactive) Stunden keine Aktivität hattest."
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        let timeString = formatter.string(from: triggerTime)
+
+        // Format selected days
+        let dayString: String
+        if selectedDays.count == 7 {
+            dayString = "Täglich"
+        } else if selectedDays.isEmpty {
+            dayString = "Keine Tage"
+        } else {
+            let sortedDays = Weekday.allCases.filter { selectedDays.contains($0) }
+            let dayAbbreviations = sortedDays.map { day -> String in
+                switch day {
+                case .monday: return "Mo"
+                case .tuesday: return "Di"
+                case .wednesday: return "Mi"
+                case .thursday: return "Do"
+                case .friday: return "Fr"
+                case .saturday: return "Sa"
+                case .sunday: return "So"
+                }
+            }
+            dayString = dayAbbreviations.joined(separator: ", ")
+        }
+
+        return "\(dayString) um \(timeString)"
     }
 
     static func sampleData() -> [SmartReminder] {
