@@ -28,9 +28,7 @@ struct CalendarView: View {
 
     private let hk = HealthKitManager.shared
     private let calendar = Calendar.current
-    
-    @EnvironmentObject var streakManager: StreakManager
-    
+
     @State private var showMeditationInfo = false
     @State private var showWorkoutInfo = false
     @State private var showNoAlcInfo = false
@@ -45,6 +43,50 @@ struct CalendarView: View {
 
         while true {
             if alcoholDays[checkDate] != nil {
+                currentStreak += 1
+                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                checkDate = previousDate
+            } else {
+                break
+            }
+        }
+
+        return currentStreak
+    }
+
+    private var meditationStreak: Int {
+        let today = calendar.startOfDay(for: Date())
+        let todayMinutes = dailyMinutes[today]?.mindfulnessMinutes ?? 0
+        let hasDataToday = round(todayMinutes) >= 2.0
+
+        var currentStreak = 0
+        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        while true {
+            let minutes = dailyMinutes[checkDate]?.mindfulnessMinutes ?? 0
+            if round(minutes) >= 2.0 {
+                currentStreak += 1
+                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                checkDate = previousDate
+            } else {
+                break
+            }
+        }
+
+        return currentStreak
+    }
+
+    private var workoutStreak: Int {
+        let today = calendar.startOfDay(for: Date())
+        let todayMinutes = dailyMinutes[today]?.workoutMinutes ?? 0
+        let hasDataToday = round(todayMinutes) >= 2.0
+
+        var currentStreak = 0
+        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        while true {
+            let minutes = dailyMinutes[checkDate]?.workoutMinutes ?? 0
+            if round(minutes) >= 2.0 {
                 currentStreak += 1
                 guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
                 checkDate = previousDate
@@ -102,10 +144,10 @@ struct CalendarView: View {
                         .onTapGesture {
                             showMeditationInfo = true
                         }
-                    Text("Meditation: Streak \(streakManager.meditationStreak.currentStreakDays) Days")
+                    Text("Meditation: Streak \(meditationStreak) Day\(meditationStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
-                    rewardsView(for: streakManager.meditationStreak.rewardsEarned, icon: "leaf.fill", color: .blue)
+                    rewardsView(for: min(3, meditationStreak / 7), icon: "leaf.fill", color: .blue)
                 }
                 .popover(isPresented: $showMeditationInfo) {
                     VStack(spacing: 0) {
@@ -139,10 +181,10 @@ struct CalendarView: View {
                         .onTapGesture {
                             showWorkoutInfo = true
                         }
-                    Text("Workouts: Streak \(streakManager.workoutStreak.currentStreakDays) Days")
+                    Text("Workouts: Streak \(workoutStreak) Day\(workoutStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
-                    rewardsView(for: streakManager.workoutStreak.rewardsEarned, icon: "flame.fill", color: .purple)
+                    rewardsView(for: min(3, workoutStreak / 7), icon: "flame.fill", color: .purple)
                 }
                 .popover(isPresented: $showWorkoutInfo) {
                     VStack(spacing: 0) {
@@ -228,13 +270,11 @@ struct CalendarView: View {
                     do {
                         try await hk.requestAuthorization()
                         loadActivityDays()
-                        await streakManager.updateStreaks()
                     } catch {
                         errorMessage = "HealthKit-Berechtigung erforderlich: \(error.localizedDescription)"
                     }
                 } else {
                     loadActivityDays()
-                    await streakManager.updateStreaks()
                 }
             }
         }
@@ -360,11 +400,6 @@ struct CalendarView: View {
                 withAnimation {
                     scrollProxy?.scrollTo(0, anchor: .center)
                 }
-            }
-            
-            // Update streaks after loading data
-            Task {
-                await streakManager.updateStreaks()
             }
         }
     }
