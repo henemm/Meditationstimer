@@ -3,6 +3,7 @@ import Foundation
 public enum ActivityType: String, Codable {
     case mindfulness = "mindfulness"
     case workout = "workout"
+    case noalc = "noalc"
 }
 
 public enum Weekday: String, CaseIterable, Codable {
@@ -73,6 +74,16 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
                 isEnabled: true,
                 selectedDays: [.monday, .tuesday, .wednesday, .thursday, .friday],
                 activityType: .workout
+            ),
+            SmartReminder(
+                id: UUID(),
+                title: "NoAlc Check-In",
+                message: "Log your drinks to keep your streak going 💧",
+                hoursInactive: 24,
+                triggerTime: Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date()) ?? Date(),
+                isEnabled: false,  // Disabled by default - user must enable
+                selectedDays: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday],
+                activityType: .noalc
             )
         ]
     }

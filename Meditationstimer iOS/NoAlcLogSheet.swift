@@ -13,10 +13,8 @@ struct NoAlcLogSheet: View {
     @State private var selectedDate = Date()
     @State private var isLogging = false
     @State private var errorMessage: String?
-    @State private var notificationsEnabled = false
 
     private let noAlc = NoAlcManager.shared
-    private let notificationManager = NoAlcNotificationManager.shared
 
     var body: some View {
         VStack(spacing: 0) {
@@ -134,29 +132,6 @@ struct NoAlcLogSheet: View {
                                 .padding(.horizontal)
                         }
 
-                        // Daily Reminder Toggle
-                        VStack(spacing: 12) {
-                            Divider()
-                                .padding(.vertical, 8)
-
-                            Toggle(isOn: $notificationsEnabled) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("Daily Reminder")
-                                        .font(.subheadline)
-                                        .fontWeight(.medium)
-                                    Text("Get notified at 9:00 AM")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            .onChange(of: notificationsEnabled) { _, newValue in
-                                Task {
-                                    await toggleNotifications(enabled: newValue)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-
                         Spacer()
                     }
                     .navigationTitle("Log Drinks")
@@ -169,11 +144,6 @@ struct NoAlcLogSheet: View {
                                 }
                             }
                         }
-                    }
-                    .task {
-                        // Check current notification status on appear
-                        let status = await notificationManager.getAuthorizationStatus()
-                        notificationsEnabled = (status == .authorized)
                     }
                 }
             }
@@ -223,26 +193,6 @@ struct NoAlcLogSheet: View {
         } catch {
             errorMessage = "Fehler: \(error.localizedDescription)"
             isLogging = false
-        }
-    }
-
-    @MainActor
-    private func toggleNotifications(enabled: Bool) async {
-        do {
-            if enabled {
-                // Request permission
-                try await notificationManager.requestAuthorization()
-
-                // Schedule daily reminder
-                try await notificationManager.scheduleDailyReminder(hour: 9, minute: 0)
-            } else {
-                // Cancel notifications
-                notificationManager.cancelAllNotifications()
-            }
-        } catch {
-            errorMessage = "Notification error: \(error.localizedDescription)"
-            // Revert toggle on error
-            notificationsEnabled = false
         }
     }
 }

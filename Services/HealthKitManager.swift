@@ -683,6 +683,21 @@ final class HealthKitManager {
                 }
                 self.healthStore.execute(query)
             }
+        case "noalc":
+            guard let alcoholType = HKObjectType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+                throw HealthKitError.healthDataUnavailable
+            }
+            return try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Bool, Error>) in
+                let query = HKSampleQuery(sampleType: alcoholType, predicate: predicate, limit: 1, sortDescriptors: nil) { _, samples, error in
+                    if let error = error {
+                        cont.resume(throwing: error)
+                        return
+                    }
+                    // Return true if alcohol entry exists (activity logged)
+                    cont.resume(returning: !(samples?.isEmpty ?? true))
+                }
+                self.healthStore.execute(query)
+            }
         default:
             return false
         }

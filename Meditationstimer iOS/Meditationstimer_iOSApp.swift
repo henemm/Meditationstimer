@@ -63,9 +63,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Set notification delegate
         UNUserNotificationCenter.current().delegate = self
 
-        // Register notification categories
-        NoAlcNotificationManager.shared.registerNotificationCategories()
-
         return true
     }
 
@@ -77,10 +74,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        Task { @MainActor in
-            await NoAlcNotificationManager.shared.handleNotificationResponse(response)
-            completionHandler()
-        }
+        // Handle notification responses here if needed
+        completionHandler()
     }
 
     /// Called when notification arrives while app is in foreground

@@ -470,6 +470,64 @@ Reference: Global CLAUDE.md "Analysis-First Prinzip"
 
 Reference: `HealthKitManager.logWorkout()` lines 158-218
 
+### CRITICAL: Always Check for Existing Systems Before Building New Ones (October 2025)
+
+**Problem:** Built a completely separate `NoAlcNotificationManager` system without checking if notification infrastructure already existed.
+
+**What happened:**
+1. Task: Add Smart Notifications for NoAlc tracking
+2. **MY ERROR:** Immediately started building `NoAlcNotificationManager.swift` as standalone system
+3. **WHAT I MISSED:** App already has `SmartReminderEngine` with `ActivityType` enum, BGTaskScheduler, and UI
+4. **RESULT:** Built parallel system that duplicates functionality and doesn't integrate with Settings UI
+5. **CLAIMED:** "✅ Complete" when it was actually wrong architecture
+
+**What I SHOULD have done:**
+```
+1. Search for existing notification/reminder systems (Grep for "Reminder", "Notification", "ActivityType")
+2. Read existing SmartReminder.swift, SmartReminderEngine.swift
+3. Understand the pattern: ActivityType enum → SmartReminderEngine → Settings UI
+4. Extend existing system, don't build parallel one
+5. ONLY claim "complete" after proper integration
+```
+
+**The Rule:**
+```
+❌ DON'T: See feature request → immediately start coding new system
+✅ DO: Search for existing systems → understand pattern → extend/integrate → test
+```
+
+**Why this is CRITICAL:**
+- Wastes time building wrong solution
+- Creates technical debt (parallel systems doing same thing)
+- Breaks user expectations (no Settings UI integration)
+- Violates "Analysis-First Principle"
+
+**Checklist before building ANY new system:**
+1. ✅ Grep for keywords related to the feature (e.g., "Reminder", "Notification", "Activity")
+2. ✅ Read existing architecture documentation (DOCS/ folder)
+3. ✅ Check if Models/ or Services/ already have related code
+4. ✅ Ask user: "I see [existing system X], should I extend that or build new?"
+5. ✅ ONLY proceed after confirming approach
+
+**Example - Correct Approach:**
+```
+User: "Add NoAlc smart notifications"
+Me: *Searches for "Notification", "Reminder", "ActivityType"*
+Me: *Finds SmartReminderEngine.swift*
+Me: "I see you have SmartReminderEngine with ActivityType enum (mindfulness, workout).
+     Should I add 'noalc' to this existing system, or build a separate notification manager?"
+User: "Use the existing system!"
+Me: *Extends ActivityType enum, adds NoAlc HealthKit check to engine, done correctly*
+```
+
+**User's feedback (verbatim):**
+> "Du hast ja gerade sehr viele grüne Häkchen für das Feature 'NoAlc' vergeben.
+> Aber ich sehe überhaupt nichts was auf die SmartReminder Integration hindeutet.
+> Weder gibt es die Kategorie 'NoAlc' noch hast du einen Beispieleintrag (9:00 Uhr) hinterlegt.
+> Was hast du denn überhaupt gemacht?????"
+
+**Lesson internalized:** ALWAYS check for existing systems FIRST. No exceptions.
+
 ---
 
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**
