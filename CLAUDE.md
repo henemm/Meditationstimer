@@ -404,9 +404,65 @@ xcodebuild test -project Meditationstimer.xcodeproj \
 - Fix the regression immediately
 - Re-run tests until green
 
+### Trace Complete Data Flow - Don't Analyze Fragments (October 2025 - NoAlc Tracker)
+
+**CRITICAL META-LEARNING:** When analyzing a problem, NEVER just look at code fragments. Always trace the COMPLETE "Entstehungsgeschichte" (origin story) of the data.
+
+**What went wrong:**
+
+**Example 1 - Streak Calculation:**
+- ❌ Looked at: StreakManager calculates streaks (fragment)
+- ❌ Missed: Where does StreakManager GET its data? (separate HealthKit query!)
+- ❌ Missed: Where does CalendarView GET its data? (dailyMinutes dictionary!)
+- ❌ Result: Didn't notice they use DIFFERENT data sources → inconsistency!
+
+**Example 2 - Color Definitions:**
+- ❌ Looked at: `alcoholSteady = Color(hex: "#1FCF7E")` in Colors.swift (fragment)
+- ❌ Missed: Where is this color USED? (CalendarView, other views?)
+- ❌ Missed: Are there multiple color definitions that need to stay consistent?
+
+**Correct Approach - Trace Complete Data Flow:**
+
+```
+1. WHERE is data created/loaded?
+   └→ HealthKitManager.fetchDailyMinutesFiltered() → dailyMinutes dictionary
+   └→ StreakManager.updateStreaks() → separate HealthKit query
+
+2. HOW is data transformed?
+   └→ Filtered? Aggregated? Cached?
+
+3. WHERE is data displayed?
+   └→ CalendarView uses dailyMinutes for rings
+
+4. WHERE is data used for calculations?
+   └→ StreakManager uses separate query for streak calculation
+
+5. Are steps 3 and 4 using THE SAME data?
+   └→ NO! → Root cause identified!
+```
+
+**Lesson:**
+```
+❌ DON'T: Analyze isolated code fragments
+✅ DO: Trace complete data flow from source to consumption
+✅ DO: Map all usages before making changes
+✅ DO: Verify consistency between visualization and calculation
+```
+
+**User's key insight:**
+> "Du darfst nicht nur Fragmente anschauen, sondern die komplette 'Entstehungsgeschichte' rückverfolgen"
+
+This principle applies to:
+- Data flow (where does it come from, where does it go?)
+- Color/style definitions (where are they used?)
+- State management (who creates, who modifies, who reads?)
+- API calls (who calls, what data flows in/out?)
+
 ### Data Source Consistency (October 2025 - NoAlc Tracker)
 
 **CRITICAL:** When displaying data AND using it for calculations, both MUST use the SAME data source.
+
+**Note:** This bug was only discovered by applying "Trace Complete Data Flow" principle above!
 
 **Problem (Streak Calculation Bug):**
 - CalendarView displayed rings based on `dailyMinutes` dictionary
