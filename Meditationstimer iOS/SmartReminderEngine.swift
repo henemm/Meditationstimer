@@ -141,7 +141,9 @@ public final class SmartReminderEngine {
             if let error = error {
                 self.logger.error("❌ Failed to schedule notification for '\(reminder.title)': \(error.localizedDescription)")
             } else {
-                self.logger.info("✅ Scheduled notification for '\(reminder.title)' at \(reminder.triggerHour):00")
+                let hour = calendar.component(.hour, from: reminder.triggerTime)
+                let minute = calendar.component(.minute, from: reminder.triggerTime)
+                self.logger.info("✅ Scheduled notification for '\(reminder.title)' at \(String(format: "%02d:%02d", hour, minute))")
             }
         }
     }
