@@ -420,6 +420,25 @@ private struct OverlayBackgroundEffect: ViewModifier {
         let preset: Preset
         @Environment(\.dismiss) private var dismiss
 
+        private var recommendedUsage: String {
+            switch preset.name {
+            case "Box 4-4-4-4":
+                return "Bei akutem Stress, vor wichtigen Terminen oder Präsentationen. Ideal für schnelle Beruhigung in fordernden Situationen."
+            case "4-0-6-0":
+                return "Abends zur Entspannung oder vor dem Schlafengehen. Verlängerte Ausatmung aktiviert den Ruhemodus des Körpers."
+            case "Coherent 5-0-5-0", "Coherent Breathing 5-0-5-0":
+                return "Täglich morgens oder mittags zur HRV-Optimierung. Regelmäßige Praxis verbessert langfristig die Stressresilienz."
+            case "7-0-5-0":
+                return "Bei innerer Unruhe oder wenn mentale Klarheit benötigt wird. Fördert Fokus und tiefe Entspannung."
+            case "4-7-8":
+                return "Abends direkt vor dem Einschlafen oder bei Schlafproblemen. Wirkt beruhigend bei Stress und Angst."
+            case "Rectangle 6-3-6-3":
+                return "Jederzeit als tägliche Routine. Ausgewogener Rhythmus für Balance im Alltag."
+            default:
+                return "Regelmäßige Praxis für beste Ergebnisse."
+            }
+        }
+
         var body: some View {
             NavigationStack {
                 ScrollView {
@@ -455,6 +474,15 @@ private struct OverlayBackgroundEffect: ViewModifier {
                                 Text(description)
                                     .font(.body)
                             }
+                        }
+
+                        // Recommended Usage Section
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Empfohlene Anwendung")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            Text(recommendedUsage)
+                                .font(.body)
                         }
                     }
                     .padding()
