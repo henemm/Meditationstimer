@@ -156,6 +156,11 @@ final class HealthKitManager {
                 }
             }
         }
+
+        // Reverse Smart Reminders: Cancel matching reminders after successful log
+        #if os(iOS)
+        SmartReminderEngine.shared.cancelMatchingReminders(for: .mindfulness, completedAt: end)
+        #endif
     }
     
     /// Schreibt EIN Workout von `start` bis `end` in Apple Health (Trainings‑App).
@@ -219,6 +224,9 @@ final class HealthKitManager {
 
         // Finalize workout (saves to HealthKit automatically)
         _ = try await builder.finishWorkout()
+
+        // Reverse Smart Reminders: Cancel matching reminders after successful log
+        SmartReminderEngine.shared.cancelMatchingReminders(for: .workout, completedAt: end)
         #else
         throw HealthKitError.healthDataUnavailable
         #endif
@@ -736,6 +744,11 @@ final class HealthKitManager {
                 }
             }
         }
+
+        // Reverse Smart Reminders: Cancel NoAlc reminders after logging (regardless of drinks count)
+        #if os(iOS)
+        SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: normalizedDate)
+        #endif
     }
 
     /// Holt Alkoholkonsum-Einträge für einen Monat aus Apple Health.

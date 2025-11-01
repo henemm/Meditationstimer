@@ -22,7 +22,7 @@
 **Development Target:**
 - **Xcode 26.0.1 / Swift 6.2** (iOS 26.0 SDK)
 - **Minimum Deployment:** iOS 18.5, watchOS 9.0
-- **Testing:** 44 Unit Tests (StreakManager + HealthKit) in LeanHealthTimerTests/
+- **Testing:** 66 Unit Tests (StreakManager + HealthKit + SmartReminder) in LeanHealthTimerTests/
 
 ---
 
@@ -255,10 +255,13 @@ Session ends
 **Test Files:** Located in `Tests/` directory
 
 **Test Coverage:**
-- `TwoPhaseTimerEngineTests.swift` – 18 tests
-- `StreakManagerTests.swift` – 15 tests
-- `HealthKitManagerTests.swift` – 25+ tests
-- Total: 58+ test cases
+- `StreakManagerTests.swift` – 14 tests
+- `HealthKitManagerTests.swift` – 24 tests
+- `NoAlcManagerTests.swift` – 10 tests
+- `SmartReminderEngineTests.swift` – 15 tests (Reverse Smart Reminders)
+- `MockHealthKitManagerTests.swift` – 2 tests
+- `LeanHealthTimerTests.swift` – 1 test
+- Total: 66 test cases
 
 **Setup:** Test files need to be added to Xcode test target first (see DOCS/testing-guide.md)
 

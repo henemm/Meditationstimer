@@ -89,7 +89,25 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
             dayString = dayAbbreviations.joined(separator: ", ")
         }
 
-        return "\(dayString) um \(timeString)"
+        // Activity description
+        let activityDescription: String
+        if hoursInactive == 1 {
+            // Singular: "in der letzten Stunde"
+            switch activityType {
+            case .mindfulness: activityDescription = "in der letzten Stunde keine Meditation gemacht wurde"
+            case .workout: activityDescription = "in der letzten Stunde kein Workout gemacht wurde"
+            case .noalc: activityDescription = "in der letzten Stunde keinen Alkoholkonsum protokolliert haben"
+            }
+        } else {
+            // Plural: "in den letzten X Stunden"
+            switch activityType {
+            case .mindfulness: activityDescription = "in den letzten \(hoursInactive) Stunden keine Meditation gemacht wurde"
+            case .workout: activityDescription = "in den letzten \(hoursInactive) Stunden kein Workout gemacht wurde"
+            case .noalc: activityDescription = "in den letzten \(hoursInactive) Stunden keinen Alkoholkonsum protokolliert haben"
+            }
+        }
+
+        return "\(dayString) um \(timeString) wenn \(activityDescription)"
     }
 
     static func sampleData() -> [SmartReminder] {

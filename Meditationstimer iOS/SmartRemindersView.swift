@@ -12,7 +12,7 @@ import HealthKit
 import UIKit
 #endif
 
-/// View für die Verwaltung von Activity Reminders mit Permission-Handling
+/// View für die Verwaltung von Smart Reminders mit Permission-Handling
 struct SmartRemindersView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("smartRemindersEnabled") private var smartRemindersEnabled: Bool = false
@@ -33,9 +33,9 @@ struct SmartRemindersView: View {
         List {
             // Toggle Section (disabled wenn Permissions fehlen)
             Section {
-                Toggle("Activity Reminders aktivieren", isOn: $smartRemindersEnabled)
+                Toggle("Smart Reminders aktivieren", isOn: $smartRemindersEnabled)
                     .disabled(!allPermissionsGranted)
-                    .help("Aktiviert tägliche Erinnerungen zur Aktivitäts-Protokollierung.")
+                    .help("Aktiviert intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast.")
                     .onChange(of: smartRemindersEnabled) { _, newValue in
                         if newValue {
                             requestNotificationPermissions()
@@ -55,7 +55,7 @@ struct SmartRemindersView: View {
                                 Text("Fehlende Berechtigungen")
                                     .font(.headline)
                                     .fontWeight(.semibold)
-                                Text("Activity Reminders benötigen alle folgenden Berechtigungen:")
+                                Text("Smart Reminders benötigen alle folgenden Berechtigungen:")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
@@ -106,7 +106,7 @@ struct SmartRemindersView: View {
             if smartRemindersEnabled && allPermissionsGranted {
                 Section(header: Text("Erinnerungen")) {
                     if reminders.isEmpty {
-                        Text("Keine Activity Reminders konfiguriert")
+                        Text("Keine Smart Reminders konfiguriert")
                             .foregroundColor(.secondary)
                             .italic()
                     } else {
@@ -132,13 +132,13 @@ struct SmartRemindersView: View {
                 }
 
                 Section(header: Text("Info")) {
-                    Text("Activity Reminders senden tägliche Benachrichtigungen zur konfigurierten Uhrzeit, um dich an die Aktivitäts-Protokollierung zu erinnern.")
+                    Text("Smart Reminders senden Benachrichtigungen zur konfigurierten Uhrzeit, werden aber automatisch storniert wenn du die Aktivität bereits im Rückblick-Zeitraum durchgeführt hast.")
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
             }
         }
-        .navigationTitle("Activity Reminders")
+        .navigationTitle("Smart Reminders")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -330,7 +330,7 @@ struct ReminderEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var title: String = ""
     @State private var message: String = ""
-    @State private var hoursInactive: Int = 24
+    @State private var hoursInactive: Int = 12  // Default: 12h look-back window
     @State private var triggerTime: Date = Date()
     @State private var isEnabled: Bool = true
     @State private var selectedDays: Set<Weekday> = Set(Weekday.allCases)
@@ -372,6 +372,20 @@ struct ReminderEditorView: View {
                     }
 
                     DatePicker("Uhrzeit", selection: $triggerTime, displayedComponents: .hourAndMinute)
+
+                    Picker("Rückblick-Zeitraum", selection: $hoursInactive) {
+                        ForEach(1...24, id: \.self) { hours in
+                            if hours == 1 {
+                                Text("1 Stunde").tag(hours)
+                            } else {
+                                Text("\(hours) Stunden").tag(hours)
+                            }
+                        }
+                    }
+
+                    Text("Reminder wird nicht gesendet, wenn Aktivität in den letzten \(hoursInactive)h vor der Reminder-Zeit stattfand.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
 
                 Section(header: Text("Wochentage")) {

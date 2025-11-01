@@ -146,8 +146,8 @@ struct SettingsSheet: View {
 
                 Section {
                     NavigationLink(destination: SmartRemindersView()) {
-                        Label("Activity Reminders", systemImage: "bell.badge")
-                            .help("Konfiguriere tägliche Erinnerungen zur Aktivitäts-Protokollierung.")
+                        Label("Smart Reminders", systemImage: "bell.badge")
+                            .help("Konfiguriere intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast.")
                     }
                 }
 
