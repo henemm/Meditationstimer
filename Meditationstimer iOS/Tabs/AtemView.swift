@@ -64,8 +64,9 @@ public struct AtemView: View {
         var exhale: Int
         var holdOut: Int
         var repetitions: Int
+        var description: String?
 
-        init(id: UUID = UUID(), name: String, emoji: String, inhale: Int, holdIn: Int, exhale: Int, holdOut: Int, repetitions: Int) {
+        init(id: UUID = UUID(), name: String, emoji: String, inhale: Int, holdIn: Int, exhale: Int, holdOut: Int, repetitions: Int, description: String? = nil) {
             self.id = id
             self.name = name
             self.emoji = emoji
@@ -74,6 +75,7 @@ public struct AtemView: View {
             self.exhale = exhale
             self.holdOut = holdOut
             self.repetitions = repetitions
+            self.description = description
         }
 
         var rhythmString: String { "\(inhale)-\(holdIn)-\(exhale)-\(holdOut)" }
@@ -165,17 +167,25 @@ public struct AtemView: View {
 
     // MARK: - Sample Presets & State
     @State private var presets: [Preset] = [
-        .init(name: "Box 4-4-4-4", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10),
-        .init(name: "4-0-6-0",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10),
-        .init(name: "7-0-5-0",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8),
-        .init(name: "4-7-8",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10),
-        .init(name: "Rectangle 6-3-6-3", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8)
+        .init(name: "Box 4-4-4-4", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
+              description: "Navy SEAL Technik zur Stress-Reduktion. Nachweislich effektiv zur Senkung des Cortisol-Spiegels."),
+        .init(name: "4-0-6-0",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
+              description: "Aktiviert das Parasympathische Nervensystem durch verlängerte Ausatmung. Ideal zur Entspannung."),
+        .init(name: "Coherent 5-0-5-0", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
+              description: "Optimiert Herz-Kohärenz (HRV). Wissenschaftlich am besten untersucht für kardiovaskuläre Gesundheit. 6 Atemzüge/min."),
+        .init(name: "7-0-5-0",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
+              description: "Tiefe Beruhigung durch sanften Rhythmus. Fördert mentale Klarheit."),
+        .init(name: "4-7-8",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
+              description: "Dr. Andrew Weil's Einschlaf-Technik. Basierend auf Pranayama, wirkt beruhigend bei Stress und Angst."),
+        .init(name: "Rectangle 6-3-6-3", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
+              description: "Ausgewogener Rhythmus mit kurzen Halte-Phasen. Balance zwischen Aktivierung und Entspannung.")
     ]
 
     @State private var showSettings = false
     @State private var showingCalendar = false
     @State private var showingNoAlcLog = false
     @State private var showingEditor: Preset? = nil
+    @State private var showingInfo: Preset? = nil
     @State private var runningPreset: Preset? = nil
 
     private let presetsKey = "atemPresets"
@@ -208,7 +218,8 @@ public struct AtemView: View {
                         Row(
                             preset: preset,
                             play: { runningPreset = preset },
-                            edit: { showingEditor = preset }
+                            edit: { showingEditor = preset },
+                            showInfo: { showingInfo = preset }
                         )
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
@@ -269,6 +280,9 @@ public struct AtemView: View {
                         }
                     )
                 }
+                .sheet(item: $showingInfo) { preset in
+                    PresetInfoSheet(preset: preset)
+                }
                 .onAppear { loadPresets() }
             }
             .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
@@ -317,6 +331,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         let preset: Preset
         let play: () -> Void
         let edit: () -> Void
+        let showInfo: (() -> Void)?
 
         var body: some View {
             AtemGlassCard {
@@ -342,7 +357,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     // Spacer to bias layout so bottom feels like lower third
                     Spacer(minLength: 8)
 
-                    // BOTTOM ~1/3: details left, edit right
+                    // BOTTOM ~1/3: details left, info + edit right
                     HStack(alignment: .center) {
                         Text("\(preset.rhythmString) · \(preset.repetitions)x · ≈ \(preset.totalDurationString)")
                             .font(.subheadline)
@@ -350,6 +365,18 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             .lineLimit(1)
                             .truncationMode(.tail)
                         Spacer()
+
+                        // Info button (only if description exists)
+                        if preset.description != nil, let showInfo = showInfo {
+                            Button(action: showInfo) {
+                                Image(systemName: "info.circle")
+                                    .font(.system(size: 18, weight: .regular))
+                                    .frame(width: 32, height: 32)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Info")
+                        }
+
                         Button(action: edit) {
                             Image(systemName: "ellipsis")
                                 .font(.system(size: 18, weight: .regular))
@@ -384,6 +411,63 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     Spacer()
                 }
                 .frame(minHeight: 70)
+            }
+        }
+    }
+
+    // MARK: - Preset Info Sheet
+    struct PresetInfoSheet: View {
+        let preset: Preset
+        @Environment(\.dismiss) private var dismiss
+
+        var body: some View {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        // Header: Emoji + Name
+                        HStack(spacing: 16) {
+                            Text(preset.emoji)
+                                .font(.system(size: 60))
+                            Text(preset.name)
+                                .font(.system(size: 28, weight: .bold))
+                            Spacer()
+                        }
+                        .padding(.top, 8)
+
+                        // Rhythm Section
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Rhythmus")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            Text(preset.rhythmString)
+                                .font(.title3)
+                            Text("\(preset.repetitions) Wiederholungen · ≈ \(preset.totalDurationString)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        // Description Section
+                        if let description = preset.description {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Wirkung")
+                                    .font(.headline)
+                                    .foregroundStyle(.secondary)
+                                Text(description)
+                                    .font(.body)
+                            }
+                        }
+                    }
+                    .padding()
+                }
+                .navigationTitle("Preset-Info")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Fertig") {
+                            dismiss()
+                        }
+                    }
+                }
             }
         }
     }
