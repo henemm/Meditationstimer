@@ -104,10 +104,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				auftakt.caf,
-				ausatmen.caf,
-				"ausgeatmet-halten.caf",
-				einatmen.caf,
-				"eingeatmet-halten.caf",
 			);
 			target = B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */;
 		};
