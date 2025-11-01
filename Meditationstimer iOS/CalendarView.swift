@@ -241,7 +241,7 @@ struct CalendarView: View {
                         }
                         .padding(.top, 8)
                         .padding(.trailing, 8)
-                        Text("Track your alcohol consumption daily.\n\n• Steady (💧): 0-1 drinks\n• Easy (✨): 2-5 drinks\n• Wild (💥): 6+ drinks\n\nStreak tracking coming soon!")
+                        Text("Track your alcohol consumption daily.\n\n• Steady (💧): 0-1 drinks\n• Easy (✨): 2-5 drinks\n• Wild (💥): 6+ drinks\n\nGet a reward every 7 days of logging:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
                             .padding()
                             .frame(maxWidth: 280)
                             .font(.footnote)

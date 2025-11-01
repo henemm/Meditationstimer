@@ -137,11 +137,15 @@ struct NoAlcLogSheet: View {
                     .navigationTitle("Log Drinks")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Abbrechen") {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
                                 withAnimation {
                                     isExpanded = false
                                 }
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                                    .foregroundStyle(.secondary)
                             }
                         }
                     }
