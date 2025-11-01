@@ -75,49 +75,37 @@ keine
 
 ## 🔧 Sonstige Todos
 
-### Test-Target in Xcode einrichten
-**Status:** Offen
+### ~~Test-Target in Xcode einrichten~~ ✅ **Abgeschlossen**
+**Status:** ✅ Erledigt (1. November 2025)
 **Priorität:** Niedrig
-**Aufwand:** ~30 Min
+**Aufwand:** War ~30 Min
 
-**Problem:**
-Es existieren 58+ Unit Tests im Verzeichnis `/Tests/`:
-- `TwoPhaseTimerEngineTests.swift` (18 Tests)
-- `StreakManagerTests.swift` (15 Tests)
-- `HealthKitManagerTests.swift` (25+ Tests)
+**Was erledigt wurde:**
+- ✅ Test Target `LeanHealthTimerTests` erstellt und konfiguriert
+- ✅ 53 Unit Tests erfolgreich integriert:
+  - `HealthKitManagerTests.swift` (25 Tests)
+  - `StreakManagerTests.swift` (15 Tests)
+  - `NoAlcManagerTests.swift` (10 Tests)
+  - `MockHealthKitManagerTests.swift` (2 Tests)
+  - `LeanHealthTimerTests.swift` (1 Test)
+- ✅ Alle Tests laufen via `⌘U` oder xcodebuild
+- ✅ 100% Test Success Rate
 
-Diese Tests sind NICHT in Xcode integriert und werden nicht ausgeführt.
+**Bereinigung durchgeführt (1. November 2025):**
+- Gelöscht: Duplikat-Verzeichnis `Tests/` (identische Kopie)
+- Gelöscht: Alte manuelle Test-Scripts in `scripts/` (durch XCTest ersetzt)
+- Behalten: `LeanHealthTimerTests/` (einziges aktives Test-Target)
 
-**Was zu tun ist:**
+**Test-Ausführung:**
+```bash
+# In Xcode:
+⌘U
 
-**Schritt 1: Test Target erstellen**
-1. Xcode öffnen → Meditationstimer.xcodeproj
-2. File → New → Target
-3. iOS → Unit Testing Bundle auswählen
-4. Product Name: "MeditationstimerTests"
-5. Finish klicken
-
-**Schritt 2: Test-Dateien zum Target hinzufügen**
-1. Im Project Navigator (links): Ordner `/Tests/` finden
-2. Für JEDE `.swift` Datei in `/Tests/`:
-   - Datei im Navigator anklicken
-   - File Inspector öffnen (Rechte Sidebar, Datei-Symbol)
-   - Unter "Target Membership": Häkchen bei "MeditationstimerTests" setzen
-3. Alternativ: Alle 3 Dateien markieren → Rechtsklick → "Show File Inspector" → Target Membership
-
-**Schritt 3: Tests ausführen**
-- In Xcode: Product → Test (⌘U)
-- Oder Terminal: `xcodebuild test -scheme MeditationstimerTests -destination 'platform=iOS Simulator,name=iPhone 16 Pro'`
-
-**Schritt 4: Verifizieren**
-- Test Navigator (⌘6) öffnen
-- Alle 58+ Tests sollten sichtbar sein
-- Grüne Häkchen = Tests passed
-
-**Warum wichtig:**
-- Regression Testing bei Code-Änderungen
-- CI/CD Integration möglich
-- Test Coverage sichtbar machen
+# Oder Terminal:
+xcodebuild test -project Meditationstimer.xcodeproj \
+  -scheme "Lean Health Timer" \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+```
 
 ---
 
