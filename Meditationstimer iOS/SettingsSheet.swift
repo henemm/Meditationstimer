@@ -122,11 +122,8 @@ struct SettingsSheet: View {
                 Section(header: Text("Atem-Sounds 🎵")) {
                     Picker("Sound-Theme", selection: $selectedAtemTheme) {
                         ForEach(AtemView.AtemSoundTheme.allCases, id: \.self) { theme in
-                            HStack {
-                                Text(theme.emoji)
-                                Text(theme.displayName)
-                            }
-                            .tag(theme)
+                            Text("\(theme.emoji) \(theme.displayName)")
+                                .tag(theme)
                         }
                     }
                     #if os(iOS)
