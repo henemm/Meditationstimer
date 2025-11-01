@@ -115,38 +115,43 @@ public final class SmartReminderEngine {
     }
 
     /// Schedules a single UNNotificationRequest for a reminder.
-    /// SIMPLIFIED - exactly like working debug code!
+    /// FIXED: Now with weekday support + notification actions for NoAlc
     private func scheduleNotification(for reminder: SmartReminder) {
         let calendar = Calendar.current
-
-        // Extract hour and minute from triggerTime
         let hour = calendar.component(.hour, from: reminder.triggerTime)
         let minute = calendar.component(.minute, from: reminder.triggerTime)
 
-        // Create DateComponents for trigger
-        var dateComponents = DateComponents()
-        dateComponents.hour = hour
-        dateComponents.minute = minute
+        // Schedule one notification PER selected weekday
+        for weekday in reminder.selectedDays {
+            var dateComponents = DateComponents()
+            dateComponents.hour = hour
+            dateComponents.minute = minute
+            dateComponents.weekday = weekday.calendarWeekday  // 1=Sunday, 2=Monday, etc.
 
-        // Create calendar trigger (repeats daily)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
-        // Create notification content
-        let content = UNMutableNotificationContent()
-        content.title = reminder.title
-        content.body = reminder.message
-        content.sound = .default
+            // Create notification content
+            let content = UNMutableNotificationContent()
+            content.title = reminder.title
+            content.body = reminder.message
+            content.sound = .default
 
-        // Create request with unique identifier
-        let identifier = "activity-reminder-\(reminder.id.uuidString)"
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            // NoAlc: Add notification actions for direct logging
+            if reminder.activityType == .noalc {
+                content.categoryIdentifier = "NOALC_LOG_CATEGORY"
+            }
 
-        // Schedule notification
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                self.logger.error("❌ Failed to schedule notification for '\(reminder.title)': \(error.localizedDescription)")
-            } else {
-                self.logger.info("✅ Scheduled notification for '\(reminder.title)' at \(String(format: "%02d:%02d", hour, minute))")
+            // Unique identifier per weekday
+            let identifier = "activity-reminder-\(reminder.id.uuidString)-\(weekday.rawValue)"
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+            // Schedule notification
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    self.logger.error("❌ Failed to schedule '\(reminder.title)' for \(weekday.displayName): \(error.localizedDescription)")
+                } else {
+                    self.logger.info("✅ Scheduled '\(reminder.title)' for \(weekday.displayName) at \(String(format: "%02d:%02d", hour, minute))")
+                }
             }
         }
     }

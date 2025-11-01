@@ -45,7 +45,41 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Set notification delegate
         UNUserNotificationCenter.current().delegate = self
 
+        // Register notification categories for NoAlc direct logging
+        registerNotificationCategories()
+
         return true
+    }
+
+    /// Register notification actions for NoAlc reminders
+    private func registerNotificationCategories() {
+        // NoAlc actions: Steady, Easy, Wild
+        let steadyAction = UNNotificationAction(
+            identifier: "NOALC_STEADY",
+            title: "💧 Steady",
+            options: []
+        )
+
+        let easyAction = UNNotificationAction(
+            identifier: "NOALC_EASY",
+            title: "✨ Easy",
+            options: []
+        )
+
+        let wildAction = UNNotificationAction(
+            identifier: "NOALC_WILD",
+            title: "💥 Wild",
+            options: []
+        )
+
+        let noAlcCategory = UNNotificationCategory(
+            identifier: "NOALC_LOG_CATEGORY",
+            actions: [steadyAction, easyAction, wildAction],
+            intentIdentifiers: [],
+            options: []
+        )
+
+        UNUserNotificationCenter.current().setNotificationCategories([noAlcCategory])
     }
 
     // MARK: - UNUserNotificationCenterDelegate
@@ -56,8 +90,37 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        // Handle notification responses here if needed
-        completionHandler()
+        // Handle NoAlc direct logging
+        Task { @MainActor in
+            switch response.actionIdentifier {
+            case "NOALC_STEADY":
+                await logNoAlc(.steady)
+            case "NOALC_EASY":
+                await logNoAlc(.easy)
+            case "NOALC_WILD":
+                await logNoAlc(.wild)
+            default:
+                break
+            }
+            completionHandler()
+        }
+    }
+
+    /// Log NoAlc consumption from notification action
+    @MainActor
+    private func logNoAlc(_ level: NoAlcManager.ConsumptionLevel) async {
+        do {
+            let noAlc = NoAlcManager.shared
+            try await noAlc.requestAuthorization()
+
+            // Use target day (yesterday evening if before 18:00)
+            let dateToLog = noAlc.targetDay()
+            try await noAlc.logConsumption(level, for: dateToLog)
+
+            print("✅ Logged NoAlc: \(level.label) for \(dateToLog)")
+        } catch {
+            print("❌ Failed to log NoAlc: \(error.localizedDescription)")
+        }
     }
 
     /// Called when notification arrives while app is in foreground
