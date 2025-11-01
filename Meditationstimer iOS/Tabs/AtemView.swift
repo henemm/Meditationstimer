@@ -214,6 +214,15 @@ public struct AtemView: View {
                         .listRowBackground(Color.clear)
                     }
                     .onDelete { presets.remove(atOffsets: $0); savePresets() }
+
+                    // Add Preset Card
+                    AddPresetCard {
+                        showingEditor = Preset(name: "Neues Preset",
+                                               emoji: randomEmoji(),
+                                               inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
                 }
                 .listStyle(.plain)
                 .padding(.horizontal, 4)
@@ -222,12 +231,6 @@ public struct AtemView: View {
                 .toolbar {
                     if runningPreset == nil {
                         ToolbarItemGroup(placement: .topBarTrailing) {
-                            Button {
-                                showingEditor = Preset(name: "Neues Preset",
-                                                       emoji: randomEmoji(),
-                                                       inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
-                            } label: { Image(systemName: "plus") }
-
                             Button { showingNoAlcLog = true } label: { Image(systemName: "drop.fill") }
 
                             Button { showingCalendar = true } label: { Image(systemName: "calendar") }
@@ -357,6 +360,30 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     }
                 }
                 .frame(minHeight: 140)
+            }
+        }
+    }
+
+    // MARK: - Add Preset Card
+    struct AddPresetCard: View {
+        let action: () -> Void
+
+        var body: some View {
+            AtemGlassCard {
+                HStack {
+                    Spacer()
+                    Button(action: action) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 22, weight: .regular))
+                            .frame(width: 40, height: 40)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.blue)
+                    .clipShape(Circle())
+                    .accessibilityLabel("Neues Preset hinzufügen")
+                    Spacer()
+                }
+                .frame(minHeight: 70)
             }
         }
     }
