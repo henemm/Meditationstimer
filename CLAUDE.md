@@ -612,6 +612,37 @@ Me: *Extends ActivityType enum, adds NoAlc HealthKit check to engine, done corre
 
 **Lesson internalized:** ALWAYS check for existing systems FIRST. No exceptions.
 
+### Notification Debugging Protocol (November 2025)
+
+**Problem:** UNCalendarNotificationTrigger notifications not firing after 5+ attempts.
+
+**Solution:** Build minimal reproducible test FIRST:
+1. Create debug view with simplest possible notification (10-second timer)
+2. Test system works isolated from complex code
+3. If debug works → problem is in app code, not system
+4. Rewrite complex code based on working minimal example
+
+**Key Technical Fixes:**
+- `DateComponents.weekday` = proper way to schedule weekday-specific notifications (not manual logic!)
+- One notification PER weekday with unique identifiers
+- `UNNotificationCategory` + actions for interactive notifications (NoAlc: 3 buttons)
+- Extract both `.hour` AND `.minute` from Date (not just hour with :00 hardcoded)
+
+**CRITICAL Mistake:** In panic, removed core features (weekday filtering, NoAlc direct logging) instead of fixing ONLY the scheduling bug.
+
+**The Rule:**
+```
+❌ DON'T: Delete features when stuck - fix the actual problem
+✅ DO: Create minimal test, identify root cause, fix systematically
+✅ DO: Preserve existing features while fixing bugs
+```
+
+**User feedback (verbatim):** "Aber warum sind Weekdays jetzt weg? Und außerdem: Was ist aus dem Feature geworden, dass ich über den Reminder direkt meinen NoAlc Report machen kann???"
+
+**Lesson:** Stick to Analysis-First principle. Never remove features without user approval, even under time pressure.
+
+Reference: `NotificationDebugView.swift` (minimal test), `SmartReminderEngine.swift` (lines 124-156: weekday loop)
+
 ---
 
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**
