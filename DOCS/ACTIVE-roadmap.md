@@ -46,23 +46,6 @@ Vollständige Lokalisierung der App für Deutsch und Englisch.
 
 ---
 
-### 3. Beschreibungstexte für Atem-Meditationen
-**Priorität:** Niedrig
-**Aufwand:** Niedrig (wenige Tage)
-**Status:** Planungsphase
-
-**Beschreibung:**
-Kurze, inspirierende Beschreibungstexte zu den Atem-Meditationen hinzufügen.
-
-**Details:**
-- Lokalisierte Beschreibungen für jede Atem-Übung
-- Anzeige in der Atem-View oder Preset-Auswahl
-- Kurze Anleitungen oder Benefits der Übung
-
-**Risiken:** Lokalisierung, UI-Anpassungen
-
----
-
 ## 📝 Regeln für diese Datei
 
 1. **Nur geplante Features** - Keine "vielleicht mal"-Ideen
