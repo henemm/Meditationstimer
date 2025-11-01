@@ -90,6 +90,45 @@ public struct AtemView: View {
     // MARK: - Session Phase
     enum Phase: String { case inhale = "Einatmen", holdIn = "Halten (ein)", exhale = "Ausatmen", holdOut = "Halten (aus)" }
 
+    // MARK: - Sound Theme
+    enum AtemSoundTheme: String, Codable, CaseIterable {
+        case distinctive = "distinctive"
+        case marimba = "marimba"
+        case harp = "harp"
+        case guitar = "guitar"
+        case epiano = "epiano"
+
+        var displayName: String {
+            switch self {
+            case .distinctive: return "Markant"
+            case .marimba: return "Marimba"
+            case .harp: return "Harfe"
+            case .guitar: return "Gitarre"
+            case .epiano: return "E-Piano"
+            }
+        }
+
+        var emoji: String {
+            switch self {
+            case .distinctive: return "🔔"
+            case .marimba: return "🎵"
+            case .harp: return "🪕"
+            case .guitar: return "🎸"
+            case .epiano: return "🎹"
+            }
+        }
+
+        var description: String {
+            switch self {
+            case .distinctive: return "Klare, deutliche Signale"
+            case .marimba: return "Warme, hölzerne Klänge"
+            case .harp: return "Sanfte, fließende Töne"
+            case .guitar: return "Akustische Zupftöne"
+            case .epiano: return "Weiche, elektronische Klänge"
+            }
+        }
+    }
+
     // MARK: - Local GongPlayer (only for AtemView)
     final class GongPlayer: NSObject, AVAudioPlayerDelegate {
         func stopAll() {
@@ -351,6 +390,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @State private var ambientPlayer = AmbientSoundPlayer()
         @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
         @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
+        @AppStorage("atemSoundTheme") private var soundTheme: AtemSoundTheme = .distinctive
 
         private var ambientSound: AmbientSound {
             AmbientSound(rawValue: ambientSoundRaw) ?? .none
@@ -389,12 +429,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
 
         func soundName(for phase: Phase) -> String {
+            let suffix: String
             switch phase {
-            case .inhale: return "einatmen"
-            case .holdIn: return "eingeatmet-halten"
-            case .exhale: return "ausatmen"
-            case .holdOut: return "ausgeatmet-halten"
+            case .inhale: suffix = "in"
+            case .holdIn: suffix = "inhold"
+            case .exhale: suffix = "out"
+            case .holdOut: suffix = "outhold"
             }
+            return "\(soundTheme.rawValue)-\(suffix)"
         }
 
         func setPhase(_ p: Phase) {
@@ -441,7 +483,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 VStack(spacing: 12) {
                     if !finished {
                         Text(preset.name).font(.headline)
-                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, sessionStart: sessionStart, sessionTotal: sessionTotal, onPhaseChanged: onPhaseChanged)
+                        PhaseProgressView(preset: preset, phase: $phase, repIndex: $repIndex, phaseEndFired: $phaseEndFired, finished: $finished, phaseStart: $phaseStart, phaseDuration: $phaseDuration, gong: gong, soundTheme: soundTheme, sessionStart: sessionStart, sessionTotal: sessionTotal, onPhaseChanged: onPhaseChanged)
                     } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
@@ -528,6 +570,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
             @Binding var phaseStart: Date?
             @Binding var phaseDuration: Double
             let gong: GongPlayer
+            let soundTheme: AtemSoundTheme
             let sessionStart: Date
             let sessionTotal: TimeInterval
             let onPhaseChanged: (Phase) -> Void
@@ -606,12 +649,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             func soundName(for phase: Phase) -> String {
+                let suffix: String
                 switch phase {
-                case .inhale: return "einatmen"
-                case .holdIn: return "eingeatmet-halten"
-                case .exhale: return "ausatmen"
-                case .holdOut: return "ausgeatmet-halten"
+                case .inhale: suffix = "in"
+                case .holdIn: suffix = "inhold"
+                case .exhale: suffix = "out"
+                case .holdOut: suffix = "outhold"
                 }
+                return "\(soundTheme.rawValue)-\(suffix)"
             }
 
             func setPhase(_ p: Phase) {

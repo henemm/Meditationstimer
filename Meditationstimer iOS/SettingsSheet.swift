@@ -19,6 +19,7 @@ struct SettingsSheet: View {
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
     @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
+    @AppStorage("atemSoundTheme") private var selectedAtemTheme: AtemView.AtemSoundTheme = .distinctive
 
     @State private var previewPlayer = AmbientSoundPlayer()
     @State private var gongPlayer = GongPlayer()
@@ -114,6 +115,34 @@ struct SettingsSheet: View {
                                 previewPlayer.start(sound: ambientSound.wrappedValue)
                                 isPreviewPlaying = true
                             }
+                        }
+                    }
+                }
+
+                Section(header: Text("Atem-Sounds 🎵")) {
+                    Picker("Sound-Theme", selection: $selectedAtemTheme) {
+                        ForEach(AtemView.AtemSoundTheme.allCases, id: \.self) { theme in
+                            HStack {
+                                Text(theme.emoji)
+                                Text(theme.displayName)
+                            }
+                            .tag(theme)
+                        }
+                    }
+                    #if os(iOS)
+                    .pickerStyle(.menu)
+                    #endif
+
+                    Text(selectedAtemTheme.description)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    Button(action: {
+                        gongPlayer.play(named: "\(selectedAtemTheme.rawValue)-in")
+                    }) {
+                        HStack {
+                            Image(systemName: "play.circle.fill")
+                            Text("Sound testen")
                         }
                     }
                 }
