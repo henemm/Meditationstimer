@@ -1,6 +1,6 @@
 # Feature Roadmap - Meditationstimer
 
-**Letzte Aktualisierung:** 30. Oktober 2025
+**Letzte Aktualisierung:** 1. November 2025
 **Regel:** Geplante Features. Nach Implementation → löschen und feature-*.md erstellen
 
 ---
@@ -28,26 +28,7 @@ Passives Alcohol-Tracking mit NoAlk-Streak-System analog zu Meditation/Workout S
 
 ---
 
-### 2. Klangpakete/-Presets
-**Priorität:** Mittel
-**Aufwand:** Mittel
-**Status:** Planungsphase
-
-**Beschreibung:**
-Auswahl verschiedener Klangpakete/Soundpresets für Offen, Atem und Workouts.
-
-**Details:**
-- Mehrere Gong-Varianten (klassisch, Klangschale, modern)
-- Unterschiedliche Atem-Cue Sounds
-- Workout-Countdown Varianten
-- Settings-Integration: Sound-Theme Auswahl
-- Beibehaltung aktueller Sounds als "Standard"-Preset
-
-**Risiken:** Audio-Assets Größe, Lokalisierung der Sound-Namen
-
----
-
-### 3. Mehrsprachigkeit (Deutsch/Englisch)
+### 2. Mehrsprachigkeit (Deutsch/Englisch)
 **Priorität:** Mittel
 **Aufwand:** Mittel
 **Status:** Planungsphase
@@ -65,7 +46,7 @@ Vollständige Lokalisierung der App für Deutsch und Englisch.
 
 ---
 
-### 4. Beschreibungstexte für Atem-Meditationen
+### 3. Beschreibungstexte für Atem-Meditationen
 **Priorität:** Niedrig
 **Aufwand:** Niedrig (wenige Tage)
 **Status:** Planungsphase
