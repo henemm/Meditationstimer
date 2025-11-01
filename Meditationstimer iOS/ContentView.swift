@@ -47,6 +47,7 @@ struct ContentView: View {
     private let notifier = NotificationHelper()
     @StateObject private var engine = TwoPhaseTimerEngine()
     @StateObject private var streakManager = StreakManager()
+    @StateObject private var shortcutHandler = ShortcutHandler()
     @State private var showingError: String?
     @State private var askedPermissions = false
     @State private var showingCalendar = false
@@ -97,12 +98,12 @@ struct ContentView: View {
             #else
             let isPreview = false
             #endif
-            
+
             // Reset stored streaks to force recalculation with new filtering logic
             let defaults = UserDefaults.standard
             defaults.removeObject(forKey: "meditationStreak")
             defaults.removeObject(forKey: "workoutStreak")
-            
+
             // Update streaks with new filtered data
             Task {
                 await streakManager.updateStreaks()
@@ -114,6 +115,10 @@ struct ContentView: View {
                     streakManager.workoutStreak = workStreak
                 }
             }
+        }
+        .onOpenURL { url in
+            // Handle deep links from Shortcuts App
+            shortcutHandler.handle(url, selectedTab: $selectedTab)
         }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }
