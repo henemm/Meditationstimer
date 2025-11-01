@@ -123,11 +123,6 @@ struct SettingsSheet: View {
                         Label("Activity Reminders", systemImage: "bell.badge")
                             .help("Konfiguriere tägliche Erinnerungen zur Aktivitäts-Protokollierung.")
                     }
-
-                    NavigationLink(destination: NotificationDebugView()) {
-                        Label("🔧 Notification Debug", systemImage: "ant.fill")
-                            .help("Test und Debug für Notifications")
-                    }
                 }
 
                 #if os(iOS)
