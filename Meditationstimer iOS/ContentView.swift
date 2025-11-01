@@ -26,11 +26,16 @@ import HealthKit
 //   • (Live Activities entfernt)
 //   • NotificationHelper    – Local notifications (backup when app backgrounds).
 //   • HealthKitManager      – Logs mindfulness to Health.
-//   • BackgroundAudioKeeper – Keeps audio session alive so timers/gongs aren’t killed.
+//   • BackgroundAudioKeeper – Keeps audio session alive so timers/gongs aren't killed.
 //
 // Control Flow (high level):
 //   Tabs only. No engine state handling here; each tab manages its own session flow,
 //   sounds, idle timer, notifications, and Live Activity updates.
+
+// MARK: - Tab Enum for Shortcuts Deep Linking
+enum AppTab: String, CaseIterable {
+    case offen, atem, workouts
+}
 
 struct ContentView: View {
     // Einstellungen (merken letzte Werte)
@@ -46,29 +51,35 @@ struct ContentView: View {
     @State private var askedPermissions = false
     @State private var showingCalendar = false
 
+    // Tab selection (for Shortcuts deep linking)
+    @State private var selectedTab: AppTab = .offen
+
 
     var body: some View {
         // MARK: Tabs & global background
         NavigationView {
-            TabView {
+            TabView(selection: $selectedTab) {
                 OffenView()
                     .environmentObject(engine)
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Offen", systemImage: "figure.mind.and.body")
                     }
+                    .tag(AppTab.offen)
 
                 AtemView()
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Atem", systemImage: "wind")
                     }
+                    .tag(AppTab.atem)
 
                 WorkoutsView()
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Workouts", systemImage: "flame")
                     }
+                    .tag(AppTab.workouts)
             }
             .background(
                 LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
