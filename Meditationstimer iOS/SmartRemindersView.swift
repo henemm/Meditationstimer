@@ -315,12 +315,6 @@ struct ReminderRow: View {
             Text(reminder.description)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
-
-            HStack {
-                Text(reminder.triggerTime.formatted(date: .omitted, time: .shortened))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
         }
         .contentShape(Rectangle())
         .onTapGesture {
