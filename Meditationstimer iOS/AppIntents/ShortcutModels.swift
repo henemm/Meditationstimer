@@ -19,12 +19,12 @@ struct BreathingPresetEntity: AppEntity {
     }
 
     static let allPresets: [BreathingPresetEntity] = [
-        BreathingPresetEntity(id: "Box 4-4-4-4"),
-        BreathingPresetEntity(id: "4-0-6-0"),
-        BreathingPresetEntity(id: "Coherent 5-0-5-0"),
-        BreathingPresetEntity(id: "7-0-5-0"),
-        BreathingPresetEntity(id: "4-7-8"),
-        BreathingPresetEntity(id: "Rectangle 6-3-6-3")
+        BreathingPresetEntity(id: "Box Breathing"),
+        BreathingPresetEntity(id: "Calming Breath"),
+        BreathingPresetEntity(id: "Coherent Breathing"),
+        BreathingPresetEntity(id: "Deep Calm"),
+        BreathingPresetEntity(id: "Relaxing Breath"),
+        BreathingPresetEntity(id: "Rhythmic Breath")
     ]
 }
 

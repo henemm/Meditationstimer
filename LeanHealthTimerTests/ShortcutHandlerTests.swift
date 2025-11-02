@@ -75,21 +75,21 @@ final class ShortcutHandlerTests: XCTestCase {
     // MARK: - Breathing (Atem Tab)
 
     func testParseAtemURL_ValidPreset() {
-        let url = URL(string: "henemm-lht://start?tab=atem&preset=Box%204-4-4-4")!
+        let url = URL(string: "henemm-lht://start?tab=atem&preset=Box%20Breathing")!
         let request = handler.parse(url)
 
         XCTAssertNotNil(request)
         XCTAssertEqual(request?.tab, .atem)
 
         if case let .breathing(presetName) = request?.action {
-            XCTAssertEqual(presetName, "Box 4-4-4-4")
+            XCTAssertEqual(presetName, "Box Breathing")
         } else {
             XCTFail("Expected breathing action")
         }
     }
 
     func testParseAtemURL_AllValidPresets() {
-        let presets = ["Box 4-4-4-4", "4-0-6-0", "Coherent 5-0-5-0", "7-0-5-0", "4-7-8", "Rectangle 6-3-6-3"]
+        let presets = ["Box Breathing", "Calming Breath", "Coherent Breathing", "Deep Calm", "Relaxing Breath", "Rhythmic Breath"]
 
         for preset in presets {
             let encoded = preset.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!

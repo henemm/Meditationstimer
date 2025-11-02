@@ -87,7 +87,7 @@ class ShortcutHandler: ObservableObject {
             }
 
             // Validate preset name (basic check, full validation in AtemView)
-            let validPresets = ["Box 4-4-4-4", "4-0-6-0", "Coherent 5-0-5-0", "7-0-5-0", "4-7-8", "Rectangle 6-3-6-3"]
+            let validPresets = ["Box Breathing", "Calming Breath", "Coherent Breathing", "Deep Calm", "Relaxing Breath", "Rhythmic Breath"]
             guard validPresets.contains(presetName) else {
                 print("[ShortcutHandler] Invalid preset name: \(presetName)")
                 return nil

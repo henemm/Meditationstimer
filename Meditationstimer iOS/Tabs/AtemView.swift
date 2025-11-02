@@ -167,17 +167,17 @@ public struct AtemView: View {
 
     // MARK: - Default Presets (used for new installations and migration)
     private static let defaultPresets: [Preset] = [
-        .init(name: "Box 4-4-4-4", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
+        .init(name: "Box Breathing", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
               description: "Navy SEAL Technik zur Stress-Reduktion. Nachweislich effektiv zur Senkung des Cortisol-Spiegels."),
-        .init(name: "4-0-6-0",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
+        .init(name: "Calming Breath",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
               description: "Aktiviert das Parasympathische Nervensystem durch verlängerte Ausatmung. Ideal zur Entspannung."),
-        .init(name: "Coherent 5-0-5-0", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
+        .init(name: "Coherent Breathing", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
               description: "Optimiert Herz-Kohärenz (HRV). Wissenschaftlich am besten untersucht für kardiovaskuläre Gesundheit. 6 Atemzüge/min."),
-        .init(name: "7-0-5-0",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
+        .init(name: "Deep Calm",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
               description: "Tiefe Beruhigung durch sanften Rhythmus. Fördert mentale Klarheit."),
-        .init(name: "4-7-8",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
+        .init(name: "Relaxing Breath",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
               description: "Dr. Andrew Weil's Einschlaf-Technik. Basierend auf Pranayama, wirkt beruhigend bei Stress und Angst."),
-        .init(name: "Rectangle 6-3-6-3", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
+        .init(name: "Rhythmic Breath", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
               description: "Ausgewogener Rhythmus mit kurzen Halte-Phasen. Balance zwischen Aktivierung und Entspannung.")
     ]
 
