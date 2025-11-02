@@ -26,11 +26,16 @@ import HealthKit
 //   • (Live Activities entfernt)
 //   • NotificationHelper    – Local notifications (backup when app backgrounds).
 //   • HealthKitManager      – Logs mindfulness to Health.
-//   • BackgroundAudioKeeper – Keeps audio session alive so timers/gongs aren’t killed.
+//   • BackgroundAudioKeeper – Keeps audio session alive so timers/gongs aren't killed.
 //
 // Control Flow (high level):
 //   Tabs only. No engine state handling here; each tab manages its own session flow,
 //   sounds, idle timer, notifications, and Live Activity updates.
+
+// MARK: - Tab Enum for Shortcuts Deep Linking
+enum AppTab: String, CaseIterable {
+    case offen, atem, workouts
+}
 
 struct ContentView: View {
     // Einstellungen (merken letzte Werte)
@@ -42,33 +47,40 @@ struct ContentView: View {
     private let notifier = NotificationHelper()
     @StateObject private var engine = TwoPhaseTimerEngine()
     @StateObject private var streakManager = StreakManager()
+    @StateObject private var shortcutHandler = ShortcutHandler()
     @State private var showingError: String?
     @State private var askedPermissions = false
     @State private var showingCalendar = false
+
+    // Tab selection (for Shortcuts deep linking)
+    @State private var selectedTab: AppTab = .offen
 
 
     var body: some View {
         // MARK: Tabs & global background
         NavigationView {
-            TabView {
+            TabView(selection: $selectedTab) {
                 OffenView()
                     .environmentObject(engine)
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Offen", systemImage: "figure.mind.and.body")
                     }
+                    .tag(AppTab.offen)
 
                 AtemView()
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Atem", systemImage: "wind")
                     }
+                    .tag(AppTab.atem)
 
                 WorkoutsView()
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Workouts", systemImage: "flame")
                     }
+                    .tag(AppTab.workouts)
             }
             .background(
                 LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
@@ -86,12 +98,12 @@ struct ContentView: View {
             #else
             let isPreview = false
             #endif
-            
+
             // Reset stored streaks to force recalculation with new filtering logic
             let defaults = UserDefaults.standard
             defaults.removeObject(forKey: "meditationStreak")
             defaults.removeObject(forKey: "workoutStreak")
-            
+
             // Update streaks with new filtered data
             Task {
                 await streakManager.updateStreaks()
@@ -103,6 +115,25 @@ struct ContentView: View {
                     streakManager.workoutStreak = workStreak
                 }
             }
+        }
+        .onOpenURL { url in
+            // Handle deep links from Shortcuts App
+            shortcutHandler.handle(url, selectedTab: $selectedTab)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .startMeditationSession)) { _ in
+            // Switch to Offen tab before session starts
+            selectedTab = .offen
+            print("[ContentView] Switched to Offen tab for meditation session")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .startBreathingSession)) { _ in
+            // Switch to Atem tab before session starts
+            selectedTab = .atem
+            print("[ContentView] Switched to Atem tab for breathing session")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .startWorkoutSession)) { _ in
+            // Switch to Workouts tab before session starts
+            selectedTab = .workouts
+            print("[ContentView] Switched to Workouts tab for workout session")
         }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }

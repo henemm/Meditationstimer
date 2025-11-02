@@ -165,21 +165,24 @@ public struct AtemView: View {
         }
     }
 
-    // MARK: - Sample Presets & State
-    @State private var presets: [Preset] = [
-        .init(name: "Box 4-4-4-4", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
+    // MARK: - Default Presets (used for new installations and migration)
+    private static let defaultPresets: [Preset] = [
+        .init(name: "Box Breathing", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
               description: "Navy SEAL Technik zur Stress-Reduktion. Nachweislich effektiv zur Senkung des Cortisol-Spiegels."),
-        .init(name: "4-0-6-0",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
+        .init(name: "Calming Breath",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
               description: "Aktiviert das Parasympathische Nervensystem durch verlängerte Ausatmung. Ideal zur Entspannung."),
-        .init(name: "Coherent 5-0-5-0", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
+        .init(name: "Coherent Breathing", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
               description: "Optimiert Herz-Kohärenz (HRV). Wissenschaftlich am besten untersucht für kardiovaskuläre Gesundheit. 6 Atemzüge/min."),
-        .init(name: "7-0-5-0",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
+        .init(name: "Deep Calm",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
               description: "Tiefe Beruhigung durch sanften Rhythmus. Fördert mentale Klarheit."),
-        .init(name: "4-7-8",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
+        .init(name: "Relaxing Breath",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
               description: "Dr. Andrew Weil's Einschlaf-Technik. Basierend auf Pranayama, wirkt beruhigend bei Stress und Angst."),
-        .init(name: "Rectangle 6-3-6-3", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
+        .init(name: "Rhythmic Breath", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
               description: "Ausgewogener Rhythmus mit kurzen Halte-Phasen. Balance zwischen Aktivierung und Entspannung.")
     ]
+
+    // MARK: - Sample Presets & State
+    @State private var presets: [Preset] = AtemView.defaultPresets
 
     @State private var showSettings = false
     @State private var showingCalendar = false
@@ -196,6 +199,40 @@ public struct AtemView: View {
         if let data = UserDefaults.standard.data(forKey: presetsKey),
            let decoded = try? JSONDecoder().decode([Preset].self, from: data) {
             presets = decoded
+            migratePresets()
+        }
+    }
+
+    /// Migrates old presets without descriptions to include new descriptions
+    /// and adds missing default presets (e.g., Rectangle 6-3-6-3)
+    private func migratePresets() {
+        var needsSave = false
+
+        // Update existing presets with descriptions from defaults
+        for i in 0..<presets.count {
+            if let defaultPreset = Self.defaultPresets.first(where: { $0.name == presets[i].name }) {
+                // If preset exists in defaults but current one has no description, update it
+                if presets[i].description == nil && defaultPreset.description != nil {
+                    presets[i].description = defaultPreset.description
+                    needsSave = true
+                    print("[AtemView] Migrated description for preset: \(presets[i].name)")
+                }
+            }
+        }
+
+        // Add missing default presets (e.g., Rectangle 6-3-6-3)
+        for defaultPreset in Self.defaultPresets {
+            if !presets.contains(where: { $0.name == defaultPreset.name }) {
+                presets.append(defaultPreset)
+                needsSave = true
+                print("[AtemView] Added missing default preset: \(defaultPreset.name)")
+            }
+        }
+
+        // Save if any changes were made
+        if needsSave {
+            savePresets()
+            print("[AtemView] Migration completed, presets saved")
         }
     }
 
@@ -287,6 +324,21 @@ public struct AtemView: View {
             }
             .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
             .toolbar(runningPreset != nil ? .hidden : .visible, for: .tabBar)
+            .onReceive(NotificationCenter.default.publisher(for: .startBreathingSession)) { notification in
+                print("[AtemView] Received startBreathingSession notification")
+                guard let presetName = notification.userInfo?["presetName"] as? String else {
+                    print("[AtemView] ERROR: No presetName in notification")
+                    return
+                }
+                // Find preset by name
+                if let preset = presets.first(where: { $0.name == presetName }) {
+                    // Auto-end running session if exists (requirement 3A)
+                    runningPreset = preset
+                    print("[AtemView] Started preset: \(presetName)")
+                } else {
+                    print("[AtemView] ERROR: Preset not found: \(presetName)")
+                }
+            }
 
             // When overlay is up, dim & blur the background to show depth
             if runningPreset != nil {

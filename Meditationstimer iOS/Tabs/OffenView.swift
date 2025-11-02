@@ -457,6 +457,18 @@ struct OffenView: View {
                 notifier.stop()
                 resetSession(logPartialSession: true)
             }
+            .onReceive(NotificationCenter.default.publisher(for: .startMeditationSession)) { _ in
+                Task { @MainActor in
+                    print("[OffenView] Received startMeditationSession notification")
+                    // Auto-end any running session (requirement 3A)
+                    if engine.state != .idle {
+                        await liveActivity.end()
+                        engine.cancel()
+                    }
+                    // Start new session
+                    startMeditationSession()
+                }
+            }
         }
     }
 
@@ -472,6 +484,29 @@ struct OffenView: View {
         #endif
     }
     
+    private func startMeditationSession() {
+        Task { @MainActor in
+            if !(await HealthKitManager.shared.isAuthorized()) {
+                showHealthAlert = true
+                return
+            }
+            // Engine should be idle at this point (already cleaned up)
+            let now = Date()
+            engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+            guard let phase1End = engine.phase1EndDate else { return }
+
+            // Force start (conflict already handled above)
+            liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+            sessionStart = now
+            setIdleTimer(true)
+            bgAudio.start()
+            ambientPlayer.setVolume(percent: ambientSoundVolume)
+            ambientPlayer.start(sound: ambientSound)
+            gong.play(named: "gong-ende")
+            print("[OffenView] Session started via Shortcut")
+        }
+    }
+
     private func endSession(manual: Bool) async {
     #if DEBUG
     print("DBG endSession: invoked manual=\(manual) engine.state=\(engine.state) owner=\(liveActivity.ownerId ?? "nil") ownerTitle=\(liveActivity.ownerTitle ?? "")")

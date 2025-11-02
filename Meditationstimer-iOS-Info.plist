@@ -12,5 +12,24 @@
 		<string>processing</string>
 		<string>fetch</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>henemm.lht</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>henemm-lht</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>StartMeditationIntent</string>
+		<string>StartBreathingIntent</string>
+		<string>StartWorkoutIntent</string>
+	</array>
 </dict>
 </plist>
