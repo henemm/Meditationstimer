@@ -17,7 +17,7 @@ struct StartMeditationIntent: AppIntent {
     @Parameter(title: "Meditation (Minuten)", default: 15, controlStyle: .field, inclusiveRange: (1, 120))
     var phase1Minutes: Int
 
-    @Parameter(title: "Besinnung (Minuten)", default: 0, controlStyle: .field, inclusiveRange: (0, 30))
+    @Parameter(title: "Besinnung (Minuten)", default: 2, controlStyle: .field, inclusiveRange: (0, 30))
     var phase2Minutes: Int
 
     static var parameterSummary: some ParameterSummary {
