@@ -187,9 +187,4 @@ class ShortcutHandler: ObservableObject {
     }
 }
 
-// MARK: - Notification Names
-extension Notification.Name {
-    static let startMeditationSession = Notification.Name("startMeditationSession")
-    static let startBreathingSession = Notification.Name("startBreathingSession")
-    static let startWorkoutSession = Notification.Name("startWorkoutSession")
-}
+// Notification names moved to ShortcutNotifications.swift

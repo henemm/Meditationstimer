@@ -12,6 +12,7 @@ import UIKit
 struct StartMeditationIntent: AppIntent {
     static var title: LocalizedStringResource = "Starte Meditation"
     static var description = IntentDescription("Startet eine freie Meditations-Session mit konfigurierbaren Phasen.")
+    static var openAppWhenRun: Bool = true
 
     @Parameter(title: "Meditation (Minuten)", default: 15, controlStyle: .field, inclusiveRange: (1, 120))
     var phase1Minutes: Int
@@ -25,15 +26,14 @@ struct StartMeditationIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        // Encode parameters as URL
-        let urlString = "henemm-lht://start?tab=offen&phase1=\(phase1Minutes)&phase2=\(phase2Minutes)"
+        // Update AppStorage values (OffenView will pick them up)
+        UserDefaults.standard.set(phase1Minutes, forKey: "phase1Minutes")
+        UserDefaults.standard.set(phase2Minutes, forKey: "phase2Minutes")
 
-        guard let url = URL(string: urlString) else {
-            throw IntentError.message("Ungültige URL")
-        }
+        // Trigger session start via NotificationCenter
+        NotificationCenter.default.post(name: .startMeditationSession, object: nil)
 
-        // Open URL (this will trigger .onOpenURL in ContentView)
-        await UIApplication.shared.open(url)
+        print("[StartMeditationIntent] Triggered meditation: \(phase1Minutes)min + \(phase2Minutes)min")
 
         return .result()
     }

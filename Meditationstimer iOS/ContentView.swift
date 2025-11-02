@@ -120,6 +120,21 @@ struct ContentView: View {
             // Handle deep links from Shortcuts App
             shortcutHandler.handle(url, selectedTab: $selectedTab)
         }
+        .onReceive(NotificationCenter.default.publisher(for: .startMeditationSession)) { _ in
+            // Switch to Offen tab before session starts
+            selectedTab = .offen
+            print("[ContentView] Switched to Offen tab for meditation session")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .startBreathingSession)) { _ in
+            // Switch to Atem tab before session starts
+            selectedTab = .atem
+            print("[ContentView] Switched to Atem tab for breathing session")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .startWorkoutSession)) { _ in
+            // Switch to Workouts tab before session starts
+            selectedTab = .workouts
+            print("[ContentView] Switched to Workouts tab for workout session")
+        }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }
         }, message: { Text(showingError ?? "") })

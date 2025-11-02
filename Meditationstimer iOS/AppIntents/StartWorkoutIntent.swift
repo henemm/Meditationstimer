@@ -12,6 +12,7 @@ import UIKit
 struct StartWorkoutIntent: AppIntent {
     static var title: LocalizedStringResource = "Starte Workout"
     static var description = IntentDescription("Startet eine HIIT-Workout-Session mit konfigurierbaren Intervallen.")
+    static var openAppWhenRun: Bool = true
 
     @Parameter(title: "Belastung (Sekunden)", default: 30, controlStyle: .field, inclusiveRange: (5, 600))
     var intervalSec: Int
@@ -28,15 +29,15 @@ struct StartWorkoutIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        // Encode parameters as URL
-        let urlString = "henemm-lht://start?tab=workouts&interval=\(intervalSec)&rest=\(restSec)&repeats=\(repeats)"
+        // Update AppStorage values (WorkoutsView will pick them up)
+        UserDefaults.standard.set(intervalSec, forKey: "intervalSec")
+        UserDefaults.standard.set(restSec, forKey: "restSec")
+        UserDefaults.standard.set(repeats, forKey: "repeats")
 
-        guard let url = URL(string: urlString) else {
-            throw IntentError.message("Ungültige URL")
-        }
+        // Trigger session start via NotificationCenter
+        NotificationCenter.default.post(name: .startWorkoutSession, object: nil)
 
-        // Open URL (this will trigger .onOpenURL in ContentView)
-        await UIApplication.shared.open(url)
+        print("[StartWorkoutIntent] Triggered workout: \(intervalSec)s/\(restSec)s x\(repeats)")
 
         return .result()
     }

@@ -12,6 +12,7 @@ import UIKit
 struct StartBreathingIntent: AppIntent {
     static var title: LocalizedStringResource = "Starte Atem-Session"
     static var description = IntentDescription("Startet eine geführte Atem-Übung mit einem ausgewählten Preset.")
+    static var openAppWhenRun: Bool = true
 
     @Parameter(title: "Preset")
     var preset: BreathingPresetEntity
@@ -22,19 +23,14 @@ struct StartBreathingIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        // URL-encode preset name (handles spaces)
-        guard let encodedPreset = preset.id.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            throw IntentError.message("Preset-Name konnte nicht kodiert werden")
-        }
+        // Trigger session start via NotificationCenter with preset name
+        NotificationCenter.default.post(
+            name: .startBreathingSession,
+            object: nil,
+            userInfo: ["presetName": preset.id]
+        )
 
-        let urlString = "henemm-lht://start?tab=atem&preset=\(encodedPreset)"
-
-        guard let url = URL(string: urlString) else {
-            throw IntentError.message("Ungültige URL")
-        }
-
-        // Open URL (this will trigger .onOpenURL in ContentView)
-        await UIApplication.shared.open(url)
+        print("[StartBreathingIntent] Triggered breathing: \(preset.id)")
 
         return .result()
     }
