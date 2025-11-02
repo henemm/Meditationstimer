@@ -15,8 +15,7 @@ struct LeanHealthTimerShortcuts: AppShortcutsProvider {
             intent: StartMeditationIntent(),
             phrases: [
                 "Starte \(.applicationName) Meditation",
-                "Meditiere mit \(.applicationName)",
-                "Starte eine Meditation"
+                "Meditiere mit \(.applicationName)"
             ],
             shortTitle: "Meditation starten",
             systemImageName: "figure.mind.and.body"
@@ -27,8 +26,7 @@ struct LeanHealthTimerShortcuts: AppShortcutsProvider {
             intent: StartBreathingIntent(),
             phrases: [
                 "Starte \(.applicationName) Atem-Session",
-                "Atme mit \(.applicationName)",
-                "Starte Atemübung"
+                "Atme mit \(.applicationName)"
             ],
             shortTitle: "Atem-Session starten",
             systemImageName: "wind"
@@ -39,8 +37,7 @@ struct LeanHealthTimerShortcuts: AppShortcutsProvider {
             intent: StartWorkoutIntent(),
             phrases: [
                 "Starte \(.applicationName) Workout",
-                "Trainiere mit \(.applicationName)",
-                "Starte ein Workout"
+                "Trainiere mit \(.applicationName)"
             ],
             shortTitle: "Workout starten",
             systemImageName: "flame"

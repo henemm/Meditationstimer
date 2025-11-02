@@ -7,6 +7,7 @@
 
 import Foundation
 import AppIntents
+import UIKit
 
 struct StartMeditationIntent: AppIntent {
     static var title: LocalizedStringResource = "Starte Meditation"

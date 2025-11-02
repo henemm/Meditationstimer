@@ -7,6 +7,7 @@
 
 import Foundation
 import AppIntents
+import UIKit
 
 struct StartBreathingIntent: AppIntent {
     static var title: LocalizedStringResource = "Starte Atem-Session"

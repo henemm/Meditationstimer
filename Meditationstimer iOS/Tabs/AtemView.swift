@@ -287,6 +287,21 @@ public struct AtemView: View {
             }
             .modifier(OverlayBackgroundEffect(isDimmed: runningPreset != nil))
             .toolbar(runningPreset != nil ? .hidden : .visible, for: .tabBar)
+            .onReceive(NotificationCenter.default.publisher(for: .startBreathingSession)) { notification in
+                print("[AtemView] Received startBreathingSession notification")
+                guard let presetName = notification.userInfo?["presetName"] as? String else {
+                    print("[AtemView] ERROR: No presetName in notification")
+                    return
+                }
+                // Find preset by name
+                if let preset = presets.first(where: { $0.name == presetName }) {
+                    // Auto-end running session if exists (requirement 3A)
+                    runningPreset = preset
+                    print("[AtemView] Started preset: \(presetName)")
+                } else {
+                    print("[AtemView] ERROR: Preset not found: \(presetName)")
+                }
+            }
 
             // When overlay is up, dim & blur the background to show depth
             if runningPreset != nil {

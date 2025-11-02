@@ -127,7 +127,7 @@ class ShortcutHandler: ObservableObject {
         return ShortcutRequest(tab: tab, action: action)
     }
 
-    /// Handles shortcut URL (Commit 3: only tab navigation, no session start yet)
+    /// Handles shortcut URL with full session auto-start
     /// - Parameters:
     ///   - url: Deep link URL
     ///   - selectedTab: Binding to current tab selection
@@ -141,10 +141,55 @@ class ShortcutHandler: ObservableObject {
 
         print("[ShortcutHandler] Parsed request: tab=\(request.tab), action=\(request.action)")
 
-        // Commit 3: Only switch tab (session start in Commit 6)
+        // Switch to target tab
         selectedTab.wrappedValue = request.tab
         print("[ShortcutHandler] Switched to tab: \(request.tab)")
 
-        // TODO (Commit 6): Trigger session start based on request.action
+        // Wait for tab to render, then trigger session start
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.triggerSession(for: request)
+        }
     }
+
+    /// Triggers session start via NotificationCenter
+    private func triggerSession(for request: ShortcutRequest) {
+        let notification: Notification.Name
+
+        switch request.action {
+        case .meditation(let phase1, let phase2):
+            // Update AppStorage values (OffenView will pick them up)
+            UserDefaults.standard.set(phase1, forKey: "phase1Minutes")
+            UserDefaults.standard.set(phase2, forKey: "phase2Minutes")
+            notification = .startMeditationSession
+            print("[ShortcutHandler] Triggering meditation: \(phase1)min + \(phase2)min")
+
+        case .breathing(let presetName):
+            // Pass preset name via notification userInfo
+            NotificationCenter.default.post(
+                name: .startBreathingSession,
+                object: nil,
+                userInfo: ["presetName": presetName]
+            )
+            print("[ShortcutHandler] Triggering breathing: \(presetName)")
+            return // Early return (already posted)
+
+        case .workout(let interval, let rest, let repeats):
+            // Update AppStorage values (WorkoutsView will pick them up)
+            UserDefaults.standard.set(interval, forKey: "intervalSec")
+            UserDefaults.standard.set(rest, forKey: "restSec")
+            UserDefaults.standard.set(repeats, forKey: "repeats")
+            notification = .startWorkoutSession
+            print("[ShortcutHandler] Triggering workout: \(interval)s/\(rest)s x\(repeats)")
+        }
+
+        // Post notification to trigger session start
+        NotificationCenter.default.post(name: notification, object: nil)
+    }
+}
+
+// MARK: - Notification Names
+extension Notification.Name {
+    static let startMeditationSession = Notification.Name("startMeditationSession")
+    static let startBreathingSession = Notification.Name("startBreathingSession")
+    static let startWorkoutSession = Notification.Name("startWorkoutSession")
 }

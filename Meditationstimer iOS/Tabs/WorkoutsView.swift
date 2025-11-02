@@ -871,6 +871,18 @@ struct WorkoutsView: View {
             } message: {
                 Text("Diese App kann deine Workouts in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?")
             }
+            .onReceive(NotificationCenter.default.publisher(for: .startWorkoutSession)) { _ in
+                Task { @MainActor in
+                    print("[WorkoutsView] Received startWorkoutSession notification")
+                    if await HealthKitManager.shared.isAuthorized() {
+                        // Auto-end running session (requirement 3A)
+                        showRunner = true
+                        print("[WorkoutsView] Started workout via Shortcut: \(intervalSec)s/\(restSec)s x\(repeats)")
+                    } else {
+                        showHealthAlert = true
+                    }
+                }
+            }
         }
     }
 }
