@@ -99,26 +99,9 @@ struct CalendarView: View {
     }
 
     var body: some View {
-        VStack {
-            // Close Button
-            HStack {
-                Spacer()
-                ZStack {
-                    Circle()
-                        .fill(.ultraThinMaterial)
-                        .frame(width: 40, height: 40)
-                    Image(systemName: "xmark")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(.primary)
-                }
-                .onTapGesture {
-                    dismiss()
-                }
-            }
-            .padding(.horizontal)
-            .padding(.top, 10)
-
-            // Scrollbare Monatsliste
+        NavigationView {
+            VStack {
+                // Scrollbare Monatsliste
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 20) {
@@ -139,112 +122,163 @@ struct CalendarView: View {
             VStack(spacing: 12) {
                 // Meditation Streaks
                 HStack {
-                    Image(systemName: "info.circle")
-                        .foregroundColor(.secondary)
-                        .onTapGesture {
-                            showMeditationInfo = true
-                        }
+                    Button(action: { showMeditationInfo = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 18, weight: .regular))
+                            .frame(width: 32, height: 32)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Meditation Streak Info")
+
                     Text("Meditation: Streak \(meditationStreak) Day\(meditationStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: min(3, meditationStreak / 7), icon: "leaf.fill", color: .blue)
                 }
-                .popover(isPresented: $showMeditationInfo) {
-                    VStack(spacing: 0) {
-                        HStack {
-                            Spacer()
-                            ZStack {
-                                Circle()
-                                    .fill(.ultraThinMaterial)
-                                    .frame(width: 30, height: 30)
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(.primary)
+                .sheet(isPresented: $showMeditationInfo) {
+                    NavigationStack {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 16) {
+                                Text("Get a reward every 7 days in a row of meditation (at least 2 minutes per day).")
+                                    .font(.body)
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Example:")
+                                        .font(.headline)
+                                    Text("• Days 1-7: Earn 1 reward")
+                                    Text("• Days 8-14: Earn 2 rewards")
+                                    Text("• Days 15-21: Earn 3 rewards")
+                                }
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("If you miss a day:")
+                                        .font(.headline)
+                                    Text("• Lose 1 reward, but keep your streak")
+                                    Text("• If you have no rewards left and miss again, streak resets to 0")
+                                }
                             }
-                            .onTapGesture {
-                                showMeditationInfo = false
+                            .padding()
+                        }
+                        .navigationTitle("Meditation Streak")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Fertig") {
+                                    showMeditationInfo = false
+                                }
                             }
                         }
-                        .padding(.top, 8)
-                        .padding(.trailing, 8)
-                        Text("Get a reward every 7 days in a row of meditation (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
-                            .padding()
-                            .frame(maxWidth: 280)
-                            .font(.footnote)
                     }
                 }
                 
                 // Workout Streaks
                 HStack {
-                    Image(systemName: "info.circle")
-                        .foregroundColor(.secondary)
-                        .onTapGesture {
-                            showWorkoutInfo = true
-                        }
+                    Button(action: { showWorkoutInfo = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 18, weight: .regular))
+                            .frame(width: 32, height: 32)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Workout Streak Info")
+
                     Text("Workouts: Streak \(workoutStreak) Day\(workoutStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: min(3, workoutStreak / 7), icon: "flame.fill", color: .purple)
                 }
-                .popover(isPresented: $showWorkoutInfo) {
-                    VStack(spacing: 0) {
-                        HStack {
-                            Spacer()
-                            ZStack {
-                                Circle()
-                                    .fill(.ultraThinMaterial)
-                                    .frame(width: 30, height: 30)
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(.primary)
+                .sheet(isPresented: $showWorkoutInfo) {
+                    NavigationStack {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 16) {
+                                Text("Get a reward every 7 days in a row of workouts (at least 2 minutes per day).")
+                                    .font(.body)
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Example:")
+                                        .font(.headline)
+                                    Text("• Days 1-7: Earn 1 reward")
+                                    Text("• Days 8-14: Earn 2 rewards")
+                                    Text("• Days 15-21: Earn 3 rewards")
+                                }
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("If you miss a day:")
+                                        .font(.headline)
+                                    Text("• Lose 1 reward, but keep your streak")
+                                    Text("• If you have no rewards left and miss again, streak resets to 0")
+                                }
                             }
-                            .onTapGesture {
-                                showWorkoutInfo = false
+                            .padding()
+                        }
+                        .navigationTitle("Workout Streak")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Fertig") {
+                                    showWorkoutInfo = false
+                                }
                             }
                         }
-                        .padding(.top, 8)
-                        .padding(.trailing, 8)
-                        Text("Get a reward every 7 days in a row of workouts (at least 2 minutes per day).\n\nExample:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
-                            .padding()
-                            .frame(maxWidth: 280)
-                            .font(.footnote)
                     }
                 }
 
                 // NoAlc Streak
                 HStack {
-                    Image(systemName: "info.circle")
-                        .foregroundColor(.secondary)
-                        .onTapGesture {
-                            showNoAlcInfo = true
-                        }
+                    Button(action: { showNoAlcInfo = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 18, weight: .regular))
+                            .frame(width: 32, height: 32)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("NoAlc Streak Info")
+
                     Text("NoAlc: Streak \(noAlcStreak) Day\(noAlcStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: min(3, noAlcStreak / 7), icon: "drop.fill", color: .green)
                 }
-                .popover(isPresented: $showNoAlcInfo) {
-                    VStack(spacing: 0) {
-                        HStack {
-                            Spacer()
-                            ZStack {
-                                Circle()
-                                    .fill(.ultraThinMaterial)
-                                    .frame(width: 30, height: 30)
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(.primary)
+                .sheet(isPresented: $showNoAlcInfo) {
+                    NavigationStack {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 16) {
+                                Text("Track your alcohol consumption daily.")
+                                    .font(.body)
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Levels:")
+                                        .font(.headline)
+                                    Text("• Steady (💧): 0-1 drinks")
+                                    Text("• Easy (✨): 2-5 drinks")
+                                    Text("• Wild (💥): 6+ drinks")
+                                }
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Rewards:")
+                                        .font(.headline)
+                                    Text("Get a reward every 7 days of logging:")
+                                    Text("• Days 1-7: Earn 1 reward")
+                                    Text("• Days 8-14: Earn 2 rewards")
+                                    Text("• Days 15-21: Earn 3 rewards")
+                                }
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("If you miss a day:")
+                                        .font(.headline)
+                                    Text("• Lose 1 reward, but keep your streak")
+                                    Text("• If you have no rewards left and miss again, streak resets to 0")
+                                }
                             }
-                            .onTapGesture {
-                                showNoAlcInfo = false
+                            .padding()
+                        }
+                        .navigationTitle("NoAlc Streak")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Fertig") {
+                                    showNoAlcInfo = false
+                                }
                             }
                         }
-                        .padding(.top, 8)
-                        .padding(.trailing, 8)
-                        Text("Track your alcohol consumption daily.\n\n• Steady (💧): 0-1 drinks\n• Easy (✨): 2-5 drinks\n• Wild (💥): 6+ drinks\n\nGet a reward every 7 days of logging:\n• Days 1-7: Earn 1 reward\n• Days 8-14: Earn 2 rewards\n• Days 15-21: Earn 3 rewards\n\nIf you miss a day:\n• Lose 1 reward, but keep your streak\n• If you have no rewards left and miss again, streak resets to 0")
-                            .padding()
-                            .frame(maxWidth: 280)
-                            .font(.footnote)
                     }
                 }
             }
@@ -277,6 +311,16 @@ struct CalendarView: View {
                     loadActivityDays()
                 }
             }
+        }
+        .navigationTitle("Kalender")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Fertig") {
+                    dismiss()
+                }
+            }
+        }
         }
     }
 
