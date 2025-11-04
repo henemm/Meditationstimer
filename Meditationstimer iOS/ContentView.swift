@@ -34,7 +34,7 @@ import HealthKit
 
 // MARK: - Tab Enum for Shortcuts Deep Linking
 enum AppTab: String, CaseIterable {
-    case offen, atem, workouts
+    case offen, atem, frei, workouts
 }
 
 struct ContentView: View {
@@ -78,7 +78,14 @@ struct ContentView: View {
                 WorkoutsView()
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Workouts", systemImage: "flame")
+                        Label("Frei", systemImage: "flame")
+                    }
+                    .tag(AppTab.frei)
+
+                WorkoutProgramsView()
+                    .environmentObject(streakManager)
+                    .tabItem {
+                        Label("Workouts", systemImage: "figure.strengthtraining.traditional")
                     }
                     .tag(AppTab.workouts)
             }
@@ -131,9 +138,9 @@ struct ContentView: View {
             print("[ContentView] Switched to Atem tab for breathing session")
         }
         .onReceive(NotificationCenter.default.publisher(for: .startWorkoutSession)) { _ in
-            // Switch to Workouts tab before session starts
-            selectedTab = .workouts
-            print("[ContentView] Switched to Workouts tab for workout session")
+            // Switch to Frei tab before session starts
+            selectedTab = .frei
+            print("[ContentView] Switched to Frei tab for workout session")
         }
         .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }

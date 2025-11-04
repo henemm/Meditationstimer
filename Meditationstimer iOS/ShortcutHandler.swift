@@ -95,8 +95,8 @@ class ShortcutHandler: ObservableObject {
 
             action = .breathing(presetName: presetName)
 
-        case .workouts:
-            // Workout: interval, rest, repeats (all required)
+        case .frei:
+            // Frei (Free Workout): interval, rest, repeats (all required)
             guard let intervalString = params["interval"],
                   let restString = params["rest"],
                   let repeatsString = params["repeats"],
@@ -122,6 +122,12 @@ class ShortcutHandler: ObservableObject {
             }
 
             action = .workout(intervalSec: interval, restSec: rest, repeats: repeats)
+
+        case .workouts:
+            // TODO: Phase 6 - Implement workout program shortcuts (e.g., preset name)
+            // For now, just switch to the workouts tab without auto-start
+            print("[ShortcutHandler] Workouts tab shortcuts not yet implemented (Phase 6)")
+            return nil
         }
 
         return ShortcutRequest(tab: tab, action: action)

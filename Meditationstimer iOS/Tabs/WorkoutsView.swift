@@ -207,7 +207,7 @@ private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelega
 }
 
 // MARK: - Workout Runner (identisch zu vorher; kein Layout-Tuning)
-private enum WorkoutPhase: String { case work, rest }
+private enum IntervalPhase: String { case work, rest }
 
 private struct WorkoutRunnerView: View {
     // scenePhase-Automatik entfernt – führte zu unerwünschten Beendigungen beim App-Wechsel
@@ -279,7 +279,7 @@ private struct WorkoutRunnerView: View {
 
     @State private var phaseStart: Date? = nil
     @State private var phaseDuration: Double = 1
-    @State private var phase: WorkoutPhase = .work
+    @State private var phase: IntervalPhase = .work
     @State private var finished = false
     @State private var started = false
     @State private var isPaused = false
@@ -524,10 +524,10 @@ private struct WorkoutRunnerView: View {
         onClose()
     }
 
-    private func iconName(for phase: WorkoutPhase) -> String { phase == .work ? "flame" : "pause" }
-    private func label(for phase: WorkoutPhase) -> String { phase == .work ? "Belastung" : "Erholung" }
+    private func iconName(for phase: IntervalPhase) -> String { phase == .work ? "flame" : "pause" }
+    private func label(for phase: IntervalPhase) -> String { phase == .work ? "Belastung" : "Erholung" }
 
-    private func setPhase(_ p: WorkoutPhase) {
+    private func setPhase(_ p: IntervalPhase) {
         cancelScheduled()
         phase = p
         pausedPhaseAccum = 0
