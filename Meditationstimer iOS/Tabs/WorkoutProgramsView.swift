@@ -42,6 +42,117 @@ import UIKit
 
 #if os(iOS)
 
+// MARK: - Sound Cues for Workout
+fileprivate enum Cue: String {
+    case countdownTransition = "countdown-transition" // 3x beep + long tone (combined)
+    case auftakt    // pre-start cue before first work
+    case ausklang   // final chime at end of last work
+}
+
+fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
+    private var urls: [Cue: URL] = [:]  // Cache URLs, not players
+    private var activePlayers: [AVAudioPlayer] = []  // Currently playing sounds
+    private var prepared = false
+    private let speech = AVSpeechSynthesizer()
+
+    func prepare() {
+        guard !prepared else { return }
+        #if os(iOS)
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try session.setActive(true)
+            print("[Sound] Audio session configured successfully")
+        } catch {
+            print("[Sound] Audio session configuration failed: \(error)")
+        }
+        #endif
+        // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
+        for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
+            let name = cue.rawValue
+            let exts = ["caff", "caf", "wav", "mp3", "aiff"]
+            var found: URL? = nil
+            for ext in exts {
+                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
+                    found = url
+                    break
+                }
+            }
+            if let url = found {
+                urls[cue] = url
+                print("[Sound] found \(name)")
+            } else {
+                print("[Sound] MISSING \(name).(caff|caf|wav|mp3|aiff)")
+            }
+        }
+        prepared = true
+    }
+
+    func play(_ cue: Cue) {
+        prepare()
+        guard let url = urls[cue] else {
+            print("[Sound] cannot play \(cue.rawValue): URL not found")
+            return
+        }
+
+        // Create NEW player for each playback (allows parallel sounds)
+        do {
+            let p = try AVAudioPlayer(contentsOf: url)
+            p.delegate = self
+            p.prepareToPlay()
+            p.play()
+            activePlayers.append(p)
+            print("[Sound] play \(cue.rawValue) (active players: \(activePlayers.count))")
+        } catch {
+            print("[Sound] failed to create player for \(cue.rawValue): \(error)")
+        }
+    }
+
+    // MARK: - AVAudioPlayerDelegate
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if let idx = activePlayers.firstIndex(where: { $0 === player }) {
+            activePlayers.remove(at: idx)
+            print("[Sound] removed finished player (remaining: \(activePlayers.count))")
+        }
+    }
+
+    func play(_ cue: Cue, after delay: TimeInterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.play(cue)
+        }
+    }
+
+    func speak(_ text: String, language: String = "de-DE") {
+        prepare()
+        let u = AVSpeechUtterance(string: text)
+        u.voice = AVSpeechSynthesisVoice(language: language)
+        u.rate = AVSpeechUtteranceDefaultSpeechRate
+        speech.speak(u)
+    }
+
+    func speak(_ text: String, after delay: TimeInterval, language: String = "de-DE") {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.speak(text, language: language)
+        }
+    }
+
+    func stopAll() {
+        for p in activePlayers {
+            p.stop()
+        }
+        activePlayers.removeAll()
+        speech.stopSpeaking(at: .immediate)
+    }
+
+    func duration(of cue: Cue) -> TimeInterval {
+        prepare()
+        guard let url = urls[cue] else { return 0 }
+        // Create temporary player to get duration
+        guard let p = try? AVAudioPlayer(contentsOf: url) else { return 0 }
+        return p.duration
+    }
+}
+
 // MARK: - Models
 
 /// Represents a complete workout program with multiple phases
@@ -548,13 +659,19 @@ public struct WorkoutProgramsView: View {
         @EnvironmentObject private var liveActivity: LiveActivityController
         @EnvironmentObject private var streakManager: StreakManager
 
-        private let gong = GongPlayer()
+        @AppStorage("speakExerciseNames") private var speakExerciseNames: Bool = false
+
+        @StateObject private var sounds = SoundPlayer()
 
         @State private var sessionStart: Date = .now
         @State private var currentPhase: SessionPhase = .work(phaseIndex: 0)
         @State private var currentRound: Int = 1
         @State private var phaseStart: Date = .now
         @State private var finished = false
+        @State private var isPaused = false
+        @State private var pausedAt: Date?
+        @State private var pausedPhaseAccum: TimeInterval = 0
+        @State private var pausedSessionAccum: TimeInterval = 0
 
         var body: some View {
             ZStack {
@@ -571,7 +688,11 @@ public struct WorkoutProgramsView: View {
                             phaseStart: $phaseStart,
                             finished: $finished,
                             sessionStart: sessionStart,
-                            gong: gong,
+                            sounds: sounds,
+                            speakExerciseNames: speakExerciseNames,
+                            isPaused: $isPaused,
+                            pausedPhaseAccum: $pausedPhaseAccum,
+                            pausedSessionAccum: $pausedSessionAccum,
                             onSessionEnd: { await endSession(manual: false) }
                         )
                     } else {
@@ -583,10 +704,8 @@ public struct WorkoutProgramsView: View {
                         }
                     }
 
-                    Button("Beenden") {
-                        Task {
-                            await endSession(manual: true)
-                        }
+                    Button(isPaused ? "Weiter" : "Pause") {
+                        togglePause()
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
@@ -613,11 +732,19 @@ public struct WorkoutProgramsView: View {
                 .padding(8)
             }
             .task {
-                // 1. Disable idle timer
+                // 0. Prepare audio session
+                sounds.prepare()
+
+                // 1. Announce first exercise (if TTS enabled)
+                if speakExerciseNames {
+                    sounds.speak("Als nächstes: \(set.phases[0].name)")
+                }
+
+                // 2. Disable idle timer
                 setIdleTimer(true)
 
-                // 2. Play start sound
-                gong.play(named: "gong")
+                // 3. Play start sound
+                sounds.play(.auftakt)
 
                 // 3. Start Live Activity
                 let endDate = sessionStart.addingTimeInterval(TimeInterval(set.totalSeconds))
@@ -648,8 +775,9 @@ public struct WorkoutProgramsView: View {
             // 1. Re-enable idle timer
             setIdleTimer(false)
 
-            // 2. Stop all sounds (no active players to stop for GongPlayer)
+            // 2. Stop all sounds
             // GongPlayer handles cleanup automatically via delegate
+            // Scheduled sounds cancelled by ProgressRingsView.onDisappear
 
             // 3. HealthKit Logging if session > 3s
             let endDate = Date()
@@ -675,7 +803,7 @@ public struct WorkoutProgramsView: View {
 
             // 6. Play end sound if session completed
             if !manual {
-                gong.play(named: "gong-ende")
+                sounds.play(.ausklang)
             }
 
             // 7. Small delay for UI feedback
@@ -684,6 +812,39 @@ public struct WorkoutProgramsView: View {
             // 8. Close the view
             print("[WorkoutPrograms] close() called")
             close()
+        }
+
+        private func togglePause() {
+            if !isPaused {
+                // PAUSE
+                isPaused = true
+                pausedAt = Date()
+                sounds.stopAll()
+                // Scheduled sounds cancelled by ProgressRingsView's checkProgress guard
+                print("[WorkoutPrograms] Session PAUSED")
+                // LiveActivity: Pause-Status setzen
+                let now = Date()
+                let elapsedSession = max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum)
+                let remaining = max(0, TimeInterval(set.totalSeconds) - elapsedSession)
+                let pausedEndDate = now.addingTimeInterval(remaining)
+                Task { await liveActivity.update(phase: currentPhase.isWork ? 1 : 2, endDate: pausedEndDate, isPaused: true) }
+            } else {
+                // RESUME
+                if let p = pausedAt {
+                    let delta = Date().timeIntervalSince(p)
+                    pausedSessionAccum += delta
+                    pausedPhaseAccum += delta
+                }
+                pausedAt = nil
+                isPaused = false
+                print("[WorkoutPrograms] Session RESUMED")
+                // LiveActivity: Pause-Status zurücknehmen
+                let now = Date()
+                let elapsedSession = max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum)
+                let remaining = max(0, TimeInterval(set.totalSeconds) - elapsedSession)
+                let resumedEndDate = now.addingTimeInterval(remaining)
+                Task { await liveActivity.update(phase: currentPhase.isWork ? 1 : 2, endDate: resumedEndDate, isPaused: false) }
+            }
         }
     }
 
@@ -695,68 +856,139 @@ public struct WorkoutProgramsView: View {
         @Binding var phaseStart: Date
         @Binding var finished: Bool
         let sessionStart: Date
-        let gong: GongPlayer
+        fileprivate let sounds: SoundPlayer
+        let speakExerciseNames: Bool
+        @Binding var isPaused: Bool
+        @Binding var pausedPhaseAccum: TimeInterval
+        @Binding var pausedSessionAccum: TimeInterval
         let onSessionEnd: () async -> Void
 
         @State private var currentTime: Date = Date()
         @State private var timer: Timer?
+        @State private var countdownTriggered = false  // Track countdown sound per phase
+        @State private var scheduled: [DispatchWorkItem] = []  // Cancellable scheduled sounds
+
+        // MARK: - Computed Properties
+
+        /// Returns what's coming next: "Als nächstes: Planke" or "Als nächstes: Runde 3 mit Planke"
+        /// Used for REST phase display AND pause display
+        private var nextExerciseInfo: String {
+            let index = currentPhase.phaseIndex
+            let nextIndex = index + 1
+
+            if nextIndex < set.phases.count {
+                // Next exercise in current round
+                return "Als nächstes: \(set.phases[nextIndex].name)"
+            } else if currentRound < set.repetitions {
+                // Next round, first exercise
+                let nextRound = currentRound + 1
+                let firstExercise = set.phases[0].name
+                if nextRound == set.repetitions {
+                    return "Als nächstes: Letzte Runde mit \(firstExercise)"
+                } else {
+                    return "Als nächstes: Runde \(nextRound) mit \(firstExercise)"
+                }
+            } else {
+                return "Erholung"  // Fallback (session ending)
+            }
+        }
 
         var body: some View {
             VStack(spacing: 8) {
                 let now = currentTime
 
-                // Calculate total session progress
+                // Calculate total session progress (accounting for paused time)
                 let totalSeconds = Double(set.totalSeconds)
-                let elapsedTotal = now.timeIntervalSince(sessionStart)
+                let elapsedTotal = now.timeIntervalSince(sessionStart) - pausedSessionAccum
                 let progressTotal = max(0.0, min(1.0, elapsedTotal / totalSeconds))
 
-                // Calculate current phase progress
+                // Calculate current phase progress (accounting for paused time)
                 let phase = set.phases[currentPhase.phaseIndex]
                 let phaseDuration = Double(currentPhase.isWork ? phase.workDuration : phase.restDuration)
-                let elapsedPhase = now.timeIntervalSince(phaseStart)
+                let elapsedPhase = now.timeIntervalSince(phaseStart) - pausedPhaseAccum
                 let progressPhase = max(0.0, min(1.0, elapsedPhase / phaseDuration))
 
                 ZStack {
                     // Outer ring: total session
-                    CircularRing(progress: progressTotal, lineWidth: 22)
-                        .foregroundStyle(Color.workoutViolet)
+                    CircularRing(
+                        progress: progressTotal,
+                        lineWidth: 22,
+                        gradient: LinearGradient(
+                            colors: [Color.workoutViolet.opacity(0.8), Color.workoutViolet],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
                     // Inner ring: current phase
-                    CircularRing(progress: progressPhase, lineWidth: 14)
-                        .scaleEffect(0.72)
-                        .foregroundStyle(.secondary)
-                    // Center: Phase name + icon
+                    CircularRing(
+                        progress: progressPhase,
+                        lineWidth: 14,
+                        gradient: LinearGradient(
+                            colors: [Color.workoutViolet.opacity(0.5), Color.workoutViolet.opacity(0.7)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .scaleEffect(0.72)
+                    // Center: Phase name + icon (or Pause message)
                     VStack(spacing: 8) {
-                        Image(systemName: currentPhase.isWork ? "flame" : "pause")
-                            .font(.system(size: 48, weight: .regular))
-                            .foregroundStyle(Color.workoutViolet)
-                        Text(phase.name)
-                            .font(.headline)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
-                        Text(currentPhase.isWork ? "Belastung" : "Erholung")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        if isPaused {
+                            // During PAUSE: only show next exercise info
+                            Text(nextExerciseInfo)
+                                .font(.headline)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(3)
+                        } else {
+                            // During SESSION: show icon, exercise name, type
+                            Image(systemName: currentPhase.isWork ? "flame" : "pause")
+                                .font(.system(size: 48, weight: .regular))
+                                .foregroundStyle(Color.workoutViolet)
+                            Text(phase.name)
+                                .font(.headline)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                            Text(currentPhase.isWork ? "Übung" : nextExerciseInfo)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .frame(width: 200)
                 }
                 .frame(width: 320, height: 320)
                 .padding(.top, 6)
 
-                Text("Runde \(currentRound) / \(set.repetitions)")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                // Exercise counter + Round counter
+                VStack(spacing: 2) {
+                    Text("Übung \(currentPhase.phaseIndex + 1) / \(set.phases.count)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Text("Runde \(currentRound) / \(set.repetitions)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
             .onAppear {
                 startTimer()
             }
             .onDisappear {
                 stopTimer()
+                cancelScheduled()  // Clean up scheduled sounds on disappear
+            }
+            .onChange(of: isPaused) { _, newValue in
+                if newValue {  // Paused
+                    cancelScheduled()  // Cancel all scheduled sounds
+                    countdownTriggered = false  // Reset countdown flag
+                    print("[WorkoutPrograms] ProgressRingsView: Pause detected, cancelled scheduled sounds")
+                }
             }
         }
 
         private func startTimer() {
             timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
-                currentTime = Date()
+                // Only update time if NOT paused (freeze UI during pause)
+                if !isPaused {
+                    currentTime = Date()
+                }
                 checkProgress()
             }
         }
@@ -767,13 +999,91 @@ public struct WorkoutProgramsView: View {
         }
 
         private func checkProgress() {
+            // SKIP progress check during PAUSE
+            if isPaused { return }
+
             let now = currentTime
             let phase = set.phases[currentPhase.phaseIndex]
             let phaseDuration = Double(currentPhase.isWork ? phase.workDuration : phase.restDuration)
-            let elapsed = now.timeIntervalSince(phaseStart)
+            let elapsed = now.timeIntervalSince(phaseStart) - pausedPhaseAccum
+
+            // COUNTDOWN MONITORING (exactly like Frei-Tab)
+            // During WORK phase: play countdown-transition at remaining <= 3.0s
+            if currentPhase.isWork && !countdownTriggered {
+                let remaining = phaseDuration - elapsed
+                if remaining <= 3.0 && remaining > 0 {
+                    countdownTriggered = true
+                    sounds.play(.countdownTransition)
+                    print("[WorkoutPrograms] countdown-transition triggered, remaining: \(remaining)s")
+                }
+            }
 
             if elapsed >= phaseDuration {
                 advancePhase()
+            }
+        }
+
+        // MARK: - Sound Scheduling Helpers
+
+        /// Cancel all scheduled sounds (called during pause and session end)
+        private func cancelScheduled() {
+            scheduled.forEach { $0.cancel() }
+            scheduled.removeAll()
+        }
+
+        /// Schedule a sound with a delay (cancellable via cancelScheduled)
+        private func schedule(_ delay: TimeInterval, action: @escaping () -> Void) {
+            let w = DispatchWorkItem(block: action)
+            scheduled.append(w)
+            DispatchQueue.main.asyncAfter(deadline: .now() + max(0, delay), execute: w)
+        }
+
+        /// Returns announcement text for what's coming next after current REST phase (FOR UI DISPLAY)
+        private func getNextAnnouncementText(afterIndex index: Int) -> String {
+            let nextIndex = index + 1
+            if nextIndex < set.phases.count {
+                // Next exercise in current round
+                return "Als nächstes: \(set.phases[nextIndex].name)"
+            } else if currentRound < set.repetitions {
+                // Next round, first exercise
+                let nextRound = currentRound + 1
+                let firstExercise = set.phases[0].name
+                if nextRound == set.repetitions {
+                    return "Als nächstes: Letzte Runde mit \(firstExercise)"
+                } else {
+                    return "Als nächstes: Runde \(nextRound) mit \(firstExercise)"
+                }
+            } else {
+                return ""  // No next (shouldn't happen)
+            }
+        }
+
+        /// Returns TTS announcement for next exercise with number: "Als nächstes Übung 2 von 5 Planke"
+        private func getNextExerciseNameForTTS(afterIndex index: Int) -> String {
+            let nextIndex = index + 1
+            if nextIndex < set.phases.count {
+                // Next exercise in current round
+                let exerciseName = set.phases[nextIndex].name
+                let exerciseNum = nextIndex + 1
+                let totalExercises = set.phases.count
+
+                // Check if last exercise AND last round
+                if nextIndex == set.phases.count - 1 && currentRound == set.repetitions {
+                    return "letzte Übung: \(exerciseName)"
+                } else {
+                    return "Als nächstes Übung \(exerciseNum) von \(totalExercises) \(exerciseName)"
+                }
+            } else if currentRound < set.repetitions {
+                // Next round, first exercise
+                let nextRound = currentRound + 1
+                let firstExercise = set.phases[0].name
+                if nextRound == set.repetitions {
+                    return "Letzte Runde mit \(firstExercise)"
+                } else {
+                    return "Runde \(nextRound) mit \(firstExercise)"
+                }
+            } else {
+                return ""  // No next (shouldn't happen)
             }
         }
 
@@ -784,14 +1094,35 @@ public struct WorkoutProgramsView: View {
                 if set.phases[index].restDuration > 0 {
                     currentPhase = .rest(phaseIndex: index)
                     phaseStart = Date()
-                    // No sound for work → rest transition (too frequent)
+                    countdownTriggered = false  // Reset for next phase
+
+                    // TTS ANNOUNCEMENT (if enabled) - speak ONLY exercise name
+                    if speakExerciseNames {
+                        let ttsText = getNextExerciseNameForTTS(afterIndex: index)
+                        if !ttsText.isEmpty {
+                            sounds.speak(ttsText)
+                            print("[WorkoutPrograms] TTS: \(ttsText)")
+                        }
+                    }
+
+                    // PRE-ROLL AUFTAKT SCHEDULING (exactly like Frei-Tab lines 564-566)
+                    // Play auftakt so it ENDS exactly when next WORK phase starts
+                    let restDuration = Double(set.phases[index].restDuration)
+                    let auftaktDuration = sounds.duration(of: .auftakt)
+                    let delay = max(0, restDuration - auftaktDuration)
+                    schedule(delay) {
+                        self.sounds.play(.auftakt)
+                        print("[WorkoutPrograms] auftakt triggered (pre-roll), delay: \(delay)s")
+                    }
                 } else {
                     // No rest, go to next phase
+                    countdownTriggered = false  // Reset for next phase
                     goToNextPhase(from: index)
                 }
 
             case .rest(let index):
                 // Rest finished → go to next phase
+                countdownTriggered = false  // Reset for next phase
                 goToNextPhase(from: index)
             }
         }
@@ -802,8 +1133,7 @@ public struct WorkoutProgramsView: View {
                 // Next phase in current round
                 currentPhase = .work(phaseIndex: nextIndex)
                 phaseStart = Date()
-                // Play phase transition sound
-                gong.play(named: "gong-dreimal")
+                // Sound will be handled by continuous monitoring system
             } else {
                 // Round finished
                 if currentRound < set.repetitions {
@@ -811,8 +1141,7 @@ public struct WorkoutProgramsView: View {
                     currentRound += 1
                     currentPhase = .work(phaseIndex: 0)
                     phaseStart = Date()
-                    // Play round transition sound
-                    gong.play(named: "gong-dreimal")
+                    // Sound will be handled by continuous monitoring system
                 } else {
                     // All rounds finished
                     finished = true
@@ -858,7 +1187,7 @@ public struct WorkoutProgramsView: View {
 
                     // BOTTOM ~1/3: details left, info + edit right
                     HStack(alignment: .center) {
-                        Text("\(set.phaseCount) Phasen · \(set.repetitions) Runden · ≈ \(set.totalDurationString)")
+                        Text("\(set.phaseCount) Übungen · \(set.repetitions) Runden · ≈ \(set.totalDurationString)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
@@ -967,7 +1296,7 @@ public struct WorkoutProgramsView: View {
                             Text("Struktur")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
-                            Text("\(set.phaseCount) Phasen · \(set.repetitions) Runden")
+                            Text("\(set.phaseCount) Übungen · \(set.repetitions) Runden")
                                 .font(.title3)
                             Text("Gesamtdauer: ≈ \(set.totalDurationString)")
                                 .font(.subheadline)
@@ -1089,9 +1418,9 @@ public struct WorkoutProgramsView: View {
                     Section("Runden") {
                         WorkoutWheelPicker("Wiederholungen", selection: $draft.repetitions, range: 1...99)
                     }
-                    Section("Phasen") {
+                    Section("Übungen") {
                         if draft.phases.isEmpty {
-                            Text("Keine Phasen")
+                            Text("Keine Übungen")
                                 .foregroundStyle(.secondary)
                                 .font(.subheadline)
                         } else {
@@ -1132,7 +1461,7 @@ public struct WorkoutProgramsView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                Text("Phase hinzufügen")
+                                Text("Übung hinzufügen")
                             }
                         }
                     }
@@ -1257,7 +1586,7 @@ public struct WorkoutProgramsView: View {
                             Text("s").foregroundStyle(.secondary)
                         }
                     }
-                    Section(footer: isLastPhase ? Text("Letzte Phase im Set hat keine Pause.") : nil) {
+                    Section(footer: isLastPhase ? Text("Letzte Übung im Set hat keine Pause.") : nil) {
                         HStack {
                             Text("Pause")
                             Spacer()
@@ -1287,7 +1616,7 @@ public struct WorkoutProgramsView: View {
                         }
                     }
                 }
-                .navigationTitle(isNew ? "Neue Phase" : "Phase bearbeiten")
+                .navigationTitle(isNew ? "Neue Übung" : "Übung bearbeiten")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { dismiss() } }

@@ -20,6 +20,7 @@ struct SettingsSheet: View {
     @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
     @AppStorage("atemSoundTheme") private var selectedAtemTheme: AtemView.AtemSoundTheme = .distinctive
+    @AppStorage("speakExerciseNames") private var speakExerciseNames: Bool = false
 
     @State private var previewPlayer = AmbientSoundPlayer()
     @State private var gongPlayer = GongPlayer()
@@ -142,6 +143,15 @@ struct SettingsSheet: View {
                             Text("Sound testen")
                         }
                     }
+                }
+
+                Section(header: Text("Workout-Programme")) {
+                    Toggle("Übungsnamen ansagen", isOn: $speakExerciseNames)
+                        .help("Spricht Übungsnamen vor jeder Übung per Sprachsynthese an")
+
+                    Text("Verwendet die Systemsprache für Ansagen (Deutsch/Englisch).")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
 
                 Section {
