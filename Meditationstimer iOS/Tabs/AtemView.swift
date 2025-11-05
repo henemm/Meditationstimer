@@ -474,17 +474,17 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
         private var recommendedUsage: String {
             switch preset.name {
-            case "Box 4-4-4-4":
+            case "Box Breathing":
                 return "Bei akutem Stress, vor wichtigen Terminen oder Präsentationen. Ideal für schnelle Beruhigung in fordernden Situationen."
-            case "4-0-6-0":
+            case "Calming Breath":
                 return "Abends zur Entspannung oder vor dem Schlafengehen. Verlängerte Ausatmung aktiviert den Ruhemodus des Körpers."
-            case "Coherent 5-0-5-0", "Coherent Breathing 5-0-5-0":
+            case "Coherent Breathing":
                 return "Täglich morgens oder mittags zur HRV-Optimierung. Regelmäßige Praxis verbessert langfristig die Stressresilienz."
-            case "7-0-5-0":
+            case "Deep Calm":
                 return "Bei innerer Unruhe oder wenn mentale Klarheit benötigt wird. Fördert Fokus und tiefe Entspannung."
-            case "4-7-8":
+            case "Relaxing Breath":
                 return "Abends direkt vor dem Einschlafen oder bei Schlafproblemen. Wirkt beruhigend bei Stress und Angst."
-            case "Rectangle 6-3-6-3":
+            case "Rhythmic Breath":
                 return "Jederzeit als tägliche Routine. Ausgewogener Rhythmus für Balance im Alltag."
             default:
                 return "Regelmäßige Praxis für beste Ergebnisse."
