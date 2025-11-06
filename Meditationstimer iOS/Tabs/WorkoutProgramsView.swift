@@ -793,21 +793,23 @@ public struct WorkoutProgramsView: View {
             // GongPlayer handles cleanup automatically via delegate
             // Scheduled sounds cancelled by ProgressRingsView.onDisappear
 
-            // 3. HealthKit Logging if session > 3s
+            // 3. HealthKit Logging if session > 3s (runs in background)
             let endDate = Date()
             if sessionStart.distance(to: endDate) > 3 {
-                do {
-                    try await HealthKitManager.shared.logWorkout(
-                        start: sessionStart,
-                        end: endDate,
-                        activity: .highIntensityIntervalTraining
-                    )
-                    print("[WorkoutPrograms] HealthKit workout logged")
+                Task.detached(priority: .userInitiated) {
+                    do {
+                        try await HealthKitManager.shared.logWorkout(
+                            start: sessionStart,
+                            end: endDate,
+                            activity: .highIntensityIntervalTraining
+                        )
+                        print("[WorkoutPrograms] HealthKit workout logged")
 
-                    // 4. Update streaks after successful HealthKit log
-                    await streakManager.updateStreaks()
-                } catch {
-                    print("[WorkoutPrograms] HealthKit logging failed: \(error)")
+                        // 4. Update streaks after successful HealthKit log
+                        await streakManager.updateStreaks()
+                    } catch {
+                        print("[WorkoutPrograms] HealthKit logging failed: \(error)")
+                    }
                 }
             }
 
