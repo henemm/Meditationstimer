@@ -16,10 +16,12 @@ struct DayDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var sessions: [ActivitySession] = []
+    @State private var noAlcLevel: NoAlcManager.ConsumptionLevel? = nil
     @State private var isLoading = false
     @State private var errorMessage: String?
 
     private let healthStore = HKHealthStore()
+    private let noAlcManager = NoAlcManager.shared
     private let calendar = Calendar.current
 
     var body: some View {
@@ -62,6 +64,23 @@ struct DayDetailSheet: View {
                                 Text("\(Int(round(workoutMinutes))) Min")
                                     .font(.title3.bold())
                                     .foregroundColor(.purple)
+                            }
+
+                            Divider()
+                                .frame(height: 40)
+
+                            // NoAlc Summary
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Image(systemName: "drop.fill")
+                                        .foregroundColor(noAlcColor)
+                                    Text("NoAlc")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                }
+                                Text(noAlcLabel)
+                                    .font(.title3.bold())
+                                    .foregroundColor(noAlcColor)
                             }
                         }
                     }
@@ -125,6 +144,28 @@ struct DayDetailSheet: View {
         return formatter.string(from: date)
     }
 
+    private var noAlcLabel: String {
+        guard let level = noAlcLevel else {
+            return "Keine Daten"
+        }
+        return "\(level.emoji) \(level.label)"
+    }
+
+    private var noAlcColor: Color {
+        guard let level = noAlcLevel else {
+            return .gray
+        }
+        // Use spec colors: Steady: #0EBF6E, Easy: #89D6B2, Wild: #B6B6B6
+        switch level {
+        case .steady:
+            return Color(red: 0x0E/255, green: 0xBF/255, blue: 0x6E/255)
+        case .easy:
+            return Color(red: 0x89/255, green: 0xD6/255, blue: 0xB2/255)
+        case .wild:
+            return Color(red: 0xB6/255, green: 0xB6/255, blue: 0xB6/255)
+        }
+    }
+
     private func loadSessions() {
         isLoading = true
         errorMessage = nil
@@ -133,8 +174,28 @@ struct DayDetailSheet: View {
                 let startOfDay = calendar.startOfDay(for: date)
                 let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
 
+                // Fetch mindfulness and workout sessions
                 let rawSessions = try await fetchSessions(from: startOfDay, to: endOfDay)
-                sessions = rawSessions.sorted { $0.startDate < $1.startDate }
+
+                // Fetch NoAlc data
+                let fetchedNoAlcLevel = try? await noAlcManager.fetchConsumption(for: date)
+                noAlcLevel = fetchedNoAlcLevel
+
+                // Add NoAlc as a "session" if it exists (for display in sessions list)
+                var allSessions = rawSessions
+                if let level = fetchedNoAlcLevel {
+                    allSessions.append(ActivitySession(
+                        id: "noalc-\(startOfDay.timeIntervalSince1970)",
+                        type: .noalc(level),
+                        startDate: startOfDay,
+                        endDate: startOfDay,
+                        duration: 0,
+                        calories: nil,
+                        workoutName: nil
+                    ))
+                }
+
+                sessions = allSessions.sorted { $0.startDate < $1.startDate }
                 isLoading = false
             } catch {
                 errorMessage = error.localizedDescription
@@ -254,34 +315,42 @@ struct SessionRow: View {
     var body: some View {
         HStack(spacing: 12) {
             // Icon
-            Image(systemName: session.type == .mindfulness ? "leaf.fill" : "flame.fill")
+            Image(systemName: iconName)
                 .font(.title3)
-                .foregroundColor(session.type == .mindfulness ? .blue : .purple)
+                .foregroundColor(iconColor)
                 .frame(width: 32)
 
             // Info
             VStack(alignment: .leading, spacing: 4) {
-                Text(session.type == .mindfulness ? "Meditation" : session.workoutName ?? "Workout")
+                Text(sessionTitle)
                     .font(.body.weight(.medium))
 
                 HStack(spacing: 8) {
-                    Text(timeString(from: session.startDate))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    Text("•")
-                        .foregroundColor(.secondary)
-
-                    Text("\(Int(round(session.duration))) Min")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    if let calories = session.calories {
-                        Text("•")
-                            .foregroundColor(.secondary)
-                        Text("\(Int(calories)) kcal")
+                    // Only show time for mindfulness and workout
+                    if case .noalc = session.type {
+                        // NoAlc: just show the emoji and label
+                        Text(noAlcInfo)
                             .font(.caption)
                             .foregroundColor(.secondary)
+                    } else {
+                        Text(timeString(from: session.startDate))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        Text("•")
+                            .foregroundColor(.secondary)
+
+                        Text("\(Int(round(session.duration))) Min")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        if let calories = session.calories {
+                            Text("•")
+                                .foregroundColor(.secondary)
+                            Text("\(Int(calories)) kcal")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
             }
@@ -291,6 +360,54 @@ struct SessionRow: View {
         .padding()
         .background(Color(.systemGray6))
         .cornerRadius(8)
+    }
+
+    private var iconName: String {
+        switch session.type {
+        case .mindfulness:
+            return "leaf.fill"
+        case .workout:
+            return "flame.fill"
+        case .noalc:
+            return "drop.fill"
+        }
+    }
+
+    private var iconColor: Color {
+        switch session.type {
+        case .mindfulness:
+            return .blue
+        case .workout:
+            return .purple
+        case .noalc(let level):
+            // Use spec colors
+            switch level {
+            case .steady:
+                return Color(red: 0x0E/255, green: 0xBF/255, blue: 0x6E/255)
+            case .easy:
+                return Color(red: 0x89/255, green: 0xD6/255, blue: 0xB2/255)
+            case .wild:
+                return Color(red: 0xB6/255, green: 0xB6/255, blue: 0xB6/255)
+            }
+        }
+    }
+
+    private var sessionTitle: String {
+        switch session.type {
+        case .mindfulness:
+            return "Meditation"
+        case .workout:
+            return session.workoutName ?? "Workout"
+        case .noalc:
+            return "Alcohol Tracking"
+        }
+    }
+
+    private var noAlcInfo: String {
+        if case .noalc(let level) = session.type {
+            return "\(level.emoji) \(level.label)"
+        }
+        return ""
     }
 
     private func timeString(from date: Date) -> String {
@@ -313,6 +430,7 @@ struct ActivitySession: Identifiable {
     enum ActivityType {
         case mindfulness
         case workout
+        case noalc(NoAlcManager.ConsumptionLevel)
     }
 }
 
