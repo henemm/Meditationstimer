@@ -881,7 +881,8 @@ public struct WorkoutProgramsView: View {
         @State private var timer: Timer?
         @State private var countdownTriggered = false  // Track countdown sound per phase
         @State private var scheduled: [DispatchWorkItem] = []  // Cancellable scheduled sounds
-        @State private var selectedExercise: String? = nil  // For exercise detail sheet
+        @State private var showExerciseSheet = false  // For exercise detail sheet
+        @State private var selectedExerciseName: String = ""  // Exercise name for sheet
 
         // MARK: - Computed Properties
 
@@ -996,11 +997,8 @@ public struct WorkoutProgramsView: View {
                     print("[WorkoutPrograms] ProgressRingsView: Pause detected, cancelled scheduled sounds")
                 }
             }
-            .sheet(item: Binding(
-                get: { selectedExercise.map { ExerciseSheetWrapper(name: $0) } },
-                set: { selectedExercise = $0?.name }
-            )) { wrapper in
-                ExerciseDetailSheet(exerciseName: wrapper.name)
+            .sheet(isPresented: $showExerciseSheet) {
+                ExerciseDetailSheet(exerciseName: selectedExerciseName)
             }
         }
 
@@ -1013,7 +1011,8 @@ public struct WorkoutProgramsView: View {
                     .lineLimit(2)
 
                 Button {
-                    selectedExercise = name
+                    selectedExerciseName = name
+                    showExerciseSheet = true
                 } label: {
                     Image(systemName: "info.circle")
                         .font(.caption)
@@ -1287,7 +1286,8 @@ public struct WorkoutProgramsView: View {
     struct PresetInfoSheet: View {
         let set: WorkoutSet
         @Environment(\.dismiss) private var dismiss
-        @State private var selectedExercise: String? = nil
+        @State private var showExerciseSheet = false  // For exercise detail sheet
+        @State private var selectedExerciseName: String = ""  // Exercise name for sheet
 
         private var recommendedUsage: String {
             // Extract recommended usage based on set name
@@ -1387,11 +1387,8 @@ public struct WorkoutProgramsView: View {
                         }
                     }
                 }
-                .sheet(item: Binding(
-                    get: { selectedExercise.map { ExerciseSheetWrapper(name: $0) } },
-                    set: { selectedExercise = $0?.name }
-                )) { wrapper in
-                    ExerciseDetailSheet(exerciseName: wrapper.name)
+                .sheet(isPresented: $showExerciseSheet) {
+                    ExerciseDetailSheet(exerciseName: selectedExerciseName)
                 }
             }
         }
@@ -1409,7 +1406,8 @@ public struct WorkoutProgramsView: View {
                     .font(.body)
                 Spacer()
                 Button {
-                    selectedExercise = phase.name
+                    selectedExerciseName = phase.name
+                    showExerciseSheet = true
                 } label: {
                     Image(systemName: "info.circle")
                         .foregroundStyle(Color.workoutViolet)
@@ -1421,6 +1419,9 @@ public struct WorkoutProgramsView: View {
                     .foregroundStyle(.secondary)
                     .frame(width: 40, alignment: .trailing)
             }
+            .frame(minHeight: 44)  // Apple HIG minimum touch target
+            .padding(.vertical, 4)
+            .contentShape(Rectangle())  // Make entire row tappable
         }
     }
 
