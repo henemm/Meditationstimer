@@ -1,0 +1,208 @@
+================================================================================
+APP STORE TEXTE - LEAN HEALTH TIMER V1.7
+================================================================================
+
+================================================================================
+1. WERBETEXT (Promotional Text - max 170 Zeichen)
+================================================================================
+
+10 HIIT-Workout-Programme + eigene Workouts erstellen! Streaks für Meditation & Training. Smart Reminders. NoAlc-Tracking. 6 Atemtechniken. Alles in Apple Health.
+
+(168 Zeichen)
+
+
+================================================================================
+2. BESCHREIBUNG (Description)
+================================================================================
+
+Dein minimalistischer Begleiter für Meditation, Atemübungen und Workouts – entwickelt, um tägliche Wellness-Gewohnheiten zu etablieren und zu feiern.
+
+Lean Health Timer verbindet bewährte Wellness-Praktiken mit intelligenter Motivations-Unterstützung. Ohne Ablenkung, ohne Schnickschnack – nur das, was du brauchst, um deine Praxis zur täglichen Gewohnheit zu machen.
+
+STREAKS & GEWOHNHEITEN
+
+TÄGLICHE STREAKS
+Das Herzstück der App: Verfolge deine Meditation- und Workout-Streaks Tag für Tag. Sieh deine aktuelle Serie und feiere jeden Tag, an dem du deine Ziele erreichst. Streaks motivieren dich, dranzubleiben und verwandeln gute Vorsätze in echte Gewohnheiten.
+
+AKTIVITÄTS-KALENDER
+Visualisiert deine tägliche Praxis auf einen Blick: Wie viele Minuten Meditation und Workout hast du absolviert? Setze individuelle Tagesziele in den Einstellungen und beobachte, wie sich deine Gewohnheiten entwickeln.
+
+SMART REMINDERS
+Intelligente Erinnerungen, die nur dann benachrichtigen, wenn du noch nicht aktiv warst. Kein Spam – nur sinnvolle Impulse zur richtigen Zeit (z.B. "Keine Meditation seit 12 Stunden"). Perfekt, um deine neue Gewohnheit zu etablieren, ohne aufdringlich zu sein.
+
+NOALC-TRACKING
+Dokumentiere alkoholfreie Tage im Kalender und baue auch hier deine Streak auf! Das NoAlc-Tracking hilft dir, bewusste Entscheidungen zu treffen und Erfolge zu feiern. Smart Notifications unterstützen dich bei deinen Zielen.
+
+DREI KRAFTVOLLE MODI
+
+OFFENE MEDITATION
+Freies Meditieren mit zwei Phasen: Meditation und anschließende Besinnung. Du bestimmst die Dauer (1-120 Min) – die App kümmert sich um sanfte Gong-Klänge zum Start, Übergang und Ende.
+
+ATEM-MEDITATION
+6 wissenschaftlich fundierte Atemtechniken:
+• Box Breathing (Navy SEAL Technik)
+• Calming Breath (Parasympathikus-Aktivierung)
+• Coherent Breathing (HRV-Optimierung)
+• Deep Calm (tiefe Entspannung)
+• Relaxing Breath (Dr. Andrew Weil's 4-7-8)
+• Rhythmic Breath (Savitri Pranayama)
+
+Jede Technik mit Info-Button: Erfahre Wirkungsweise, Anwendungsfälle und wissenschaftliche Fundierung. Erstelle auch eigene Presets mit individuellen Atemrhythmen!
+
+5 SOUND-THEMES: Marimba, Harfe, Gitarre, E-Piano, Markant – wähle die Klangwelt, die zu deiner Stimmung passt.
+
+WORKOUT PROGRAMMES (NEU!)
+10 wissenschaftlich fundierte HIIT-Presets:
+• Tabata Classic (20s/10s Original-Protokoll)
+• Core Circuit (Rumpfstabilität)
+• Full Body Burn (Ganzkörper-HIIT)
+• Power Intervals (explosive Bewegungen)
+• Upper Body Strength
+• Lower Body Power
+• Cardio Blast
+• Recovery Flow
+• Morning Energizer
+• Evening Wind-Down
+
+Erstelle EIGENE WORKOUT-PROGRAMME:
+• Multi-Phasen-Support (verschiedene Übungen hintereinander)
+• Erweiterbare Exercise Library (~60 Übungen + eigene)
+• Individuelle Work/Rest-Zeiten pro Phase
+• Dual-Ring Progress Display (Gesamt + Phase)
+• Audio-Cues für jeden Phasenübergang
+• Speichern & teilen deiner Workouts
+
+FREIE INTERVALLE
+HIIT-Timer mit konfigurierbaren Intervallen: Belastung, Erholung, Wiederholungen. Perfekt für Tabata, Boxtraining oder deine eigene Routine.
+
+APPLE ECOSYSTEM INTEGRATION
+
+HEALTHKIT
+Alle Sessions werden in Apple Health gespeichert – deine Daten bleiben in deiner Kontrolle. Keine zusätzlichen Accounts nötig.
+
+APPLE WATCH
+Meditation und Workouts auch unterwegs mit Heart-Rate-Monitoring.
+
+DYNAMIC ISLAND & LIVE ACTIVITIES
+Sieh deine laufende Session auf dem Sperrbildschirm oder in der Dynamic Island (iPhone 14 Pro+).
+
+SHORTCUTS & SIRI
+"Hey Siri, starte Box Breathing" – Automatisiere deine Wellness-Routine mit 3 Shortcuts-Aktionen. Baue komplexe Workflows (Musik → Fokus → Atem → Meditation).
+
+WAS LEAN HEALTH TIMER BESONDERS MACHT
+
+• Workout-Programme – 10 HIIT-Presets + eigene Workouts erstellen
+• Streaks als Motivations-Motor – Feiere jeden Tag
+• Smart Reminders – Unterstützung ohne Aufdringlichkeit
+• NoAlc-Tracking – Gesunde Entscheidungen sichtbar machen
+• Wissenschaftlich fundiert – Etablierte Techniken mit Hintergrundinfos
+• Deine Daten, deine Kontrolle – HealthKit statt Cloud-Zwang
+• Komplett offline – Keine Registrierung, kein Tracking
+• Minimalistisches Design – Keine Ablenkungen, nur Fokus
+
+SYSTEMANFORDERUNGEN
+
+• iOS 16.1 oder neuer
+• watchOS 9.0 oder neuer (optional)
+• HealthKit-Berechtigung für Activity-Tracking
+
+Starte noch heute – baue Gewohnheiten, die bleiben.
+
+
+================================================================================
+3. NEUES IN DIESER VERSION (What's New in Version 1.7)
+================================================================================
+
+WORKOUT PROGRAMMES – HIIT AUF DEM NÄCHSTEN LEVEL
+
+10 WISSENSCHAFTLICH FUNDIERTE HIIT-PRESETS
+Wähle aus professionell gestalteten Workout-Programmen:
+
+🔥 TABATA CLASSIC
+Das Original-Tabata-Protokoll: 8 Runden à 20s maximale Intensität / 10s Pause. Nachweislich VO2max-Steigerung um bis zu 14% in 6 Wochen.
+
+💪 CORE CIRCUIT
+Fokussiert auf Rumpfstabilität: Planken, Crunches, Russian Twists. Kombiniert isometrische und dynamische Übungen für ganzheitliche Core-Stärkung.
+
+🏃 FULL BODY BURN
+Ganzkörper-HIIT: Burpees, Kniebeugen, Liegestütze, Mountain Climbers. Maximale Kalorienverbrennung durch große Muskelgruppen.
+
+⚡ POWER INTERVALS
+Explosive plyometrische Übungen zur Steigerung von Schnellkraft und anaerober Kapazität. EPOC-Effekt bis 24h nach dem Training.
+
+🦵 LOWER BODY POWER
+Beine & Gesäß: Jump-Kniebeugen, Ausfallschritte, Bulgarian Splits. Kraft-Ausdauer für untere Extremitäten.
+
+💪 UPPER BODY STRENGTH
+Oberkörper-Fokus: Push-ups, Dips, Plank-Variationen. Muskuläre Ausdauer für Brust, Schultern, Trizeps.
+
+🫀 CARDIO BLAST
+Hochintensives Cardio: High Knees, Butt Kicks, Jumping Jacks. Optimiert für Herzkreislauf-Fitness.
+
+🧘 RECOVERY FLOW
+Aktive Erholung: Sanfte Bewegungen & Stretching. Perfekt für Regenerationstage.
+
+☀️ MORNING ENERGIZER
+Wachmach-Routine: Dynamische Bewegungen zum Tagesstart.
+
+🌙 EVENING WIND-DOWN
+Beruhigendes Abend-Workout: Sanfte Kräftigung & Mobilisierung.
+
+ERSTELLE EIGENE WORKOUT-PROGRAMME
+
+MULTI-PHASEN-SUPPORT
+Baue komplexe Workouts mit mehreren Übungen:
+• Verschiedene Übungen nacheinander
+• Individuelle Work/Rest-Zeiten pro Phase
+• Bis zu 99 Runden
+• Swipe-to-delete & Drag-to-reorder
+
+ERWEITERBARE EXERCISE LIBRARY
+• ~60 vordefinierte Übungen (Kraft, Cardio, Stretching)
+• Eigene Übungsnamen hinzufügen
+• Kategorisiert nach Muskelgruppen
+• Picker + freie Eingabe
+
+DUAL-RING PROGRESS DISPLAY
+• Äußerer Ring: Gesamtfortschritt der Session
+• Innerer Ring: Aktuelle Phase
+• Live-Timer mit Phase-Name
+• Runden-Zähler
+• Workout Violet Farb-Theme
+
+AUDIO & LIVE ACTIVITY
+• Gong-Sounds (Start, Phasenübergänge, Ende)
+• LiveActivity für Lock Screen / Dynamic Island
+• Idle Timer Management
+• HealthKit Logging als HIIT-Workout
+
+PERSISTENT STORAGE
+• Speichere deine Workouts lokal
+• Bearbeite & lösche jederzeit
+• Keine Cloud, keine Accounts
+• Deine Daten bleiben auf deinem Gerät
+
+INTEGRATION MIT BESTEHENDEM SYSTEM
+
+STREAKS & KALENDER
+Workout-Programme zählen vollständig zu deinen Workout-Streaks und erscheinen im Aktivitäts-Kalender. Baue deine Gewohnheit mit beiden Workout-Modi auf!
+
+HEALTHKIT
+Automatisches Logging als "High Intensity Interval Training" in Apple Health. Deine Fitness-Daten bleiben unter deiner Kontrolle.
+
+APPLE WATCH
+Workout-Programme auch auf der Apple Watch verfügbar (coming soon).
+
+VERBESSERUNGEN
+
+• Toolbar vereinfacht (kein verwirrlicher "Edit" Button mehr)
+• Custom Exercise Names Support
+• Workout Violet Farbe konsistent in der gesamten UI
+• Performance-Optimierungen für Timer-Engine
+
+Viel Erfolg beim Erreichen deiner Fitness-Ziele! 💪
+
+
+================================================================================
+ENDE
+================================================================================

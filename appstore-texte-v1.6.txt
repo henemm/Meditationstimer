@@ -1,0 +1,148 @@
+================================================================================
+APP STORE TEXTE - LEAN HEALTH TIMER V1.6
+================================================================================
+
+================================================================================
+1. WERBETEXT (Promotional Text - max 170 Zeichen)
+================================================================================
+
+Baue gesunde Gewohnheiten mit täglichen Meditation & Workout Streaks! Smart Reminders unterstützen dich. NoAlc-Tracking inklusive. 6 wissenschaftliche Atemtechniken.
+
+(160 Zeichen)
+
+
+================================================================================
+2. BESCHREIBUNG (Description)
+================================================================================
+
+Dein minimalistischer Begleiter für Meditation, Atemübungen und Workouts – entwickelt, um tägliche Wellness-Gewohnheiten zu etablieren und zu feiern.
+
+Lean Health Timer verbindet bewährte Wellness-Praktiken mit intelligenter Motivations-Unterstützung. Ohne Ablenkung, ohne Schnickschnack – nur das, was du brauchst, um deine Praxis zur täglichen Gewohnheit zu machen.
+
+STREAKS & GEWOHNHEITEN
+
+TÄGLICHE STREAKS
+Das Herzstück der App: Verfolge deine Meditation- und Workout-Streaks Tag für Tag. Sieh deine aktuelle Serie und feiere jeden Tag, an dem du deine Ziele erreichst. Streaks motivieren dich, dranzubleiben und verwandeln gute Vorsätze in echte Gewohnheiten.
+
+AKTIVITÄTS-KALENDER
+Visualisiert deine tägliche Praxis auf einen Blick: Wie viele Minuten Meditation und Workout hast du absolviert? Setze individuelle Tagesziele in den Einstellungen und beobachte, wie sich deine Gewohnheiten entwickeln.
+
+SMART REMINDERS
+Intelligente Erinnerungen, die nur dann benachrichtigen, wenn du noch nicht aktiv warst. Kein Spam – nur sinnvolle Impulse zur richtigen Zeit (z.B. "Keine Meditation seit 12 Stunden"). Perfekt, um deine neue Gewohnheit zu etablieren, ohne aufdringlich zu sein.
+
+NOALC-TRACKING
+Dokumentiere alkoholfreie Tage im Kalender und baue auch hier deine Streak auf! Das NoAlc-Tracking hilft dir, bewusste Entscheidungen zu treffen und Erfolge zu feiern. Smart Notifications unterstützen dich bei deinen Zielen.
+
+DREI KRAFTVOLLE MODI
+
+OFFENE MEDITATION
+Freies Meditieren mit zwei Phasen: Meditation und anschließende Besinnung. Du bestimmst die Dauer (1-120 Min) – die App kümmert sich um sanfte Gong-Klänge zum Start, Übergang und Ende.
+
+ATEM-MEDITATION
+6 wissenschaftlich fundierte Atemtechniken:
+• Box Breathing (Navy SEAL Technik)
+• Calming Breath (Parasympathikus-Aktivierung)
+• Coherent Breathing (HRV-Optimierung)
+• Deep Calm (tiefe Entspannung)
+• Relaxing Breath (Dr. Andrew Weil's 4-7-8)
+• Rhythmic Breath (Savitri Pranayama)
+
+Jede Technik mit Info-Button: Erfahre Wirkungsweise, Anwendungsfälle und wissenschaftliche Fundierung. Erstelle auch eigene Presets mit individuellen Atemrhythmen!
+
+5 SOUND-THEMES: Marimba, Harfe, Gitarre, E-Piano, Markant – wähle die Klangwelt, die zu deiner Stimmung passt.
+
+WORKOUTS
+HIIT-Timer mit konfigurierbaren Intervallen: Belastung, Erholung, Wiederholungen. Perfekt für Tabata, Boxtraining oder deine eigene Routine.
+
+APPLE ECOSYSTEM INTEGRATION
+
+HEALTHKIT
+Alle Sessions werden in Apple Health gespeichert – deine Daten bleiben in deiner Kontrolle. Keine zusätzlichen Accounts nötig.
+
+APPLE WATCH
+Meditation und Workouts auch unterwegs mit Heart-Rate-Monitoring.
+
+DYNAMIC ISLAND & LIVE ACTIVITIES
+Sieh deine laufende Session auf dem Sperrbildschirm oder in der Dynamic Island (iPhone 14 Pro+).
+
+SHORTCUTS & SIRI
+"Hey Siri, starte Box Breathing" – Automatisiere deine Wellness-Routine mit 3 Shortcuts-Aktionen. Baue komplexe Workflows (Musik → Fokus → Atem → Meditation).
+
+WAS LEAN HEALTH TIMER BESONDERS MACHT
+
+• Streaks als Motivations-Motor – Feiere jeden Tag
+• Smart Reminders – Unterstützung ohne Aufdringlichkeit
+• NoAlc-Tracking – Gesunde Entscheidungen sichtbar machen
+• Wissenschaftlich fundiert – Etablierte Techniken mit Hintergrundinfos
+• Deine Daten, deine Kontrolle – HealthKit statt Cloud-Zwang
+• Komplett offline – Keine Registrierung, kein Tracking
+• Minimalistisches Design – Keine Ablenkungen, nur Fokus
+
+SYSTEMANFORDERUNGEN
+
+• iOS 16.1 oder neuer
+• watchOS 9.0 oder neuer (optional)
+• HealthKit-Berechtigung für Activity-Tracking
+
+Starte noch heute – baue Gewohnheiten, die bleiben.
+
+
+================================================================================
+3. NEUES IN DIESER VERSION (What's New in Version 1.6)
+================================================================================
+
+STREAKS & GEWOHNHEITEN IM FOKUS
+
+TÄGLICHE STREAKS FÜR MEDITATION & WORKOUTS
+Verfolge deine Erfolge Tag für Tag! Das neue Streak-System zeigt dir deine aktuelle Serie und motiviert dich, dranzubleiben. Verwandle gute Vorsätze in echte tägliche Gewohnheiten.
+
+AKTIVITÄTS-KALENDER
+Visualisiert deine tägliche Praxis: Sieh auf einen Blick, wie viele Minuten du meditiert und trainiert hast. Setze individuelle Tagesziele und beobachte deine Entwicklung.
+
+SMART REMINDERS 2.0
+Intelligente Erinnerungen, die nur bei Inaktivität benachrichtigen:
+• Erinnerung nur, wenn du noch nicht aktiv warst
+• Konfigurierbares Zeitfenster (Check der letzten X Stunden)
+• Kein Spam – nur sinnvolle Impulse
+
+NOALC-TRACKING MIT STREAKS
+Dokumentiere alkoholfreie Tage und baue auch hier deine Streak auf! Das neue NoAlc-Tracking hilft dir, bewusste Entscheidungen zu treffen und Erfolge zu feiern. Smart Notifications unterstützen dich bei deinen Zielen.
+
+VERBESSERTE ATEM-TECHNIKEN
+
+6 wissenschaftlich fundierte Atemtechniken mit professionellen Namen:
+• Box Breathing (Navy SEAL Technik zur Stress-Reduktion)
+• Calming Breath (Parasympathikus-Aktivierung)
+• Coherent Breathing (HRV-Optimierung)
+• Deep Calm (tiefe Entspannung)
+• Relaxing Breath (Dr. Andrew Weil's Einschlaf-Technik)
+• Rhythmic Breath (Savitri Pranayama – neu hinzugefügt!)
+
+Info-Button mit wissenschaftlichem Hintergrund:
+• Wirkungsweise jeder Technik
+• Empfohlene Anwendungsfälle
+• Wissenschaftliche Fundierung
+
+5 ATEM-SOUND-THEMES
+Neue Klangwelten für individuelle Atmosphäre:
+• Marimba (warm & beruhigend)
+• Harfe (elegant & sanft)
+• Gitarre (natürlich & organisch)
+• E-Piano (modern & klar)
+• Markant (präzise & fokussiert)
+
+APPLE SHORTCUTS INTEGRATION
+"Hey Siri, starte Box Breathing" – Automatisiere deine Wellness-Routine:
+• 3 neue Shortcuts-Aktionen (Meditation, Atem, Workout)
+• Baue komplexe Workflows (Musik → Fokus → Atem → Meditation)
+• Verbinde mit iOS Fokus-Modi
+
+AUTOMATISCHE MIGRATION
+Deine bestehenden Atem-Presets werden automatisch mit den neuen Namen und Beschreibungen aktualisiert. Keine manuellen Schritte erforderlich!
+
+Viel Erfolg beim Aufbau deiner täglichen Wellness-Gewohnheiten!
+
+
+================================================================================
+ENDE
+================================================================================

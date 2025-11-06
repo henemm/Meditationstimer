@@ -13,7 +13,10 @@ struct ExerciseDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     private var exerciseInfo: ExerciseInfo? {
-        ExerciseDatabase.info(for: exerciseName)
+        print("[ExerciseDetailSheet] Looking up: '\(exerciseName)' (length: \(exerciseName.count))")
+        let result = ExerciseDatabase.info(for: exerciseName)
+        print("[ExerciseDetailSheet] Found: \(result != nil)")
+        return result
     }
 
     var body: some View {

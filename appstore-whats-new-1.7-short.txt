@@ -1,0 +1,49 @@
+WORKOUT PROGRAMMES – HIIT AUF DEM NÄCHSTEN LEVEL
+
+10 WISSENSCHAFTLICH FUNDIERTE HIIT-PRESETS
+
+Wähle aus professionell gestalteten Workout-Programmen:
+• Tabata Classic (20s/10s Original-Protokoll)
+• Core Circuit (Rumpfstabilität)
+• Full Body Burn (Ganzkörper-HIIT)
+• Power Intervals (explosive Bewegungen)
+• Lower/Upper Body Focus
+• Cardio Blast & Recovery Flow
+• Morning Energizer & Evening Wind-Down
+
+Jedes Programm mit wissenschaftlicher Beschreibung und erwarteten Effekten!
+
+ERSTELLE EIGENE WORKOUT-PROGRAMME
+
+Multi-Phasen-Support:
+• Verschiedene Übungen nacheinander
+• Individuelle Work/Rest-Zeiten pro Phase
+• Bis zu 99 Runden
+
+Erweiterbare Exercise Library:
+• ~60 vordefinierte Übungen
+• Eigene Übungsnamen hinzufügen
+• Kategorisiert nach Muskelgruppen
+
+Dual-Ring Progress Display:
+• Äußerer Ring: Gesamtfortschritt
+• Innerer Ring: Aktuelle Phase
+• Live-Timer mit Runden-Zähler
+
+Audio & Live Activity:
+• Gong-Sounds bei Phasenübergängen
+• LiveActivity für Lock Screen / Dynamic Island
+• HealthKit Logging als HIIT-Workout
+• Zählt zu Workout-Streaks & Kalender
+
+INTEGRATION
+
+Workout-Programme zählen vollständig zu deinen Workout-Streaks und erscheinen im Aktivitäts-Kalender. Automatisches Logging in Apple Health als "High Intensity Interval Training".
+
+VERBESSERUNGEN
+
+• Toolbar vereinfacht
+• Custom Exercise Names Support
+• Performance-Optimierungen
+
+Viel Erfolg beim Erreichen deiner Fitness-Ziele! 💪
