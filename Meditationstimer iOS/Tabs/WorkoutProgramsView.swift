@@ -1261,6 +1261,7 @@ public struct WorkoutProgramsView: View {
     struct PresetInfoSheet: View {
         let set: WorkoutSet
         @Environment(\.dismiss) private var dismiss
+        @State private var selectedExercise: String? = nil
 
         private var recommendedUsage: String {
             // Extract recommended usage based on set name
@@ -1331,9 +1332,18 @@ public struct WorkoutProgramsView: View {
                                         Text(phase.name)
                                             .font(.body)
                                         Spacer()
+                                        Button {
+                                            selectedExercise = phase.name
+                                        } label: {
+                                            Image(systemName: "info.circle")
+                                                .foregroundStyle(.workoutViolet)
+                                                .font(.body)
+                                        }
+                                        .buttonStyle(.plain)
                                         Text("\(phase.workDuration)s")
                                             .font(.subheadline)
                                             .foregroundStyle(.secondary)
+                                            .frame(width: 40, alignment: .trailing)
                                     }
                                 }
                             }
@@ -1370,8 +1380,20 @@ public struct WorkoutProgramsView: View {
                         }
                     }
                 }
+                .sheet(item: Binding(
+                    get: { selectedExercise.map { ExerciseSheetWrapper(name: $0) } },
+                    set: { selectedExercise = $0?.name }
+                )) { wrapper in
+                    ExerciseDetailSheet(exerciseName: wrapper.name)
+                }
             }
         }
+    }
+
+    // Helper struct to make String identifiable for .sheet(item:)
+    struct ExerciseSheetWrapper: Identifiable {
+        let id = UUID()
+        let name: String
     }
 
     // MARK: - SetEditorView (create/edit workout set)
