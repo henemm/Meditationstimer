@@ -852,6 +852,24 @@ public struct WorkoutProgramsView: View {
                 pausedAt = nil
                 isPaused = false
                 print("[WorkoutPrograms] Session RESUMED")
+
+                // Re-schedule auftakt sound if we're in REST phase
+                if case .rest(let index) = currentPhase {
+                    let now = Date()
+                    let restDuration = Double(set.phases[index].restDuration)
+                    let elapsedRest = now.timeIntervalSince(phaseStart) - pausedPhaseAccum
+                    let remainingRest = max(0, restDuration - elapsedRest)
+
+                    let auftaktDuration = sounds.duration(of: .auftakt)
+                    let delay = max(0, remainingRest - auftaktDuration)
+
+                    // Schedule auftakt sound directly
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                        sounds.play(.auftakt)
+                        print("[WorkoutPrograms] auftakt re-scheduled after resume, delay: \(delay)s")
+                    }
+                }
+
                 // LiveActivity: Pause-Status zurücknehmen
                 let now = Date()
                 let elapsedSession = max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum)
