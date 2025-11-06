@@ -458,7 +458,7 @@ struct MonthView: View {
     let workoutGoalMinutes: Double
     private let calendar = Calendar.current
 
-    @State private var showTooltipFor: Date? = nil
+    @State private var selectedDate: Date? = nil
 
     // Custom shape for filled sectors (quarters)
     struct Sector: Shape {
@@ -562,15 +562,20 @@ struct MonthView: View {
             }
         }
         .onTapGesture {
-            showTooltipFor = dayKey
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                showTooltipFor = nil
+            // Only show sheet if day has activity
+            if hasActivity {
+                selectedDate = dayKey
             }
         }
-        .popover(isPresented: Binding(get: { showTooltipFor == dayKey }, set: { if !$0 { showTooltipFor = nil } })) {
-            if let tooltip = tooltipView(for: mins, date: dayKey) {
-                tooltip
-            }
+        .sheet(isPresented: Binding(
+            get: { selectedDate == dayKey },
+            set: { if !$0 { selectedDate = nil } }
+        )) {
+            DayDetailSheet(
+                date: dayKey,
+                mindfulnessMinutes: mins.mindfulnessMinutes,
+                workoutMinutes: mins.workoutMinutes
+            )
         }
     }
     

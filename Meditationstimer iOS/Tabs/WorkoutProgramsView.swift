@@ -881,6 +881,7 @@ public struct WorkoutProgramsView: View {
         @State private var timer: Timer?
         @State private var countdownTriggered = false  // Track countdown sound per phase
         @State private var scheduled: [DispatchWorkItem] = []  // Cancellable scheduled sounds
+        @State private var selectedExercise: String? = nil  // For exercise detail sheet
 
         // MARK: - Computed Properties
 
@@ -957,10 +958,10 @@ public struct WorkoutProgramsView: View {
                             Image(systemName: currentPhase.isWork ? "flame" : "pause")
                                 .font(.system(size: 48, weight: .regular))
                                 .foregroundStyle(Color.workoutViolet)
-                            Text(phase.name)
-                                .font(.headline)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(2)
+
+                            // Exercise name with info button
+                            exerciseNameWithInfoButton(phase.name)
+
                             Text(currentPhase.isWork ? "Übung" : nextExerciseInfo)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
@@ -994,6 +995,31 @@ public struct WorkoutProgramsView: View {
                     countdownTriggered = false  // Reset countdown flag
                     print("[WorkoutPrograms] ProgressRingsView: Pause detected, cancelled scheduled sounds")
                 }
+            }
+            .sheet(item: Binding(
+                get: { selectedExercise.map { ExerciseSheetWrapper(name: $0) } },
+                set: { selectedExercise = $0?.name }
+            )) { wrapper in
+                ExerciseDetailSheet(exerciseName: wrapper.name)
+            }
+        }
+
+        @ViewBuilder
+        private func exerciseNameWithInfoButton(_ name: String) -> some View {
+            HStack(spacing: 6) {
+                Text(name)
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+
+                Button {
+                    selectedExercise = name
+                } label: {
+                    Image(systemName: "info.circle")
+                        .font(.caption)
+                        .foregroundStyle(Color.workoutViolet)
+                }
+                .buttonStyle(.plain)
             }
         }
 
@@ -1325,26 +1351,7 @@ public struct WorkoutProgramsView: View {
                                 .foregroundStyle(.secondary)
                             VStack(alignment: .leading, spacing: 4) {
                                 ForEach(Array(set.phases.enumerated()), id: \.offset) { index, phase in
-                                    HStack {
-                                        Text("\(index + 1).")
-                                            .foregroundStyle(.tertiary)
-                                            .frame(width: 24, alignment: .trailing)
-                                        Text(phase.name)
-                                            .font(.body)
-                                        Spacer()
-                                        Button {
-                                            selectedExercise = phase.name
-                                        } label: {
-                                            Image(systemName: "info.circle")
-                                                .foregroundStyle(.workoutViolet)
-                                                .font(.body)
-                                        }
-                                        .buttonStyle(.plain)
-                                        Text("\(phase.workDuration)s")
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
-                                            .frame(width: 40, alignment: .trailing)
-                                    }
+                                    phaseRow(index: index, phase: phase)
                                 }
                             }
                         }
@@ -1386,6 +1393,33 @@ public struct WorkoutProgramsView: View {
                 )) { wrapper in
                     ExerciseDetailSheet(exerciseName: wrapper.name)
                 }
+            }
+        }
+
+        // MARK: - Helper Views
+
+        /// Helper function to avoid compiler timeout with complex HStack
+        @ViewBuilder
+        private func phaseRow(index: Int, phase: WorkoutPhase) -> some View {
+            HStack {
+                Text("\(index + 1).")
+                    .foregroundStyle(.tertiary)
+                    .frame(width: 24, alignment: .trailing)
+                Text(phase.name)
+                    .font(.body)
+                Spacer()
+                Button {
+                    selectedExercise = phase.name
+                } label: {
+                    Image(systemName: "info.circle")
+                        .foregroundStyle(Color.workoutViolet)
+                        .font(.body)
+                }
+                .buttonStyle(.plain)
+                Text("\(phase.workDuration)s")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 40, alignment: .trailing)
             }
         }
     }
