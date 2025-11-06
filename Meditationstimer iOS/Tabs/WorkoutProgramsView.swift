@@ -967,11 +967,14 @@ public struct WorkoutProgramsView: View {
                     // Center: Phase name + icon (or Pause message)
                     VStack(spacing: 8) {
                         if isPaused {
-                            // During PAUSE: only show next exercise info
+                            // During PAUSE: show exercise name with info button
+                            exerciseNameWithInfoButton(phase.name)
+
                             Text(nextExerciseInfo)
-                                .font(.headline)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
-                                .lineLimit(3)
+                                .lineLimit(2)
                         } else {
                             // During SESSION: show icon, exercise name, type
                             Image(systemName: currentPhase.isWork ? "flame" : "pause")
