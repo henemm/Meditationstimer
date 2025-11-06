@@ -1,36 +1,16 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 30. Oktober 2025
+**Letzte Aktualisierung:** 6. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
 
 ## 🐛 aktive Bugs
 
-keine
+- Workouts: Keine Sounds mehr nachdem man auf Pause gedrückt hat und weiter spielt (Fix implementiert in 0f61eec, muss noch getestet werden)
 
 ---
 
-## 🎨 Design & UX - Liquid Glass Modernisierung
-
-### View-Transitions Vereinheitlichen
-**Status:** Analysiert, bereit zur Implementation
-**Priorität:** Hoch
-**Aufwand:** ~137 LOC über 7 Dateien
-
-**Problem:**
-- Drei unterschiedliche Präsentations-Patterns für Session-Runner (Offen/Atem/Workouts)
-- OffenView: Overlay ohne Animation
-- AtemView: Overlay mit `.scale+.opacity` ✅ (Best Practice)
-- WorkoutsView: `.fullScreenCover` (inkonsistent)
-
-**High Priority Fixes:**
-1. WorkoutsView → Replace `.fullScreenCover` mit Overlay-Pattern (~80 LOC)
-2. OffenView → Add `.scale+.opacity` transition animation (~30 LOC)
-3. Alle `NavigationView` → `NavigationStack` (3 Stellen, ~20 LOC)
-4. AtemView Animation → `.easeInOut` zu `.smooth` (~2 LOC)
-
-**Details:** Siehe CLAUDE.md "Critical Lessons Learned" für Liquid Glass Patterns
 
 ---
 

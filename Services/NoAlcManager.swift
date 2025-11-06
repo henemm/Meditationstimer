@@ -101,6 +101,11 @@ final class NoAlcManager {
         let sample = HKQuantitySample(type: alcoholType, quantity: quantity, start: targetDay, end: targetDay)
 
         try await healthStore.save(sample)
+
+        // Reverse Smart Reminders: Cancel NoAlc reminders after logging
+        #if os(iOS)
+        SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: targetDay)
+        #endif
     }
 
     /// Fetches alcohol data for a specific day
