@@ -17,8 +17,9 @@ struct SettingsSheet: View {
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
     @AppStorage("workoutGoalMinutes") private var workoutGoalMinutes: Int = 10
-    @AppStorage("ambientSoundOffen") private var ambientSoundOffenRaw: String = AmbientSound.none.rawValue
-    @AppStorage("ambientSoundAtem") private var ambientSoundAtemRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSoundOffenEnabled") private var ambientSoundOffenEnabled: Bool = false
+    @AppStorage("ambientSoundAtemEnabled") private var ambientSoundAtemEnabled: Bool = false
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
     @AppStorage("atemSoundTheme") private var selectedAtemTheme: AtemView.AtemSoundTheme = .distinctive
     @AppStorage("speakExerciseNames") private var speakExerciseNames: Bool = false
@@ -26,19 +27,11 @@ struct SettingsSheet: View {
     @State private var previewPlayer = AmbientSoundPlayer()
     @State private var gongPlayer = GongPlayer()
     @State private var isPreviewPlaying = false
-    @State private var previewingSound: AmbientSound = .none  // Track which sound is currently previewing
 
-    private var ambientSoundOffen: Binding<AmbientSound> {
+    private var ambientSound: Binding<AmbientSound> {
         Binding(
-            get: { AmbientSound(rawValue: ambientSoundOffenRaw) ?? .none },
-            set: { ambientSoundOffenRaw = $0.rawValue }
-        )
-    }
-
-    private var ambientSoundAtem: Binding<AmbientSound> {
-        Binding(
-            get: { AmbientSound(rawValue: ambientSoundAtemRaw) ?? .none },
-            set: { ambientSoundAtemRaw = $0.rawValue }
+            get: { AmbientSound(rawValue: ambientSoundRaw) ?? .none },
+            set: { ambientSoundRaw = $0.rawValue }
         )
     }
 
@@ -78,8 +71,8 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Hintergrundsounds - Offen (freie Meditation)")) {
-                    Picker("Ambient-Sound", selection: ambientSoundOffen) {
+                Section(header: Text("Hintergrundsounds")) {
+                    Picker("Ambient-Sound", selection: ambientSound) {
                         ForEach(AmbientSound.allCases) { sound in
                             Text(sound.rawValue).tag(sound)
                         }
@@ -88,57 +81,29 @@ struct SettingsSheet: View {
                     .pickerStyle(.menu)
                     #endif
 
-                    Text("Hintergrundsound für Meditation im Offen-Tab.")
+                    Text("Wähle einen Hintergrundsound und aktiviere ihn für Offen und/oder Atem.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    if ambientSoundOffen.wrappedValue != .none {
-                        // PREVIEW - spielt NUR den Ambient Sound
-                        if isPreviewPlaying && previewingSound == ambientSoundOffen.wrappedValue {
+                    Toggle("Für Offen (freie Meditation) aktivieren", isOn: $ambientSoundOffenEnabled)
+                        .disabled(ambientSound.wrappedValue == .none)
+
+                    Toggle("Für Atem (Atemübungen) aktivieren", isOn: $ambientSoundAtemEnabled)
+                        .disabled(ambientSound.wrappedValue == .none)
+
+                    if ambientSound.wrappedValue != .none {
+                        // TEST BUTTON - Preview des gewählten Sounds
+                        if isPreviewPlaying {
                             Button("Stop Hintergrundsound") {
                                 previewPlayer.stop()
                                 isPreviewPlaying = false
                             }
                         } else {
                             Button("Play Hintergrundsound") {
-                                previewPlayer.stop()  // Stop any currently playing preview
-                                previewPlayer.setVolume(percent: ambientSoundVolume)
-                                previewPlayer.start(sound: ambientSoundOffen.wrappedValue)
-                                isPreviewPlaying = true
-                                previewingSound = ambientSoundOffen.wrappedValue
-                            }
-                        }
-                    }
-                }
-
-                Section(header: Text("Hintergrundsounds - Atem (Atemübungen)")) {
-                    Picker("Ambient-Sound", selection: ambientSoundAtem) {
-                        ForEach(AmbientSound.allCases) { sound in
-                            Text(sound.rawValue).tag(sound)
-                        }
-                    }
-                    #if os(iOS)
-                    .pickerStyle(.menu)
-                    #endif
-
-                    Text("Hintergrundsound für Atemübungen im Atem-Tab.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    if ambientSoundAtem.wrappedValue != .none {
-                        // PREVIEW - spielt NUR den Ambient Sound
-                        if isPreviewPlaying && previewingSound == ambientSoundAtem.wrappedValue {
-                            Button("Stop Hintergrundsound") {
                                 previewPlayer.stop()
-                                isPreviewPlaying = false
-                            }
-                        } else {
-                            Button("Play Hintergrundsound") {
-                                previewPlayer.stop()  // Stop any currently playing preview
                                 previewPlayer.setVolume(percent: ambientSoundVolume)
-                                previewPlayer.start(sound: ambientSoundAtem.wrappedValue)
+                                previewPlayer.start(sound: ambientSound.wrappedValue)
                                 isPreviewPlaying = true
-                                previewingSound = ambientSoundAtem.wrappedValue
                             }
                         }
                     }
