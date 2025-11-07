@@ -27,6 +27,9 @@ struct SmartRemindersView: View {
     @State private var healthKitGranted: Bool = false
     @State private var allPermissionsGranted: Bool = false
 
+    // Deleted reminders blacklist (verhindert automatisches Wieder-Hinzufügen durch Migration)
+    @AppStorage("deletedSampleReminderTypes") private var deletedTypesData: Data = Data()
+
     private let engine = SmartReminderEngine.shared
 
     var body: some View {
@@ -179,9 +182,9 @@ struct SmartRemindersView: View {
             }
             reminders = engine.getReminders()
         } else {
-            // Migration: NoAlc Reminder hinzufügen falls nicht vorhanden
+            // Migration: NoAlc Reminder hinzufügen falls nicht vorhanden UND nicht gelöscht
             let hasNoAlcReminder = reminders.contains { $0.activityType == .noalc }
-            if !hasNoAlcReminder {
+            if !hasNoAlcReminder && !isDeleted(.noalc) {
                 let samples = SmartReminder.sampleData()
                 if let noAlcSample = samples.first(where: { $0.activityType == .noalc }) {
                     engine.addReminder(noAlcSample)
@@ -203,7 +206,43 @@ struct SmartRemindersView: View {
 
     private func deleteReminder(_ reminder: SmartReminder) {
         engine.removeReminder(withId: reminder.id)
+
+        // Mark activity type as deleted (prevents auto-re-adding by migration)
+        markAsDeleted(reminder.activityType)
+
         loadReminders()
+    }
+
+    // MARK: - Deleted Types Blacklist
+
+    private func loadDeletedTypes() -> Set<ActivityType> {
+        guard !deletedTypesData.isEmpty else { return [] }
+        do {
+            let decoded = try JSONDecoder().decode(Set<ActivityType>.self, from: deletedTypesData)
+            return decoded
+        } catch {
+            print("Failed to load deleted types: \(error)")
+            return []
+        }
+    }
+
+    private func saveDeletedTypes(_ types: Set<ActivityType>) {
+        do {
+            let encoded = try JSONEncoder().encode(types)
+            deletedTypesData = encoded
+        } catch {
+            print("Failed to save deleted types: \(error)")
+        }
+    }
+
+    private func isDeleted(_ type: ActivityType) -> Bool {
+        return loadDeletedTypes().contains(type)
+    }
+
+    private func markAsDeleted(_ type: ActivityType) {
+        var deleted = loadDeletedTypes()
+        deleted.insert(type)
+        saveDeletedTypes(deleted)
     }
 
     // MARK: - Permission Checks
