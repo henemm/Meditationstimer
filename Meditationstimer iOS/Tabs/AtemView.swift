@@ -579,7 +579,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         // GongPlayer instance
         @State private var gong = GongPlayer()
         @State private var ambientPlayer = AmbientSoundPlayer()
-        @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+        @AppStorage("ambientSoundAtem") private var ambientSoundRaw: String = AmbientSound.none.rawValue
         @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
         @AppStorage("atemSoundTheme") private var soundTheme: AtemSoundTheme = .distinctive
 

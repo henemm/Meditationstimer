@@ -126,7 +126,7 @@ struct OffenView: View {
     @State private var pendingEndStop: DispatchWorkItem?
     @State private var showHealthAlert = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
-    @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSoundOffen") private var ambientSoundRaw: String = AmbientSound.none.rawValue
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
 
     private var ambientSound: AmbientSound {
