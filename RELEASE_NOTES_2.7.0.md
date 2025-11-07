@@ -16,6 +16,7 @@
 - **Calendar Integration:** Day detail sheet shows workout history with exercise-specific breakdowns
 
 ### Enhanced Audio Experience
+- **Redesigned Breathing Sounds:** Completely reworked audio cues for Atem meditation with improved clarity and timing
 - **Separate Background Sound Controls:** Independent activation for "Offen" (meditation) and "Atem" (breathing)
 - **Centralized Sound Picker:** Single sound selection with per-tab toggles for cleaner UX
 - **Improved Workout Audio:** Enhanced auftakt (start) sound scheduling after pause/resume
