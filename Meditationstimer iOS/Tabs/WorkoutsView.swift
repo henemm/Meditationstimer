@@ -217,9 +217,8 @@ private struct WorkoutRunnerView: View {
     let onClose: () -> Void
 
     @StateObject private var sounds = SoundPlayer()
-    
+
     @State private var workoutStart: Date?
-    @State private var isSaving = false
     @State private var saveFailed = false
     @EnvironmentObject private var liveActivity: LiveActivityController
 
@@ -364,35 +363,20 @@ private struct WorkoutRunnerView: View {
                     Color.clear.frame(height: 1)
                 }
 
-                Button(finished ? "Fertig" : (isPaused ? "Weiter" : "Pause")) {
-                    if finished {
-                        Task { await endSession(completed: true) }
-                    } else {
+                // Only show Pause/Weiter button during workout (not when finished)
+                if !finished {
+                    Button(isPaused ? "Weiter" : "Pause") {
                         togglePause()
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                    .controlSize(.large)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 4)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.red)
-                .controlSize(.large)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, 4)
-                .disabled(isSaving)
             }
             .frame(minWidth: 280, maxWidth: 360)
             .padding(16)
-
-            // Saving overlay
-            if isSaving {
-                ZStack {
-                    Color.black.opacity(0.2).ignoresSafeArea()
-                    ProgressView("Speichern…")
-                        .progressViewStyle(.circular)
-                        .padding(20)
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(12)
-                }
-                .transition(.opacity)
-            }
             // Failure toast (brief)
             if saveFailed {
                 VStack {
@@ -425,7 +409,6 @@ private struct WorkoutRunnerView: View {
             .tint(.secondary)
             .clipShape(Circle())
             .padding(8)
-            .disabled(isSaving)
         }
         .task {
             // Request HealthKit authorization
@@ -491,36 +474,33 @@ private struct WorkoutRunnerView: View {
     /// Zentraler Beendigungsablauf. completed=true: regulär abgeschlossen; false: abgebrochen.
     @MainActor
     private func endSession(completed: Bool) async {
-        guard !isSaving else { return }
-        isSaving = true
-        defer { isSaving = false }
-
         sounds.stopAll()
         cancelScheduled()
-        stopSoundMonitoring()  // NEW: Stop continuous monitoring
+        stopSoundMonitoring()  // Stop continuous monitoring
         setIdleTimer(false) // Re-enable idle timer
 
+        // HealthKit Logging in background (runs asynchronously)
         let endDate = Date()
         if let start = workoutStart {
-            do {
-                if logWorkoutsAsMindfulness {
-                    try await HealthKitManager.shared.logMindfulness(start: start, end: endDate)
-                } else {
-                    // Workouts als echtes HKWorkout
-                    try await HealthKitManager.shared.logWorkout(start: start, end: endDate, activity: HKWorkoutActivityType.highIntensityIntervalTraining)
+            Task.detached(priority: .userInitiated) { [logWorkoutsAsMindfulness] in
+                do {
+                    if logWorkoutsAsMindfulness {
+                        try await HealthKitManager.shared.logMindfulness(start: start, end: endDate)
+                    } else {
+                        // Workouts als echtes HKWorkout
+                        try await HealthKitManager.shared.logWorkout(start: start, end: endDate, activity: HKWorkoutActivityType.highIntensityIntervalTraining)
+                    }
+                    print("[WorkoutsView] HealthKit workout logged")
+                } catch {
+                    print("[WorkoutsView] HealthKit workout logging failed: \(error)")
                 }
-            } catch {
-                print("HealthKit workout logging failed: \(error)")
-                saveFailed = true
-                // UX-Entscheidung: View dennoch schließen, kurzer Hinweis bleibt optional
             }
         }
 
         // End Live Activity
-        Task { await liveActivity.end(immediate: true) }
+        await liveActivity.end(immediate: true)
 
-        // Optional: kurze Verzögerung, damit Overlay wahrnehmbar ist
-        try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
+        // Close immediately
         onClose()
     }
 
