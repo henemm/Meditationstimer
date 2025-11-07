@@ -126,7 +126,8 @@ struct OffenView: View {
     @State private var pendingEndStop: DispatchWorkItem?
     @State private var showHealthAlert = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
-    @AppStorage("ambientSoundOffen") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+    @AppStorage("ambientSoundOffenEnabled") private var ambientSoundOffenEnabled: Bool = false
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
 
     private var ambientSound: AmbientSound {
@@ -208,8 +209,10 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
-                                    ambientPlayer.setVolume(percent: ambientSoundVolume)
-                                    ambientPlayer.start(sound: ambientSound)
+                                    if ambientSoundOffenEnabled {
+                                        ambientPlayer.setVolume(percent: ambientSoundVolume)
+                                        ambientPlayer.start(sound: ambientSound)
+                                    }
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                                 case .conflict(let existingOwner, let existingTitle):
@@ -220,8 +223,10 @@ struct OffenView: View {
                                     sessionStart = now
                                     setIdleTimer(true)
                                     bgAudio.start()
-                                    ambientPlayer.setVolume(percent: ambientSoundVolume)
-                                    ambientPlayer.start(sound: ambientSound)
+                                    if ambientSoundOffenEnabled {
+                                        ambientPlayer.setVolume(percent: ambientSoundVolume)
+                                        ambientPlayer.start(sound: ambientSound)
+                                    }
                                     gong.play(named: "gong-ende")
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                                 }
@@ -259,8 +264,10 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
-                    ambientPlayer.setVolume(percent: ambientSoundVolume)
-                    ambientPlayer.start(sound: ambientSound)
+                    if ambientSoundOffenEnabled {
+                        ambientPlayer.setVolume(percent: ambientSoundVolume)
+                        ambientPlayer.start(sound: ambientSound)
+                    }
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 case .conflict(let existingOwner, let existingTitle):
@@ -272,8 +279,10 @@ struct OffenView: View {
                     sessionStart = now
                     setIdleTimer(true)
                     bgAudio.start()
-                    ambientPlayer.setVolume(percent: ambientSoundVolume)
-                    ambientPlayer.start(sound: ambientSound)
+                    if ambientSoundOffenEnabled {
+                        ambientPlayer.setVolume(percent: ambientSoundVolume)
+                        ambientPlayer.start(sound: ambientSound)
+                    }
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 }
@@ -316,8 +325,10 @@ struct OffenView: View {
                     sessionStart = Date()
                     setIdleTimer(true)
                     bgAudio.start()
-                    ambientPlayer.setVolume(percent: ambientSoundVolume)
-                    ambientPlayer.start(sound: ambientSound)
+                    if ambientSoundOffenEnabled {
+                        ambientPlayer.setVolume(percent: ambientSoundVolume)
+                        ambientPlayer.start(sound: ambientSound)
+                    }
                     gong.play(named: "gong-ende")
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                     if let sessionEnd = engine.endDate {
@@ -500,8 +511,10 @@ struct OffenView: View {
             sessionStart = now
             setIdleTimer(true)
             bgAudio.start()
-            ambientPlayer.setVolume(percent: ambientSoundVolume)
-            ambientPlayer.start(sound: ambientSound)
+            if ambientSoundOffenEnabled {
+                ambientPlayer.setVolume(percent: ambientSoundVolume)
+                ambientPlayer.start(sound: ambientSound)
+            }
             gong.play(named: "gong-ende")
             print("[OffenView] Session started via Shortcut")
         }

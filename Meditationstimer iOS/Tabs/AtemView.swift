@@ -579,7 +579,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
         // GongPlayer instance
         @State private var gong = GongPlayer()
         @State private var ambientPlayer = AmbientSoundPlayer()
-        @AppStorage("ambientSoundAtem") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+        @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
+        @AppStorage("ambientSoundAtemEnabled") private var ambientSoundAtemEnabled: Bool = false
         @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
         @AppStorage("atemSoundTheme") private var soundTheme: AtemSoundTheme = .distinctive
 
@@ -718,8 +719,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 setIdleTimer(true)
 
                 // Start ambient sound
-                ambientPlayer.setVolume(percent: ambientSoundVolume)
-                ambientPlayer.start(sound: ambientSound)
+                if ambientSoundAtemEnabled {
+                    ambientPlayer.setVolume(percent: ambientSoundVolume)
+                    ambientPlayer.start(sound: ambientSound)
+                }
 
                 // Start the session
                 let start = Date()
@@ -903,15 +906,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
         func endSession(manual: Bool) async {
             print("[AtemView] endSession(manual: \(manual)) called")
 
-            // 1. Stoppe alle Sounds
-            gong.stopAll()
-            ambientPlayer.stop()
-            print("[AtemView] gong.stopAll() and ambientPlayer.stop() called")
-
-            // 2. Re-enable idle timer
+            // 1. Re-enable idle timer
             setIdleTimer(false)
 
-            // 3. HealthKit Logging, wenn Session > 3s
+            // 2. HealthKit Logging, wenn Session > 3s
             let endDate = Date()
             if sessionStart.distance(to: endDate) > 3 {
                 do {
@@ -925,14 +923,23 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 }
             }
 
+            // 3. End-Gong nur bei natürlichem Ende (nicht beim manuellen Abbrechen)
+            if !manual {
+                gong.play(named: "gong-ende")
+                // Wait for gong to finish before stopping ambient sound
+                try? await Task.sleep(nanoseconds: 2_000_000_000) // 2s
+                ambientPlayer.stop()
+            } else {
+                // Bei manuellem Abbruch: sofort stoppen ohne Gong
+                gong.stopAll()
+                ambientPlayer.stop()
+            }
+
             // 4. Beende Live Activity garantiert
             await liveActivity.end(immediate: true)
             print("[AtemView] liveActivity.end(immediate: true) called")
 
-            // 5. Optional: kurze Verzögerung für UI-Feedback
-            try? await Task.sleep(nanoseconds: 400_000_000) // 0.4s
-
-            // 6. Schließe die View
+            // 5. Schließe die View
             print("[AtemView] close() called")
             close()
         }
