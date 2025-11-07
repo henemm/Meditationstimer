@@ -7,28 +7,8 @@
 
 ## 🚀 Geplante Features
 
-### 1. NoAlk Streak (Alcohol Tracking)
-**Priorität:** Hoch
-**Aufwand:** Mittel
-**Status:** Spec fehlt - muss neu erstellt werden
 
-**Beschreibung:**
-Passives Alcohol-Tracking mit NoAlk-Streak-System analog zu Meditation/Workout Streaks.
-
-**Details:**
-- Unterschwelliges Feature (nicht aufdringlich)
-- Smart Notifications als Haupt-Interaktion
-- NoAlk Streak: Belohnung für alkoholfreie Tage
-- HealthKit Integration (numberOfAlcoholicBeverages)
-- Minimale UI (kein Manual-Entry im Vordergrund)
-
-**Risiken:** Feature-Spec verloren gegangen, muss neu definiert werden
-
-**Hinweis:** Erste Implementation wurde revertiert (falsche Annahmen ohne Spec)
-
----
-
-### 2. Mehrsprachigkeit (Deutsch/Englisch)
+### 1. Mehrsprachigkeit (Deutsch/Englisch)
 **Priorität:** Mittel
 **Aufwand:** Mittel
 **Status:** Planungsphase
