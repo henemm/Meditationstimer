@@ -978,17 +978,27 @@ public struct WorkoutProgramsView: View {
                                 .multilineTextAlignment(.center)
                                 .lineLimit(2)
                         } else {
-                            // During SESSION: show icon, exercise name, type
-                            Image(systemName: currentPhase.isWork ? "flame" : "pause")
-                                .font(.system(size: 48, weight: .regular))
-                                .foregroundStyle(Color.workoutViolet)
+                            // During SESSION
+                            if currentPhase.isWork {
+                                // WORK phase: show flame icon + current exercise
+                                Image(systemName: "flame")
+                                    .font(.system(size: 48, weight: .regular))
+                                    .foregroundStyle(Color.workoutViolet)
 
-                            // Exercise name with info button
-                            exerciseNameWithInfoButton(phase.name)
+                                exerciseNameWithInfoButton(phase.name)
 
-                            Text(currentPhase.isWork ? "Übung" : nextExerciseInfo)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                Text("Übung")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            } else {
+                                // REST phase: show pause icon + ONLY next exercise
+                                Image(systemName: "pause")
+                                    .font(.system(size: 48, weight: .regular))
+                                    .foregroundStyle(Color.workoutViolet)
+
+                                // Show next exercise name with info button
+                                nextExerciseNameWithInfoButton()
+                            }
                         }
                     }
                     .frame(width: 200)
@@ -1042,6 +1052,55 @@ public struct WorkoutProgramsView: View {
                         .foregroundStyle(Color.workoutViolet)
                 }
                 .buttonStyle(.plain)
+            }
+        }
+
+        @ViewBuilder
+        private func nextExerciseNameWithInfoButton() -> some View {
+            let index = currentPhase.phaseIndex
+            let nextIndex = index + 1
+
+            // Determine next exercise info
+            let nextInfo = getNextExerciseInfo(afterIndex: index)
+
+            HStack(spacing: 6) {
+                Text(nextInfo.label)
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+
+                Button {
+                    selectedExerciseName = nextInfo.name
+                    showExerciseSheet = true
+                } label: {
+                    Image(systemName: "info.circle")
+                        .font(.caption)
+                        .foregroundStyle(Color.workoutViolet)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+
+        /// Helper function to determine next exercise name and label
+        private func getNextExerciseInfo(afterIndex index: Int) -> (name: String, label: String) {
+            let nextIndex = index + 1
+
+            if nextIndex < set.phases.count {
+                // Next exercise in current round
+                let nextExerciseName = set.phases[nextIndex].name
+                return (nextExerciseName, "Als nächstes: \(nextExerciseName)")
+            } else if currentRound < set.repetitions {
+                // Next round, first exercise
+                let firstExercise = set.phases[0].name
+                let nextRound = currentRound + 1
+                if nextRound == set.repetitions {
+                    return (firstExercise, "Als nächstes: Letzte Runde mit \(firstExercise)")
+                } else {
+                    return (firstExercise, "Als nächstes: Runde \(nextRound) mit \(firstExercise)")
+                }
+            } else {
+                // Fallback (should not happen during REST)
+                return ("Erholung", "Erholung")
             }
         }
 
