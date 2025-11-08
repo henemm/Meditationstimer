@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>method</key>
+	<string>app-store</string>
+	<key>destination</key>
+	<string>export</string>
+	<key>teamID</key>
+	<string>XK87E2B3VR</string>
+	<key>uploadSymbols</key>
+	<true/>
+	<key>uploadBitcode</key>
+	<false/>
+	<key>compileBitcode</key>
+	<false/>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<key>signingCertificate</key>
+	<string>Apple Distribution</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>henemm.Meditationstimer-iOS</key>
+		<string>match AppStore henemm.Meditationstimer-iOS</string>
+		<key>henemm.Meditationstimer-iOS.MeditationstimerWidget</key>
+		<string>match AppStore henemm.Meditationstimer-iOS.MeditationstimerWidget</string>
+	</dict>
+</dict>
+</plist>

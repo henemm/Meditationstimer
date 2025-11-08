@@ -136,8 +136,10 @@ public struct AtemView: View {
         func stopAll() {
             for p in active { p.stop() }
             active.removeAll()
+            completions.removeAll()
         }
         private var active: [AVAudioPlayer] = []
+        private var completions: [AVAudioPlayer: () -> Void] = [:]
 
         private func activateSession() {
             let s = AVAudioSession.sharedInstance()
@@ -145,7 +147,7 @@ public struct AtemView: View {
             try? s.setActive(true, options: [])
         }
 
-        func play(named name: String) {
+        func play(named name: String, completion: (() -> Void)? = nil) {
             activateSession()
             // try bundled caf/wav/mp3
             for ext in ["caf","wav","mp3"] {
@@ -155,6 +157,9 @@ public struct AtemView: View {
                     p.prepareToPlay()
                     p.play()
                     active.append(p)
+                    if let completion = completion {
+                        completions[p] = completion
+                    }
                     return
                 }
             }
@@ -162,6 +167,10 @@ public struct AtemView: View {
         }
         func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
             if let i = active.firstIndex(where: { $0 === player }) { active.remove(at: i) }
+            if let completion = completions[player] {
+                completions.removeValue(forKey: player)
+                completion()
+            }
         }
     }
 
@@ -579,6 +588,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         // GongPlayer instance
         @State private var gong = GongPlayer()
         @State private var ambientPlayer = AmbientSoundPlayer()
+        @State private var pendingEndStop: DispatchWorkItem?  // For delayed audio cleanup after gong
         @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
         @AppStorage("ambientSoundAtemEnabled") private var ambientSoundAtemEnabled: Bool = false
         @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
@@ -924,11 +934,17 @@ private struct OverlayBackgroundEffect: ViewModifier {
             }
 
             // 3. End-Gong nur bei natürlichem Ende (nicht beim manuellen Abbrechen)
+            // IMPORTANT: Use completion handler + delayed audio stop (exactly like OffenView)
             if !manual {
-                gong.play(named: "gong-ende")
-                // Wait for gong to finish before stopping ambient sound
-                try? await Task.sleep(nanoseconds: 2_000_000_000) // 2s
-                ambientPlayer.stop()
+                gong.play(named: "gong-ende") {
+                    // Completion handler: called after gong finishes playing
+                    self.pendingEndStop?.cancel()
+                    let work = DispatchWorkItem { [ambientPlayer = self.ambientPlayer] in
+                        ambientPlayer.stop()  // Fade-out ambient sound
+                    }
+                    self.pendingEndStop = work
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra delay for safety
+                }
             } else {
                 // Bei manuellem Abbruch: sofort stoppen ohne Gong
                 gong.stopAll()

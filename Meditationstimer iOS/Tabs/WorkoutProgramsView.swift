@@ -1308,7 +1308,7 @@ public struct WorkoutProgramsView: View {
 
                     // BOTTOM ~1/3: details left, info + edit right
                     HStack(alignment: .center) {
-                        Text("\(set.phaseCount) Übungen · \(set.repetitions) Runden · ≈ \(set.totalDurationString)")
+                        Text("\(set.phaseCount) x \(set.repetitions) = \(set.totalDurationString)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
