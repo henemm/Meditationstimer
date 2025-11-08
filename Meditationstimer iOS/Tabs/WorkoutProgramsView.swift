@@ -969,14 +969,24 @@ public struct WorkoutProgramsView: View {
                     // Center: Phase name + icon (or Pause message)
                     VStack(spacing: 8) {
                         if isPaused {
-                            // During PAUSE: show exercise name with info button
-                            exerciseNameWithInfoButton(phase.name)
+                            // During PAUSE
+                            if currentPhase.isWork {
+                                // WORK phase paused: show current exercise
+                                exerciseNameWithInfoButton(phase.name)
 
-                            Text(nextExerciseInfo)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(2)
+                                Text(nextExerciseInfo)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(2)
+                            } else {
+                                // REST phase paused: show ONLY next exercise (same as running)
+                                Image(systemName: "pause")
+                                    .font(.system(size: 48, weight: .regular))
+                                    .foregroundStyle(Color.workoutViolet)
+
+                                nextExerciseNameWithInfoButton()
+                            }
                         } else {
                             // During SESSION
                             if currentPhase.isWork {
@@ -1063,44 +1073,53 @@ public struct WorkoutProgramsView: View {
             // Determine next exercise info
             let nextInfo = getNextExerciseInfo(afterIndex: index)
 
-            HStack(spacing: 6) {
-                Text(nextInfo.label)
-                    .font(.headline)
+            VStack(spacing: 4) {
+                // "Als nächstes" prefix in small font
+                Text(nextInfo.prefix)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
 
-                Button {
-                    selectedExerciseName = nextInfo.name
-                    showExerciseSheet = true
-                } label: {
-                    Image(systemName: "info.circle")
-                        .font(.caption)
-                        .foregroundStyle(Color.workoutViolet)
+                // Exercise name in large font with info button
+                HStack(spacing: 6) {
+                    Text(nextInfo.name)
+                        .font(.headline)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+
+                    Button {
+                        selectedExerciseName = nextInfo.name
+                        showExerciseSheet = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .font(.caption)
+                            .foregroundStyle(Color.workoutViolet)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
         }
 
-        /// Helper function to determine next exercise name and label
-        private func getNextExerciseInfo(afterIndex index: Int) -> (name: String, label: String) {
+        /// Helper function to determine next exercise name, prefix text, and full label
+        private func getNextExerciseInfo(afterIndex index: Int) -> (name: String, prefix: String, label: String) {
             let nextIndex = index + 1
 
             if nextIndex < set.phases.count {
                 // Next exercise in current round
                 let nextExerciseName = set.phases[nextIndex].name
-                return (nextExerciseName, "Als nächstes: \(nextExerciseName)")
+                return (nextExerciseName, "Als nächstes", "Als nächstes: \(nextExerciseName)")
             } else if currentRound < set.repetitions {
                 // Next round, first exercise
                 let firstExercise = set.phases[0].name
                 let nextRound = currentRound + 1
                 if nextRound == set.repetitions {
-                    return (firstExercise, "Als nächstes: Letzte Runde mit \(firstExercise)")
+                    return (firstExercise, "Als nächstes", "Als nächstes: Letzte Runde mit \(firstExercise)")
                 } else {
-                    return (firstExercise, "Als nächstes: Runde \(nextRound) mit \(firstExercise)")
+                    return (firstExercise, "Als nächstes", "Als nächstes: Runde \(nextRound) mit \(firstExercise)")
                 }
             } else {
                 // Fallback (should not happen during REST)
-                return ("Erholung", "Erholung")
+                return ("Erholung", "", "Erholung")
             }
         }
 
