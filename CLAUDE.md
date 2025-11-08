@@ -17,7 +17,7 @@
 - Live Activities / Dynamic Island support
 - Apple Watch companion app with heart rate monitoring
 
-**Current Version:** 2.5.4
+**Current Version:** 2.7.1
 
 **Development Target:**
 - **Xcode 26.0.1 / Swift 6.2** (iOS 26.0 SDK)
@@ -645,6 +645,125 @@ Me: *Extends ActivityType enum, adds NoAlc HealthKit check to engine, done corre
 **Lesson:** Stick to Analysis-First principle. Never remove features without user approval, even under time pressure.
 
 Reference: `NotificationDebugView.swift` (minimal test), `SmartReminderEngine.swift` (lines 124-156: weekday loop)
+
+### Audio Completion Handler Pattern (November 2025)
+
+**Problem:** End-gong sound in Atem meditation was being cut off because ambient audio stopped before the gong finished playing.
+
+**Root Cause:** Using `Task.sleep()` which doesn't wait for audio playback to complete:
+```swift
+gong.play(named: "gong-ende")
+try? await Task.sleep(nanoseconds: 2_000_000_000) // This doesn't wait for gong!
+ambientPlayer.stop()  // Stops too early, cutting off gong
+```
+
+**Solution:** Completion handler pattern in AVAudioPlayerDelegate + DispatchWorkItem for delayed cleanup:
+```swift
+// In GongPlayer class:
+private var completions: [AVAudioPlayer: () -> Void] = [:]
+
+func play(named name: String, completion: (() -> Void)? = nil) {
+    // ... setup player ...
+    if let completion = completion {
+        completions[player] = completion
+    }
+}
+
+func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    if let completion = completions[player] {
+        completions.removeValue(forKey: player)
+        completion()  // Called when audio finishes
+    }
+}
+
+// In endSession:
+gong.play(named: "gong-ende") {
+    self.pendingEndStop?.cancel()
+    let work = DispatchWorkItem { [ambientPlayer = self.ambientPlayer] in
+        ambientPlayer.stop()
+    }
+    self.pendingEndStop = work
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: work) // Extra 0.5s safety delay
+}
+```
+
+**The Pattern:**
+```
+❌ DON'T: Use Task.sleep() or arbitrary delays hoping audio finishes
+✅ DO: Use AVAudioPlayerDelegate + completion callback + DispatchWorkItem
+✅ DO: Stop dependent resources AFTER audio finishes, not based on guessed timing
+```
+
+**Why this matters:**
+- Race conditions between audio playback and resource cleanup
+- Audio files have variable length - hardcoded delays break when audio changes
+- Completion handlers guarantee correct sequencing regardless of audio duration
+- DispatchWorkItem allows cancellation if user interrupts
+
+**User feedback:** "Implementiere ihn exakt genauso wie beim Offen-Tab. Du hast schon einmal sehr viel rumprobiert."
+
+Reference: `AtemView.swift` lines 134-175 (GongPlayer class), 582 (@State pendingEndStop), 927-943 (endSession with completion)
+
+### Workout REST Phase UI State Management (November 2025)
+
+**Problem:** During workout REST phase pause, UI showed both completed exercise AND next exercise (redundant). "Als nächstes" text was not consistently displayed in small font.
+
+**Root Cause:** Pause state didn't differentiate between WORK phase pause and REST phase pause:
+```swift
+// WRONG: Same display for both WORK and REST pause
+if isPaused {
+    exerciseNameWithInfoButton(phase.name)  // Current exercise
+    Text(nextExerciseInfo)                   // Next exercise → redundant in REST!
+}
+```
+
+**Solution:** Split pause behavior based on phase type + separate text styling:
+```swift
+// CORRECT: Different display for WORK vs REST pause
+if isPaused {
+    if currentPhase.isWork {
+        // WORK phase paused: show current exercise
+        exerciseNameWithInfoButton(phase.name)
+        Text(nextExerciseInfo).font(.caption)
+    } else {
+        // REST phase paused: show ONLY next exercise (same as REST running)
+        Image(systemName: "pause")
+        nextExerciseNameWithInfoButton()
+    }
+}
+
+// Split "Als nächstes" text for consistent font sizes:
+VStack(spacing: 4) {
+    Text(nextInfo.prefix)  // "Als nächstes" in .font(.caption)
+        .font(.caption)
+        .foregroundStyle(.secondary)
+
+    HStack(spacing: 6) {
+        Text(nextInfo.name)  // Exercise name in .font(.headline)
+            .font(.headline)
+        // ... info button
+    }
+}
+```
+
+**The Pattern:**
+```
+❌ DON'T: Use same UI state for semantically different phases
+❌ DON'T: Combine text with different styles in single Text view
+✅ DO: Differentiate UI based on phase type (WORK vs REST)
+✅ DO: Match pause display to running display for same phase
+✅ DO: Split text into separate views for independent styling
+```
+
+**Why this matters:**
+- Reduces cognitive load: user sees only relevant information
+- Prevents redundancy: showing completed exercise during REST is noise
+- Consistent styling: separate views allow granular font control
+- UX principle: "What you see matches what's happening"
+
+**User feedback:** "Wir haben ja grundsätzlich die zwei Phasen: 1. Belastungsphase und 2. Rest-Phase. [...] Ich drücke auf Pause. 'Als nächstes' (kleine Schrift) 'Kniebeugen' (große schrift) wird angezeigt (also exakt das gleiche wie ohne drücken der Pause-Taste)."
+
+Reference: `WorkoutProgramsView.swift` lines 970-1124 (pause behavior split, text styling split, 3-tuple data structure)
 
 ---
 
