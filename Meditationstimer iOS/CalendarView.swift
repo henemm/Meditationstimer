@@ -34,86 +34,76 @@ struct CalendarView: View {
     @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
 
-    private var noAlcStreak: Int {
+    // Helper function that calculates BOTH streak and rewards in one pass
+    // Simple Rule: Go FORWARD chronologically, track earned/consumed rewards, find current streak
+    private func calculateNoAlcStreakAndRewards() -> (streak: Int, rewards: Int) {
         let today = calendar.startOfDay(for: Date())
-        let hasDataToday = alcoholDays[today] == .steady
 
-        var currentStreak = 0
-        var streakPoints = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        while true {
-            if let level = alcoholDays[checkDate] {
-                if level == .steady {
-                    // Steady day: count it
-                    currentStreak += 1
-                    // Earn streak point every 7 days (max 3)
-                    if currentStreak % 7 == 0 && streakPoints < 3 {
-                        streakPoints += 1
-                    }
-                } else if level == .wild {
-                    // Wild day: check forgiveness
-                    if streakPoints > 0 {
-                        // Use 1 streak point to forgive
-                        streakPoints -= 1
-                        currentStreak += 1
-                    } else {
-                        // No points → streak ends
-                        break
-                    }
-                } else {
-                    // Easy day → streak ends immediately
-                    break
-                }
-
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
-                checkDate = previousDate
-            } else {
-                // No entry → streak ends
-                break
-            }
-        }
-
-        return currentStreak
-    }
-
-    private var noAlcStreakPoints: Int {
-        // Calculate earned streak points from historical data
-        // Points are earned every 7 days of Steady, and consumed when forgiving Wild days
-
-        // Get all dates sorted chronologically (oldest first)
+        // Sort all dates chronologically (earliest to latest)
         let sortedDates = alcoholDays.keys.sorted()
 
-        var earnedPoints = 0
-        var consumedPoints = 0
-        var consecutiveSteady = 0
+        guard !sortedDates.isEmpty else { return (0, 0) }
 
+        var consecutiveDays = 0
+        var earnedRewards = 0
+        var consumedRewards = 0
+        var currentStreakStart: Date? = nil
+
+        // Iterate FORWARD through ALL data
         for date in sortedDates {
             guard let level = alcoholDays[date] else { continue }
 
             if level == .steady {
-                consecutiveSteady += 1
-                // Earn 1 point every 7 consecutive Steady days (max 3 total)
-                if consecutiveSteady % 7 == 0 && earnedPoints < 3 {
-                    earnedPoints += 1
+                // Steady day: count it
+                consecutiveDays += 1
+                if currentStreakStart == nil {
+                    currentStreakStart = date
                 }
-            } else if level == .wild {
-                // Wild day consumes a point if available, otherwise breaks streak
-                let availablePoints = earnedPoints - consumedPoints
-                if availablePoints > 0 {
-                    consumedPoints += 1
-                    // Streak continues (forgiven)
-                } else {
-                    // No points available, streak breaks
-                    consecutiveSteady = 0
+
+                // Earn reward every 7 days (max 3 total)
+                if consecutiveDays % 7 == 0 && earnedRewards < 3 {
+                    earnedRewards += 1
                 }
             } else {
-                // Easy day always breaks streak
-                consecutiveSteady = 0
+                // Easy or Wild day: needs forgiveness
+                let availableRewards = earnedRewards - consumedRewards
+
+                if availableRewards > 0 {
+                    // Use 1 reward to heal this day
+                    consumedRewards += 1
+                    consecutiveDays += 1  // Healed day counts!
+
+                    // Check if we earn a new reward for reaching a 7-day milestone
+                    if consecutiveDays % 7 == 0 && earnedRewards < 3 {
+                        earnedRewards += 1
+                    }
+                } else {
+                    // No rewards available → streak resets
+                    consecutiveDays = 0
+                    currentStreakStart = nil
+                }
             }
         }
 
-        return max(0, earnedPoints - consumedPoints)
+        // Calculate final streak: from last streak start to today (or yesterday if no entry today)
+        let endDate = alcoholDays[today] != nil ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        var finalStreak = 0
+        if let streakStart = currentStreakStart, let end = endDate as Date? {
+            // Count days from streakStart to endDate
+            finalStreak = consecutiveDays
+        }
+
+        let availableRewards = max(0, earnedRewards - consumedRewards)
+        return (finalStreak, availableRewards)
+    }
+
+    private var noAlcStreak: Int {
+        return calculateNoAlcStreakAndRewards().streak
+    }
+
+    private var noAlcStreakPoints: Int {
+        return calculateNoAlcStreakAndRewards().rewards
     }
 
     private var meditationStreak: Int {

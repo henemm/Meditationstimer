@@ -104,7 +104,7 @@ final class NoAlcManager {
 
         // Reverse Smart Reminders: Cancel NoAlc reminders after logging
         #if os(iOS)
-        SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: targetDay)
+        SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: Date())
         #endif
     }
 

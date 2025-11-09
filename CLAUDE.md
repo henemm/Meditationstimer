@@ -465,6 +465,64 @@ User: *"Das sind schon wieder viel zu viele Versuche!"*
 
 Reference: Global CLAUDE.md "Analysis-First Prinzip"
 
+### Forward vs. Backward Iteration for Chronological Data (November 2025)
+
+**Problem:** NoAlc Streak calculation showing 0 despite visible data.
+
+**Root Cause:** Used backwards iteration (today → past) to calculate streaks with reward-based forgiveness system. When iterating backwards, code tried to USE rewards before they were EARNED chronologically.
+
+**Example Bug:**
+```swift
+// WRONG: Backwards iteration
+var checkDate = today
+while true {
+    if level == .easy && earnedRewards > 0 { // Try to use reward
+        consumedRewards += 1
+    }
+    checkDate = previousDate  // But rewards earned in chronologically earlier dates!
+}
+```
+
+**Why backwards iteration fails for reward tracking:**
+1. Start at Nov 8 (Easy day needing reward)
+2. At this point: `earnedRewards = 0` (haven't iterated through past yet)
+3. Cannot heal Easy day → streak ends
+4. Rewards from Nov 1-7 are encountered AFTER in iteration, but chronologically BEFORE
+5. Result: Trying to use future rewards to heal past days
+
+**Solution:** Forward chronological iteration (past → today)
+```swift
+// CORRECT: Forward iteration
+let sortedDates = data.keys.sorted()  // Earliest → Latest
+for date in sortedDates {
+    if level == .steady {
+        consecutiveDays += 1
+        if consecutiveDays % 7 == 0 { earnedRewards += 1 }  // Earn chronologically
+    } else if level == .easy {
+        if earnedRewards - consumedRewards > 0 {  // Rewards already earned!
+            consumedRewards += 1
+            consecutiveDays += 1
+        }
+    }
+}
+```
+
+**User Insight:** *"Denke doch einmal nach: Wie ist die ganz einfache Regel? Du machst es aktuell immer komplizierter."*
+
+**The Simple Rule:**
+```
+✅ DO: Process chronological data in chronological order (past → present)
+✅ DO: Earn/consume resources in the order they naturally occur in time
+❌ DON'T: Use backwards iteration when tracking cumulative earned resources
+❌ DON'T: Overcomplicate with "clever" iteration directions
+```
+
+**When to use which:**
+- **Forward iteration:** Tracking earned/consumed resources, cumulative statistics, chronological state changes
+- **Backwards iteration:** Finding most recent value, checking "current streak from now", simple recency queries
+
+Reference: `DOCS/bug-noalc-streak-logic.md` Lösungsversuch 3
+
 ### Workout Calorie Tracking (October 2025)
 
 **Implementation:** MET-based estimation (HIIT: 12 kcal/min, Yoga: 4 kcal/min) written as `HKQuantitySample` with `.activeEnergyBurned` type.
