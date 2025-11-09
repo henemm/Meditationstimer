@@ -1230,8 +1230,12 @@ public struct WorkoutProgramsView: View {
         private func advancePhase() {
             switch currentPhase {
             case .work(let index):
-                // Work finished → go to rest (if restDuration > 0)
-                if set.phases[index].restDuration > 0 {
+                // Work finished → check if we need a REST phase
+                let isLastPhaseInSet = (index == set.phases.count - 1)
+                let isFinalRound = (currentRound == set.repetitions)
+                let needsRest = set.phases[index].restDuration > 0 && !(isLastPhaseInSet && isFinalRound)
+
+                if needsRest {
                     currentPhase = .rest(phaseIndex: index)
                     phaseStart = Date()
                     countdownTriggered = false  // Reset for next phase
@@ -1250,12 +1254,12 @@ public struct WorkoutProgramsView: View {
                     let restDuration = Double(set.phases[index].restDuration)
                     let auftaktDuration = sounds.duration(of: .auftakt)
                     let delay = max(0, restDuration - auftaktDuration)
-                    schedule(delay) {
-                        self.sounds.play(.auftakt)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                        sounds.play(.auftakt)
                         print("[WorkoutPrograms] auftakt triggered (pre-roll), delay: \(delay)s")
                     }
                 } else {
-                    // No rest, go to next phase
+                    // No rest needed (either restDuration=0 OR last phase of final round)
                     countdownTriggered = false  // Reset for next phase
                     goToNextPhase(from: index)
                 }
