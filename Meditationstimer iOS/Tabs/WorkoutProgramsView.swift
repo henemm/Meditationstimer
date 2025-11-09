@@ -686,6 +686,7 @@ public struct WorkoutProgramsView: View {
         @State private var pausedAt: Date?
         @State private var pausedPhaseAccum: TimeInterval = 0
         @State private var pausedSessionAccum: TimeInterval = 0
+        @State private var sessionEnded: Bool = false  // Prevent double HealthKit logging
 
         var body: some View {
             ZStack {
@@ -786,6 +787,12 @@ public struct WorkoutProgramsView: View {
         func endSession(manual: Bool) async {
             print("[WorkoutPrograms] endSession(manual: \(manual)) called")
 
+            // Guard: Prevent double execution (callback + onDisappear)
+            if sessionEnded {
+                print("[WorkoutPrograms] endSession already executed, skipping duplicate call")
+                return
+            }
+
             // 1. Re-enable idle timer
             setIdleTimer(false)
 
@@ -796,6 +803,9 @@ public struct WorkoutProgramsView: View {
             // 3. HealthKit Logging if session > 3s (runs in background)
             let endDate = Date()
             if sessionStart.distance(to: endDate) > 3 {
+                // Mark session as ended BEFORE async logging starts
+                sessionEnded = true
+
                 Task.detached(priority: .userInitiated) {
                     do {
                         try await HealthKitManager.shared.logWorkout(
@@ -811,6 +821,9 @@ public struct WorkoutProgramsView: View {
                         print("[WorkoutPrograms] HealthKit logging failed: \(error)")
                     }
                 }
+            } else {
+                // Session < 3s: no HealthKit logging, but still mark as ended
+                sessionEnded = true
             }
 
             // 5. End Live Activity
