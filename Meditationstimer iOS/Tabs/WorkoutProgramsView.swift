@@ -1081,7 +1081,6 @@ public struct WorkoutProgramsView: View {
         @ViewBuilder
         private func nextExerciseNameWithInfoButton() -> some View {
             let index = currentPhase.phaseIndex
-            let nextIndex = index + 1
 
             // Determine next exercise info
             let nextInfo = getNextExerciseInfo(afterIndex: index)

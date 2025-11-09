@@ -51,9 +51,9 @@ struct NotificationHelper {
     }
 
     /// Storniert alle geplanten Benachrichtigungen.
-    func cancelAll() async {
+    func cancelAll() {
         let center = UNUserNotificationCenter.current()
-        await center.removeAllPendingNotificationRequests()
-        await center.removeAllDeliveredNotifications()
+        center.removeAllPendingNotificationRequests()
+        center.removeAllDeliveredNotifications()
     }
 }

@@ -89,7 +89,7 @@ struct CalendarView: View {
         let endDate = alcoholDays[today] != nil ? today : calendar.date(byAdding: .day, value: -1, to: today)!
 
         var finalStreak = 0
-        if let streakStart = currentStreakStart, let end = endDate as Date? {
+        if currentStreakStart != nil, let _ = endDate as Date? {
             // Count days from streakStart to endDate
             finalStreak = consecutiveDays
         }

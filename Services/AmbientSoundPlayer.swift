@@ -289,7 +289,6 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
         // Cross-fade
         let steps = 30
         let stepDuration = crossFadeDuration / Double(steps)
-        let volumeStep = targetVolume / Float(steps)
 
         var currentStep = 0
         fadeTimer = Timer.scheduledTimer(withTimeInterval: stepDuration, repeats: true) { [weak self] timer in
