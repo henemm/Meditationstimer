@@ -36,22 +36,84 @@ struct CalendarView: View {
 
     private var noAlcStreak: Int {
         let today = calendar.startOfDay(for: Date())
-        let hasDataToday = alcoholDays[today] != nil
+        let hasDataToday = alcoholDays[today] == .steady
 
         var currentStreak = 0
+        var streakPoints = 0
         var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
 
         while true {
-            if alcoholDays[checkDate] != nil {
-                currentStreak += 1
+            if let level = alcoholDays[checkDate] {
+                if level == .steady {
+                    // Steady day: count it
+                    currentStreak += 1
+                    // Earn streak point every 7 days (max 3)
+                    if currentStreak % 7 == 0 && streakPoints < 3 {
+                        streakPoints += 1
+                    }
+                } else if level == .wild {
+                    // Wild day: check forgiveness
+                    if streakPoints > 0 {
+                        // Use 1 streak point to forgive
+                        streakPoints -= 1
+                        currentStreak += 1
+                    } else {
+                        // No points → streak ends
+                        break
+                    }
+                } else {
+                    // Easy day → streak ends immediately
+                    break
+                }
+
                 guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
                 checkDate = previousDate
             } else {
+                // No entry → streak ends
                 break
             }
         }
 
         return currentStreak
+    }
+
+    private var noAlcStreakPoints: Int {
+        // Calculate earned streak points from historical data
+        // Points are earned every 7 days of Steady, and consumed when forgiving Wild days
+
+        // Get all dates sorted chronologically (oldest first)
+        let sortedDates = alcoholDays.keys.sorted()
+
+        var earnedPoints = 0
+        var consumedPoints = 0
+        var consecutiveSteady = 0
+
+        for date in sortedDates {
+            guard let level = alcoholDays[date] else { continue }
+
+            if level == .steady {
+                consecutiveSteady += 1
+                // Earn 1 point every 7 consecutive Steady days (max 3 total)
+                if consecutiveSteady % 7 == 0 && earnedPoints < 3 {
+                    earnedPoints += 1
+                }
+            } else if level == .wild {
+                // Wild day consumes a point if available, otherwise breaks streak
+                let availablePoints = earnedPoints - consumedPoints
+                if availablePoints > 0 {
+                    consumedPoints += 1
+                    // Streak continues (forgiven)
+                } else {
+                    // No points available, streak breaks
+                    consecutiveSteady = 0
+                }
+            } else {
+                // Easy day always breaks streak
+                consecutiveSteady = 0
+            }
+        }
+
+        return max(0, earnedPoints - consumedPoints)
     }
 
     private var meditationStreak: Int {
@@ -235,7 +297,7 @@ struct CalendarView: View {
                     Text("NoAlc: Streak \(noAlcStreak) Day\(noAlcStreak == 1 ? "" : "s")")
                         .font(.subheadline)
                     Spacer()
-                    rewardsView(for: min(3, noAlcStreak / 7), icon: "drop.fill", color: .green)
+                    rewardsView(for: noAlcStreakPoints, icon: "drop.fill", color: .green)
                 }
                 .sheet(isPresented: $showNoAlcInfo) {
                     NavigationStack {
