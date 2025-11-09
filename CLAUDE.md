@@ -823,6 +823,119 @@ VStack(spacing: 4) {
 
 Reference: `WorkoutProgramsView.swift` lines 970-1124 (pause behavior split, text styling split, 3-tuple data structure)
 
+### Bug Documentation Protocol (November 2025)
+
+**CRITICAL:** Every bug fix MUST be documented following this protocol.
+
+**When to create separate bug-*.md file:**
+1. ✅ Bug required multiple solution attempts (track failed approaches)
+2. ✅ Bug represents a recurring pattern (SwiftUI Lifecycle, Date Semantics)
+3. ✅ Bug solution is non-obvious and took significant analysis
+
+**When CLAUDE.md + commit is sufficient:**
+1. ✅ Bug has generalizable pattern already documented in CLAUDE.md
+2. ✅ Bug is trivial fix with no recurring pattern
+3. ✅ Commit message + CLAUDE.md lesson cover the learning
+
+**Mandatory artifacts for EVERY bug:**
+1. ✅ **Entry in DOCS/bug-index.md** (even if no separate file)
+2. ✅ **CLAUDE.md Lesson** (if generalizable pattern)
+3. ✅ **Detailed commit message** (Problem, Root Cause, Fix, Files)
+
+**The Rule:**
+```
+❌ DON'T: Document everything exhaustively (creates noise)
+❌ DON'T: Document nothing (lose institutional memory)
+✅ DO: Document bugs that help prevent future mistakes
+✅ DO: Update bug-index.md for ALL bugs (tracks everything)
+✅ DO: Ask yourself: "Will this doc help me avoid repeating this mistake?"
+```
+
+**User expectation:** *"Du brauchst nichts zu protokollieren, was dir nichts hilft."*
+
+Reference: DOCS/bug-index.md for categorization criteria
+
+### SwiftUI Lifecycle Duplicate Execution - Callbacks + .onDisappear (November 2025)
+
+**Problem:** Workouts were being logged twice to Apple Health in the Workouts tab.
+
+**Root Cause:** SwiftUI `.onDisappear` lifecycle hook fires AFTER session completion callbacks, causing `endSession()` to execute twice:
+```swift
+// WorkoutProgramsView.swift - THREE call sites:
+// Line 710: Callback when timer completes
+ProgressRingsView(onSessionEnd: { await endSession(manual: false) })
+
+// Line 736: Manual stop button
+await endSession(manual: true)
+
+// Line 775: View lifecycle
+.onDisappear { await endSession(manual: true) }
+
+// When workout completes normally:
+// 1. Timer fires → onSessionEnd callback (line 710) executes endSession()
+// 2. View disappears → .onDisappear (line 775) executes endSession() AGAIN
+// Result: HKWorkoutBuilder.finishWorkout() called twice → duplicate entries
+```
+
+**Solution:** Guard Flag Pattern to prevent duplicate execution:
+```swift
+// Line 689: Add state flag
+@State private var sessionEnded: Bool = false
+
+// Lines 791-826: Guard check in endSession()
+func endSession(manual: Bool) async {
+    print("[WorkoutPrograms] endSession(manual: \(manual)) called")
+
+    // Guard: Prevent double execution (callback + onDisappear)
+    if sessionEnded {
+        print("[WorkoutPrograms] endSession already executed, skipping duplicate call")
+        return
+    }
+
+    // ... cleanup code ...
+
+    // Mark session as ended BEFORE async HealthKit logging
+    if sessionStart.distance(to: endDate) > 3 {
+        sessionEnded = true  // Set synchronously to prevent race condition
+
+        Task.detached(priority: .userInitiated) {
+            try await HealthKitManager.shared.logWorkout(
+                start: sessionStart,
+                end: endDate,
+                activity: .highIntensityIntervalTraining
+            )
+        }
+    } else {
+        sessionEnded = true  // Also set for sessions < 3s
+    }
+}
+```
+
+**The Pattern:**
+```
+❌ DON'T: Rely on SwiftUI lifecycle hooks alone for cleanup tasks
+❌ DON'T: Call side-effect methods from both callbacks AND .onDisappear without guards
+❌ DON'T: Set guard flags AFTER async tasks (race conditions!)
+✅ DO: Use Guard Flag Pattern for methods called from multiple lifecycle points
+✅ DO: Set flags synchronously BEFORE async operations
+✅ DO: Log guard hits for debugging ("already executed, skipping")
+```
+
+**Why this matters:**
+- SwiftUI lifecycle is unpredictable: callbacks and hooks can overlap
+- HealthKit duplicate entries corrupt user's health data
+- Race conditions: async tasks can interleave without synchronous guards
+- Same pattern applies to: notifications, Live Activities, audio cleanup
+
+**Technical Detail:**
+- `HKWorkoutBuilder.finishWorkout()` automatically saves to HealthKit (no manual save needed)
+- Each call creates a new HKWorkout entry → duplicates accumulate over time
+- Flag must be set synchronously before Task.detached to prevent both branches executing
+
+**User observation:** "Workouts werden doppelt in Apple Health gelogt" (Workouts are being logged twice in Apple Health)
+
+Reference: `WorkoutProgramsView.swift` lines 689 (flag), 791-794 (guard), 807+826 (flag setting)
+
 ---
 
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**

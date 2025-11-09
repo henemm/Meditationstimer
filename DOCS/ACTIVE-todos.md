@@ -7,6 +7,8 @@
 
 ## 🐛 aktive Bugs
 
+
+## behobene Bugs
 - Workouts: Keine Sounds mehr nachdem man auf Pause gedrückt hat und weiter spielt (Fix implementiert in 0f61eec, muss noch getestet werden)
 - Auf der Workouts-View wird der Text "6 Übungen . 3 Runden = 1…" abgeschnitten. Wir müssen am besten die Begriffe "Übungen" und "Runden" kürzen. Evlt. einfach "6 x 3 = 18:00 min"?
 
