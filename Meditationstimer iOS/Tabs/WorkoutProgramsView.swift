@@ -198,7 +198,7 @@ struct WorkoutPhase: Identifiable, Hashable, Codable {
     var name: String            // "Diamond-Liegestütze", "Planke", etc.
     var workDuration: Int       // Seconds of work (1-600)
     var restDuration: Int       // Seconds of rest (0-600)
-                                // IMPORTANT: Last phase in set should have restDuration = 0
+                                // NOTE: restDuration of last phase is used for pauses between rounds
 
     init(id: UUID = UUID(), name: String, workDuration: Int, restDuration: Int) {
         self.id = id
@@ -325,7 +325,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Seitliche Planke rechts", workDuration: 30, restDuration: 15),
             WorkoutPhase(name: "Fahrrad-Crunches", workDuration: 40, restDuration: 15),
             WorkoutPhase(name: "Beinheben", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Russian Twists", workDuration: 40, restDuration: 0),
+            WorkoutPhase(name: "Russian Twists", workDuration: 40, restDuration: 10),
         ],
         repetitions: 3,
         description: "Fokussiert auf Core-Stabilität und Rotationskraft. Kombiniert isometrische (Planken) und dynamische Übungen für ganzheitliche Rumpfstärkung. Verbessert Haltung und reduziert Rückenschmerzen."
@@ -341,7 +341,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Liegestütze", workDuration: 30, restDuration: 20),
             WorkoutPhase(name: "Mountain Climbers", workDuration: 30, restDuration: 20),
             WorkoutPhase(name: "Ausfallschritte", workDuration: 40, restDuration: 20),
-            WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 0),
+            WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 10),
         ],
         repetitions: 3,
         description: "Ganzkörper-HIIT mit Fokus auf funktionelle Bewegungsmuster. Kombiniert Kraft, Cardio und Core-Stabilität. Maximale Kalorienverbrennung durch Einbindung großer Muskelgruppen."
@@ -356,7 +356,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Burpees", workDuration: 40, restDuration: 20),
             WorkoutPhase(name: "High Knees", workDuration: 40, restDuration: 20),
             WorkoutPhase(name: "Mountain Climbers", workDuration: 40, restDuration: 20),
-            WorkoutPhase(name: "Hampelmänner", workDuration: 40, restDuration: 0),
+            WorkoutPhase(name: "Hampelmänner", workDuration: 40, restDuration: 10),
         ],
         repetitions: 4,
         description: "Explosive plyometrische Übungen zur Steigerung von Schnellkraft und anaerober Kapazität. Optimal für Fettverbrennung und kardiovaskuläre Fitness. EPOC-Effekt (Nachbrenneffekt) bis 24h."
@@ -373,7 +373,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Bulgarische Split-Kniebeugen links", workDuration: 20, restDuration: 10),
             WorkoutPhase(name: "Bulgarische Split-Kniebeugen rechts", workDuration: 20, restDuration: 15),
             WorkoutPhase(name: "Reverse-Ausfallschritte", workDuration: 40, restDuration: 15),
-            WorkoutPhase(name: "Wadenheben", workDuration: 30, restDuration: 0),
+            WorkoutPhase(name: "Wadenheben", workDuration: 30, restDuration: 10),
         ],
         repetitions: 3,
         description: "Gezieltes Training der posterior chain (Gesäß, Hamstrings, unterer Rücken, Waden). Essentiell für Laufökonomie, Sprintgeschwindigkeit und Verletzungsprävention. Korrigiert Dysbalancen durch Sitzposition."
@@ -388,7 +388,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Butt Kicks", workDuration: 30, restDuration: 10),
             WorkoutPhase(name: "Beinpendel", workDuration: 30, restDuration: 10),
             WorkoutPhase(name: "Ausfallschritte gehend", workDuration: 40, restDuration: 10),
-            WorkoutPhase(name: "Hüftkreisen", workDuration: 30, restDuration: 0),
+            WorkoutPhase(name: "Hüftkreisen", workDuration: 30, restDuration: 10),
         ],
         repetitions: 2,
         description: "Dynamisches Aufwärmen für Läufer. Aktiviert Hüftmuskulatur, erhöht Bewegungsumfang und bereitet den Körper auf Laufbelastung vor. Reduziert Verletzungsrisiko um bis zu 35%."
@@ -1706,6 +1706,19 @@ public struct WorkoutProgramsView: View {
                     }
                 )
             }
+            .onChange(of: draft.repetitions) { oldValue, newValue in
+                // Update last phase rest duration based on repetitions
+                guard !draft.phases.isEmpty else { return }
+                let lastIndex = draft.phases.count - 1
+
+                if newValue > 1 && oldValue == 1 {
+                    // Changed from 1 round to multiple rounds: set 10s rest on last phase
+                    draft.phases[lastIndex].restDuration = 10
+                } else if newValue == 1 && oldValue > 1 {
+                    // Changed from multiple rounds to 1 round: set 0s rest on last phase
+                    draft.phases[lastIndex].restDuration = 0
+                }
+            }
         }
     }
 
@@ -1774,18 +1787,13 @@ public struct WorkoutProgramsView: View {
                             Text("s").foregroundStyle(.secondary)
                         }
                     }
-                    Section(footer: isLastPhase ? Text("Letzte Übung im Set hat keine Pause.") : nil) {
+                    Section(footer: isLastPhase ? Text("Pause wird für Pausen zwischen Runden genutzt.") : nil) {
                         HStack {
                             Text("Pause")
                             Spacer()
-                            if isLastPhase {
-                                Text("0s")
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                WorkoutWheelPicker("", selection: $draft.restDuration, range: 0...600)
-                                    .frame(width: 120, height: 100)
-                                Text("s").foregroundStyle(.secondary)
-                            }
+                            WorkoutWheelPicker("", selection: $draft.restDuration, range: 0...600)
+                                .frame(width: 120, height: 100)
+                            Text("s").foregroundStyle(.secondary)
                         }
                     }
                     Section {
@@ -1813,11 +1821,6 @@ public struct WorkoutProgramsView: View {
                             // Use custom exercise name if selected
                             if useCustomExercise {
                                 draft.name = customExerciseName
-                            }
-
-                            // Force restDuration to 0 for last phase
-                            if isLastPhase {
-                                draft.restDuration = 0
                             }
 
                             onSave(draft)
