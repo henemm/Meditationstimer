@@ -74,6 +74,15 @@
 - **Commit:** `34d3670`
 - **CLAUDE.md Lesson:** *(Not documented in CLAUDE.md)*
 
+#### 🔴 **Workout Last Exercise Pause - Context-Dependent Defaults**
+- **Datei:** Commit `87a355f` only (keine separate Bug-Dokumentation nötig - trivial nach Korrektur)
+- **Symptom:** Pause der letzten Übung in Multi-Round-Workouts nicht editierbar
+- **Root Cause:** UI restrictions von alter Logic vor commit 34d3670 (Footer, conditional picker, forced reset to 0)
+- **Pattern:** Context-Dependent Default Values in SwiftUI (gleiche Property hat unterschiedliche Bedeutung je nach State)
+- **Fix:** 3-teilig: UI Restrictions entfernt + Default Presets aktualisiert + Reactive Logic (.onChange)
+- **Commit:** `87a355f`
+- **User Correction Required:** Initial fix unvollständig (nur UI, fehlten Defaults + Reactive Logic)
+
 ---
 
 ### 5. Data Persistence & State Management
@@ -101,6 +110,7 @@
 | Redundante UI in Pause | bug-workout-rest-phase-ui.md | Split State by Phase Type |
 | Keine Pause zwischen Runden | bug-workout-rounds-missing-pause.md | Conditional Rest Skip |
 | Points falsch nach Restart | bug-noalc-streak-points-persistence.md | Persistent State |
+| Letzte Übung Pause nicht editierbar | Commit 87a355f | Context-Dependent Defaults |
 
 ### Pattern → Alle Bugs mit diesem Pattern
 
@@ -113,6 +123,7 @@
 | UI State Differentiation | bug-workout-rest-phase-ui.md |
 | Logic Conditional Edge Cases | bug-workout-rounds-missing-pause.md |
 | Persistent vs Computed State | bug-noalc-streak-points-persistence.md |
+| Context-Dependent Default Values | Commit 87a355f |
 
 ### Kategorie → Bug Count
 
@@ -121,9 +132,9 @@
 | SwiftUI Lifecycle & State | 2 |
 | Audio / Completion Handlers | 1 |
 | Date Semantics & Iteration | 2 |
-| Workout Logic & Timing | 1 |
+| Workout Logic & Timing | 2 |
 | Data Persistence | 1 |
-| **TOTAL** | **7** |
+| **TOTAL** | **8** |
 
 ---
 
