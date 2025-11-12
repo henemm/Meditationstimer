@@ -62,6 +62,14 @@
 - **Commit:** `960811a` (combined fix)
 - **CLAUDE.md Lesson:** Siehe "Forward vs Backward Iteration" Section
 
+#### 🔴 **Smart Reminder Next-Week Scheduling**
+- **Datei:** [bug-smart-reminder-next-week-scheduling.md](bug-smart-reminder-next-week-scheduling.md)
+- **Symptom:** Alle Smart Reminders scheduled für nächste Woche statt diese Woche (5+ Tage Delay)
+- **Root Cause:** `scheduleNotifications()` nach JEDER `cancelMatchingReminders()` → löscht ALLE Notifications → re-created mit partial DateComponents → iOS schedules für "next occurrence" (= nächste Woche wenn Zeit heute vorbei)
+- **Pattern:** Notification Re-Scheduling Timing - Don't delete/recreate notifications unnecessarily, use state-based filtering instead
+- **Commit:** `2fb6792` (fix implemented, testing pending)
+- **CLAUDE.md Lesson:** TBD (nach Testing)
+
 ---
 
 ### 4. Workout Logic & Timing
@@ -107,6 +115,7 @@
 | Audio wird abgeschnitten | bug-atem-end-gong-cutoff.md | Completion Handler Pattern |
 | Streak zeigt 0 trotz Daten | bug-noalc-streak-logic.md | Forward Iteration |
 | Reminder trotz Logging | bug-noalc-reminder-cancellation.md | Date vs startOfDay |
+| Reminders 5+ Tage verzögert | bug-smart-reminder-next-week-scheduling.md | Notification Re-Scheduling Timing |
 | Redundante UI in Pause | bug-workout-rest-phase-ui.md | Split State by Phase Type |
 | Keine Pause zwischen Runden | bug-workout-rounds-missing-pause.md | Conditional Rest Skip |
 | Points falsch nach Restart | bug-noalc-streak-points-persistence.md | Persistent State |
@@ -119,6 +128,7 @@
 | SwiftUI Lifecycle Hooks | bug-workout-double-healthkit-logging.md |
 | Completion Handler (Audio) | bug-atem-end-gong-cutoff.md |
 | Date Semantics | bug-noalc-reminder-cancellation.md |
+| Notification Re-Scheduling Timing | bug-smart-reminder-next-week-scheduling.md |
 | Iteration Direction | bug-noalc-streak-logic.md |
 | UI State Differentiation | bug-workout-rest-phase-ui.md |
 | Logic Conditional Edge Cases | bug-workout-rounds-missing-pause.md |
@@ -131,10 +141,10 @@
 |---------------|-----------------|
 | SwiftUI Lifecycle & State | 2 |
 | Audio / Completion Handlers | 1 |
-| Date Semantics & Iteration | 2 |
+| Date Semantics & Iteration | 3 |
 | Workout Logic & Timing | 2 |
 | Data Persistence | 1 |
-| **TOTAL** | **8** |
+| **TOTAL** | **9** |
 
 ---
 
@@ -160,6 +170,7 @@
 - ✅ bug-workout-double-healthkit-logging.md - Guard Flag Pattern (wiederkehrend)
 - ✅ bug-noalc-streak-logic.md - 3 Lösungsversuche (verhindert Wiederholung)
 - ✅ bug-noalc-reminder-cancellation.md - Date-Semantik (wichtige Unterscheidung)
+- ✅ bug-smart-reminder-next-week-scheduling.md - Notification Re-Scheduling Timing (fix pending)
 
 **Nur in CLAUDE.md + Commit dokumentiert (ausreichend):**
 - ✅ Atem end-gong cutoff → CLAUDE.md:728-763 + commit `b1a16f0`
@@ -174,4 +185,4 @@
 
 ---
 
-**Letzte Aktualisierung:** 9. November 2025
+**Letzte Aktualisierung:** 12. November 2025
