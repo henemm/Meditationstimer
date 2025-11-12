@@ -1,15 +1,19 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 10. November 2025
+**Letzte Aktualisierung:** 12. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
 
 ## 🐛 aktive Bugs
-- NoAlk-Reporting "Schublade": Handle-Balken überdeckt Text "Yesterday Evening". Text braucht mehr Abstand nach oben (15px)
+(Keine)
 
 
 ## behobene Bugs
+- NoAlc Sheet: Drag Handle überlappte/schnitt durch "NoAlc-Tagebuch" Titel (Fix implementiert in 45b1330, muss noch getestet werden)
+  - Root Cause: Drag Indicator ist Teil des Sheet Containers, nicht des Content VStack - inner padding hatte keine Auswirkung
+  - Fix: Root-level `.padding(.top, 20)` + Sheet height 200→240 + inner padding 52→32
+  - NoAlcLogSheet.swift Lines 38, 161-162
 - Workouts: Keine Sounds mehr nachdem man auf Pause gedrückt hat und weiter spielt (Fix implementiert in 0f61eec, muss noch getestet werden)
 - Auf der Workouts-View wird der Text "6 Übungen . 3 Runden = 1…" abgeschnitten. Wir müssen am besten die Begriffe "Übungen" und "Runden" kürzen. Evlt. einfach "6 x 3 = 18:00 min"?
 - Smart Reminders: Alle Notifications wurden für nächste Woche statt diese Woche scheduled nach commit 960811a (Fix implementiert in 2fb6792, muss noch getestet werden)
