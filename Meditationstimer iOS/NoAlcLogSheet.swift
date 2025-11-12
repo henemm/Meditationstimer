@@ -22,14 +22,20 @@ struct NoAlcLogSheet: View {
                 // Compact Tooltip Mode
                 VStack(spacing: 16) {
                     // Header
-                    VStack(spacing: 4) {
+                    VStack(spacing: 8) {
+                        Text("NoAlc-Tagebuch")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+
                         Text(titleText)
-                            .font(.headline)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
                         Text(subtitleText)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
-                    .padding(.top, 21)
+                    .padding(.top, 52)
 
                     // Quick Log Buttons
                     HStack(spacing: 12) {
