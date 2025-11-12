@@ -27,12 +27,15 @@ public final class SmartReminderEngine {
     private var cancelled: [CancelledNotification] = []
 
     private init() {
+        logger.info("🚀 SmartReminderEngine initializing...")
         loadReminders()
         loadCancelled()
+        logger.info("📊 State after load: \(self.reminders.count) reminders, \(self.cancelled.count) cancelled, isPaused: \(self.isPaused)")
         #if os(iOS)
         // Initial scheduling beim App-Start
         scheduleNotifications()
         #endif
+        logger.info("✅ SmartReminderEngine initialization complete")
     }
 
     // MARK: - Persistence
@@ -136,23 +139,41 @@ public final class SmartReminderEngine {
         let lookAheadEnd = now.addingTimeInterval(24 * 3600)  // 24h window
         let calendar = Calendar.current
 
-        logger.info("🔍 Checking for reminders to cancel (activity: \(activityType.rawValue), completed: \(completedAt))")
+        logger.info("🔍 cancelMatchingReminders called:")
+        logger.info("  → activityType: \(activityType.rawValue)")
+        logger.info("  → completedAt: \(completedAt)")
+        logger.info("  → now: \(now)")
+        logger.info("  → lookAheadEnd: \(lookAheadEnd)")
+
+        let matchingReminders = reminders.filter { $0.isEnabled && $0.activityType == activityType }
+        logger.info("  → Enabled reminders for type '\(activityType.rawValue)': \(matchingReminders.count)")
 
         var cancelledCount = 0
 
-        for reminder in reminders where reminder.isEnabled && reminder.activityType == activityType {
+        for reminder in matchingReminders {
+            logger.info("  🔎 Processing reminder '\(reminder.title)' (lookback: \(reminder.lookbackHours)h, days: \(reminder.selectedDays.map { $0.displayName }.joined(separator: ", ")))")
+
             for weekday in reminder.selectedDays {
                 // Calculate next trigger for this reminder+weekday
                 guard let nextTrigger = calculateNextTrigger(reminder: reminder, weekday: weekday, after: now, calendar: calendar) else {
+                    logger.info("    ❌ Could not calculate next trigger for \(weekday.displayName)")
                     continue
                 }
 
+                logger.info("    → \(weekday.displayName): next trigger = \(nextTrigger)")
+
                 // Outside 24h look-ahead window?
-                guard nextTrigger <= lookAheadEnd else { continue }
+                if nextTrigger > lookAheadEnd {
+                    logger.info("    ⏭️ Outside 24h window, skipping")
+                    continue
+                }
 
                 // Calculate look-back window for that trigger
                 let lookBackStart = nextTrigger.addingTimeInterval(-Double(reminder.lookbackHours) * 3600)
                 let lookBackEnd = nextTrigger
+
+                logger.info("    → Look-back window: \(lookBackStart) to \(lookBackEnd)")
+                logger.info("    → completedAt in window? \(completedAt >= lookBackStart && completedAt <= lookBackEnd)")
 
                 // Does completedAt fall into look-back window?
                 if completedAt >= lookBackStart && completedAt <= lookBackEnd {
@@ -167,17 +188,19 @@ public final class SmartReminderEngine {
                     if !cancelled.contains(cancelledNotification) {
                         cancelled.append(cancelledNotification)
                         cancelledCount += 1
-                        logger.info("✅ Cancelled reminder '\(reminder.title)' for \(weekday.displayName) at \(nextTrigger)")
+                        logger.info("    ✅ CANCELLED reminder '\(reminder.title)' for \(weekday.displayName)")
+                    } else {
+                        logger.info("    ℹ️ Already cancelled")
                     }
+                } else {
+                    logger.info("    ⏭️ completedAt not in look-back window, skipping")
                 }
             }
         }
 
         if cancelledCount > 0 {
+            logger.info("💾 Saving \(cancelledCount) new cancellation(s), total cancelled: \(self.cancelled.count)")
             saveCancelled()
-            #if os(iOS)
-            scheduleNotifications()  // Re-schedule (respecting cancelled list)
-            #endif
             logger.info("🎯 Cancelled \(cancelledCount) reminder(s) based on activity completion")
         } else {
             logger.info("ℹ️ No matching reminders found to cancel")
@@ -223,6 +246,11 @@ public final class SmartReminderEngine {
     /// Respects cancelled list (Reverse Smart Reminders).
     func scheduleNotifications() {
         logger.info("📅 Scheduling smart reminders...")
+        logger.info("📊 Total reminders: \(self.reminders.count), Enabled: \(self.reminders.filter { $0.isEnabled }.count), Disabled: \(self.reminders.filter { !$0.isEnabled }.count)")
+
+        if isPaused {
+            logger.warning("⏸️ WARNING: Smart reminders are PAUSED globally (isPaused = true)")
+        }
 
         // 1. Clean up expired cancellations
         cleanupExpiredCancellations()
@@ -239,7 +267,11 @@ public final class SmartReminderEngine {
             }
 
             // 3. Schedule notifications for each enabled reminder (respecting cancelled list)
-            for reminder in self.reminders where reminder.isEnabled {
+            let enabledReminders = self.reminders.filter { $0.isEnabled }
+            self.logger.info("🔄 Scheduling \(enabledReminders.count) enabled reminder(s)...")
+
+            for reminder in enabledReminders {
+                self.logger.info("  → Processing '\(reminder.title)' (type: \(reminder.activityType.rawValue), days: \(reminder.selectedDays.count))")
                 self.scheduleNotification(for: reminder)
             }
 
@@ -251,8 +283,13 @@ public final class SmartReminderEngine {
     /// Skips weekdays that are currently cancelled.
     private func scheduleNotification(for reminder: SmartReminder) {
         let calendar = Calendar.current
+        let now = Date()
         let hour = calendar.component(.hour, from: reminder.triggerTime)
         let minute = calendar.component(.minute, from: reminder.triggerTime)
+
+        let currentWeekday = calendar.component(.weekday, from: now)
+        let currentHour = calendar.component(.hour, from: now)
+        let currentMinute = calendar.component(.minute, from: now)
 
         // Schedule one notification PER selected weekday (unless cancelled)
         for weekday in reminder.selectedDays {
@@ -262,12 +299,22 @@ public final class SmartReminderEngine {
                 continue
             }
 
+            // Determine if we should trigger TODAY or let iOS find the next occurrence
+            // If it's the same weekday and the time hasn't passed yet, iOS will trigger today
+            // If the time has passed, iOS will wait until next week
+            // This is correct behavior - we just need to accept it
+
             var dateComponents = DateComponents()
             dateComponents.hour = hour
             dateComponents.minute = minute
             dateComponents.weekday = weekday.calendarWeekday  // 1=Sunday, 2=Monday, etc.
 
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+
+            // Log whether this will trigger today or next week (for debugging)
+            let willTriggerToday = (weekday.calendarWeekday == currentWeekday) &&
+                                   (hour > currentHour || (hour == currentHour && minute > currentMinute))
+            let triggerInfo = willTriggerToday ? "today" : "next week"
 
             // Create notification content
             let content = UNMutableNotificationContent()
@@ -289,7 +336,7 @@ public final class SmartReminderEngine {
                 if let error = error {
                     self.logger.error("❌ Failed to schedule '\(reminder.title)' for \(weekday.displayName): \(error.localizedDescription)")
                 } else {
-                    self.logger.info("✅ Scheduled '\(reminder.title)' for \(weekday.displayName) at \(String(format: "%02d:%02d", hour, minute))")
+                    self.logger.info("✅ Scheduled '\(reminder.title)' for \(weekday.displayName) at \(String(format: "%02d:%02d", hour, minute)) (\(triggerInfo))")
                 }
             }
         }
