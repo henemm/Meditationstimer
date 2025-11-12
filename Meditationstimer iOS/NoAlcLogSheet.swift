@@ -35,7 +35,7 @@ struct NoAlcLogSheet: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
-                    .padding(.top, 52)
+                    .padding(.top, 32)
 
                     // Quick Log Buttons
                     HStack(spacing: 12) {
@@ -158,7 +158,8 @@ struct NoAlcLogSheet: View {
                 }
             }
         }
-        .presentationDetents(isExpanded ? [.large] : [.height(200)])
+        .padding(.top, 20)
+        .presentationDetents(isExpanded ? [.large] : [.height(240)])
         .presentationDragIndicator(.visible)
     }
 
