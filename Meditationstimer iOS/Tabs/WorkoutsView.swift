@@ -678,17 +678,26 @@ struct WorkoutsView: View {
             VStack(spacing: 28) {
                 VStack(spacing: 6) {
                     Text("🔥").font(.system(size: 50))
-                    Text("Work").font(.footnote).foregroundStyle(.secondary)
+                    Text("Work")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
                     Text("🧊").font(.system(size: 50))
-                    Text("Rest").font(.footnote).foregroundStyle(.secondary)
+                    Text("Rest")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
                     Text("↻").font(.system(size: 50))
-                    Text("Repetitions").font(.footnote).foregroundStyle(.secondary)
+                    Text("Repetitions")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(height: 90, alignment: .center)
             }
