@@ -759,18 +759,18 @@ struct WorkoutsView: View {
             ZStack {
                 // Base content
                 VStack {
-                    HStack(spacing: 8) {
-                        Text("Free Workout")
-                            .font(.title3)
-                            .foregroundStyle(.secondary)
-                        InfoButton { showFreiInfo = true }
-                        Spacer()
-                    }
-                    .padding(.horizontal, 4)
-                    .padding(.top, 4)
-
                     GlassCard {
                         VStack(spacing: 16) {
+                            HStack(spacing: 8) {
+                                Text("Free Workout")
+                                    .font(.title3)
+                                    .foregroundStyle(.secondary)
+                                InfoButton { showFreiInfo = true }
+                                Spacer()
+                            }
+                            .padding(.horizontal, 4)
+                            .padding(.top, 4)
+
                             pickerSection
                             HStack {
                                 Text("Total Duration")
