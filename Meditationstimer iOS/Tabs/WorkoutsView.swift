@@ -681,7 +681,7 @@ struct WorkoutsView: View {
                     Text("Work")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
@@ -689,7 +689,7 @@ struct WorkoutsView: View {
                     Text("Rest")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
@@ -697,7 +697,7 @@ struct WorkoutsView: View {
                     Text("Repetitions")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(height: 90, alignment: .center)
             }
