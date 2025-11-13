@@ -1,12 +1,11 @@
 # Feature Roadmap - Meditationstimer
 
-**Letzte Aktualisierung:** 1. November 2025
+**Letzte Aktualisierung:** 13. November 2025
 **Regel:** Geplante Features. Nach Implementation → löschen und feature-*.md erstellen
 
 ---
 
 ## 🚀 Geplante Features
-
 
 ### 1. Mehrsprachigkeit (Deutsch/Englisch)
 **Priorität:** Mittel

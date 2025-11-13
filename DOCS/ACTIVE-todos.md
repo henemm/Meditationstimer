@@ -1,6 +1,6 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 12. November 2025
+**Letzte Aktualisierung:** 13. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
