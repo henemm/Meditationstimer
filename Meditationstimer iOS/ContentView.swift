@@ -64,21 +64,21 @@ struct ContentView: View {
                     .environmentObject(engine)
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Offen", systemImage: "figure.mind.and.body")
+                        Label("Open", systemImage: "figure.mind.and.body")
                     }
                     .tag(AppTab.offen)
 
                 AtemView()
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Atem", systemImage: "wind")
+                        Label("Breathe", systemImage: "wind")
                     }
                     .tag(AppTab.atem)
 
                 WorkoutsView()
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Frei", systemImage: "flame")
+                        Label("Free", systemImage: "flame")
                     }
                     .tag(AppTab.frei)
 

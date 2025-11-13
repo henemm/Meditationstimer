@@ -154,7 +154,7 @@ struct OffenView: View {
                 VStack(spacing: 6) {
                     Text("🪷")
                         .font(.system(size: 56))
-                    Text("Besinnung")
+                    Text("Contemplation")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -171,7 +171,7 @@ struct OffenView: View {
                 .frame(width: 160, height: 130)
                 .clipped()
 
-                Picker("Besinnung (min)", selection: $phase2Minutes) {
+                Picker("Contemplation (min)", selection: $phase2Minutes) {
                     ForEach(0..<61) { Text("\($0)") }
                 }
                 .labelsHidden()
@@ -187,9 +187,9 @@ struct OffenView: View {
             .alert(isPresented: $showLocalConflictAlert) {
                 localConflictAlert
             }
-            .alert("Health-Zugang", isPresented: $showHealthAlert) {
-                Button("Abbrechen", role: .cancel) {}
-                Button("Erlauben") {
+            .alert("Health Access", isPresented: $showHealthAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Allow") {
                     Task {
                         do {
                             try await HealthKitManager.shared.requestAuthorization()
@@ -217,7 +217,7 @@ struct OffenView: View {
                                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                                 case .conflict(let existingOwner, let existingTitle):
                                     conflictOwnerId = existingOwner
-                                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                                    conflictTitle = existingTitle.isEmpty ? "Another Timer" : existingTitle
                                     showConflictAlert = true
                                 case .failed:
                                     sessionStart = now
@@ -307,16 +307,16 @@ struct OffenView: View {
                     liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
                 }
             }),
-            secondaryButton: .cancel(Text("Abbrechen"))
+            secondaryButton: .cancel(Text("Cancel"))
         )
     }
 
     // Local alert when engine.state != .idle and user presses Start
     private var localConflictAlert: Alert {
         Alert(
-            title: Text("Sitzung läuft bereits"),
-            message: Text("Eine Sitzung läuft bereits. Soll diese beendet und die neue gestartet werden?"),
-            primaryButton: .destructive(Text("Beenden & Starten"), action: {
+            title: Text("Session Already Running"),
+            message: Text("A session is already running. Should it be stopped and the new one started?"),
+            primaryButton: .destructive(Text("Stop & Start"), action: {
                 Task { @MainActor in
                     // End current session and start fresh
                     await liveActivity.end()
@@ -336,7 +336,7 @@ struct OffenView: View {
                     }
                 }
             }),
-            secondaryButton: .cancel(Text("Abbrechen"))
+            secondaryButton: .cancel(Text("Cancel"))
         )
     }
 
@@ -388,7 +388,7 @@ struct OffenView: View {
                     .animation(.smooth(duration: 0.3), value: engine.state)
                     .zIndex(2)
                 } else if case .phase2 = engine.state {
-                    RunCard(title: "Besinnung", endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
+                    RunCard(title: "Contemplation", endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
@@ -574,6 +574,7 @@ private struct RunCard: View {
             // Title
             Text(title)
                 .font(.title3.weight(.semibold))
+                .textCase(.uppercase)
             // Progress ring + icon
             let progress = max(0, min(1, (endDate.timeIntervalSince(currentTime)) / Double(totalSeconds)))
             ZStack {
@@ -589,14 +590,14 @@ private struct RunCard: View {
                 }
             }
 
-            // Centered Beenden button (same look & size as Atem run card)
-            Button("Beenden") {
+            // Centered End button (same look & size as Atem run card)
+            Button("End") {
                 onEnd()
             }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .tint(.red)
-                .accessibilityLabel("Sitzung beenden")
+                .accessibilityLabel("End Session")
         }
         .frame(maxWidth: 420)
         .onAppear {
