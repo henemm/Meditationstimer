@@ -7,21 +7,7 @@
 
 ## 🚀 Geplante Features
 
-### 1. Mehrsprachigkeit (Deutsch/Englisch)
-**Priorität:** Mittel
-**Aufwand:** Mittel
-**Status:** Planungsphase
-
-**Beschreibung:**
-Vollständige Lokalisierung der App für Deutsch und Englisch.
-
-**Details:**
-- Alle UI-Texte, Beschreibungen, Notifications
-- SwiftUI LocalizedStringKey verwenden
-- String-Katalog erstellen (Localizable.xcstrings)
-- Automatische Spracherkennung (System-Sprache)
-
-**Risiken:** Konsistente Übersetzungen, Testing auf beiden Sprachen
+_Aktuell keine geplanten Features._
 
 ---
 
