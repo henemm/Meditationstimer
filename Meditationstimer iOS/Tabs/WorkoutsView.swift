@@ -342,7 +342,7 @@ private struct WorkoutRunnerView: View {
                             }
                             .frame(width: 320, height: 320)
                             .padding(.top, 6)
-                            Text("Satz \(repIndex) / \(plannedRepeats) — \(label(for: phase))")
+                            Text("Set \(repIndex) / \(plannedRepeats) — \(label(for: phase))")
                                 .font(.subheadline)
                                 .monospacedDigit()
                                 .foregroundStyle(.secondary)
@@ -365,7 +365,7 @@ private struct WorkoutRunnerView: View {
 
                 // Only show Pause/Weiter button during workout (not when finished)
                 if !finished {
-                    Button(isPaused ? "Weiter" : "Pause") {
+                    Button(isPaused ? "Continue" : "Pause") {
                         togglePause()
                     }
                     .buttonStyle(.borderedProminent)
@@ -381,7 +381,7 @@ private struct WorkoutRunnerView: View {
             if saveFailed {
                 VStack {
                     Spacer()
-                    Text("Konnte nicht in Health sichern")
+                    Text("Could not save to Health")
                         .font(.footnote)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
@@ -505,7 +505,7 @@ private struct WorkoutRunnerView: View {
     }
 
     private func iconName(for phase: IntervalPhase) -> String { phase == .work ? "flame" : "pause" }
-    private func label(for phase: IntervalPhase) -> String { phase == .work ? "Belastung" : "Erholung" }
+    private func label(for phase: IntervalPhase) -> String { phase == .work ? "Work" : "Rest" }
 
     private func setPhase(_ p: IntervalPhase) {
         cancelScheduled()
@@ -653,6 +653,7 @@ struct WorkoutsView: View {
     @State private var showHealthAlert = false
     @State private var showingCalendar = false
     @State private var showingNoAlcLog = false
+    @State private var showFreiInfo = false
 
     @AppStorage("intervalSec") private var intervalSec: Int = 30
     @AppStorage("restSec") private var restSec: Int = 10
@@ -677,17 +678,17 @@ struct WorkoutsView: View {
             VStack(spacing: 28) {
                 VStack(spacing: 6) {
                     Text("🔥").font(.system(size: 50))
-                    Text("Belastung").font(.footnote).foregroundStyle(.secondary)
+                    Text("Work").font(.footnote).foregroundStyle(.secondary)
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
                     Text("🧊").font(.system(size: 50))
-                    Text("Erholung").font(.footnote).foregroundStyle(.secondary)
+                    Text("Rest").font(.footnote).foregroundStyle(.secondary)
                 }
                 .frame(height: 90, alignment: .center)
                 VStack(spacing: 6) {
                     Text("↻").font(.system(size: 50))
-                    Text("Wiederholungen").font(.footnote).foregroundStyle(.secondary)
+                    Text("Repetitions").font(.footnote).foregroundStyle(.secondary)
                 }
                 .frame(height: 90, alignment: .center)
             }
@@ -695,7 +696,7 @@ struct WorkoutsView: View {
 
             // Rechte Spalte: Wheel-Picker in exakt derselben Größe wie Offen (160x130)
             VStack(spacing: 24) {
-                Picker("Belastung (s)", selection: $intervalSec) {
+                Picker("Work (s)", selection: $intervalSec) {
                     ForEach(0..<601) { v in Text("\(v)").font(.title3).tag(v) }
                 }
                 .labelsHidden()
@@ -707,7 +708,7 @@ struct WorkoutsView: View {
                 .frame(width: 144, height: 90)
                 .clipped()
 
-                Picker("Erholung (s)", selection: $restSec) {
+                Picker("Rest (s)", selection: $restSec) {
                     ForEach(0..<601) { v in Text("\(v)").font(.title3).tag(v) }
                 }
                 .labelsHidden()
@@ -719,7 +720,7 @@ struct WorkoutsView: View {
                 .frame(width: 144, height: 90)
                 .clipped()
 
-                Picker("Wiederholungen", selection: $repeats) {
+                Picker("Repetitions", selection: $repeats) {
                     ForEach(1..<201) { v in Text("\(v)").font(.title3).tag(v) }
                 }
                 .labelsHidden()
@@ -758,11 +759,21 @@ struct WorkoutsView: View {
             ZStack {
                 // Base content
                 VStack {
+                    HStack(spacing: 8) {
+                        Text("Free Workout")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                        InfoButton { showFreiInfo = true }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 4)
+                    .padding(.top, 4)
+
                     GlassCard {
                         VStack(spacing: 16) {
                             pickerSection
                             HStack {
-                                Text("Gesamtdauer")
+                                Text("Total Duration")
                                     .font(.footnote)
                                     .foregroundStyle(.secondary)
                                 Spacer()
@@ -816,7 +827,7 @@ struct WorkoutsView: View {
 
                         Button { showingCalendar = true } label: { Image(systemName: "calendar") }
                         Button(action: { showSettings = true }) {
-                            Image(systemName: "gearshape").accessibilityLabel("Einstellungen")
+                            Image(systemName: "gearshape").accessibilityLabel("Settings")
                         }
                     }
                 }
@@ -834,10 +845,23 @@ struct WorkoutsView: View {
             .sheet(isPresented: $showingNoAlcLog) {
                 NoAlcLogSheet()
             }
+            .sheet(isPresented: $showFreiInfo) {
+                InfoSheet(
+                    title: "Free Workout",
+                    description: "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions.",
+                    usageTips: [
+                        "Choose work time, rest time, and repetitions",
+                        "Work phase: Intense training",
+                        "Rest phase: Active or passive break",
+                        "Gong signals mark phase transitions",
+                        "Activity is automatically logged in Apple Health"
+                    ]
+                )
+            }
             .toolbar(showRunner ? .hidden : .visible, for: .tabBar)
-            .alert("Health-Zugang", isPresented: $showHealthAlert) {
-                Button("Abbrechen", role: .cancel) {}
-                Button("Erlauben") {
+            .alert("Health Access", isPresented: $showHealthAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Allow") {
                     Task {
                         do {
                             try await HealthKitManager.shared.requestAuthorization()
@@ -849,7 +873,7 @@ struct WorkoutsView: View {
                     }
                 }
             } message: {
-                Text("Diese App kann deine Workouts in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?")
+                Text("This app can record your workouts in Apple Health to track your progress. Would you like to allow this?")
             }
             .onReceive(NotificationCenter.default.publisher(for: .startWorkoutSession)) { _ in
                 Task { @MainActor in
@@ -887,6 +911,6 @@ private struct OverlayBackgroundEffect: ViewModifier {
 #else
 // Fallback for non-iOS analyzers/targets
 struct WorkoutsView: View {
-    var body: some View { Text("Workouts sind nur auf iOS verfügbar.") }
+    var body: some View { Text("Workouts are only available on iOS.") }
 }
 #endif
