@@ -39,6 +39,10 @@ struct SettingsSheet: View {
         NavigationView {
             Form {
                 Section(header: Text("Tägliche Ziele in Minuten")) {
+                    Text("Setze deine täglichen Ziele für Meditation und Workouts. Der Fortschritt wird im Kalender als teilgefüllter Kreis angezeigt.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
                     HStack {
                         Text("Meditation")
                             .help("Setze dein tägliches Meditation-Ziel. Der Fortschritt wird als teilgefüllter blauer Kreis im Kalender angezeigt.")
@@ -131,7 +135,7 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Atem-Sounds 🎵")) {
+                Section(header: Text("Atem-Sounds")) {
                     Picker("Sound-Theme", selection: $selectedAtemTheme) {
                         ForEach(AtemView.AtemSoundTheme.allCases, id: \.self) { theme in
                             Text("\(theme.emoji) \(theme.displayName)")
@@ -166,9 +170,18 @@ struct SettingsSheet: View {
                 }
 
                 Section {
+                    Text("Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
                     NavigationLink(destination: SmartRemindersView()) {
                         Label("Smart Reminders", systemImage: "bell.badge")
                             .help("Konfiguriere intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast.")
+                    }
+
+                    NavigationLink(destination: SmartReminderDebugView()) {
+                        Label("Smart Reminder Debug", systemImage: "ant.circle")
+                            .help("Zeigt alle Smart Reminder Details: Reminders, Cancelled List, Pending Notifications, Permissions.")
                     }
                 }
 
