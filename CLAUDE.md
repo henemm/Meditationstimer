@@ -938,4 +938,141 @@ Reference: `WorkoutProgramsView.swift` lines 689 (flag), 791-794 (guard), 807+82
 
 ---
 
+## Established Design Patterns (November 2025)
+
+### InfoButton + InfoSheet Pattern
+
+**Purpose:** Provide contextual help for tabs and features without cluttering the UI.
+
+**Components:**
+1. **InfoButton.swift** - Reusable button component
+2. **InfoSheet.swift** - Reusable modal sheet with title, description, usage tips
+
+**Usage Pattern:**
+```swift
+// In parent view
+@State private var showInfo = false
+
+// In body
+HStack(spacing: 8) {
+    Text("Feature Title")
+    InfoButton { showInfo = true }
+}
+
+// Sheet presentation
+.sheet(isPresented: $showInfo) {
+    InfoSheet(
+        title: "Feature Name",
+        description: "What this feature does and why it's useful",
+        usageTips: [
+            "Step 1: How to use",
+            "Step 2: What to expect",
+            "Tip: Additional context"
+        ]
+    )
+}
+```
+
+**When to Use:**
+- ✅ Tab-specific features (Offen-Tab, Frei-Tab, Atem-Tab)
+- ✅ Complex UI elements needing explanation (NoAlc-Sheet)
+- ✅ Non-obvious functionality requiring user education
+
+**When NOT to Use:**
+- ❌ Settings screens (already modal → use inline text instead)
+- ❌ Simple, self-explanatory UI elements
+- ❌ Features with extensive documentation needs (use separate help screens)
+
+**Key Design Decisions:**
+- No decorative icons in InfoSheet (information, not decoration)
+- Minimal whitespace (8pt top padding instead of 20pt)
+- Consistent styling: `.font(.caption)` for secondary text
+- Close button: xmark.circle.fill in toolbar (not dismiss button in content)
+
+**Successfully Applied:**
+- Offen-Tab (Offene Meditation)
+- Frei-Tab (Freies Workout)
+- NoAlc-Tagebuch Sheet
+- Phase 2 Mini Improvements: All implemented first-try without errors
+
+Reference: `InfoButton.swift`, `InfoSheet.swift`
+
+---
+
+### Modal Context Awareness
+
+**Rule:** Avoid nested modals. Use inline text for already-modal contexts.
+
+**Example - Settings Screen:**
+```swift
+// WRONG: Info button in Settings (Settings is already .sheet presentation)
+Section(header: Text("Daily Goals")) {
+    InfoButton { showGoalsInfo = true }  // ❌ Sheet in Sheet!
+}
+
+// CORRECT: Inline explanatory text
+Section(header: Text("Daily Goals")) {
+    Text("Set your daily goals. Progress shown as filled circles in calendar.")
+        .font(.caption)
+        .foregroundStyle(.secondary)
+}
+```
+
+**Why This Matters:**
+- iOS Guidelines discourage nested modals (poor UX)
+- User has to dismiss multiple layers to return to main content
+- Inline text provides immediate context without additional interaction
+
+**Pattern:**
+```
+✅ DO: Inline text for modal contexts (Settings, Sheets)
+❌ DON'T: Info buttons in already-modal UI
+```
+
+**Successfully Applied:**
+- SettingsSheet.swift: 3 sections with inline explanatory text
+- Consistent styling: `.font(.caption)` + `.foregroundStyle(.secondary)`
+
+---
+
+### Tab Content vs Toolbar Placement
+
+**Rule:** Info buttons belong in tab content, not toolbar.
+
+**Why:**
+- **Toolbar** = global navigation, shared across tabs (Settings, Calendar navigation)
+- **Tab Content** = tab-specific features and context
+
+**Example:**
+```swift
+// WRONG: Info button in toolbar
+.toolbar {
+    ToolbarItem(placement: .topBarTrailing) {
+        InfoButton { showInfo = true }  // ❌ Which tab does this explain?
+    }
+}
+
+// CORRECT: Info button in tab content
+VStack {
+    HStack(spacing: 8) {
+        Text("Feature Title")
+        InfoButton { showInfo = true }  // ✅ Clearly belongs to this feature
+        Spacer()
+    }
+    // ... rest of tab content
+}
+```
+
+**Pattern:**
+```
+✅ DO: Place info buttons in tab content (next to feature titles)
+❌ DON'T: Place info buttons in toolbar (unless explaining global feature)
+```
+
+**Successfully Applied:**
+- Frei-Tab: Info button next to "Freies Workout" header
+- NoAlc-Sheet: Info button next to "NoAlc-Tagebuch" title
+
+---
+
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**
