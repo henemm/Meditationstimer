@@ -26,9 +26,9 @@ final class NoAlcManager {
 
         var label: String {
             switch self {
-            case .steady: return "Steady"
-            case .easy: return "Easy"
-            case .wild: return "Wild"
+            case .steady: return NSLocalizedString("Steady", comment: "NoAlc consumption level: minimal/no drinking")
+            case .easy: return NSLocalizedString("Easy", comment: "NoAlc consumption level: moderate drinking")
+            case .wild: return NSLocalizedString("Wild", comment: "NoAlc consumption level: heavy drinking")
             }
         }
 

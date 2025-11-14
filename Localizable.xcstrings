@@ -52,6 +52,23 @@
         }
       }
     },
+    "Advanced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erweitert"
+          }
+        }
+      }
+    },
     "Add Exercise": {
       "extractionState": "manual",
       "localizations": {
@@ -392,6 +409,23 @@
         }
       }
     },
+    "Choose Date": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Date"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum wählen"
+          }
+        }
+      }
+    },
     "Configure smart reminders that are automatically cancelled when you've already completed the activity.": {
       "extractionState": "manual",
       "localizations": {
@@ -477,6 +511,23 @@
         }
       }
     },
+    "Daily logging helps recognize patterns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily logging helps recognize patterns"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tägliches Logging hilft, Muster zu erkennen"
+          }
+        }
+      }
+    },
     "Daily Goals in Minutes": {
       "extractionState": "manual",
       "localizations": {
@@ -490,6 +541,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tägliche Ziele in Minuten"
+          }
+        }
+      }
+    },
+    "Date": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum"
           }
         }
       }
@@ -613,6 +681,23 @@
         }
       }
     },
+    "Easy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Easy"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leicht"
+          }
+        }
+      }
+    },
     "Enable for Breathe (breathing exercises)": {
       "extractionState": "manual",
       "localizations": {
@@ -694,6 +779,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Übung"
+          }
+        }
+      }
+    },
+    "Error: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler: %@"
           }
         }
       }
@@ -885,6 +987,23 @@
         }
       }
     },
+    "How was it?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How was it?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie war es?"
+          }
+        }
+      }
+    },
     "Inhale": {
       "extractionState": "manual",
       "localizations": {
@@ -898,6 +1017,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einatmen"
+          }
+        }
+      }
+    },
+    "Log Drinks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Drinks"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getränke protokollieren"
           }
         }
       }
@@ -966,6 +1102,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neues Workout-Set"
+          }
+        }
+      }
+    },
+    "NoAlc Diary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NoAlc Diary"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NoAlc-Tagebuch"
           }
         }
       }
@@ -1446,6 +1599,23 @@
         }
       }
     },
+    "Smart Reminders remind you automatically": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders remind you automatically"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders erinnern dich automatisch"
+          }
+        }
+      }
+    },
     "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.": {
       "extractionState": "manual",
       "localizations": {
@@ -1493,6 +1663,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Start"
+          }
+        }
+      }
+    },
+    "Steady": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steady"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruhig"
           }
         }
       }
@@ -1633,6 +1820,23 @@
         }
       }
     },
+    "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das NoAlc-Tagebuch hilft dir, deinen Alkoholkonsum zu tracken und einen bewussten Umgang damit zu entwickeln. Das System nutzt drei Kategorien zur Selbstreflexion."
+          }
+        }
+      }
+    },
     "The timer '%@' is already running. Should it be stopped and the new one started?": {
       "extractionState": "manual",
       "localizations": {
@@ -1697,6 +1901,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "This app can record your workouts in Apple Health to track your progress. Would you like to allow this?"
+          }
+        }
+      }
+    },
+    "Today": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
           }
         }
       }
@@ -1867,6 +2088,91 @@
           "stringUnit": {
             "state": "translated",
             "value": "Workouts are only available on iOS."
+          }
+        }
+      }
+    },
+    "Wild": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wild"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wild"
+          }
+        }
+      }
+    },
+    "🔴 Wild: Intensive consumption – be especially mindful": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔴 Wild: Intensive consumption – be especially mindful"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔴 Wild: Intensiver Konsum – sei besonders achtsam"
+          }
+        }
+      }
+    },
+    "🟡 Easy: Increased consumption – watch your balance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🟡 Easy: Increased consumption – watch your balance"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🟡 Easy: Erhöhter Konsum – achte auf deine Balance"
+          }
+        }
+      }
+    },
+    "🟢 Steady: No or moderate consumption – you're on a good path": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🟢 Steady: No or moderate consumption – you're on a good path"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🟢 Steady: Kein oder moderater Konsum – du bist auf einem guten Weg"
+          }
+        }
+      }
+    },
+    "Yesterday Evening": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yesterday Evening"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestern Abend"
           }
         }
       }

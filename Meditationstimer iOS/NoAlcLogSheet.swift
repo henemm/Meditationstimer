@@ -13,6 +13,7 @@ struct NoAlcLogSheet: View {
     @State private var selectedDate = Date()
     @State private var isLogging = false
     @State private var errorMessage: String?
+    @State private var showNoAlcInfo = false
 
     private let noAlc = NoAlcManager.shared
 
@@ -23,9 +24,12 @@ struct NoAlcLogSheet: View {
                 VStack(spacing: 16) {
                     // Header
                     VStack(spacing: 8) {
-                        Text("NoAlc-Tagebuch")
-                            .font(.title3)
-                            .fontWeight(.semibold)
+                        HStack(spacing: 8) {
+                            Text("NoAlc Diary")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            InfoButton { showNoAlcInfo = true }
+                        }
 
                         Text(titleText)
                             .font(.subheadline)
@@ -65,7 +69,7 @@ struct NoAlcLogSheet: View {
                             isExpanded = true
                         }
                     } label: {
-                        Text("Erweitert")
+                        Text("Advanced")
                             .font(.footnote)
                             .foregroundColor(.secondary)
                     }
@@ -88,7 +92,7 @@ struct NoAlcLogSheet: View {
                             Image(systemName: "drop.fill")
                                 .font(.system(size: 48))
                                 .foregroundStyle(.blue)
-                            Text("Datum wählen")
+                            Text("Choose Date")
                                 .font(.title3)
                                 .fontWeight(.semibold)
                         }
@@ -96,7 +100,7 @@ struct NoAlcLogSheet: View {
 
                         // Date Picker
                         DatePicker(
-                            "Datum",
+                            "Date",
                             selection: $selectedDate,
                             displayedComponents: .date
                         )
@@ -105,7 +109,7 @@ struct NoAlcLogSheet: View {
 
                         // Consumption Buttons
                         VStack(spacing: 12) {
-                            Text("Wie war es?")
+                            Text("How was it?")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
 
@@ -161,6 +165,19 @@ struct NoAlcLogSheet: View {
         .padding(.top, 20)
         .presentationDetents(isExpanded ? [.large] : [.height(240)])
         .presentationDragIndicator(.visible)
+        .sheet(isPresented: $showNoAlcInfo) {
+            InfoSheet(
+                title: "NoAlc Diary",
+                description: "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection.",
+                usageTips: [
+                    "🟢 Steady: No or moderate consumption – you're on a good path",
+                    "🟡 Easy: Increased consumption – watch your balance",
+                    "🔴 Wild: Intensive consumption – be especially mindful",
+                    "Daily logging helps recognize patterns",
+                    "Smart Reminders remind you automatically"
+                ]
+            )
+        }
     }
 
     private var titleText: String {
@@ -202,7 +219,7 @@ struct NoAlcLogSheet: View {
                 dismiss()
             }
         } catch {
-            errorMessage = "Fehler: \(error.localizedDescription)"
+            errorMessage = String(format: NSLocalizedString("Error: %@", comment: ""), error.localizedDescription)
             isLogging = false
         }
     }
