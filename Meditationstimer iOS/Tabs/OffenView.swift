@@ -54,7 +54,7 @@ import AVFoundation
 #endif
 
 #if !os(iOS)
-struct OffenView: View { var body: some View { Text("Offen ist nur auf iOS verfügbar.") } }
+struct OffenView: View { var body: some View { Text("Open is only available on iOS.") } }
 #else
 
 struct OffenView: View {
@@ -237,7 +237,7 @@ struct OffenView: View {
                     }
                 }
             } message: {
-                Text("Diese App kann deine Meditationen in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?")
+                Text("This app can record your meditations in Apple Health to track your progress. Do you want to allow this?")
             }
     }
 
@@ -272,7 +272,7 @@ struct OffenView: View {
                     engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
                 case .conflict(let existingOwner, let existingTitle):
                     conflictOwnerId = existingOwner
-                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                    conflictTitle = existingTitle.isEmpty ? "Another Timer" : existingTitle
                     showConflictAlert = true
                 case .failed:
                     // If Activity start failed, we still allow the engine to start locally
@@ -299,9 +299,9 @@ struct OffenView: View {
     // Alert for existing timer conflict
     private var conflictAlert: Alert {
         Alert(
-            title: Text("Anderer Timer läuft"),
-            message: Text("Der Timer ‚\(conflictTitle ?? "Aktiver Timer")‘ läuft bereits. Soll dieser beendet und der neue gestartet werden?"),
-            primaryButton: .destructive(Text("Timer beenden und starten"), action: {
+            title: Text("Another Timer Running"),
+            message: Text(String(format: "The timer '%@' is already running. Should it be stopped and the new one started?", conflictTitle ?? "Active Timer")),
+            primaryButton: .destructive(Text("Stop & Start Timer"), action: {
                 // Force start now
                 if let phase1End = engine.phase1EndDate {
                     liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
@@ -404,7 +404,7 @@ struct OffenView: View {
                         Button { showingCalendar = true } label: { Image(systemName: "calendar") }
                         Button(action: { showSettings = true }) {
                             Image(systemName: "gearshape")
-                                .accessibilityLabel("Einstellungen")
+                                .accessibilityLabel("Settings")
                         }
                     }
                 }
