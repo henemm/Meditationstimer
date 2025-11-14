@@ -545,6 +545,23 @@
         }
       }
     },
+    "Done (Button)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        }
+      }
+    },
     "Duration": {
       "extractionState": "manual",
       "localizations": {
@@ -711,6 +728,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Übungen"
+          }
+        }
+      }
+    },
+    "Exercises and Rounds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Exercises · %d Rounds"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Übungen · %d Runden"
           }
         }
       }
@@ -1017,6 +1051,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pause"
+          }
+        }
+      }
+    },
+    "Pause is used for pauses between rounds.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause is used for pauses between rounds."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause wird für Pausen zwischen Runden genutzt."
           }
         }
       }
@@ -1765,6 +1816,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Workout-Set"
+          }
+        }
+      }
+    },
+    "Workout programs are only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout programs are only available on iOS."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout-Programme sind nur auf iOS verfügbar."
           }
         }
       }

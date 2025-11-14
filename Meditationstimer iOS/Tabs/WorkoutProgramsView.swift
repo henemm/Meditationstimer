@@ -1454,7 +1454,7 @@ public struct WorkoutProgramsView: View {
                             Text("Structure")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
-                            Text("\(set.phaseCount) Übungen · \(set.repetitions) Runden")
+                            Text(String(format: NSLocalizedString("Exercises and Rounds", comment: ""), set.phaseCount, set.repetitions))
                                 .font(.title3)
                             Text(String(format: NSLocalizedString("Total Duration: ≈ %@", comment: ""), set.totalDurationString))
                                 .font(.subheadline)
@@ -1499,7 +1499,7 @@ public struct WorkoutProgramsView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Fertig") {
+                        Button("Done") {
                             dismiss()
                         }
                     }
@@ -1787,7 +1787,7 @@ public struct WorkoutProgramsView: View {
                             Text("s").foregroundStyle(.secondary)
                         }
                     }
-                    Section(footer: isLastPhase ? Text("Pause wird für Pausen zwischen Runden genutzt.") : nil) {
+                    Section(footer: isLastPhase ? Text("Pause is used for pauses between rounds.") : nil) {
                         HStack {
                             Text("Rest")
                             Spacer()
@@ -1879,7 +1879,7 @@ public struct WorkoutProgramsView: View {
 public struct WorkoutProgramsView: View {
     public init() {}
     public var body: some View {
-        Text("Workout-Programme sind nur auf iOS verfügbar.")
+        Text("Workout programs are only available on iOS.")
     }
 }
 #endif
