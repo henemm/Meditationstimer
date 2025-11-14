@@ -142,7 +142,7 @@ struct ContentView: View {
             selectedTab = .frei
             print("[ContentView] Switched to Frei tab for workout session")
         }
-        .alert("Hinweis", isPresented: .constant(showingError != nil), actions: {
+        .alert("Notice", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }
         }, message: { Text(showingError ?? "") })
     }
