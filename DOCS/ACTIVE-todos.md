@@ -1,7 +1,45 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 13. November 2025
+**Letzte Aktualisierung:** 14. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
+
+---
+
+## 🌐 Localization Fehler (Systematische Überprüfung - 14. Nov 2025)
+
+### 1. Offen Tab
+- [ ] Beide Sprachen: Überschrift und (i) fehlt
+- [ ] Typo sollte in Großbuchstaben sein (wie auf anderen Tabs)
+- [ ] Farbe der Überschrift wie auf "Frei" Tab anpassen
+
+### 2. Tab-Reihenfolge
+- [ ] Vertausche "Workouts" und "Frei" Tab (neue Reihenfolge definieren)
+
+### 3. Frei Tab
+- [ ] Alle Beschriftungen in Großbuchstaben
+- [ ] Info Text (Sheet) ist in der deutschen Version English
+- [ ] Info Sheet in englischer Version: "So funktioniert's" nicht übersetzt
+
+### 4. Workouts Tab
+- [ ] Info-Sheets nicht vollständig übersetzt (ab "Description" noch Deutsch in EN-Version)
+- [ ] Übungsnamen nicht übersetzt (Kniebeugen, Liegestütze, etc.)
+
+### 5. NoAlc Sheet
+- [ ] Deutsch: "Yesterday Evening" nicht übersetzt
+- [ ] Englisch: "Tagebuch" nicht übersetzt
+- [ ] Englisch: "Erweitert" nicht übersetzt
+- [ ] Englisch: Kompletter Dialog "Datum wählen", "Wie war es?" nicht übersetzt
+- [ ] Info (i) Sheet von NoAlc Tagebuch nicht übersetzt (beide Sprachen)
+
+### 6. Kalender
+- [ ] (i) Tooltip noch 3x Englisch (in deutscher Version)
+
+### 7. Settings
+- [ ] Breathe Sounds: Harfe, Gitarre, ... nicht übersetzt
+- [ ] Smart Reminders: Kompletter Dialog nicht übersetzt
+
+**Priorität:** Hoch (für v2.8.0 Release mit Mehrsprachigkeit)
+**Aufwand:** ~2-3h systematische Durcharbeitung
 
 ---
 
