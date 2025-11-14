@@ -1031,10 +1031,10 @@ public struct WorkoutProgramsView: View {
 
                 // Exercise counter + Round counter
                 VStack(spacing: 2) {
-                    Text("Übung \(currentPhase.phaseIndex + 1) / \(set.phases.count)")
+                    Text(String(format: NSLocalizedString("Exercise %lld / %lld", comment: ""), currentPhase.phaseIndex + 1, set.phases.count))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                    Text("Runde \(currentRound) / \(set.repetitions)")
+                    Text(String(format: NSLocalizedString("Round %lld / %lld", comment: ""), currentRound, set.repetitions))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -1451,19 +1451,19 @@ public struct WorkoutProgramsView: View {
 
                         // Structure Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Struktur")
+                            Text("Structure")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text("\(set.phaseCount) Übungen · \(set.repetitions) Runden")
                                 .font(.title3)
-                            Text("Gesamtdauer: ≈ \(set.totalDurationString)")
+                            Text(String(format: NSLocalizedString("Total Duration: ≈ %@", comment: ""), set.totalDurationString))
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
 
                         // Phases Overview Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Übungen")
+                            Text("Exercises")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             VStack(alignment: .leading, spacing: 4) {
