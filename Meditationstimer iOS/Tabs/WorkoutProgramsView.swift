@@ -1010,7 +1010,7 @@ public struct WorkoutProgramsView: View {
 
                                 exerciseNameWithInfoButton(phase.name)
 
-                                Text("Übung")
+                                Text("Exercise")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             } else {
@@ -1476,7 +1476,7 @@ public struct WorkoutProgramsView: View {
                         // Description Section
                         if let description = set.description {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Beschreibung")
+                                Text("Description")
                                     .font(.headline)
                                     .foregroundStyle(.secondary)
                                 Text(description)
@@ -1486,7 +1486,7 @@ public struct WorkoutProgramsView: View {
 
                         // Recommended Usage Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Empfohlene Anwendung")
+                            Text("Recommended Application")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(recommendedUsage)
@@ -1606,9 +1606,9 @@ public struct WorkoutProgramsView: View {
                     Section("Runden") {
                         WorkoutWheelPicker("Wiederholungen", selection: $draft.repetitions, range: 1...99)
                     }
-                    Section("Übungen") {
+                    Section("Exercises") {
                         if draft.phases.isEmpty {
-                            Text("Keine Übungen")
+                            Text("No Exercises")
                                 .foregroundStyle(.secondary)
                                 .font(.subheadline)
                         } else {
@@ -1649,7 +1649,7 @@ public struct WorkoutProgramsView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                Text("Übung hinzufügen")
+                                Text("Add Exercise")
                             }
                         }
                     }
@@ -1769,7 +1769,7 @@ public struct WorkoutProgramsView: View {
                             ForEach(exerciseSuggestions, id: \.self) { exercise in
                                 Text(exercise).tag(exercise)
                             }
-                            Text("Eigene Übung...").tag("Eigene Übung...")
+                            Text("Custom Exercise...").tag("Custom Exercise...")
                         }
                         .pickerStyle(.menu)
 
@@ -1780,7 +1780,7 @@ public struct WorkoutProgramsView: View {
                     }
                     Section("Belastung") {
                         HStack {
-                            Text("Dauer")
+                            Text("Duration")
                             Spacer()
                             WorkoutWheelPicker("", selection: $draft.workDuration, range: 1...600)
                                 .frame(width: 120, height: 100)
@@ -1789,7 +1789,7 @@ public struct WorkoutProgramsView: View {
                     }
                     Section(footer: isLastPhase ? Text("Pause wird für Pausen zwischen Runden genutzt.") : nil) {
                         HStack {
-                            Text("Pause")
+                            Text("Rest")
                             Spacer()
                             WorkoutWheelPicker("", selection: $draft.restDuration, range: 0...600)
                                 .frame(width: 120, height: 100)

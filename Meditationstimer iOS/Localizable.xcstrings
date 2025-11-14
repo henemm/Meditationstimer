@@ -1,1638 +1,1791 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "Allow" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erlauben"
+  "sourceLanguage": "en",
+  "strings": {
+    "Allow": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlauben"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Allow"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow"
           }
         }
       }
     },
-    "Cancel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abbrechen"
+    "Cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         }
       }
     },
-    "Continue" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weiter"
+    "Continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
           }
         }
       }
     },
-    "Could not save to Health" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konnte nicht in Health sichern"
+    "Could not save to Health": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konnte nicht in Health sichern"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not save to Health"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not save to Health"
           }
         }
       }
     },
-    "Free Workout" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Freies Workout"
+    "Free Workout": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freies Workout"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Free Workout"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free Workout"
           }
         }
       }
     },
-    "Health Access" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Health-Zugang"
+    "Health Access": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health-Zugang"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Health Access"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Access"
           }
         }
       }
     },
-    "Pause" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pause"
+    "Pause": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pause"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
           }
         }
       }
     },
-    "Repetitions" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiederholungen"
+    "Repetitions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholungen"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Repetitions"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repetitions"
           }
         }
       }
     },
-    "Rest" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erholung"
+    "Rest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rest"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
           }
         }
       }
     },
-    "Set" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Satz"
+    "Set": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satz"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set"
           }
         }
       }
     },
-    "Settings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einstellungen"
+    "Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
           }
         }
       }
     },
-    "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das freie Workout bietet dir einen flexiblen HIIT-Timer mit individuell einstellbarer Belastungs- und Erholungsphase. Du bestimmst die Intensität und die Anzahl der Wiederholungen."
+    "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das freie Workout bietet dir einen flexiblen HIIT-Timer mit individuell einstellbarer Belastungs- und Erholungsphase. Du bestimmst die Intensität und die Anzahl der Wiederholungen."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
           }
         }
       }
     },
-    "This app can record your workouts in Apple Health to track your progress. Would you like to allow this?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diese App kann deine Workouts in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?"
+    "This app can record your workouts in Apple Health to track your progress. Would you like to allow this?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App kann deine Workouts in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This app can record your workouts in Apple Health to track your progress. Would you like to allow this?"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app can record your workouts in Apple Health to track your progress. Would you like to allow this?"
           }
         }
       }
     },
-    "Total Duration" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesamtdauer"
+    "Total Duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamtdauer"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Total Duration"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Duration"
           }
         }
       }
     },
-    "Work" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belastung"
+    "Total Duration: ≈ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Duration: ≈ %@"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Work"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamtdauer: ≈ %@"
           }
         }
       }
     },
-    "Workouts are only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts sind nur auf iOS verfügbar."
+    "Work": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belastung"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts are only available on iOS."
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Work"
           }
         }
       }
     },
-    "Choose work time, rest time, and repetitions" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wähle Belastungszeit, Erholungszeit und Wiederholungen"
+    "Workouts are only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workouts sind nur auf iOS verfügbar."
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose work time, rest time, and repetitions"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workouts are only available on iOS."
           }
         }
       }
     },
-    "Work phase: Intense training" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belastungsphase: Intensives Training"
+    "Choose work time, rest time, and repetitions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle Belastungszeit, Erholungszeit und Wiederholungen"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Work phase: Intense training"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose work time, rest time, and repetitions"
           }
         }
       }
     },
-    "Rest phase: Active or passive break" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erholungsphase: Aktive oder passive Pause"
+    "Work phase: Intense training": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belastungsphase: Intensives Training"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rest phase: Active or passive break"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Work phase: Intense training"
           }
         }
       }
     },
-    "Gong signals mark phase transitions" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gong-Signale markieren Phasenwechsel"
+    "Rest phase: Active or passive break": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erholungsphase: Aktive oder passive Pause"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gong signals mark phase transitions"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest phase: Active or passive break"
           }
         }
       }
     },
-    "Activity is automatically logged in Apple Health" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivität wird automatisch in Apple Health geloggt"
+    "Gong signals mark phase transitions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong-Signale markieren Phasenwechsel"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activity is automatically logged in Apple Health"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong signals mark phase transitions"
           }
         }
       }
     },
-    "Open" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open"
+    "Activity is automatically logged in Apple Health": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivität wird automatisch in Apple Health geloggt"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offen"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity is automatically logged in Apple Health"
           }
         }
       }
     },
-    "Breathe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breathe"
+    "Open": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atem"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen"
           }
         }
       }
     },
-    "Free" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Free"
+    "Breathe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Frei"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atem"
           }
         }
       }
     },
-    "Workouts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts"
+    "Free": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frei"
           }
         }
       }
     },
-    "Meditation" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meditation"
+    "Workouts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workouts"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meditation"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workouts"
           }
         }
       }
     },
-    "Contemplation" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contemplation"
+    "Meditation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditation"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Besinnung"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditation"
           }
         }
       }
     },
-    "This app can record your meditations in Apple Health to track your progress. Would you like to allow this?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This app can record your meditations in Apple Health to track your progress. Would you like to allow this?"
+    "Contemplation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contemplation"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diese App kann deine Meditationen in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Besinnung"
           }
         }
       }
     },
-    "Another Timer is Running" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Another Timer is Running"
+    "This app can record your meditations in Apple Health to track your progress. Would you like to allow this?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app can record your meditations in Apple Health to track your progress. Would you like to allow this?"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anderer Timer läuft"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App kann deine Meditationen in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?"
           }
         }
       }
     },
-    "Active Timer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active Timer"
+    "Another Timer is Running": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Another Timer is Running"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiver Timer"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anderer Timer läuft"
           }
         }
       }
     },
-    "Stop Timer and Start" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop Timer and Start"
+    "Active Timer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active Timer"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timer beenden und starten"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiver Timer"
           }
         }
       }
     },
-    "Session Already Running" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Session Already Running"
+    "Stop Timer and Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Timer and Start"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung läuft bereits"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer beenden und starten"
           }
         }
       }
     },
-    "A session is already running. Should it be stopped and the new one started?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A session is already running. Should it be stopped and the new one started?"
+    "Session Already Running": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Session Already Running"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eine Sitzung läuft bereits. Soll diese beendet und die neue gestartet werden?"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung läuft bereits"
           }
         }
       }
     },
-    "Stop & Start" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop & Start"
+    "A session is already running. Should it be stopped and the new one started?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A session is already running. Should it be stopped and the new one started?"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beenden & Starten"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Sitzung läuft bereits. Soll diese beendet und die neue gestartet werden?"
           }
         }
       }
     },
-    "End" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "End"
+    "Stop & Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop & Start"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beenden"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beenden & Starten"
           }
         }
       }
     },
-    "End Session" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "End Session"
+    "End": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung beenden"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beenden"
           }
         }
       }
     },
-    "The timer '%@' is already running. Should it be stopped and the new one started?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The timer '%@' is already running. Should it be stopped and the new one started?"
+    "End Session": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End Session"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Timer ‚%@' läuft bereits. Soll dieser beendet und der neue gestartet werden?"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung beenden"
           }
         }
       }
     },
-    "Inhale" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inhale"
+    "The timer '%@' is already running. Should it be stopped and the new one started?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The timer '%@' is already running. Should it be stopped and the new one started?"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einatmen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Timer ‚%@' läuft bereits. Soll dieser beendet und der neue gestartet werden?"
           }
         }
       }
     },
-    "Hold (in)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hold (in)"
+    "Inhale": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhale"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Halten (ein)"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einatmen"
           }
         }
       }
     },
-    "Exhale" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exhale"
+    "Hold (in)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold (in)"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ausatmen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halten (ein)"
           }
         }
       }
     },
-    "Hold (out)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hold (out)"
+    "Exhale": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exhale"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Halten (aus)"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausatmen"
           }
         }
       }
     },
-    "Breathe is only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breathe is only available on iOS."
+    "Exercise %lld / %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise %lld / %lld"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atem ist nur auf iOS verfügbar."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übung %lld / %lld"
           }
         }
       }
     },
-    "Edit" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
+    "Exercises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercises"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bearbeiten"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übungen"
           }
         }
       }
     },
-    "Add new preset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add new preset"
+    "Hold (out)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold (out)"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neues Preset hinzufügen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halten (aus)"
           }
         }
       }
     },
-    "Done" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
+    "Breathe is only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe is only available on iOS."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fertig"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atem ist nur auf iOS verfügbar."
           }
         }
       }
     },
-    "Round" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Round"
+    "Edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Runde"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearbeiten"
           }
         }
       }
     },
-    "Rhythm (seconds)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rhythm (seconds)"
+    "Add new preset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add new preset"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rhythmus (Sekunden)"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Preset hinzufügen"
           }
         }
       }
     },
-    "Rounds" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rounds"
+    "Done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Runden"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
           }
         }
       }
     },
-    "Delete" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
+    "Round": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Round"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Löschen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runde"
           }
         }
       }
     },
-    "New Breathing Preset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Breathing Preset"
+    "Round %lld / %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Round %lld / %lld"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neues Atem-Preset"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runde %lld / %lld"
           }
         }
       }
     },
-    "Breathing Preset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breathing Preset"
+    "Rhythm (seconds)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rhythm (seconds)"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atem-Preset"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rhythmus (Sekunden)"
           }
         }
       }
     },
-    "Save" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+    "Rounds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rounds"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Speichern"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runden"
           }
         }
       }
     },
-    "New Preset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Preset"
+    "Delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neues Preset"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
           }
         }
       }
     },
-    "Notice" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notice"
+    "New Breathing Preset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Breathing Preset"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hinweis"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Atem-Preset"
           }
         }
       }
     },
-    "Rhythm" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rhythm"
+    "Breathing Preset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathing Preset"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rhythmus"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atem-Preset"
           }
         }
       }
     },
-    "Effect" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effect"
+    "Save": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wirkung"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichern"
           }
         }
       }
     },
-    "Recommended Use" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recommended Use"
+    "New Preset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Preset"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Empfohlene Anwendung"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Preset"
           }
         }
       }
     },
-    "Preset Info" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preset Info"
+    "Notice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notice"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preset-Info"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinweis"
           }
         }
       }
     },
-    "Start" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start"
+    "Rhythm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rhythm"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rhythmus"
           }
         }
       }
     },
-    "Daily Goals in Minutes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daily Goals in Minutes"
+    "Effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effect"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tägliche Ziele in Minuten"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wirkung"
           }
         }
       }
     },
-    "Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle."
+    "Recommended Use": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommended Use"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Setze deine täglichen Ziele für Meditation und Workouts. Der Fortschritt wird im Kalender als teilgefüllter Kreis angezeigt."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empfohlene Anwendung"
           }
         }
       }
     },
-    "Set your daily meditation goal. Progress is shown as a partially filled blue circle in the calendar." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set your daily meditation goal. Progress is shown as a partially filled blue circle in the calendar."
+    "Preset Info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preset Info"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Setze dein tägliches Meditation-Ziel. Der Fortschritt wird als teilgefüllter blauer Kreis im Kalender angezeigt."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preset-Info"
           }
         }
       }
     },
-    "Choose your daily meditation goal in minutes." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose your daily meditation goal in minutes."
+    "Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wähle dein tägliches Meditation-Ziel in Minuten."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
           }
         }
       }
     },
-    "Set your daily workout goal. Progress is shown as a partially filled purple circle in the calendar." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set your daily workout goal. Progress is shown as a partially filled purple circle in the calendar."
+    "Daily Goals in Minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily Goals in Minutes"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Setze dein tägliches Workout-Ziel. Der Fortschritt wird als teilgefüllter violetter Kreis im Kalender angezeigt."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tägliche Ziele in Minuten"
           }
         }
       }
     },
-    "Choose your daily workout goal in minutes." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose your daily workout goal in minutes."
+    "Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wähle dein tägliches Workout-Ziel in Minuten."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setze deine täglichen Ziele für Meditation und Workouts. Der Fortschritt wird im Kalender als teilgefüllter Kreis angezeigt."
           }
         }
       }
     },
-    "Background Sounds" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Background Sounds"
+    "Set your daily meditation goal. Progress is shown as a partially filled blue circle in the calendar.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your daily meditation goal. Progress is shown as a partially filled blue circle in the calendar."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hintergrundsounds"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setze dein tägliches Meditation-Ziel. Der Fortschritt wird als teilgefüllter blauer Kreis im Kalender angezeigt."
           }
         }
       }
     },
-    "Ambient Sound" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ambient Sound"
+    "Choose your daily meditation goal in minutes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose your daily meditation goal in minutes."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ambient-Sound"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle dein tägliches Meditation-Ziel in Minuten."
           }
         }
       }
     },
-    "Choose a background sound and activate it for Open and/or Breathe." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choose a background sound and activate it for Open and/or Breathe."
+    "Set your daily workout goal. Progress is shown as a partially filled purple circle in the calendar.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set your daily workout goal. Progress is shown as a partially filled purple circle in the calendar."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wähle einen Hintergrundsound und aktiviere ihn für Offen und/oder Atem."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setze dein tägliches Workout-Ziel. Der Fortschritt wird als teilgefüllter violetter Kreis im Kalender angezeigt."
           }
         }
       }
     },
-    "Enable for Open (free meditation)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable for Open (free meditation)"
+    "Choose your daily workout goal in minutes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose your daily workout goal in minutes."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Für Offen (freie Meditation) aktivieren"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle dein tägliches Workout-Ziel in Minuten."
           }
         }
       }
     },
-    "Enable for Breathe (breathing exercises)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable for Breathe (breathing exercises)"
+    "Background Sounds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sounds"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Für Atem (Atemübungen) aktivieren"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintergrundsounds"
           }
         }
       }
     },
-    "Stop Background Sound" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop Background Sound"
+    "Ambient Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ambient Sound"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop Hintergrundsound"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ambient-Sound"
           }
         }
       }
     },
-    "Play Background Sound" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Play Background Sound"
+    "Choose a background sound and activate it for Open and/or Breathe.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a background sound and activate it for Open and/or Breathe."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Play Hintergrundsound"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle einen Hintergrundsound und aktiviere ihn für Offen und/oder Atem."
           }
         }
       }
     },
-    "Background Sound Settings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Background Sound Settings"
+    "Enable for Open (free meditation)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable for Open (free meditation)"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hintergrundsound Einstellungen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Offen (freie Meditation) aktivieren"
           }
         }
       }
     },
-    "Test Gong" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test Gong"
+    "Enable for Breathe (breathing exercises)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable for Breathe (breathing exercises)"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gong testen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Atem (Atemübungen) aktivieren"
           }
         }
       }
     },
-    "First adjust the system volume using the gong. The background sound volume is relative to the gong." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "First adjust the system volume using the gong. The background sound volume is relative to the gong."
+    "Structure": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Structure"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Struktur"
           }
         }
       }
     },
-    "relative volume: %lld%%" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "relative volume: %lld%%"
+    "Stop Background Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Background Sound"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "relative Lautstärke: %lld%%"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Hintergrundsound"
           }
         }
       }
     },
-    "Breathe Sounds" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breathe Sounds"
+    "Play Background Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play Background Sound"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atem-Sounds"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play Hintergrundsound"
           }
         }
       }
     },
-    "Sound Theme" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sound Theme"
+    "Background Sound Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sound Settings"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sound-Theme"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintergrundsound Einstellungen"
           }
         }
       }
     },
-    "Test Sound" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test Sound"
+    "Test Gong": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test Gong"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sound testen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong testen"
           }
         }
       }
     },
-    "Workout Programs" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workout Programs"
+    "First adjust the system volume using the gong. The background sound volume is relative to the gong.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First adjust the system volume using the gong. The background sound volume is relative to the gong."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workout-Programme"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong."
           }
         }
       }
     },
-    "Announce exercise names" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Announce exercise names"
+    "relative volume: %lld%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative volume: %lld%%"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Übungsnamen ansagen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative Lautstärke: %lld%%"
           }
         }
       }
     },
-    "Announces exercise names before each exercise using speech synthesis" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Announces exercise names before each exercise using speech synthesis"
+    "Breathe Sounds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe Sounds"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spricht Übungsnamen vor jeder Übung per Sprachsynthese an"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atem-Sounds"
           }
         }
       }
     },
-    "Uses the system language for announcements (German/English)." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uses the system language for announcements (German/English)."
+    "Sound Theme": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sound Theme"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verwendet die Systemsprache für Ansagen (Deutsch/Englisch)."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sound-Theme"
           }
         }
       }
     },
-    "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications."
+    "Test Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test Sound"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sound testen"
           }
         }
       }
     },
-    "Smart Reminders" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminders"
+    "Workout Programs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout Programs"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminders"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout-Programme"
           }
         }
       }
     },
-    "Configure smart reminders that are automatically cancelled when you've already completed the activity." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configure smart reminders that are automatically cancelled when you've already completed the activity."
+    "Announce exercise names": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Announce exercise names"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konfiguriere intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übungsnamen ansagen"
           }
         }
       }
     },
-    "Smart Reminder Debug" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminder Debug"
+    "Announces exercise names before each exercise using speech synthesis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Announces exercise names before each exercise using speech synthesis"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminder Debug"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spricht Übungsnamen vor jeder Übung per Sprachsynthese an"
           }
         }
       }
     },
-    "Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions."
+    "Uses the system language for announcements (German/English).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses the system language for announcements (German/English)."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeigt alle Smart Reminder Details: Reminders, Cancelled List, Pending Notifications, Permissions."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwendet die Systemsprache für Ansagen (Deutsch/Englisch)."
           }
         }
       }
     },
-    "Open is only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open is only available on iOS."
+    "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offen ist nur auf iOS verfügbar."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen."
           }
         }
       }
     },
-    "This app can record your meditations in Apple Health to track your progress. Do you want to allow this?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This app can record your meditations in Apple Health to track your progress. Do you want to allow this?"
+    "Smart Reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diese App kann deine Meditationen in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders"
           }
         }
       }
     },
-    "Another Timer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Another Timer"
+    "Configure smart reminders that are automatically cancelled when you've already completed the activity.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configure smart reminders that are automatically cancelled when you've already completed the activity."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ein anderer Timer"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konfiguriere intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast."
           }
         }
       }
     },
-    "Another Timer Running" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Another Timer Running"
+    "Smart Reminder Debug": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminder Debug"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anderer Timer läuft"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminder Debug"
           }
         }
       }
     },
-    "Active Timer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active Timer"
+    "Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiver Timer"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeigt alle Smart Reminder Details: Reminders, Cancelled List, Pending Notifications, Permissions."
           }
         }
       }
     },
-    "The timer '%@' is already running. Should it be stopped and the new one started?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The timer '%@' is already running. Should it be stopped and the new one started?"
+    "Open is only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open is only available on iOS."
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Timer ‚%@' läuft bereits. Soll dieser beendet und der neue gestartet werden?"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen ist nur auf iOS verfügbar."
           }
         }
       }
     },
-    "Stop & Start Timer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop & Start Timer"
+    "This app can record your meditations in Apple Health to track your progress. Do you want to allow this?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app can record your meditations in Apple Health to track your progress. Do you want to allow this?"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timer beenden und starten"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App kann deine Meditationen in Apple Health aufzeichnen, um deine Fortschritte zu verfolgen. Möchtest du das erlauben?"
           }
         }
       }
     },
-    "Settings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "Another Timer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Another Timer"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einstellungen"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein anderer Timer"
+          }
+        }
+      }
+    },
+    "Another Timer Running": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Another Timer Running"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anderer Timer läuft"
+          }
+        }
+      }
+    },
+    "Stop & Start Timer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop & Start Timer"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer beenden und starten"
+          }
+        }
+      }
+    },
+    "Add Exercise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Exercise"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übung hinzufügen"
+          }
+        }
+      }
+    },
+    "Custom Exercise...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom Exercise..."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigene Übung..."
+          }
+        }
+      }
+    },
+    "Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beschreibung"
+          }
+        }
+      }
+    },
+    "Duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duration"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dauer"
+          }
+        }
+      }
+    },
+    "Exercise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übung"
+          }
+        }
+      }
+    },
+    "No Exercises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Exercises"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Übungen"
+          }
+        }
+      }
+    },
+    "Recommended Application": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommended Application"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empfohlene Anwendung"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }
