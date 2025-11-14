@@ -38,14 +38,14 @@ struct SettingsSheet: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Tägliche Ziele in Minuten")) {
-                    Text("Setze deine täglichen Ziele für Meditation und Workouts. Der Fortschritt wird im Kalender als teilgefüllter Kreis angezeigt.")
+                Section(header: Text("Daily Goals in Minutes")) {
+                    Text("Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     HStack {
                         Text("Meditation")
-                            .help("Setze dein tägliches Meditation-Ziel. Der Fortschritt wird als teilgefüllter blauer Kreis im Kalender angezeigt.")
+                            .help("Set your daily meditation goal. Progress is shown as a partially filled blue circle in the calendar.")
                         Spacer()
                         Picker("", selection: $meditationGoalMinutes) {
                             ForEach(1...120, id: \.self) { minutes in
@@ -56,11 +56,11 @@ struct SettingsSheet: View {
                         .pickerStyle(.wheel)
                         #endif
                         .frame(width: 80, height: 120)
-                        .help("Wähle dein tägliches Meditation-Ziel in Minuten.")
+                        .help("Choose your daily meditation goal in minutes.")
                     }
                     HStack {
                         Text("Workouts")
-                            .help("Setze dein tägliches Workout-Ziel. Der Fortschritt wird als teilgefüllter violetter Kreis im Kalender angezeigt.")
+                            .help("Set your daily workout goal. Progress is shown as a partially filled purple circle in the calendar.")
                         Spacer()
                         Picker("", selection: $workoutGoalMinutes) {
                             ForEach(1...120, id: \.self) { minutes in
@@ -71,12 +71,12 @@ struct SettingsSheet: View {
                         .pickerStyle(.wheel)
                         #endif
                         .frame(width: 80, height: 120)
-                        .help("Wähle dein tägliches Workout-Ziel in Minuten.")
+                        .help("Choose your daily workout goal in minutes.")
                     }
                 }
 
-                Section(header: Text("Hintergrundsounds")) {
-                    Picker("Ambient-Sound", selection: ambientSound) {
+                Section(header: Text("Background Sounds")) {
+                    Picker("Ambient Sound", selection: ambientSound) {
                         ForEach(AmbientSound.allCases) { sound in
                             Text(sound.rawValue).tag(sound)
                         }
@@ -85,25 +85,25 @@ struct SettingsSheet: View {
                     .pickerStyle(.menu)
                     #endif
 
-                    Text("Wähle einen Hintergrundsound und aktiviere ihn für Offen und/oder Atem.")
+                    Text("Choose a background sound and activate it for Open and/or Breathe.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    Toggle("Für Offen (freie Meditation) aktivieren", isOn: $ambientSoundOffenEnabled)
+                    Toggle("Enable for Open (free meditation)", isOn: $ambientSoundOffenEnabled)
                         .disabled(ambientSound.wrappedValue == .none)
 
-                    Toggle("Für Atem (Atemübungen) aktivieren", isOn: $ambientSoundAtemEnabled)
+                    Toggle("Enable for Breathe (breathing exercises)", isOn: $ambientSoundAtemEnabled)
                         .disabled(ambientSound.wrappedValue == .none)
 
                     if ambientSound.wrappedValue != .none {
                         // TEST BUTTON - Preview des gewählten Sounds
                         if isPreviewPlaying {
-                            Button("Stop Hintergrundsound") {
+                            Button("Stop Background Sound") {
                                 previewPlayer.stop()
                                 isPreviewPlaying = false
                             }
                         } else {
-                            Button("Play Hintergrundsound") {
+                            Button("Play Background Sound") {
                                 previewPlayer.stop()
                                 previewPlayer.setVolume(percent: ambientSoundVolume)
                                 previewPlayer.start(sound: ambientSound.wrappedValue)
@@ -113,19 +113,19 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Hintergrundsound Einstellungen")) {
+                Section(header: Text("Background Sound Settings")) {
                     // GONG TEST - spielt NUR den Gong
-                    Button("Gong testen") {
+                    Button("Test Gong") {
                         gongPlayer.play(named: "gong-ende") {}
                     }
 
-                    Text("Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong.")
+                    Text("First adjust the system volume using the gong. The background sound volume is relative to the gong.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     // VOLUME SLIDER
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("relative Lautstärke: \(ambientSoundVolume)%")
+                        Text("relative volume: \(ambientSoundVolume)%")
                             .font(.subheadline)
 
                         Slider(value: Binding(
@@ -135,8 +135,8 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Atem-Sounds")) {
-                    Picker("Sound-Theme", selection: $selectedAtemTheme) {
+                Section(header: Text("Breathe Sounds")) {
+                    Picker("Sound Theme", selection: $selectedAtemTheme) {
                         ForEach(AtemView.AtemSoundTheme.allCases, id: \.self) { theme in
                             Text("\(theme.emoji) \(theme.displayName)")
                                 .tag(theme)
@@ -155,33 +155,33 @@ struct SettingsSheet: View {
                     }) {
                         HStack {
                             Image(systemName: "play.circle.fill")
-                            Text("Sound testen")
+                            Text("Test Sound")
                         }
                     }
                 }
 
-                Section(header: Text("Workout-Programme")) {
-                    Toggle("Übungsnamen ansagen", isOn: $speakExerciseNames)
-                        .help("Spricht Übungsnamen vor jeder Übung per Sprachsynthese an")
+                Section(header: Text("Workout Programs")) {
+                    Toggle("Announce exercise names", isOn: $speakExerciseNames)
+                        .help("Announces exercise names before each exercise using speech synthesis")
 
-                    Text("Verwendet die Systemsprache für Ansagen (Deutsch/Englisch).")
+                    Text("Uses the system language for announcements (German/English).")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
                 Section {
-                    Text("Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen.")
+                    Text("Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     NavigationLink(destination: SmartRemindersView()) {
                         Label("Smart Reminders", systemImage: "bell.badge")
-                            .help("Konfiguriere intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast.")
+                            .help("Configure smart reminders that are automatically cancelled when you've already completed the activity.")
                     }
 
                     NavigationLink(destination: SmartReminderDebugView()) {
                         Label("Smart Reminder Debug", systemImage: "ant.circle")
-                            .help("Zeigt alle Smart Reminder Details: Reminders, Cancelled List, Pending Notifications, Permissions.")
+                            .help("Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions.")
                     }
                 }
 
