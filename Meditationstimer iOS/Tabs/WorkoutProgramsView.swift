@@ -715,11 +715,11 @@ public struct WorkoutProgramsView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 40))
                                 .foregroundStyle(Color.workoutViolet)
-                            Text("Fertig").font(.subheadline.weight(.semibold))
+                            Text("Done").font(.subheadline.weight(.semibold))
                         }
                     }
 
-                    Button(isPaused ? "Weiter" : "Pause") {
+                    Button(isPaused ? "Continue" : "Pause") {
                         togglePause()
                     }
                     .buttonStyle(.borderedProminent)
@@ -1655,7 +1655,7 @@ public struct WorkoutProgramsView: View {
                     }
                     Section {
                         HStack {
-                            Text("Gesamtdauer")
+                            Text("Total Duration")
                             Spacer()
                             Text(totalString).monospacedDigit().foregroundStyle(.secondary)
                         }
@@ -1665,16 +1665,16 @@ public struct WorkoutProgramsView: View {
                             Button(role: .destructive) {
                                 onDelete(draft.id)
                                 dismiss()
-                            } label: { Text("Löschen") }
+                            } label: { Text("Delete") }
                         }
                     }
                 }
-                .navigationTitle(isNew ? "Neues Workout-Set" : "Workout-Set")
+                .navigationTitle(isNew ? "New Workout Set" : "Workout Set")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Speichern") {
+                        Button("Save") {
                             onSave(draft); dismiss()
                         }
                         .disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || draft.phases.isEmpty)
@@ -1798,7 +1798,7 @@ public struct WorkoutProgramsView: View {
                     }
                     Section {
                         HStack {
-                            Text("Gesamtdauer")
+                            Text("Total Duration")
                             Spacer()
                             Text(totalString).monospacedDigit().foregroundStyle(.secondary)
                         }
@@ -1808,16 +1808,16 @@ public struct WorkoutProgramsView: View {
                             Button(role: .destructive) {
                                 onDelete()
                                 dismiss()
-                            } label: { Text("Löschen") }
+                            } label: { Text("Delete") }
                         }
                     }
                 }
-                .navigationTitle(isNew ? "Neue Übung" : "Übung bearbeiten")
+                .navigationTitle(isNew ? "New Exercise" : "Edit Exercise")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Speichern") {
+                        Button("Save") {
                             // Use custom exercise name if selected
                             if useCustomExercise {
                                 draft.name = customExerciseName
