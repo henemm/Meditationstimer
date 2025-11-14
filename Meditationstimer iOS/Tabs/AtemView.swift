@@ -46,7 +46,7 @@ public struct AtemView: View {
     @Environment(\.scenePhase) private var scenePhase
     public init() {}
     public var body: some View {
-        Text("Atem ist nur auf iOS verfügbar.")
+        Text("Breathe is only available on iOS.")
     }
 }
 #else
@@ -90,7 +90,7 @@ public struct AtemView: View {
     }
 
     // MARK: - Session Phase
-    enum Phase: String { case inhale = "Einatmen", holdIn = "Halten (ein)", exhale = "Ausatmen", holdOut = "Halten (aus)" }
+    enum Phase: String { case inhale = "Inhale", holdIn = "Hold (in)", exhale = "Exhale", holdOut = "Hold (out)" }
 
     // MARK: - Sound Theme
     enum AtemSoundTheme: String, Codable, CaseIterable {
@@ -274,7 +274,7 @@ public struct AtemView: View {
 
                     // Add Preset Card
                     AddPresetCard {
-                        showingEditor = Preset(name: "Neues Preset",
+                        showingEditor = Preset(name: "New Preset",
                                                emoji: randomEmoji(),
                                                inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10)
                     }
@@ -444,7 +444,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                                 .frame(width: 32, height: 32)
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("Bearbeiten")
+                        .accessibilityLabel("Edit")
                     }
                 }
                 .frame(minHeight: 140)
@@ -468,7 +468,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     .buttonStyle(.borderedProminent)
                     .tint(.blue)
                     .clipShape(Circle())
-                    .accessibilityLabel("Neues Preset hinzufügen")
+                    .accessibilityLabel("Add new preset")
                     Spacer()
                 }
                 .frame(minHeight: 70)
@@ -689,7 +689,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
-                            Text("Fertig").font(.subheadline.weight(.semibold))
+                            Text("Done").font(.subheadline.weight(.semibold))
                         }
                         // Snap outer progress to full on finish
                         .onAppear {
@@ -701,7 +701,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             // }
                         }
                     }
-                    Button("Beenden") {
+                    Button("End") {
                         Task { await endSession(manual: true) }
                     }
                     .buttonStyle(.borderedProminent)
@@ -813,7 +813,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     .frame(width: 320, height: 320)
                     .padding(.top, 6)
                     .contentShape(Rectangle())
-                    Text("Runde \(repIndex) / \(preset.repetitions)")
+                    Text("Round \(repIndex) / \(preset.repetitions)")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
