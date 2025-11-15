@@ -681,6 +681,7 @@ struct WorkoutsView: View {
                     Text("Work")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(height: 90, alignment: .center)
@@ -689,6 +690,7 @@ struct WorkoutsView: View {
                     Text("Rest")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(height: 90, alignment: .center)
@@ -697,6 +699,7 @@ struct WorkoutsView: View {
                     Text("Repetitions")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .frame(height: 90, alignment: .center)
@@ -774,6 +777,7 @@ struct WorkoutsView: View {
                                 Text("Free Workout")
                                     .font(.title3)
                                     .foregroundStyle(.secondary)
+                                    .textCase(.uppercase)
                                 InfoButton { showFreiInfo = true }
                                 Spacer()
                             }
@@ -785,6 +789,7 @@ struct WorkoutsView: View {
                                 Text("Total Duration")
                                     .font(.footnote)
                                     .foregroundStyle(.secondary)
+                                    .textCase(.uppercase)
                                 Spacer()
                                 Text(totalString)
                                     .font(.footnote)
