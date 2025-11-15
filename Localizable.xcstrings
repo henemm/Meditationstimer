@@ -52,23 +52,6 @@
         }
       }
     },
-    "Advanced": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Advanced"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erweitert"
-          }
-        }
-      }
-    },
     "Add Exercise": {
       "extractionState": "manual",
       "localizations": {
@@ -99,6 +82,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neues Preset hinzufügen"
+          }
+        }
+      }
+    },
+    "Advanced": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erweitert"
           }
         }
       }
@@ -324,6 +324,23 @@
         }
       }
     },
+    "Calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalender"
+          }
+        }
+      }
+    },
     "Cancel": {
       "extractionState": "manual",
       "localizations": {
@@ -337,6 +354,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abbrechen"
+          }
+        }
+      }
+    },
+    "Choose Date": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Date"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum wählen"
           }
         }
       }
@@ -405,23 +439,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wähle dein tägliches Workout-Ziel in Minuten."
-          }
-        }
-      }
-    },
-    "Choose Date": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose Date"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datum wählen"
           }
         }
       }
@@ -511,23 +528,6 @@
         }
       }
     },
-    "Daily logging helps recognize patterns": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Daily logging helps recognize patterns"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tägliches Logging hilft, Muster zu erkennen"
-          }
-        }
-      }
-    },
     "Daily Goals in Minutes": {
       "extractionState": "manual",
       "localizations": {
@@ -541,6 +541,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tägliche Ziele in Minuten"
+          }
+        }
+      }
+    },
+    "Daily logging helps recognize patterns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily logging helps recognize patterns"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tägliches Logging hilft, Muster zu erkennen"
           }
         }
       }
@@ -647,6 +664,23 @@
         }
       }
     },
+    "Easy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Easy"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leicht"
+          }
+        }
+      }
+    },
     "Edit": {
       "extractionState": "manual",
       "localizations": {
@@ -677,23 +711,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wirkung"
-          }
-        }
-      }
-    },
-    "Easy": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Easy"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leicht"
           }
         }
       }
@@ -766,23 +783,6 @@
         }
       }
     },
-    "Exercise": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exercise"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Übung"
-          }
-        }
-      }
-    },
     "Error: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -796,6 +796,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fehler: %@"
+          }
+        }
+      }
+    },
+    "Example:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Example:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beispiel:"
+          }
+        }
+      }
+    },
+    "Exercise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übung"
           }
         }
       }
@@ -919,6 +953,57 @@
         }
       }
     },
+    "Get a reward every 7 days in a row of meditation (at least 2 minutes per day).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get a reward every 7 days in a row of meditation (at least 2 minutes per day)."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalte eine Belohnung für 7 aufeinanderfolgende Tage Meditation (mindestens 2 Minuten pro Tag)."
+          }
+        }
+      }
+    },
+    "Get a reward every 7 days in a row of workouts (at least 2 minutes per day).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get a reward every 7 days in a row of workouts (at least 2 minutes per day)."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalte eine Belohnung für 7 aufeinanderfolgende Tage Workouts (mindestens 2 Minuten pro Tag)."
+          }
+        }
+      }
+    },
+    "Get a reward every 7 days of logging:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get a reward every 7 days of logging:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalte eine Belohnung alle 7 Tage des Trackings:"
+          }
+        }
+      }
+    },
     "Gong signals mark phase transitions": {
       "extractionState": "manual",
       "localizations": {
@@ -1004,6 +1089,23 @@
         }
       }
     },
+    "If you miss a day:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you miss a day:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn du einen Tag verpasst:"
+          }
+        }
+      }
+    },
     "Inhale": {
       "extractionState": "manual",
       "localizations": {
@@ -1017,6 +1119,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einatmen"
+          }
+        }
+      }
+    },
+    "Levels:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levels:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stufen:"
+          }
+        }
+      }
+    },
+    "Loading Data...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading Data..."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lade Daten..."
           }
         }
       }
@@ -1051,6 +1187,98 @@
           "stringUnit": {
             "state": "translated",
             "value": "Meditation"
+          }
+        }
+      }
+    },
+    "Meditation Streak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditation Streak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditations-Streak"
+          }
+        }
+      }
+    },
+    "Meditation Streak Info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditation Streak Info"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditations-Streak Info"
+          }
+        }
+      }
+    },
+    "Meditation: %d/%d Min": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditation: %d/%d Min"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meditation: %d/%d Min"
+          }
+        }
+      }
+    },
+    "Meditation: Streak %d Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Meditation: Streak %d Day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Meditation: Streak %d Days"
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Meditation: Streak %d Tag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Meditation: Streak %d Tage"
+                }
+              }
+            }
           }
         }
       }
@@ -1106,6 +1334,23 @@
         }
       }
     },
+    "No Exercises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Exercises"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Übungen"
+          }
+        }
+      }
+    },
     "NoAlc Diary": {
       "extractionState": "manual",
       "localizations": {
@@ -1123,19 +1368,77 @@
         }
       }
     },
-    "No Exercises": {
+    "NoAlc Streak Info": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No Exercises"
+            "value": "NoAlc Streak Info"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keine Übungen"
+            "value": "NoAlc-Streak Info"
+          }
+        }
+      }
+    },
+    "NoAlc: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NoAlc: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NoAlc: %@"
+          }
+        }
+      }
+    },
+    "NoAlc: Streak %d Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "NoAlc: Streak %d Day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "NoAlc: Streak %d Days"
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "NoAlc: Streak %d Tag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "NoAlc: Streak %d Tage"
+                }
+              }
+            }
           }
         }
       }
@@ -1340,6 +1643,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rest phase: Active or passive break"
+          }
+        }
+      }
+    },
+    "Rewards:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rewards:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belohnungen:"
           }
         }
       }
@@ -1803,23 +2123,6 @@
         }
       }
     },
-    "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Das freie Workout bietet dir einen flexiblen HIIT-Timer mit individuell einstellbarer Belastungs- und Erholungsphase. Du bestimmst die Intensität und die Anzahl der Wiederholungen."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
-          }
-        }
-      }
-    },
     "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection.": {
       "extractionState": "manual",
       "localizations": {
@@ -1833,6 +2136,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Das NoAlc-Tagebuch hilft dir, deinen Alkoholkonsum zu tracken und einen bewussten Umgang damit zu entwickeln. Das System nutzt drei Kategorien zur Selbstreflexion."
+          }
+        }
+      }
+    },
+    "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das freie Workout bietet dir einen flexiblen HIIT-Timer mit individuell einstellbarer Belastungs- und Erholungsphase. Du bestimmst die Intensität und die Anzahl der Wiederholungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
           }
         }
       }
@@ -1956,6 +2276,23 @@
         }
       }
     },
+    "Track your alcohol consumption daily.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track your alcohol consumption daily."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tracke deinen Alkoholkonsum täglich."
+          }
+        }
+      }
+    },
     "Uses the system language for announcements (German/English).": {
       "extractionState": "manual",
       "localizations": {
@@ -1969,6 +2306,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verwendet die Systemsprache für Ansagen (Deutsch/Englisch)."
+          }
+        }
+      }
+    },
+    "Wild": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wild"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wild"
           }
         }
       }
@@ -2041,6 +2395,40 @@
         }
       }
     },
+    "Workout Streak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout Streak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout-Streak"
+          }
+        }
+      }
+    },
+    "Workout Streak Info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout Streak Info"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout-Streak Info"
+          }
+        }
+      }
+    },
     "Workout programs are only available on iOS.": {
       "extractionState": "manual",
       "localizations": {
@@ -2092,19 +2480,230 @@
         }
       }
     },
-    "Wild": {
+    "Workouts: %d/%d Min": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wild"
+            "value": "Workouts: %d/%d Min"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wild"
+            "value": "Workouts: %d/%d Min"
+          }
+        }
+      }
+    },
+    "Workouts: Streak %d Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Workouts: Streak %d Day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Workouts: Streak %d Days"
+                }
+              }
+            }
+          }
+        },
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Workouts: Streak %d Tag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Workouts: Streak %d Tage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Yesterday Evening": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yesterday Evening"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestern Abend"
+          }
+        }
+      }
+    },
+    "relative volume: %lld%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative volume: %lld%%"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative Lautstärke: %lld%%"
+          }
+        }
+      }
+    },
+    "• Days 1-7: Earn 1 reward": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Days 1-7: Earn 1 reward"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Tage 1-7: 1 Belohnung"
+          }
+        }
+      }
+    },
+    "• Days 15-21: Earn 3 rewards": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Days 15-21: Earn 3 rewards"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Tage 15-21: 3 Belohnungen"
+          }
+        }
+      }
+    },
+    "• Days 8-14: Earn 2 rewards": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Days 8-14: Earn 2 rewards"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Tage 8-14: 2 Belohnungen"
+          }
+        }
+      }
+    },
+    "• Easy (✨): 2-5 drinks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Easy (✨): 2-5 drinks"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Leicht (✨): 2-5 Getränke"
+          }
+        }
+      }
+    },
+    "• If you have no rewards left and miss again, streak resets to 0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• If you have no rewards left and miss again, streak resets to 0"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Wenn du keine Belohnungen mehr hast und erneut verpasst, wird der Streak auf 0 zurückgesetzt"
+          }
+        }
+      }
+    },
+    "• Lose 1 reward, but keep your streak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Lose 1 reward, but keep your streak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Verliere 1 Belohnung, aber behalte deinen Streak"
+          }
+        }
+      }
+    },
+    "• Steady (💧): 0-1 drinks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Steady (💧): 0-1 drinks"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Ruhig (💧): 0-1 Getränke"
+          }
+        }
+      }
+    },
+    "• Wild (💥): 6+ drinks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Wild (💥): 6+ drinks"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "• Wild (💥): 6+ Getränke"
           }
         }
       }
@@ -2156,40 +2755,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "🟢 Steady: Kein oder moderater Konsum – du bist auf einem guten Weg"
-          }
-        }
-      }
-    },
-    "Yesterday Evening": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yesterday Evening"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gestern Abend"
-          }
-        }
-      }
-    },
-    "relative volume: %lld%%": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "relative volume: %lld%%"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "relative Lautstärke: %lld%%"
           }
         }
       }

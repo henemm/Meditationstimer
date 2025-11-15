@@ -182,7 +182,7 @@ struct CalendarView: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("Meditation Streak Info")
 
-                    Text("Meditation: Streak \(meditationStreak) Day\(meditationStreak == 1 ? "" : "s")")
+                    Text("Meditation: Streak \(meditationStreak) Day", comment: "Meditation streak count")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: min(3, meditationStreak / 7), icon: "leaf.fill", color: .blue)
@@ -215,7 +215,7 @@ struct CalendarView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
-                                Button("Fertig") {
+                                Button("Done") {
                                     showMeditationInfo = false
                                 }
                             }
@@ -233,7 +233,7 @@ struct CalendarView: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("Workout Streak Info")
 
-                    Text("Workouts: Streak \(workoutStreak) Day\(workoutStreak == 1 ? "" : "s")")
+                    Text("Workouts: Streak \(workoutStreak) Day", comment: "Workout streak count")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: min(3, workoutStreak / 7), icon: "flame.fill", color: .purple)
@@ -266,7 +266,7 @@ struct CalendarView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
-                                Button("Fertig") {
+                                Button("Done") {
                                     showWorkoutInfo = false
                                 }
                             }
@@ -284,7 +284,7 @@ struct CalendarView: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("NoAlc Streak Info")
 
-                    Text("NoAlc: Streak \(noAlcStreak) Day\(noAlcStreak == 1 ? "" : "s")")
+                    Text("NoAlc: Streak \(noAlcStreak) Day", comment: "NoAlc streak count")
                         .font(.subheadline)
                     Spacer()
                     rewardsView(for: noAlcStreakPoints, icon: "drop.fill", color: .green)
@@ -326,7 +326,7 @@ struct CalendarView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
-                                Button("Fertig") {
+                                Button("Done") {
                                     showNoAlcInfo = false
                                 }
                             }
@@ -340,11 +340,11 @@ struct CalendarView: View {
             .padding(.top)
 
             if isLoading {
-                ProgressView("Lade Daten...")
+                ProgressView("Loading Data...")
             }
 
             if let error = errorMessage {
-                Text("Fehler: \(error)")
+                Text(String(format: NSLocalizedString("Error: %@", comment: ""), error))
                     .foregroundColor(.red)
                     .padding()
             }
@@ -364,11 +364,11 @@ struct CalendarView: View {
                 }
             }
         }
-        .navigationTitle("Kalender")
+        .navigationTitle("Calendar")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Fertig") {
+                Button("Done") {
                     dismiss()
                 }
             }
