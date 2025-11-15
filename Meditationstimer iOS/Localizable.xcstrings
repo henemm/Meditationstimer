@@ -1072,6 +1072,23 @@
         }
       }
     },
+    "How it works:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How it works:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So funktioniert's:"
+          }
+        }
+      }
+    },
     "How was it?": {
       "extractionState": "manual",
       "localizations": {
