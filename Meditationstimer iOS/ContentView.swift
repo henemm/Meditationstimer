@@ -75,19 +75,19 @@ struct ContentView: View {
                     }
                     .tag(AppTab.atem)
 
-                WorkoutsView()
-                    .environmentObject(streakManager)
-                    .tabItem {
-                        Label("Free", systemImage: "flame")
-                    }
-                    .tag(AppTab.frei)
-
                 WorkoutProgramsView()
                     .environmentObject(streakManager)
                     .tabItem {
                         Label("Workouts", systemImage: "figure.strengthtraining.traditional")
                     }
                     .tag(AppTab.workouts)
+
+                WorkoutsView()
+                    .environmentObject(streakManager)
+                    .tabItem {
+                        Label("Free", systemImage: "flame")
+                    }
+                    .tag(AppTab.frei)
             }
             .background(
                 LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],

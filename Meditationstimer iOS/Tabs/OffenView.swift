@@ -109,6 +109,7 @@ struct OffenView: View {
     @State private var showSettings = false
     @State private var showingCalendar = false
     @State private var showingNoAlcLog = false
+    @State private var showOffenInfo = false
 
     @EnvironmentObject var engine: TwoPhaseTimerEngine
     @State private var lastState: TwoPhaseTimerEngine.State = .idle
@@ -364,6 +365,16 @@ struct OffenView: View {
                 VStack {
                     GlassCard {
                         VStack(spacing: 16) {
+                            HStack(spacing: 8) {
+                                Text("Open Meditation")
+                                    .font(.title3)
+                                    .foregroundStyle(.secondary)
+                                    .textCase(.uppercase)
+                                InfoButton { showOffenInfo = true }
+                                Spacer()
+                            }
+                            .padding(.horizontal, 4)
+
                             switch engine.state {
                             case .idle, .finished:
                                 pickerSection
@@ -419,6 +430,19 @@ struct OffenView: View {
             }
             .sheet(isPresented: $showingNoAlcLog) {
                 NoAlcLogSheet()
+            }
+            .sheet(isPresented: $showOffenInfo) {
+                InfoSheet(
+                    title: "Open Meditation",
+                    description: "The two-phase timer helps you practice meditation with a structured approach. Choose your meditation duration and an optional contemplation phase.",
+                    usageTips: [
+                        "Phase 1: Main meditation session",
+                        "Phase 2: Reflection and contemplation (optional)",
+                        "Gong sounds mark phase transitions",
+                        "Sessions are automatically logged in Apple Health",
+                        "Timer runs in foreground only"
+                    ]
+                )
             }
             .onChange(of: engine.state) { _, newValue in
                 // Übergang Phase 1 -> Phase 2: dreifacher Gong und Live Activity auf Phase 2 updaten
