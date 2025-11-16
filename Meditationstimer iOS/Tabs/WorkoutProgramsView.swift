@@ -310,7 +310,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 0),
         ],
         repetitions: 1,
-        description: "Original Tabata-Protokoll (Izumi Tabata, 1996): 8 Runden à 20s maximale Intensität / 10s Pause. Nachweislich VO2max-Steigerung um bis zu 14% in 6 Wochen. Erfordert 170% VO2max Intensität."
+        description: "Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest. Proven to increase VO2max by up to 14% in 6 weeks. Requires 170% VO2max intensity."
     ),
 
     // 2. Core Circuit 💪
@@ -326,7 +326,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Russian Twists", workDuration: 40, restDuration: 10),
         ],
         repetitions: 3,
-        description: "Fokussiert auf Core-Stabilität und Rotationskraft. Kombiniert isometrische (Planken) und dynamische Übungen für ganzheitliche Rumpfstärkung. Verbessert Haltung und reduziert Rückenschmerzen."
+        description: "Focuses on core stability and rotational strength. Combines isometric (planks) and dynamic exercises for comprehensive core strengthening. Improves posture and reduces back pain."
     ),
 
     // 3. Full Body Burn 🏃
@@ -342,7 +342,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Plank", workDuration: 45, restDuration: 10),
         ],
         repetitions: 3,
-        description: "Ganzkörper-HIIT mit Fokus auf funktionelle Bewegungsmuster. Kombiniert Kraft, Cardio und Core-Stabilität. Maximale Kalorienverbrennung durch Einbindung großer Muskelgruppen."
+        description: "Full-body HIIT focused on functional movement patterns. Combines strength, cardio, and core stability. Maximum calorie burn through engagement of large muscle groups."
     ),
 
     // 4. Power Intervals ⚡
@@ -357,7 +357,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Jumping Jacks", workDuration: 40, restDuration: 10),
         ],
         repetitions: 4,
-        description: "Explosive plyometrische Übungen zur Steigerung von Schnellkraft und anaerober Kapazität. Optimal für Fettverbrennung und kardiovaskuläre Fitness. EPOC-Effekt (Nachbrenneffekt) bis 24h."
+        description: "Explosive plyometric exercises to increase power and anaerobic capacity. Optimal for fat burning and cardiovascular fitness. EPOC effect (afterburn) lasts up to 24 hours."
     ),
 
     // 5. Hintere Kette 🦵
@@ -374,7 +374,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Calf Raises", workDuration: 30, restDuration: 10),
         ],
         repetitions: 3,
-        description: "Gezieltes Training der posterior chain (Gesäß, Hamstrings, unterer Rücken, Waden). Essentiell für Laufökonomie, Sprintgeschwindigkeit und Verletzungsprävention. Korrigiert Dysbalancen durch Sitzposition."
+        description: "Targeted training of the posterior chain (glutes, hamstrings, lower back, calves). Essential for running economy, sprint speed, and injury prevention. Corrects imbalances from sitting."
     ),
 
     // 6. Jogging Warm-up 🏃‍♀️
@@ -389,7 +389,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Hip Circles", workDuration: 30, restDuration: 10),
         ],
         repetitions: 2,
-        description: "Dynamisches Aufwärmen für Läufer. Aktiviert Hüftmuskulatur, erhöht Bewegungsumfang und bereitet den Körper auf Laufbelastung vor. Reduziert Verletzungsrisiko um bis zu 35%."
+        description: "Dynamic warm-up for runners. Activates hip muscles, increases range of motion, and prepares the body for running load. Reduces injury risk by up to 35%."
     ),
 
     // 7. Post-Run Stretching 🧘‍♂️
@@ -409,7 +409,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Child's Pose", workDuration: 60, restDuration: 0),
         ],
         repetitions: 1,
-        description: "Statisches Stretching zur Regeneration nach dem Laufen. Fokus auf Hüft- und Beinmuskulatur. Reduziert Muskelkater (DOMS), verbessert Beweglichkeit und fördert Durchblutung. Mindestens 30s pro Stretch halten."
+        description: "Static stretching for recovery after running. Focus on hip and leg muscles. Reduces muscle soreness (DOMS), improves flexibility, and promotes circulation. Hold each stretch for at least 30 seconds."
     ),
 
     // 8. Beginner Flow 🌱
@@ -424,7 +424,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Standing Knee Raises", workDuration: 30, restDuration: 0),
         ],
         repetitions: 2,
-        description: "Sanfter Einstieg ins HIIT-Training. Gelenkschonende Varianten mit längeren Pausen (1:1 Ratio). Ideal zum Aufbau von Grundfitness und Technik. Progressiv steigerbar durch mehr Runden oder kürzere Pausen."
+        description: "Gentle introduction to HIIT training. Joint-friendly variations with longer rest periods (1:1 ratio). Ideal for building basic fitness and technique. Progressive by adding rounds or reducing rest."
     ),
 
     // 9. Quick Burn 🔥
@@ -438,7 +438,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Plank", workDuration: 30, restDuration: 0),
         ],
         repetitions: 3,
-        description: "Kompaktes 6-Minuten-Workout für maximale Effizienz. Kombiniert Cardio und Core für schnelle Kalorienverbrennung. Perfekt für zeitknappe Tage oder als Finisher nach Krafttraining."
+        description: "Compact 6-minute workout for maximum efficiency. Combines cardio and core for quick calorie burn. Perfect for time-constrained days or as a finisher after strength training."
     ),
 
     // 10. Upper Body Push 💪
@@ -453,7 +453,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Plank to Downward Dog", workDuration: 30, restDuration: 0),
         ],
         repetitions: 3,
-        description: "Fokussiertes Training der Druckmuskulatur (Brust, Trizeps, Schultern). Progression durch Push-up-Varianten mit unterschiedlichen Schwerpunkten. Ergänzt Pull-Training für ausgewogene Oberkörperentwicklung."
+        description: "Focused training of push muscles (chest, triceps, shoulders). Progression through push-up variations with different focus points. Complements pull training for balanced upper body development."
     ),
 ]
 
@@ -1084,7 +1084,7 @@ public struct WorkoutProgramsView: View {
             let nextInfo = getNextExerciseInfo(afterIndex: index)
 
             VStack(spacing: 4) {
-                // "Als nächstes" prefix in small font
+                // "Up next" prefix in small font
                 Text(nextInfo.prefix)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -1117,19 +1117,19 @@ public struct WorkoutProgramsView: View {
             if nextIndex < set.phases.count {
                 // Next exercise in current round
                 let nextExerciseName = set.phases[nextIndex].name
-                return (nextExerciseName, "Als nächstes", "Als nächstes: \(nextExerciseName)")
+                return (nextExerciseName, "Up next", "Up next: \(nextExerciseName)")
             } else if currentRound < set.repetitions {
                 // Next round, first exercise
                 let firstExercise = set.phases[0].name
                 let nextRound = currentRound + 1
                 if nextRound == set.repetitions {
-                    return (firstExercise, "Als nächstes", "Als nächstes: Letzte Runde mit \(firstExercise)")
+                    return (firstExercise, "Up next", "Up next: Last round with \(firstExercise)")
                 } else {
-                    return (firstExercise, "Als nächstes", "Als nächstes: Runde \(nextRound) mit \(firstExercise)")
+                    return (firstExercise, "Up next", "Up next: Round \(nextRound) with \(firstExercise)")
                 }
             } else {
                 // Fallback (should not happen during REST)
-                return ("Erholung", "", "Erholung")
+                return ("Recovery", "", "Recovery")
             }
         }
 
@@ -1193,22 +1193,22 @@ public struct WorkoutProgramsView: View {
             let nextIndex = index + 1
             if nextIndex < set.phases.count {
                 // Next exercise in current round
-                return "Als nächstes: \(set.phases[nextIndex].name)"
+                return "Up next: \(set.phases[nextIndex].name)"
             } else if currentRound < set.repetitions {
                 // Next round, first exercise
                 let nextRound = currentRound + 1
                 let firstExercise = set.phases[0].name
                 if nextRound == set.repetitions {
-                    return "Als nächstes: Letzte Runde mit \(firstExercise)"
+                    return "Up next: Last round with \(firstExercise)"
                 } else {
-                    return "Als nächstes: Runde \(nextRound) mit \(firstExercise)"
+                    return "Up next: Round \(nextRound) with \(firstExercise)"
                 }
             } else {
                 return ""  // No next (shouldn't happen)
             }
         }
 
-        /// Returns TTS announcement for next exercise with number: "Als nächstes Übung 2 von 5 Planke"
+        /// Returns TTS announcement for next exercise with number: "Up next exercise 2 of 5 Plank"
         private func getNextExerciseNameForTTS(afterIndex index: Int) -> String {
             let nextIndex = index + 1
             if nextIndex < set.phases.count {
@@ -1219,18 +1219,18 @@ public struct WorkoutProgramsView: View {
 
                 // Check if last exercise AND last round
                 if nextIndex == set.phases.count - 1 && currentRound == set.repetitions {
-                    return "letzte Übung: \(exerciseName)"
+                    return "Last exercise: \(exerciseName)"
                 } else {
-                    return "Als nächstes Übung \(exerciseNum) von \(totalExercises) \(exerciseName)"
+                    return "Up next exercise \(exerciseNum) of \(totalExercises) \(exerciseName)"
                 }
             } else if currentRound < set.repetitions {
                 // Next round, first exercise
                 let nextRound = currentRound + 1
                 let firstExercise = set.phases[0].name
                 if nextRound == set.repetitions {
-                    return "Letzte Runde mit \(firstExercise)"
+                    return "Last round with \(firstExercise)"
                 } else {
-                    return "Runde \(nextRound) mit \(firstExercise)"
+                    return "Round \(nextRound) with \(firstExercise)"
                 }
             } else {
                 return ""  // No next (shouldn't happen)
