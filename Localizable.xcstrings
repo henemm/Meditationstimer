@@ -222,6 +222,23 @@
         }
       }
     },
+    "Archer Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archer Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archer-Liegestütze"
+          }
+        }
+      }
+    },
     "Background Sound Settings": {
       "extractionState": "manual",
       "localizations": {
@@ -252,6 +269,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hintergrundsounds"
+          }
+        }
+      }
+    },
+    "Bicycle Crunches": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bicycle Crunches"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahrrad-Crunches"
           }
         }
       }
@@ -324,6 +358,57 @@
         }
       }
     },
+    "Bulgarian Split Squats Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarian Split Squats Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarische Split-Kniebeugen links"
+          }
+        }
+      }
+    },
+    "Bulgarian Split Squats Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarian Split Squats Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarische Split-Kniebeugen rechts"
+          }
+        }
+      }
+    },
+    "Butterfly Stretch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butterfly Stretch"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schmetterlings-Dehnung"
+          }
+        }
+      }
+    },
     "Calendar": {
       "extractionState": "manual",
       "localizations": {
@@ -341,6 +426,57 @@
         }
       }
     },
+    "Calf Raises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Raises"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wadenheben"
+          }
+        }
+      }
+    },
+    "Calf Stretch Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Stretch Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waden-Dehnung links"
+          }
+        }
+      }
+    },
+    "Calf Stretch Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Stretch Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waden-Dehnung rechts"
+          }
+        }
+      }
+    },
     "Cancel": {
       "extractionState": "manual",
       "localizations": {
@@ -354,6 +490,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abbrechen"
+          }
+        }
+      }
+    },
+    "Cat-Cow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cat-Cow"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Katze-Kuh"
+          }
+        }
+      }
+    },
+    "Child's Pose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Child's Pose"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kindspose"
           }
         }
       }
@@ -439,6 +609,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wähle dein tägliches Workout-Ziel in Minuten."
+          }
+        }
+      }
+    },
+    "Cobra Stretch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cobra Stretch"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kobra-Dehnung"
           }
         }
       }
@@ -579,6 +766,23 @@
         }
       }
     },
+    "Decline Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decline Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decline-Liegestütze"
+          }
+        }
+      }
+    },
     "Delete": {
       "extractionState": "manual",
       "localizations": {
@@ -613,6 +817,23 @@
         }
       }
     },
+    "Diamond Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamond Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamond-Liegestütze"
+          }
+        }
+      }
+    },
     "Done": {
       "extractionState": "manual",
       "localizations": {
@@ -643,6 +864,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fertig"
+          }
+        }
+      }
+    },
+    "Downward Dog": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downward Dog"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herabschauender Hund"
           }
         }
       }
@@ -1021,6 +1259,40 @@
         }
       }
     },
+    "Hamstring Stretch Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring Stretch Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring-Dehnung links"
+          }
+        }
+      }
+    },
+    "Hamstring Stretch Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring Stretch Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring-Dehnung rechts"
+          }
+        }
+      }
+    },
     "Health Access": {
       "extractionState": "manual",
       "localizations": {
@@ -1034,6 +1306,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Health Access"
+          }
+        }
+      }
+    },
+    "Hip Circles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip Circles"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftkreisen"
+          }
+        }
+      }
+    },
+    "Hip Flexor Stretch Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip Flexor Stretch Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftbeuger-Dehnung links"
+          }
+        }
+      }
+    },
+    "Hip Flexor Stretch Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip Flexor Stretch Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftbeuger-Dehnung rechts"
           }
         }
       }
@@ -1123,6 +1446,91 @@
         }
       }
     },
+    "Jump Rope": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump Rope"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seilspringen"
+          }
+        }
+      }
+    },
+    "Jump Squats": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump Squats"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump-Kniebeugen"
+          }
+        }
+      }
+    },
+    "Leg Raises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leg Raises"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinheben"
+          }
+        }
+      }
+    },
+    "Leg Swing Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leg Swing Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinpendel links"
+          }
+        }
+      }
+    },
+    "Leg Swing Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leg Swing Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinpendel rechts"
+          }
+        }
+      }
+    },
     "Levels:": {
       "extractionState": "manual",
       "localizations": {
@@ -1170,6 +1578,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Getränke protokollieren"
+          }
+        }
+      }
+    },
+    "Lunges": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunges"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausfallschritte"
+          }
+        }
+      }
+    },
+    "Marching in Place": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marching in Place"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marschieren auf der Stelle"
           }
         }
       }
@@ -1528,6 +1970,57 @@
         }
       }
     },
+    "Pike Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pike Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pike-Liegestütze"
+          }
+        }
+      }
+    },
+    "Plank": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plank"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planke"
+          }
+        }
+      }
+    },
+    "Plank to Downward Dog": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plank to Downward Dog"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planke zu Herabschauender Hund"
+          }
+        }
+      }
+    },
     "Play Background Sound": {
       "extractionState": "manual",
       "localizations": {
@@ -1558,6 +2051,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Preset-Info"
+          }
+        }
+      }
+    },
+    "Pull-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klimmzüge"
+          }
+        }
+      }
+    },
+    "Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liegestütze"
+          }
+        }
+      }
+    },
+    "Quadriceps Stretch Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadriceps Stretch Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadrizeps-Dehnung links"
+          }
+        }
+      }
+    },
+    "Quadriceps Stretch Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadriceps Stretch Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadrizeps-Dehnung rechts"
           }
         }
       }
@@ -1643,6 +2204,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rest phase: Active or passive break"
+          }
+        }
+      }
+    },
+    "Reverse Lunges": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reverse Lunges"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reverse-Ausfallschritte"
           }
         }
       }
@@ -1766,6 +2344,23 @@
         }
       }
     },
+    "Seated Forward Bend": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seated Forward Bend"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorbeuge im Sitzen"
+          }
+        }
+      }
+    },
     "Session Already Running": {
       "extractionState": "manual",
       "localizations": {
@@ -1868,6 +2463,40 @@
         }
       }
     },
+    "Shoulder Stretch Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder Stretch Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schulter-Dehnung links"
+          }
+        }
+      }
+    },
+    "Shoulder Stretch Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder Stretch Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schulter-Dehnung rechts"
+          }
+        }
+      }
+    },
     "Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions.": {
       "extractionState": "manual",
       "localizations": {
@@ -1881,6 +2510,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zeigt alle Smart Reminder Details: Reminders, Cancelled List, Pending Notifications, Permissions."
+          }
+        }
+      }
+    },
+    "Side Plank Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side Plank Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitliche Planke links"
+          }
+        }
+      }
+    },
+    "Side Plank Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side Plank Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitliche Planke rechts"
+          }
+        }
+      }
+    },
+    "Single-Leg Deadlift Left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Single-Leg Deadlift Left"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einbeiniges Kreuzheben links"
+          }
+        }
+      }
+    },
+    "Single-Leg Deadlift Right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Single-Leg Deadlift Right"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einbeiniges Kreuzheben rechts"
           }
         }
       }
@@ -1966,6 +2663,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sound-Theme"
+          }
+        }
+      }
+    },
+    "Squats": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squats"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kniebeugen"
+          }
+        }
+      }
+    },
+    "Standing Knee Raises": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standing Knee Raises"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Knieheben stehend"
           }
         }
       }
@@ -2306,6 +3037,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verwendet die Systemsprache für Ansagen (Deutsch/Englisch)."
+          }
+        }
+      }
+    },
+    "Walking Lunges": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Lunges"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausfallschritte gehend"
+          }
+        }
+      }
+    },
+    "Wall Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wall Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wandliegestütze"
+          }
+        }
+      }
+    },
+    "Wide Push-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wide Push-ups"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breite Liegestütze"
           }
         }
       }
