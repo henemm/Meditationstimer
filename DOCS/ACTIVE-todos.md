@@ -6,7 +6,64 @@
 ---
 
 ## 🐛 aktive Bugs
-(Keine)
+
+### Localization Inconsistencies (10 Bugs)
+**Status:** Offen
+**Priorität:** Hoch (User Impact - App soll bilingual sein)
+
+**Bug 1: Offen Tab - "Meditation/Besinnung" Text nicht Uppercase**
+- Location: OffenView.swift Header
+- Problem: Text sollte uppercase sein (konsistent mit anderen Tabs)
+- Expected: "MEDITATION/BESINNUNG"
+
+**Bug 2: Deutscher "Offen" Tab komplett in Deutsch**
+- Location: OffenView.swift - Title + InfoSheet
+- Problem: Title und InfoSheet sind aktuell auf Englisch (nach Section 1&2 Implementation)
+- Expected: Deutscher Tab sollte "Offene Meditation" + deutsche InfoSheet Texte zeigen
+- Note: Englische Version sollte "OPEN MEDITATION" bleiben
+
+**Bug 3: Breathe Meditation InfoSheets auf Deutsch (in EN Version)**
+- Location: AtemView.swift InfoSheets
+- Problem: InfoSheets zeigen deutsche Texte in englischer App-Version
+- Expected: InfoSheets sollten in EN Version englische Texte zeigen
+
+**Bug 4: Breathe Exercise Edit Dialog auf Deutsch (in EN Version)**
+- Location: AtemView.swift Edit Dialog
+- Problem: Edit Dialog zeigt deutsche Texte in englischer App-Version
+- Expected: Dialog sollte in EN Version englische Texte zeigen
+
+**Bug 5: Workouts - Section unterhalb "Recommended Application" auf Deutsch (in EN Version)**
+- Location: WorkoutsView.swift - Section unterhalb "Recommended Application"
+- Problem: Section zeigt deutsche Texte in englischer App-Version
+- Expected: Section sollte in EN Version englische Texte zeigen
+
+**Bug 6: Workouts Edit Dialog teilweise auf Deutsch (in EN Version)**
+- Location: WorkoutsView.swift Edit Dialog
+- Problem: Begriffe wie "Runden" erscheinen auf Deutsch in EN Version
+- Expected: Alle Begriffe sollten in EN Version englisch sein (z.B. "Rounds")
+
+**Bug 7: Settings Background/Ambient Sound zeigt "Kein Sound" (in EN Version)**
+- Location: SettingsSheet.swift - Background/Ambient Sound Setting
+- Problem: "Kein Sound" erscheint auf Deutsch in EN Version
+- Expected: "No Sound" in EN Version, "Kein Sound" in DE Version
+
+**Bug 8: Debug Entry für Smart Reminders entfernen**
+- Location: SmartRemindersView.swift (Sample Data)
+- Problem: Debug/Test-Eintrag für Smart Reminders sollte in Production nicht sichtbar sein
+- Expected: Debug Entry in beiden Versionen (EN + DE) entfernen
+- Priority: Niedrig (nicht user-facing wenn keine Debug-Daten)
+
+**Bug 9: Example Reminders haben deutsche Inhalte**
+- Location: SmartReminder.swift sampleData()
+- Problem: Beispiel-Reminders zeigen deutsche Texte auch in EN Version
+- Expected: Reminders sollten in EN Version englische Texte zeigen
+- Note: Title + Message lokalisieren
+
+**Bug 10: Touch-Bereich für "..." Edit Buttons zu klein (UX)**
+- Location: AtemView.swift + WorkoutsView.swift - "..." Buttons für Exercises
+- Problem: Touch-Bereich der "..." Edit-Buttons ist zu klein (schwer zu treffen)
+- Expected: Größeren Touch-Bereich für bessere Usability
+- Type: UX Improvement (nicht Localization Bug, aber in gleicher Session gefunden)
 
 
 ## behobene Bugs
