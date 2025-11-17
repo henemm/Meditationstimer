@@ -1362,7 +1362,7 @@ public struct WorkoutProgramsView: View {
                         Button(action: edit) {
                             Image(systemName: "ellipsis")
                                 .font(.system(size: 18, weight: .regular))
-                                .frame(width: 32, height: 32)
+                                .frame(width: 44, height: 44)
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Bearbeiten")
@@ -1409,27 +1409,27 @@ public struct WorkoutProgramsView: View {
             // These match the descriptions from the default presets
             switch set.name {
             case "Tabata Classic":
-                return "Ideal als Warm-up vor Krafttraining oder als eigenständiges HIIT-Workout. Maximale Intensität erforderlich."
+                return NSLocalizedString("Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required.", comment: "")
             case "Core Circuit":
-                return "2-3x pro Woche für starke Rumpfmuskulatur. Perfekt als Ergänzung zu anderen Workouts."
+                return NSLocalizedString("2-3x per week for strong core muscles. Perfect as supplement to other workouts.", comment: "")
             case "Full Body Burn":
-                return "Als Haupt-Workout 3-4x pro Woche. Kombiniert Kraft, Ausdauer und funktionelle Bewegungen."
+                return NSLocalizedString("As main workout 3-4x per week. Combines strength, endurance and functional movements.", comment: "")
             case "Power Intervals":
-                return "Für fortgeschrittene Athleten 2-3x pro Woche. Fokus auf explosive Kraft und Schnelligkeit."
+                return NSLocalizedString("For advanced athletes 2-3x per week. Focus on explosive strength and speed.", comment: "")
             case "Hintere Kette":
-                return "Ergänzend zu Sitz-Tätigkeit oder nach dem Laufen. Korrigiert muskuläre Dysbalancen."
+                return NSLocalizedString("Complementary to sedentary activities or after running. Corrects muscular imbalances.", comment: "")
             case "Jogging Warm-up":
-                return "Vor jedem Lauf-Training. Bereitet Gelenke, Sehnen und Muskeln auf die Belastung vor."
+                return NSLocalizedString("Before every running session. Prepares joints, tendons and muscles for the stress.", comment: "")
             case "Post-Run Stretching":
-                return "Direkt nach dem Laufen (innerhalb 10 min). Fördert Regeneration und Beweglichkeit."
+                return NSLocalizedString("Directly after running (within 10 min). Promotes recovery and mobility.", comment: "")
             case "Beginner Flow":
-                return "Perfekter Einstieg für Anfänger. Täglich oder jeden 2. Tag für Gewöhnung an regelmäßige Bewegung."
+                return NSLocalizedString("Perfect start for beginners. Daily or every 2nd day to get used to regular exercise.", comment: "")
             case "Quick Burn":
-                return "Täglich in der Mittagspause oder morgens. Kurz, effektiv, keine Ausreden."
+                return NSLocalizedString("Daily during lunch break or in the morning. Short, effective, no excuses.", comment: "")
             case "Upper Body Push":
-                return "2x pro Woche als Push-Day. Kombiniere mit Pull-Workout für ausgewogenes Training."
+                return NSLocalizedString("2x per week as push day. Combine with pull workout for balanced training.", comment: "")
             default:
-                return "Regelmäßige Durchführung für beste Ergebnisse."
+                return NSLocalizedString("Regular execution for best results.", comment: "")
             }
         }
 
@@ -1449,7 +1449,7 @@ public struct WorkoutProgramsView: View {
 
                         // Structure Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Structure")
+                            Text(NSLocalizedString("Structure", comment: ""))
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(String(format: NSLocalizedString("Exercises and Rounds", comment: ""), set.phaseCount, set.repetitions))
@@ -1461,7 +1461,7 @@ public struct WorkoutProgramsView: View {
 
                         // Phases Overview Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Exercises")
+                            Text(NSLocalizedString("Exercises", comment: ""))
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             VStack(alignment: .leading, spacing: 4) {
@@ -1474,7 +1474,7 @@ public struct WorkoutProgramsView: View {
                         // Description Section
                         if let description = set.description {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Description")
+                                Text(NSLocalizedString("Description", comment: ""))
                                     .font(.headline)
                                     .foregroundStyle(.secondary)
                                 Text(description)
@@ -1484,7 +1484,7 @@ public struct WorkoutProgramsView: View {
 
                         // Recommended Usage Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Recommended Application")
+                            Text(NSLocalizedString("Recommended Application", comment: ""))
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(recommendedUsage)
@@ -1493,11 +1493,11 @@ public struct WorkoutProgramsView: View {
                     }
                     .padding()
                 }
-                .navigationTitle("Workout Info")
+                .navigationTitle(NSLocalizedString("Workout Info", comment: ""))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Done") {
+                        Button(NSLocalizedString("Done", comment: "")) {
                             dismiss()
                         }
                     }

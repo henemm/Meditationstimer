@@ -102,11 +102,11 @@ public struct AtemView: View {
 
         var displayName: String {
             switch self {
-            case .distinctive: return "Markant"
-            case .marimba: return "Marimba"
-            case .harp: return "Harfe"
-            case .guitar: return "Gitarre"
-            case .epiano: return "E-Piano"
+            case .distinctive: return NSLocalizedString("Distinctive", comment: "Atem sound theme: clear, distinctive signals")
+            case .marimba: return NSLocalizedString("Marimba", comment: "Atem sound theme: warm, wooden sounds")
+            case .harp: return NSLocalizedString("Harp", comment: "Atem sound theme: gentle, flowing tones")
+            case .guitar: return NSLocalizedString("Guitar", comment: "Atem sound theme: acoustic plucked tones")
+            case .epiano: return NSLocalizedString("E-Piano", comment: "Atem sound theme: soft piano tones")
             }
         }
 
@@ -122,11 +122,11 @@ public struct AtemView: View {
 
         var description: String {
             switch self {
-            case .distinctive: return "Klare, deutliche Signale"
-            case .marimba: return "Warme, hölzerne Klänge"
-            case .harp: return "Sanfte, fließende Töne"
-            case .guitar: return "Akustische Zupftöne"
-            case .epiano: return "Weiche, elektronische Klänge"
+            case .distinctive: return NSLocalizedString("Clear, distinctive signals", comment: "Atem sound theme description: distinctive")
+            case .marimba: return NSLocalizedString("Warm, wooden sounds", comment: "Atem sound theme description: marimba")
+            case .harp: return NSLocalizedString("Gentle, flowing tones", comment: "Atem sound theme description: harp")
+            case .guitar: return NSLocalizedString("Acoustic plucked tones", comment: "Atem sound theme description: guitar")
+            case .epiano: return NSLocalizedString("Soft, electronic sounds", comment: "Atem sound theme description: e-piano")
             }
         }
     }
@@ -441,7 +441,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         Button(action: edit) {
                             Image(systemName: "ellipsis")
                                 .font(.system(size: 18, weight: .regular))
-                                .frame(width: 32, height: 32)
+                                .frame(width: 44, height: 44)
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Edit")
@@ -481,22 +481,22 @@ private struct OverlayBackgroundEffect: ViewModifier {
         let preset: Preset
         @Environment(\.dismiss) private var dismiss
 
-        private var recommendedUsage: String {
+        private var recommendedUsage: LocalizedStringKey {
             switch preset.name {
             case "Box Breathing":
-                return "Bei akutem Stress, vor wichtigen Terminen oder Präsentationen. Ideal für schnelle Beruhigung in fordernden Situationen."
+                return "During acute stress, before important appointments or presentations. Ideal for quick calming in demanding situations."
             case "Calming Breath":
-                return "Abends zur Entspannung oder vor dem Schlafengehen. Verlängerte Ausatmung aktiviert den Ruhemodus des Körpers."
+                return "In the evening for relaxation or before bedtime. Extended exhalation activates the body's rest mode."
             case "Coherent Breathing":
-                return "Täglich morgens oder mittags zur HRV-Optimierung. Regelmäßige Praxis verbessert langfristig die Stressresilienz."
+                return "Daily in the morning or midday for HRV optimization. Regular practice improves stress resilience long-term."
             case "Deep Calm":
-                return "Bei innerer Unruhe oder wenn mentale Klarheit benötigt wird. Fördert Fokus und tiefe Entspannung."
+                return "During inner restlessness or when mental clarity is needed. Promotes focus and deep relaxation."
             case "Relaxing Breath":
-                return "Abends direkt vor dem Einschlafen oder bei Schlafproblemen. Wirkt beruhigend bei Stress und Angst."
+                return "In the evening directly before falling asleep or with sleep problems. Calming effect for stress and anxiety."
             case "Rhythmic Breath":
-                return "Jederzeit als tägliche Routine. Ausgewogener Rhythmus für Balance im Alltag."
+                return "Anytime as a daily routine. Balanced rhythm for balance in everyday life."
             default:
-                return "Regelmäßige Praxis für beste Ergebnisse."
+                return "Regular practice for best results."
             }
         }
 
@@ -516,12 +516,12 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
                         // Rhythm Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Rhythmus")
+                            Text("Rhythm")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(preset.rhythmString)
                                 .font(.title3)
-                            Text("\(preset.repetitions) Wiederholungen · ≈ \(preset.totalDurationString)")
+                            Text("\(preset.repetitions) Repetitions · ≈ \(preset.totalDurationString)")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -529,7 +529,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         // Description Section
                         if let description = preset.description {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Wirkung")
+                                Text("Effect")
                                     .font(.headline)
                                     .foregroundStyle(.secondary)
                                 Text(description)
@@ -539,7 +539,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
                         // Recommended Usage Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Empfohlene Anwendung")
+                            Text("Recommended Application")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(recommendedUsage)
@@ -548,11 +548,11 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     }
                     .padding()
                 }
-                .navigationTitle("Preset-Info")
+                .navigationTitle("Preset Info")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Fertig") {
+                        Button("Done") {
                             dismiss()
                         }
                     }
@@ -1037,18 +1037,18 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         TextField("Name", text: $draft.name)
                             .textInputAutocapitalization(.words)
                     }
-                    Section("Rhythmus (Sekunden)") {
-                        pickerRow(title: "Einatmen", value: $draft.inhale)
-                        pickerRow(title: "Halten (ein)", value: $draft.holdIn)
-                        pickerRow(title: "Ausatmen", value: $draft.exhale)
-                        pickerRow(title: "Halten (aus)", value: $draft.holdOut)
+                    Section("Rhythm (Seconds)") {
+                        pickerRow(title: "Inhale", value: $draft.inhale)
+                        pickerRow(title: "Hold (in)", value: $draft.holdIn)
+                        pickerRow(title: "Exhale", value: $draft.exhale)
+                        pickerRow(title: "Hold (out)", value: $draft.holdOut)
                     }
-                    Section("Wiederholungen") {
-                        AtemWheelPicker("Runden", selection: $draft.repetitions, range: 1...99)
+                    Section("Repetitions") {
+                        AtemWheelPicker("Rounds", selection: $draft.repetitions, range: 1...99)
                     }
                     Section {
                         HStack {
-                            Text("Gesamtdauer")
+                            Text("Total Duration")
                             Spacer()
                             Text(totalString).monospacedDigit().foregroundStyle(.secondary)
                         }
@@ -1058,16 +1058,16 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             Button(role: .destructive) {
                                 onDelete(draft.id)
                                 dismiss()
-                            } label: { Text("Löschen") }
+                            } label: { Text("Delete") }
                         }
                     }
                 }
-                .navigationTitle(isNew ? "Neues Atem-Preset" : "Atem-Preset")
+                .navigationTitle(isNew ? "New Breathe Preset" : "Breathe Preset")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Speichern") {
+                        Button("Save") {
                             onSave(draft); dismiss()
                         }.disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     }
