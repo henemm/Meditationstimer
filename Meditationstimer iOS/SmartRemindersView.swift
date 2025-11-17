@@ -36,9 +36,9 @@ struct SmartRemindersView: View {
         List {
             // Toggle Section (disabled wenn Permissions fehlen)
             Section {
-                Toggle("Smart Reminders aktivieren", isOn: $smartRemindersEnabled)
+                Toggle("Enable Smart Reminders", isOn: $smartRemindersEnabled)
                     .disabled(!allPermissionsGranted)
-                    .help("Aktiviert intelligente Erinnerungen, die automatisch storniert werden wenn du die Aktivität bereits durchgeführt hast.")
+                    .help("Activates smart reminders that are automatically cancelled when you have already completed the activity.")
                     .onChange(of: smartRemindersEnabled) { _, newValue in
                         if newValue {
                             requestNotificationPermissions()
@@ -55,10 +55,10 @@ struct SmartRemindersView: View {
                                 .foregroundColor(.orange)
                                 .font(.title2)
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Fehlende Berechtigungen")
+                                Text("Missing Permissions")
                                     .font(.headline)
                                     .fontWeight(.semibold)
-                                Text("Smart Reminders benötigen alle folgenden Berechtigungen:")
+                                Text("Smart Reminders require all of the following permissions:")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
@@ -68,17 +68,17 @@ struct SmartRemindersView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             PermissionRow(
                                 icon: "bell.fill",
-                                title: "Benachrichtigungen",
+                                title: "Notifications",
                                 granted: notificationsGranted
                             )
                             PermissionRow(
                                 icon: "arrow.clockwise",
-                                title: "Hintergrundaktualisierung",
+                                title: "Background Refresh",
                                 granted: backgroundRefreshEnabled
                             )
                             PermissionRow(
                                 icon: "heart.fill",
-                                title: "HealthKit (Achtsamkeit lesen)",
+                                title: "HealthKit (Read Mindfulness)",
                                 granted: healthKitGranted
                             )
                         }
@@ -86,7 +86,7 @@ struct SmartRemindersView: View {
 
                         Button(action: openSettings) {
                             HStack {
-                                Text("Einstellungen öffnen")
+                                Text("Open Settings")
                                     .fontWeight(.medium)
                                 Spacer()
                                 Image(systemName: "arrow.up.forward.app")
@@ -99,7 +99,7 @@ struct SmartRemindersView: View {
                 } header: {
                     Text("")
                 } footer: {
-                    Text("Gehe zu: Einstellungen → Lean Health Timer\n• Benachrichtigungen: Erlauben\n• Hintergrundaktualisierung: Aktivieren\n• Health → Achtsamkeit: Lesen erlauben")
+                    Text("Go to: Settings → Lean Health Timer\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -107,9 +107,9 @@ struct SmartRemindersView: View {
 
             // Reminders List (nur wenn aktiviert)
             if smartRemindersEnabled && allPermissionsGranted {
-                Section(header: Text("Erinnerungen")) {
+                Section(header: Text("Reminders")) {
                     if reminders.isEmpty {
-                        Text("Keine Smart Reminders konfiguriert")
+                        Text("No Smart Reminders configured")
                             .foregroundColor(.secondary)
                             .italic()
                     } else {
@@ -121,7 +121,7 @@ struct SmartRemindersView: View {
                                 Button(role: .destructive) {
                                     deleteReminder(reminder)
                                 } label: {
-                                    Label("Löschen", systemImage: "trash")
+                                    Label("Delete", systemImage: "trash")
                                 }
                             }
                         }
@@ -130,12 +130,12 @@ struct SmartRemindersView: View {
                     Button(action: {
                         showingAddReminder = true
                     }) {
-                        Label("Neue Erinnerung hinzufügen", systemImage: "plus")
+                        Label("Add New Reminder", systemImage: "plus")
                     }
                 }
 
                 Section(header: Text("Info")) {
-                    Text("Smart Reminders senden Benachrichtigungen zur konfigurierten Uhrzeit, werden aber automatisch storniert wenn du die Aktivität bereits im Rückblick-Zeitraum durchgeführt hast.")
+                    Text("Smart Reminders send notifications at the configured time, but are automatically cancelled if you've already completed the activity during the look-back period.")
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
@@ -174,22 +174,13 @@ struct SmartRemindersView: View {
     private func loadReminders() {
         reminders = engine.getReminders()
 
-        // Beim ersten Start: Beispieldaten in Engine speichern
-        if reminders.isEmpty {
+        // Migration: NoAlc Reminder hinzufügen falls nicht vorhanden UND nicht gelöscht
+        let hasNoAlcReminder = reminders.contains { $0.activityType == .noalc }
+        if !hasNoAlcReminder && !isDeleted(.noalc) {
             let samples = SmartReminder.sampleData()
-            for sample in samples {
-                engine.addReminder(sample)
-            }
-            reminders = engine.getReminders()
-        } else {
-            // Migration: NoAlc Reminder hinzufügen falls nicht vorhanden UND nicht gelöscht
-            let hasNoAlcReminder = reminders.contains { $0.activityType == .noalc }
-            if !hasNoAlcReminder && !isDeleted(.noalc) {
-                let samples = SmartReminder.sampleData()
-                if let noAlcSample = samples.first(where: { $0.activityType == .noalc }) {
-                    engine.addReminder(noAlcSample)
-                    reminders = engine.getReminders()
-                }
+            if let noAlcSample = samples.first(where: { $0.activityType == .noalc }) {
+                engine.addReminder(noAlcSample)
+                reminders = engine.getReminders()
             }
         }
     }
@@ -342,7 +333,7 @@ struct ReminderRow: View {
                 Text(reminder.title)
                     .font(.headline)
                 Spacer()
-                Text(reminder.isEnabled ? "Aktiv" : "Inaktiv")
+                Text(reminder.isEnabled ? "Active" : "Inactive")
                     .font(.caption)
                     .foregroundColor(reminder.isEnabled ? .green : .secondary)
                     .padding(.horizontal, 8)
@@ -396,38 +387,38 @@ struct ReminderEditorView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Allgemein")) {
-                    TextField("Titel", text: $title)
-                    TextField("Nachricht", text: $message, axis: .vertical)
+                Section(header: Text("General")) {
+                    TextField("Title", text: $title)
+                    TextField("Message", text: $message, axis: .vertical)
                         .lineLimit(3...6)
-                    Toggle("Aktiviert", isOn: $isEnabled)
+                    Toggle("Enabled", isOn: $isEnabled)
                 }
 
-                Section(header: Text("Zeitplan")) {
-                    Picker("Aktivitätstyp", selection: $activityType) {
+                Section(header: Text("Schedule")) {
+                    Picker("Activity Type", selection: $activityType) {
                         Text("Meditation").tag(ActivityType.mindfulness)
                         Text("Workout").tag(ActivityType.workout)
                         Text("NoAlc").tag(ActivityType.noalc)
                     }
 
-                    DatePicker("Uhrzeit", selection: $triggerTime, displayedComponents: .hourAndMinute)
+                    DatePicker("Time", selection: $triggerTime, displayedComponents: .hourAndMinute)
 
-                    Picker("Rückblick-Zeitraum", selection: $hoursInactive) {
+                    Picker("Look-back Period", selection: $hoursInactive) {
                         ForEach(1...24, id: \.self) { hours in
                             if hours == 1 {
-                                Text("1 Stunde").tag(hours)
+                                Text("1 hour").tag(hours)
                             } else {
-                                Text("\(hours) Stunden").tag(hours)
+                                Text(String(format: "%d hours", hours)).tag(hours)
                             }
                         }
                     }
 
-                    Text("Reminder wird nicht gesendet, wenn Aktivität in den letzten \(hoursInactive)h vor der Reminder-Zeit stattfand.")
+                    Text(String(format: "Reminder won't be sent if activity occurred in the last %dh before reminder time.", hoursInactive))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
-                Section(header: Text("Wochentage")) {
+                Section(header: Text("Weekdays")) {
                     ForEach(Weekday.allCases, id: \.self) { day in
                         Toggle(day.displayName, isOn: Binding(
                             get: { selectedDays.contains(day) },
@@ -442,18 +433,18 @@ struct ReminderEditorView: View {
                     }
                 }
             }
-            .navigationTitle(reminder == nil ? "Neue Erinnerung" : "Erinnerung bearbeiten")
+            .navigationTitle(reminder == nil ? "New Reminder" : "Edit Reminder")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Abbrechen") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Speichern") {
+                    Button("Save") {
                         let newReminder = SmartReminder(
                             id: reminder?.id ?? UUID(),
                             title: title,
