@@ -1,6 +1,40 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%d hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d hours"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Stunden"
+          }
+        }
+      }
+    },
+    "1 hour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 hour"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Stunde"
+          }
+        }
+      }
+    },
     "A session is already running. Should it be stopped and the new one started?": {
       "extractionState": "manual",
       "localizations": {
@@ -18,6 +52,40 @@
         }
       }
     },
+    "Acoustic plucked tones": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acoustic plucked tones"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akustische Zupftöne"
+          }
+        }
+      }
+    },
+    "Active": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        }
+      }
+    },
     "Active Timer": {
       "extractionState": "manual",
       "localizations": {
@@ -31,6 +99,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aktiver Timer"
+          }
+        }
+      }
+    },
+    "Activity Type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity Type"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivitätstyp"
           }
         }
       }
@@ -65,6 +150,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Übung hinzufügen"
+          }
+        }
+      }
+    },
+    "Add New Reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add New Reminder"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Erinnerung hinzufügen"
           }
         }
       }
@@ -235,6 +337,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Archer-Liegestütze"
+          }
+        }
+      }
+    },
+    "Background Refresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Refresh"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintergrundaktualisierung"
           }
         }
       }
@@ -613,6 +732,23 @@
         }
       }
     },
+    "Clear, distinctive signals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear, distinctive signals"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klare, deutliche Signale"
+          }
+        }
+      }
+    },
     "Cobra Stretch": {
       "extractionState": "manual",
       "localizations": {
@@ -851,6 +987,23 @@
         }
       }
     },
+    "Distinctive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distinctive"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markant"
+          }
+        }
+      }
+    },
     "Done": {
       "extractionState": "manual",
       "localizations": {
@@ -936,6 +1089,23 @@
         }
       }
     },
+    "E-Piano": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Piano"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Piano"
+          }
+        }
+      }
+    },
     "Easy": {
       "extractionState": "manual",
       "localizations": {
@@ -970,6 +1140,23 @@
         }
       }
     },
+    "Edit Reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Reminder"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung bearbeiten"
+          }
+        }
+      }
+    },
     "Effect": {
       "extractionState": "manual",
       "localizations": {
@@ -983,6 +1170,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wirkung"
+          }
+        }
+      }
+    },
+    "Enable Smart Reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable Smart Reminders"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders aktivieren"
           }
         }
       }
@@ -1017,6 +1221,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Für Offen (freie Meditation) aktivieren"
+          }
+        }
+      }
+    },
+    "Enabled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enabled"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviert"
           }
         }
       }
@@ -1276,6 +1497,23 @@
         }
       }
     },
+    "Gong sounds mark phase transitions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong-Klänge markieren Phasenübergänge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong sounds mark phase transitions"
+          }
+        }
+      }
+    },
     "Full-body HIIT focused on functional movement patterns. Combines strength, cardio, and core stability. Maximum calorie burn through engagement of large muscle groups.": {
       "extractionState": "manual",
       "localizations": {
@@ -1293,6 +1531,23 @@
         }
       }
     },
+    "General": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allgemein"
+          }
+        }
+      }
+    },
     "Gentle introduction to HIIT training. Joint-friendly variations with longer rest periods (1:1 ratio). Ideal for building basic fitness and technique. Progressive by adding rounds or reducing rest.": {
       "extractionState": "manual",
       "localizations": {
@@ -1306,6 +1561,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sanfter Einstieg ins HIIT-Training. Gelenkschonende Varianten mit längeren Pausen (1:1 Ratio). Ideal zum Aufbau von Grundfitness und Technik. Progressiv steigerbar durch mehr Runden oder kürzere Pausen."
+          }
+        }
+      }
+    },
+    "Gentle, flowing tones": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gentle, flowing tones"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sanfte, fließende Töne"
           }
         }
       }
@@ -1361,6 +1633,23 @@
         }
       }
     },
+    "Go to: Settings → Lean Health Timer\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go to: Settings → Lean Health Timer\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gehe zu: Einstellungen → Lean Health Timer\n• Benachrichtigungen: Erlauben\n• Hintergrundaktualisierung: Aktivieren\n• Health → Achtsamkeit: Lesen erlauben"
+          }
+        }
+      }
+    },
     "Gong signals mark phase transitions": {
       "extractionState": "manual",
       "localizations": {
@@ -1374,6 +1663,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gong signals mark phase transitions"
+          }
+        }
+      }
+    },
+    "Guitar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guitar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gitarre"
           }
         }
       }
@@ -1412,6 +1718,23 @@
         }
       }
     },
+    "Harp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harp"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harfe"
+          }
+        }
+      }
+    },
     "Health Access": {
       "extractionState": "manual",
       "localizations": {
@@ -1425,6 +1748,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Health Access"
+          }
+        }
+      }
+    },
+    "HealthKit (Read Mindfulness)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HealthKit (Read Mindfulness)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HealthKit (Achtsamkeit lesen)"
           }
         }
       }
@@ -1544,6 +1884,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wenn du einen Tag verpasst:"
+          }
+        }
+      }
+    },
+    "Inactive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inactive"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inaktiv"
+          }
+        }
+      }
+    },
+    "Info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
           }
         }
       }
@@ -1735,6 +2109,23 @@
         }
       }
     },
+    "Look-back Period": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look-back Period"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückblick-Zeitraum"
+          }
+        }
+      }
+    },
     "Lunges": {
       "extractionState": "manual",
       "localizations": {
@@ -1765,6 +2156,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Marschieren auf der Stelle"
+          }
+        }
+      }
+    },
+    "Marimba": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marimba"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marimba"
           }
         }
       }
@@ -1878,6 +2286,40 @@
         }
       }
     },
+    "Message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Message"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachricht"
+          }
+        }
+      }
+    },
+    "Missing Permissions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Missing Permissions"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlende Berechtigungen"
+          }
+        }
+      }
+    },
     "New Breathing Preset": {
       "extractionState": "manual",
       "localizations": {
@@ -1912,6 +2354,23 @@
         }
       }
     },
+    "New Reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Reminder"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Erinnerung"
+          }
+        }
+      }
+    },
     "New Workout Set": {
       "extractionState": "manual",
       "localizations": {
@@ -1942,6 +2401,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine Übungen"
+          }
+        }
+      }
+    },
+    "No Smart Reminders configured": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Smart Reminders configured"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Smart Reminders konfiguriert"
           }
         }
       }
@@ -2055,6 +2531,40 @@
         }
       }
     },
+    "Open Meditation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offene Meditation"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Meditation"
+          }
+        }
+      }
+    },
+    "Notifications": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benachrichtigungen"
+          }
+        }
+      }
+    },
     "Open": {
       "extractionState": "manual",
       "localizations": {
@@ -2068,6 +2578,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offen"
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen öffnen"
+          }
+        }
+      }
+    },
+    "Open System Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open System Settings"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System‑Einstellungen öffnen"
           }
         }
       }
@@ -2136,6 +2680,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pause wird für Pausen zwischen Runden genutzt."
+          }
+        }
+      }
+    },
+    "Phase 1: Main meditation session": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phase 1: Haupt-Meditationssitzung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phase 1: Main meditation session"
+          }
+        }
+      }
+    },
+    "Phase 2: Reflection and contemplation (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phase 2: Reflexion und Besinnung (optional)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phase 2: Reflection and contemplation (optional)"
           }
         }
       }
@@ -2344,6 +2922,40 @@
         }
       }
     },
+    "Reminder won't be sent if activity occurred in the last %dh before reminder time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder won't be sent if activity occurred in the last %dh before reminder time."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminder wird nicht gesendet, wenn Aktivität in den letzten %dh vor der Reminder-Zeit stattfand."
+          }
+        }
+      }
+    },
+    "Reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reminders"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerungen"
+          }
+        }
+      }
+    },
     "Repetitions": {
       "extractionState": "manual",
       "localizations": {
@@ -2548,6 +3160,23 @@
         }
       }
     },
+    "Schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitplan"
+          }
+        }
+      }
+    },
     "Seated Forward Bend": {
       "extractionState": "manual",
       "localizations": {
@@ -2578,6 +3207,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sitzung läuft bereits"
+          }
+        }
+      }
+    },
+    "Sessions are automatically logged in Apple Health": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen werden automatisch in Apple Health protokolliert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessions are automatically logged in Apple Health"
           }
         }
       }
@@ -2837,6 +3483,40 @@
         }
       }
     },
+    "Smart Reminders require all of the following permissions:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders require all of the following permissions:"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders benötigen alle folgenden Berechtigungen:"
+          }
+        }
+      }
+    },
+    "Smart Reminders send notifications at the configured time, but are automatically cancelled if you've already completed the activity during the look-back period.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders send notifications at the configured time, but are automatically cancelled if you've already completed the activity during the look-back period."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders senden Benachrichtigungen zur konfigurierten Uhrzeit, werden aber automatisch storniert wenn du die Aktivität bereits im Rückblick-Zeitraum durchgeführt hast."
+          }
+        }
+      }
+    },
     "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.": {
       "extractionState": "manual",
       "localizations": {
@@ -2850,6 +3530,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen."
+          }
+        }
+      }
+    },
+    "Soft, electronic sounds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soft, electronic sounds"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiche, elektronische Klänge"
           }
         }
       }
@@ -3143,6 +3840,23 @@
         }
       }
     },
+    "The two-phase timer helps you practice meditation with a structured approach. Choose your meditation duration and an optional contemplation phase.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The two-phase timer helps you practice meditation with a structured approach. Choose your meditation duration and an optional contemplation phase."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der zweiphasige Timer hilft dir, Meditation mit einem strukturierten Ansatz zu üben. Wähle deine Meditationsdauer und eine optionale Reflexionsphase."
+          }
+        }
+      }
+    },
     "This app can record your meditations in Apple Health to track your progress. Do you want to allow this?": {
       "extractionState": "manual",
       "localizations": {
@@ -3190,6 +3904,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "This app can record your workouts in Apple Health to track your progress. Would you like to allow this?"
+          }
+        }
+      }
+    },
+    "Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhrzeit"
+          }
+        }
+      }
+    },
+    "Timer runs in foreground only": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer runs in foreground only"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer läuft nur im Vordergrund"
+          }
+        }
+      }
+    },
+    "Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
           }
         }
       }
@@ -3394,6 +4159,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wandliegestütze"
+          }
+        }
+      }
+    },
+    "Warm, wooden sounds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warm, wooden sounds"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warme, hölzerne Klänge"
+          }
+        }
+      }
+    },
+    "Weekdays": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekdays"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochentage"
           }
         }
       }
