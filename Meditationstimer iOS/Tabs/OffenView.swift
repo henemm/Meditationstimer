@@ -151,6 +151,7 @@ struct OffenView: View {
                     Text("Meditation")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
                 }
                 VStack(spacing: 6) {
                     Text("🪷")
@@ -158,6 +159,7 @@ struct OffenView: View {
                     Text("Contemplation")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
                 }
             }
             .frame(minWidth: 110, alignment: .center)
