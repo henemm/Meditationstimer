@@ -48,18 +48,10 @@ extension Color {
     static let todayRed = Color.red
 
     // MARK: - Alcohol Tracking Colors
-
-    /// Bright green for 0-1 drinks (Steady)
-    static let alcoholSteady = Color(hex: "#0EBF6E")
-
-    /// Medium green for 2-5 drinks (Easy)
-    static let alcoholEasy = Color(hex: "#89D6B2")
-
-    /// Gray for 6+ drinks (Wild)
-    static let alcoholWild = Color(hex: "#B6B6B6")
-
-    // MARK: - Alcohol Text Colors
-
-    /// White text for ALL alcohol tracking backgrounds (Steady, Easy, Wild)
-    static let alcoholText = Color.white
+    // Note: Alcohol colors are now defined in Assets.xcassets/*.colorset
+    // This supports Dark Mode variants properly:
+    // - alcoholSteady: Green for 0-1 drinks (Steady)
+    // - alcoholEasy: Orange for 2-5 drinks (Easy)
+    // - alcoholWild: Red for 6+ drinks (Wild)
+    // - alcoholText: White text for ALL alcohol tracking backgrounds
 }
