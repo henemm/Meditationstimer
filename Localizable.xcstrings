@@ -426,6 +426,23 @@
         }
       }
     },
+    "Breathe Preset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe Preset"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atem-Preset"
+          }
+        }
+      }
+    },
     "Breathe Sounds": {
       "extractionState": "manual",
       "localizations": {
@@ -1293,6 +1310,23 @@
         }
       }
     },
+    "Evening Workout": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evening Workout"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abendliches Workout"
+          }
+        }
+      }
+    },
     "Example:": {
       "extractionState": "manual",
       "localizations": {
@@ -1425,6 +1459,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong."
+          }
+        }
+      }
+    },
+    "Fire": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fire"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feuer"
           }
         }
       }
@@ -1905,6 +1956,23 @@
         }
       }
     },
+    "Icon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icon"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Symbol"
+          }
+        }
+      }
+    },
     "Info": {
       "extractionState": "manual",
       "localizations": {
@@ -2320,6 +2388,40 @@
         }
       }
     },
+    "Morning Meditation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning Meditation"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgendliche Meditation"
+          }
+        }
+      }
+    },
+    "New Breathe Preset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Breathe Preset"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Atem-Preset"
+          }
+        }
+      }
+    },
     "New Breathing Preset": {
       "extractionState": "manual",
       "localizations": {
@@ -2527,6 +2629,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hinweis"
+          }
+        }
+      }
+    },
+    "No Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Sound"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Sound"
           }
         }
       }
@@ -2884,6 +3003,193 @@
           "stringUnit": {
             "state": "translated",
             "value": "Empfohlene Anwendung"
+          }
+        }
+      }
+    },
+    "2-3x per week for strong core muscles. Perfect as supplement to other workouts.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2-3x per week for strong core muscles. Perfect as supplement to other workouts."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2-3x pro Woche für starke Rumpfmuskulatur. Perfekt als Ergänzung zu anderen Workouts."
+          }
+        }
+      }
+    },
+    "2x per week as push day. Combine with pull workout for balanced training.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2x per week as push day. Combine with pull workout for balanced training."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2x pro Woche als Push-Tag. Kombiniere mit Pull-Workout für ausgeglichenes Training."
+          }
+        }
+      }
+    },
+    "As main workout 3-4x per week. Combines strength, endurance and functional movements.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As main workout 3-4x per week. Combines strength, endurance and functional movements."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Hauptworkout 3-4x pro Woche. Kombiniert Kraft, Ausdauer und funktionelle Bewegungen."
+          }
+        }
+      }
+    },
+    "Before every running session. Prepares joints, tendons and muscles for the stress.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before every running session. Prepares joints, tendons and muscles for the stress."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vor jeder Laufeinheit. Bereitet Gelenke, Sehnen und Muskeln auf die Belastung vor."
+          }
+        }
+      }
+    },
+    "Complementary to sedentary activities or after running. Corrects muscular imbalances.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Complementary to sedentary activities or after running. Corrects muscular imbalances."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergänzend zu sitzenden Tätigkeiten oder nach dem Laufen. Korrigiert muskuläre Dysbalancen."
+          }
+        }
+      }
+    },
+    "Daily during lunch break or in the morning. Short, effective, no excuses.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily during lunch break or in the morning. Short, effective, no excuses."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Täglich in der Mittagspause oder morgens. Kurz, effektiv, keine Ausreden."
+          }
+        }
+      }
+    },
+    "Directly after running (within 10 min). Promotes recovery and mobility.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Directly after running (within 10 min). Promotes recovery and mobility."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Direkt nach dem Laufen (innerhalb 10 Min). Fördert Regeneration und Mobilität."
+          }
+        }
+      }
+    },
+    "For advanced athletes 2-3x per week. Focus on explosive strength and speed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For advanced athletes 2-3x per week. Focus on explosive strength and speed."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Fortgeschrittene 2-3x pro Woche. Fokus auf explosive Kraft und Schnelligkeit."
+          }
+        }
+      }
+    },
+    "Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ideal als Aufwärmung vor dem Krafttraining oder als eigenständiges HIIT-Workout. Maximale Intensität erforderlich."
+          }
+        }
+      }
+    },
+    "Perfect start for beginners. Daily or every 2nd day to get used to regular exercise.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfect start for beginners. Daily or every 2nd day to get used to regular exercise."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfekter Einstieg für Anfänger. Täglich oder jeden 2. Tag, um sich an regelmäßige Bewegung zu gewöhnen."
+          }
+        }
+      }
+    },
+    "Regular execution for best results.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular execution for best results."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regelmäßige Ausführung für beste Ergebnisse."
           }
         }
       }
@@ -3551,6 +3857,23 @@
         }
       }
     },
+    "Spring": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spring"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühling"
+          }
+        }
+      }
+    },
     "Sound Theme": {
       "extractionState": "manual",
       "localizations": {
@@ -3734,6 +4057,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Struktur"
+          }
+        }
+      }
+    },
+    "Take a moment to breathe 🌿": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a moment to breathe 🌿"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nimm dir einen Moment zum Atmen 🌿"
+          }
+        }
+      }
+    },
+    "Time for your daily workout! 💪": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time for your daily workout! 💪"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit für dein tägliches Workout! 💪"
           }
         }
       }
@@ -4142,6 +4499,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ausfallschritte gehend"
+          }
+        }
+      }
+    },
+    "Waves": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waves"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wellen"
           }
         }
       }
