@@ -177,17 +177,17 @@ public struct AtemView: View {
     // MARK: - Default Presets (used for new installations and migration)
     private static let defaultPresets: [Preset] = [
         .init(name: "Box Breathing", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
-              description: "Navy SEAL Technik zur Stress-Reduktion. Nachweislich effektiv zur Senkung des Cortisol-Spiegels."),
+              description: NSLocalizedString("Navy SEAL technique for stress reduction. Proven effective at lowering cortisol levels.", comment: "Box Breathing preset description")),
         .init(name: "Calming Breath",    emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
-              description: "Aktiviert das Parasympathische Nervensystem durch verlängerte Ausatmung. Ideal zur Entspannung."),
+              description: NSLocalizedString("Activates the parasympathetic nervous system through extended exhalation. Ideal for relaxation.", comment: "Calming Breath preset description")),
         .init(name: "Coherent Breathing", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
-              description: "Optimiert Herz-Kohärenz (HRV). Wissenschaftlich am besten untersucht für kardiovaskuläre Gesundheit. 6 Atemzüge/min."),
+              description: NSLocalizedString("Optimizes heart coherence (HRV). Most scientifically studied for cardiovascular health. 6 breaths/min.", comment: "Coherent Breathing preset description")),
         .init(name: "Deep Calm",    emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
-              description: "Tiefe Beruhigung durch sanften Rhythmus. Fördert mentale Klarheit."),
+              description: NSLocalizedString("Deep calming through gentle rhythm. Promotes mental clarity.", comment: "Deep Calm preset description")),
         .init(name: "Relaxing Breath",      emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
-              description: "Dr. Andrew Weil's Einschlaf-Technik. Basierend auf Pranayama, wirkt beruhigend bei Stress und Angst."),
+              description: NSLocalizedString("Dr. Andrew Weil's sleep technique. Based on Pranayama, calming for stress and anxiety.", comment: "Relaxing Breath preset description")),
         .init(name: "Rhythmic Breath", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
-              description: "Ausgewogener Rhythmus mit kurzen Halte-Phasen. Balance zwischen Aktivierung und Entspannung.")
+              description: NSLocalizedString("Balanced rhythm with brief holds. Balance between activation and relaxation.", comment: "Rhythmic Breath preset description"))
     ]
 
     // MARK: - Sample Presets & State
@@ -440,8 +440,9 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
                         Button(action: edit) {
                             Image(systemName: "ellipsis")
-                                .font(.system(size: 18, weight: .regular))
+                                .font(.system(size: 24, weight: .regular))
                                 .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Edit")
@@ -747,7 +748,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 if case .conflict(let existingOwner, let existingTitle) = result {
                     print("🫁 [AtemView] Live Activity CONFLICT: existingOwner='\(existingOwner)', existingTitle='\(existingTitle)'")
                     conflictOwnerId = existingOwner
-                    conflictTitle = existingTitle.isEmpty ? "Ein anderer Timer" : existingTitle
+                    conflictTitle = existingTitle.isEmpty ? NSLocalizedString("Another Timer", comment: "Fallback title for unknown timer") : existingTitle
                     showConflictAlert = true
                 } else {
                     print("🫁 [AtemView] Live Activity request submitted (no immediate conflict)")
@@ -970,15 +971,19 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
         // Alert for existing timer conflict
         private var conflictAlert: Alert {
-            Alert(
-                title: Text("Anderer Timer läuft"),
-                message: Text("Der Timer ‚\(conflictTitle ?? "Aktiver Timer")‘ läuft bereits. Soll dieser beendet und der neue gestartet werden?"),
-                primaryButton: .destructive(Text("Timer beenden und starten"), action: {
+            let timerName = conflictTitle ?? NSLocalizedString("Active Timer", comment: "Fallback for active timer name")
+            let messageFormat = NSLocalizedString("The timer '%@' is already running. Should it be stopped and the new one started?", comment: "Alert message for timer conflict")
+            let messageText = String(format: messageFormat, timerName)
+
+            return Alert(
+                title: Text("Another Timer Running"),
+                message: Text(messageText),
+                primaryButton: .destructive(Text("Stop Timer and Start"), action: {
                     // Force start now
                     let endDate = sessionStart.addingTimeInterval(TimeInterval(preset.totalSeconds))
                     liveActivity.forceStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
                 }),
-                secondaryButton: .cancel(Text("Abbrechen"))
+                secondaryButton: .cancel(Text("Cancel"))
             )
         }
     }

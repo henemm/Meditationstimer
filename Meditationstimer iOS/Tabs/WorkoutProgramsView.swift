@@ -1361,8 +1361,9 @@ public struct WorkoutProgramsView: View {
 
                         Button(action: edit) {
                             Image(systemName: "ellipsis")
-                                .font(.system(size: 18, weight: .regular))
+                                .font(.system(size: 24, weight: .regular))
                                 .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Bearbeiten")
@@ -1601,8 +1602,8 @@ public struct WorkoutProgramsView: View {
                         TextField("Name", text: $draft.name)
                             .textInputAutocapitalization(.words)
                     }
-                    Section("Runden") {
-                        WorkoutWheelPicker("Wiederholungen", selection: $draft.repetitions, range: 1...99)
+                    Section("Rounds") {
+                        WorkoutWheelPicker("Repetitions", selection: $draft.repetitions, range: 1...99)
                     }
                     Section("Exercises") {
                         if draft.phases.isEmpty {
@@ -1752,11 +1753,11 @@ public struct WorkoutProgramsView: View {
         var body: some View {
             NavigationView {
                 Form {
-                    Section("Übung") {
+                    Section("Exercise") {
                         Picker("Name", selection: Binding(
-                            get: { useCustomExercise ? "Eigene Übung..." : draft.name },
+                            get: { useCustomExercise ? "Custom Exercise..." : draft.name },
                             set: { newValue in
-                                if newValue == "Eigene Übung..." {
+                                if newValue == "Custom Exercise..." {
                                     useCustomExercise = true
                                 } else {
                                     useCustomExercise = false
@@ -1772,11 +1773,11 @@ public struct WorkoutProgramsView: View {
                         .pickerStyle(.menu)
 
                         if useCustomExercise {
-                            TextField("Übungsname", text: $customExerciseName)
+                            TextField("Exercise Name", text: $customExerciseName)
                                 .textInputAutocapitalization(.words)
                         }
                     }
-                    Section("Belastung") {
+                    Section("Work") {
                         HStack {
                             Text("Duration")
                             Spacer()
