@@ -11,13 +11,13 @@ public enum Weekday: String, CaseIterable, Codable {
 
     public var displayName: String {
         switch self {
-        case .sunday: return "Sonntag"
-        case .monday: return "Montag"
-        case .tuesday: return "Dienstag"
-        case .wednesday: return "Mittwoch"
-        case .thursday: return "Donnerstag"
-        case .friday: return "Freitag"
-        case .saturday: return "Samstag"
+        case .sunday: return NSLocalizedString("Sunday", comment: "Weekday name")
+        case .monday: return NSLocalizedString("Monday", comment: "Weekday name")
+        case .tuesday: return NSLocalizedString("Tuesday", comment: "Weekday name")
+        case .wednesday: return NSLocalizedString("Wednesday", comment: "Weekday name")
+        case .thursday: return NSLocalizedString("Thursday", comment: "Weekday name")
+        case .friday: return NSLocalizedString("Friday", comment: "Weekday name")
+        case .saturday: return NSLocalizedString("Saturday", comment: "Weekday name")
         }
     }
 
@@ -70,20 +70,20 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
         // Format selected days
         let dayString: String
         if selectedDays.count == 7 {
-            dayString = "Täglich"
+            dayString = NSLocalizedString("Daily", comment: "All days selected")
         } else if selectedDays.isEmpty {
-            dayString = "Keine Tage"
+            dayString = NSLocalizedString("No days", comment: "No days selected")
         } else {
             let sortedDays = Weekday.allCases.filter { selectedDays.contains($0) }
             let dayAbbreviations = sortedDays.map { day -> String in
                 switch day {
-                case .monday: return "Mo"
-                case .tuesday: return "Di"
-                case .wednesday: return "Mi"
-                case .thursday: return "Do"
-                case .friday: return "Fr"
-                case .saturday: return "Sa"
-                case .sunday: return "So"
+                case .monday: return NSLocalizedString("Mon", comment: "Monday abbreviation")
+                case .tuesday: return NSLocalizedString("Tue", comment: "Tuesday abbreviation")
+                case .wednesday: return NSLocalizedString("Wed", comment: "Wednesday abbreviation")
+                case .thursday: return NSLocalizedString("Thu", comment: "Thursday abbreviation")
+                case .friday: return NSLocalizedString("Fri", comment: "Friday abbreviation")
+                case .saturday: return NSLocalizedString("Sat", comment: "Saturday abbreviation")
+                case .sunday: return NSLocalizedString("Sun", comment: "Sunday abbreviation")
                 }
             }
             dayString = dayAbbreviations.joined(separator: ", ")
@@ -92,30 +92,30 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
         // Activity description
         let activityDescription: String
         if hoursInactive == 1 {
-            // Singular: "in der letzten Stunde"
+            // Singular: "in the last hour"
             switch activityType {
-            case .mindfulness: activityDescription = "in der letzten Stunde keine Meditation gemacht wurde"
-            case .workout: activityDescription = "in der letzten Stunde kein Workout gemacht wurde"
-            case .noalc: activityDescription = "in der letzten Stunde keinen Alkoholkonsum protokolliert haben"
+            case .mindfulness: activityDescription = NSLocalizedString("no meditation in the last hour", comment: "Mindfulness reminder condition singular")
+            case .workout: activityDescription = NSLocalizedString("no workout in the last hour", comment: "Workout reminder condition singular")
+            case .noalc: activityDescription = NSLocalizedString("no alcohol logged in the last hour", comment: "NoAlc reminder condition singular")
             }
         } else {
-            // Plural: "in den letzten X Stunden"
+            // Plural: "in the last X hours"
             switch activityType {
-            case .mindfulness: activityDescription = "in den letzten \(hoursInactive) Stunden keine Meditation gemacht wurde"
-            case .workout: activityDescription = "in den letzten \(hoursInactive) Stunden kein Workout gemacht wurde"
-            case .noalc: activityDescription = "in den letzten \(hoursInactive) Stunden keinen Alkoholkonsum protokolliert haben"
+            case .mindfulness: activityDescription = String(format: NSLocalizedString("no meditation in the last %d hours", comment: "Mindfulness reminder condition plural"), hoursInactive)
+            case .workout: activityDescription = String(format: NSLocalizedString("no workout in the last %d hours", comment: "Workout reminder condition plural"), hoursInactive)
+            case .noalc: activityDescription = String(format: NSLocalizedString("no alcohol logged in the last %d hours", comment: "NoAlc reminder condition plural"), hoursInactive)
             }
         }
 
-        return "\(dayString) um \(timeString) wenn \(activityDescription)"
+        return String(format: NSLocalizedString("%@ at %@ if %@", comment: "Reminder description format: days, time, condition"), dayString, timeString, activityDescription)
     }
 
     static func sampleData() -> [SmartReminder] {
         return [
             SmartReminder(
                 id: UUID(),
-                title: "Morgendliche Meditation",
-                message: "Nimm dir einen Moment zum Atmen 🌿",
+                title: "Morning Meditation",
+                message: "Take a moment to breathe 🌿",
                 hoursInactive: 24,
                 triggerTime: Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? Date(),
                 isEnabled: true,
@@ -124,8 +124,8 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
             ),
             SmartReminder(
                 id: UUID(),
-                title: "Abendliches Workout",
-                message: "Zeit für dein tägliches Workout! 💪",
+                title: "Evening Workout",
+                message: "Time for your daily workout! 💪",
                 hoursInactive: 48,
                 triggerTime: Calendar.current.date(bySettingHour: 18, minute: 0, second: 0, of: Date()) ?? Date(),
                 isEnabled: true,

@@ -26,13 +26,6 @@
 - Test: Sample löschen → App neu starten → prüfen ob es wiederkommt (sollte NICHT)
 - Priority: Niedrig
 
-**Bug 9: Example Reminders haben deutsche Inhalte**
-- Location: SmartReminder.swift sampleData()
-- Problem: Beispiel-Reminders zeigen deutsche Texte auch in EN Version
-- Expected: Reminders sollten in EN Version englische Texte zeigen
-- Note: Title + Message lokalisieren
-- **Update 22.11.:** Bug immer noch vorhanden! (Beispieltext in Settings auf Englisch)
-
 **Bug 10: Touch-Bereich für "..." Edit Buttons zu klein (UX)**
 - Location: AtemView.swift + WorkoutsView.swift - "..." Buttons für Exercises
 - Problem: Touch-Bereich der "..." Edit-Buttons ist zu klein (schwer zu treffen)
@@ -136,6 +129,11 @@
 - Bug 7: Settings Ambient Sound zeigt falschen Text
   - Fix: Text(sound.rawValue) → Text(LocalizedStringKey(sound.rawValue))
   - SettingsSheet.swift Line 81
+- Bug 9: SmartReminder Beschreibungen auf Deutsch (in EN Version)
+  - Root Cause: Hardcoded deutsche Strings in Weekday.displayName + SmartReminder.description
+  - Fix: Alle Strings durch NSLocalizedString ersetzt + deutsche Übersetzungen im xcstrings
+  - Betroffen: Wochentagsnamen, Abkürzungen, "Täglich", "Keine Tage", activity descriptions
+  - SmartReminder.swift Lines 12-22, 65-111, Localizable.xcstrings (+25 neue Einträge)
 - NoAlc Sheet: Drag Handle überlappte/schnitt durch "NoAlc-Tagebuch" Titel (Fix implementiert in 45b1330, muss noch getestet werden)
   - Root Cause: Drag Indicator ist Teil des Sheet Containers, nicht des Content VStack - inner padding hatte keine Auswirkung
   - Fix: Root-level `.padding(.top, 20)` + Sheet height 200→240 + inner padding 52→32
