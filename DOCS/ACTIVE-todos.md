@@ -45,16 +45,13 @@
 
 ### Weitere Localization Bugs (Neu: 22.11.2025)
 
-**Bug 18: Workouts-Tab Übungs-Info-Sheets nicht aufrufbar (wiederkehrend!)**
-- Location: `WorkoutProgramsView.swift` Zeilen 1435-1472 (WorkoutCard exercise row)
-- Problem: "Übungsinformation nicht verfügbar, für diese…" - Info-Sheets der einzelnen Übungen können nicht aufgerufen werden (außer während laufendem Training)
-- Expected: Info-Sheets sollten immer aufrufbar sein
-- **Root Cause:** SwiftUI Gesture Konflikt! Der Info-Button (Zeile 1460-1472) liegt INNERHALB eines HStack (Zeile 1435) der `.onTapGesture` (Zeile 1446) + `.contentShape(Rectangle())` (Zeile 1449) hat. Der HStack-Tap fängt ALLE Taps ab - auch Button-Taps!
-- **Warum während Training OK:** Dort wird `showExerciseInfoButton()` (Zeile 1185) direkt verwendet, NICHT in HStack mit konkurrierendem TapGesture
-- **Warum Bug wiederkehrt:** Fixes die nur den Button ändern, ignorieren das HStack-Gesture-Problem
-- Test: Workout auswählen (NICHT starten!) → Info-Button tippen → Sheet sollte öffnen
-- Priority: Mittel
-- Aufwand: Klein (Button aus Gesture-Bereich rausnehmen, ~10-20 LoC)
+**Bug 18: Workouts-Tab Übungs-Info-Sheets zeigen "nicht verfügbar"**
+- Location: `WorkoutProgramsView.swift` (WorkoutPhase names) + `ExerciseDatabase.swift`
+- Problem: Info-Sheets zeigen "Übungsinformationen nicht verfügbar" statt der Übungsdetails
+- **KORRIGIERTE Root Cause:** Namensmismatch! WorkoutPhases verwendeten englische Namen ("Plank", "Squats"), ExerciseDatabase hat deutsche Namen ("Planke", "Kniebeugen") → Lookup schlägt fehl
+- **Fix implementiert:** 31 Übungsnamen in WorkoutProgramsView.swift auf deutsche ExerciseDatabase-Namen geändert
+- Test: Workout aufklappen → Info-Button tippen → Sheet sollte Übungsdetails zeigen (nicht "nicht verfügbar")
+- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
 
 **Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version) - KOMPLEX**
 - Location: ExerciseDatabase.swift - alle 35+ Übungen mit effect + instructions Strings
