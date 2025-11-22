@@ -18,28 +18,24 @@
 **Priorität:** Hoch (User Impact - App soll bilingual sein)
 
 **Bug 8: Debug Entry für Smart Reminders entfernen**
-- Location: `SmartRemindersView.swift` Zeile 20-21 (@AppStorage)
-- Problem: Debug/Test-Eintrag für Smart Reminders sollte in Production nicht sichtbar sein
-- Expected: Debug Entry in beiden Versionen (EN + DE) entfernen
-- **Root Cause:** Commit d1e1d14 hat `sampleReminders` auf `[]` gesetzt, aber bei bestehenden Installationen sind die alten Sample-Daten bereits in `@AppStorage("smartReminders")` gespeichert. UserDefaults werden NICHT automatisch gelöscht wenn der Default-Wert sich ändert. Fix wirkt nur bei NEU-Installationen!
-- **Workaround:** User kann Sample manuell löschen (swipe-to-delete) - sollte NICHT wiederkommen
+- Location: `SmartRemindersView.swift` Zeilen 207-237 (Blacklist-Logik)
+- Problem: Debug/Test-Eintrag für Smart Reminders sollte nicht wiederkommen nach Löschen
+- **Fix existiert:** Blacklist-Logik (deletedSampleReminderTypes) verhindert Wieder-Hinzufügen
 - Test: Sample löschen → App neu starten → prüfen ob es wiederkommt (sollte NICHT)
-- Priority: Niedrig
+- Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
 
 **Bug 10: Touch-Bereich für "..." Edit Buttons zu klein (UX)**
-- Location: AtemView.swift + WorkoutsView.swift - "..." Buttons für Exercises
-- Problem: Touch-Bereich der "..." Edit-Buttons ist zu klein (schwer zu treffen)
-- Expected: Größeren Touch-Bereich für bessere Usability
-- Type: UX Improvement (nicht Localization Bug, aber in gleicher Session gefunden)
+- Location: AtemView.swift:441-448, WorkoutProgramsView.swift:1365-1372
+- **Fix existiert:** Buttons haben `.frame(width: 44, height: 44)` + `.contentShape(Rectangle())`
+- Commit: be02cfe "fix: Improve edit button touch targets (Bug 10)"
+- Test: Edit Button antippen - sollte leichter zu treffen sein
+- Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
 
 **Bug 12: AirPods Static Noise während Meditation**
-- Location: Services/BackgroundAudioKeeper.swift
-- Problem: Minimales statisches Fiepen bei AirPods mit ANC während Meditation
-- Root Cause: BackgroundAudioKeeper spielt "silence.caf" mit Volume 0.01 in Endlosschleife → Bluetooth-Codec erzeugt Artefakte
-- Expected: Keine Störgeräusche bei Bluetooth-Kopfhörern
+- Location: `Meditationstimer iOS/BackgroundAudioKeeper.swift` Zeile 32
+- **Fix existiert:** Volume wurde auf `0.0` gesetzt (war vorher 0.01)
 - Test: AirPods + ANC aktivieren, Meditation OHNE Ambient Sound starten, auf Fiepen achten
-- Priority: Mittel (User Impact bei ANC-Kopfhörern)
-- Dokumentation: DOCS/bug-airpods-static-noise.md
+- Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
 
 ---
 
