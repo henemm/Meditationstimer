@@ -50,23 +50,23 @@
 - Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
 
 **Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version) - KOMPLEX**
-- Location: ExerciseDatabase.swift - alle 35+ Übungen mit effect + instructions Strings
-- Problem: Übungsbeschreibungen sind hardcoded Deutsch, keine Lokalisierung
-- Expected: Englische Info-Sheets in EN Version
-- **Aufwand:** ~140 Übersetzungen (35 Übungen × 2 Texte × 2 Sprachen)
-- **Empfehlung:** Als Feature-Spec ausarbeiten - zu komplex für einfachen Bug-Fix (wie Bug 25)
+- Location: `ExerciseDatabase.swift` - 45 Übungen mit effect + instructions Strings
+- Problem: Alle Texte hardcoded Deutsch → EN-Version zeigt deutsche Info-Sheets
+- **Aufwand:** 90 Strings × 2 Sprachen = ~20.000 Zeichen Übersetzung + Code-Wrapping
+- **Feature-Spec erstellt:** `DOCS/feature-exercise-localization.md`
+- Status: **FEATURE-SPEC ERSTELLT, AWAITING DECISION**
 
 ---
 
-### Workout-Übungen (Feature-Kandidat)
+### Workout-Übungen
 
-**Bug 25: Übungsnamen inkonsistent lokalisiert**
-- Location: Exercise Definitions (WorkoutProgramsView oder Exercises.swift)
-- Problem: Übungsnamen sind komplett Englisch. Zuvor war es eine sinnvolle Mischung (Deutsche Begriffe wo üblich, Englisch als Fallback)
-- Beispiel: "Hip Circles" sollte "Hüftkreisen" sein (bekannter deutscher Begriff)
-- Expected: Mischung: Deutsche Begriffe wenn üblich, sonst Englisch (z.B. "Push-Ups" bleibt)
-- Note: Trainings scheinen unvollständig ("Leg Swing Left" ohne "Leg Swing Right")
-- **Empfehlung:** Als Feature-Spec ausarbeiten - zu komplex für einfachen Bug-Fix
+**Bug 25: Übungsnamen inkonsistent lokalisiert - TEILWEISE BEHOBEN**
+- **Durch Bug 18 gefixt:** WorkoutPhase Namen → ExerciseDatabase Namen (31 Änderungen)
+- **Links/Rechts Paare:** Alle vollständig in ExerciseDatabase ✅
+- **Verbleibend:** EN-Version zeigt deutsche Namen (z.B. "Kniebeugen" statt "Squats")
+- **Empfehlung:** Zusammen mit Bug 19 lokalisieren
+- **Feature-Spec erstellt:** `DOCS/feature-exercise-names.md`
+- Status: **TEILWEISE BEHOBEN, REST MIT BUG 19 ZUSAMMENFÜHREN**
 
 ---
 
