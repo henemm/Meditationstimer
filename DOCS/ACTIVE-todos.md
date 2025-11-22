@@ -17,16 +17,6 @@
 **Status:** Offen
 **Priorität:** Hoch (User Impact - App soll bilingual sein)
 
-**Bug 6: Workouts Edit Dialog teilweise auf Deutsch (in EN Version)**
-- Location: WorkoutsView.swift Edit Dialog
-- Problem: Begriffe wie "Runden" erscheinen auf Deutsch in EN Version
-- Expected: Alle Begriffe sollten in EN Version englisch sein (z.B. "Rounds")
-
-**Bug 7: Settings Background/Ambient Sound zeigt "Kein Sound" (in EN Version)**
-- Location: SettingsSheet.swift - Background/Ambient Sound Setting
-- Problem: "Kein Sound" erscheint auf Deutsch in EN Version
-- Expected: "No Sound" in EN Version, "Kein Sound" in DE Version
-
 **Bug 8: Debug Entry für Smart Reminders entfernen**
 - Location: `SmartRemindersView.swift` Zeile 20-21 (@AppStorage)
 - Problem: Debug/Test-Eintrag für Smart Reminders sollte in Production nicht sichtbar sein
@@ -140,6 +130,12 @@
   - Fix: Automatisch durch Bug 16 Fix behoben (pickerRow → LocalizedStringKey)
 - Bug 5: Workouts Section unterhalb "Recommended Application" auf Deutsch (in EN Version)
   - Status: War bereits korrekt implementiert - NSLocalizedString + Übersetzungen existieren
+- Bug 6: Workouts Edit Dialog teilweise auf Deutsch (in EN Version)
+  - Fix: "Neue Übung" → NSLocalizedString("New Exercise"), "Work: Rest:" Format-String lokalisiert
+  - WorkoutProgramsView.swift Lines 1625, 1646, Localizable.xcstrings
+- Bug 7: Settings Ambient Sound zeigt falschen Text
+  - Fix: Text(sound.rawValue) → Text(LocalizedStringKey(sound.rawValue))
+  - SettingsSheet.swift Line 81
 - NoAlc Sheet: Drag Handle überlappte/schnitt durch "NoAlc-Tagebuch" Titel (Fix implementiert in 45b1330, muss noch getestet werden)
   - Root Cause: Drag Indicator ist Teil des Sheet Containers, nicht des Content VStack - inner padding hatte keine Auswirkung
   - Fix: Root-level `.padding(.top, 20)` + Sheet height 200→240 + inner padding 52→32

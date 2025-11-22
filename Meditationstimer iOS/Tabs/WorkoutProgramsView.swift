@@ -122,17 +122,20 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
         }
     }
 
-    func speak(_ text: String, language: String = "de-DE") {
+    func speak(_ text: String) {
         prepare()
         let u = AVSpeechUtterance(string: text)
-        u.voice = AVSpeechSynthesisVoice(language: language)
+        // Sprache automatisch aus App-Locale ermitteln
+        let languageCode = Locale.current.language.languageCode?.identifier ?? "de"
+        let voiceLanguage = languageCode == "en" ? "en-US" : "de-DE"
+        u.voice = AVSpeechSynthesisVoice(language: voiceLanguage)
         u.rate = AVSpeechUtteranceDefaultSpeechRate
         speech.speak(u)
     }
 
-    func speak(_ text: String, after delay: TimeInterval, language: String = "de-DE") {
+    func speak(_ text: String, after delay: TimeInterval) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            self?.speak(text, language: language)
+            self?.speak(text)
         }
     }
 
@@ -1619,7 +1622,7 @@ public struct WorkoutProgramsView: View {
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(phase.name)
                                                 .foregroundStyle(.primary)
-                                            Text("Work: \(phase.workDuration)s  Rest: \(phase.restDuration)s")
+                                            Text(String(format: NSLocalizedString("Work: %llds  Rest: %llds", comment: ""), Int64(phase.workDuration), Int64(phase.restDuration)))
                                                 .font(.caption)
                                                 .foregroundStyle(.secondary)
                                         }
@@ -1640,7 +1643,7 @@ public struct WorkoutProgramsView: View {
                         Button {
                             // Create new phase with first exercise suggestion
                             let newPhase = WorkoutPhase(
-                                name: exerciseSuggestions.first ?? "Neue Übung",
+                                name: exerciseSuggestions.first ?? NSLocalizedString("New Exercise", comment: "Default name for new exercise"),
                                 workDuration: 30,
                                 restDuration: 15
                             )

@@ -3194,7 +3194,21 @@
       }
     },
     "New Exercise" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Übung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Exercise"
+          }
+        }
+      }
     },
     "New Preset" : {
       "extractionState" : "manual",
@@ -5468,9 +5482,15 @@
     },
     "Work: %llds  Rest: %llds" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belastung: %1$llds  Pause: %2$llds"
+          }
+        },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Work: %1$llds  Rest: %2$llds"
           }
         }

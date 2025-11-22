@@ -78,7 +78,7 @@ struct SettingsSheet: View {
                 Section(header: Text("Background Sounds")) {
                     Picker("Ambient Sound", selection: ambientSound) {
                         ForEach(AmbientSound.allCases) { sound in
-                            Text(sound.rawValue).tag(sound)
+                            Text(LocalizedStringKey(sound.rawValue)).tag(sound)
                         }
                     }
                     #if os(iOS)
@@ -163,19 +163,15 @@ struct SettingsSheet: View {
                 Section(header: Text("Workout Programs")) {
                     Toggle("Announce exercise names", isOn: $speakExerciseNames)
                         .help("Announces exercise names before each exercise using speech synthesis")
-
-                    Text("Uses the system language for announcements (German/English).")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                 }
 
                 Section {
-                    Text("Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.")
+                    Text(NSLocalizedString("Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.", comment: "Smart reminder explanation"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     NavigationLink(destination: SmartRemindersView()) {
-                        Label("Smart Reminders", systemImage: "bell.badge")
+                        Label(NSLocalizedString("Smart Reminders", comment: ""), systemImage: "bell.badge")
                             .help("Configure smart reminders that are automatically cancelled when you've already completed the activity.")
                     }
 
@@ -188,18 +184,18 @@ struct SettingsSheet: View {
                 #if os(iOS)
                 Section {
                     Link(destination: URL(string: UIApplication.openSettingsURLString)!) {
-                        Label("System‑Einstellungen öffnen", systemImage: "gearshape")
+                        Label(NSLocalizedString("Open System Settings", comment: ""), systemImage: "gearshape")
                     }
                 }
                 #endif
             }
-            .navigationTitle("Einstellungen")
+            .navigationTitle(NSLocalizedString("Settings", comment: ""))
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .tabBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fertig") {
+                    Button(NSLocalizedString("Done", comment: "")) {
                         dismiss()
                     }
                 }
