@@ -26,6 +26,19 @@
 
 ---
 
+## Bug-Fixing Pflicht
+
+**Bei JEDEM Bug-Fix MUSS der `bug-investigator` Agent verwendet werden:**
+
+- Direktes Fixen ohne Agent ist **VERBOTEN**
+- Der Agent analysiert erst vollständig, dann wird (nach Freigabe) gefixt
+- Aufruf: `/bug [Beschreibung]` oder explizit "Nutze bug-investigator für..."
+- **Ausnahme:** Triviale Typos (1 Zeile, offensichtlich)
+
+**Warum:** Verhindert Trial-and-Error und erzwingt Analysis-First Prinzip.
+
+---
+
 ## Architecture Overview
 
 Multi-target, horizontally-layered architecture:
