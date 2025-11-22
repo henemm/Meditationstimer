@@ -517,12 +517,12 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
                         // Rhythm Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Rhythm")
+                            Text(NSLocalizedString("Rhythm", comment: "Section header in preset info"))
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(preset.rhythmString)
                                 .font(.title3)
-                            Text("\(preset.repetitions) Repetitions · ≈ \(preset.totalDurationString)")
+                            Text(String(format: NSLocalizedString("%lld Repetitions · ≈ %@", comment: "Repetitions count in preset info"), Int64(preset.repetitions), preset.totalDurationString))
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -530,7 +530,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                         // Description Section
                         if let description = preset.description {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("Effect")
+                                Text(NSLocalizedString("Effect", comment: "Section header in preset info"))
                                     .font(.headline)
                                     .foregroundStyle(.secondary)
                                 Text(description)
@@ -540,7 +540,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
 
                         // Recommended Usage Section
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Recommended Application")
+                            Text(NSLocalizedString("Recommended Application", comment: "Section header in preset info"))
                                 .font(.headline)
                                 .foregroundStyle(.secondary)
                             Text(recommendedUsage)
@@ -1081,7 +1081,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         }
 
         @ViewBuilder
-        private func pickerRow(title: String, value: Binding<Int>) -> some View {
+        private func pickerRow(title: LocalizedStringKey, value: Binding<Int>) -> some View {
             HStack {
                 Text(title)
                 Spacer()

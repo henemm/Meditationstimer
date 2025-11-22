@@ -12,9 +12,9 @@ import SwiftUI
 struct InfoSheet: View {
     @Environment(\.dismiss) private var dismiss
 
-    let title: String
-    let description: String
-    let usageTips: [String]
+    let title: LocalizedStringKey
+    let description: LocalizedStringKey
+    let usageTips: [LocalizedStringKey]
 
     var body: some View {
         NavigationView {

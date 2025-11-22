@@ -1,41 +1,21 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 16. November 2025
+**Letzte Aktualisierung:** 22. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
+
+---
+
+## 🚨 KRITISCHE Bugs
+
+*Aktuell keine kritischen Bugs*
 
 ---
 
 ## 🐛 aktive Bugs
 
-### Localization Inconsistencies (10 Bugs)
+### Localization Bugs
 **Status:** Offen
 **Priorität:** Hoch (User Impact - App soll bilingual sein)
-
-**Bug 1: Offen Tab - "Meditation/Besinnung" Text nicht Uppercase**
-- Location: OffenView.swift Header
-- Problem: Text sollte uppercase sein (konsistent mit anderen Tabs)
-- Expected: "MEDITATION/BESINNUNG"
-
-**Bug 2: Deutscher "Offen" Tab komplett in Deutsch**
-- Location: OffenView.swift - Title + InfoSheet
-- Problem: Title und InfoSheet sind aktuell auf Englisch (nach Section 1&2 Implementation)
-- Expected: Deutscher Tab sollte "Offene Meditation" + deutsche InfoSheet Texte zeigen
-- Note: Englische Version sollte "OPEN MEDITATION" bleiben
-
-**Bug 3: Breathe Meditation InfoSheets auf Deutsch (in EN Version)**
-- Location: AtemView.swift InfoSheets
-- Problem: InfoSheets zeigen deutsche Texte in englischer App-Version
-- Expected: InfoSheets sollten in EN Version englische Texte zeigen
-
-**Bug 4: Breathe Exercise Edit Dialog auf Deutsch (in EN Version)**
-- Location: AtemView.swift Edit Dialog
-- Problem: Edit Dialog zeigt deutsche Texte in englischer App-Version
-- Expected: Dialog sollte in EN Version englische Texte zeigen
-
-**Bug 5: Workouts - Section unterhalb "Recommended Application" auf Deutsch (in EN Version)**
-- Location: WorkoutsView.swift - Section unterhalb "Recommended Application"
-- Problem: Section zeigt deutsche Texte in englischer App-Version
-- Expected: Section sollte in EN Version englische Texte zeigen
 
 **Bug 6: Workouts Edit Dialog teilweise auf Deutsch (in EN Version)**
 - Location: WorkoutsView.swift Edit Dialog
@@ -48,16 +28,20 @@
 - Expected: "No Sound" in EN Version, "Kein Sound" in DE Version
 
 **Bug 8: Debug Entry für Smart Reminders entfernen**
-- Location: SmartRemindersView.swift (Sample Data)
+- Location: `SmartRemindersView.swift` Zeile 20-21 (@AppStorage)
 - Problem: Debug/Test-Eintrag für Smart Reminders sollte in Production nicht sichtbar sein
 - Expected: Debug Entry in beiden Versionen (EN + DE) entfernen
-- Priority: Niedrig (nicht user-facing wenn keine Debug-Daten)
+- **Root Cause:** Commit d1e1d14 hat `sampleReminders` auf `[]` gesetzt, aber bei bestehenden Installationen sind die alten Sample-Daten bereits in `@AppStorage("smartReminders")` gespeichert. UserDefaults werden NICHT automatisch gelöscht wenn der Default-Wert sich ändert. Fix wirkt nur bei NEU-Installationen!
+- **Workaround:** User kann Sample manuell löschen (swipe-to-delete) - sollte NICHT wiederkommen
+- Test: Sample löschen → App neu starten → prüfen ob es wiederkommt (sollte NICHT)
+- Priority: Niedrig
 
 **Bug 9: Example Reminders haben deutsche Inhalte**
 - Location: SmartReminder.swift sampleData()
 - Problem: Beispiel-Reminders zeigen deutsche Texte auch in EN Version
 - Expected: Reminders sollten in EN Version englische Texte zeigen
 - Note: Title + Message lokalisieren
+- **Update 22.11.:** Bug immer noch vorhanden! (Beispieltext in Settings auf Englisch)
 
 **Bug 10: Touch-Bereich für "..." Edit Buttons zu klein (UX)**
 - Location: AtemView.swift + WorkoutsView.swift - "..." Buttons für Exercises
@@ -65,8 +49,97 @@
 - Expected: Größeren Touch-Bereich für bessere Usability
 - Type: UX Improvement (nicht Localization Bug, aber in gleicher Session gefunden)
 
+**Bug 12: AirPods Static Noise während Meditation**
+- Location: Services/BackgroundAudioKeeper.swift
+- Problem: Minimales statisches Fiepen bei AirPods mit ANC während Meditation
+- Root Cause: BackgroundAudioKeeper spielt "silence.caf" mit Volume 0.01 in Endlosschleife → Bluetooth-Codec erzeugt Artefakte
+- Expected: Keine Störgeräusche bei Bluetooth-Kopfhörern
+- Test: AirPods + ANC aktivieren, Meditation OHNE Ambient Sound starten, auf Fiepen achten
+- Priority: Mittel (User Impact bei ANC-Kopfhörern)
+- Dokumentation: DOCS/bug-airpods-static-noise.md
+
+---
+
+### Weitere Localization Bugs (Neu: 22.11.2025)
+
+**Bug 18: Workouts-Tab Übungs-Info-Sheets nicht aufrufbar (wiederkehrend!)**
+- Location: `WorkoutProgramsView.swift` Zeilen 1435-1472 (WorkoutCard exercise row)
+- Problem: "Übungsinformation nicht verfügbar, für diese…" - Info-Sheets der einzelnen Übungen können nicht aufgerufen werden (außer während laufendem Training)
+- Expected: Info-Sheets sollten immer aufrufbar sein
+- **Root Cause:** SwiftUI Gesture Konflikt! Der Info-Button (Zeile 1460-1472) liegt INNERHALB eines HStack (Zeile 1435) der `.onTapGesture` (Zeile 1446) + `.contentShape(Rectangle())` (Zeile 1449) hat. Der HStack-Tap fängt ALLE Taps ab - auch Button-Taps!
+- **Warum während Training OK:** Dort wird `showExerciseInfoButton()` (Zeile 1185) direkt verwendet, NICHT in HStack mit konkurrierendem TapGesture
+- **Warum Bug wiederkehrt:** Fixes die nur den Button ändern, ignorieren das HStack-Gesture-Problem
+- Test: Workout auswählen (NICHT starten!) → Info-Button tippen → Sheet sollte öffnen
+- Priority: Mittel
+- Aufwand: Klein (Button aus Gesture-Bereich rausnehmen, ~10-20 LoC)
+
+**Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version) - KOMPLEX**
+- Location: ExerciseDatabase.swift - alle 35+ Übungen mit effect + instructions Strings
+- Problem: Übungsbeschreibungen sind hardcoded Deutsch, keine Lokalisierung
+- Expected: Englische Info-Sheets in EN Version
+- **Aufwand:** ~140 Übersetzungen (35 Übungen × 2 Texte × 2 Sprachen)
+- **Empfehlung:** Als Feature-Spec ausarbeiten - zu komplex für einfachen Bug-Fix (wie Bug 25)
+
+---
+
+### Workout-Übungen (Feature-Kandidat)
+
+**Bug 25: Übungsnamen inkonsistent lokalisiert**
+- Location: Exercise Definitions (WorkoutProgramsView oder Exercises.swift)
+- Problem: Übungsnamen sind komplett Englisch. Zuvor war es eine sinnvolle Mischung (Deutsche Begriffe wo üblich, Englisch als Fallback)
+- Beispiel: "Hip Circles" sollte "Hüftkreisen" sein (bekannter deutscher Begriff)
+- Expected: Mischung: Deutsche Begriffe wenn üblich, sonst Englisch (z.B. "Push-Ups" bleibt)
+- Note: Trainings scheinen unvollständig ("Leg Swing Left" ohne "Leg Swing Right")
+- **Empfehlung:** Als Feature-Spec ausarbeiten - zu komplex für einfachen Bug-Fix
+
+---
 
 ## behobene Bugs
+- Bug 13: RunCard hatte transparenten Hintergrund statt soliden
+  - Root Cause: RunCard hatte keinen expliziten Hintergrund → Liquid Glass durchscheinend
+  - Fix: `.frame(maxWidth: .infinity, maxHeight: .infinity)` + `.background(Color(uiColor: .systemBackground))` hinzugefügt
+  - OffenView.swift RunCard struct (Lines 629-631)
+- Bug 11: TTS sprach immer Deutsch (auch in EN-App)
+  - Root Cause: `speak()` hatte hardcoded `language: String = "de-DE"` Default
+  - Fix: Sprache automatisch aus `Locale.current.language.languageCode` ermitteln
+  - WorkoutProgramsView.swift speak() Funktion (Lines 125-140)
+- Bug 20: NoAlc Sheet "Yesterday Evening" nicht lokalisiert
+  - Fix: Hardcoded Strings durch NSLocalizedString ersetzt
+  - NoAlcLogSheet.swift titleText (Lines 186, 188)
+- Bug 21: NoAlc Sheet Begriffe umbenennen
+  - Fix: "Ruhig"→"Kaum", "Leicht"→"Überschaubar", "Wild"→"Party"
+  - Localizable.xcstrings (Steady, Easy, Wild Entries)
+- Bug 22: Settings-Sheet hardcoded deutsche Texte
+  - Fix: "Einstellungen", "System-Einstellungen öffnen", "Fertig" → NSLocalizedString
+  - SettingsSheet.swift (Lines 191, 196, 202)
+- Bug 23: Settings Smart-Reminder Text nicht lokalisiert
+  - Fix: NSLocalizedString für den Erklärungstext verwendet (Übersetzung existierte bereits)
+  - SettingsSheet.swift (Line 173)
+- Bug 24: Settings irreführender "(German/English)" Text
+  - Fix: Text entfernt (System nutzt tatsächlich alle Sprachen)
+  - SettingsSheet.swift (Lines 167-169 entfernt)
+- Bug 14: Offen Info-Dialog auf Englisch (in DE)
+  - Fix: NSLocalizedString für alle Texte (Übersetzungen existierten bereits)
+  - OffenView.swift InfoSheet (Lines 436-444)
+- Bug 15: Atem-Tab Info-Sheets unvollständig übersetzt (DE)
+  - Fix: NSLocalizedString für Section-Überschriften (Rhythm, Effect, Recommended Application)
+  - Fix: Format-String "%lld Repetitions · ≈ %@" → "%lld Wiederholungen · ≈ %@"
+  - Fix: 7 recommendedUsage Fließtexte mit deutschen Übersetzungen hinzugefügt
+  - AtemView.swift PresetInfoSheet (Lines 520-543), Localizable.xcstrings
+- Bug 16: Atem-Tab Edit Dialog unvollständig übersetzt (DE)
+  - Root Cause: `pickerRow(title: String, ...)` - String-Parameter wird nicht automatisch lokalisiert
+  - Fix: Parameter-Typ von `String` auf `LocalizedStringKey` geändert
+  - AtemView.swift pickerRow() Funktion (Line 1084)
+- Bug 17: Workouts-Tab Info-Sheet unvollständig übersetzt (DE)
+  - Root Cause: InfoSheet akzeptierte `String` statt `LocalizedStringKey` → keine automatische Lokalisierung
+  - Fix: InfoSheet.swift Parameter von String auf LocalizedStringKey geändert
+  - Bonus: Alle InfoSheet-Aufrufstellen (OffenView, WorkoutsView, NoAlcLogSheet) automatisch gefixt!
+- Bug 3: Breathe Meditation InfoSheets auf Deutsch (in EN Version)
+  - Fix: Automatisch durch Bug 17 Fix behoben (InfoSheet → LocalizedStringKey)
+- Bug 4: Breathe Exercise Edit Dialog auf Deutsch (in EN Version)
+  - Fix: Automatisch durch Bug 16 Fix behoben (pickerRow → LocalizedStringKey)
+- Bug 5: Workouts Section unterhalb "Recommended Application" auf Deutsch (in EN Version)
+  - Status: War bereits korrekt implementiert - NSLocalizedString + Übersetzungen existieren
 - NoAlc Sheet: Drag Handle überlappte/schnitt durch "NoAlc-Tagebuch" Titel (Fix implementiert in 45b1330, muss noch getestet werden)
   - Root Cause: Drag Indicator ist Teil des Sheet Containers, nicht des Content VStack - inner padding hatte keine Auswirkung
   - Fix: Root-level `.padding(.top, 20)` + Sheet height 200→240 + inner padding 52→32

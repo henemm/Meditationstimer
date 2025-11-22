@@ -167,7 +167,7 @@ struct OffenView: View {
             // Rechte Spalte: große Wheel-Picker für Zeiten
             VStack(spacing: 24) {
                 Picker("Meditation (min)", selection: $phase1Minutes) {
-                    ForEach(0..<61) { Text("\($0)") }
+                    ForEach(1..<61) { Text("\($0)") }  // Min 1 Minute (Bug 13 Fix)
                 }
                 .labelsHidden()
                 .pickerStyle(.wheel)
@@ -175,7 +175,7 @@ struct OffenView: View {
                 .clipped()
 
                 Picker("Contemplation (min)", selection: $phase2Minutes) {
-                    ForEach(0..<61) { Text("\($0)") }
+                    ForEach(1..<61) { Text("\($0)") }  // Min 1 Minute (Bug 13 Fix)
                 }
                 .labelsHidden()
                 .pickerStyle(.wheel)
@@ -365,26 +365,24 @@ struct OffenView: View {
             ZStack {
                 // Base (idle & finished)
                 VStack {
-                    GlassCard {
-                        VStack(spacing: 16) {
-                            HStack(spacing: 8) {
-                                Text("Open Meditation")
-                                    .font(.title3)
-                                    .foregroundStyle(.secondary)
-                                    .textCase(.uppercase)
-                                InfoButton { showOffenInfo = true }
-                                Spacer()
-                            }
-                            .padding(.horizontal, 4)
+                    VStack(spacing: 16) {
+                        HStack(spacing: 8) {
+                            Text("Open Meditation")
+                                .font(.title3)
+                                .foregroundStyle(.secondary)
+                                .textCase(.uppercase)
+                            InfoButton { showOffenInfo = true }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 4)
 
-                            switch engine.state {
-                            case .idle, .finished:
-                                pickerSection
-                                startButton
-                            case .phase1, .phase2:
-                                // The active states are handled by the overlay run card below
-                                EmptyView()
-                            }
+                        switch engine.state {
+                        case .idle, .finished:
+                            pickerSection
+                            startButton
+                        case .phase1, .phase2:
+                            // The active states are handled by the overlay run card below
+                            EmptyView()
                         }
                     }
                     .padding()
@@ -489,6 +487,9 @@ struct OffenView: View {
             .onAppear { lastState = engine.state }
             .onAppear {
                 notifier.start()
+                // Bug 13 Fix: Korrigiere ungültige gespeicherte Werte (0 Minuten)
+                if phase1Minutes < 1 { phase1Minutes = 10 }
+                if phase2Minutes < 1 { phase2Minutes = 5 }
             }
             .onDisappear {
                 notifier.stop()
@@ -626,6 +627,8 @@ private struct RunCard: View {
                 .accessibilityLabel("End Session")
         }
         .frame(maxWidth: 420)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(uiColor: .systemBackground))
         .onAppear {
             timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
                 currentTime = Date()
