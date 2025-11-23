@@ -51,9 +51,9 @@
 - Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
 
 **Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version)**
-- Location: `ExerciseDatabase.swift` - 45 Übungen mit effect + instructions Strings
-- Problem: Alle Texte hardcoded Deutsch → EN-Version zeigt deutsche Info-Sheets
-- **Fix implementiert:** 90 NSLocalizedString wraps + DE/EN Übersetzungen in Localizable.xcstrings
+- Location: `ExerciseDatabase.swift` - 43 Übungen mit effect + instructions Strings
+- Problem: EN-Übersetzungen fehlten in Localizable.xcstrings (state: "new" mit deutschem Text)
+- **Fix (23.11.2025):** 86 englische Übersetzungen in Localizable.xcstrings eingefügt
 - Test: EN-Version starten → Workout aufklappen → Info-Button → Sheet sollte englische Texte zeigen
 - Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN** 
 
