@@ -39,6 +39,19 @@
 
 ---
 
+## UI-Testing Regeln
+
+**Bei manuellen UI-Tests mit Henning:**
+
+1. **Immer nur EINEN Test zur Zeit** - Nicht alle Tests auf einmal präsentieren
+2. **Auf Ergebnis warten** - Erst nach Hennings Feedback zum nächsten Test
+3. **Sofort protokollieren** - Pass/Fail direkt in ACTIVE-todos.md dokumentieren
+4. **Bei Fehler: STOP** - Nicht weiter testen, sondern Bug analysieren
+
+**Warum:** Henning testet auf echtem Device. Zu viele Tests gleichzeitig führen zu Chaos.
+
+---
+
 ## Architecture Overview
 
 Multi-target, horizontally-layered architecture:
@@ -1089,3 +1102,4 @@ VStack {
 ---
 
 **For global collaboration rules and workflow, see `~/.claude/CLAUDE.md`**
+- immer an lokalisierung denken, bei neuen Features genauso wie bei der Behebung von Bugs. Nutze den Agenten
