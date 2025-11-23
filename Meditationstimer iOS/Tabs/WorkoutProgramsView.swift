@@ -292,6 +292,8 @@ private let exerciseSuggestions: [String] = [
     "Shoulder Stretch Right",
     "Leg Swing Left",
     "Leg Swing Right",
+    "Beinpendel links",
+    "Beinpendel rechts",
     "Hip Circles",
 ].sorted()
 
@@ -387,7 +389,8 @@ private let defaultWorkoutSets: [WorkoutSet] = [
         phases: [
             WorkoutPhase(name: "High Knees", workDuration: 30, restDuration: 10),
             WorkoutPhase(name: "Butt Kicks", workDuration: 30, restDuration: 10),
-            WorkoutPhase(name: "Beinpendel", workDuration: 30, restDuration: 10),
+            WorkoutPhase(name: "Beinpendel links", workDuration: 15, restDuration: 5),
+            WorkoutPhase(name: "Beinpendel rechts", workDuration: 15, restDuration: 10),
             WorkoutPhase(name: "Ausfallschritte gehend", workDuration: 40, restDuration: 10),
             WorkoutPhase(name: "Hüftkreisen", workDuration: 30, restDuration: 10),
         ],
@@ -688,13 +691,15 @@ public struct WorkoutProgramsView: View {
         @State private var pausedPhaseAccum: TimeInterval = 0
         @State private var pausedSessionAccum: TimeInterval = 0
         @State private var sessionEnded: Bool = false  // Prevent double HealthKit logging
+        @AppStorage("countdownBeforeStart") private var countdownBeforeStart: Int = 0
+        @State private var showCountdown = false
 
         var body: some View {
             ZStack {
                 Color(.systemGray6).ignoresSafeArea()
                 VStack(spacing: 12) {
                     if !finished {
-                        Text(set.name).font(.headline)
+                        Text(LocalizedStringKey(set.name)).font(.headline)
 
                         // Dual Ring Progress + Timer
                         ProgressRingsView(
@@ -751,24 +756,27 @@ public struct WorkoutProgramsView: View {
                 // 0. Prepare audio session
                 sounds.prepare()
 
-                // 1. Announce first exercise (if TTS enabled)
-                if speakExerciseNames {
-                    sounds.speak("Als nächstes: \(set.phases[0].name)")
-                }
-
-                // 2. Disable idle timer
+                // 1. Disable idle timer
                 setIdleTimer(true)
 
-                // 3. Play start sound
-                sounds.play(.auftakt)
-
-                // 3. Start Live Activity
-                let endDate = sessionStart.addingTimeInterval(TimeInterval(set.totalSeconds))
-                liveActivity.start(
-                    title: set.name,
-                    phase: 1,
-                    endDate: endDate,
-                    ownerId: "WorkoutsTab"
+                // 2. Countdown vor Start (wenn aktiviert)
+                if countdownBeforeStart > 0 {
+                    showCountdown = true
+                } else {
+                    beginSessionAfterCountdown()
+                }
+            }
+            .fullScreenCover(isPresented: $showCountdown) {
+                CountdownOverlayView(
+                    totalSeconds: countdownBeforeStart,
+                    onComplete: {
+                        showCountdown = false
+                        beginSessionAfterCountdown()
+                    },
+                    onCancel: {
+                        showCountdown = false
+                        close()
+                    }
                 )
             }
             .onDisappear {
@@ -783,6 +791,28 @@ public struct WorkoutProgramsView: View {
             #if canImport(UIKit)
             UIApplication.shared.isIdleTimerDisabled = disabled
             #endif
+        }
+
+        /// Starts the actual workout session (called after optional countdown)
+        private func beginSessionAfterCountdown() {
+            // 1. Announce first exercise (if TTS enabled)
+            if speakExerciseNames {
+                let totalExercises = set.phases.count
+                let text = String(format: NSLocalizedString("Exercise %d of %d: %@", comment: "TTS announcement for exercise number"), 1, totalExercises, set.phases[0].name)
+                sounds.speak(text)
+            }
+
+            // 2. Play start sound (Auftakt)
+            sounds.play(.auftakt)
+
+            // 3. Start Live Activity
+            let endDate = sessionStart.addingTimeInterval(TimeInterval(set.totalSeconds))
+            liveActivity.start(
+                title: set.name,
+                phase: 1,
+                endDate: endDate,
+                ownerId: "WorkoutsTab"
+            )
         }
 
         func endSession(manual: Bool) async {
@@ -831,15 +861,20 @@ public struct WorkoutProgramsView: View {
             await liveActivity.end(immediate: true)
             print("[WorkoutPrograms] LiveActivity ended")
 
-            // 6. Play end sound if session completed
+            // 6. Play end sound if session completed naturally
+            // Wait for sound to finish before closing (prevents cutoff)
             if !manual {
+                let soundDuration = sounds.duration(of: .ausklang)
                 sounds.play(.ausklang)
+                // Wait for sound duration + 0.3s buffer
+                let waitNanoseconds = UInt64((soundDuration + 0.3) * 1_000_000_000)
+                try? await Task.sleep(nanoseconds: waitNanoseconds)
+            } else {
+                // Manual stop: small delay for UI feedback
+                try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
             }
 
-            // 7. Small delay for UI feedback
-            try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
-
-            // 8. Close the view
+            // 7. Close the view
             print("[WorkoutPrograms] close() called")
             close()
         }
@@ -1095,7 +1130,7 @@ public struct WorkoutProgramsView: View {
 
                 // Exercise name in large font with info button
                 HStack(spacing: 6) {
-                    Text(nextInfo.name)
+                    Text(LocalizedStringKey(nextInfo.name))
                         .font(.headline)
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
@@ -1222,18 +1257,18 @@ public struct WorkoutProgramsView: View {
 
                 // Check if last exercise AND last round
                 if nextIndex == set.phases.count - 1 && currentRound == set.repetitions {
-                    return "Last exercise: \(exerciseName)"
+                    return String(format: NSLocalizedString("Last exercise: %@", comment: "TTS for last exercise"), exerciseName)
                 } else {
-                    return "Up next exercise \(exerciseNum) of \(totalExercises) \(exerciseName)"
+                    return String(format: NSLocalizedString("Exercise %d of %d: %@", comment: "TTS announcement for exercise number"), exerciseNum, totalExercises, exerciseName)
                 }
             } else if currentRound < set.repetitions {
                 // Next round, first exercise
                 let nextRound = currentRound + 1
                 let firstExercise = set.phases[0].name
                 if nextRound == set.repetitions {
-                    return "Last round with \(firstExercise)"
+                    return String(format: NSLocalizedString("Last round: %@", comment: "TTS for last round"), firstExercise)
                 } else {
-                    return "Round \(nextRound) with \(firstExercise)"
+                    return String(format: NSLocalizedString("Round %d: %@", comment: "TTS for round number"), nextRound, firstExercise)
                 }
             } else {
                 return ""  // No next (shouldn't happen)
@@ -1325,7 +1360,7 @@ public struct WorkoutProgramsView: View {
                     HStack(alignment: .center, spacing: 14) {
                         Text(set.emoji)
                             .font(.system(size: 42))
-                        Text(set.name)
+                        Text(LocalizedStringKey(set.name))
                             .font(.system(size: 22, weight: .bold))
                         Spacer()
                         Button(action: play) {
@@ -1445,7 +1480,7 @@ public struct WorkoutProgramsView: View {
                         HStack(spacing: 16) {
                             Text(set.emoji)
                                 .font(.system(size: 60))
-                            Text(set.name)
+                            Text(LocalizedStringKey(set.name))
                                 .font(.system(size: 28, weight: .bold))
                             Spacer()
                         }
@@ -1521,7 +1556,7 @@ public struct WorkoutProgramsView: View {
                 Text("\(index + 1).")
                     .foregroundStyle(.tertiary)
                     .frame(width: 24, alignment: .trailing)
-                Text(phase.name)
+                Text(LocalizedStringKey(phase.name))
                     .font(.body)
                 Spacer()
                 Button {
@@ -1620,7 +1655,7 @@ public struct WorkoutProgramsView: View {
                                 } label: {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 4) {
-                                            Text(phase.name)
+                                            Text(LocalizedStringKey(phase.name))
                                                 .foregroundStyle(.primary)
                                             Text(String(format: NSLocalizedString("Work: %llds  Rest: %llds", comment: ""), Int64(phase.workDuration), Int64(phase.restDuration)))
                                                 .font(.caption)

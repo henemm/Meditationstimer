@@ -35,6 +35,40 @@
         }
       }
     },
+    "2-3x per week for strong core muscles. Perfect as supplement to other workouts.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2-3x per week for strong core muscles. Perfect as supplement to other workouts."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2-3x pro Woche für starke Rumpfmuskulatur. Perfekt als Ergänzung zu anderen Workouts."
+          }
+        }
+      }
+    },
+    "2x per week as push day. Combine with pull workout for balanced training.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2x per week as push day. Combine with pull workout for balanced training."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2x pro Woche als Push-Tag. Kombiniere mit Pull-Workout für ausgeglichenes Training."
+          }
+        }
+      }
+    },
     "A session is already running. Should it be stopped and the new one started?": {
       "extractionState": "manual",
       "localizations": {
@@ -103,23 +137,6 @@
         }
       }
     },
-    "Activity Type": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Activity Type"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aktivitätstyp"
-          }
-        }
-      }
-    },
     "Activity is automatically logged in Apple Health": {
       "extractionState": "manual",
       "localizations": {
@@ -133,6 +150,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Activity is automatically logged in Apple Health"
+          }
+        }
+      }
+    },
+    "Activity Type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity Type"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivitätstyp"
           }
         }
       }
@@ -154,23 +188,6 @@
         }
       }
     },
-    "Add New Reminder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add New Reminder"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neue Erinnerung hinzufügen"
-          }
-        }
-      }
-    },
     "Add new preset": {
       "extractionState": "manual",
       "localizations": {
@@ -184,6 +201,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neues Preset hinzufügen"
+          }
+        }
+      }
+    },
+    "Add New Reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add New Reminder"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Erinnerung hinzufügen"
           }
         }
       }
@@ -290,13 +324,13 @@
         }
       }
     },
-    "Another Timer Running": {
+    "Another Timer is Running": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Another Timer Running"
+            "value": "Another Timer is Running"
           }
         },
         "de": {
@@ -307,13 +341,13 @@
         }
       }
     },
-    "Another Timer is Running": {
+    "Another Timer Running": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Another Timer is Running"
+            "value": "Another Timer Running"
           }
         },
         "de": {
@@ -337,6 +371,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Archer-Liegestütze"
+          }
+        }
+      }
+    },
+    "As main workout 3-4x per week. Combines strength, endurance and functional movements.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As main workout 3-4x per week. Combines strength, endurance and functional movements."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Hauptworkout 3-4x pro Woche. Kombiniert Kraft, Ausdauer und funktionelle Bewegungen."
           }
         }
       }
@@ -392,6 +443,23 @@
         }
       }
     },
+    "Before every running session. Prepares joints, tendons and muscles for the stress.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before every running session. Prepares joints, tendons and muscles for the stress."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vor jeder Laufeinheit. Bereitet Gelenke, Sehnen und Muskeln auf die Belastung vor."
+          }
+        }
+      }
+    },
     "Bicycle Crunches": {
       "extractionState": "manual",
       "localizations": {
@@ -426,6 +494,23 @@
         }
       }
     },
+    "Breathe is only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe is only available on iOS."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atem ist nur auf iOS verfügbar."
+          }
+        }
+      }
+    },
     "Breathe Preset": {
       "extractionState": "manual",
       "localizations": {
@@ -456,23 +541,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Atem-Sounds"
-          }
-        }
-      }
-    },
-    "Breathe is only available on iOS.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Breathe is only available on iOS."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Atem ist nur auf iOS verfügbar."
           }
         }
       }
@@ -664,23 +732,6 @@
         }
       }
     },
-    "Choose Date": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose Date"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datum wählen"
-          }
-        }
-      }
-    },
     "Choose a background sound and activate it for Open and/or Breathe.": {
       "extractionState": "manual",
       "localizations": {
@@ -694,6 +745,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wähle einen Hintergrundsound und aktiviere ihn für Offen und/oder Atem."
+          }
+        }
+      }
+    },
+    "Choose Date": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Date"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum wählen"
           }
         }
       }
@@ -800,6 +868,23 @@
         }
       }
     },
+    "Complementary to sedentary activities or after running. Corrects muscular imbalances.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Complementary to sedentary activities or after running. Corrects muscular imbalances."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergänzend zu sitzenden Tätigkeiten oder nach dem Laufen. Korrigiert muskuläre Dysbalancen."
+          }
+        }
+      }
+    },
     "Configure smart reminders that are automatically cancelled when you've already completed the activity.": {
       "extractionState": "manual",
       "localizations": {
@@ -881,6 +966,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eigene Übung..."
+          }
+        }
+      }
+    },
+    "Daily during lunch break or in the morning. Short, effective, no excuses.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily during lunch break or in the morning. Short, effective, no excuses."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Täglich in der Mittagspause oder morgens. Kurz, effektiv, keine Ausreden."
           }
         }
       }
@@ -1000,6 +1102,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diamond-Liegestütze"
+          }
+        }
+      }
+    },
+    "Directly after running (within 10 min). Promotes recovery and mobility.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Directly after running (within 10 min). Promotes recovery and mobility."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Direkt nach dem Laufen (innerhalb 10 Min). Fördert Regeneration und Mobilität."
           }
         }
       }
@@ -1191,23 +1310,6 @@
         }
       }
     },
-    "Enable Smart Reminders": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enable Smart Reminders"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Smart Reminders aktivieren"
-          }
-        }
-      }
-    },
     "Enable for Breathe (breathing exercises)": {
       "extractionState": "manual",
       "localizations": {
@@ -1238,6 +1340,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Für Offen (freie Meditation) aktivieren"
+          }
+        }
+      }
+    },
+    "Enable Smart Reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable Smart Reminders"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Reminders aktivieren"
           }
         }
       }
@@ -1412,6 +1531,23 @@
         }
       }
     },
+    "Exercise %d of %d: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise %d of %d: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übung %d von %d: %@"
+          }
+        }
+      }
+    },
     "Exhale": {
       "extractionState": "manual",
       "localizations": {
@@ -1446,23 +1582,6 @@
         }
       }
     },
-    "First adjust the system volume using the gong. The background sound volume is relative to the gong.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First adjust the system volume using the gong. The background sound volume is relative to the gong."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong."
-          }
-        }
-      }
-    },
     "Fire": {
       "extractionState": "manual",
       "localizations": {
@@ -1476,6 +1595,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Feuer"
+          }
+        }
+      }
+    },
+    "First adjust the system volume using the gong. The background sound volume is relative to the gong.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First adjust the system volume using the gong. The background sound volume is relative to the gong."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stelle zuerst die Systemlautstärke mit dem Gong ein. Die Lautstärke des Hintergrundgeräuschs ist relativ zum Gong."
           }
         }
       }
@@ -1514,6 +1650,23 @@
         }
       }
     },
+    "For advanced athletes 2-3x per week. Focus on explosive strength and speed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For advanced athletes 2-3x per week. Focus on explosive strength and speed."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Fortgeschrittene 2-3x pro Woche. Fokus auf explosive Kraft und Schnelligkeit."
+          }
+        }
+      }
+    },
     "Free": {
       "extractionState": "manual",
       "localizations": {
@@ -1544,23 +1697,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Free Workout"
-          }
-        }
-      }
-    },
-    "Gong sounds mark phase transitions": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gong-Klänge markieren Phasenübergänge"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gong sounds mark phase transitions"
           }
         }
       }
@@ -1714,6 +1850,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gong signals mark phase transitions"
+          }
+        }
+      }
+    },
+    "Gong sounds mark phase transitions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong-Klänge markieren Phasenübergänge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gong sounds mark phase transitions"
           }
         }
       }
@@ -1922,6 +2075,40 @@
         }
       }
     },
+    "Icon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icon"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Symbol"
+          }
+        }
+      }
+    },
+    "Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ideal als Aufwärmung vor dem Krafttraining oder als eigenständiges HIIT-Workout. Maximale Intensität erforderlich."
+          }
+        }
+      }
+    },
     "If you miss a day:": {
       "extractionState": "manual",
       "localizations": {
@@ -1952,23 +2139,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Inaktiv"
-          }
-        }
-      }
-    },
-    "Icon": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Icon"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Symbol"
           }
         }
       }
@@ -2071,6 +2241,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Letzte Runde mit %@"
+          }
+        }
+      }
+    },
+    "Last round: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last round: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Runde: %@"
+          }
+        }
+      }
+    },
+    "Last round": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last round"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Runde"
           }
         }
       }
@@ -2524,6 +2728,23 @@
         }
       }
     },
+    "No Sound": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Sound"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Sound"
+          }
+        }
+      }
+    },
     "NoAlc Diary": {
       "extractionState": "manual",
       "localizations": {
@@ -2633,40 +2854,6 @@
         }
       }
     },
-    "No Sound": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Sound"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kein Sound"
-          }
-        }
-      }
-    },
-    "Open Meditation": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Offene Meditation"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open Meditation"
-          }
-        }
-      }
-    },
     "Notifications": {
       "extractionState": "manual",
       "localizations": {
@@ -2701,6 +2888,40 @@
         }
       }
     },
+    "Open is only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open is only available on iOS."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen ist nur auf iOS verfügbar."
+          }
+        }
+      }
+    },
+    "Open Meditation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offene Meditation"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Meditation"
+          }
+        }
+      }
+    },
     "Open Settings": {
       "extractionState": "manual",
       "localizations": {
@@ -2731,23 +2952,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "System‑Einstellungen öffnen"
-          }
-        }
-      }
-    },
-    "Open is only available on iOS.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open is only available on iOS."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Offen ist nur auf iOS verfügbar."
           }
         }
       }
@@ -2799,6 +3003,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pause wird für Pausen zwischen Runden genutzt."
+          }
+        }
+      }
+    },
+    "Perfect start for beginners. Daily or every 2nd day to get used to regular exercise.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfect start for beginners. Daily or every 2nd day to get used to regular exercise."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfekter Einstieg für Anfänger. Täglich oder jeden 2. Tag, um sich an regelmäßige Bewegung zu gewöhnen."
           }
         }
       }
@@ -3007,193 +3228,6 @@
         }
       }
     },
-    "2-3x per week for strong core muscles. Perfect as supplement to other workouts.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2-3x per week for strong core muscles. Perfect as supplement to other workouts."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2-3x pro Woche für starke Rumpfmuskulatur. Perfekt als Ergänzung zu anderen Workouts."
-          }
-        }
-      }
-    },
-    "2x per week as push day. Combine with pull workout for balanced training.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2x per week as push day. Combine with pull workout for balanced training."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "2x pro Woche als Push-Tag. Kombiniere mit Pull-Workout für ausgeglichenes Training."
-          }
-        }
-      }
-    },
-    "As main workout 3-4x per week. Combines strength, endurance and functional movements.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "As main workout 3-4x per week. Combines strength, endurance and functional movements."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Als Hauptworkout 3-4x pro Woche. Kombiniert Kraft, Ausdauer und funktionelle Bewegungen."
-          }
-        }
-      }
-    },
-    "Before every running session. Prepares joints, tendons and muscles for the stress.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Before every running session. Prepares joints, tendons and muscles for the stress."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vor jeder Laufeinheit. Bereitet Gelenke, Sehnen und Muskeln auf die Belastung vor."
-          }
-        }
-      }
-    },
-    "Complementary to sedentary activities or after running. Corrects muscular imbalances.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Complementary to sedentary activities or after running. Corrects muscular imbalances."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ergänzend zu sitzenden Tätigkeiten oder nach dem Laufen. Korrigiert muskuläre Dysbalancen."
-          }
-        }
-      }
-    },
-    "Daily during lunch break or in the morning. Short, effective, no excuses.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Daily during lunch break or in the morning. Short, effective, no excuses."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Täglich in der Mittagspause oder morgens. Kurz, effektiv, keine Ausreden."
-          }
-        }
-      }
-    },
-    "Directly after running (within 10 min). Promotes recovery and mobility.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Directly after running (within 10 min). Promotes recovery and mobility."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Direkt nach dem Laufen (innerhalb 10 Min). Fördert Regeneration und Mobilität."
-          }
-        }
-      }
-    },
-    "For advanced athletes 2-3x per week. Focus on explosive strength and speed.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "For advanced athletes 2-3x per week. Focus on explosive strength and speed."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Für Fortgeschrittene 2-3x pro Woche. Fokus auf explosive Kraft und Schnelligkeit."
-          }
-        }
-      }
-    },
-    "Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ideal as warm-up before strength training or as standalone HIIT workout. Maximum intensity required."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ideal als Aufwärmung vor dem Krafttraining oder als eigenständiges HIIT-Workout. Maximale Intensität erforderlich."
-          }
-        }
-      }
-    },
-    "Perfect start for beginners. Daily or every 2nd day to get used to regular exercise.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Perfect start for beginners. Daily or every 2nd day to get used to regular exercise."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Perfekter Einstieg für Anfänger. Täglich oder jeden 2. Tag, um sich an regelmäßige Bewegung zu gewöhnen."
-          }
-        }
-      }
-    },
-    "Regular execution for best results.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Regular execution for best results."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Regelmäßige Ausführung für beste Ergebnisse."
-          }
-        }
-      }
-    },
     "Recommended Use": {
       "extractionState": "manual",
       "localizations": {
@@ -3224,6 +3258,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erholung"
+          }
+        }
+      }
+    },
+    "Regular execution for best results.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular execution for best results."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regelmäßige Ausführung für beste Ergebnisse."
+          }
+        }
+      }
+    },
+    "relative volume: %lld%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative volume: %lld%%"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative Lautstärke: %lld%%"
           }
         }
       }
@@ -3381,6 +3449,23 @@
         }
       }
     },
+    "Rhythm (Seconds)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rhythm (Seconds)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rhythmus (Sekunden)"
+          }
+        }
+      }
+    },
     "Round": {
       "extractionState": "manual",
       "localizations": {
@@ -3428,6 +3513,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Runde %lld mit %@"
+          }
+        }
+      }
+    },
+    "Round %d: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Round %d: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runde %d: %@"
+          }
+        }
+      }
+    },
+    "Round %d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Round %d"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runde %d"
           }
         }
       }
@@ -3772,6 +3891,23 @@
         }
       }
     },
+    "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen."
+          }
+        }
+      }
+    },
     "Smart Reminders remind you automatically": {
       "extractionState": "manual",
       "localizations": {
@@ -3823,23 +3959,6 @@
         }
       }
     },
-    "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Intelligente Erinnerungen werden automatisch storniert, wenn du die Aktivität bereits durchgeführt hast. So vermeidest du unnötige Benachrichtigungen."
-          }
-        }
-      }
-    },
     "Soft, electronic sounds": {
       "extractionState": "manual",
       "localizations": {
@@ -3857,23 +3976,6 @@
         }
       }
     },
-    "Spring": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spring"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Frühling"
-          }
-        }
-      }
-    },
     "Sound Theme": {
       "extractionState": "manual",
       "localizations": {
@@ -3887,6 +3989,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sound-Theme"
+          }
+        }
+      }
+    },
+    "Spring": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spring"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühling"
           }
         }
       }
@@ -4078,23 +4197,6 @@
         }
       }
     },
-    "Time for your daily workout! 💪": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Time for your daily workout! 💪"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zeit für dein tägliches Workout! 💪"
-          }
-        }
-      }
-    },
     "Targeted training of the posterior chain (glutes, hamstrings, lower back, calves). Essential for running economy, sprint speed, and injury prevention. Corrects imbalances from sitting.": {
       "extractionState": "manual",
       "localizations": {
@@ -4146,23 +4248,6 @@
         }
       }
     },
-    "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Das NoAlc-Tagebuch hilft dir, deinen Alkoholkonsum zu tracken und einen bewussten Umgang damit zu entwickeln. Das System nutzt drei Kategorien zur Selbstreflexion."
-          }
-        }
-      }
-    },
     "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions.": {
       "extractionState": "manual",
       "localizations": {
@@ -4176,6 +4261,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
+          }
+        }
+      }
+    },
+    "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das NoAlc-Tagebuch hilft dir, deinen Alkoholkonsum zu tracken und einen bewussten Umgang damit zu entwickeln. Das System nutzt drei Kategorien zur Selbstreflexion."
           }
         }
       }
@@ -4278,6 +4380,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uhrzeit"
+          }
+        }
+      }
+    },
+    "Time for your daily workout! 💪": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time for your daily workout! 💪"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit für dein tägliches Workout! 💪"
           }
         }
       }
@@ -4503,23 +4622,6 @@
         }
       }
     },
-    "Waves": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Waves"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wellen"
-          }
-        }
-      }
-    },
     "Wall Push-ups": {
       "extractionState": "manual",
       "localizations": {
@@ -4550,6 +4652,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Warme, hölzerne Klänge"
+          }
+        }
+      }
+    },
+    "Waves": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waves"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wellen"
           }
         }
       }
@@ -4656,6 +4775,23 @@
         }
       }
     },
+    "Workout programs are only available on iOS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout programs are only available on iOS."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout-Programme sind nur auf iOS verfügbar."
+          }
+        }
+      }
+    },
     "Workout Set": {
       "extractionState": "manual",
       "localizations": {
@@ -4703,23 +4839,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Workout-Streak Info"
-          }
-        }
-      }
-    },
-    "Workout programs are only available on iOS.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Workout programs are only available on iOS."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Workout-Programme sind nur auf iOS verfügbar."
           }
         }
       }
@@ -4829,23 +4948,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestern Abend"
-          }
-        }
-      }
-    },
-    "relative volume: %lld%%": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "relative volume: %lld%%"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "relative Lautstärke: %lld%%"
           }
         }
       }
@@ -5033,6 +5135,2204 @@
           "stringUnit": {
             "state": "translated",
             "value": "🟢 Steady: Kein oder moderater Konsum – du bist auf einem guten Weg"
+          }
+        }
+      }
+    },
+    "exercise.burpees.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full-body exercise that activates nearly all muscle groups: legs, core, chest, shoulders, arms. Improves endurance, explosive power, and cardiovascular fitness. High calorie burn through combined strength and cardio load."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzkörper-Übung, die nahezu alle Muskelgruppen aktiviert: Beine, Core, Brust, Schultern, Arme. Verbessert Ausdauer, Explosivkraft und kardiovaskuläre Fitness. Hohe Kalorienverbrennung durch kombinierte Kraft- und Cardio-Belastung."
+          }
+        }
+      }
+    },
+    "exercise.burpees.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Squat down and place hands on the floor 3) Jump feet back into plank position 4) Optional: Push-up 5) Jump feet back to squat 6) Jump explosively upward with arms extended. Focus on controlled landing and stable core tension throughout the movement."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Gehe in die Hocke und setze Hände auf den Boden 3) Springe mit den Füßen nach hinten in die Planke 4) Optional: Liegestütz 5) Springe mit den Füßen zurück zur Hocke 6) Springe explosiv nach oben mit gestreckten Armen. Achte auf eine kontrollierte Landung und stabile Core-Spannung während der gesamten Bewegung."
+          }
+        }
+      }
+    },
+    "exercise.mountainClimbers.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trains core stability, shoulders, and leg muscles. Improves coordination and cardiovascular endurance. Activates oblique abdominal muscles through rotational movement."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainiert Core-Stabilität, Schultern und Beinmuskulatur. Verbessert Koordination und kardiovaskuläre Ausdauer. Aktiviert schräge Bauchmuskulatur durch Rotationsbewegung."
+          }
+        }
+      }
+    },
+    "exercise.mountainClimbers.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Start in plank position with arms extended 2) Alternately bring right and left knee to chest 3) Keep hips low and core engaged 4) Move at running pace. Make sure hips don't rise and shoulders stay over wrists."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Starte in der Planke-Position mit gestreckten Armen 2) Ziehe abwechselnd das rechte und linke Knie zur Brust 3) Halte die Hüfte tief und den Core angespannt 4) Bewege dich im Lauftempo. Achte darauf, dass die Hüfte nicht nach oben wandert und die Schultern über den Handgelenken bleiben."
+          }
+        }
+      }
+    },
+    "exercise.highKnees.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strengthens hip flexors, quadriceps, and calves. Improves running economy and ankle mobility. Quickly elevates heart rate for effective cardio training."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stärkt Hüftbeuger, Quadrizeps und Waden. Verbessert Laufökonomie und Fußgelenk-Mobilität. Erhöht Herzfrequenz schnell für effektives Cardio-Training."
+          }
+        }
+      }
+    },
+    "exercise.highKnees.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright with feet hip-width apart 2) Alternately lift knees as high as possible (ideally to hip height) 3) Actively swing arms 4) Land on forefoot and spring off. Keep upper body upright and core engaged. Progressively increase tempo."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht mit hüftbreiten Füßen 2) Hebe abwechselnd die Knie so hoch wie möglich (idealerweise auf Hüfthöhe) 3) Bewege die Arme aktiv mit 4) Lande auf dem Vorfuß und federe ab. Halte den Oberkörper aufrecht und den Core angespannt. Tempo progressiv steigern."
+          }
+        }
+      }
+    },
+    "exercise.jumpingJacks.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Classic cardio exercise for full-body activation. Improves coordination, endurance, and serves as effective warm-up. Mobilizes shoulders and hips."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klassische Cardio-Übung zur Aktivierung des gesamten Körpers. Verbessert Koordination, Ausdauer und dient als effektives Warm-up. Mobilisiert Schultern und Hüften."
+          }
+        }
+      }
+    },
+    "exercise.jumpingJacks.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright with legs together and arms at sides 2) Jump and spread legs shoulder-width apart 3) Bring arms together overhead 4) Jump back to starting position. Land softly on forefeet and maintain steady breathing."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht mit geschlossenen Beinen und Armen an den Seiten 2) Springe und spreize gleichzeitig die Beine schulterbreit 3) Führe die Arme über den Kopf zusammen 4) Springe zurück zur Ausgangsposition. Lande weich auf den Vorfüßen und halte eine gleichmäßige Atmung."
+          }
+        }
+      }
+    },
+    "exercise.buttKicks.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activates hamstrings and glute muscles. Improves posterior leg flexibility and running technique. Ideal as dynamic warm-up before running."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviert Hamstrings und Gesäßmuskulatur. Verbessert Beinrückseiten-Flexibilität und Lauftechnik. Ideal als dynamisches Warm-up vor dem Laufen."
+          }
+        }
+      }
+    },
+    "exercise.buttKicks.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Run in place bringing heels as close to glutes as possible 3) Actively swing arms in running rhythm. Keep upper body upright and avoid leaning forward. Short ground contact with forefoot."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Laufe auf der Stelle und bringe die Fersen so nah wie möglich zum Gesäß 3) Bewege die Arme aktiv im Laufrhythmus mit. Halte den Oberkörper aufrecht und vermeide nach vorne Lehnen. Kurzer Bodenkontakt mit dem Vorfuß."
+          }
+        }
+      }
+    },
+    "exercise.marchingInPlace.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gentle warm-up that elevates heart rate and activates leg muscles. Mobilizes hip joints and prepares the body for more intense exercise."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sanftes Aufwärmen, das Herzfrequenz erhöht und Beinmuskulatur aktiviert. Mobilisiert Hüftgelenke und bereitet den Körper auf intensivere Belastung vor."
+          }
+        }
+      }
+    },
+    "exercise.marchingInPlace.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Alternately lift knees to about hip height 3) Swing arms naturally 4) Maintain a controlled rhythm. Breathe evenly and keep core slightly engaged. Ideal as entry point for beginners."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Hebe abwechselnd die Knie etwa auf Hüfthöhe 3) Schwinge die Arme natürlich mit 4) Halte einen kontrollierten Rhythmus. Atme gleichmäßig und halte den Core leicht angespannt. Ideal als Einstieg für Anfänger."
+          }
+        }
+      }
+    },
+    "exercise.jumpSquats.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plyometric exercise for explosive leg power. Intensively trains quadriceps, glutes, and calves. Improves jumping ability and speed-strength."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plyometrische Übung für explosive Beinkraft. Trainiert Quadrizeps, Gesäß und Waden intensiv. Verbessert Sprungkraft und Schnellkraft."
+          }
+        }
+      }
+    },
+    "exercise.jumpSquats.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand with feet hip-width apart 2) Lower into a deep squat (thighs parallel to floor) 3) Jump explosively upward 4) Land softly back into squat. Focus on controlled landing with bent knees. Knees stay over feet, don't collapse inward."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe mit hüftbreiten Füßen 2) Gehe in eine tiefe Kniebeuge (Oberschenkel parallel zum Boden) 3) Springe explosiv nach oben 4) Lande weich zurück in die Kniebeuge. Achte auf eine kontrollierte Landung mit gebeugten Knien. Knie bleiben über den Füßen, nicht nach innen knicken."
+          }
+        }
+      }
+    },
+    "exercise.plank.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ultimate core exercise. Trains the entire trunk musculature (rectus and oblique abdominals, lower back), shoulders, and glutes. Improves body tension and posture."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die ultimative Core-Übung. Trainiert die gesamte Rumpfmuskulatur (gerade und schräge Bauchmuskeln, unterer Rücken), Schultern und Gesäß. Verbessert Körperspannung und Haltung."
+          }
+        }
+      }
+    },
+    "exercise.plank.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Get into forearm plank position with elbows under shoulders 2) Keep body in a straight line from head to heels 3) Actively engage core and glutes 4) Look at floor, neck neutral. Avoid sagging hips or raised buttocks. Continue breathing steadily."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Gehe in die Unterarmstütz-Position mit Ellenbogen unter den Schultern 2) Halte den Körper in einer geraden Linie von Kopf bis Fersen 3) Spanne Core und Gesäß aktiv an 4) Blick zum Boden, Nacken neutral. Vermeide ein Durchhängen der Hüfte oder ein Hochschieben des Gesäßes. Atme gleichmäßig weiter."
+          }
+        }
+      }
+    },
+    "exercise.plankKnees.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simplified plank variation for beginners. Trains core stability with reduced load. Ideal for building basic strength."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vereinfachte Planken-Variante für Anfänger. Trainiert Core-Stabilität mit reduzierter Belastung. Ideal zum Aufbau der Grundkraft."
+          }
+        }
+      }
+    },
+    "exercise.plankKnees.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Get into forearm plank position 2) Place knees on the floor 3) Keep body in a straight line from head to knees 4) Engage core and glutes. Focus is on body tension, not duration. Progressively advance to regular plank."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Gehe in die Unterarmstütz-Position 2) Lege die Knie auf dem Boden ab 3) Halte den Körper von Kopf bis Knie in einer geraden Linie 4) Spanne Core und Gesäß an. Der Fokus liegt auf der Körperspannung, nicht der Dauer. Progressiv zur normalen Planke steigern."
+          }
+        }
+      }
+    },
+    "exercise.sidePlankLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focuses on oblique abdominal muscles and lateral core stability. Strengthens shoulders and improves balance. Important for rotational power and injury prevention."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fokussiert auf schräge Bauchmuskulatur und seitliche Core-Stabilität. Stärkt Schultern und verbessert Balance. Wichtig für Rotationskraft und Verletzungsprävention."
+          }
+        }
+      }
+    },
+    "exercise.sidePlankLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Lie on left side, support on left forearm 2) Raise hips until body forms a straight line 3) Stack feet or place top foot in front 4) Hold position. Right arm can rest on hip or extend upward."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Liege auf der linken Seite, stütze dich auf den linken Unterarm 2) Hebe die Hüfte, bis der Körper eine gerade Linie bildet 3) Stapel die Füße übereinander oder stelle den oberen Fuß vor den unteren 4) Halte die Position. Der rechte Arm kann auf der Hüfte ruhen oder nach oben gestreckt werden."
+          }
+        }
+      }
+    },
+    "exercise.sidePlankRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Side Plank', trains the right side of the body. Important for symmetrical core development."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Seitliche Planke links', trainiert die rechte Körperseite. Wichtig für symmetrische Core-Entwicklung."
+          }
+        }
+      }
+    },
+    "exercise.sidePlankRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Lie on right side, support on right forearm 2) Raise hips until body forms a straight line 3) Stack feet or place top foot in front 4) Hold position. Left arm can rest on hip or extend upward."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Liege auf der rechten Seite, stütze dich auf den rechten Unterarm 2) Hebe die Hüfte, bis der Körper eine gerade Linie bildet 3) Stapel die Füße übereinander oder stelle den oberen Fuß vor den unteren 4) Halte die Position. Der linke Arm kann auf der Hüfte ruhen oder nach oben gestreckt werden."
+          }
+        }
+      }
+    },
+    "exercise.bicycleCrunches.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamic core exercise that trains rectus and oblique abdominals simultaneously. Improves rotational power and coordination."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamische Core-Übung, die gerade und schräge Bauchmuskeln gleichzeitig trainiert. Verbessert Rotationskraft und Koordination."
+          }
+        }
+      }
+    },
+    "exercise.bicycleCrunches.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Lie on back, hands behind head 2) Lift shoulder blades and legs off floor 3) Bring right elbow to left knee while extending right leg 4) Alternate sides rhythmically. Lower back stays on floor. Exhale on the twist."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Liege auf dem Rücken, Hände hinter dem Kopf 2) Hebe Schulterblätter und Beine vom Boden 3) Führe den rechten Ellenbogen zum linken Knie, während das rechte Bein gestreckt wird 4) Wechsel die Seite rhythmisch. Unterer Rücken bleibt am Boden. Atme aus bei der Drehung."
+          }
+        }
+      }
+    },
+    "exercise.legRaises.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intensively trains the lower abs. Strengthens hip flexors and improves core stability. Important for balanced trunk musculature."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainiert den unteren Bauch intensiv. Stärkt Hüftbeuger und verbessert Core-Stabilität. Wichtig für eine ausgewogene Rumpfmuskulatur."
+          }
+        }
+      }
+    },
+    "exercise.legRaises.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Lie on back, arms beside body 2) Raise both legs straight up until vertical 3) Lower legs slowly without touching floor 4) Repeat. Keep lower back pressed to floor. If difficult: slightly bend knees or reduce range of motion."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Liege auf dem Rücken, Arme neben dem Körper 2) Hebe beide Beine gestreckt an, bis sie senkrecht stehen 3) Senke die Beine langsam ab, ohne dass sie den Boden berühren 4) Wiederhole. Halte den unteren Rücken am Boden gedrückt. Bei Schwierigkeiten: Knie leicht beugen oder geringeren Bewegungsumfang wählen."
+          }
+        }
+      }
+    },
+    "exercise.russianTwists.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trains oblique abdominals and rotational power. Improves balance and core stability. Relevant for sports involving rotational movements."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainiert schräge Bauchmuskeln und Rotationskraft. Verbessert Balance und Core-Stabilität. Relevant für Sportarten mit Drehbewegungen."
+          }
+        }
+      }
+    },
+    "exercise.russianTwists.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Sit with bent legs, lean upper body slightly back 2) Lift feet off floor (advanced) or keep them grounded 3) Rotate upper body alternately right and left 4) Optionally touch floor beside hip. Keep core engaged and avoid rounding back."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Sitze mit angewinkelten Beinen, lehne den Oberkörper leicht zurück 2) Hebe die Füße vom Boden (fortgeschritten) oder lasse sie am Boden 3) Drehe den Oberkörper abwechselnd nach rechts und links 4) Berühre optional den Boden neben der Hüfte. Halte den Core angespannt und vermeide runden Rücken."
+          }
+        }
+      }
+    },
+    "exercise.squats.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The king of leg exercises. Trains quadriceps, glutes, hamstrings, and core. Improves functional strength, mobility, and bone density."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Königsübung für die Beine. Trainiert Quadrizeps, Gesäß, Hamstrings und Core. Verbessert funktionelle Kraft, Mobilität und Knochendichte."
+          }
+        }
+      }
+    },
+    "exercise.squats.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand with feet hip-width apart, toes slightly outward 2) Bend knees and push hips back as if sitting down 3) Go as deep as your mobility allows (ideally thighs parallel to floor) 4) Push through heels to stand. Knees stay over feet, chest stays upright."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe mit hüftbreiten Füßen, Zehen leicht nach außen 2) Beuge die Knie und schiebe das Gesäß nach hinten, als würdest du dich setzen 3) Gehe so tief, wie deine Mobilität es erlaubt (ideal: Oberschenkel parallel zum Boden) 4) Drücke dich über die Fersen nach oben. Knie bleiben über den Füßen, Brust bleibt aufrecht."
+          }
+        }
+      }
+    },
+    "exercise.lunges.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unilateral leg exercise that improves balance and coordination. Trains quadriceps, glutes, and hamstrings. Corrects muscle imbalances between left and right leg."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unilaterale Beinübung, die Balance und Koordination verbessert. Trainiert Quadrizeps, Gesäß und Hamstrings. Korrigiert Muskel-Dysbalancen zwischen linkem und rechtem Bein."
+          }
+        }
+      }
+    },
+    "exercise.lunges.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Take a large step forward 3) Lower back knee toward floor until both knees are bent about 90° 4) Push through front heel to return to standing. Front knee stays over ankle. Alternate legs."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Mache einen großen Schritt nach vorne 3) Senke das hintere Knie Richtung Boden, bis beide Knie etwa 90° gebeugt sind 4) Drücke dich über die vordere Ferse zurück in den Stand. Das vordere Knie bleibt über dem Fußgelenk. Wechsel die Beine."
+          }
+        }
+      }
+    },
+    "exercise.reverseLunges.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like regular lunges, but stepping backward. Easier on the knees and better balance. Focuses more on glute muscles."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie normale Ausfallschritte, aber mit Schritt nach hinten. Schonender für die Knie und bessere Balance. Fokussiert stärker auf Gesäßmuskulatur."
+          }
+        }
+      }
+    },
+    "exercise.reverseLunges.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Take a step backward 3) Lower back knee toward floor 4) Push through front heel to return. This variation is easier to control and more knee-friendly than forward lunges."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Mache einen Schritt nach hinten 3) Senke das hintere Knie Richtung Boden 4) Drücke dich über die vordere Ferse zurück. Diese Variante ist leichter zu kontrollieren und knie-freundlicher als vorwärts gerichtete Ausfallschritte."
+          }
+        }
+      }
+    },
+    "exercise.walkingLunges.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamic variation that additionally challenges coordination and balance. Ideal as warm-up for runners."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamische Variante, die Koordination und Gleichgewicht zusätzlich herausfordert. Ideal als Warm-up für Läufer."
+          }
+        }
+      }
+    },
+    "exercise.walkingLunges.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Perform a lunge 2) Instead of returning, bring back leg forward into next lunge 3) 'Walk' forward this way. Keep upper body upright and core engaged. Focus on consistent step length."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Führe einen Ausfallschritt aus 2) Statt zurückzukehren, bringe das hintere Bein nach vorne in den nächsten Ausfallschritt 3) 'Gehe' so vorwärts. Halte den Oberkörper aufrecht und die Core-Spannung. Konzentriere dich auf eine gleichmäßige Schrittlänge."
+          }
+        }
+      }
+    },
+    "exercise.gluteBridges.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isolates glute muscles and hamstrings. Activates often neglected muscles that weaken from sitting. Reduces lower back pain."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isoliert Gesäßmuskulatur und Hamstrings. Aktiviert oft vernachlässigte Muskeln, die beim Sitzen schwach werden. Reduziert untere Rückenschmerzen."
+          }
+        }
+      }
+    },
+    "exercise.gluteBridges.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Lie on back, knees bent, feet hip-width apart 2) Raise hips until knees, hips, and shoulders form a line 3) Actively squeeze glutes at top 4) Lower hips in controlled manner. Push through heels, not toes."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Liege auf dem Rücken, Knie gebeugt, Füße hüftbreit aufgestellt 2) Hebe die Hüfte, bis Knie, Hüfte und Schultern eine Linie bilden 3) Spanne das Gesäß am oberen Punkt aktiv an 4) Senke die Hüfte kontrolliert ab. Drücke durch die Fersen, nicht durch die Zehen."
+          }
+        }
+      }
+    },
+    "exercise.singleLegDeadliftLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trains hamstrings, glutes, and lower back unilaterally. Improves balance, stability, and coordination. Corrects asymmetries."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainiert Hamstrings, Gesäß und unteren Rücken unilateral. Verbessert Balance, Stabilität und Koordination. Korrigiert Asymmetrien."
+          }
+        }
+      }
+    },
+    "exercise.singleLegDeadliftLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand on left leg, right leg slightly bent behind 2) Hinge at hips forward, extend right leg behind 3) Lower upper body until parallel to floor (or as far as possible) 4) Return with control. Keep back straight and core engaged."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe auf dem linken Bein, rechtes Bein leicht gebeugt nach hinten 2) Beuge dich in der Hüfte nach vorne, strecke das rechte Bein nach hinten aus 3) Senke den Oberkörper, bis er parallel zum Boden ist (oder so weit wie möglich) 4) Kehre kontrolliert zurück. Halte den Rücken gerade und Core angespannt."
+          }
+        }
+      }
+    },
+    "exercise.singleLegDeadliftRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Single Leg Deadlift', trains the right side of the body. Important for symmetrical leg development."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Einbeiniges Kreuzheben links', trainiert die rechte Körperseite. Wichtig für symmetrische Beinentwicklung."
+          }
+        }
+      }
+    },
+    "exercise.singleLegDeadliftRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand on right leg, left leg slightly bent behind 2) Hinge at hips forward, extend left leg behind 3) Lower upper body until parallel to floor (or as far as possible) 4) Return with control. Keep back straight and core engaged."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe auf dem rechten Bein, linkes Bein leicht gebeugt nach hinten 2) Beuge dich in der Hüfte nach vorne, strecke das linke Bein nach hinten aus 3) Senke den Oberkörper, bis er parallel zum Boden ist (oder so weit wie möglich) 4) Kehre kontrolliert zurück. Halte den Rücken gerade und Core angespannt."
+          }
+        }
+      }
+    },
+    "exercise.bulgarianSplitSquatLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Advanced unilateral leg exercise with elevated rear foot. Intensive activation of quadriceps and glutes. Improves balance and flexibility."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortgeschrittene unilaterale Beinübung mit erhöhtem hinteren Fuß. Intensive Aktivierung von Quadrizeps und Gesäß. Verbessert Balance und Flexibilität."
+          }
+        }
+      }
+    },
+    "exercise.bulgarianSplitSquatLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Place right foot on elevated surface behind you (bench, chair) 2) Stand on left leg 3) Lower into a deep squat 4) Push through left heel to rise. Front knee stays over ankle. Upper body stays upright."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stelle den rechten Fuß auf eine erhöhte Fläche hinter dir (Bank, Stuhl) 2) Stehe auf dem linken Bein 3) Senke dich in eine tiefe Kniebeuge 4) Drücke dich über die linke Ferse nach oben. Das vordere Knie bleibt über dem Fußgelenk. Oberkörper bleibt aufrecht."
+          }
+        }
+      }
+    },
+    "exercise.bulgarianSplitSquatRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Bulgarian Split Squat', trains the right leg. Important for symmetrical strength development."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Bulgarische Split-Kniebeugen links', trainiert das rechte Bein. Wichtig für symmetrische Kraftentwicklung."
+          }
+        }
+      }
+    },
+    "exercise.bulgarianSplitSquatRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Place left foot on elevated surface behind you (bench, chair) 2) Stand on right leg 3) Lower into a deep squat 4) Push through right heel to rise. Front knee stays over ankle. Upper body stays upright."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stelle den linken Fuß auf eine erhöhte Fläche hinter dir (Bank, Stuhl) 2) Stehe auf dem rechten Bein 3) Senke dich in eine tiefe Kniebeuge 4) Drücke dich über die rechte Ferse nach oben. Das vordere Knie bleibt über dem Fußgelenk. Oberkörper bleibt aufrecht."
+          }
+        }
+      }
+    },
+    "exercise.calfRaises.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isolated training of calf muscles (gastrocnemius and soleus). Important for jumping power, running economy, and ankle stability."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isoliertes Training der Wadenmuskulatur (Gastrocnemius und Soleus). Wichtig für Sprungkraft, Laufökonomie und Knöchelstabilität."
+          }
+        }
+      }
+    },
+    "exercise.calfRaises.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand with forefeet on elevated surface (stair step) or flat on floor 2) Raise heels as high as possible 3) Hold briefly at top 4) Lower with control. Optional: Single leg for higher intensity."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe mit den Vorfüßen auf einer erhöhten Fläche (Treppenstufe) oder flach auf dem Boden 2) Hebe die Fersen so hoch wie möglich 3) Halte kurz am oberen Punkt 4) Senke kontrolliert ab. Optional: Einbeinig für höhere Intensität."
+          }
+        }
+      }
+    },
+    "exercise.standingKneeRaises.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light exercise for activating hip flexors and quadriceps. Improves balance and coordination. Ideal for beginners."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leichte Übung zur Aktivierung der Hüftbeuger und Quadrizeps. Verbessert Balance und Koordination. Ideal für Anfänger."
+          }
+        }
+      }
+    },
+    "exercise.standingKneeRaises.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright, hands on hips or in front of chest 2) Slowly raise one knee to hip height 3) Lower with control 4) Switch legs. Keep upper body stable and avoid lateral swaying."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht, Hände auf den Hüften oder vor der Brust 2) Hebe ein Knie langsam bis auf Hüfthöhe 3) Senke es kontrolliert ab 4) Wechsel das Bein. Halte den Oberkörper stabil und vermeide seitliches Schwanken."
+          }
+        }
+      }
+    },
+    "exercise.pushups.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Classic upper body exercise. Trains chest, triceps, front shoulders, and core. Improves pushing strength and functional upper body strength."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klassische Oberkörper-Übung. Trainiert Brust, Trizeps, vordere Schultern und Core. Verbessert Druckkraft und funktionelle Oberkörperstärke."
+          }
+        }
+      }
+    },
+    "exercise.pushups.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Start in plank position with arms extended, hands shoulder-width apart 2) Lower body until chest nearly touches floor 3) Keep elbows close to body (about 45°) 4) Push back up. Keep core engaged and body in a line. If needed: place knees on floor."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Starte in der Planke-Position mit gestreckten Armen, Hände schulterbreit 2) Senke den Körper ab, bis die Brust fast den Boden berührt 3) Halte die Ellenbogen nah am Körper (ca. 45°) 4) Drücke dich zurück nach oben. Halte den Core angespannt und den Körper in einer Linie. Bei Bedarf: Knie am Boden ablegen."
+          }
+        }
+      }
+    },
+    "exercise.wallPushups.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beginner-friendly push-up variation. Trains chest, triceps, and shoulders with reduced load. Ideal for learning technique."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anfänger-freundliche Liegestütz-Variante. Trainiert Brust, Trizeps und Schultern mit reduzierter Belastung. Ideal zum Technik-Lernen."
+          }
+        }
+      }
+    },
+    "exercise.wallPushups.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand about arm's length from a wall 2) Place hands at shoulder height on wall 3) Bend arms and bring chest to wall 4) Push back. Keep body straight and core engaged."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stelle dich etwa armlänge von einer Wand entfernt 2) Platziere die Hände auf Schulterhöhe an der Wand 3) Beuge die Arme und bringe die Brust zur Wand 4) Drücke dich zurück. Halte den Körper gerade und den Core angespannt."
+          }
+        }
+      }
+    },
+    "exercise.diamondPushups.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triceps-focused push-up variation. Trains triceps more intensely than regular push-ups, plus chest and shoulders."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trizeps-fokussierte Liegestütz-Variante. Trainiert Trizeps intensiver als normale Liegestütze, plus Brust und Schultern."
+          }
+        }
+      }
+    },
+    "exercise.diamondPushups.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Start in plank position 2) Place hands close together so thumbs and index fingers form a triangle (diamond) 3) Lower body 4) Push back up. Elbows stay close to body. This is more challenging than regular push-ups."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Starte in Planke-Position 2) Platziere die Hände so nah zusammen, dass Daumen und Zeigefinger ein Dreieck (Diamond) bilden 3) Senke den Körper ab 4) Drücke dich zurück. Ellenbogen bleiben eng am Körper. Dies ist anspruchsvoller als normale Liegestütze."
+          }
+        }
+      }
+    },
+    "exercise.widePushups.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chest-focused push-up variation. Trains outer chest muscles more than regular push-ups."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brust-fokussierte Liegestütz-Variante. Trainiert die äußere Brustmuskulatur stärker als normale Liegestütze."
+          }
+        }
+      }
+    },
+    "exercise.widePushups.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Start in plank position 2) Place hands significantly wider than shoulder-width 3) Lower body 4) Push back up. Elbows go further out than with regular push-ups."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Starte in Planke-Position 2) Platziere die Hände deutlich breiter als schulterbreit 3) Senke den Körper ab 4) Drücke dich zurück. Die Ellenbogen gehen weiter nach außen als bei normalen Liegestützen."
+          }
+        }
+      }
+    },
+    "exercise.pikePushups.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder-focused push-up variation. Intensively trains front and lateral shoulders. Preparation for handstand push-ups."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schulter-fokussierte Liegestütz-Variante. Trainiert vordere und seitliche Schultern intensiv. Vorbereitung für Handstand-Liegestütze."
+          }
+        }
+      }
+    },
+    "exercise.pikePushups.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Start in inverted V position (hips high, hands and feet on floor) 2) Bend arms and bring head toward floor 3) Push back up. Focus is on shoulders, not chest. The higher the hips, the harder."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Starte in einer umgedrehten V-Position (Hüfte hoch, Hände und Füße am Boden) 2) Beuge die Arme und bringe den Kopf Richtung Boden 3) Drücke dich zurück. Der Fokus liegt auf den Schultern, nicht der Brust. Je höher die Hüfte, desto schwieriger."
+          }
+        }
+      }
+    },
+    "exercise.plankToDownwardDog.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamic exercise combining shoulders, core, and hamstring flexibility. Derived from yoga. Improves mobility and strength."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamische Übung, die Schultern, Core und Hamstring-Flexibilität kombiniert. Aus Yoga abgeleitet. Verbessert Mobilität und Kraft."
+          }
+        }
+      }
+    },
+    "exercise.plankToDownwardDog.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Start in plank 2) Push hips up and back into Downward Dog (inverted V) 3) Straighten legs and push heels toward floor 4) Return to plank. Flowing movement, synchronized with breathing."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Starte in der Planke 2) Schiebe die Hüfte nach oben und hinten in den Herabschauenden Hund (umgedrehtes V) 3) Strecke die Beine und schiebe die Fersen Richtung Boden 4) Kehre zur Planke zurück. Fließende Bewegung, synchron mit der Atmung."
+          }
+        }
+      }
+    },
+    "exercise.quadStretchLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stretches the front thigh (quadriceps). Reduces muscle tension after running, improves hip extension. Important for runners and cyclists."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dehnt den vorderen Oberschenkel (Quadrizeps). Reduziert Muskelspannung nach dem Laufen, verbessert Hüftstreckung. Wichtig für Läufer und Radfahrer."
+          }
+        }
+      }
+    },
+    "exercise.quadStretchLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand on right leg 2) Grab left foot behind body 3) Pull heel toward glutes 4) Hold position 22-45 seconds. Knee points down, not forward. Hips stay straight, don't tilt forward. Optional: support on wall."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe auf dem rechten Bein 2) Greife den linken Fuß hinter dem Körper 3) Ziehe die Ferse zum Gesäß 4) Halte die Position 22-45 Sekunden. Knie zeigen nach unten, nicht nach vorne. Hüfte bleibt gerade, nicht nach vorne kippen. Optional: An einer Wand abstützen."
+          }
+        }
+      }
+    },
+    "exercise.quadStretchRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Quad Stretch', stretches the right thigh. Important for symmetrical flexibility."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Quadrizeps-Dehnung links', dehnt den rechten Oberschenkel. Wichtig für symmetrische Flexibilität."
+          }
+        }
+      }
+    },
+    "exercise.quadStretchRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand on left leg 2) Grab right foot behind body 3) Pull heel toward glutes 4) Hold position 22-45 seconds. Knee points down, not forward. Hips stay straight, don't tilt forward. Optional: support on wall."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe auf dem linken Bein 2) Greife den rechten Fuß hinter dem Körper 3) Ziehe die Ferse zum Gesäß 4) Halte die Position 22-45 Sekunden. Knie zeigen nach unten, nicht nach vorne. Hüfte bleibt gerade, nicht nach vorne kippen. Optional: An einer Wand abstützen."
+          }
+        }
+      }
+    },
+    "exercise.hamstringStretchLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stretches the posterior thigh muscles (hamstrings). Reduces injury risk and improves running technique. Important for healthy lower back."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dehnt die hintere Oberschenkelmuskulatur (Hamstrings). Reduziert Verletzungsrisiko und verbessert Lauftechnik. Wichtig für gesunden unteren Rücken."
+          }
+        }
+      }
+    },
+    "exercise.hamstringStretchLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Place left foot forward on heel, toes pointing up 3) Hinge at hips forward, back straight 4) Hold position. Feel the stretch in back of leg. Don't round back. Alternative: Seated with extended leg."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Stelle den linken Fuß nach vorne auf die Ferse, Zehen zeigen nach oben 3) Beuge dich in der Hüfte nach vorne, Rücken gerade 4) Halte die Position. Spüre die Dehnung in der Beinrückseite. Nicht in den Rücken gehen. Alternative: Im Sitzen mit gestrecktem Bein."
+          }
+        }
+      }
+    },
+    "exercise.hamstringStretchRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Hamstring Stretch', stretches the right leg. Important for balanced flexibility."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Hamstring-Dehnung links', dehnt das rechte Bein. Wichtig für ausgeglichene Flexibilität."
+          }
+        }
+      }
+    },
+    "exercise.hamstringStretchRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand upright 2) Place right foot forward on heel, toes pointing up 3) Hinge at hips forward, back straight 4) Hold position. Feel the stretch in back of leg. Don't round back. Alternative: Seated with extended leg."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe aufrecht 2) Stelle den rechten Fuß nach vorne auf die Ferse, Zehen zeigen nach oben 3) Beuge dich in der Hüfte nach vorne, Rücken gerade 4) Halte die Position. Spüre die Dehnung in der Beinrückseite. Nicht in den Rücken gehen. Alternative: Im Sitzen mit gestrecktem Bein."
+          }
+        }
+      }
+    },
+    "exercise.hipFlexorStretchLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stretches the hip flexor (iliopsoas). Extremely important for people who sit a lot. Improves hip extension and reduces lower back pain."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dehnt den Hüftbeuger (Iliopsoas). Extrem wichtig für Menschen, die viel sitzen. Verbessert Hüftstreckung und reduziert untere Rückenschmerzen."
+          }
+        }
+      }
+    },
+    "exercise.hipFlexorStretchLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Get into a lunge, left leg forward 2) Lower right knee to floor (on mat or towel) 3) Push hips forward until you feel a stretch in right hip 4) Hold position. Upper body stays upright. Optional: Extend arms overhead for deeper stretch."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Gehe in einen Ausfallschritt, linkes Bein vorne 2) Senke das rechte Knie zum Boden (auf Matte oder Handtuch) 3) Schiebe die Hüfte nach vorne, bis du eine Dehnung in der rechten Hüfte spürst 4) Halte die Position. Oberkörper bleibt aufrecht. Optional: Arme nach oben strecken für intensivere Dehnung."
+          }
+        }
+      }
+    },
+    "exercise.hipFlexorStretchRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Hip Flexor Stretch', stretches the right hip. Essential for runners and office workers."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Hüftbeuger-Dehnung links', dehnt die rechte Hüfte. Essentiell für Läufer und Büro-Arbeiter."
+          }
+        }
+      }
+    },
+    "exercise.hipFlexorStretchRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Get into a lunge, right leg forward 2) Lower left knee to floor (on mat or towel) 3) Push hips forward until you feel a stretch in left hip 4) Hold position. Upper body stays upright. Optional: Extend arms overhead for deeper stretch."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Gehe in einen Ausfallschritt, rechtes Bein vorne 2) Senke das linke Knie zum Boden (auf Matte oder Handtuch) 3) Schiebe die Hüfte nach vorne, bis du eine Dehnung in der linken Hüfte spürst 4) Halte die Position. Oberkörper bleibt aufrecht. Optional: Arme nach oben strecken für intensivere Dehnung."
+          }
+        }
+      }
+    },
+    "exercise.calfStretchLeft.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stretches calf muscles (gastrocnemius and soleus). Reduces Achilles tendon problems and improves ankle mobility. Important for runners."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dehnt die Wadenmuskulatur (Gastrocnemius und Soleus). Reduziert Achillessehnen-Probleme und verbessert Knöchel-Mobilität. Wichtig für Läufer."
+          }
+        }
+      }
+    },
+    "exercise.calfStretchLeft.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand facing a wall 2) Bring left leg forward (bent) 3) Extend right leg back, heel on floor 4) Lean toward wall and feel stretch in right calf. Heel stays on floor. For soleus (deeper): slightly bend back knee."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stelle dich vor eine Wand 2) Bringe das linke Bein nach vorne (gebeugt) 3) Strecke das rechte Bein nach hinten, Ferse am Boden 4) Lehne dich zur Wand und spüre die Dehnung in der rechten Wade. Ferse bleibt am Boden. Für Soleus (tiefer): Hinteres Knie leicht beugen."
+          }
+        }
+      }
+    },
+    "exercise.calfStretchRight.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Like 'Left Calf Stretch', stretches the right calf. Prevents Achilles tendon injuries."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie 'Waden-Dehnung links', dehnt die rechte Wade. Beugt Achillessehnen-Verletzungen vor."
+          }
+        }
+      }
+    },
+    "exercise.calfStretchRight.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand facing a wall 2) Bring right leg forward (bent) 3) Extend left leg back, heel on floor 4) Lean toward wall and feel stretch in left calf. Heel stays on floor. For soleus (deeper): slightly bend back knee."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stelle dich vor eine Wand 2) Bringe das rechte Bein nach vorne (gebeugt) 3) Strecke das linke Bein nach hinten, Ferse am Boden 4) Lehne dich zur Wand und spüre die Dehnung in der linken Wade. Ferse bleibt am Boden. Für Soleus (tiefer): Hinteres Knie leicht beugen."
+          }
+        }
+      }
+    },
+    "exercise.butterflyStretch.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stretches hip adductors (inner thighs) and opens hips. Improves hip mobility and reduces groin tension."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dehnt die Hüftadduktoren (Innenseiten der Oberschenkel) und öffnet die Hüften. Verbessert Hüftmobilität und reduziert Leisten-Verspannungen."
+          }
+        }
+      }
+    },
+    "exercise.butterflyStretch.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Sit on floor 2) Bring soles of feet together, knees fall outward 3) Hold feet with hands 4) Gently lean forward for deeper stretch. Back stays straight. Don't push knees down, let gravity do the work."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Sitze auf dem Boden 2) Bringe die Fußsohlen zusammen, Knie fallen nach außen 3) Halte die Füße mit den Händen 4) Lehne dich sanft nach vorne für eine tiefere Dehnung. Rücken bleibt gerade. Nicht die Knie nach unten drücken, sondern die Schwerkraft wirken lassen."
+          }
+        }
+      }
+    },
+    "exercise.childsPose.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relaxing yoga position. Stretches lower back, hips, thighs, and shoulders. Promotes relaxation and recovery. Perfect for finishing."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entspannende Yoga-Position. Dehnt unteren Rücken, Hüften, Oberschenkel und Schultern. Fördert Entspannung und Regeneration. Perfekt zum Abschluss."
+          }
+        }
+      }
+    },
+    "exercise.childsPose.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Kneel down, toes touching, knees wide 2) Sit buttocks on heels 3) Extend arms forward and lower forehead to floor 4) Breathe deeply and relax. Optional: Arms beside body for more shoulder relaxation. Stay at least 30 seconds."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Knie dich hin, Zehen berühren sich, Knie sind breit 2) Setze das Gesäß auf die Fersen 3) Strecke die Arme nach vorne aus und senke die Stirn zum Boden 4) Atme tief und entspanne. Optional: Arme neben dem Körper für mehr Schulter-Entspannung. Verweile mindestens 30 Sekunden."
+          }
+        }
+      }
+    },
+    "exercise.legSwings.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamic mobility exercise for hip joints. Improves range of motion and prepares for explosive leg work. Activates hip flexors and abductors."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dynamische Mobilitätsübung für Hüftgelenke. Verbessert Bewegungsumfang und bereitet auf explosive Beinarbeit vor. Aktiviert Hüftbeuger und Abduktoren."
+          }
+        }
+      }
+    },
+    "exercise.legSwings.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand on one leg, optionally support on wall 2) Swing free leg forward and back (sagittal plane) or sideways (frontal plane) 3) Start small and increase range of motion. Keep upper body stable, only leg moves. 10-15 swings per leg."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe auf einem Bein, optional an einer Wand abstützen 2) Schwinge das freie Bein vor und zurück (sagittale Ebene) oder seitlich (frontale Ebene) 3) Starte klein und steigere den Bewegungsumfang. Halte den Oberkörper stabil, nur das Bein bewegt sich. 10-15 Schwünge pro Bein."
+          }
+        }
+      }
+    },
+    "exercise.hipCircles.effect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mobilizes hip joints in all directions. Improves mobility and prepares for running or jumping loads."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mobilisiert Hüftgelenke in alle Richtungen. Verbessert Beweglichkeit und bereitet auf Lauf- oder Sprung-Belastung vor."
+          }
+        }
+      }
+    },
+    "exercise.hipCircles.instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stand with feet hip-width apart, hands on hips 2) Slowly circle hips in large circles 3) Switch direction after 10 repetitions. Knees stay slightly bent. Focus on full range of motion."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1) Stehe mit hüftbreiten Füßen, Hände auf den Hüften 2) Kreise die Hüfte langsam in großen Kreisen 3) Wechsel die Richtung nach 10 Wiederholungen. Knie bleiben leicht gebeugt. Konzentriere dich auf die volle Bewegungsamplitude."
+          }
+        }
+      }
+    },
+    "Ausfallschritte": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausfallschritte"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunges"
+          }
+        }
+      }
+    },
+    "Ausfallschritte gehend": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausfallschritte gehend"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walking Lunges"
+          }
+        }
+      }
+    },
+    "Beinheben": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinheben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leg Raises"
+          }
+        }
+      }
+    },
+    "Beinpendel links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinpendel links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leg Swings Left"
+          }
+        }
+      }
+    },
+    "Beinpendel rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinpendel rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leg Swings Right"
+          }
+        }
+      }
+    },
+    "Breite Liegestütze": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breite Liegestütze"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wide Push-Ups"
+          }
+        }
+      }
+    },
+    "Bulgarische Split-Kniebeugen links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarische Split-Kniebeugen links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarian Split Squats Left"
+          }
+        }
+      }
+    },
+    "Bulgarische Split-Kniebeugen rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarische Split-Kniebeugen rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgarian Split Squats Right"
+          }
+        }
+      }
+    },
+    "Burpees": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burpees"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burpees"
+          }
+        }
+      }
+    },
+    "Butt Kicks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butt Kicks"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butt Kicks"
+          }
+        }
+      }
+    },
+    "Diamond-Liegestütze": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamond-Liegestütze"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamond Push-Ups"
+          }
+        }
+      }
+    },
+    "Einbeiniges Kreuzheben links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einbeiniges Kreuzheben links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Single-Leg Deadlift Left"
+          }
+        }
+      }
+    },
+    "Einbeiniges Kreuzheben rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einbeiniges Kreuzheben rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Single-Leg Deadlift Right"
+          }
+        }
+      }
+    },
+    "Fahrrad-Crunches": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahrrad-Crunches"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bicycle Crunches"
+          }
+        }
+      }
+    },
+    "Glute Bridges": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glute Bridges"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glute Bridges"
+          }
+        }
+      }
+    },
+    "Hampelmänner": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hampelmänner"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jumping Jacks"
+          }
+        }
+      }
+    },
+    "Hamstring-Dehnung links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring-Dehnung links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring Stretch Left"
+          }
+        }
+      }
+    },
+    "Hamstring-Dehnung rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring-Dehnung rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstring Stretch Right"
+          }
+        }
+      }
+    },
+    "High Knees": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High Knees"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High Knees"
+          }
+        }
+      }
+    },
+    "Hüftbeuger-Dehnung links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftbeuger-Dehnung links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip Flexor Stretch Left"
+          }
+        }
+      }
+    },
+    "Hüftbeuger-Dehnung rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftbeuger-Dehnung rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip Flexor Stretch Right"
+          }
+        }
+      }
+    },
+    "Hüftkreisen": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftkreisen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip Circles"
+          }
+        }
+      }
+    },
+    "Jump-Kniebeugen": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump-Kniebeugen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jump Squats"
+          }
+        }
+      }
+    },
+    "Kindspose": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kindspose"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Child's Pose"
+          }
+        }
+      }
+    },
+    "Kniebeugen": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kniebeugen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squats"
+          }
+        }
+      }
+    },
+    "Knieheben stehend": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Knieheben stehend"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standing Knee Raises"
+          }
+        }
+      }
+    },
+    "Liegestütze": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liegestütze"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push-Ups"
+          }
+        }
+      }
+    },
+    "Marschieren auf der Stelle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marschieren auf der Stelle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marching in Place"
+          }
+        }
+      }
+    },
+    "Mountain Climbers": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mountain Climbers"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mountain Climbers"
+          }
+        }
+      }
+    },
+    "Pike-Liegestütze": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pike-Liegestütze"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pike Push-Ups"
+          }
+        }
+      }
+    },
+    "Planke": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planke"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plank"
+          }
+        }
+      }
+    },
+    "Planke (Knie)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planke (Knie)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Knee Plank"
+          }
+        }
+      }
+    },
+    "Planke zu Herabschauender Hund": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planke zu Herabschauender Hund"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plank to Downward Dog"
+          }
+        }
+      }
+    },
+    "Quadrizeps-Dehnung links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadrizeps-Dehnung links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quad Stretch Left"
+          }
+        }
+      }
+    },
+    "Quadrizeps-Dehnung rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadrizeps-Dehnung rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quad Stretch Right"
+          }
+        }
+      }
+    },
+    "Reverse-Ausfallschritte": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reverse-Ausfallschritte"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reverse Lunges"
+          }
+        }
+      }
+    },
+    "Russian Twists": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Russian Twists"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Russian Twists"
+          }
+        }
+      }
+    },
+    "Schmetterlings-Dehnung": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schmetterlings-Dehnung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butterfly Stretch"
+          }
+        }
+      }
+    },
+    "Seitliche Planke links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitliche Planke links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side Plank Left"
+          }
+        }
+      }
+    },
+    "Seitliche Planke rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitliche Planke rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side Plank Right"
+          }
+        }
+      }
+    },
+    "Waden-Dehnung links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waden-Dehnung links"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Stretch Left"
+          }
+        }
+      }
+    },
+    "Waden-Dehnung rechts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waden-Dehnung rechts"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Stretch Right"
+          }
+        }
+      }
+    },
+    "Wadenheben": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wadenheben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Raises"
+          }
+        }
+      }
+    },
+    "Wandliegestütze": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wandliegestütze"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wall Push-Ups"
+          }
+        }
+      }
+    },
+    "Hintere Kette": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintere Kette"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posterior Chain"
+          }
+        }
+      }
+    },
+    "Neues Workout": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Workout"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Workout"
           }
         }
       }

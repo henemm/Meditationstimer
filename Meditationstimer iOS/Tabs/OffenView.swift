@@ -130,6 +130,8 @@ struct OffenView: View {
     @AppStorage("ambientSound") private var ambientSoundRaw: String = AmbientSound.none.rawValue
     @AppStorage("ambientSoundOffenEnabled") private var ambientSoundOffenEnabled: Bool = false
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
+    @AppStorage("countdownBeforeStart") private var countdownBeforeStart: Int = 0
+    @State private var showCountdown = false
 
     private var ambientSound: AmbientSound {
         AmbientSound(rawValue: ambientSoundRaw) ?? .none
@@ -256,38 +258,16 @@ struct OffenView: View {
                     showLocalConflictAlert = true
                     return
                 }
-                // Engine bestimmt Endzeit, keine lokale Berechnung mehr
-                let now = Date()
-                engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
-                guard let phase1End = engine.phase1EndDate else { return }
-                let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
-                switch result {
-                case .started:
-                    // Proceed to start local engine and audio
-                    sessionStart = now
-                    setIdleTimer(true)
-                    bgAudio.start()
+                // Countdown vor Start (wenn aktiviert)
+                if countdownBeforeStart > 0 {
+                    // Ambient Sound startet bereits während Countdown (laut Spec)
                     if ambientSoundOffenEnabled {
                         ambientPlayer.setVolume(percent: ambientSoundVolume)
                         ambientPlayer.start(sound: ambientSound)
                     }
-                    gong.play(named: "gong-ende")
-                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
-                case .conflict(let existingOwner, let existingTitle):
-                    conflictOwnerId = existingOwner
-                    conflictTitle = existingTitle.isEmpty ? "Another Timer" : existingTitle
-                    showConflictAlert = true
-                case .failed:
-                    // If Activity start failed, we still allow the engine to start locally
-                    sessionStart = now
-                    setIdleTimer(true)
-                    bgAudio.start()
-                    if ambientSoundOffenEnabled {
-                        ambientPlayer.setVolume(percent: ambientSoundVolume)
-                        ambientPlayer.start(sound: ambientSound)
-                    }
-                    gong.play(named: "gong-ende")
-                    engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+                    showCountdown = true
+                } else {
+                    beginSessionAfterCountdown()
                 }
             }
         }) {
@@ -365,24 +345,26 @@ struct OffenView: View {
             ZStack {
                 // Base (idle & finished)
                 VStack {
-                    VStack(spacing: 16) {
-                        HStack(spacing: 8) {
-                            Text("Open Meditation")
-                                .font(.title3)
-                                .foregroundStyle(.secondary)
-                                .textCase(.uppercase)
-                            InfoButton { showOffenInfo = true }
-                            Spacer()
-                        }
-                        .padding(.horizontal, 4)
+                    GlassCard {
+                        VStack(spacing: 16) {
+                            HStack(spacing: 8) {
+                                Text("Open Meditation")
+                                    .font(.title3)
+                                    .foregroundStyle(.secondary)
+                                    .textCase(.uppercase)
+                                InfoButton { showOffenInfo = true }
+                                Spacer()
+                            }
+                            .padding(.horizontal, 4)
 
-                        switch engine.state {
-                        case .idle, .finished:
-                            pickerSection
-                            startButton
-                        case .phase1, .phase2:
-                            // The active states are handled by the overlay run card below
-                            EmptyView()
+                            switch engine.state {
+                            case .idle, .finished:
+                                pickerSection
+                                startButton
+                            case .phase1, .phase2:
+                                // The active states are handled by the overlay run card below
+                                EmptyView()
+                            }
                         }
                     }
                     .padding()
@@ -507,6 +489,20 @@ struct OffenView: View {
                     startMeditationSession()
                 }
             }
+            .fullScreenCover(isPresented: $showCountdown) {
+                CountdownOverlayView(
+                    totalSeconds: countdownBeforeStart,
+                    onComplete: {
+                        showCountdown = false
+                        beginSessionAfterCountdown()
+                    },
+                    onCancel: {
+                        showCountdown = false
+                        // Stop ambient sound if it was started during countdown
+                        ambientPlayer.stop()
+                    }
+                )
+            }
         }
     }
 
@@ -521,7 +517,31 @@ struct OffenView: View {
         UIApplication.shared.isIdleTimerDisabled = disabled
         #endif
     }
-    
+
+    /// Starts the actual meditation session (called after optional countdown)
+    private func beginSessionAfterCountdown() {
+        let now = Date()
+        engine.start(phase1Minutes: phase1Minutes, phase2Minutes: phase2Minutes)
+        guard let phase1End = engine.phase1EndDate else { return }
+
+        let result = liveActivity.requestStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
+        switch result {
+        case .started, .failed:
+            sessionStart = now
+            setIdleTimer(true)
+            bgAudio.start()
+            if ambientSoundOffenEnabled {
+                ambientPlayer.setVolume(percent: ambientSoundVolume)
+                ambientPlayer.start(sound: ambientSound)
+            }
+            gong.play(named: "gong-ende")
+        case .conflict(let existingOwner, let existingTitle):
+            conflictOwnerId = existingOwner
+            conflictTitle = existingTitle.isEmpty ? "Another Timer" : existingTitle
+            showConflictAlert = true
+        }
+    }
+
     private func startMeditationSession() {
         Task { @MainActor in
             if !(await HealthKitManager.shared.isAuthorized()) {

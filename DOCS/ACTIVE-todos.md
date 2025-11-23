@@ -1,6 +1,6 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 22. November 2025
+**Letzte Aktualisierung:** 23. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -18,18 +18,12 @@
 **Priorität:** Hoch (User Impact - App soll bilingual sein)
 
 **Bug 8: Debug Entry für Smart Reminders entfernen**
-- Location: `SmartRemindersView.swift` Zeilen 207-237 (Blacklist-Logik)
-- Problem: Debug/Test-Eintrag für Smart Reminders sollte nicht wiederkommen nach Löschen
-- **Fix existiert:** Blacklist-Logik (deletedSampleReminderTypes) verhindert Wieder-Hinzufügen
-- Test: Sample löschen → App neu starten → prüfen ob es wiederkommt (sollte NICHT)
-- Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
+- Problem: Debug-Datei `SmartReminderDebugView.swift` + NavigationLink in Settings
+- **Fix (23.11.2025):**
+  - Datei `SmartReminderDebugView.swift` gelöscht
+  - NavigationLink in `SettingsSheet.swift:200` entfernt
+- Status: **GEFIXT**
 
-**Bug 10: Touch-Bereich für "..." Edit Buttons zu klein (UX)**
-- Location: AtemView.swift:441-448, WorkoutProgramsView.swift:1365-1372
-- **Fix existiert:** Buttons haben `.frame(width: 44, height: 44)` + `.contentShape(Rectangle())`
-- Commit: be02cfe "fix: Improve edit button touch targets (Bug 10)"
-- Test: Edit Button antippen - sollte leichter zu treffen sein
-- Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
 
 **Bug 12: AirPods Static Noise während Meditation**
 - Location: `Meditationstimer iOS/BackgroundAudioKeeper.swift` Zeile 32
@@ -49,28 +43,31 @@
 - Test: Workout aufklappen → Info-Button tippen → Sheet sollte Übungsdetails zeigen (nicht "nicht verfügbar")
 - Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
 
-**Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version) - KOMPLEX**
+**Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version)**
 - Location: `ExerciseDatabase.swift` - 45 Übungen mit effect + instructions Strings
 - Problem: Alle Texte hardcoded Deutsch → EN-Version zeigt deutsche Info-Sheets
-- **Aufwand:** 90 Strings × 2 Sprachen = ~20.000 Zeichen Übersetzung + Code-Wrapping
-- **Feature-Spec erstellt:** `DOCS/feature-exercise-localization.md`
-- Status: **FEATURE-SPEC ERSTELLT, AWAITING DECISION**
+- **Fix implementiert:** 90 NSLocalizedString wraps + DE/EN Übersetzungen in Localizable.xcstrings
+- Test: EN-Version starten → Workout aufklappen → Info-Button → Sheet sollte englische Texte zeigen
+- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN** 
 
 ---
 
 ### Workout-Übungen
 
-**Bug 25: Übungsnamen inkonsistent lokalisiert - TEILWEISE BEHOBEN**
+**Bug 25: Übungsnamen inkonsistent lokalisiert - GEFIXT**
 - **Durch Bug 18 gefixt:** WorkoutPhase Namen → ExerciseDatabase Namen (31 Änderungen)
 - **Links/Rechts Paare:** Alle vollständig in ExerciseDatabase ✅
-- **Verbleibend:** EN-Version zeigt deutsche Namen (z.B. "Kniebeugen" statt "Squats")
-- **Empfehlung:** Zusammen mit Bug 19 lokalisieren
-- **Feature-Spec erstellt:** `DOCS/feature-exercise-names.md`
-- Status: **TEILWEISE BEHOBEN, REST MIT BUG 19 ZUSAMMENFÜHREN**
+- **NEU (23.11.2025):** 46 Übungsnamen in Localizable.xcstrings mit EN-Übersetzungen
+- **NEU:** UI-Code geändert: Text(name) → Text(LocalizedStringKey(name))
+- Test: EN-Version starten → Workouts → "Squats" statt "Kniebeugen" angezeigt
+- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
 
 ---
 
 ## behobene Bugs
+- Bug 10: Touch-Bereich für "..." Edit Buttons zu klein (UX)
+  - Fix: `.frame(width: 44, height: 44)` + `.contentShape(Rectangle())`
+  - Commit: be02cfe
 - Bug 13: RunCard hatte transparenten Hintergrund statt soliden
   - Root Cause: RunCard hatte keinen expliziten Hintergrund → Liquid Glass durchscheinend
   - Fix: `.frame(maxWidth: .infinity, maxHeight: .infinity)` + `.background(Color(uiColor: .systemBackground))` hinzugefügt

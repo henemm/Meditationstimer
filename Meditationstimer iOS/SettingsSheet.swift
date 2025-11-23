@@ -23,6 +23,7 @@ struct SettingsSheet: View {
     @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
     @AppStorage("atemSoundTheme") private var selectedAtemTheme: AtemView.AtemSoundTheme = .distinctive
     @AppStorage("speakExerciseNames") private var speakExerciseNames: Bool = false
+    @AppStorage("countdownBeforeStart") private var countdownBeforeStart: Int = 0
 
     @State private var previewPlayer = AmbientSoundPlayer()
     @State private var gongPlayer = GongPlayer()
@@ -165,6 +166,27 @@ struct SettingsSheet: View {
                         .help("Announces exercise names before each exercise using speech synthesis")
                 }
 
+                Section(header: Text("Countdown Before Start")) {
+                    Text("Get ready before sessions start. The countdown gives you time to settle in.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    HStack {
+                        Text("Delay")
+                        Spacer()
+                        Picker("", selection: $countdownBeforeStart) {
+                            Text("Off").tag(0)
+                            ForEach(1...20, id: \.self) { seconds in
+                                Text("\(seconds)s").tag(seconds)
+                            }
+                        }
+                        #if os(iOS)
+                        .pickerStyle(.wheel)
+                        #endif
+                        .frame(width: 80, height: 120)
+                    }
+                }
+
                 Section {
                     Text(NSLocalizedString("Smart reminders are automatically cancelled when you've already completed the activity. This helps you avoid unnecessary notifications.", comment: "Smart reminder explanation"))
                         .font(.caption)
@@ -175,10 +197,6 @@ struct SettingsSheet: View {
                             .help("Configure smart reminders that are automatically cancelled when you've already completed the activity.")
                     }
 
-                    NavigationLink(destination: SmartReminderDebugView()) {
-                        Label("Smart Reminder Debug", systemImage: "ant.circle")
-                            .help("Shows all Smart Reminder details: Reminders, Cancelled List, Pending Notifications, Permissions.")
-                    }
                 }
 
                 #if os(iOS)
