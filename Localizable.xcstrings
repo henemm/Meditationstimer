@@ -682,18 +682,17 @@
       }
     },
     "Cancel": {
-      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
-          }
-        },
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Abbrechen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         }
       }
@@ -7397,6 +7396,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Countdown"
+          }
+        }
+      }
+    },
+    "Get ready...": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereit machen..."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get ready..."
           }
         }
       }
