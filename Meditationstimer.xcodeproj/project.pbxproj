@@ -89,6 +89,7 @@
 		B7A881742E658C93003FC2F0 /* RuntimeSessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeSessionHelper.swift; sourceTree = "<group>"; };
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
+		B7AC811C2ED1960F00FC9888 /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
 		B7BF2D012EB3D1B5009C1636 /* LeanHealthTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanHealthTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAlcManager.swift; sourceTree = "<group>"; };
 		B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lean Health Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +98,7 @@
 		B7C556912E73E5EA00EFC1F5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B7E601122E6582C1008AE315 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		B7EC6E192EC781CB00967561 /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -104,6 +106,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				auftakt.caf,
+				Localizable.xcstrings,
 			);
 			target = B737BB572E656A63000AE8C4 /* Meditationstimer Watch App */;
 		};
@@ -118,6 +121,7 @@
 		B7C556B12E73E88D00EFC1F5 /* Exceptions for "Meditationstimer iOS" folder in "MeditationstimerWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Localizable.xcstrings,
 				MeditationActivityAttributes.swift,
 			);
 			target = B7C5568E2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension */;
@@ -218,6 +222,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B7AC813C2ED1960F00FC9888 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B7C556902E73E5EA00EFC1F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +252,11 @@
 				B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		B7EC6E1A2EC781CB00967561 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -398,6 +412,16 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B737BB532E656A63000AE8C4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B7AC813C2ED1960F00FC9888 /* Products */;
+					ProjectRef = B7AC811C2ED1960F00FC9888 /* Meditationstimer.xcodeproj */;
+				},
+				{
+					ProductGroup = B7EC6E1A2EC781CB00967561 /* Products */;
+					ProjectRef = B7EC6E192EC781CB00967561 /* Meditationstimer.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B737BB512E656A63000AE8C4 /* Meditationstimer */,
@@ -805,7 +829,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.7.4;
+				MARKETING_VERSION = 2.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -843,7 +867,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.7.4;
+				MARKETING_VERSION = 2.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -872,7 +896,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.7.4;
+				MARKETING_VERSION = 2.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS.MeditationstimerWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -901,7 +925,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.7.4;
+				MARKETING_VERSION = 2.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "henemm.Meditationstimer-iOS.MeditationstimerWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
