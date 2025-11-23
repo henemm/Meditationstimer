@@ -31,6 +31,13 @@
 - Test: AirPods + ANC aktivieren, Meditation OHNE Ambient Sound starten, auf Fiepen achten
 - Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
 
+**Bug 26: Free Workout TTS sagt "Round Eins" statt "Round one" (EN)**
+- Location: `Meditationstimer iOS/Tabs/WorkoutsView.swift` Zeilen 178-200
+- Root Cause: TTS-Stimme war hardcoded auf `de-DE` → deutsche Stimme las englischen Text
+- **Fix (23.11.2025):** `currentTTSLanguage` computed property hinzugefügt, erkennt Gerätesprache automatisch
+- Test: EN-Version → Free Workout starten → TTS sollte "Round one" sagen (nicht "Round Eins")
+- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
+
 ---
 
 ### Weitere Localization Bugs (Neu: 22.11.2025)

@@ -175,15 +175,25 @@ private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelega
         }
     }
 
-    func speak(_ text: String, language: String = "de-DE") {
+    /// Returns the appropriate TTS language code based on device locale
+    private var currentTTSLanguage: String {
+        let languageCode = Locale.current.language.languageCode?.identifier ?? "de"
+        switch languageCode {
+        case "en": return "en-US"
+        case "de": return "de-DE"
+        default: return "de-DE"
+        }
+    }
+
+    func speak(_ text: String, language: String? = nil) {
         prepare()
         let u = AVSpeechUtterance(string: text)
-        u.voice = AVSpeechSynthesisVoice(language: language)
+        u.voice = AVSpeechSynthesisVoice(language: language ?? currentTTSLanguage)
         u.rate = AVSpeechUtteranceDefaultSpeechRate
         speech.speak(u)
     }
 
-    func speak(_ text: String, after delay: TimeInterval, language: String = "de-DE") {
+    func speak(_ text: String, after delay: TimeInterval, language: String? = nil) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
             self?.speak(text, language: language)
         }
@@ -224,6 +234,7 @@ private struct WorkoutRunnerView: View {
 
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
+    @AppStorage("speakExerciseNames") private var speakExerciseNames: Bool = true
     @State private var scheduled: [DispatchWorkItem] = []
     @State private var soundCheckTimer: Timer?  // NEW: Continuous monitoring timer
     @State private var countdownSoundTriggered = false  // NEW: Flag to prevent double-trigger
@@ -520,6 +531,7 @@ private struct WorkoutRunnerView: View {
             phaseStart = Date()
             phaseDuration = Double(max(1, cfgRest))
         }
+
         scheduleCuesForCurrentPhase()
 
         // Live Activity Update bei Phasenwechsel
@@ -562,14 +574,23 @@ private struct WorkoutRunnerView: View {
             if nextRound >= 2 && nextRound <= cfgRepeats {
                 let announceDelay = max(0, Double(dur) * 0.2)  // Early in rest phase
                 if announceDelay > 0.001 {
-                    schedule(announceDelay) {
+                    schedule(announceDelay) { [speakExerciseNames] in
                         if nextRound == self.cfgRepeats {
                             // Last round announcement
-                            self.sounds.play(.lastRound)
+                            if speakExerciseNames {
+                                self.sounds.speak(NSLocalizedString("Last round", comment: "TTS for last round in free workout"))
+                            } else {
+                                self.sounds.play(.lastRound)
+                            }
                             print("[Workout] Last round announcement (round \(nextRound))")
                         } else {
                             // Normal round announcement
-                            self.sounds.playRound(nextRound)
+                            if speakExerciseNames {
+                                let text = String(format: NSLocalizedString("Round %d", comment: "TTS for round number in free workout"), nextRound)
+                                self.sounds.speak(text)
+                            } else {
+                                self.sounds.playRound(nextRound)
+                            }
                             print("[Workout] Round announcement: \(nextRound)")
                         }
                     }
@@ -660,6 +681,8 @@ struct WorkoutsView: View {
     @AppStorage("repeats") private var repeats: Int = 10
 
     @EnvironmentObject private var streakManager: StreakManager
+    @AppStorage("countdownBeforeStart") private var countdownBeforeStart: Int = 0
+    @State private var showCountdown = false
 
     private var totalSeconds: Int {
         // Gesamtdauer ohne Ausklang/Auftakt: (Belastung * Wdh) + (Erholung * (Wdh-1))
@@ -752,7 +775,12 @@ struct WorkoutsView: View {
         Button(action: {
             Task {
                 if await HealthKitManager.shared.isAuthorized() {
-                    showRunner = true
+                    // Countdown vor Start (wenn aktiviert)
+                    if countdownBeforeStart > 0 {
+                        showCountdown = true
+                    } else {
+                        showRunner = true
+                    }
                 } else {
                     showHealthAlert = true
                 }
@@ -855,6 +883,18 @@ struct WorkoutsView: View {
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
                     .environmentObject(streakManager)
+            }
+            .fullScreenCover(isPresented: $showCountdown) {
+                CountdownOverlayView(
+                    totalSeconds: countdownBeforeStart,
+                    onComplete: {
+                        showCountdown = false
+                        showRunner = true
+                    },
+                    onCancel: {
+                        showCountdown = false
+                    }
+                )
             }
             .sheet(isPresented: $showingNoAlcLog) {
                 NoAlcLogSheet()

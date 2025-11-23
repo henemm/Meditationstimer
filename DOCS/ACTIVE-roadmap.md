@@ -1,13 +1,40 @@
 # Feature Roadmap - Meditationstimer
 
-**Letzte Aktualisierung:** 13. November 2025
+**Letzte Aktualisierung:** 23. November 2025
 **Regel:** Geplante Features. Nach Implementation → löschen und feature-*.md erstellen
+
+---
+
+## ✅ Kürzlich abgeschlossen
+
+### Countdown vor Start
+**Status:** ✅ IMPLEMENTIERT & GETESTET (23.11.2025)
+**Dokumentation:** DOCS/feature-countdown-vor-start.md
+
+### TTS für freie Workouts
+**Status:** Implementiert, Test ausstehend (23.11.2025)
+**Bug gefunden:** TTS-Stimme war hardcoded auf de-DE → "Round Eins" statt "Round one"
+**Fix:** Locale-basierte Sprachauswahl in WorkoutsView.swift
+**Dokumentation:** DOCS/feature-tts-free-workouts.md
 
 ---
 
 ## 🚀 Geplante Features
 
-_Aktuell keine geplanten Features._
+### Workout-Übungen Lokalisierung & Vollständigkeit
+**Status:** Geplant
+**Priorität:** Mittel
+**Kategorie:** Support Feature
+**Aufwand:** Klein-Mittel (~150-200 LoC, 2 Dateien)
+
+**Kurzbeschreibung:**
+Übungsnamen in HIIT-Workouts sind komplett englisch, obwohl deutsche Begriffe wo üblich sein sollten. Zusätzlich fehlt "Leg Swing Right" im Morning Stretch.
+
+**Betroffene Systeme:**
+- Services/WorkoutModels.swift (Übungsdefinitionen)
+- Localizable.xcstrings (neue Strings)
+
+**Dokumentation:** DOCS/feature-workout-exercises.md
 
 ---
 
