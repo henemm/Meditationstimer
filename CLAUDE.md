@@ -43,12 +43,19 @@
 
 **Bei manuellen UI-Tests mit Henning:**
 
-1. **Immer nur EINEN Test zur Zeit** - Nicht alle Tests auf einmal präsentieren
-2. **Auf Ergebnis warten** - Erst nach Hennings Feedback zum nächsten Test
-3. **Sofort protokollieren** - Pass/Fail direkt in ACTIVE-todos.md dokumentieren
-4. **Bei Fehler: STOP** - Nicht weiter testen, sondern Bug analysieren
+1. **ALLE ausstehenden Tests durchgehen** - Nicht fragen "möchtest du noch mehr testen?"
+2. **Immer nur EINEN Test zur Zeit** - Nicht alle Tests auf einmal präsentieren
+3. **Auf Ergebnis warten** - Erst nach Hennings Feedback zum nächsten Test
+4. **Sofort protokollieren** - Pass/Fail direkt in ACTIVE-todos.md dokumentieren
+5. **Bei Fehler: STOP** - Nicht weiter testen, sondern Bug analysieren
+6. **Erst wenn ALLES getestet:** Session beenden oder fragen was als nächstes
 
-**Warum:** Henning testet auf echtem Device. Zu viele Tests gleichzeitig führen zu Chaos.
+**Workflow:**
+1. ACTIVE-todos.md lesen → alle "Test ausstehend" Items sammeln
+2. Jeden Test einzeln präsentieren → Ergebnis abwarten → dokumentieren → nächster
+3. Erst wenn Liste leer: "Alle Tests abgeschlossen"
+
+**Warum:** Henning testet auf echtem Device. Alle offenen Tests müssen am Stück erledigt werden.
 
 ---
 

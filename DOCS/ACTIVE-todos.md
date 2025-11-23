@@ -45,10 +45,9 @@
 **Bug 18: Workouts-Tab Übungs-Info-Sheets zeigen "nicht verfügbar"**
 - Location: `WorkoutProgramsView.swift` (WorkoutPhase names) + `ExerciseDatabase.swift`
 - Problem: Info-Sheets zeigen "Übungsinformationen nicht verfügbar" statt der Übungsdetails
-- **KORRIGIERTE Root Cause:** Namensmismatch! WorkoutPhases verwendeten englische Namen ("Plank", "Squats"), ExerciseDatabase hat deutsche Namen ("Planke", "Kniebeugen") → Lookup schlägt fehl
-- **Fix implementiert:** 31 Übungsnamen in WorkoutProgramsView.swift auf deutsche ExerciseDatabase-Namen geändert
-- Test: Workout aufklappen → Info-Button tippen → Sheet sollte Übungsdetails zeigen (nicht "nicht verfügbar")
-- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
+- **Fix:** 31 Übungsnamen in WorkoutProgramsView.swift auf deutsche ExerciseDatabase-Namen geändert
+- **Getestet (23.11.2025):** ✅ Übungsdetails werden korrekt angezeigt
+- Status: **GEFIXT**
 
 **Bug 19: Workouts-Tab Übungs-Info-Sheets auf Deutsch (in EN Version)**
 - Location: `ExerciseDatabase.swift` - 43 Übungen mit effect + instructions Strings
@@ -66,8 +65,8 @@
 - **Links/Rechts Paare:** Alle vollständig in ExerciseDatabase ✅
 - **NEU (23.11.2025):** 46 Übungsnamen in Localizable.xcstrings mit EN-Übersetzungen
 - **NEU:** UI-Code geändert: Text(name) → Text(LocalizedStringKey(name))
-- Test: EN-Version starten → Workouts → "Squats" statt "Kniebeugen" angezeigt
-- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
+- **Getestet (23.11.2025):** ✅ EN-Version zeigt englische Übungsnamen
+- Status: **GEFIXT**
 
 ---
 
