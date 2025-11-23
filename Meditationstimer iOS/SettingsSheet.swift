@@ -166,24 +166,24 @@ struct SettingsSheet: View {
                         .help("Announces exercise names before each exercise using speech synthesis")
                 }
 
-                Section(header: Text("Countdown Before Start")) {
-                    Text("Get ready before sessions start. The countdown gives you time to settle in.")
+                Section(header: Text(NSLocalizedString("Countdown Before Start", comment: "Settings section header"))) {
+                    Text(NSLocalizedString("Get ready before sessions start. The countdown gives you time to settle in.", comment: "Countdown explanation"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     HStack {
-                        Text("Delay")
+                        Text(NSLocalizedString("Seconds", comment: "Countdown seconds label"))
                         Spacer()
                         Picker("", selection: $countdownBeforeStart) {
-                            Text("Off").tag(0)
+                            Text(NSLocalizedString("Off", comment: "Countdown off option")).tag(0)
                             ForEach(1...20, id: \.self) { seconds in
-                                Text("\(seconds)s").tag(seconds)
+                                Text("\(seconds)").tag(seconds)
                             }
                         }
                         #if os(iOS)
                         .pickerStyle(.wheel)
                         #endif
-                        .frame(width: 80, height: 120)
+                        .frame(width: 60, height: 120)
                     }
                 }
 

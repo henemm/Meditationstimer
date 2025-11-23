@@ -7336,6 +7336,70 @@
           }
         }
       }
+    },
+    "Countdown Before Start": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown vor Start"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown Before Start"
+          }
+        }
+      }
+    },
+    "Get ready before sessions start. The countdown gives you time to settle in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereite dich vor dem Start vor. Der Countdown gibt dir Zeit, dich einzufinden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get ready before sessions start. The countdown gives you time to settle in."
+          }
+        }
+      }
+    },
+    "Seconds": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sekunden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seconds"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
