@@ -7,9 +7,34 @@
 
 ## Schritt-für-Schritt Prozess
 
+### 0. ⚠️ KRITISCH: ALLE Feature-Dateien finden
+
+**BEVOR du irgendetwas lokalisierst, MUSS dieser Schritt erfolgen!**
+
+```bash
+# ALLE Dateien zum Feature finden
+grep -ri "featurename" --include="*.swift" -l
+
+# Beispiel für "Countdown":
+grep -ri "countdown" --include="*.swift" -l
+```
+
+**Warum kritisch?**
+- Ein Feature besteht oft aus MEHREREN Dateien (Settings + View + Model)
+- Nur die offensichtliche Datei zu lokalisieren reicht NICHT
+- Countdown-Fehler vom 23.11.2025: Settings lokalisiert, OverlayView vergessen!
+
+**Typische Feature-Struktur:**
+| Komponente | Beispiel-Datei | Enthält Strings? |
+|------------|----------------|------------------|
+| Settings | SettingsSheet.swift | ✓ Labels, Descriptions |
+| View/UI | CountdownOverlayView.swift | ✓ Status-Texte, Buttons |
+| Model | Timer.swift | Evtl. State-Namen |
+| Tab-Integration | OffenView.swift | Evtl. Hinweise |
+
 ### 1. Scope definieren
 - Was soll lokalisiert werden? (UI-Texte, Übungsnamen, Beschreibungen)
-- Welche Dateien sind betroffen?
+- **Welche Dateien sind betroffen? (aus Schritt 0!)**
 - Wie viele Strings ungefähr?
 
 ### 2. Localizer Agent starten
@@ -146,6 +171,15 @@ Text(String(format: NSLocalizedString("Exercise %d of %d", comment: ""), number,
 - Immer mit grep verifizieren
 - Dynamisch generierte Strings können übersehen werden
 - Strings in anderen Dateien (z.B. Models) prüfen
+
+### 4. ⚠️ Feature hat MEHRERE Dateien (Countdown-Fehler 23.11.2025)
+```
+❌ FALSCH: Nur SettingsSheet.swift lokalisiert
+✅ RICHTIG: ALLE Dateien zum Feature finden (grep -ri "countdown")
+           → SettingsSheet.swift (Settings)
+           → CountdownOverlayView.swift (UI) ← wurde vergessen!
+```
+**Regel:** IMMER Schritt 0 (Feature-Dateien finden) ausführen!
 
 ---
 
