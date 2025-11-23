@@ -56,7 +56,7 @@ struct SettingsSheet: View {
                         #if os(iOS)
                         .pickerStyle(.wheel)
                         #endif
-                        .frame(width: 80, height: 120)
+                        .frame(width: 100, height: 120)
                         .help("Choose your daily meditation goal in minutes.")
                     }
                     HStack {
@@ -71,7 +71,7 @@ struct SettingsSheet: View {
                         #if os(iOS)
                         .pickerStyle(.wheel)
                         #endif
-                        .frame(width: 80, height: 120)
+                        .frame(width: 100, height: 120)
                         .help("Choose your daily workout goal in minutes.")
                     }
                 }
@@ -166,13 +166,13 @@ struct SettingsSheet: View {
                         .help("Announces exercise names before each exercise using speech synthesis")
                 }
 
-                Section(header: Text(NSLocalizedString("Countdown Before Start", comment: "Settings section header"))) {
+                Section(header: Text(NSLocalizedString("Countdown Before Start (in Seconds)", comment: "Settings section header"))) {
                     Text(NSLocalizedString("Get ready before sessions start. The countdown gives you time to settle in.", comment: "Countdown explanation"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     HStack {
-                        Text(NSLocalizedString("Seconds", comment: "Countdown seconds label"))
+                        Text(NSLocalizedString("Countdown", comment: "Countdown label"))
                         Spacer()
                         Picker("", selection: $countdownBeforeStart) {
                             Text(NSLocalizedString("Off", comment: "Countdown off option")).tag(0)
@@ -183,7 +183,7 @@ struct SettingsSheet: View {
                         #if os(iOS)
                         .pickerStyle(.wheel)
                         #endif
-                        .frame(width: 60, height: 120)
+                        .frame(width: 100, height: 120)
                     }
                 }
 

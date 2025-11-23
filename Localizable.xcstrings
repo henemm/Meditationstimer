@@ -7337,22 +7337,6 @@
         }
       }
     },
-    "Countdown Before Start": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Countdown vor Start"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Countdown Before Start"
-          }
-        }
-      }
-    },
     "Get ready before sessions start. The countdown gives you time to settle in.": {
       "localizations": {
         "de": {
@@ -7369,22 +7353,6 @@
         }
       }
     },
-    "Seconds": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sekunden"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seconds"
-          }
-        }
-      }
-    },
     "Off": {
       "localizations": {
         "de": {
@@ -7397,6 +7365,38 @@
           "stringUnit": {
             "state": "translated",
             "value": "Off"
+          }
+        }
+      }
+    },
+    "Countdown Before Start (in Seconds)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown vor Start (in Sekunden)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown Before Start (in Seconds)"
+          }
+        }
+      }
+    },
+    "Countdown": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Countdown"
           }
         }
       }
