@@ -35,8 +35,8 @@
 - Location: `Meditationstimer iOS/Tabs/WorkoutsView.swift` Zeilen 178-200
 - Root Cause: TTS-Stimme war hardcoded auf `de-DE` → deutsche Stimme las englischen Text
 - **Fix (23.11.2025):** `currentTTSLanguage` computed property hinzugefügt, erkennt Gerätesprache automatisch
-- Test: EN-Version → Free Workout starten → TTS sollte "Round one" sagen (nicht "Round Eins")
-- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN**
+- **Getestet (23.11.2025):** ✅ EN-Version sagt "Round two" korrekt
+- Status: **GEFIXT**
 
 ---
 
@@ -54,8 +54,8 @@
 - Location: `ExerciseDatabase.swift` - 43 Übungen mit effect + instructions Strings
 - Problem: EN-Übersetzungen fehlten in Localizable.xcstrings (state: "new" mit deutschem Text)
 - **Fix (23.11.2025):** 86 englische Übersetzungen in Localizable.xcstrings eingefügt
-- Test: EN-Version starten → Workout aufklappen → Info-Button → Sheet sollte englische Texte zeigen
-- Status: **FIX IMPLEMENTIERT, BITTE AUF DEVICE TESTEN** 
+- **Getestet (23.11.2025):** ✅ EN-Version zeigt englische Texte
+- Status: **GEFIXT** 
 
 ---
 

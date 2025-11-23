@@ -8,13 +8,14 @@
 ## ✅ Kürzlich abgeschlossen
 
 ### Countdown vor Start
-**Status:** ✅ IMPLEMENTIERT & GETESTET (23.11.2025)
+**Status:** ✅ KOMPLETT (23.11.2025)
+**Getestet:** EN-Version, Offen-Tab - Countdown + Gong funktioniert
 **Dokumentation:** DOCS/feature-countdown-vor-start.md
 
 ### TTS für freie Workouts
-**Status:** Implementiert, Test ausstehend (23.11.2025)
-**Bug gefunden:** TTS-Stimme war hardcoded auf de-DE → "Round Eins" statt "Round one"
-**Fix:** Locale-basierte Sprachauswahl in WorkoutsView.swift
+**Status:** ✅ KOMPLETT (23.11.2025)
+**Getestet:** EN-Version sagt "Round two" korrekt
+**Bug behoben:** TTS-Stimme war hardcoded auf de-DE → jetzt Locale-basiert
 **Dokumentation:** DOCS/feature-tts-free-workouts.md
 
 ---
