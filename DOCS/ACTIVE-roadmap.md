@@ -18,23 +18,12 @@
 **Bug behoben:** TTS-Stimme war hardcoded auf de-DE → jetzt Locale-basiert
 **Dokumentation:** DOCS/feature-tts-free-workouts.md
 
----
-
-## 🚀 Geplante Features
-
 ### Workout-Übungen Lokalisierung & Vollständigkeit
-**Status:** Geplant
-**Priorität:** Mittel
-**Kategorie:** Support Feature
-**Aufwand:** Klein-Mittel (~150-200 LoC, 2 Dateien)
-
-**Kurzbeschreibung:**
-Übungsnamen in HIIT-Workouts sind komplett englisch, obwohl deutsche Begriffe wo üblich sein sollten. Zusätzlich fehlt "Leg Swing Right" im Morning Stretch.
-
-**Betroffene Systeme:**
-- Services/WorkoutModels.swift (Übungsdefinitionen)
-- Localizable.xcstrings (neue Strings)
-
+**Status:** ✅ KOMPLETT (23.11.2025)
+**Umgesetzt durch:**
+- Bug 18: ExerciseDatabase-Lookup gefixt (31 Namen)
+- Bug 19: 86 Exercise-Info-Strings übersetzt
+- Bug 25: 46 Übungsnamen lokalisiert
 **Dokumentation:** DOCS/feature-workout-exercises.md
 
 ---

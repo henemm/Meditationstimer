@@ -59,6 +59,24 @@
 
 ---
 
+## Dokumentations-Pflicht
+
+**SOFORT aktualisieren wenn Arbeit erledigt ist:**
+
+1. **Nach jedem Fix:** ACTIVE-todos.md → Status auf "GEFIXT" setzen
+2. **Nach jedem Test:** ACTIVE-todos.md → "Getestet" + Datum hinzufügen
+3. **Wenn Feature komplett:** ACTIVE-roadmap.md → Status auf "KOMPLETT" setzen
+4. **Nicht warten** bis Henning danach fragt!
+
+**Prüfen bei Session-Ende:**
+- Sind alle erledigten Items in ACTIVE-todos.md als GEFIXT markiert?
+- Sind alle getesteten Items dokumentiert?
+- Sind abgeschlossene Features in ACTIVE-roadmap.md aktualisiert?
+
+**Warum:** Henning soll nicht nachfragen müssen. Dokumentation ist Teil der Arbeit.
+
+---
+
 ## Architecture Overview
 
 Multi-target, horizontally-layered architecture:
