@@ -1,6 +1,6 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 23. November 2025
+**Letzte Aktualisierung:** 24. November 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -12,6 +12,18 @@
 ---
 
 ## 🐛 aktive Bugs
+
+### NoAlc Bugs
+
+**Bug 27: NoAlc Rewards können nach 3 Wochen nicht mehr verdient werden**
+- Location: `CalendarView.swift` Zeilen 64-65 und 79-80
+- Problem: Nach 3 verdienten Rewards (auch wenn alle verbraucht) wurden keine neuen mehr vergeben
+- Root Cause: Cap prüfte `earnedRewards < 3` (total je verdient) statt `availableRewards < 3` (aktuell verfügbar)
+- **Fix (24.11.2025):** Beide Stellen korrigiert auf `currentAvailable < 3` bzw. `newAvailable < 3`
+- Commit: 5a4fbdd
+- Status: **GEFIXT, BITTE TESTEN**
+
+---
 
 ### Localization Bugs
 **Status:** Offen
