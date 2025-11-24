@@ -60,8 +60,9 @@ struct CalendarView: View {
                     currentStreakStart = date
                 }
 
-                // Earn reward every 7 days (max 3 total)
-                if consecutiveDays % 7 == 0 && earnedRewards < 3 {
+                // Earn reward every 7 days (max 3 available at any time)
+                let currentAvailable = earnedRewards - consumedRewards
+                if consecutiveDays % 7 == 0 && currentAvailable < 3 {
                     earnedRewards += 1
                 }
             } else {
@@ -74,7 +75,9 @@ struct CalendarView: View {
                     consecutiveDays += 1  // Healed day counts!
 
                     // Check if we earn a new reward for reaching a 7-day milestone
-                    if consecutiveDays % 7 == 0 && earnedRewards < 3 {
+                    // Note: availableRewards was calculated before consumption, so recalculate
+                    let newAvailable = earnedRewards - consumedRewards
+                    if consecutiveDays % 7 == 0 && newAvailable < 3 {
                         earnedRewards += 1
                     }
                 } else {
