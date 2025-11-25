@@ -90,6 +90,7 @@
 		B7A881762E658D9F003FC2F0 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		B7A881782E658DD8003FC2F0 /* TwoPhaseTimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhaseTimerEngine.swift; sourceTree = "<group>"; };
 		B7AC811C2ED1960F00FC9888 /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
+		B7AC82DD2ED49C3600FC9888 /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
 		B7BF2D012EB3D1B5009C1636 /* LeanHealthTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanHealthTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAlcManager.swift; sourceTree = "<group>"; };
 		B7C5566D2E6609F400EFC1F5 /* Lean Health Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lean Health Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -223,6 +224,11 @@
 			sourceTree = "<group>";
 		};
 		B7AC813C2ED1960F00FC9888 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B7AC82E82ED49C3600FC9888 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -416,6 +422,10 @@
 				{
 					ProductGroup = B7AC813C2ED1960F00FC9888 /* Products */;
 					ProjectRef = B7AC811C2ED1960F00FC9888 /* Meditationstimer.xcodeproj */;
+				},
+				{
+					ProductGroup = B7AC82E82ED49C3600FC9888 /* Products */;
+					ProjectRef = B7AC82DD2ED49C3600FC9888 /* Meditationstimer.xcodeproj */;
 				},
 				{
 					ProductGroup = B7EC6E1A2EC781CB00967561 /* Products */;

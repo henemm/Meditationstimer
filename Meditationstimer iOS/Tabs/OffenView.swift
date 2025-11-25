@@ -150,7 +150,7 @@ struct OffenView: View {
                 VStack(spacing: 6) {
                     Text("🧘")
                         .font(.system(size: 56))
-                    Text("Meditation")
+                    Text(NSLocalizedString("Meditation", comment: "Phase label"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
@@ -158,7 +158,7 @@ struct OffenView: View {
                 VStack(spacing: 6) {
                     Text("🪷")
                         .font(.system(size: 56))
-                    Text("Contemplation")
+                    Text(NSLocalizedString("Contemplation", comment: "Phase label"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
@@ -169,7 +169,9 @@ struct OffenView: View {
             // Rechte Spalte: große Wheel-Picker für Zeiten
             VStack(spacing: 24) {
                 Picker("Meditation (min)", selection: $phase1Minutes) {
-                    ForEach(1..<61) { Text("\($0)") }  // Min 1 Minute (Bug 13 Fix)
+                    ForEach(1..<61) { value in
+                        Text("\(value)").tag(value)  // Bug #30 Fix: Explizites .tag() damit Wert (nicht Index) verwendet wird
+                    }
                 }
                 .labelsHidden()
                 .pickerStyle(.wheel)
@@ -177,7 +179,9 @@ struct OffenView: View {
                 .clipped()
 
                 Picker("Contemplation (min)", selection: $phase2Minutes) {
-                    ForEach(1..<61) { Text("\($0)") }  // Min 1 Minute (Bug 13 Fix)
+                    ForEach(1..<61) { value in
+                        Text("\(value)").tag(value)  // Bug #30 Fix: Explizites .tag() damit Wert (nicht Index) verwendet wird
+                    }
                 }
                 .labelsHidden()
                 .pickerStyle(.wheel)
@@ -192,9 +196,9 @@ struct OffenView: View {
             .alert(isPresented: $showLocalConflictAlert) {
                 localConflictAlert
             }
-            .alert("Health Access", isPresented: $showHealthAlert) {
-                Button("Cancel", role: .cancel) {}
-                Button("Allow") {
+            .alert(NSLocalizedString("Health Access", comment: "Alert title"), isPresented: $showHealthAlert) {
+                Button(NSLocalizedString("Cancel", comment: "Alert button"), role: .cancel) {}
+                Button(NSLocalizedString("Allow", comment: "Alert button")) {
                     Task {
                         do {
                             try await HealthKitManager.shared.requestAuthorization()
@@ -242,7 +246,7 @@ struct OffenView: View {
                     }
                 }
             } message: {
-                Text("This app can record your meditations in Apple Health to track your progress. Do you want to allow this?")
+                Text(NSLocalizedString("This app can record your meditations in Apple Health to track your progress. Do you want to allow this?", comment: "Health access explanation"))
             }
     }
 
@@ -282,24 +286,24 @@ struct OffenView: View {
     // Alert for existing timer conflict
     private var conflictAlert: Alert {
         Alert(
-            title: Text("Another Timer Running"),
-            message: Text(String(format: "The timer '%@' is already running. Should it be stopped and the new one started?", conflictTitle ?? "Active Timer")),
-            primaryButton: .destructive(Text("Stop & Start Timer"), action: {
+            title: Text(NSLocalizedString("Another Timer Running", comment: "Alert title")),
+            message: Text(String(format: NSLocalizedString("The timer '%@' is already running. Should it be stopped and the new one started?", comment: "Timer conflict message"), conflictTitle ?? NSLocalizedString("Active Timer", comment: "Default timer name"))),
+            primaryButton: .destructive(Text(NSLocalizedString("Stop & Start Timer", comment: "Alert button")), action: {
                 // Force start now
                 if let phase1End = engine.phase1EndDate {
                     liveActivity.forceStart(title: "Meditation", phase: 1, endDate: phase1End, ownerId: "OffenTab")
                 }
             }),
-            secondaryButton: .cancel(Text("Cancel"))
+            secondaryButton: .cancel(Text(NSLocalizedString("Cancel", comment: "Alert button")))
         )
     }
 
     // Local alert when engine.state != .idle and user presses Start
     private var localConflictAlert: Alert {
         Alert(
-            title: Text("Session Already Running"),
-            message: Text("A session is already running. Should it be stopped and the new one started?"),
-            primaryButton: .destructive(Text("Stop & Start"), action: {
+            title: Text(NSLocalizedString("Session Already Running", comment: "Alert title")),
+            message: Text(NSLocalizedString("A session is already running. Should it be stopped and the new one started?", comment: "Session conflict message")),
+            primaryButton: .destructive(Text(NSLocalizedString("Stop & Start", comment: "Alert button")), action: {
                 Task { @MainActor in
                     // End current session and start fresh
                     await liveActivity.end()
@@ -319,7 +323,7 @@ struct OffenView: View {
                     }
                 }
             }),
-            secondaryButton: .cancel(Text("Cancel"))
+            secondaryButton: .cancel(Text(NSLocalizedString("Cancel", comment: "Alert button")))
         )
     }
 
@@ -348,7 +352,7 @@ struct OffenView: View {
                     GlassCard {
                         VStack(spacing: 16) {
                             HStack(spacing: 8) {
-                                Text("Open Meditation")
+                                Text(NSLocalizedString("Open Meditation", comment: "Tab title"))
                                     .font(.title3)
                                     .foregroundStyle(.secondary)
                                     .textCase(.uppercase)
@@ -381,7 +385,7 @@ struct OffenView: View {
                     .animation(.smooth(duration: 0.3), value: engine.state)
                     .zIndex(2)
                 } else if case .phase2 = engine.state {
-                    RunCard(title: "Contemplation", endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
+                    RunCard(title: NSLocalizedString("Contemplation", comment: "Phase 2 title"), endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
@@ -638,7 +642,7 @@ private struct RunCard: View {
             }
 
             // Centered End button (same look & size as Atem run card)
-            Button("End") {
+            Button(NSLocalizedString("End", comment: "Button to end session")) {
                 onEnd()
             }
                 .buttonStyle(.borderedProminent)

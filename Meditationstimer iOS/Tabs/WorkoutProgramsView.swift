@@ -315,7 +315,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 0),
         ],
         repetitions: 1,
-        description: "Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest. Proven to increase VO2max by up to 14% in 6 weeks. Requires 170% VO2max intensity."
+        description: NSLocalizedString("Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest. Proven to increase VO2max by up to 14% in 6 weeks. Requires 170% VO2max intensity.", comment: "Tabata workout description")
     ),
 
     // 2. Core Circuit 💪
@@ -331,7 +331,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Russian Twists", workDuration: 40, restDuration: 10),
         ],
         repetitions: 3,
-        description: "Focuses on core stability and rotational strength. Combines isometric (planks) and dynamic exercises for comprehensive core strengthening. Improves posture and reduces back pain."
+        description: NSLocalizedString("Focuses on core stability and rotational strength. Combines isometric (planks) and dynamic exercises for comprehensive core strengthening. Improves posture and reduces back pain.", comment: "Core Circuit workout description")
     ),
 
     // 3. Full Body Burn 🏃
@@ -347,7 +347,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 10),
         ],
         repetitions: 3,
-        description: "Full-body HIIT focused on functional movement patterns. Combines strength, cardio, and core stability. Maximum calorie burn through engagement of large muscle groups."
+        description: NSLocalizedString("Full-body HIIT focused on functional movement patterns. Combines strength, cardio, and core stability. Maximum calorie burn through engagement of large muscle groups.", comment: "Full Body Burn workout description")
     ),
 
     // 4. Power Intervals ⚡
@@ -362,7 +362,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Hampelmänner", workDuration: 40, restDuration: 10),
         ],
         repetitions: 4,
-        description: "Explosive plyometric exercises to increase power and anaerobic capacity. Optimal for fat burning and cardiovascular fitness. EPOC effect (afterburn) lasts up to 24 hours."
+        description: NSLocalizedString("Explosive plyometric exercises to increase power and anaerobic capacity. Optimal for fat burning and cardiovascular fitness. EPOC effect (afterburn) lasts up to 24 hours.", comment: "Power Intervals workout description")
     ),
 
     // 5. Hintere Kette 🦵
@@ -379,7 +379,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Wadenheben", workDuration: 30, restDuration: 10),
         ],
         repetitions: 3,
-        description: "Targeted training of the posterior chain (glutes, hamstrings, lower back, calves). Essential for running economy, sprint speed, and injury prevention. Corrects imbalances from sitting."
+        description: NSLocalizedString("Targeted training of the posterior chain (glutes, hamstrings, lower back, calves). Essential for running economy, sprint speed, and injury prevention. Corrects imbalances from sitting.", comment: "Hintere Kette workout description")
     ),
 
     // 6. Jogging Warm-up 🏃‍♀️
@@ -395,7 +395,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Hüftkreisen", workDuration: 30, restDuration: 10),
         ],
         repetitions: 2,
-        description: "Dynamic warm-up for runners. Activates hip muscles, increases range of motion, and prepares the body for running load. Reduces injury risk by up to 35%."
+        description: NSLocalizedString("Dynamic warm-up for runners. Activates hip muscles, increases range of motion, and prepares the body for running load. Reduces injury risk by up to 35%.", comment: "Jogging Warm-up workout description")
     ),
 
     // 7. Post-Run Stretching 🧘‍♂️
@@ -415,7 +415,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Kindspose", workDuration: 60, restDuration: 0),
         ],
         repetitions: 1,
-        description: "Static stretching for recovery after running. Focus on hip and leg muscles. Reduces muscle soreness (DOMS), improves flexibility, and promotes circulation. Hold each stretch for at least 30 seconds."
+        description: NSLocalizedString("Static stretching for recovery after running. Focus on hip and leg muscles. Reduces muscle soreness (DOMS), improves flexibility, and promotes circulation. Hold each stretch for at least 30 seconds.", comment: "Post-Run Stretching workout description")
     ),
 
     // 8. Beginner Flow 🌱
@@ -430,7 +430,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Knieheben stehend", workDuration: 30, restDuration: 0),
         ],
         repetitions: 2,
-        description: "Gentle introduction to HIIT training. Joint-friendly variations with longer rest periods (1:1 ratio). Ideal for building basic fitness and technique. Progressive by adding rounds or reducing rest."
+        description: NSLocalizedString("Gentle introduction to HIIT training. Joint-friendly variations with longer rest periods (1:1 ratio). Ideal for building basic fitness and technique. Progressive by adding rounds or reducing rest.", comment: "Beginner Flow workout description")
     ),
 
     // 9. Quick Burn 🔥
@@ -444,7 +444,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Planke", workDuration: 30, restDuration: 0),
         ],
         repetitions: 3,
-        description: "Compact 6-minute workout for maximum efficiency. Combines cardio and core for quick calorie burn. Perfect for time-constrained days or as a finisher after strength training."
+        description: NSLocalizedString("Compact 6-minute workout for maximum efficiency. Combines cardio and core for quick calorie burn. Perfect for time-constrained days or as a finisher after strength training.", comment: "Quick Burn workout description")
     ),
 
     // 10. Upper Body Push 💪
@@ -459,7 +459,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
             WorkoutPhase(name: "Planke zu Herabschauender Hund", workDuration: 30, restDuration: 0),
         ],
         repetitions: 3,
-        description: "Focused training of push muscles (chest, triceps, shoulders). Progression through push-up variations with different focus points. Complements pull training for balanced upper body development."
+        description: NSLocalizedString("Focused training of push muscles (chest, triceps, shoulders). Progression through push-up variations with different focus points. Complements pull training for balanced upper body development.", comment: "Upper Body Push workout description")
     ),
 ]
 
@@ -721,11 +721,11 @@ public struct WorkoutProgramsView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 40))
                                 .foregroundStyle(Color.workoutViolet)
-                            Text("Done").font(.subheadline.weight(.semibold))
+                            Text(NSLocalizedString("Done", comment: "Session completed")).font(.subheadline.weight(.semibold))
                         }
                     }
 
-                    Button(isPaused ? "Continue" : "Pause") {
+                    Button(isPaused ? NSLocalizedString("Continue", comment: "Button") : NSLocalizedString("Pause", comment: "Button")) {
                         togglePause()
                     }
                     .buttonStyle(.borderedProminent)
@@ -1516,7 +1516,7 @@ public struct WorkoutProgramsView: View {
                                 Text(NSLocalizedString("Description", comment: ""))
                                     .font(.headline)
                                     .foregroundStyle(.secondary)
-                                Text(description)
+                                Text(LocalizedStringKey(description))
                                     .font(.body)
                             }
                         }
@@ -1610,7 +1610,7 @@ public struct WorkoutProgramsView: View {
         var body: some View {
             NavigationView {
                 Form {
-                    Section("Icon") {
+                    Section(NSLocalizedString("Icon", comment: "Section header")) {
                         let choices = ["💪","🔥","🏃","⚡","🦵","🏃‍♀️","🧘‍♂️","🌱","🤸","🏋️","🚴","⛹️","🤾","🧗"]
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
@@ -1636,16 +1636,16 @@ public struct WorkoutProgramsView: View {
                             .padding(.vertical, 4)
                         }
                     }
-                    Section("Name") {
-                        TextField("Name", text: $draft.name)
+                    Section(NSLocalizedString("Name", comment: "Section header")) {
+                        TextField(NSLocalizedString("Name", comment: "TextField placeholder"), text: $draft.name)
                             .textInputAutocapitalization(.words)
                     }
-                    Section("Rounds") {
-                        WorkoutWheelPicker("Repetitions", selection: $draft.repetitions, range: 1...99)
+                    Section(NSLocalizedString("Rounds", comment: "Section header")) {
+                        WorkoutWheelPicker(NSLocalizedString("Repetitions", comment: "Picker label"), selection: $draft.repetitions, range: 1...99)
                     }
-                    Section("Exercises") {
+                    Section(NSLocalizedString("Exercises", comment: "Section header")) {
                         if draft.phases.isEmpty {
-                            Text("No Exercises")
+                            Text(NSLocalizedString("No Exercises", comment: "Empty state"))
                                 .foregroundStyle(.secondary)
                                 .font(.subheadline)
                         } else {
@@ -1686,13 +1686,13 @@ public struct WorkoutProgramsView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                Text("Add Exercise")
+                                Text(NSLocalizedString("Add Exercise", comment: "Button"))
                             }
                         }
                     }
                     Section {
                         HStack {
-                            Text("Total Duration")
+                            Text(NSLocalizedString("Total Duration", comment: "Label"))
                             Spacer()
                             Text(totalString).monospacedDigit().foregroundStyle(.secondary)
                         }
@@ -1702,16 +1702,16 @@ public struct WorkoutProgramsView: View {
                             Button(role: .destructive) {
                                 onDelete(draft.id)
                                 dismiss()
-                            } label: { Text("Delete") }
+                            } label: { Text(NSLocalizedString("Delete", comment: "Button")) }
                         }
                     }
                 }
-                .navigationTitle(isNew ? "New Workout Set" : "Workout Set")
+                .navigationTitle(isNew ? NSLocalizedString("New Workout Set", comment: "Navigation title") : NSLocalizedString("Workout Set", comment: "Navigation title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button(NSLocalizedString("Cancel", comment: "Button")) { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Save") {
+                        Button(NSLocalizedString("Save", comment: "Button")) {
                             onSave(draft); dismiss()
                         }
                         .disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || draft.phases.isEmpty)
@@ -1791,8 +1791,8 @@ public struct WorkoutProgramsView: View {
         var body: some View {
             NavigationView {
                 Form {
-                    Section("Exercise") {
-                        Picker("Name", selection: Binding(
+                    Section(NSLocalizedString("Exercise", comment: "Section header")) {
+                        Picker(NSLocalizedString("Name", comment: "Picker label"), selection: Binding(
                             get: { useCustomExercise ? "Custom Exercise..." : draft.name },
                             set: { newValue in
                                 if newValue == "Custom Exercise..." {
@@ -1806,36 +1806,36 @@ public struct WorkoutProgramsView: View {
                             ForEach(exerciseSuggestions, id: \.self) { exercise in
                                 Text(exercise).tag(exercise)
                             }
-                            Text("Custom Exercise...").tag("Custom Exercise...")
+                            Text(NSLocalizedString("Custom Exercise...", comment: "Picker option")).tag("Custom Exercise...")
                         }
                         .pickerStyle(.menu)
 
                         if useCustomExercise {
-                            TextField("Exercise Name", text: $customExerciseName)
+                            TextField(NSLocalizedString("Exercise Name", comment: "TextField placeholder"), text: $customExerciseName)
                                 .textInputAutocapitalization(.words)
                         }
                     }
-                    Section("Work") {
+                    Section(NSLocalizedString("Work", comment: "Section header")) {
                         HStack {
-                            Text("Duration")
+                            Text(NSLocalizedString("Duration", comment: "Label"))
                             Spacer()
                             WorkoutWheelPicker("", selection: $draft.workDuration, range: 1...600)
                                 .frame(width: 120, height: 100)
-                            Text("s").foregroundStyle(.secondary)
+                            Text(NSLocalizedString("s", comment: "Seconds abbreviation")).foregroundStyle(.secondary)
                         }
                     }
-                    Section(footer: isLastPhase ? Text("Pause is used for pauses between rounds.") : nil) {
+                    Section(footer: isLastPhase ? Text(NSLocalizedString("Pause is used for pauses between rounds.", comment: "Section footer")) : nil) {
                         HStack {
-                            Text("Rest")
+                            Text(NSLocalizedString("Rest", comment: "Label"))
                             Spacer()
                             WorkoutWheelPicker("", selection: $draft.restDuration, range: 0...600)
                                 .frame(width: 120, height: 100)
-                            Text("s").foregroundStyle(.secondary)
+                            Text(NSLocalizedString("s", comment: "Seconds abbreviation")).foregroundStyle(.secondary)
                         }
                     }
                     Section {
                         HStack {
-                            Text("Total Duration")
+                            Text(NSLocalizedString("Total Duration", comment: "Label"))
                             Spacer()
                             Text(totalString).monospacedDigit().foregroundStyle(.secondary)
                         }
@@ -1845,16 +1845,16 @@ public struct WorkoutProgramsView: View {
                             Button(role: .destructive) {
                                 onDelete()
                                 dismiss()
-                            } label: { Text("Delete") }
+                            } label: { Text(NSLocalizedString("Delete", comment: "Button")) }
                         }
                     }
                 }
-                .navigationTitle(isNew ? "New Exercise" : "Edit Exercise")
+                .navigationTitle(isNew ? NSLocalizedString("New Exercise", comment: "Navigation title") : NSLocalizedString("Edit Exercise", comment: "Navigation title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button(NSLocalizedString("Cancel", comment: "Button")) { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Save") {
+                        Button(NSLocalizedString("Save", comment: "Button")) {
                             // Use custom exercise name if selected
                             if useCustomExercise {
                                 draft.name = customExerciseName

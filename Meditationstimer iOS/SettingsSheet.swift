@@ -39,13 +39,13 @@ struct SettingsSheet: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Daily Goals in Minutes")) {
-                    Text("Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle.")
+                Section(header: Text(NSLocalizedString("Daily Goals in Minutes", comment: "Settings section header"))) {
+                    Text(NSLocalizedString("Set your daily goals for meditation and workouts. Progress is shown in the calendar as a partially filled circle.", comment: "Daily goals explanation"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     HStack {
-                        Text("Meditation")
+                        Text(NSLocalizedString("Meditation", comment: "Settings label"))
                             .help("Set your daily meditation goal. Progress is shown as a partially filled blue circle in the calendar.")
                         Spacer()
                         Picker("", selection: $meditationGoalMinutes) {
@@ -60,7 +60,7 @@ struct SettingsSheet: View {
                         .help("Choose your daily meditation goal in minutes.")
                     }
                     HStack {
-                        Text("Workouts")
+                        Text(NSLocalizedString("Workouts", comment: "Settings label"))
                             .help("Set your daily workout goal. Progress is shown as a partially filled purple circle in the calendar.")
                         Spacer()
                         Picker("", selection: $workoutGoalMinutes) {
@@ -76,8 +76,8 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Background Sounds")) {
-                    Picker("Ambient Sound", selection: ambientSound) {
+                Section(header: Text(NSLocalizedString("Background Sounds", comment: "Settings section header"))) {
+                    Picker(NSLocalizedString("Ambient Sound", comment: "Settings picker label"), selection: ambientSound) {
                         ForEach(AmbientSound.allCases) { sound in
                             Text(LocalizedStringKey(sound.rawValue)).tag(sound)
                         }
@@ -86,25 +86,25 @@ struct SettingsSheet: View {
                     .pickerStyle(.menu)
                     #endif
 
-                    Text("Choose a background sound and activate it for Open and/or Breathe.")
+                    Text(NSLocalizedString("Choose a background sound and activate it for Open and/or Breathe.", comment: "Background sound explanation"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    Toggle("Enable for Open (free meditation)", isOn: $ambientSoundOffenEnabled)
+                    Toggle(NSLocalizedString("Enable for Open (free meditation)", comment: "Settings toggle"), isOn: $ambientSoundOffenEnabled)
                         .disabled(ambientSound.wrappedValue == .none)
 
-                    Toggle("Enable for Breathe (breathing exercises)", isOn: $ambientSoundAtemEnabled)
+                    Toggle(NSLocalizedString("Enable for Breathe (breathing exercises)", comment: "Settings toggle"), isOn: $ambientSoundAtemEnabled)
                         .disabled(ambientSound.wrappedValue == .none)
 
                     if ambientSound.wrappedValue != .none {
                         // TEST BUTTON - Preview des gewählten Sounds
                         if isPreviewPlaying {
-                            Button("Stop Background Sound") {
+                            Button(NSLocalizedString("Stop Background Sound", comment: "Settings button")) {
                                 previewPlayer.stop()
                                 isPreviewPlaying = false
                             }
                         } else {
-                            Button("Play Background Sound") {
+                            Button(NSLocalizedString("Play Background Sound", comment: "Settings button")) {
                                 previewPlayer.stop()
                                 previewPlayer.setVolume(percent: ambientSoundVolume)
                                 previewPlayer.start(sound: ambientSound.wrappedValue)
@@ -114,19 +114,19 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Background Sound Settings")) {
+                Section(header: Text(NSLocalizedString("Background Sound Settings", comment: "Settings section header"))) {
                     // GONG TEST - spielt NUR den Gong
-                    Button("Test Gong") {
+                    Button(NSLocalizedString("Test Gong", comment: "Settings button")) {
                         gongPlayer.play(named: "gong-ende") {}
                     }
 
-                    Text("First adjust the system volume using the gong. The background sound volume is relative to the gong.")
+                    Text(NSLocalizedString("First adjust the system volume using the gong. The background sound volume is relative to the gong.", comment: "Volume explanation"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
                     // VOLUME SLIDER
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("relative volume: \(ambientSoundVolume)%")
+                        Text(String(format: NSLocalizedString("relative volume: %d%%", comment: "Volume percentage"), ambientSoundVolume))
                             .font(.subheadline)
 
                         Slider(value: Binding(
@@ -136,8 +136,8 @@ struct SettingsSheet: View {
                     }
                 }
 
-                Section(header: Text("Breathe Sounds")) {
-                    Picker("Sound Theme", selection: $selectedAtemTheme) {
+                Section(header: Text(NSLocalizedString("Breathe Sounds", comment: "Settings section header"))) {
+                    Picker(NSLocalizedString("Sound Theme", comment: "Settings picker label"), selection: $selectedAtemTheme) {
                         ForEach(AtemView.AtemSoundTheme.allCases, id: \.self) { theme in
                             Text("\(theme.emoji) \(theme.displayName)")
                                 .tag(theme)
@@ -156,13 +156,13 @@ struct SettingsSheet: View {
                     }) {
                         HStack {
                             Image(systemName: "play.circle.fill")
-                            Text("Test Sound")
+                            Text(NSLocalizedString("Test Sound", comment: "Settings button"))
                         }
                     }
                 }
 
-                Section(header: Text("Workout Programs")) {
-                    Toggle("Announce exercise names", isOn: $speakExerciseNames)
+                Section(header: Text(NSLocalizedString("Workout Programs", comment: "Settings section header"))) {
+                    Toggle(NSLocalizedString("Announce exercise names", comment: "Settings toggle"), isOn: $speakExerciseNames)
                         .help("Announces exercise names before each exercise using speech synthesis")
                 }
 

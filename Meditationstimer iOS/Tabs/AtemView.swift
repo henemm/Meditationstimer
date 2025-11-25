@@ -549,11 +549,11 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     }
                     .padding()
                 }
-                .navigationTitle("Preset Info")
+                .navigationTitle(NSLocalizedString("Preset Info", comment: "Navigation title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Done") {
+                        Button(NSLocalizedString("Done", comment: "Button")) {
                             dismiss()
                         }
                     }
@@ -594,6 +594,8 @@ private struct OverlayBackgroundEffect: ViewModifier {
         @AppStorage("ambientSoundAtemEnabled") private var ambientSoundAtemEnabled: Bool = false
         @AppStorage("ambientSoundVolume") private var ambientSoundVolume: Int = 45
         @AppStorage("atemSoundTheme") private var soundTheme: AtemSoundTheme = .distinctive
+        @AppStorage("countdownBeforeStart") private var countdownBeforeStart: Int = 0
+        @State private var showCountdown = false
 
         private var ambientSound: AmbientSound {
             AmbientSound(rawValue: ambientSoundRaw) ?? .none
@@ -649,6 +651,27 @@ private struct OverlayBackgroundEffect: ViewModifier {
             gong.play(named: soundName(for: p))
         }
 
+        /// Starts the actual breathing session (called after optional countdown)
+        func beginSessionAfterCountdown() {
+            let start = Date()
+            sessionStart = start
+            sessionTotal = TimeInterval(preset.totalSeconds)
+            started = true
+            setPhase(.inhale)
+            // Live Activity starten
+            let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
+            let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
+            print("🫁 [AtemView] REQUESTING Live Activity start: title='\(preset.name)', ownerId='AtemTab'")
+            if case .conflict(let existingOwner, let existingTitle) = result {
+                print("🫁 [AtemView] Live Activity CONFLICT: existingOwner='\(existingOwner)', existingTitle='\(existingTitle)'")
+                conflictOwnerId = existingOwner
+                conflictTitle = existingTitle.isEmpty ? NSLocalizedString("Another Timer", comment: "Fallback title for unknown timer") : existingTitle
+                showConflictAlert = true
+            } else {
+                print("🫁 [AtemView] Live Activity request submitted (no immediate conflict)")
+            }
+        }
+
         func advance() {
             switch phase {
             case .inhale:
@@ -690,7 +713,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.system(size: 40))
-                            Text("Done").font(.subheadline.weight(.semibold))
+                            Text(NSLocalizedString("Done", comment: "Session completed")).font(.subheadline.weight(.semibold))
                         }
                         // Snap outer progress to full on finish
                         .onAppear {
@@ -702,7 +725,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             // }
                         }
                     }
-                    Button("End") {
+                    Button(NSLocalizedString("End", comment: "Button to end session")) {
                         Task { await endSession(manual: true) }
                     }
                     .buttonStyle(.borderedProminent)
@@ -729,34 +752,36 @@ private struct OverlayBackgroundEffect: ViewModifier {
                 // Disable idle timer to keep display on during session
                 setIdleTimer(true)
 
-                // Start ambient sound
+                // Start ambient sound (starts during countdown if enabled)
                 if ambientSoundAtemEnabled {
                     ambientPlayer.setVolume(percent: ambientSoundVolume)
                     ambientPlayer.start(sound: ambientSound)
                 }
 
-                // Start the session
-                let start = Date()
-                sessionStart = start
-                sessionTotal = TimeInterval(preset.totalSeconds)
-                started = true
-                setPhase(.inhale)
-                // Live Activity starten
-                let endDate = start.addingTimeInterval(TimeInterval(preset.totalSeconds))
-                let result = liveActivity.requestStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
-                print("🫁 [AtemView] REQUESTING Live Activity start: title='\(preset.name)', ownerId='AtemTab'")
-                if case .conflict(let existingOwner, let existingTitle) = result {
-                    print("🫁 [AtemView] Live Activity CONFLICT: existingOwner='\(existingOwner)', existingTitle='\(existingTitle)'")
-                    conflictOwnerId = existingOwner
-                    conflictTitle = existingTitle.isEmpty ? NSLocalizedString("Another Timer", comment: "Fallback title for unknown timer") : existingTitle
-                    showConflictAlert = true
+                // Countdown vor Start (wenn aktiviert)
+                if countdownBeforeStart > 0 {
+                    showCountdown = true
                 } else {
-                    print("🫁 [AtemView] Live Activity request submitted (no immediate conflict)")
+                    beginSessionAfterCountdown()
                 }
             }
             // Keine automatische Beendigung bei App-Wechsel
             .alert(isPresented: $showConflictAlert) {
                 conflictAlert
+            }
+            .fullScreenCover(isPresented: $showCountdown) {
+                CountdownOverlayView(
+                    totalSeconds: countdownBeforeStart,
+                    onComplete: {
+                        showCountdown = false
+                        beginSessionAfterCountdown()
+                    },
+                    onCancel: {
+                        showCountdown = false
+                        ambientPlayer.stop()
+                        close()
+                    }
+                )
             }
             .onChange(of: finished) { _, newValue in
                 if newValue {
@@ -814,7 +839,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
                     .frame(width: 320, height: 320)
                     .padding(.top, 6)
                     .contentShape(Rectangle())
-                    Text("Round \(repIndex) / \(preset.repetitions)")
+                    Text(String(format: NSLocalizedString("Round %d / %d", comment: "Round counter"), repIndex, preset.repetitions))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
@@ -976,14 +1001,14 @@ private struct OverlayBackgroundEffect: ViewModifier {
             let messageText = String(format: messageFormat, timerName)
 
             return Alert(
-                title: Text("Another Timer Running"),
+                title: Text(NSLocalizedString("Another Timer Running", comment: "Alert title")),
                 message: Text(messageText),
-                primaryButton: .destructive(Text("Stop Timer and Start"), action: {
+                primaryButton: .destructive(Text(NSLocalizedString("Stop Timer and Start", comment: "Alert button")), action: {
                     // Force start now
                     let endDate = sessionStart.addingTimeInterval(TimeInterval(preset.totalSeconds))
                     liveActivity.forceStart(title: preset.name, phase: 1, endDate: endDate, ownerId: "AtemTab")
                 }),
-                secondaryButton: .cancel(Text("Cancel"))
+                secondaryButton: .cancel(Text(NSLocalizedString("Cancel", comment: "Alert button")))
             )
         }
     }
@@ -1012,7 +1037,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
         var body: some View {
             NavigationView {
                 Form {
-                    Section("Icon") {
+                    Section(NSLocalizedString("Icon", comment: "Section header")) {
                         let choices = ["🧘","🪷","🌬️","🫁","🌿","🌀","✨","🔷","🔶","💠"]
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
@@ -1038,22 +1063,22 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             .padding(.vertical, 4)
                         }
                     }
-                    Section("Name") {
-                        TextField("Name", text: $draft.name)
+                    Section(NSLocalizedString("Name", comment: "Section header")) {
+                        TextField(NSLocalizedString("Name", comment: "TextField placeholder"), text: $draft.name)
                             .textInputAutocapitalization(.words)
                     }
-                    Section("Rhythm (Seconds)") {
+                    Section(NSLocalizedString("Rhythm (Seconds)", comment: "Section header")) {
                         pickerRow(title: "Inhale", value: $draft.inhale)
                         pickerRow(title: "Hold (in)", value: $draft.holdIn)
                         pickerRow(title: "Exhale", value: $draft.exhale)
                         pickerRow(title: "Hold (out)", value: $draft.holdOut)
                     }
-                    Section("Repetitions") {
-                        AtemWheelPicker("Rounds", selection: $draft.repetitions, range: 1...99)
+                    Section(NSLocalizedString("Repetitions", comment: "Section header")) {
+                        AtemWheelPicker(NSLocalizedString("Rounds", comment: "Picker label"), selection: $draft.repetitions, range: 1...99)
                     }
                     Section {
                         HStack {
-                            Text("Total Duration")
+                            Text(NSLocalizedString("Total Duration", comment: "Label"))
                             Spacer()
                             Text(totalString).monospacedDigit().foregroundStyle(.secondary)
                         }
@@ -1063,16 +1088,16 @@ private struct OverlayBackgroundEffect: ViewModifier {
                             Button(role: .destructive) {
                                 onDelete(draft.id)
                                 dismiss()
-                            } label: { Text("Delete") }
+                            } label: { Text(NSLocalizedString("Delete", comment: "Button")) }
                         }
                     }
                 }
-                .navigationTitle(isNew ? "New Breathe Preset" : "Breathe Preset")
+                .navigationTitle(isNew ? NSLocalizedString("New Breathe Preset", comment: "Navigation title") : NSLocalizedString("Breathe Preset", comment: "Navigation title"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button(NSLocalizedString("Cancel", comment: "Button")) { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Save") {
+                        Button(NSLocalizedString("Save", comment: "Button")) {
                             onSave(draft); dismiss()
                         }.disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     }

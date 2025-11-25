@@ -183,9 +183,9 @@ struct NoAlcLogSheet: View {
     private var titleText: String {
         let hour = Calendar.current.component(.hour, from: Date())
         if hour < 18 {
-            return "Yesterday Evening"
+            return NSLocalizedString("Yesterday Evening", comment: "NoAlc sheet title before 6pm")
         } else {
-            return "Today"
+            return NSLocalizedString("Today", comment: "NoAlc sheet title after 6pm")
         }
     }
 

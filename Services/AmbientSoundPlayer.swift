@@ -43,7 +43,7 @@ import Foundation
 
 /// Ambient sound options for meditation background
 enum AmbientSound: String, CaseIterable, Identifiable, Codable {
-    case none = "Kein Sound"
+    case none = "No Sound"
     case waves = "Waves"
     case spring = "Spring"
     case fire = "Fire"
