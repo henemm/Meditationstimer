@@ -17,7 +17,7 @@
 - Live Activities / Dynamic Island support
 - Apple Watch companion app with heart rate monitoring
 
-**Current Version:** 2.7.1
+**Current Version:** 2.8.2
 
 **Development Target:**
 - **Xcode 26.0.1 / Swift 6.2** (iOS 26.0 SDK)

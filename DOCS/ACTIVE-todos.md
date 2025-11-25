@@ -11,40 +11,18 @@
 
 ---
 
-## ✅ Kürzlich gefixte Bugs (25.11.2025)
+## ✅ In Version 2.8.2 gefixt (25.11.2025)
 
-**Bug #28: Gelöschte Presets kommen nach App-Update zurück - GEFIXT**
-- Location: AtemView.swift (Zeilen 97-110), WorkoutProgramsView.swift (Zeilen 90-113)
-- Problem: User löscht alle Presets → App-Neustart lädt Defaults nach
-- Root Cause: `.onAppear` prüfte `if presets.isEmpty` ohne zwischen "First Launch" und "User hat gelöscht" zu unterscheiden
-- Fix: First-Launch-Flag `hasLaunchedBefore_[Feature]` in UserDefaults
-- Test: 6 Unit Tests in PresetPersistenceTests.swift (alle PASS)
-- Status: **GEFIXT, DEVICE-TEST AUSSTEHEND**
+**4 Bugs gefixt mit Test-First Ansatz:**
 
-**Bug #29: Besinnungszeit Reset bei Tab-Wechsel - GEFIXT**
-- Location: OffenView.swift Zeile 106 (war Line 103 vor Änderungen)
-- Problem: Phase2Minutes auf 2 min → Atem-Tab/Frei-Tab Wechsel → zurück → 6 min
-- Root Cause: `@State` ist flüchtig, geht verloren bei View-Recreation
-- Fix: `@State` → `@AppStorage("offenPhase2Minutes")`
-- Test: 3 Unit Tests in OffenViewStateTests.swift (alle PASS)
-- Status: **GEFIXT, DEVICE-TEST AUSSTEHEND**
+1. **Bug #28:** Gelöschte Presets → First-Launch-Flag Pattern ✅ (wird mit Update 2.8.2 verifiziert)
+2. **Bug #29:** Besinnungszeit Reset → `@AppStorage` statt `@State` ✅ VERIFIZIERT
+3. **Bug #30:** 1 Minute = 0 → `.tag()` zu Pickern ✅ VERIFIZIERT
+4. **Bug #31:** "Contemplation" → `NSLocalizedString()` ✅ VERIFIZIERT
 
-**Bug #30: 1 Minute wird als 0 interpretiert - GEFIXT**
-- Location: OffenView.swift Zeilen 172-184
-- Problem: Phase auf 1 min setzen → Phase wird übersprungen
-- Root Cause: SwiftUI Picker `ForEach(1..<61) { Text("\($0)") }` ohne `.tag()` → SwiftUI verwendet Index (0-basiert) statt Wert → User wählt "1" → phase1Minutes = 0
-- Fix: `ForEach(1..<61) { value in Text("\(value)").tag(value) }` - Explizites .tag() zwingt Wert statt Index
-- Test: 5 Unit Tests in TwoPhaseTimerTests.swift
-- Status: **GEFIXT, DEVICE-TEST AUSSTEHEND**
+**Test-Ergebnisse:** 90/92 Unit Tests bestanden (TwoPhaseTimerTests, LocalizationTests)
 
-**Bug #31: Countdown Screen "Besinnung" nicht lokalisiert - GEFIXT**
-- Location: OffenView.swift Zeile 388
-- Problem: Deutsche App zeigt "Contemplation" statt "Besinnung" im RunCard
-- Root Cause: Hardcoded String `RunCard(title: "Contemplation", ...)`
-- Fix: `RunCard(title: NSLocalizedString("Contemplation", comment: "Phase 2 title"), ...)`
-- Localizable.xcstrings: Key existierte bereits (de: "Besinnung", en: "Contemplation")
-- Test: 4 Unit Tests in LocalizationTests.swift
-- Status: **GEFIXT, DEVICE-TEST AUSSTEHEND**
+Details siehe Commit c89163d und git history.
 
 ---
 
