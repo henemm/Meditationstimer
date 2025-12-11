@@ -1,8 +1,17 @@
-# Feature planen
+# Feature planen oder ändern
 
 Starte den `feature-planner` Agenten aus `.agent-os/agents/feature-planner.md`.
 
-**Feature:** $ARGUMENTS
+**Anfrage:** $ARGUMENTS
+
+---
+
+## Modus erkennen
+
+| Formulierung | Modus |
+|--------------|-------|
+| "Neues Feature...", "Füge hinzu...", "Implementiere..." | **NEU** |
+| "Änderung an...", "Passe an...", "Erweitere...", "Modifiziere..." | **ÄNDERUNG** |
 
 ---
 
@@ -16,10 +25,13 @@ Starte den `feature-planner` Agenten aus `.agent-os/agents/feature-planner.md`.
 
 **Anweisung:**
 
-1. Feature-Intent verstehen (WAS, WARUM, Kategorie)
-2. Bestehende Systeme pruefen (KRITISCH!)
-3. Scoping (Max 4-5 Dateien, +/-250 LoC)
-4. Dokumentiere in DOCS/ACTIVE-roadmap.md
-5. Erstelle OpenSpec Proposal in `openspec/changes/[feature-name]/`
+1. **Modus bestimmen:** NEU oder ÄNDERUNG?
+2. Feature-Intent verstehen (WAS, WARUM, Kategorie)
+3. **Bei ÄNDERUNG:** Aktuellen Zustand dokumentieren, Delta identifizieren
+4. Bestehende Systeme pruefen (KRITISCH!)
+5. Scoping (Max 4-5 Dateien, +/-250 LoC)
+6. Dokumentiere in DOCS/ACTIVE-roadmap.md
+7. **NEU:** Erstelle OpenSpec Proposal in `openspec/changes/[feature-name]/`
+8. **ÄNDERUNG:** Aktualisiere bestehende Spec in `openspec/specs/`
 
 **KEINE direkte Implementierung ohne Spec!**
