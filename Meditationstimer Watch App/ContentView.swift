@@ -45,7 +45,7 @@ struct ContentView: View {
                 Button("Abbrechen", role: .destructive) { cancelSession() }
 
             case .phase2(let remaining):
-                phaseView(title: "Besinnung", remaining: remaining)
+                phaseView(title: NSLocalizedString("Closing", comment: "Phase 2 session title"), remaining: remaining)
                 Button("Abbrechen", role: .destructive) { cancelSession() }
             }
         }
@@ -97,9 +97,9 @@ struct ContentView: View {
     private var pickerSection: some View {
         VStack {
             HStack {
-                Text("Meditation")
+                Text(NSLocalizedString("Duration", comment: "Phase 1 label"))
                 Spacer()
-                Picker("Meditation (min)", selection: $phase1Minutes) {
+                Picker("Duration (min)", selection: $phase1Minutes) {
                     ForEach(0..<61) { Text("\($0)") }
                 }
                 .frame(width: 60)
@@ -107,9 +107,9 @@ struct ContentView: View {
                 .pickerStyle(.wheel)
             }
             HStack {
-                Text("Besinnung")
+                Text(NSLocalizedString("Closing", comment: "Phase 2 label"))
                 Spacer()
-                Picker("Besinnung (min)", selection: $phase2Minutes) {
+                Picker("Closing (min)", selection: $phase2Minutes) {
                     ForEach(0..<61) { Text("\($0)") }
                 }
                 .frame(width: 60)
@@ -145,14 +145,14 @@ struct ContentView: View {
             do {
                 try await notifier.schedulePhaseEndNotification(
                     in: p1,
-                    title: "Meditation – Phase 1 beendet",
-                    body: "Weiter mit Besinnung.",
+                    title: NSLocalizedString("Meditation completed", comment: "Phase 1 end notification title"),
+                    body: NSLocalizedString("Continue with closing phase.", comment: "Phase 1 end notification body"),
                     identifier: "phase1-end"
                 )
                 try await notifier.schedulePhaseEndNotification(
                     in: total,
-                    title: "Meditation – fertig",
-                    body: "Sitzung abgeschlossen.",
+                    title: NSLocalizedString("Session completed", comment: "Phase 2 end notification title"),
+                    body: NSLocalizedString("Session finished.", comment: "Phase 2 end notification body"),
                     identifier: "phase2-end"
                 )
             } catch {

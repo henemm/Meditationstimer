@@ -150,7 +150,7 @@ struct OffenView: View {
                 VStack(spacing: 6) {
                     Text("🧘")
                         .font(.system(size: 56))
-                    Text(NSLocalizedString("Meditation", comment: "Phase label"))
+                    Text(NSLocalizedString("Duration", comment: "Phase 1 label"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
@@ -158,7 +158,7 @@ struct OffenView: View {
                 VStack(spacing: 6) {
                     Text("🪷")
                         .font(.system(size: 56))
-                    Text(NSLocalizedString("Contemplation", comment: "Phase label"))
+                    Text(NSLocalizedString("Closing", comment: "Phase 2 label"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
@@ -168,7 +168,7 @@ struct OffenView: View {
 
             // Rechte Spalte: große Wheel-Picker für Zeiten
             VStack(spacing: 24) {
-                Picker("Meditation (min)", selection: $phase1Minutes) {
+                Picker("Duration (min)", selection: $phase1Minutes) {
                     ForEach(1..<61) { value in
                         Text("\(value)").tag(value)  // Bug #30 Fix: Explizites .tag() damit Wert (nicht Index) verwendet wird
                     }
@@ -178,7 +178,7 @@ struct OffenView: View {
                 .frame(width: 160, height: 130)
                 .clipped()
 
-                Picker("Contemplation (min)", selection: $phase2Minutes) {
+                Picker("Closing (min)", selection: $phase2Minutes) {
                     ForEach(1..<61) { value in
                         Text("\(value)").tag(value)  // Bug #30 Fix: Explizites .tag() damit Wert (nicht Index) verwendet wird
                     }
@@ -377,7 +377,7 @@ struct OffenView: View {
 
                 // Overlay for active session (phase1/phase2)
                 if case .phase1 = engine.state {
-                    RunCard(title: "Meditation", endDate: engine.phase1EndDate ?? Date(), totalSeconds: phase1Minutes * 60) {
+                    RunCard(title: "Meditation", endDate: engine.phase1EndDate ?? Date(), totalSeconds: phase1Minutes * 60, phase: 1) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
@@ -385,7 +385,7 @@ struct OffenView: View {
                     .animation(.smooth(duration: 0.3), value: engine.state)
                     .zIndex(2)
                 } else if case .phase2 = engine.state {
-                    RunCard(title: NSLocalizedString("Contemplation", comment: "Phase 2 title"), endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60) {
+                    RunCard(title: NSLocalizedString("Closing", comment: "Phase 2 session title"), endDate: engine.endDate ?? Date(), totalSeconds: phase2Minutes * 60, phase: 2) {
                         Task { await endSession(manual: true) }
                     }
                     .padding(.horizontal, 20)
@@ -420,10 +420,10 @@ struct OffenView: View {
             .sheet(isPresented: $showOffenInfo) {
                 InfoSheet(
                     title: "Open Meditation",
-                    description: "The two-phase timer helps you practice meditation with a structured approach. Choose your meditation duration and an optional contemplation phase.",
+                    description: "The two-phase timer helps you practice meditation with a structured approach. Set your meditation duration and an optional closing phase.",
                     usageTips: [
-                        "Phase 1: Main meditation session",
-                        "Phase 2: Reflection and contemplation (optional)",
+                        "Duration: Main meditation session",
+                        "Closing: Wind-down and reflection (optional)",
                         "Gong sounds mark phase transitions",
                         "Sessions are automatically logged in Apple Health",
                         "Timer runs in foreground only"
@@ -615,6 +615,7 @@ private struct RunCard: View {
     let title: String
     let endDate: Date
     let totalSeconds: Int
+    let phase: Int  // 1 = Duration/Dauer, 2 = Closing/Ausklang
     var onEnd: () -> Void
 
     @State private var currentTime = Date()
@@ -632,7 +633,7 @@ private struct RunCard: View {
                 CircularRing(progress: progress, lineWidth: 30)
                     .aspectRatio(1, contentMode: .fit)
                     .frame(width: 320, height: 320)
-                if title == "Meditation" {
+                if phase == 1 {
                     Text("🧘")
                         .font(.system(size: 64, weight: .semibold))
                 } else {

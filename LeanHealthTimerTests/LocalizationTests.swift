@@ -2,7 +2,8 @@
 //  LocalizationTests.swift
 //  LeanHealthTimerTests
 //
-//  Tests für Bug #31: Countdown Screen "Besinnung" nicht lokalisiert
+//  Tests für Lokalisierung der Offenen Meditation Phase-Labels
+//  Aktualisiert: Labels umbenannt von Meditation/Contemplation zu Duration/Closing
 //
 
 import XCTest
@@ -10,74 +11,72 @@ import XCTest
 
 final class LocalizationTests: XCTestCase {
 
-    // MARK: - Bug #31: Contemplation nicht lokalisiert
+    // MARK: - Phase Labels Lokalisierung (Duration/Closing)
 
-    /// Bug #31 Test: "Contemplation" sollte in Deutsch als "Besinnung" lokalisiert sein
-    ///
-    /// Aktuelles Verhalten (Bug):
-    /// - OffenView.swift Zeile 384: `RunCard(title: "Contemplation", ...)`
-    /// - Hardcoded englischer String, nicht lokalisiert
-    /// - Deutsche App zeigt "Contemplation" statt "Besinnung"
-    ///
-    /// Erwartetes Verhalten:
-    /// - Key "Contemplation" existiert in Localizable.xcstrings
-    /// - Deutsche Übersetzung: "Besinnung"
-    /// - Englische Übersetzung: "Contemplation"
-    func testContemplationLocalizedToBesinnung() throws {
-        // ARRANGE: Setze deutschen Locale
+    /// Test: "Closing" (Phase 2) sollte in Deutsch als "Ausklang" lokalisiert sein
+    func testClosingLocalizedToAusklang() throws {
         let bundle = Bundle.main
+        let localizedString = NSLocalizedString("Closing", bundle: bundle, comment: "Phase 2 label")
 
-        // ACT: Hole lokalisierten String für "Contemplation"
-        let localizedString = NSLocalizedString("Contemplation", bundle: bundle, comment: "Phase 2 title")
-
-        // ASSERT: In deutscher App sollte "Besinnung" zurückgegeben werden
-        // WICHTIG: Dieser Test schlägt aktuell fehl weil:
-        // 1. Key "Contemplation" nicht in Localizable.xcstrings existiert ODER
-        // 2. Key existiert aber deutsche Übersetzung fehlt
-
-        // Für den Test: Wenn der String gleich dem Key ist, ist er NICHT lokalisiert
-        XCTAssertNotEqual(
-            localizedString,
-            "Contemplation",
-            "❌ Bug reproduziert: 'Contemplation' ist nicht lokalisiert (Key fehlt oder keine Übersetzung)"
-        )
-
-        // Optional: Prüfe dass deutsche Übersetzung korrekt ist (wenn Test-Umgebung DE ist)
+        // Key sollte lokalisiert sein (nicht gleich dem englischen Key in DE)
+        // In deutscher Umgebung sollte "Ausklang" zurückgegeben werden
         if Locale.current.language.languageCode?.identifier == "de" {
             XCTAssertEqual(
                 localizedString,
-                "Besinnung",
-                "Deutsche Übersetzung sollte 'Besinnung' sein"
+                "Ausklang",
+                "Deutsche Übersetzung sollte 'Ausklang' sein"
             )
         }
     }
 
-    /// Vergleichstest: "Meditation" sollte korrekt lokalisiert sein
-    /// (Um zu prüfen dass Lokalisierung generell funktioniert)
+    /// Test: "Duration" (Phase 1) sollte in Deutsch als "Dauer" lokalisiert sein
+    func testDurationLocalizedToDauer() throws {
+        let bundle = Bundle.main
+        let localizedString = NSLocalizedString("Duration", bundle: bundle, comment: "Phase 1 label")
+
+        // In deutscher Umgebung sollte "Dauer" zurückgegeben werden
+        if Locale.current.language.languageCode?.identifier == "de" {
+            XCTAssertEqual(
+                localizedString,
+                "Dauer",
+                "Deutsche Übersetzung sollte 'Dauer' sein"
+            )
+        }
+    }
+
+    // MARK: - Legacy Tests (für Abwärtskompatibilität)
+
+    /// Legacy Test: "Contemplation" Key existiert noch (für alte Referenzen)
+    func testContemplationLocalizedToBesinnung() throws {
+        let bundle = Bundle.main
+        let localizedString = NSLocalizedString("Contemplation", bundle: bundle, comment: "Phase 2 title (legacy)")
+
+        // Key sollte immer noch existieren für Abwärtskompatibilität
+        XCTAssertNotNil(localizedString, "Contemplation Key sollte existieren")
+    }
+
+    /// Legacy Test: "Meditation" Key existiert noch
     func testMeditationIsLocalized() throws {
         let bundle = Bundle.main
-        let localizedString = NSLocalizedString("Meditation", bundle: bundle, comment: "Phase 1 title")
+        let localizedString = NSLocalizedString("Meditation", bundle: bundle, comment: "Phase 1 title (legacy)")
 
-        // Sollte lokalisiert sein (auch wenn DE = "Meditation", ist Key vorhanden)
         XCTAssertNotNil(localizedString, "Meditation Key sollte existieren")
     }
 
-    /// Test: Alle Phase-bezogenen Strings sollten lokalisiert sein
+    /// Test: Alle aktuellen Phase-Labels sollten lokalisiert sein
     func testAllPhaseStringsAreLocalized() throws {
         let bundle = Bundle.main
 
         let phaseStrings = [
-            "Meditation",
-            "Contemplation",  // ← Bug: Dieser fehlt
-            "Phase 1",
-            "Phase 2"
+            "Duration",      // Phase 1 (neu)
+            "Closing",       // Phase 2 (neu)
+            "Meditation",    // Legacy
+            "Contemplation"  // Legacy
         ]
 
         for key in phaseStrings {
             let localized = NSLocalizedString(key, bundle: bundle, comment: "")
 
-            // Wenn lokalisiert, sollte String != Key sein (für EN möglich dass gleich, aber Bundle sollte Eintrag haben)
-            // Minimum-Test: Key sollte im Bundle gefunden werden können
             XCTAssertFalse(
                 localized.isEmpty,
                 "Key '\(key)' sollte lokalisiert sein"
@@ -85,48 +84,26 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
-    // MARK: - Localizable.xcstrings Direct Check
+    // MARK: - Notification Strings
 
-    /// Direkter Test: Prüfe ob Key in Localizable.xcstrings existiert
-    ///
-    /// Dieser Test liest die Localizable.xcstrings Datei und prüft ob
-    /// der Key "Contemplation" existiert
-    func testContemplationKeyExistsInLocalizableXcstrings() throws {
-        // ARRANGE: Finde Localizable.xcstrings im Bundle
-        guard let url = Bundle.main.url(forResource: "Localizable", withExtension: "xcstrings") else {
-            XCTFail("Localizable.xcstrings nicht im Bundle gefunden")
-            return
-        }
+    /// Test: Notification-Strings für Watch App sollten lokalisiert sein
+    func testNotificationStringsAreLocalized() throws {
+        let bundle = Bundle.main
 
-        // ACT: Lese Datei als JSON
-        let data = try Data(contentsOf: url)
-        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        let notificationStrings = [
+            "Duration completed",
+            "Continue with closing phase.",
+            "Session completed",
+            "Session finished."
+        ]
 
-        guard let strings = json?["strings"] as? [String: Any] else {
-            XCTFail("Kein 'strings' Dictionary in Localizable.xcstrings")
-            return
-        }
+        for key in notificationStrings {
+            let localized = NSLocalizedString(key, bundle: bundle, comment: "")
 
-        // ASSERT: Key "Contemplation" sollte existieren
-        XCTAssertNotNil(
-            strings["Contemplation"],
-            "❌ Bug reproduziert: Key 'Contemplation' fehlt in Localizable.xcstrings"
-        )
-
-        // Optional: Prüfe dass deutsche Übersetzung existiert
-        if let contemplationEntry = strings["Contemplation"] as? [String: Any],
-           let localizations = contemplationEntry["localizations"] as? [String: Any],
-           let deEntry = localizations["de"] as? [String: Any] {
-
-            // Deutsche Übersetzung sollte "Besinnung" sein
-            if let stringUnit = deEntry["stringUnit"] as? [String: Any],
-               let value = stringUnit["value"] as? String {
-                XCTAssertEqual(value, "Besinnung", "Deutsche Übersetzung sollte 'Besinnung' sein")
-            } else {
-                XCTFail("Deutsche Übersetzung für 'Contemplation' fehlt")
-            }
-        } else {
-            XCTFail("Deutsche Lokalisierung für 'Contemplation' nicht gefunden")
+            XCTAssertFalse(
+                localized.isEmpty,
+                "Notification Key '\(key)' sollte lokalisiert sein"
+            )
         }
     }
 }

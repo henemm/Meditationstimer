@@ -23,15 +23,35 @@ Starte den `feature-planner` Agenten aus `.agent-os/agents/feature-planner.md`.
 - `.agent-os/standards/global/documentation-rules.md`
 - `.agent-os/standards/swiftui/state-management.md`
 
-**Anweisung:**
+---
+
+## ⛔ ZWINGENDE CHECKPOINTS
+
+Der Feature-Workflow hat **BLOCKING Checkpoints**. Diese MUESSEN erfuellt sein:
+
+| Checkpoint | Wann | Blockiert |
+|------------|------|-----------|
+| ⛔ Tests definieren | VOR Implementierung | Ja |
+| ⛔ Unit Tests | NACH Implementierung | Ja |
+| ⛔ Simulator UI Tests | VOR User-Test | Ja |
+
+---
+
+## Anweisung
 
 1. **Modus bestimmen:** NEU oder ÄNDERUNG?
 2. Feature-Intent verstehen (WAS, WARUM, Kategorie)
 3. **Bei ÄNDERUNG:** Aktuellen Zustand dokumentieren, Delta identifizieren
 4. Bestehende Systeme pruefen (KRITISCH!)
 5. Scoping (Max 4-5 Dateien, +/-250 LoC)
-6. Dokumentiere in DOCS/ACTIVE-roadmap.md
-7. **NEU:** Erstelle OpenSpec Proposal in `openspec/changes/[feature-name]/`
-8. **ÄNDERUNG:** Aktualisiere bestehende Spec in `openspec/specs/`
+6. ⛔ **ERST Tests definieren** in `openspec/changes/[feature-name]/tests.md`
+7. Dokumentiere in DOCS/ACTIVE-roadmap.md
+8. **NEU:** Erstelle OpenSpec Proposal in `openspec/changes/[feature-name]/`
+9. **ÄNDERUNG:** Aktualisiere bestehende Spec in `openspec/specs/`
+10. Implementieren
+11. ⛔ **Unit Tests ausfuehren** - Bei Fail: STOP
+12. ⛔ **Simulator UI Tests** mit `/sim-test` - Bei Fail: STOP
+13. Erst dann: User fuer manuellen Test fragen
 
-**KEINE direkte Implementierung ohne Spec!**
+**KEINE direkte Implementierung ohne Tests.md!**
+**KEIN User-Test ohne vorherige Simulator-Tests!**

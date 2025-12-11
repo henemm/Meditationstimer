@@ -4,6 +4,22 @@
 
 Two-phase meditation timer with customizable durations, audio cues, HealthKit logging, and Live Activity support. The timer runs in foreground-only mode to avoid iOS background execution limits.
 
+## UI Labels (Updated)
+
+Labels differ by context:
+
+### Picker Labels (Configuration)
+What the user is setting - duration of each phase:
+- **Phase 1:** "Dauer" (DE) / "Duration" (EN)
+- **Phase 2:** "Ausklang" (DE) / "Closing" (EN)
+
+### Session Labels (Running Timer)
+What the user is currently doing - the activity:
+- **Phase 1:** "Meditation" (DE/EN)
+- **Phase 2:** "Ausklang" (DE) / "Closing" (EN)
+
+Note: Phase 2 uses "Ausklang"/"Closing" in both contexts as it describes both the duration setting and the wind-down activity.
+
 ## Requirements
 
 ### Requirement: Two-Phase Timer

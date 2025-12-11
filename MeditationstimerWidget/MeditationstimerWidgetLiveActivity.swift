@@ -379,7 +379,7 @@ private func timeString(from endDate: Date) -> String {
 // MARK: - Helpers
 
 private func phaseLabel(_ phase: Int) -> String {
-    phase == 1 ? "Meditation" : "Besinnung"
+    phase == 1 ? "Meditation" : NSLocalizedString("Closing", comment: "Phase 2 session label")
 }
 
 // MARK: - Previews

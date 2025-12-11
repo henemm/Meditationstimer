@@ -28,6 +28,46 @@
 
 ---
 
+## 🔄 In Planung
+
+### Label-Umbenennung Offene Meditation
+**Status:** ✅ Implementiert - UI-Test ausstehend
+**Priorität:** Mittel
+**Kategorie:** UI-Änderung
+**Aufwand:** Klein (~15 Änderungen, 4 Dateien)
+
+**Kurzbeschreibung:**
+Die Phasen-Labels der Offenen Meditation wurden umbenannt:
+- Phase 1: "Meditation" → "Dauer" (DE) / "Duration" (EN)
+- Phase 2: "Besinnung" → "Ausklang" (DE) / "Closing" (EN)
+
+**Geänderte Dateien:**
+- iOS: OffenView.swift (Picker + RunCard)
+- Widget: MeditationstimerWidgetLiveActivity.swift (Live Activity)
+- Watch: ContentView.swift (Picker + Phase + Notifications)
+- Localization: Localizable.xcstrings + iOS/Localizable.xcstrings (neue Keys)
+
+**UI-Test-Anweisungen:**
+1. **iOS App - Offen-Tab (DE)**
+   - [ ] Picker zeigt "DAUER" und "AUSKLANG" als Labels
+   - [ ] Session starten → Overlay zeigt "DAUER" mit 🧘 Emoji
+   - [ ] Nach Phase 1 → Overlay zeigt "AUSKLANG" mit 🪷 Emoji
+
+2. **iOS App - Offen-Tab (EN)**
+   - [ ] Picker zeigt "DURATION" und "CLOSING" als Labels
+   - [ ] Session starten → Overlay zeigt "DURATION"
+   - [ ] Nach Phase 1 → Overlay zeigt "CLOSING"
+
+3. **Live Activity / Dynamic Island**
+   - [ ] Während Phase 1: Label zeigt "Duration" / "Dauer"
+   - [ ] Während Phase 2: Label zeigt "Closing" / "Ausklang"
+
+4. **Watch App (falls verfügbar)**
+   - [ ] Picker zeigt neue Labels
+   - [ ] Notifications zeigen "Dauer beendet" / "Sitzung abgeschlossen"
+
+---
+
 ## 📝 Regeln für diese Datei
 
 1. **Nur geplante Features** - Keine "vielleicht mal"-Ideen

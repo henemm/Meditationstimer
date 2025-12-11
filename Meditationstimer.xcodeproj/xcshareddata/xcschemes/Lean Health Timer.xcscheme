@@ -41,6 +41,17 @@
                ReferencedContainer = "container:Meditationstimer.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B7UITEST012ED1000000005"
+               BuildableName = "LeanHealthTimerUITests.xctest"
+               BlueprintName = "LeanHealthTimerUITests"
+               ReferencedContainer = "container:Meditationstimer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
