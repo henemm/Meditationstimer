@@ -2,7 +2,9 @@
 
 ## Overview
 
-Standalone Apple Watch companion app for meditation sessions with heart rate monitoring, haptic feedback, and HealthKit integration. Uses the same TwoPhaseTimerEngine as the iOS app for consistent behavior.
+Apple Watch companion app for meditation sessions. **Minimal implementation** - only basic two-phase meditation timer with heart rate monitoring. Breathing exercises and workouts are **not available** on Watch.
+
+**Status:** Basic meditation only, not fully developed.
 
 ## Requirements
 
@@ -154,7 +156,7 @@ The system SHALL log meditation sessions to HealthKit.
 - AND errors are handled gracefully
 
 ### Requirement: Watch Connectivity
-The system SHALL sync with iPhone when available.
+The system SHALL sync with iPhone via HealthKit.
 
 #### Scenario: Data Sync
 - GIVEN iPhone app is available
@@ -165,8 +167,23 @@ The system SHALL sync with iPhone when available.
 #### Scenario: Standalone Operation
 - GIVEN iPhone is not available
 - WHEN user uses Watch app
-- THEN all features work standalone
+- THEN meditation feature works standalone
 - AND data syncs when iPhone is available later
+
+### Requirement: Feature Limitations (NOT IMPLEMENTED)
+The Watch app has **limited functionality** compared to iOS.
+
+#### Scenario: No Breathing Exercises
+- GIVEN user is on Watch app
+- WHEN looking for breathing exercises
+- THEN Atem-Tab is NOT available on Watch
+- AND this is a **future development** item
+
+#### Scenario: No Workouts
+- GIVEN user is on Watch app
+- WHEN looking for workout timer
+- THEN Workout feature is NOT available on Watch
+- AND this is a **future development** item
 
 ### Requirement: UI Layout
 The system SHALL provide watchOS-optimized interface.

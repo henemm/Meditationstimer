@@ -88,11 +88,17 @@ The system SHALL calculate NoAlc streaks using reward-based forgiveness.
 - THEN streak breaks
 - AND streak counter resets
 
-#### Scenario: Wild Day Breaks Streak
+#### Scenario: Easy Day Without Reward (Penalty)
+- GIVEN day has Easy level entry
+- AND available rewards = 0
+- WHEN streak is calculated
+- THEN streak breaks
+- AND reward count decreases by 1 (penalty)
+
+#### Scenario: Wild Day Breaks Streak (Penalty)
 - GIVEN day has Wild level entry
 - WHEN streak is calculated
 - THEN streak breaks immediately
-- AND rewards are NOT consumed for Wild days
 - AND reward count decreases by 1 (penalty)
 
 ### Requirement: Forward Chronological Iteration

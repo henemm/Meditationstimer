@@ -2,7 +2,9 @@
 
 ## Overview
 
-WidgetKit extension providing Home Screen widgets and Live Activity support for the Meditationstimer app. Includes static informational widgets and dynamic Live Activities for active sessions.
+WidgetKit extension providing Live Activity support for active sessions. Home Screen widget is **not yet developed** (placeholder only).
+
+**Status:** Live Activity functional, Home Screen Widget placeholder only.
 
 ## Requirements
 
@@ -74,26 +76,15 @@ The system SHALL use MeditationActivityAttributes for Live Activity.
 - THEN only ContentState is updated (not attributes)
 - AND updates happen via Activity.update(using:)
 
-### Requirement: Home Screen Widget
-The system SHALL provide static Home Screen widgets.
+### Requirement: Home Screen Widget (NOT IMPLEMENTED)
+The Home Screen widget is **placeholder only** - not yet developed.
 
-#### Scenario: Widget Sizes
+#### Scenario: Current State (Placeholder)
 - GIVEN user adds widget to Home Screen
-- WHEN selecting size
-- THEN available sizes include: small, medium (based on configuration)
-- AND each size has appropriate layout
-
-#### Scenario: Widget Display (Placeholder)
-- GIVEN widget is added
-- WHEN no specific data is configured
-- THEN placeholder content displays
-- AND shows app branding/emoji
-
-#### Scenario: Widget Configuration
-- GIVEN user long-presses widget
-- WHEN selecting "Edit Widget"
-- THEN ConfigurationAppIntent options show
-- AND user can customize widget appearance
+- WHEN widget displays
+- THEN only placeholder content shows (emoji + time)
+- AND no real app data is displayed
+- AND this is a **future development** item
 
 ### Requirement: Widget Timeline
 The system SHALL provide timeline entries for widget updates.
