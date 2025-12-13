@@ -2,14 +2,16 @@
 
 ## Overview
 
+"Healthy Habits Haven" is a wellness app that helps build positive habits and consciously notice negative autopilot behaviors.
+
 "Healthy Habits Haven" ist eine Wellness-App die dabei hilft, positive Gewohnheiten aufzubauen und negative Autopiloten bewusst wahrzunehmen.
 
-**Kernfunktionen:**
-- Meditation & Atemübungen (Timer-basiert)
+**Core Features / Kernfunktionen:**
+- Meditation & Breathing Exercises (Timer-based) / Meditation & Atemübungen (Timer-basiert)
 - HIIT Workouts
-- NoAlc Tracking (Alkohol-Abstinenz)
-- Good Habits (eigene positive Gewohnheiten)
-- Bad Habits / Saboteure (Awareness-Tracking)
+- NoAlc Tracking (Alcohol abstinence / Alkohol-Abstinenz)
+- Good Trackers (custom positive habits) / Positiv-Tracker (eigene positive Gewohnheiten)
+- Saboteur Trackers (Awareness-Tracking) / Saboteur-Tracker (Bewusstseins-Tracking)
 
 ---
 
@@ -71,8 +73,8 @@
 | ID | Story | Status |
 |----|-------|--------|
 | US-2.1 | Als Henning möchte ich meinen **Alkohol-Status schnell loggen** (NoAlc). | 🔲 |
-| US-2.2 | Als Henning möchte ich **schnell notieren wenn ich einen Autopiloten bemerke** (Bad Habit Awareness). | 🔲 |
-| US-2.3 | Als Henning möchte ich **positive Gewohnheiten als erledigt markieren** (Good Habit). | 🔲 |
+| US-2.2 | Als Henning möchte ich **schnell notieren wenn ich einen Autopiloten bemerke** (Saboteur Tracker Awareness). | 🔲 |
+| US-2.3 | Als Henning möchte ich **positive Gewohnheiten als erledigt markieren** (Good Tracker). | 🔲 |
 | US-2.4 | Als Henning wird meine **Meditation automatisch geloggt** nach Session-Ende. | 🔲 |
 
 #### Akzeptanzkriterien (Epic 2)
@@ -82,20 +84,20 @@
 - Quick-Actions aus Notification
 - HealthKit-Integration (numberOfAlcoholicBeverages)
 
-**US-2.2: Bad Habit Awareness loggen**
-- Optional: Levels ODER einfacher Zähler (User wählt beim Erstellen)
-- Optionale Notiz/Trigger
-- Zeitstempel automatisch
-- GIVEN Bad Habit hat Levels konfiguriert
-- WHEN User loggt
-- THEN kann Level gewählt werden
+**US-2.2: Saboteur Tracker Awareness loggen**
+- Optional: Levels OR simple counter (User chooses when creating)
+- Optional note/trigger
+- Timestamp automatic
+- GIVEN Saboteur Tracker has Levels configured
+- WHEN User logs
+- THEN can choose Level
 
-**US-2.3: Good Habit loggen**
-- Optional: Zähler (wie viele) ODER Ja/Nein (erledigt)
-- User wählt Tracking-Art beim Habit-Erstellen
-- GIVEN Good Habit ist "Ja/Nein" Typ
-- WHEN User einmal loggt
-- THEN ist Tag als erledigt markiert
+**US-2.3: Good Tracker loggen**
+- Optional: Counter (how many) OR Yes/No (done)
+- User chooses tracking type when creating Tracker
+- GIVEN Good Tracker is "Yes/No" type
+- WHEN User logs once
+- THEN day is marked as done
 
 **US-2.4: Meditation automatisch loggen**
 - Nach Session-Ende → HealthKit (mindfulSession)
@@ -118,32 +120,32 @@
 #### Akzeptanzkriterien (Epic 3)
 
 **US-3.1: Smart Reminder (NoAlc-Pattern)**
-- Pro Habit-Typ EIN Reminder (max 1 pro Tag)
-- Reminder feuert NUR wenn noch nicht geloggt
-- User konfiguriert Uhrzeit pro Habit-Typ
-- GIVEN Reminder für "Hydration" ist 20:00
-- AND User hat heute noch nicht geloggt
-- WHEN 20:00 erreicht
-- THEN erscheint Reminder
+- ONE reminder per Tracker type (max 1 per day)
+- Reminder fires ONLY if not yet logged
+- User configures time per Tracker type
+- GIVEN Reminder for "Hydration" is 20:00
+- AND User has not logged today
+- WHEN 20:00 reached
+- THEN Reminder appears
 
-- GIVEN User hat heute bereits geloggt
-- WHEN 20:00 erreicht
-- THEN erscheint KEIN Reminder
+- GIVEN User has already logged today
+- WHEN 20:00 reached
+- THEN NO Reminder appears
 
 **US-3.2: Quick-Action aus Notification**
-- Notification hat Action-Buttons
+- Notification has Action-Buttons
 - NoAlc: Steady / Easy / Wild
-- Good Habit: +1 oder "Erledigt"
-- Bad Habit: "Bemerkt" oder Level-Buttons
-- GIVEN Reminder-Notification erscheint
-- WHEN User tippt Quick-Action
-- THEN wird Log erstellt OHNE App zu öffnen
+- Good Tracker: +1 or "Done"
+- Saboteur Tracker: "Noticed" or Level-Buttons
+- GIVEN Reminder notification appears
+- WHEN User taps Quick-Action
+- THEN Log is created WITHOUT opening app
 
-**US-3.3: Abend-Check-In**
-- Variante des Smart Reminders
-- Prüft ALLE offenen Habits auf einmal
-- Zeigt: "Du hast noch nicht geloggt: Hydration, NoAlc"
-- Quick-Actions für die offenen Habits
+**US-3.3: Abend-Check-In / Evening Check-In**
+- Variant of Smart Reminder
+- Checks ALL open Trackers at once
+- Shows: "You haven't logged yet: Hydration, NoAlc"
+- Quick-Actions for the open Trackers
 
 ---
 
@@ -154,87 +156,87 @@
 | US-4.1 | Als Henning möchte ich meine **aktuelle Streak-Zahl prominent sehen**. | 🔲 |
 | US-4.2 | Als Henning möchte ich im **Kalender sehen welche Tage erfolgreich waren**. | 🔲 |
 | US-4.3 | Als Henning möchte ich meine **verdienten Rewards/Vergebungen sehen**. | 🔲 |
-| US-4.4 | Als Henning möchte ich **Streaks für verschiedene Habits sehen**. | 🔲 |
+| US-4.4 | Als Henning möchte ich **Streaks für verschiedene Trackers sehen**. | 🔲 |
 
 #### Akzeptanzkriterien (Epic 4)
 
 **US-4.1: Streak-Zahl prominent sehen**
-- Haupt-Streaks (Meditation, Workout, NoAlc) immer sichtbar
-- Custom Habit Streaks: nur wenn Streak aktiviert
-- Position: TBD nach Layout-Redesign
+- Main Streaks (Meditation, Workout, NoAlc) always visible
+- Custom Tracker Streaks: only when Streak enabled
+- Position: TBD after Layout-Redesign
 
-**US-4.2: Kalender-Übersicht**
-- Bestehendes System: Konzentrische Ringe pro Aktivitäts-Typ
-- Custom Habits: TBD (Skalierungs-Problem bei vielen Habits)
-- Tap auf Tag zeigt Details
+**US-4.2: Kalender-Übersicht / Calendar Overview**
+- Existing system: Concentric rings per activity type
+- Custom Trackers: TBD (Scaling problem with many Trackers)
+- Tap on day shows details
 
 **US-4.3: Rewards sehen**
-- Aktuelle Reward-Balance anzeigen
-- "3 Rewards verfügbar" oder "0 verbraucht von 2"
-- Reward-System ist KONFIGURIERBAR pro Habit
-- GIVEN Habit hat Rewards aktiviert
-- WHEN 7 Tage Streak erreicht
-- THEN +1 Reward verdient
+- Show current Reward balance
+- "3 Rewards available" or "0 used of 2"
+- Reward system is CONFIGURABLE per Tracker
+- GIVEN Tracker has Rewards enabled
+- WHEN 7 day Streak reached
+- THEN +1 Reward earned
 
-**US-4.4: Mehrere Streaks**
-- Übersicht aller aktiven Streaks
-- Sortiert nach Länge oder Alphabet
-- GIVEN User hat 5 Habits mit Streak aktiviert
-- WHEN Streak-Übersicht geöffnet
-- THEN zeigt alle 5 Streaks mit aktuellem Stand
+**US-4.4: Multiple Streaks / Mehrere Streaks**
+- Overview of all active Streaks
+- Sorted by length or alphabet
+- GIVEN User has 5 Trackers with Streak enabled
+- WHEN Streak overview opened
+- THEN shows all 5 Streaks with current status
 
-**Konfigurierbarkeit pro Habit:**
-- Streak: Ja/Nein (Default: Ja für Haupt-Typen)
-- Rewards: Ja/Nein (Default: Ja für NoAlc, Nein für andere)
+**Configurability per Tracker / Konfigurierbarkeit pro Tracker:**
+- Streak: Yes/No (Default: Yes for main types)
+- Rewards: Yes/No (Default: Yes for NoAlc, No for others)
 
 ---
 
-### Epic 5: Habit-Verwaltung
+### Epic 5: Tracker Management / Tracker-Verwaltung
 
 | ID | Story | Status |
 |----|-------|--------|
-| US-5.1 | Als Henning möchte ich **eigene positive Gewohnheiten anlegen** (Good Habit). | 🔲 |
-| US-5.2 | Als Henning möchte ich **Autopiloten/Saboteure definieren** (Bad Habit). | 🔲 |
-| US-5.3 | Als Henning möchte ich **Habits anpassen oder entfernen**. | 🔲 |
-| US-5.4 | Als Henning möchte ich bei Bad Habits **von Awareness zu Avoidance wechseln**. | 🔲 |
+| US-5.1 | Als Henning möchte ich **eigene positive Gewohnheiten anlegen** (Good Tracker). | 🔲 |
+| US-5.2 | Als Henning möchte ich **Autopiloten/Saboteure definieren** (Saboteur Tracker). | 🔲 |
+| US-5.3 | Als Henning möchte ich **Trackers anpassen oder entfernen**. | 🔲 |
+| US-5.4 | Als Henning möchte ich bei Saboteur Trackers **von Awareness zu Avoidance wechseln**. | 🔲 |
 
 #### Akzeptanzkriterien (Epic 5)
 
-**US-5.1: Good Habit erstellen**
-- Name eingeben (Pflicht)
-- Icon/Emoji wählen (optional, Default vorhanden)
-- Tracking-Art wählen: Zähler ODER Ja/Nein
-- Optional: Levels definieren (wie NoAlc)
-- Optional: Streak aktivieren (Default: Ja)
-- Optional: Rewards aktivieren (Default: Nein)
-- Optional: Smart Reminder konfigurieren
-- Vordefinierte Vorschläge: Hydration, Stretching, Lesen, Journaling, Spazieren
+**US-5.1: Good Tracker erstellen / Create Good Tracker**
+- Enter name (required)
+- Choose Icon/Emoji (optional, default available)
+- Choose tracking type: Counter OR Yes/No
+- Optional: Define Levels (like NoAlc)
+- Optional: Enable Streak (Default: Yes)
+- Optional: Enable Rewards (Default: No)
+- Optional: Configure Smart Reminder
+- Predefined suggestions: Hydration, Stretching, Reading, Journaling, Walking
 
-**US-5.2: Bad Habit definieren**
-- Name eingeben (Pflicht)
-- Icon/Emoji wählen (optional)
-- Modus: Awareness (Default) oder Avoidance
-- Optional: Levels definieren
-- Optional: Streak aktivieren
-- Optional: Rewards aktivieren
-- Vordefinierte Vorschläge: Doomscrolling, Prokrastination, Snacking, Nägel kauen
+**US-5.2: Saboteur Tracker definieren / Define Saboteur Tracker**
+- Enter name (required)
+- Choose Icon/Emoji (optional)
+- Mode: Awareness (Default) or Avoidance
+- Optional: Define Levels
+- Optional: Enable Streak
+- Optional: Enable Rewards
+- Predefined suggestions: Doomscrolling, Procrastination, Snacking, Nail biting
 
-**US-5.3: Habit bearbeiten/löschen**
-- Alle Felder editierbar (Name, Icon, Tracking-Art, etc.)
-- Löschen mit Bestätigung
-- GIVEN Habit hat Logs
-- WHEN User löschen will
-- THEN Warnung: "Alle Logs gehen verloren"
+**US-5.3: Tracker bearbeiten/löschen / Edit/Delete Tracker**
+- All fields editable (Name, Icon, Tracking type, etc.)
+- Delete with confirmation
+- GIVEN Tracker has Logs
+- WHEN User wants to delete
+- THEN Warning: "All logs will be lost"
 
-**US-5.4: Von Awareness zu Avoidance wechseln**
-- Nur für Bad Habits
-- Warnung: "Dein Awareness-Streak wird archiviert"
-- Nach Wechsel: Neuer Avoidance-Streak startet bei 0
-- Alter Streak bleibt in Historie sichtbar
-- GIVEN Bad Habit im Awareness-Modus
-- WHEN User zu Avoidance wechselt
-- THEN wird Awareness-Streak gespeichert
-- AND neuer Avoidance-Streak beginnt
+**US-5.4: Switch from Awareness to Avoidance / Von Awareness zu Avoidance wechseln**
+- Only for Saboteur Trackers
+- Warning: "Your Awareness Streak will be archived"
+- After switch: New Avoidance Streak starts at 0
+- Old Streak remains visible in history
+- GIVEN Saboteur Tracker in Awareness mode
+- WHEN User switches to Avoidance
+- THEN Awareness Streak is saved
+- AND new Avoidance Streak begins
 
 ---
 
@@ -255,28 +257,28 @@ Reminders nur wenn **wirklich nötig** (noch nicht geloggt).
 ### 3. Motivation durch Sichtbarkeit
 **Streaks, Kalender, Rewards** immer prominent sichtbar.
 
-### 4. Awareness vor Avoidance
-Bad Habits: Erst **bewusst werden**, dann (optional) **vermeiden**.
+### 4. Awareness Before Avoidance / Awareness vor Avoidance
+Saboteur Trackers: First **become aware**, then (optionally) **avoid**.
 
 ---
 
 ## Scope (MVP)
 
-**Enthalten:**
+**Included / Enthalten:**
 - iPhone App
-- Lokale Datenspeicherung (SwiftData)
-- Smart Reminders (wie NoAlc)
+- Local data storage (SwiftData) / Lokale Datenspeicherung (SwiftData)
+- Smart Reminders (like NoAlc) / Smart Reminders (wie NoAlc)
 
-**Nicht enthalten (später):**
+**Not included (later) / Nicht enthalten (später):**
 - iCloud Sync
 - Apple Watch App
 - Widget
-- Kalender-Visualisierung für Custom Habits (TBD)
+- Calendar visualization for Custom Trackers (TBD)
 
 ---
 
-## Referenzen
+## References / Referenzen
 
-- `openspec/specs/features/habit-tracking.md` - Detail-Spec für Good/Bad Habits
+- `openspec/specs/features/trackers.md` - Detail-Spec for Good/Saboteur Trackers
 - `openspec/specs/features/meditation-timer.md` - Meditation Feature
-- `openspec/specs/features/noalc-tracker.md` - NoAlc Pattern (Vorbild für Smart Reminders)
+- `openspec/specs/features/noalc-tracker.md` - NoAlc Pattern (model for Smart Reminders)
