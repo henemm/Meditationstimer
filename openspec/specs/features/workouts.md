@@ -153,6 +153,30 @@ The system SHALL play audio cues during workouts.
 - THEN TTS announces "Round [X]" or "Letzte Runde"
 - AND uses AVSpeechSynthesizer with German voice
 
+#### Scenario: Exercise Name TTS (Workout Programs)
+- GIVEN "Speak Exercise Names" is enabled in Settings
+- AND workout program is running
+- WHEN transitioning from REST to WORK phase
+- THEN TTS announces next exercise name
+- AND uses localized announcement ("Als nächstes: [Exercise]" / "Up next: [Exercise]")
+- AND voice language matches app locale (de-DE or en-US)
+
+#### Scenario: Exercise Name TTS (Free Workout)
+- GIVEN "Speak Exercise Names" is enabled in Settings
+- AND free workout is running with multiple exercises
+- WHEN transitioning to next exercise
+- THEN TTS announces next exercise name
+- AND uses same announcement pattern as Workout Programs
+- AND respects `@AppStorage("speakExerciseNames")` toggle
+
+#### Scenario: TTS Language Matching
+- GIVEN TTS announcement is triggered
+- WHEN AVSpeechSynthesizer speaks
+- THEN voice language matches current app locale
+- AND German app uses "de-DE" voice
+- AND English app uses "en-US" voice
+- AND prevents mismatch between localized text and voice
+
 ### Requirement: HealthKit Integration
 The system SHALL log workouts to HealthKit with calorie estimation.
 
