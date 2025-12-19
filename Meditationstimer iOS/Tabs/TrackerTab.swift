@@ -53,8 +53,7 @@ struct TrackerTab: View {
                 AddTrackerSheet()
             }
             .sheet(item: $trackerToEdit) { tracker in
-                // Phase 2.3: TrackerEditorSheet
-                Text("Edit: \(tracker.name)")
+                TrackerEditorSheet(tracker: tracker)
             }
         }
     }
