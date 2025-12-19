@@ -1,0 +1,200 @@
+//
+//  TrackerRow.swift
+//  Meditationstimer iOS
+//
+//  Created by Claude on 19.12.2025.
+//
+//  Reusable row component for displaying a tracker with quick-log functionality.
+//
+
+import SwiftUI
+import SwiftData
+
+#if os(iOS)
+
+struct TrackerRow: View {
+    let tracker: Tracker
+    let onEdit: () -> Void
+
+    @Environment(\.modelContext) private var modelContext
+    private let manager = TrackerManager.shared
+
+    var body: some View {
+        GlassCard {
+            HStack(alignment: .center, spacing: 14) {
+                // Icon
+                Text(tracker.icon)
+                    .font(.system(size: 42))
+
+                // Name + Today's status
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(tracker.name)
+                        .font(.headline)
+                    todayStatusView
+                }
+
+                Spacer()
+
+                // Quick-Log Button (mode-dependent)
+                quickLogButton
+
+                // Edit Button
+                Button(action: onEdit) {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 20))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+            }
+            .frame(minHeight: 80)
+        }
+    }
+
+    // MARK: - Today Status View
+
+    @ViewBuilder
+    private var todayStatusView: some View {
+        switch tracker.trackingMode {
+        case .counter:
+            let total = manager.todayTotal(for: tracker, in: modelContext)
+            let goal = tracker.dailyGoal ?? 0
+            if goal > 0 {
+                Text("\(total)/\(goal)")
+                    .font(.subheadline)
+                    .foregroundStyle(total >= goal ? .green : .secondary)
+            } else {
+                Text("\(total)×")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        case .yesNo:
+            let logged = manager.isLoggedToday(for: tracker, in: modelContext)
+            HStack(spacing: 4) {
+                Image(systemName: logged ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(logged ? .green : .secondary)
+                Text(logged ?
+                     NSLocalizedString("Done", comment: "Tracker logged today") :
+                     NSLocalizedString("Not yet", comment: "Tracker not logged"))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        case .awareness:
+            let count = manager.todayLogs(for: tracker, in: modelContext).count
+            Text(String(format: NSLocalizedString("%d× noticed", comment: "Awareness count"), count))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        case .avoidance:
+            let streak = manager.streak(for: tracker, in: modelContext)
+            HStack(spacing: 4) {
+                Image(systemName: "flame.fill")
+                    .foregroundStyle(.orange)
+                Text(String(format: NSLocalizedString("%d days", comment: "Avoidance streak"), streak))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    // MARK: - Quick Log Button
+
+    @ViewBuilder
+    private var quickLogButton: some View {
+        switch tracker.trackingMode {
+        case .counter:
+            HStack(spacing: 4) {
+                Button(action: decrementCounter) {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .disabled(manager.todayTotal(for: tracker, in: modelContext) <= 0)
+
+                Button(action: incrementCounter) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(.blue)
+                }
+                .buttonStyle(.plain)
+            }
+
+        case .yesNo:
+            let logged = manager.isLoggedToday(for: tracker, in: modelContext)
+            Button(action: quickLog) {
+                Image(systemName: logged ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 32))
+                    .foregroundStyle(logged ? .green : .blue)
+            }
+            .buttonStyle(.plain)
+            .disabled(logged)
+
+        case .awareness:
+            Button(action: quickLog) {
+                Text(NSLocalizedString("Notice", comment: "Awareness log button"))
+                    .font(.subheadline.bold())
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(.blue)
+                    .foregroundStyle(.white)
+                    .cornerRadius(16)
+            }
+            .buttonStyle(.plain)
+
+        case .avoidance:
+            Button(action: quickLog) {
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                    Text(NSLocalizedString("Relapse", comment: "Avoidance relapse button"))
+                }
+                .font(.subheadline.bold())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(.orange)
+                .foregroundStyle(.white)
+                .cornerRadius(16)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    // MARK: - Actions
+
+    private func quickLog() {
+        _ = manager.quickLog(for: tracker, in: modelContext)
+    }
+
+    private func incrementCounter() {
+        _ = manager.logEntry(for: tracker, value: 1, in: modelContext)
+    }
+
+    private func decrementCounter() {
+        // For counter, we need to adjust. Get today's total and decrement.
+        let todayLogs = manager.todayLogs(for: tracker, in: modelContext)
+        if let lastLog = todayLogs.last {
+            modelContext.delete(lastLog)
+        }
+    }
+}
+
+#if DEBUG
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Tracker.self, TrackerLog.self, configurations: config)
+
+    let tracker = Tracker(
+        name: "Water",
+        icon: "💧",
+        type: .good,
+        trackingMode: .counter,
+        dailyGoal: 8
+    )
+    container.mainContext.insert(tracker)
+
+    return TrackerRow(tracker: tracker, onEdit: {})
+        .modelContainer(container)
+        .padding()
+}
+#endif
+
+#endif // os(iOS)

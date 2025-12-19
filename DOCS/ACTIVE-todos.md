@@ -123,7 +123,12 @@
 | `Meditationstimer.xcodeproj/project.pbxproj` | Neue Dateien registriert |
 
 ### Nächste Schritte (Phase 2.x)
-- [ ] TrackerTab UI (Add/Edit Tracker)
+- [x] Phase 2.1: TrackerTab Liste + Quick-Log
+- [x] Phase 2.2: Add Tracker aus Presets
+- [ ] Phase 2.3: Edit/Delete Tracker
+- [ ] Phase 2.4: Streak-Anzeige
+- [ ] Phase 2.5: Custom Tracker erstellen
+- [ ] Phase 2.6: Mood/Feelings/Gratitude UIs
 - [ ] HealthKit Sync für Tracker
 - [ ] Tracker Widget
 
