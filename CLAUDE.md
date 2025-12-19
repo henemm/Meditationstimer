@@ -13,12 +13,14 @@ Siehe: `.agent-os/standards/global/implementation-gate.md`
 ```
 PFLICHT vor jeder Implementierung:
 1. [ ] Bestehende Tests ausführen (xcodebuild test)
-2. [ ] Neue Tests schreiben (TDD RED)
-3. [ ] UI-Test-Anweisungen vorbereiten
+2. [ ] Neue Unit Tests schreiben (TDD RED)
+3. [ ] Neue XCUITests schreiben (NICHT manuelle Anweisungen!)
 4. [ ] Gate-Check dokumentieren
 
 ERST DANN: Code schreiben
 ```
+
+**⚠️ XCUITests sind PFLICHT - manuelle Test-Checklisten sind KEIN Ersatz!**
 
 **Bei Verstoß:** Henning stoppt die Arbeit, Gate wird nachgeholt.
 
@@ -111,13 +113,20 @@ Specialized agents with injected standards:
 
 ## UI-Testing Regeln
 
-**Bei manuellen UI-Tests mit Henning:**
+**⚠️ XCUITests sind PFLICHT bei jeder UI-Änderung!**
 
-1. **ALLE ausstehenden Tests durchgehen**
-2. **Immer nur EINEN Test zur Zeit**
-3. **Auf Ergebnis warten** - Erst nach Feedback zum naechsten
-4. **Sofort protokollieren** - Pass/Fail in ACTIVE-todos.md
-5. **Bei Fehler: STOP** - Bug analysieren
+1. **XCUITests MÜSSEN geschrieben werden** - in `LeanHealthTimerUITests/`
+2. **Manuelle Test-Checklisten sind KEIN Ersatz** für automatisierte Tests
+3. **Ausnahme NUR bei technischer Unmöglichkeit** - mit schriftlicher Begründung
+
+**XCUITest Command:**
+```bash
+xcodebuild test \
+  -project Meditationstimer.xcodeproj \
+  -scheme "Lean Health Timer" \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -only-testing:LeanHealthTimerUITests
+```
 
 **Standards:** Siehe `.agent-os/standards/testing/ui-testing.md`
 

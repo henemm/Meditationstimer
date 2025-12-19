@@ -30,8 +30,8 @@
 
 [ ] 2. TESTS DEFINIERT
     - Unit Tests: GIVEN/WHEN/THEN formuliert
-    - UI Tests: Erwartetes Verhalten beschrieben
-    - Manuelle Test-Anweisungen für Henning vorbereitet
+    - XCUITests: Automatisierte UI-Tests geplant (PFLICHT!)
+    - ⚠️ Manuelle Checklisten sind KEIN Ersatz für XCUITests!
 
 [ ] 3. BESTEHENDE TESTS AUSGEFÜHRT
     - xcodebuild test ausgeführt
@@ -39,9 +39,10 @@
     - Baseline dokumentiert: "Tests vor Änderung: X/Y bestanden"
 
 [ ] 4. NEUE TESTS GESCHRIEBEN (TDD RED Phase)
-    - Tests existieren und SCHLAGEN FEHL
+    - Unit Tests existieren und SCHLAGEN FEHL (LeanHealthTimerTests/)
+    - XCUITests existieren für neue UI (LeanHealthTimerUITests/)
     - Tests prüfen die gewünschte Funktionalität
-    - Tests sind im Tests/ Verzeichnis
+    - ⚠️ KEINE manuellen Checklisten statt echtem Code!
 ```
 
 ### Phase 2: AFTER Writing Code
@@ -56,10 +57,10 @@
     - xcodebuild build ohne Errors
     - Keine Warnings in geänderten Dateien
 
-[ ] 7. UI-TEST-ANWEISUNGEN ERSTELLT
-    - Klare Schritte für Henning
-    - Edge Cases dokumentiert
-    - Erwartetes Verhalten beschrieben
+[ ] 7. XCUITests GESCHRIEBEN UND GRÜN
+    - Automatisierte Tests in LeanHealthTimerUITests/
+    - Tests laufen im Simulator durch
+    - xcodebuild test -only-testing:LeanHealthTimerUITests GRÜN
 ```
 
 ---
@@ -109,6 +110,14 @@ Wenn Claude Code schreibt OHNE dieses Gate zu durchlaufen:
 ---
 
 ## Lessons Learned
+
+**2025-12-19: Phase 2.4-2.6 Tracker UI**
+- Claude hat TrackerTab UI implementiert mit:
+  - Unit Tests ✅
+  - Build erfolgreich ✅
+  - **ABER: Manuelle Checklisten statt XCUITests** ❌
+- **Problem:** "UI-Test-Anweisungen" wurde als manuelle Markdown-Tabellen interpretiert
+- **Folge:** Gate-Standard verschärft - XCUITests sind PFLICHT, keine manuellen Checklisten!
 
 **2025-12-15: Phase 1.1 Tab Navigation**
 - Claude hat TabView umgebaut ohne:

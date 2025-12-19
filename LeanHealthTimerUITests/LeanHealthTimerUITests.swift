@@ -159,6 +159,503 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(logTodayButton.waitForExistence(timeout: 3), "Log Today button should exist in Tracker tab")
     }
 
+    /// Test that Tracker tab shows "Add Tracker" button
+    func testTrackerTabShowsAddTrackerButton() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Scroll down to find Add Tracker button
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        // Verify "Add Tracker" button exists
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3), "Add Tracker button should exist in Tracker tab")
+    }
+
+    // MARK: - Phase 2.5: Custom Tracker Tests
+
+    /// Test that Add Tracker sheet opens with preset categories
+    func testAddTrackerSheetShowsPresetCategories() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Scroll down and tap Add Tracker
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+
+        // Verify preset categories exist
+        let awarenessSection = app.staticTexts["Awareness"]
+        let activitySection = app.staticTexts["Activity"]
+        let saboteurSection = app.staticTexts["Saboteur"]
+
+        XCTAssertTrue(awarenessSection.waitForExistence(timeout: 3), "Awareness section should exist")
+        XCTAssertTrue(activitySection.exists, "Activity section should exist")
+        XCTAssertTrue(saboteurSection.exists, "Saboteur section should exist")
+    }
+
+    /// Test that Custom Tracker option exists in Add Tracker sheet
+    func testAddTrackerSheetShowsCustomTrackerOption() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Scroll down and tap Add Tracker
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+
+        // Scroll down in sheet to find Custom Tracker
+        sleep(1)
+        let sheetScrollView = app.tables.firstMatch
+        if sheetScrollView.exists {
+            sheetScrollView.swipeUp()
+        }
+
+        // Verify Custom Tracker option exists
+        let customTrackerButton = app.buttons["Custom Tracker"]
+        XCTAssertTrue(customTrackerButton.waitForExistence(timeout: 3), "Custom Tracker option should exist")
+    }
+
+    /// Test that Custom Tracker sheet opens with form fields
+    func testCustomTrackerSheetShowsFormFields() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Open Add Tracker sheet
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        // Scroll and tap Custom Tracker
+        let sheetScrollView = app.tables.firstMatch
+        if sheetScrollView.exists {
+            sheetScrollView.swipeUp()
+        }
+
+        let customTrackerButton = app.buttons["Custom Tracker"]
+        XCTAssertTrue(customTrackerButton.waitForExistence(timeout: 3))
+        customTrackerButton.tap()
+
+        // Verify Custom Tracker form fields
+        let iconSection = app.staticTexts["Icon"]
+        let nameSection = app.staticTexts["Name"]
+        let typeSection = app.staticTexts["Type"]
+
+        XCTAssertTrue(iconSection.waitForExistence(timeout: 3), "Icon section should exist")
+        XCTAssertTrue(nameSection.exists, "Name section should exist")
+        XCTAssertTrue(typeSection.exists, "Type section should exist")
+    }
+
+    /// Test that Create button is disabled when name is empty
+    func testCustomTrackerCreateButtonDisabledWhenNameEmpty() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab and open Custom Tracker sheet
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        let sheetScrollView = app.tables.firstMatch
+        if sheetScrollView.exists {
+            sheetScrollView.swipeUp()
+        }
+
+        let customTrackerButton = app.buttons["Custom Tracker"]
+        XCTAssertTrue(customTrackerButton.waitForExistence(timeout: 3))
+        customTrackerButton.tap()
+        sleep(1)
+
+        // Verify Create button is disabled (name is empty by default)
+        let createButton = app.buttons["Create"]
+        XCTAssertTrue(createButton.waitForExistence(timeout: 3), "Create button should exist")
+        XCTAssertFalse(createButton.isEnabled, "Create button should be disabled when name is empty")
+    }
+
+    /// Test that adding a preset tracker creates it in the list
+    func testAddPresetTrackerCreatesTrackerInList() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Open Add Tracker sheet
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        // Tap on "Drink Water" preset (Activity category)
+        let drinkWaterPreset = app.staticTexts["Drink Water"]
+        if drinkWaterPreset.waitForExistence(timeout: 3) {
+            drinkWaterPreset.tap()
+        }
+
+        // Verify tracker appears in list (water emoji 💧)
+        sleep(1)
+        let waterEmoji = app.staticTexts["💧"]
+        XCTAssertTrue(waterEmoji.waitForExistence(timeout: 3), "Water tracker (💧) should appear in list after adding")
+    }
+
+    // MARK: - Phase 2.6: Mood/Feelings/Gratitude Tests
+
+    /// Test that Mood preset opens MoodSelectionView with emoji grid
+    func testMoodTrackerOpensMoodSelectionSheet() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Add Mood tracker preset
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        // Tap on "Mood" preset
+        let moodPreset = app.staticTexts["Mood"]
+        if moodPreset.waitForExistence(timeout: 3) {
+            moodPreset.tap()
+        }
+        sleep(1)
+
+        // Find and tap the Notice button on Mood tracker
+        let noticeButton = app.buttons["Notice"]
+        XCTAssertTrue(noticeButton.waitForExistence(timeout: 3), "Notice button should appear for Mood tracker")
+        noticeButton.tap()
+
+        // Verify MoodSelectionView opens with mood question
+        let moodQuestion = app.staticTexts["How are you feeling?"]
+        XCTAssertTrue(moodQuestion.waitForExistence(timeout: 3), "Mood selection view should show 'How are you feeling?' question")
+
+        // Verify at least one mood emoji exists (e.g., Joyful)
+        let joyfulMood = app.staticTexts["Joyful"]
+        XCTAssertTrue(joyfulMood.exists, "Joyful mood option should exist")
+    }
+
+    /// Test that Mood selection is single-select (only one can be selected)
+    func testMoodSelectionIsSingleSelect() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab and add Mood tracker
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        let moodPreset = app.staticTexts["Mood"]
+        if moodPreset.waitForExistence(timeout: 3) {
+            moodPreset.tap()
+        }
+        sleep(1)
+
+        let noticeButton = app.buttons["Notice"]
+        XCTAssertTrue(noticeButton.waitForExistence(timeout: 3))
+        noticeButton.tap()
+        sleep(1)
+
+        // Save button should be disabled initially (no selection)
+        let saveButton = app.buttons["Save"]
+        XCTAssertTrue(saveButton.waitForExistence(timeout: 3), "Save button should exist")
+        XCTAssertFalse(saveButton.isEnabled, "Save button should be disabled when no mood selected")
+    }
+
+    /// Test that Feelings preset opens FeelingsSelectionView with multi-select
+    func testFeelingsTrackerOpensFeelingsSelectionSheet() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Add Feelings tracker preset
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        // Tap on "Feelings" preset
+        let feelingsPreset = app.staticTexts["Feelings"]
+        if feelingsPreset.waitForExistence(timeout: 3) {
+            feelingsPreset.tap()
+        }
+        sleep(1)
+
+        // Find and tap the Notice button on Feelings tracker
+        let noticeButton = app.buttons["Notice"]
+        XCTAssertTrue(noticeButton.waitForExistence(timeout: 3), "Notice button should appear for Feelings tracker")
+        noticeButton.tap()
+
+        // Verify FeelingsSelectionView opens with feelings question
+        let feelingsQuestion = app.staticTexts["What feelings do you notice?"]
+        XCTAssertTrue(feelingsQuestion.waitForExistence(timeout: 3), "Feelings selection view should show question")
+
+        // Verify at least one feeling option exists
+        let loveFeelings = app.staticTexts["Love"]
+        XCTAssertTrue(loveFeelings.exists, "Love feeling option should exist")
+    }
+
+    /// Test that Gratitude preset opens GratitudeLogView with text input
+    func testGratitudeTrackerOpensGratitudeLogSheet() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Add Gratitude tracker preset
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        // Tap on "Gratitude" preset
+        let gratitudePreset = app.staticTexts["Gratitude"]
+        if gratitudePreset.waitForExistence(timeout: 3) {
+            gratitudePreset.tap()
+        }
+        sleep(1)
+
+        // Find and tap the Notice button on Gratitude tracker
+        let noticeButton = app.buttons["Notice"]
+        XCTAssertTrue(noticeButton.waitForExistence(timeout: 3), "Notice button should appear for Gratitude tracker")
+        noticeButton.tap()
+
+        // Verify GratitudeLogView opens with gratitude question
+        let gratitudeQuestion = app.staticTexts["What are you grateful for?"]
+        XCTAssertTrue(gratitudeQuestion.waitForExistence(timeout: 3), "Gratitude log view should show question")
+
+        // Verify Save button exists but is disabled (empty text)
+        let saveButton = app.buttons["Save"]
+        XCTAssertTrue(saveButton.exists, "Save button should exist")
+        XCTAssertFalse(saveButton.isEnabled, "Save button should be disabled when text is empty")
+    }
+
+    // MARK: - Phase 2.4: Streak Badge Tests
+
+    /// Test that tracker row shows streak badge after logging
+    func testTrackerShowsStreakBadgeAfterLogging() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Add a counter tracker (Water)
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        let drinkWaterPreset = app.staticTexts["Drink Water"]
+        if drinkWaterPreset.waitForExistence(timeout: 3) {
+            drinkWaterPreset.tap()
+        }
+        sleep(1)
+
+        // Tap + button to log (increment counter)
+        let plusButton = app.buttons["plus.circle.fill"]
+        XCTAssertTrue(plusButton.waitForExistence(timeout: 3), "Plus button should exist for counter tracker")
+        plusButton.tap()
+        sleep(1)
+
+        // After logging, streak badge should appear (flame icon)
+        let flameImage = app.images["flame.fill"]
+        XCTAssertTrue(flameImage.waitForExistence(timeout: 3), "Streak badge (flame) should appear after logging")
+    }
+
+    /// Test that counter tracker shows correct count format
+    func testCounterTrackerShowsCorrectCountFormat() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Add Water tracker
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        let drinkWaterPreset = app.staticTexts["Drink Water"]
+        if drinkWaterPreset.waitForExistence(timeout: 3) {
+            drinkWaterPreset.tap()
+        }
+        sleep(1)
+
+        // Verify initial count shows "0/8" (goal is 8)
+        let initialCount = app.staticTexts["0/8"]
+        XCTAssertTrue(initialCount.waitForExistence(timeout: 3), "Counter should show 0/8 initially")
+
+        // Tap + button
+        let plusButton = app.buttons["plus.circle.fill"]
+        XCTAssertTrue(plusButton.waitForExistence(timeout: 3))
+        plusButton.tap()
+        sleep(1)
+
+        // Verify count updated to "1/8"
+        let updatedCount = app.staticTexts["1/8"]
+        XCTAssertTrue(updatedCount.waitForExistence(timeout: 3), "Counter should show 1/8 after incrementing")
+    }
+
+    /// Test that Edit button opens TrackerEditorSheet
+    func testEditButtonOpensTrackerEditorSheet() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        // Add a tracker first
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+        }
+
+        let addTrackerButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3))
+        addTrackerButton.tap()
+        sleep(1)
+
+        let drinkWaterPreset = app.staticTexts["Drink Water"]
+        if drinkWaterPreset.waitForExistence(timeout: 3) {
+            drinkWaterPreset.tap()
+        }
+        sleep(1)
+
+        // Tap ellipsis (edit) button
+        let ellipsisButton = app.buttons["ellipsis"]
+        XCTAssertTrue(ellipsisButton.waitForExistence(timeout: 3), "Ellipsis (edit) button should exist")
+        ellipsisButton.tap()
+
+        // Verify Edit Tracker sheet opens
+        let editTitle = app.staticTexts["Edit Tracker"]
+        XCTAssertTrue(editTitle.waitForExistence(timeout: 3), "Edit Tracker sheet should open")
+
+        // Verify Delete button exists
+        let deleteButton = app.buttons["Delete Tracker"]
+        XCTAssertTrue(deleteButton.exists, "Delete Tracker button should exist in editor")
+    }
+
     // MARK: - Erfolge Tab Tests
 
     /// Test that Erfolge tab shows content (not empty)
