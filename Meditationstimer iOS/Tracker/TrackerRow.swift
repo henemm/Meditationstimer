@@ -19,6 +19,17 @@ struct TrackerRow: View {
     @Environment(\.modelContext) private var modelContext
     private let manager = TrackerManager.shared
 
+    // Sheet states for awareness presets
+    @State private var showingMoodSheet = false
+    @State private var showingFeelingsSheet = false
+    @State private var showingGratitudeSheet = false
+
+    // Check if this is a special awareness preset
+    private var isSpecialAwareness: Bool {
+        tracker.trackingMode == .awareness &&
+        ["Mood", "Feelings", "Gratitude"].contains(tracker.name)
+    }
+
     var body: some View {
         GlassCard {
             HStack(alignment: .center, spacing: 14) {
@@ -51,6 +62,15 @@ struct TrackerRow: View {
                 .buttonStyle(.plain)
             }
             .frame(minHeight: 80)
+        }
+        .sheet(isPresented: $showingMoodSheet) {
+            MoodSelectionView(tracker: tracker, onSave: {})
+        }
+        .sheet(isPresented: $showingFeelingsSheet) {
+            FeelingsSelectionView(tracker: tracker, onSave: {})
+        }
+        .sheet(isPresented: $showingGratitudeSheet) {
+            GratitudeLogView(tracker: tracker, onSave: {})
         }
     }
 
@@ -156,7 +176,7 @@ struct TrackerRow: View {
             .disabled(logged)
 
         case .awareness:
-            Button(action: quickLog) {
+            Button(action: openAwarenessSheet) {
                 Text(NSLocalizedString("Notice", comment: "Awareness log button"))
                     .font(.subheadline.bold())
                     .padding(.horizontal, 12)
@@ -185,6 +205,21 @@ struct TrackerRow: View {
     }
 
     // MARK: - Actions
+
+    private func openAwarenessSheet() {
+        // Open appropriate sheet based on tracker name
+        switch tracker.name {
+        case "Mood":
+            showingMoodSheet = true
+        case "Feelings":
+            showingFeelingsSheet = true
+        case "Gratitude":
+            showingGratitudeSheet = true
+        default:
+            // Generic awareness tracker - just quickLog
+            quickLog()
+        }
+    }
 
     private func quickLog() {
         _ = manager.quickLog(for: tracker, in: modelContext)

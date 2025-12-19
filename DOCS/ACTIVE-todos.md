@@ -151,13 +151,33 @@
 | Tracker erstellen | Form ausfüllen → Erstellen | Neuer Tracker in Liste | ⏳ |
 | Validierung | Name leer lassen | Erstellen-Button deaktiviert | ⏳ |
 
+### Phase 2.6: Mood/Feelings/Gratitude UIs - Gate ✅
+
+| Check | Status | Ergebnis |
+|-------|--------|----------|
+| Bestehende Tests ausgeführt | ✅ | TEST SUCCEEDED |
+| Neue Tests geplant | ✅ | Keine nötig (reine UI-Arbeit) |
+| UI-Test-Anweisungen | ✅ | 7 Tests dokumentiert |
+
+**UI-Tests Phase 2.6:**
+
+| Test | Schritte | Erwartet | Status |
+|------|----------|----------|--------|
+| Mood Sheet öffnen | Stimmung-Tracker → Quick-Log | MoodSelectionView mit 9 Emojis | ⏳ |
+| Mood Single-Select | 2 Moods antippen | Nur einer ausgewählt | ⏳ |
+| Feelings Sheet öffnen | Gefühle-Tracker → Quick-Log | FeelingsSelectionView | ⏳ |
+| Feelings Multi-Select | Mehrere antippen | Alle bleiben ausgewählt | ⏳ |
+| Gratitude Sheet öffnen | Dankbarkeit-Tracker → Quick-Log | GratitudeLogView mit TextEditor | ⏳ |
+| Gratitude speichern | Text eingeben → Speichern | Note gespeichert | ⏳ |
+| Andere Tracker direkt | Counter/YesNo Quick-Log | Kein Sheet, direkt geloggt | ⏳ |
+
 ### Nächste Schritte (Phase 2.x)
 - [x] Phase 2.1: TrackerTab Liste + Quick-Log
 - [x] Phase 2.2: Add Tracker aus Presets
 - [x] Phase 2.3: Edit/Delete Tracker
 - [x] Phase 2.4: Streak-Anzeige (Gate nachgeholt)
 - [x] Phase 2.5: Custom Tracker erstellen ✅
-- [ ] Phase 2.6: Mood/Feelings/Gratitude UIs
+- [x] Phase 2.6: Mood/Feelings/Gratitude UIs ✅
 - [ ] HealthKit Sync für Tracker
 - [ ] Tracker Widget
 
