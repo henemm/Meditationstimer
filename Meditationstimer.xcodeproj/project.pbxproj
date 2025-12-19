@@ -28,6 +28,8 @@
 		B7C556852E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C556832E66C66A00EFC1F5 /* HeartRateStream.swift */; };
 		B7C556A52E73E5EC00EFC1F5 /* MeditationstimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
+		B7F123462EF60002000AAA02 /* TrackerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F123452EF60001000AAA01 /* TrackerModels.swift */; };
+		B7F123482EF60004000AAA04 /* TrackerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F123472EF60003000AAA03 /* TrackerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +92,7 @@
 		B737BB522E656A63000AE8C4 /* Meditationstimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meditationstimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B737BB582E656A63000AE8C4 /* Meditationstimer Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meditationstimer Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B74F4C752EF299430029338D /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
+		B74F4FE92EF55BE90029338D /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
 		B770C7A62E87BF2F008FB9FC /* GongPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GongPlayer.swift; sourceTree = "<group>"; };
 		B770C7B32E87C473008FB9FC /* MeditationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeditationEngine.swift; sourceTree = "<group>"; };
 		B770C7B62E87C481008FB9FC /* BackgroundNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNotifier.swift; sourceTree = "<group>"; };
@@ -108,6 +111,8 @@
 		B7C556932E73E5EA00EFC1F5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B7E601122E6582C1008AE315 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		B7EC6E192EC781CB00967561 /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
+		B7F123452EF60001000AAA01 /* TrackerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerModels.swift; sourceTree = "<group>"; };
+		B7F123472EF60003000AAA03 /* TrackerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerManager.swift; sourceTree = "<group>"; };
 		B7UITEST012ED1000000002 /* LeanHealthTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanHealthTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -251,6 +256,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B74F4FF42EF55BE90029338D /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B7AC813C2ED1960F00FC9888 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
@@ -284,6 +294,8 @@
 				B7E601122E6582C1008AE315 /* HealthKitManager.swift */,
 				B78712B62EB00C06002DA82E /* AmbientSoundPlayer.swift */,
 				B7BF30822EB3F06A009C1636 /* NoAlcManager.swift */,
+				B7F123452EF60001000AAA01 /* TrackerModels.swift */,
+				B7F123472EF60003000AAA03 /* TrackerManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -490,6 +502,10 @@
 					ProductGroup = B7EC6E1A2EC781CB00967561 /* Products */;
 					ProjectRef = B7EC6E192EC781CB00967561 /* Meditationstimer.xcodeproj */;
 				},
+				{
+					ProductGroup = B74F4FF42EF55BE90029338D /* Products */;
+					ProjectRef = B74F4FE92EF55BE90029338D /* Meditationstimer.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -575,6 +591,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7F123462EF60002000AAA02 /* TrackerModels.swift in Sources */,
+				B7F123482EF60004000AAA04 /* TrackerManager.swift in Sources */,
 				B7BF30832EB3F06A009C1636 /* NoAlcManager.swift in Sources */,
 				B7C556842E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */,
 				B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */,

@@ -1,0 +1,177 @@
+//
+//  TrackerManager.swift
+//  Meditationstimer
+//
+//  Created by Claude on 19.12.2025.
+//
+//  Manager for Custom Trackers - CRUD operations, queries, and preset handling.
+//
+
+import Foundation
+import SwiftData
+
+/// Manages Custom Trackers and their logs
+final class TrackerManager {
+    static let shared = TrackerManager()
+
+    private let calendar = Calendar.current
+
+    private init() {}
+
+    // MARK: - CRUD Operations
+
+    /// Create a new tracker
+    func createTracker(_ tracker: Tracker, in context: ModelContext) {
+        context.insert(tracker)
+    }
+
+    /// Delete a tracker (cascade deletes logs)
+    func deleteTracker(_ tracker: Tracker, from context: ModelContext) {
+        context.delete(tracker)
+    }
+
+    /// Create a tracker from a preset
+    func createFromPreset(_ preset: TrackerPreset, in context: ModelContext) -> Tracker {
+        let tracker = preset.createTracker()
+        context.insert(tracker)
+        return tracker
+    }
+
+    // MARK: - Logging
+
+    /// Log an entry for a tracker
+    func logEntry(
+        for tracker: Tracker,
+        value: Int? = nil,
+        note: String? = nil,
+        trigger: String? = nil,
+        location: String? = nil,
+        in context: ModelContext
+    ) -> TrackerLog {
+        let log = TrackerLog(
+            value: value,
+            note: note,
+            trigger: trigger,
+            location: location,
+            tracker: tracker
+        )
+        context.insert(log)
+        tracker.logs.append(log)
+        return log
+    }
+
+    /// Quick log (for counter +1 or yesNo)
+    func quickLog(for tracker: Tracker, in context: ModelContext) -> TrackerLog {
+        switch tracker.trackingMode {
+        case .counter:
+            // Increment counter by 1
+            let todayTotal = todayTotal(for: tracker, in: context)
+            return logEntry(for: tracker, value: todayTotal + 1, in: context)
+        case .yesNo, .awareness:
+            // Just log the moment
+            return logEntry(for: tracker, in: context)
+        case .avoidance:
+            // Log = relapse (breaks streak)
+            return logEntry(for: tracker, in: context)
+        }
+    }
+
+    // MARK: - Queries
+
+    /// Get all logs for a tracker on a specific date
+    func logs(for tracker: Tracker, on date: Date, in context: ModelContext) -> [TrackerLog] {
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        return tracker.logs.filter { log in
+            log.timestamp >= startOfDay && log.timestamp < endOfDay
+        }
+    }
+
+    /// Get all logs for today
+    func todayLogs(for tracker: Tracker, in context: ModelContext) -> [TrackerLog] {
+        return logs(for: tracker, on: Date(), in: context)
+    }
+
+    /// Get total value for today (for counter trackers)
+    func todayTotal(for tracker: Tracker, in context: ModelContext) -> Int {
+        let logs = todayLogs(for: tracker, in: context)
+        return logs.compactMap { $0.value }.reduce(0, +)
+    }
+
+    /// Check if tracker was logged today
+    func isLoggedToday(for tracker: Tracker, in context: ModelContext) -> Bool {
+        return !todayLogs(for: tracker, in: context).isEmpty
+    }
+
+    // MARK: - Streak Calculation
+
+    /// Calculate current streak for a tracker
+    func streak(for tracker: Tracker, in context: ModelContext) -> Int {
+        switch tracker.trackingMode {
+        case .counter, .yesNo, .awareness:
+            return calculateActiveStreak(for: tracker)
+        case .avoidance:
+            return calculateAvoidanceStreak(for: tracker)
+        }
+    }
+
+    /// Calculate streak for trackers where logging = activity (counter, yesNo, awareness)
+    /// Streak = consecutive days with at least 1 log
+    private func calculateActiveStreak(for tracker: Tracker) -> Int {
+        let today = calendar.startOfDay(for: Date())
+        let todayHasLog = tracker.logs.contains { log in
+            calendar.isDate(log.timestamp, inSameDayAs: today)
+        }
+
+        var currentStreak = 0
+        var checkDate = todayHasLog ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        while true {
+            let hasLogOnDate = tracker.logs.contains { log in
+                calendar.isDate(log.timestamp, inSameDayAs: checkDate)
+            }
+
+            if hasLogOnDate {
+                currentStreak += 1
+                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                checkDate = previousDate
+            } else {
+                break
+            }
+        }
+
+        return currentStreak
+    }
+
+    /// Calculate streak for avoidance trackers
+    /// Streak = consecutive days WITHOUT any log
+    private func calculateAvoidanceStreak(for tracker: Tracker) -> Int {
+        let today = calendar.startOfDay(for: Date())
+
+        // Find the most recent log
+        let sortedLogs = tracker.logs.sorted { $0.timestamp > $1.timestamp }
+        guard let lastLog = sortedLogs.first else {
+            // No logs ever = streak from tracker creation date
+            let daysSinceCreation = calendar.dateComponents([.day], from: tracker.createdAt, to: today).day ?? 0
+            return max(0, daysSinceCreation)
+        }
+
+        // Streak = days since last log
+        let lastLogDate = calendar.startOfDay(for: lastLog.timestamp)
+        let daysSinceLastLog = calendar.dateComponents([.day], from: lastLogDate, to: today).day ?? 0
+        return max(0, daysSinceLastLog)
+    }
+
+    // MARK: - Preset Access
+
+    /// Get all predefined presets
+    static func predefinedPresets() -> [TrackerPreset] {
+        return TrackerPreset.all
+    }
+
+    /// Get presets by category
+    static func presets(for category: TrackerPreset.PresetCategory) -> [TrackerPreset] {
+        return TrackerPreset.all.filter { $0.category == category }
+    }
+}

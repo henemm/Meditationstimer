@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import HealthKit
 import UserNotifications
 // Dynamic Island / Live Activity removed
@@ -22,10 +23,24 @@ struct Meditationstimer_iOSApp: App {
     // Notification delegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
+    // SwiftData ModelContainer for Custom Trackers
+    let modelContainer: ModelContainer
+
+    init() {
+        do {
+            let schema = Schema([Tracker.self, TrackerLog.self])
+            let config = ModelConfiguration(isStoredInMemoryOnly: false)
+            modelContainer = try ModelContainer(for: schema, configurations: [config])
+        } catch {
+            fatalError("Failed to create ModelContainer: \(error)")
+        }
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(sharedLiveActivity)
+                .modelContainer(modelContainer)
         }
         // Live Activity background cleanup removed
     }
