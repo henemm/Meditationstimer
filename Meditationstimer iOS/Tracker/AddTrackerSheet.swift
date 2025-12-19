@@ -16,6 +16,8 @@ struct AddTrackerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
+    @State private var showingCustomTracker = false
+
     private let manager = TrackerManager.shared
 
     var body: some View {
@@ -58,17 +60,19 @@ struct AddTrackerSheet: View {
                     Text(NSLocalizedString("Track autopilot behaviors to build awareness.", comment: "Saboteur explanation"))
                 }
 
-                // Custom Tracker Section (Phase 2.5)
+                // Custom Tracker Section
                 Section {
-                    Label {
-                        Text(NSLocalizedString("Custom Tracker", comment: "Custom tracker option"))
-                    } icon: {
-                        Image(systemName: "plus.circle")
-                            .foregroundStyle(.secondary)
+                    Button(action: { showingCustomTracker = true }) {
+                        Label {
+                            Text(NSLocalizedString("Custom Tracker", comment: "Custom tracker option"))
+                                .foregroundStyle(.primary)
+                        } icon: {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundStyle(.blue)
+                        }
                     }
-                    .foregroundStyle(.secondary)
                 } footer: {
-                    Text(NSLocalizedString("Coming soon", comment: "Feature coming soon"))
+                    Text(NSLocalizedString("Create your own tracker with custom settings.", comment: "Custom tracker explanation"))
                 }
             }
             .navigationTitle(NSLocalizedString("Add Tracker", comment: "Sheet title"))
@@ -79,6 +83,9 @@ struct AddTrackerSheet: View {
                         dismiss()
                     }
                 }
+            }
+            .sheet(isPresented: $showingCustomTracker) {
+                CustomTrackerSheet()
             }
         }
     }

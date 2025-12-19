@@ -131,12 +131,32 @@
 | Badge bei Avoidance | 1. Saboteur-Tracker hinzufügen | Kein Badge (Streak im Status) | ⏳ |
 | Badge verschwindet | 1. Tag ohne Log warten | Badge verschwindet | ⏳ |
 
+### Phase 2.5: Custom Tracker - Gate ✅
+
+| Check | Status | Ergebnis |
+|-------|--------|----------|
+| Bestehende Tests ausgeführt | ✅ | TEST SUCCEEDED |
+| Neue Tests geplant | ✅ | Keine nötig (nutzt existierende Logik) |
+| UI-Test-Anweisungen | ✅ | 7 Tests dokumentiert |
+
+**UI-Tests Phase 2.5:**
+
+| Test | Schritte | Erwartet | Status |
+|------|----------|----------|--------|
+| Sheet öffnen | Add Tracker → Custom Tracker | Sheet mit Form öffnet sich | ⏳ |
+| Icon-Auswahl | Emoji antippen | Blauer Rahmen um Auswahl | ⏳ |
+| Typ-Auswahl | Picker wechseln | Good ↔ Saboteur funktioniert | ⏳ |
+| Modus je Typ | Typ ändern → Modi prüfen | Good: Counter/YesNo, Saboteur: Awareness/Avoidance | ⏳ |
+| Tagesziel nur Counter | Modi wechseln | Stepper nur bei Counter sichtbar | ⏳ |
+| Tracker erstellen | Form ausfüllen → Erstellen | Neuer Tracker in Liste | ⏳ |
+| Validierung | Name leer lassen | Erstellen-Button deaktiviert | ⏳ |
+
 ### Nächste Schritte (Phase 2.x)
 - [x] Phase 2.1: TrackerTab Liste + Quick-Log
 - [x] Phase 2.2: Add Tracker aus Presets
 - [x] Phase 2.3: Edit/Delete Tracker
 - [x] Phase 2.4: Streak-Anzeige (Gate nachgeholt)
-- [ ] Phase 2.5: Custom Tracker erstellen
+- [x] Phase 2.5: Custom Tracker erstellen ✅
 - [ ] Phase 2.6: Mood/Feelings/Gratitude UIs
 - [ ] HealthKit Sync für Tracker
 - [ ] Tracker Widget
