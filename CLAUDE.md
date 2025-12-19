@@ -4,6 +4,26 @@
 
 ---
 
+## ⛔ IMPLEMENTATION GATE - ERSTE PFLICHT
+
+**VOR JEDER CODE-ÄNDERUNG MUSS dieses Gate durchlaufen werden!**
+
+Siehe: `.agent-os/standards/global/implementation-gate.md`
+
+```
+PFLICHT vor jeder Implementierung:
+1. [ ] Bestehende Tests ausführen (xcodebuild test)
+2. [ ] Neue Tests schreiben (TDD RED)
+3. [ ] UI-Test-Anweisungen vorbereiten
+4. [ ] Gate-Check dokumentieren
+
+ERST DANN: Code schreiben
+```
+
+**Bei Verstoß:** Henning stoppt die Arbeit, Gate wird nachgeholt.
+
+---
+
 ## Overview
 
 **Meditationstimer** is a meditation and wellness app built with SwiftUI for iOS 18.5+, watchOS 9.0+, and Widget Extension.
@@ -33,7 +53,7 @@ This project uses **Agent OS** for standards and **OpenSpec** for spec-driven de
 ### Standards (`.agent-os/standards/`)
 
 All coding standards and lessons learned are in:
-- `global/` - Analysis-First, Scoping Limits, Documentation Rules
+- `global/` - **Implementation Gate**, Analysis-First, Scoping Limits, Documentation Rules
 - `swiftui/` - Lifecycle Patterns, Localization, State Management
 - `healthkit/` - Date Semantics, Data Consistency
 - `audio/` - Completion Handlers

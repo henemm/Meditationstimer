@@ -34,7 +34,7 @@ import HealthKit
 
 // MARK: - Tab Enum for Shortcuts Deep Linking
 enum AppTab: String, CaseIterable {
-    case offen, atem, frei, workouts
+    case meditation, workout, tracker, erfolge
 }
 
 struct ContentView: View {
@@ -48,46 +48,49 @@ struct ContentView: View {
     @StateObject private var engine = TwoPhaseTimerEngine()
     @StateObject private var streakManager = StreakManager()
     @StateObject private var shortcutHandler = ShortcutHandler()
+    @StateObject private var liveActivity = LiveActivityController()
     @State private var showingError: String?
     @State private var askedPermissions = false
     @State private var showingCalendar = false
 
     // Tab selection (for Shortcuts deep linking)
-    @State private var selectedTab: AppTab = .offen
+    @State private var selectedTab: AppTab = .meditation
 
 
     var body: some View {
         // MARK: Tabs & global background
         NavigationView {
             TabView(selection: $selectedTab) {
-                OffenView()
+                MeditationTab()
                     .environmentObject(engine)
                     .environmentObject(streakManager)
+                    .environmentObject(liveActivity)
                     .tabItem {
-                        Label("Open", systemImage: "figure.mind.and.body")
+                        Label("Meditation", systemImage: "figure.mind.and.body")
                     }
-                    .tag(AppTab.offen)
+                    .tag(AppTab.meditation)
 
-                AtemView()
+                WorkoutTab()
+                    .environmentObject(streakManager)
+                    .environmentObject(liveActivity)
+                    .tabItem {
+                        Label("Workout", systemImage: "flame")
+                    }
+                    .tag(AppTab.workout)
+
+                TrackerTab()
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Breathe", systemImage: "wind")
+                        Label("Tracker", systemImage: "chart.bar.fill")
                     }
-                    .tag(AppTab.atem)
+                    .tag(AppTab.tracker)
 
-                WorkoutProgramsView()
+                ErfolgeTab()
                     .environmentObject(streakManager)
                     .tabItem {
-                        Label("Workouts", systemImage: "figure.strengthtraining.traditional")
+                        Label("Erfolge", systemImage: "trophy.fill")
                     }
-                    .tag(AppTab.workouts)
-
-                WorkoutsView()
-                    .environmentObject(streakManager)
-                    .tabItem {
-                        Label("Free", systemImage: "flame")
-                    }
-                    .tag(AppTab.frei)
+                    .tag(AppTab.erfolge)
             }
             .background(
                 LinearGradient(colors: [Color.blue.opacity(0.20), Color.purple.opacity(0.15)],
@@ -128,19 +131,19 @@ struct ContentView: View {
             shortcutHandler.handle(url, selectedTab: $selectedTab)
         }
         .onReceive(NotificationCenter.default.publisher(for: .startMeditationSession)) { _ in
-            // Switch to Offen tab before session starts
-            selectedTab = .offen
-            print("[ContentView] Switched to Offen tab for meditation session")
+            // Switch to Meditation tab before session starts
+            selectedTab = .meditation
+            print("[ContentView] Switched to Meditation tab for meditation session")
         }
         .onReceive(NotificationCenter.default.publisher(for: .startBreathingSession)) { _ in
-            // Switch to Atem tab before session starts
-            selectedTab = .atem
-            print("[ContentView] Switched to Atem tab for breathing session")
+            // Switch to Meditation tab before session starts (breathing is now part of Meditation tab)
+            selectedTab = .meditation
+            print("[ContentView] Switched to Meditation tab for breathing session")
         }
         .onReceive(NotificationCenter.default.publisher(for: .startWorkoutSession)) { _ in
-            // Switch to Frei tab before session starts
-            selectedTab = .frei
-            print("[ContentView] Switched to Frei tab for workout session")
+            // Switch to Workout tab before session starts
+            selectedTab = .workout
+            print("[ContentView] Switched to Workout tab for workout session")
         }
         .alert("Notice", isPresented: .constant(showingError != nil), actions: {
             Button("OK") { showingError = nil }

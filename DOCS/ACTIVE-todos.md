@@ -1,6 +1,6 @@
 # Active Todos - Meditationstimer
 
-**Letzte Aktualisierung:** 25. November 2025
+**Letzte Aktualisierung:** 19. Dezember 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -8,6 +8,78 @@
 ## 🚨 KRITISCHE Bugs
 
 *Aktuell keine kritischen Bugs*
+
+---
+
+## 📚 Lessons Learned
+
+### 2025-12-15: Implementation Gate eingeführt
+
+**Problem:** Phase 1.1 Tab Navigation wurde implementiert OHNE:
+- Bestehende Unit Tests auszuführen
+- Neue Tests zu schreiben
+- UI-Test-Anweisungen VOR der Implementierung zu erstellen
+
+**Lösung:** Implementation Gate als PFLICHT eingeführt:
+- `.agent-os/standards/global/implementation-gate.md` erstellt
+- CLAUDE.md aktualisiert mit Gate als ERSTE PFLICHT
+- Keine Code-Änderungen ohne Gate-Durchlauf
+
+**Regel:** VOR jeder Implementierung MUSS:
+1. `xcodebuild test` ausgeführt werden
+2. Neue Tests geschrieben werden (TDD RED)
+3. UI-Test-Anweisungen vorbereitet werden
+4. Gate-Check dokumentiert werden
+
+---
+
+## ✅ Phase 1.1 Tab Navigation - Gate NACHGEHOLT
+
+**Datum:** 15. Dezember 2025
+
+### Gate-Check (nachträglich)
+
+| Check | Status | Ergebnis |
+|-------|--------|----------|
+| Bestehende Tests ausgeführt | ✅ | 97/97 Tests GRÜN |
+| Tests korrigiert | ✅ | ShortcutHandlerTests für neue Tab-Namen angepasst |
+| Neue Tests hinzugefügt | ✅ | 3 neue Tests: testParseMeditationURL, testParseWorkoutURL_NewTabName, testParseWorkoutURL_LegacyWorkoutsTab |
+| UI-Test-Anweisungen | ✅ | DOCS/UI-TEST-Phase1.1-TabNavigation.md erstellt |
+| Build erfolgreich | ✅ | xcodebuild build SUCCEEDED |
+
+### Geänderte Dateien
+
+| Datei | Änderung |
+|-------|----------|
+| `ContentView.swift` | AppTab Enum + TabView |
+| `MeditationTab.swift` | NEU |
+| `WorkoutTab.swift` | NEU |
+| `TrackerTab.swift` | NEU |
+| `ErfolgeTab.swift` | NEU |
+| `ShortcutHandler.swift` | Backwards-Compatibility |
+| `ShortcutHandlerTests.swift` | Tests für neue Tabs |
+
+### UI-Tests (automatisiert im Simulator)
+
+| Test | Status |
+|------|--------|
+| testAllFourTabsExist | ✅ PASS |
+| testMeditationTabIsDefaultSelected | ✅ PASS |
+| testTabSwitching | ✅ PASS |
+| testMeditationViewShowsDauerLabelInGerman | ✅ PASS |
+| testMeditationViewShowsAusklangLabelInGerman | ✅ PASS |
+| testMeditationViewShowsDurationLabelInEnglish | ✅ PASS |
+| testMeditationViewShowsClosingLabelInEnglish | ✅ PASS |
+| testTrackerTabShowsLogTodayButton | ✅ PASS |
+| testErfolgeTabShowsContent | ✅ PASS |
+| testErfolgeTabShowsViewCalendarButton | ✅ PASS |
+| testInfoSheetOpensAndShowsContent | ✅ PASS |
+| testLaunchPerformance | ✅ PASS |
+
+**Alle 12 XCUITests bestanden!**
+
+### Nächster Schritt
+- [ ] Manuelle Verifikation auf echtem Device (optional)
 
 ---
 
@@ -26,17 +98,52 @@ Details siehe Commit c89163d und git history.
 
 ---
 
+## 🔍 Offene Untersuchungen
+
+### User-Feedback: Lautstärke muss jedes Mal neu eingestellt werden
+**Status:** Analyse abgeschlossen, Rückfrage beim User nötig
+**Datum:** 14.12.2025
+
+**User-Zitat:**
+> "Jedes Mal wenn ich die App verwende stelle ich die Lautstärke für Gong, Wellen, etc. ein, damit die nicht so aufdringlich sind. Wenn die App sich die merken und beim Start wieder einstellen würde, das wäre cool."
+
+**Analyse-Ergebnis:**
+- **Ambient Sound Volume (Wellen, etc.):** Wird gespeichert ✅ (`@AppStorage("ambientSoundVolume")`)
+- **Gong Volume:** Existiert NICHT ❌ – kein Slider, keine Einstellung
+
+**Technischer Befund:**
+- `GongPlayer.swift` hat keine Volume-Property
+- `SettingsSheet.swift` hat nur Slider für Ambient, nicht für Gong
+- Gong spielt immer mit 100% der System-Lautstärke
+
+**Vermutung:**
+User meint die Gong-Lautstärke, die nur über iPhone-Lautstärketasten einstellbar ist (= System-Lautstärke). Diese ändert sich durch andere Apps (YouTube, Telefon, etc.).
+
+**Offene Frage an User:**
+Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eigener Slider in Settings).
+
+**Falls Feature gewünscht:**
+- Aufwand: Klein (~50 LoC, 4 Dateien)
+- `GongPlayer.swift` + `SettingsSheet.swift` + `OffenView.swift` + `AtemView.swift`
+
+---
+
 ## 🐛 aktive Bugs
 
 ### NoAlc Bugs
 
-**Bug 27: NoAlc Rewards können nach 3 Wochen nicht mehr verdient werden**
-- Location: `CalendarView.swift` Zeilen 64-65 und 79-80
-- Problem: Nach 3 verdienten Rewards (auch wenn alle verbraucht) wurden keine neuen mehr vergeben
-- Root Cause: Cap prüfte `earnedRewards < 3` (total je verdient) statt `availableRewards < 3` (aktuell verfügbar)
-- **Fix (24.11.2025):** Beide Stellen korrigiert auf `currentAvailable < 3` bzw. `newAvailable < 3`
-- Commit: 5a4fbdd
-- Status: **GEFIXT, BITTE TESTEN**
+**Bug 27: NoAlc Joker-System ignorierte nicht berichtete Tage**
+- Location: `NoAlcManager.swift` (neu: `calculateStreakAndRewards()`)
+- **Ursprüngliches Problem:** Streak-Berechnung iterierte nur über existierende Einträge → Lücken (nicht berichtete Tage) wurden ignoriert
+- **Root Cause:** Code verwendete `alcoholDays.keys.sorted()` statt über ALLE Tage zu iterieren
+- **Fix (19.12.2025):**
+  - Neue testbare Methode `NoAlcManager.calculateStreakAndRewards()` erstellt
+  - Iteriert über ALLE Tage vom ersten Eintrag bis heute/gestern
+  - Lücken werden wie Easy/Wild behandelt (brauchen Joker)
+  - "Heute nicht geloggt" wird ignoriert (kein Penalty)
+  - 16 Unit Tests für Joker-System erstellt
+- **Getestet:** ✅ Alle 16 NoAlcStreakTests GRÜN
+- Status: **GEFIXT, WARTET AUF USER-TEST**
 
 ---
 

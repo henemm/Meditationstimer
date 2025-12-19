@@ -34,28 +34,32 @@ The system SHALL categorize alcohol consumption into three distinct levels.
 - AND streak breaks regardless of rewards
 
 ### Requirement: Calendar Visualization
-The system SHALL display NoAlc status as innermost ring in calendar.
+The system SHALL display NoAlc status as inner fill in the calendar day cell.
 
-#### Scenario: NoAlc Ring Display
+#### Scenario: NoAlc Fill Display
 - GIVEN calendar day has NoAlc entry
 - WHEN calendar renders day cell
 - THEN inner fill circle appears (28x28 points)
 - AND fill color matches consumption level
-- AND ring is innermost (inside workout and mindfulness rings)
+- AND positioned inside workout and mindfulness rings
 
-#### Scenario: Ring Layering Order
+#### Scenario: Ring Layering Order (4 Layers)
 - GIVEN calendar day has multiple activity types
-- WHEN rendering activity rings
-- THEN NoAlc displays as innermost fill (28x28)
-- AND Workout displays as middle ring (32x32)
-- AND Mindfulness displays as outer ring (42x42)
-- AND all rings are visible concentrically
+- WHEN rendering activity visualization
+- THEN layers display in this order (outside to inside):
+  1. **Outer Ring:** Mindfulness (42x42, blue)
+  2. **Middle Ring:** Workout (32x32, purple)
+  3. **Inner Fill:** NoAlc (28x28, level color)
+  4. **Center Segments:** Focus Trackers (20x20, if configured)
+- AND all layers are visible concentrically
+
+See `calendar-view.md` for full visualization specification.
 
 #### Scenario: No NoAlc Entry
 - GIVEN calendar day has no NoAlc entry
 - WHEN calendar renders day cell
 - THEN no inner fill circle appears
-- AND other rings (workout, mindfulness) still display if present
+- AND other rings/segments still display if present
 
 ### Requirement: Streak Calculation
 The system SHALL calculate NoAlc streaks using reward-based forgiveness.
@@ -209,7 +213,17 @@ The system SHALL support configurable NoAlc reminders.
 - **Day Assignment:** `targetDay(for:)` in NoAlcManager determines yesterday vs. today
 - **HealthKit Values:** 0 (Steady), 4 (Easy), 6 (Wild) - representative counts
 - **Feature Category:** PASSIVE - notification-driven, not prominent manual UI
+- **Location:** Now part of Tracker Tab (top section, prominently displayed)
 
 Reference Standards:
 - `.agent-os/standards/healthkit/date-semantics.md` (Forward Iteration)
-- `.agent-os/standards/healthkit/data-consistency.md` (What you see = What gets counted)
+- `.agent-os/standards/healthkit/data-consistency.md`
+
+---
+
+## References
+
+- `openspec/specs/features/app-navigation.md` - NoAlc in Tracker Tab (top section)
+- `openspec/specs/features/calendar-view.md` - Calendar visualization (4-layer structure)
+- `openspec/specs/features/smart-reminders.md` - NoAlc reminder type
+- `openspec/specs/features/streaks-rewards.md` - Reward calculation details (What you see = What gets counted)

@@ -47,18 +47,37 @@ class ShortcutHandler: ObservableObject {
             item.value.map { (item.name, $0) }
         })
 
-        // Extract tab
-        guard let tabString = params["tab"],
-              let tab = AppTab(rawValue: tabString) else {
-            print("[ShortcutHandler] Missing or invalid 'tab' parameter")
+        // Extract tab - map legacy tab names to new structure
+        guard let tabString = params["tab"] else {
+            print("[ShortcutHandler] Missing 'tab' parameter")
             return nil
         }
 
-        // Parse action based on tab
+        // Map old tab names to new ones for backwards compatibility
+        let mappedTab: AppTab
+        switch tabString {
+        case "offen", "meditation":
+            mappedTab = .meditation
+        case "atem":
+            mappedTab = .meditation  // Breathing is now part of Meditation tab
+        case "frei", "workout":
+            mappedTab = .workout
+        case "workouts":
+            mappedTab = .workout  // Workout programs are now part of Workout tab
+        case "tracker":
+            mappedTab = .tracker
+        case "erfolge":
+            mappedTab = .erfolge
+        default:
+            print("[ShortcutHandler] Invalid 'tab' parameter: \(tabString)")
+            return nil
+        }
+
+        // Parse action based on original tab parameter (for backwards compatibility)
         let action: ShortcutAction
 
-        switch tab {
-        case .offen:
+        switch tabString {
+        case "offen", "meditation":
             // Meditation: phase1 (required), phase2 (optional, default 0)
             guard let phase1String = params["phase1"],
                   let phase1 = Int(phase1String) else {
@@ -79,7 +98,7 @@ class ShortcutHandler: ObservableObject {
 
             action = .meditation(phase1Minutes: phase1, phase2Minutes: phase2)
 
-        case .atem:
+        case "atem":
             // Breathing: preset (required)
             guard let presetName = params["preset"] else {
                 print("[ShortcutHandler] Missing 'preset' parameter")
@@ -95,7 +114,7 @@ class ShortcutHandler: ObservableObject {
 
             action = .breathing(presetName: presetName)
 
-        case .frei:
+        case "frei", "workout":
             // Frei (Free Workout): interval, rest, repeats (all required)
             guard let intervalString = params["interval"],
                   let restString = params["rest"],
@@ -123,14 +142,18 @@ class ShortcutHandler: ObservableObject {
 
             action = .workout(intervalSec: interval, restSec: rest, repeats: repeats)
 
-        case .workouts:
+        case "workouts":
             // TODO: Phase 6 - Implement workout program shortcuts (e.g., preset name)
-            // For now, just switch to the workouts tab without auto-start
-            print("[ShortcutHandler] Workouts tab shortcuts not yet implemented (Phase 6)")
+            // For now, just switch to the workout tab without auto-start
+            print("[ShortcutHandler] Workout programs shortcuts not yet implemented (Phase 6)")
+            return nil
+
+        default:
+            print("[ShortcutHandler] Unknown tab type for action: \(tabString)")
             return nil
         }
 
-        return ShortcutRequest(tab: tab, action: action)
+        return ShortcutRequest(tab: mappedTab, action: action)
     }
 
     /// Handles shortcut URL with full session auto-start

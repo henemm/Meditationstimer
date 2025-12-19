@@ -141,4 +141,93 @@ final class NoAlcManager {
             healthStore.execute(query)
         }
     }
+
+    // MARK: - Streak Calculation
+
+    /// Result of streak calculation
+    struct StreakResult {
+        let streak: Int
+        let rewards: Int
+    }
+
+    /// Calculate NoAlc streak and available Jokers (rewards)
+    /// - Parameters:
+    ///   - alcoholDays: Dictionary of dates to consumption levels
+    ///   - calendar: Calendar to use for date calculations
+    /// - Returns: Current streak length and available Jokers
+    ///
+    /// Rules:
+    /// - Steady day: Streak +1
+    /// - Easy/Wild day or missing day: Needs Joker to continue streak
+    /// - Every 7 streak days: Earn 1 Joker (max 3 on hand)
+    /// - Day 7 with Easy: Earn Joker first, then consume it
+    /// - Today not logged: Ignore (don't count as missing)
+    static func calculateStreakAndRewards(
+        alcoholDays: [Date: ConsumptionLevel],
+        calendar: Calendar = .current
+    ) -> StreakResult {
+
+        let today = calendar.startOfDay(for: Date())
+
+        // Find first logged date
+        guard let firstDate = alcoholDays.keys.min() else {
+            return StreakResult(streak: 0, rewards: 0)
+        }
+
+        // Determine end date: today if logged, otherwise yesterday
+        // (don't penalize for not having logged today yet)
+        let hasEntryToday = alcoholDays[today] != nil
+        let endDate = hasEntryToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        // Don't process if first date is after end date
+        guard firstDate <= endDate else {
+            return StreakResult(streak: 0, rewards: 0)
+        }
+
+        var consecutiveDays = 0
+        var earnedRewards = 0
+        var consumedRewards = 0
+
+        // Iterate over ALL days from first entry to end date
+        var currentDate = firstDate
+        while currentDate <= endDate {
+            let level = alcoholDays[currentDate]  // nil = not logged (gap)
+
+            if level == .steady {
+                // Steady day: count it
+                consecutiveDays += 1
+
+                // Earn Joker at every 7-day milestone (max 3 on hand)
+                if consecutiveDays % 7 == 0 && (earnedRewards - consumedRewards) < 3 {
+                    earnedRewards += 1
+                }
+            } else {
+                // Easy, Wild, or nil (gap): needs Joker to continue
+
+                // First check if we would earn a Joker at this milestone
+                // (earn before consume rule for day 7)
+                let wouldBeMilestone = (consecutiveDays + 1) % 7 == 0
+                if wouldBeMilestone && (earnedRewards - consumedRewards) < 3 {
+                    earnedRewards += 1
+                }
+
+                // Now try to heal with available Joker
+                let availableJokers = earnedRewards - consumedRewards
+                if availableJokers > 0 {
+                    consumedRewards += 1
+                    consecutiveDays += 1
+                } else {
+                    // No Joker available → streak breaks
+                    consecutiveDays = 0
+                    earnedRewards = 0
+                    consumedRewards = 0
+                }
+            }
+
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+
+        let availableRewards = max(0, earnedRewards - consumedRewards)
+        return StreakResult(streak: consecutiveDays, rewards: availableRewards)
+    }
 }

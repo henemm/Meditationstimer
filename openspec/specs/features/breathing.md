@@ -1,8 +1,10 @@
-# Breathing Exercises (Atem-Tab)
+# Breathing Exercises (Meditation Tab - Atemübungen)
 
 ## Overview
 
-Guided breathing exercises with customizable patterns, preset management, ambient sounds, visual guidance, and audio cues. Supports multiple breathing rhythms with configurable repetitions.
+Guided breathing exercises with customizable patterns, preset management, ambient sounds, visual guidance, and audio cues. Located in the **scrollable presets section** of the Meditation Tab (below the free meditation timer). Supports multiple breathing rhythms with configurable repetitions.
+
+See `app-navigation.md` for tab structure.
 
 ## Requirements
 
@@ -10,7 +12,7 @@ Guided breathing exercises with customizable patterns, preset management, ambien
 The system SHALL support multiple breathing patterns with 4-phase rhythm.
 
 #### Scenario: Select 4-7-8 Pattern
-- GIVEN user is on Atem-Tab
+- GIVEN user is on Meditation Tab (presets section)
 - AND preset list is visible
 - WHEN user selects "4-7-8" pattern
 - THEN inhale duration is set to 4 seconds
@@ -19,19 +21,19 @@ The system SHALL support multiple breathing patterns with 4-phase rhythm.
 - AND hold-out duration is set to 0 seconds (disabled)
 
 #### Scenario: Select Box Breathing Pattern
-- GIVEN user is on Atem-Tab
+- GIVEN user is on Meditation Tab (presets section)
 - WHEN user selects "Box Breathing" pattern
 - THEN all four phases are set to 4 seconds each
 - AND total cycle duration is 16 seconds
 
 #### Scenario: Select Relaxing Pattern
-- GIVEN user is on Atem-Tab
+- GIVEN user is on Meditation Tab (presets section)
 - WHEN user selects "Relaxing" pattern
 - THEN inhale is 4 seconds, exhale is 6 seconds
 - AND both hold phases are disabled (0 seconds)
 
 #### Scenario: Custom Preset Creation
-- GIVEN user is on Atem-Tab
+- GIVEN user is on Meditation Tab (presets section)
 - WHEN user creates new preset
 - THEN preset editor appears
 - AND user can set name, emoji, and all four phase durations
@@ -123,7 +125,7 @@ The system SHALL provide audio cues for each breathing phase.
 The system SHALL support ambient background sounds during breathing.
 
 #### Scenario: Ambient Sound Selection
-- GIVEN user is on Atem-Tab or Settings
+- GIVEN user is on Meditation Tab or Settings
 - WHEN user selects ambient sound
 - THEN options include: Waves, Spring, Fire, None
 - AND selection persists to AppStorage

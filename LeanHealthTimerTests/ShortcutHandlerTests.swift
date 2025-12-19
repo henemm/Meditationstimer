@@ -23,14 +23,31 @@ final class ShortcutHandlerTests: XCTestCase {
         super.tearDown()
     }
 
-    // MARK: - Meditation (Offen Tab)
+    // MARK: - Meditation (Legacy: Offen Tab → New: Meditation Tab)
 
     func testParseOffenURL_ValidParameters() {
+        // Legacy URL with "offen" should map to new .meditation tab
         let url = URL(string: "henemm-lht://start?tab=offen&phase1=20&phase2=2")!
         let request = handler.parse(url)
 
         XCTAssertNotNil(request, "Request should be parsed")
-        XCTAssertEqual(request?.tab, .offen)
+        XCTAssertEqual(request?.tab, .meditation, "Legacy 'offen' should map to .meditation")
+
+        if case let .meditation(phase1, phase2) = request?.action {
+            XCTAssertEqual(phase1, 20)
+            XCTAssertEqual(phase2, 2)
+        } else {
+            XCTFail("Expected meditation action")
+        }
+    }
+
+    func testParseMeditationURL_ValidParameters() {
+        // New URL with "meditation" tab
+        let url = URL(string: "henemm-lht://start?tab=meditation&phase1=20&phase2=2")!
+        let request = handler.parse(url)
+
+        XCTAssertNotNil(request, "Request should be parsed")
+        XCTAssertEqual(request?.tab, .meditation)
 
         if case let .meditation(phase1, phase2) = request?.action {
             XCTAssertEqual(phase1, 20)
@@ -72,14 +89,15 @@ final class ShortcutHandlerTests: XCTestCase {
         XCTAssertNil(request, "phase2 > 30 should fail")
     }
 
-    // MARK: - Breathing (Atem Tab)
+    // MARK: - Breathing (Legacy: Atem Tab → New: Meditation Tab)
 
     func testParseAtemURL_ValidPreset() {
+        // Legacy "atem" tab now maps to .meditation (breathing is part of meditation tab)
         let url = URL(string: "henemm-lht://start?tab=atem&preset=Box%20Breathing")!
         let request = handler.parse(url)
 
         XCTAssertNotNil(request)
-        XCTAssertEqual(request?.tab, .atem)
+        XCTAssertEqual(request?.tab, .meditation, "Legacy 'atem' should map to .meditation")
 
         if case let .breathing(presetName) = request?.action {
             XCTAssertEqual(presetName, "Box Breathing")
@@ -117,14 +135,15 @@ final class ShortcutHandlerTests: XCTestCase {
         XCTAssertNil(request, "Missing preset should fail")
     }
 
-    // MARK: - Workout
+    // MARK: - Workout (Legacy: Frei Tab → New: Workout Tab)
 
     func testParseWorkoutURL_ValidParameters() {
-        let url = URL(string: "henemm-lht://start?tab=workouts&interval=30&rest=10&repeats=10")!
+        // Use "frei" or "workout" tab (legacy "workouts" returns nil as it's not implemented)
+        let url = URL(string: "henemm-lht://start?tab=frei&interval=30&rest=10&repeats=10")!
         let request = handler.parse(url)
 
         XCTAssertNotNil(request)
-        XCTAssertEqual(request?.tab, .workouts)
+        XCTAssertEqual(request?.tab, .workout, "Legacy 'frei' should map to .workout")
 
         if case let .workout(interval, rest, repeats) = request?.action {
             XCTAssertEqual(interval, 30)
@@ -135,20 +154,44 @@ final class ShortcutHandlerTests: XCTestCase {
         }
     }
 
+    func testParseWorkoutURL_NewTabName() {
+        // New URL with "workout" tab
+        let url = URL(string: "henemm-lht://start?tab=workout&interval=30&rest=10&repeats=10")!
+        let request = handler.parse(url)
+
+        XCTAssertNotNil(request)
+        XCTAssertEqual(request?.tab, .workout)
+
+        if case let .workout(interval, rest, repeats) = request?.action {
+            XCTAssertEqual(interval, 30)
+            XCTAssertEqual(rest, 10)
+            XCTAssertEqual(repeats, 10)
+        } else {
+            XCTFail("Expected workout action")
+        }
+    }
+
+    func testParseWorkoutURL_LegacyWorkoutsTab() {
+        // Legacy "workouts" tab returns nil (workout programs not yet implemented)
+        let url = URL(string: "henemm-lht://start?tab=workouts&interval=30&rest=10&repeats=10")!
+        let request = handler.parse(url)
+        XCTAssertNil(request, "Legacy 'workouts' tab should return nil (not implemented)")
+    }
+
     func testParseWorkoutURL_MissingParameters() {
-        let url = URL(string: "henemm-lht://start?tab=workouts&interval=30")!
+        let url = URL(string: "henemm-lht://start?tab=frei&interval=30")!
         let request = handler.parse(url)
         XCTAssertNil(request, "Missing rest/repeats should fail")
     }
 
     func testParseWorkoutURL_OutOfRangeInterval() {
-        let url = URL(string: "henemm-lht://start?tab=workouts&interval=700&rest=10&repeats=10")!
+        let url = URL(string: "henemm-lht://start?tab=frei&interval=700&rest=10&repeats=10")!
         let request = handler.parse(url)
         XCTAssertNil(request, "interval > 600 should fail")
     }
 
     func testParseWorkoutURL_OutOfRangeRepeats() {
-        let url = URL(string: "henemm-lht://start?tab=workouts&interval=30&rest=10&repeats=300")!
+        let url = URL(string: "henemm-lht://start?tab=frei&interval=30&rest=10&repeats=300")!
         let request = handler.parse(url)
         XCTAssertNil(request, "repeats > 200 should fail")
     }

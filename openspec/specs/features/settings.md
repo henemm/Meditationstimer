@@ -2,7 +2,7 @@
 
 ## Overview
 
-Global configuration sheet for the app, providing controls for daily goals, audio settings, HealthKit logging options, and workout audio cues.
+Global configuration sheet for the app, providing controls for daily goals, audio settings, HealthKit logging options, workout audio cues, and tab order configuration. Accessible via gear icon (⚙️) in the navigation bar on all tabs.
 
 ## Requirements
 
@@ -41,17 +41,17 @@ The system SHALL allow users to configure ambient sounds.
 - THEN options display: None, Waves, Spring, Fire
 - AND selection persists to AppStorage "ambientSound"
 
-#### Scenario: Enable for Offen Tab
+#### Scenario: Enable for Free Meditation
 - GIVEN ambient sound is selected (not None)
-- WHEN user toggles "Enable for Open"
+- WHEN user toggles "Enable for Free Meditation"
 - THEN setting persists to AppStorage "ambientSoundOffenEnabled"
-- AND ambient sound plays during Offen-Tab sessions if enabled
+- AND ambient sound plays during free meditation sessions (top section of Meditation Tab)
 
-#### Scenario: Enable for Atem Tab
+#### Scenario: Enable for Breathing Exercises
 - GIVEN ambient sound is selected (not None)
-- WHEN user toggles "Enable for Breathe"
+- WHEN user toggles "Enable for Breathing"
 - THEN setting persists to AppStorage "ambientSoundAtemEnabled"
-- AND ambient sound plays during Atem-Tab sessions if enabled
+- AND ambient sound plays during breathing preset sessions (bottom section of Meditation Tab)
 
 #### Scenario: Sound Toggles Disabled When None
 - GIVEN ambient sound is set to "None"
@@ -136,6 +136,38 @@ The system SHALL allow users to customize HealthKit logging behavior.
 - THEN setting persists to AppStorage "logWorkoutsAsMindfulness"
 - AND if enabled, workouts also create mindfulness sample
 
+### Requirement: Tab Order Configuration
+The system SHALL allow users to customize the order of tabs in the tab bar.
+
+#### Scenario: Tab Order Section
+- GIVEN user is in Settings sheet
+- WHEN viewing Tab Order section
+- THEN list of 4 tabs displays in current order:
+  - 🧘 Meditation
+  - 💪 Workout
+  - 📊 Tracker
+  - 🏆 Erfolge
+- AND drag handles are visible on each row
+
+#### Scenario: Reorder Tabs via Drag & Drop
+- GIVEN user is in Tab Order section
+- WHEN user drags a tab row to a new position
+- THEN tabs reorder in real-time
+- AND new order persists to AppStorage "tabOrder"
+- AND tab bar updates immediately
+
+#### Scenario: Tab Order Persistence
+- GIVEN user has customized tab order
+- WHEN app relaunches
+- THEN custom order is restored
+- AND tab bar shows tabs in saved order
+
+#### Scenario: Default Tab Order
+- GIVEN fresh app installation
+- WHEN Settings opens
+- THEN default order is: Meditation, Workout, Tracker, Erfolge
+- AND order is stored in AppStorage on first launch
+
 ### Requirement: Settings Persistence
 The system SHALL persist all settings across app restarts.
 
@@ -173,9 +205,23 @@ The system SHALL present Settings as a modal sheet.
 - THEN sheet dismisses
 - AND changes are already persisted (no "Save" needed)
 
+## Settings Sections Overview
+
+| Section | Contents |
+|---------|----------|
+| **Daily Goals** | Meditation goal, Workout goal (minutes) |
+| **Background Sounds** | Ambient sound selection, volume, enable per activity type |
+| **Breathe Sounds** | Sound theme for breathing exercises |
+| **Audio Cues** | TTS exercise names, countdown duration |
+| **HealthKit** | Cross-logging options (meditation↔workout) |
+| **Tab Order** | Drag & drop tab reordering |
+
+---
+
 ## Technical Notes
 
 - **Persistence:** All settings use `@AppStorage` for automatic UserDefaults sync
+- **Tab Order Storage:** Array of tab identifiers in AppStorage "tabOrder"
 - **Ambient Player:** `AmbientSoundPlayer()` instance for preview playback
 - **Gong Player:** `GongPlayer()` instance for test gong
 - **Localization:** All labels use `NSLocalizedString` for DE/EN support
@@ -183,3 +229,12 @@ The system SHALL present Settings as a modal sheet.
 
 Reference Standards:
 - `.agent-os/standards/swiftui/localization.md`
+
+---
+
+## References
+
+- `openspec/specs/features/app-navigation.md` - 4-tab structure definition
+- `openspec/specs/features/meditation-timer.md` - Free meditation settings
+- `openspec/specs/features/breathing.md` - Breathing preset settings
+- `openspec/specs/features/workouts.md` - Workout audio cues

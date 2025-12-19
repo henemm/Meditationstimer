@@ -2,16 +2,22 @@
 
 ## Overview
 
-"Healthy Habits Haven" is a wellness app that helps build positive habits and consciously notice negative autopilot behaviors.
+"Healthy Habits Haven" is a mindfulness and awareness app. The core insight: **The logging itself IS the mindfulness exercise** - not just documentation.
 
-"Healthy Habits Haven" ist eine Wellness-App die dabei hilft, positive Gewohnheiten aufzubauen und negative Autopiloten bewusst wahrzunehmen.
+"Healthy Habits Haven" ist eine Achtsamkeits- und Bewusstseins-App. Die Kernerkenntnis: **Das Loggen selbst IST die Achtsamkeitsübung** - nicht nur Dokumentation.
+
+**Core Philosophy / Kernphilosophie:**
+- Awareness before Action / Bewusstsein vor Handlung
+- Noticing without Judgment / Wahrnehmen ohne Bewertung
+- The act of logging = the mindfulness moment / Das Loggen = der Achtsamkeitsmoment
 
 **Core Features / Kernfunktionen:**
 - Meditation & Breathing Exercises (Timer-based) / Meditation & Atemübungen (Timer-basiert)
 - HIIT Workouts
-- NoAlc Tracking (Alcohol abstinence / Alkohol-Abstinenz)
-- Good Trackers (custom positive habits) / Positiv-Tracker (eigene positive Gewohnheiten)
-- Saboteur Trackers (Awareness-Tracking) / Saboteur-Tracker (Bewusstseins-Tracking)
+- NoAlc Tracking (Alcohol abstinence with rewards / Alkohol-Abstinenz mit Rewards)
+- Awareness Trackers (Mood, Feelings, Gratitude) / Bewusstseins-Tracker (Stimmung, Gefühle, Dankbarkeit)
+- Saboteur Trackers (Notice autopilot behaviors) / Saboteur-Tracker (Autopiloten bemerken)
+- Activity Trackers (Hydration goals) / Aktivitäts-Tracker (Hydrations-Ziele)
 
 ---
 
@@ -25,7 +31,7 @@
 
 **Motivatoren:**
 - Streak-Zahlen ("42 Tage!")
-- Kalender-Übersicht (grüne Tage sehen)
+- Erfolge-Tab (grüne Tage sehen, Streaks, Rewards)
 - Rewards/Vergebungs-System
 
 **Bedürfnisse:**
@@ -165,7 +171,7 @@
 - Custom Tracker Streaks: only when Streak enabled
 - Position: TBD after Layout-Redesign
 
-**US-4.2: Kalender-Übersicht / Calendar Overview**
+**US-4.2: Erfolge-Kalender / Achievements Calendar**
 - Existing system: Concentric rings per activity type
 - Custom Trackers: TBD (Scaling problem with many Trackers)
 - Tap on day shows details
@@ -248,37 +254,72 @@
 
 ## Design-Prinzipien
 
-### 1. Quick-Log First
-Jede Logging-Aktion muss in **max 2 Taps** erledigt sein.
+### 1. Logging IS the Exercise / Das Loggen IST die Übung
+The moment of logging = the moment of awareness. Not documentation, but practice.
+Der Moment des Loggens = der Moment der Bewusstheit. Nicht Dokumentation, sondern Übung.
 
-### 2. Smart, Not Annoying
-Reminders nur wenn **wirklich nötig** (noch nicht geloggt).
+### 2. Quick-Log First
+Every logging action must be **max 2 taps**. Widget enables spontaneous awareness capture.
+Jede Logging-Aktion muss in **max 2 Taps** erledigt sein. Widget ermöglicht spontanes Erfassen.
 
-### 3. Motivation durch Sichtbarkeit
-**Streaks, Kalender, Rewards** immer prominent sichtbar.
+### 3. Smart, Not Annoying
+Reminders only when **truly needed** (not yet reflected today).
+Reminders nur wenn **wirklich nötig** (heute noch nicht reflektiert).
 
-### 4. Awareness Before Avoidance / Awareness vor Avoidance
+### 4. Awareness Before Action / Bewusstsein vor Handlung
+- First: Notice ("I see that I...")
+- Then: Understand patterns over time
+- Finally: Choose consciously (optional)
+
 Saboteur Trackers: First **become aware**, then (optionally) **avoid**.
+
+### 5. No Judgment / Kein Urteilen
+Logging is observation, not evaluation. "I notice..." not "I failed..."
+Loggen ist Beobachtung, nicht Bewertung. "Ich bemerke..." nicht "Ich habe versagt..."
+
+### 6. Motivation durch Sichtbarkeit
+**Streaks, Kalender, Rewards** always prominently visible.
+Progress visualization motivates continued practice.
 
 ---
 
 ## Scope (MVP)
 
 **Included / Enthalten:**
-- iPhone App
-- Local data storage (SwiftData) / Lokale Datenspeicherung (SwiftData)
-- Smart Reminders (like NoAlc) / Smart Reminders (wie NoAlc)
+- iPhone App (4-Tab Structure: Meditation, Workout, Tracker, Overview)
+- Local data storage (SwiftData) for tracker definitions
+- HealthKit integration for compatible trackers (Mood, Hydration)
+- Smart Reminders for daily reflection prompts
+- Interactive Widgets for quick awareness logging
+- Focus Trackers in Calendar visualization
 
 **Not included (later) / Nicht enthalten (später):**
 - iCloud Sync
-- Apple Watch App
-- Widget
-- Calendar visualization for Custom Trackers (TBD)
+- Apple Watch Tracker Support (Watch has meditation only)
+
+---
+
+## App Structure (4 Tabs)
+
+| Tab | Content |
+|-----|---------|
+| 🧘 Meditation | Free timer (top) + Breathing presets (scroll) |
+| 💪 Workout | Free workout (top) + Programs (scroll) |
+| 📊 Tracker | NoAlc + Good Trackers + Saboteur Trackers |
+| 🏆 Erfolge / Achievements | Streaks/Rewards header + Calendar |
+
+See `app-navigation.md` for full specification.
 
 ---
 
 ## References / Referenzen
 
-- `openspec/specs/features/trackers.md` - Detail-Spec for Good/Saboteur Trackers
-- `openspec/specs/features/meditation-timer.md` - Meditation Feature
-- `openspec/specs/features/noalc-tracker.md` - NoAlc Pattern (model for Smart Reminders)
+- `openspec/specs/features/app-navigation.md` - Tab structure and navigation
+- `openspec/specs/features/trackers.md` - Tracker types with Awareness-First philosophy
+- `openspec/specs/features/tracker-widget.md` - Interactive widgets for quick logging
+- `openspec/specs/features/meditation-timer.md` - Two-phase meditation timer
+- `openspec/specs/features/breathing.md` - Breathing exercise presets
+- `openspec/specs/features/workouts.md` - HIIT and free workouts
+- `openspec/specs/features/noalc-tracker.md` - NoAlc with reward system
+- `openspec/specs/features/calendar-view.md` - Calendar with activity rings
+- `openspec/specs/features/streaks-rewards.md` - Streak calculation and rewards

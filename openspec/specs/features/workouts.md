@@ -1,8 +1,10 @@
-# Workouts (Workout-Tab)
+# Workouts (Workout Tab)
 
 ## Overview
 
-HIIT workout system with two modes: Free Workout (count-up timer) and Workout Programs (structured interval training). Includes exercise database, audio cues, and HealthKit logging with MET-based calorie estimation.
+HIIT workout system with two modes: Free Workout (count-up timer, **top section**) and Workout Programs (structured interval training, **scrollable section below**). Includes exercise database, audio cues, and HealthKit logging with MET-based calorie estimation.
+
+See `app-navigation.md` for tab structure.
 
 ## Requirements
 
@@ -10,7 +12,7 @@ HIIT workout system with two modes: Free Workout (count-up timer) and Workout Pr
 The system SHALL provide a free-form workout timer that counts up.
 
 #### Scenario: Start Free Workout
-- GIVEN user is on Frei-Tab (Free Workout)
+- GIVEN user is on Workout Tab (free workout section)
 - AND no workout is active
 - WHEN user taps "Start" button
 - THEN timer begins counting up from 00:00

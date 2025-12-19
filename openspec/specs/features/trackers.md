@@ -2,16 +2,83 @@
 
 ## Overview
 
-Custom Trackers allow users to track count-based habits beyond the built-in features (Meditation, Workouts, NoAlc).
+Custom Trackers enable conscious awareness of habits, feelings, and behaviors. The act of logging itself is the mindfulness exercise - not just documentation.
+
+Custom Trackers ermöglichen bewusstes Wahrnehmen von Gewohnheiten, Gefühlen und Verhaltensweisen. Das Loggen selbst ist die Achtsamkeitsübung - nicht nur Dokumentation.
 
 **Terminology / Begriffe:**
 | English | Deutsch | Description |
 |---------|---------|-------------|
-| Tracker | Tracker | Count-based logging tool |
-| Good Tracker | Positiv-Tracker | Positive habits to build (Hydration, Stretching) |
-| Saboteur Tracker | Saboteur-Tracker | Negative autopilots to notice (Doomscrolling) |
+| Tracker | Tracker | Awareness and logging tool |
+| Good Tracker | Positiv-Tracker | Positive habits and awareness exercises |
+| Saboteur Tracker | Saboteur-Tracker | Negative autopilots to notice consciously |
 
-### Core Principle: Awareness Before Avoidance
+---
+
+## Core Philosophy: Awareness-First
+
+### The Logging IS the Exercise
+
+| Traditional Approach | Awareness-First Approach |
+|---------------------|--------------------------|
+| "Did I do the good thing?" | "Did I pause and notice?" |
+| "Did I avoid the bad thing?" | "Did I become aware?" |
+| Logging = Documentation | **Logging = Mindfulness Exercise** |
+
+### Why This Matters
+
+**Gratitude Example:**
+- ❌ Old: "Was I grateful today? Yes ✓" (meaningless checkbox)
+- ✅ New: The act of logging "I'm grateful for [...]" IS the gratitude practice
+
+**Mood Example:**
+- ❌ Old: "Rate your mood 1-5" (judgment)
+- ✅ New: "What am I feeling right now?" (awareness without judgment)
+
+**Saboteur Example:**
+- ❌ Old: "I failed and scrolled again" (shame)
+- ✅ New: "I notice I'm scrolling" (awareness = first step to change)
+
+### The Awareness Progression
+
+```
+1. AWARENESS     →    2. PATTERNS    →    3. CHOICE
+"I notice..."        "I see that..."      "I choose to..."
+
+Logging captures      Over time,           Awareness enables
+the moment of        patterns emerge       conscious choice
+awareness            from data             (optional)
+```
+
+### Smart Reminder + Widget = Awareness Tools
+
+| Tool | Purpose |
+|------|---------|
+| **Widget** | Capture spontaneous awareness moments quickly |
+| **Smart Reminder** | Prompt daily reflection if not yet done |
+| **Reminder fires only if NOT logged** | Already reflected = no nagging |
+
+---
+
+## Tracker Categories
+
+### Awareness Trackers (Logging = The Exercise)
+
+| Tracker | What You Log | The Awareness Exercise |
+|---------|--------------|------------------------|
+| Stimmung | What mood am I in? | Pausing to notice internal state |
+| Gefühle | What emotions am I feeling? | Identifying and naming feelings |
+| Dankbarkeit | What am I grateful for? | Conscious appreciation |
+| Saboteure | I notice I'm doing [behavior] | Non-judgmental observation |
+
+### Activity Trackers (Logging = Documentation)
+
+| Tracker | What You Log | Purpose |
+|---------|--------------|---------|
+| Wasser | How much I drank | Track progress toward goal |
+| NoAlc | Consumption level | Track abstinence with rewards |
+
+### Core Principle for Saboteur Trackers
 
 Saboteur Trackers use a two-stage model:
 1. **Awareness Mode**: First become aware of when the behavior occurs
@@ -56,10 +123,92 @@ The system SHALL allow users to create custom trackers.
 #### Scenario: Predefined Suggestions
 - GIVEN user wants to add tracker
 - WHEN selection sheet opens
-- THEN suggestions are displayed:
-  - Good: Hydration, Stretching, Reading, Journaling, Walking
-  - Saboteur: Doomscrolling, Procrastination, Snacking, Nail biting
-- AND user can choose suggestion or create custom
+- THEN predefined presets are displayed (see Presets section below)
+- AND user can choose preset or create custom tracker
+
+---
+
+## Presets
+
+### Awareness Tracker Presets (Logging = The Exercise)
+
+| Preset | Icon | Type | HealthKit | DE | EN | Awareness Exercise |
+|--------|------|------|-----------|----|----|-------------------|
+| Stimmung | 😊 | Selection | `HKStateOfMind` | Stimmung | Mood | "What mood am I in right now?" |
+| Gefühle | 💭 | Selection | `HKStateOfMind` | Gefühle | Feelings | "What emotions am I feeling?" |
+| Dankbarkeit | 🙏 | Log + Note | - | Dankbarkeit | Gratitude | "What am I grateful for right now?" |
+
+**Selection Options for Stimmung/Mood:**
+```
+Wie fühlst du dich gerade? / How are you feeling?
+
+😊 Freudig / Joyful       😌 Entspannt / Relaxed    🤔 Nachdenklich / Thoughtful
+😟 Ängstlich / Anxious    😤 Ärgerlich / Irritated  😢 Traurig / Sad
+😐 Neutral / Neutral      🥱 Müde / Tired          ⚡ Energiegeladen / Energized
+```
+
+**Selection Options for Gefühle/Feelings:**
+```
+Welche Gefühle bemerkst du? / What feelings do you notice?
+(Multi-select possible)
+
+❤️ Liebe / Love           😊 Freude / Joy          🙏 Dankbarkeit / Gratitude
+😰 Angst / Fear           😤 Ärger / Anger         😢 Trauer / Sadness
+😔 Enttäuschung / Disappointment  🤗 Verbundenheit / Connection
+```
+
+**Dankbarkeit/Gratitude Log:**
+```
+Wofür bist du gerade dankbar? / What are you grateful for?
+
+[Free text input or quick-select common items]
+Optional: Add note with details
+```
+
+### Activity Tracker Presets (Logging = Documentation)
+
+| Preset | Icon | Type | HealthKit | DE | EN | Purpose |
+|--------|------|------|-----------|----|----|---------|
+| Wasser | 💧 | Counter | `dietaryWater` | Wasser trinken | Drink Water | Track hydration goal |
+
+### Saboteur Tracker Presets (Awareness Mode)
+
+| Preset | Icon | Mode | DE | EN | Awareness Prompt |
+|--------|------|------|----|----|------------------|
+| Doomscrolling | 📱 | Awareness | Doomscrolling | Doomscrolling | "I notice I'm scrolling..." |
+| Snacking | 🍫 | Awareness | Snacking | Snacking | "I notice I'm eating without hunger..." |
+| Prokrastination | 🛋️ | Awareness | Prokrastination | Procrastination | "I notice I'm avoiding..." |
+| Grübeln | 💭 | Awareness | Grübeln | Rumination | "I notice I'm stuck in thoughts..." |
+| Handy im Gespräch | 📵 | Awareness | Handy während Gesprächen | Phone During Conversations | "I notice I reached for my phone..." |
+
+### Preset Behavior
+
+#### Scenario: Select Awareness Preset
+- GIVEN user selects an awareness preset (Stimmung, Gefühle, Dankbarkeit)
+- WHEN preset is chosen
+- THEN tracker is created with selection options or note field
+- AND logging UI prompts reflection ("What are you feeling?")
+- AND the logging moment itself is the mindfulness exercise
+
+#### Scenario: Select Activity Preset
+- GIVEN user selects an activity preset (Wasser)
+- WHEN preset is chosen
+- THEN tracker is created with counter and optional goal
+- AND logging tracks quantity toward goal
+
+#### Scenario: Select Saboteur Preset
+- GIVEN user selects a saboteur preset
+- WHEN preset is chosen
+- THEN tracker is created in Awareness Mode (not Avoidance)
+- AND logging prompts non-judgmental observation
+- AND optional trigger/note field is available
+
+#### Scenario: Custom Tracker
+- GIVEN user wants a tracker not in presets
+- WHEN user selects "Custom" / "Eigener Tracker"
+- THEN creation form asks: Awareness Tracker or Activity Tracker?
+- AND appropriate fields are shown based on type
+- AND HealthKit mapping is suggested if applicable
 
 ---
 
@@ -162,14 +311,25 @@ The system SHALL visualize trackers in the calendar.
 - WHEN day is displayed
 - THEN green indicator appears (successful avoidance)
 
-### [OPEN] Scaling with Many Trackers
-- Current: 3 concentric rings (Mindfulness, Workout, NoAlc)
-- With many custom trackers: How to visualize?
-- **Options:**
-  - A: More rings (max 5-6, then cluttered)
-  - B: Aggregated "Tracker Score" + detail on tap
-  - C: User selects 2-3 "Focus Trackers" for rings, rest in list
-- **Decision:** TBD after UI prototyping
+#### Scenario: Focus Tracker Selection
+- GIVEN user has multiple custom trackers
+- WHEN user wants tracker to appear in calendar rings
+- THEN user enables "Show in Calendar" for that tracker
+- AND maximum 2 Focus Trackers can be enabled (beyond built-in Mindfulness/Workout/NoAlc)
+- AND Focus Trackers appear as additional rings (4th and 5th ring)
+
+#### Scenario: Focus Tracker Ring Display
+- GIVEN calendar day has Focus Tracker activity
+- WHEN day is displayed
+- THEN Focus Tracker ring appears in configured color
+- AND ring shows completion status (filled = goal met or logged)
+- AND position is consistent (same tracker = same ring position)
+
+#### Scenario: Non-Focus Tracker Visibility
+- GIVEN user has trackers NOT set as Focus Trackers
+- WHEN tapping on calendar day
+- THEN DayDetailSheet shows ALL tracker logs for that day
+- AND non-focus trackers are visible in detail view (not in rings)
 
 ---
 
@@ -190,13 +350,12 @@ The system SHALL support reminders for custom trackers.
 - AND asks: "Did you notice [Saboteur] today?" / "Hast du heute [Saboteur] bemerkt?"
 - AND enables logging if forgotten
 
-### [OPEN] Scaling with Many Reminders
-- With 10+ trackers: Avoid notification spam
-- **Options:**
-  - A: Max X tracker reminders per day (user-configured)
-  - B: Grouped "Tracker Check-In" notification
-  - C: Smart prioritization (only for missed trackers)
-- **Decision:** TBD
+#### Scenario: Smart Reminder for Custom Tracker
+- GIVEN user has custom tracker with reminder enabled
+- WHEN reminder time is reached
+- THEN Smart Reminder checks if tracker was logged today
+- AND notification only fires if NOT logged (same as existing Smart Reminders)
+- AND no additional scaling logic needed (Smart Reminders handle this by design)
 
 ---
 
@@ -280,10 +439,53 @@ The system SHALL recognize patterns in Saboteur Tracker data.
 
 ## Technical Notes
 
-### Storage
-- Custom Trackers: SwiftData (not HealthKit - no standard types)
-- Exception: Hydration could use HKQuantityTypeIdentifier.dietaryWater
-- Tracker definitions: Local storage (no iCloud sync for MVP)
+### Storage: Hybrid Approach (SwiftData + HealthKit)
+
+Custom Trackers use **SwiftData** for definitions and **HealthKit** for logging where a matching type exists.
+
+#### HealthKit-Mapped Trackers (Good Trackers)
+
+| Tracker | HealthKit Type | Unit | Notes |
+|---------|----------------|------|-------|
+| 💧 Wasser trinken | `dietaryWater` | ml/L | Counter-based |
+| ☕ Koffein-Limit | `dietaryCaffeine` | mg | Counter-based |
+| 🦷 Zähneputzen | `toothbrushingEvent` | Event | Yes/No (2x daily) |
+| 😊 Stimmung | `HKStateOfMind` | Scale 1-5 | iOS 17+ Mood tracking |
+| 🤲 Händewaschen | `handwashingEvent` | Event | Yes/No |
+
+#### SwiftData-Only Trackers (No HealthKit Match)
+
+| Tracker | Reason |
+|---------|--------|
+| 📱 Doomscrolling | No matching HealthKit type |
+| 🍫 Snacking | `dietaryEnergyConsumed` too complex |
+| 💅 Nägelkauen | No matching HealthKit type |
+| 🛋️ Prokrastination | No matching HealthKit type |
+
+#### Design Decisions
+
+1. **No Sleep Tracking** - Apple's native sleep tracking is superior. Don't reinvent.
+2. **Mood/Feelings: YES** - `HKStateOfMind` (iOS 17+) integrates with Apple Health.
+3. **Auto-detect HealthKit** - When creating tracker, app suggests HealthKit mapping if available.
+4. **User Toggle** - "Save to Apple Health" toggle when HealthKit type exists (default: ON).
+
+#### Storage Architecture
+
+```
+Tracker Definition (SwiftData)
+├── id, name, icon, type, trackingMode
+├── healthKitType: String?        ← nil if no mapping
+├── showInWidget: Bool
+├── widgetOrder: Int
+└── dailyGoal: Int?
+
+TrackerLog (SwiftData + HealthKit)
+├── Always: SwiftData for app queries
+└── If healthKitType != nil: Also write to HealthKit
+```
+
+### Tracker Definitions
+- Local storage via SwiftData (no iCloud sync for MVP)
 
 ### Data Model (conceptual) / Datenmodell (konzeptuell)
 ```
@@ -294,7 +496,13 @@ Tracker
 ├── type: .good | .saboteur
 ├── trackingMode: .counter | .yesNo | .awareness | .avoidance
 ├── createdAt: Date
-└── isActive: Bool
+├── isActive: Bool
+├── healthKitType: String?         ← NEW: HealthKit identifier (nil if no mapping)
+├── saveToHealthKit: Bool          ← NEW: User toggle (default: true if healthKitType exists)
+├── showInWidget: Bool             ← NEW: Show in Tracker Widget
+├── widgetOrder: Int               ← NEW: Position in Widget (lower = higher priority)
+├── dailyGoal: Int?                ← NEW: Target for counter-based trackers
+└── showInCalendar: Bool           ← NEW: Show as Focus Tracker ring in calendar
 
 TrackerLog
 ├── id: UUID
@@ -303,7 +511,8 @@ TrackerLog
 ├── value: Int? (for Counter)
 ├── note: String?
 ├── trigger: String? (for Saboteur Trackers)
-└── location: String? (optional)
+├── location: String? (optional)
+└── syncedToHealthKit: Bool        ← NEW: Track if successfully synced
 ```
 
 ### Integration with Existing System / Integration mit bestehendem System
@@ -313,17 +522,18 @@ TrackerLog
 
 ---
 
-## Open Questions / Offene Fragen
+## Design Decisions / Entscheidungen
 
-1. **Calendar Visualization**: How to display with 5+ trackers? (see above)
-   - Kalender-Visualisierung: Wie bei 5+ Trackers? (siehe oben)
-2. **Reminder Scaling**: How to handle many trackers? (see above)
-   - Reminder-Skalierung: Wie bei vielen Trackers? (siehe oben)
-3. **HealthKit Integration**: Which Good Trackers should use HealthKit?
-   - HealthKit-Integration: Welche Good Trackers sollen HealthKit nutzen?
-4. ~~**iCloud Sync**: Should custom trackers sync across devices?~~ → **Decided: No, local only for MVP**
-5. ~~**Widget**: Should there be a tracker widget?~~ → **Decided: Not for MVP**
-6. ~~**Watch**: Should trackers be trackable on Watch?~~ → **Decided: iPhone only for MVP**
+| Question | Decision |
+|----------|----------|
+| **Calendar Visualization** | Focus Tracker: User selects 1-2 trackers to show as rings. Rest visible on day tap. |
+| **Reminder Scaling** | Smart Reminders already handle this: Only fire if not logged. No additional logic needed. |
+| **HealthKit Integration** | Hybrid approach: Use HealthKit where type exists (see Technical Notes). User toggle per tracker. |
+| **Sleep Tracking** | NO - Apple's native solution is superior. Don't reinvent. |
+| **Mood/State of Mind** | YES - Use `HKStateOfMind` (iOS 17+) for mood tracking in Apple Health ecosystem. |
+| **iCloud Sync** | No, local only for MVP |
+| **Widget** | YES - See `tracker-widget.md` for full specification |
+| **Watch** | No, iPhone only for MVP |
 
 ---
 
@@ -332,3 +542,5 @@ TrackerLog
 - `.agent-os/standards/healthkit/date-semantics.md` (Forward Iteration for Streaks)
 - `openspec/specs/features/noalc-tracker.md` (Pattern for Streak with Rewards)
 - `openspec/specs/features/smart-reminders.md` (Reminder System)
+- `openspec/specs/features/tracker-widget.md` (Widget for Quick-Logging)
+- `openspec/specs/app-vision.md` (Healthy Habits Haven Vision)

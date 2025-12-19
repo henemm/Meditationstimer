@@ -34,79 +34,17 @@ struct CalendarView: View {
     @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
 
-    // Helper function that calculates BOTH streak and rewards in one pass
-    // Simple Rule: Go FORWARD chronologically, track earned/consumed rewards, find current streak
-    private func calculateNoAlcStreakAndRewards() -> (streak: Int, rewards: Int) {
-        let today = calendar.startOfDay(for: Date())
-
-        // Sort all dates chronologically (earliest to latest)
-        let sortedDates = alcoholDays.keys.sorted()
-
-        guard !sortedDates.isEmpty else { return (0, 0) }
-
-        var consecutiveDays = 0
-        var earnedRewards = 0
-        var consumedRewards = 0
-        var currentStreakStart: Date? = nil
-
-        // Iterate FORWARD through ALL data
-        for date in sortedDates {
-            guard let level = alcoholDays[date] else { continue }
-
-            if level == .steady {
-                // Steady day: count it
-                consecutiveDays += 1
-                if currentStreakStart == nil {
-                    currentStreakStart = date
-                }
-
-                // Earn reward every 7 days (max 3 available at any time)
-                let currentAvailable = earnedRewards - consumedRewards
-                if consecutiveDays % 7 == 0 && currentAvailable < 3 {
-                    earnedRewards += 1
-                }
-            } else {
-                // Easy or Wild day: needs forgiveness
-                let availableRewards = earnedRewards - consumedRewards
-
-                if availableRewards > 0 {
-                    // Use 1 reward to heal this day
-                    consumedRewards += 1
-                    consecutiveDays += 1  // Healed day counts!
-
-                    // Check if we earn a new reward for reaching a 7-day milestone
-                    // Note: availableRewards was calculated before consumption, so recalculate
-                    let newAvailable = earnedRewards - consumedRewards
-                    if consecutiveDays % 7 == 0 && newAvailable < 3 {
-                        earnedRewards += 1
-                    }
-                } else {
-                    // No rewards available → streak resets
-                    consecutiveDays = 0
-                    currentStreakStart = nil
-                }
-            }
-        }
-
-        // Calculate final streak: from last streak start to today (or yesterday if no entry today)
-        let endDate = alcoholDays[today] != nil ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        var finalStreak = 0
-        if currentStreakStart != nil, let _ = endDate as Date? {
-            // Count days from streakStart to endDate
-            finalStreak = consecutiveDays
-        }
-
-        let availableRewards = max(0, earnedRewards - consumedRewards)
-        return (finalStreak, availableRewards)
+    // Use the testable streak calculator from NoAlcManager
+    private var noAlcStreakResult: NoAlcManager.StreakResult {
+        return NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
     }
 
     private var noAlcStreak: Int {
-        return calculateNoAlcStreakAndRewards().streak
+        return noAlcStreakResult.streak
     }
 
     private var noAlcStreakPoints: Int {
-        return calculateNoAlcStreakAndRewards().rewards
+        return noAlcStreakResult.rewards
     }
 
     private var meditationStreak: Int {

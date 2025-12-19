@@ -2,7 +2,19 @@
 
 ## Overview
 
-Conditional reminder system that checks HealthKit before sending notifications. Only notifies users when no activity has been detected for the configured activity type, reducing notification fatigue.
+Conditional reminder system that checks activity/log status before sending notifications. Only notifies users when no activity has been detected for the configured type, reducing notification fatigue.
+
+**Supported Types:**
+- **HealthKit-based:** Mindfulness, Workout, NoAlc (checks HealthKit)
+- **Tracker-based:** Awareness Trackers, Saboteur Trackers (checks SwiftData)
+
+**Core Synergy with Widget:**
+The Smart Reminder works together with the Tracker Widget as a **two-part awareness system**:
+- **Widget** = Captures spontaneous awareness moments
+- **Smart Reminder** = Gentle invitation if not yet reflected today
+- **Result** = Daily awareness guaranteed, but NEVER annoying
+
+See `tracker-widget.md` for Widget + Smart Reminder Synergy diagram.
 
 ## Requirements
 
@@ -30,22 +42,44 @@ The system SHALL support reminders for multiple activity types.
 - AND default time is set to 09:00
 - AND notification includes quick-log action buttons
 
-### Requirement: Smart Condition
-The system SHALL check HealthKit activity before sending notifications.
+#### Scenario: Tracker Reminder Type (Awareness Trackers)
+- GIVEN user is configuring a smart reminder
+- WHEN user selects a custom Tracker type (e.g., "Stimmung", "Dankbarkeit")
+- THEN reminder will check for TrackerLog entries in SwiftData
+- AND default time is set to 20:00 (evening reflection)
+- AND notification prompts awareness reflection
 
-#### Scenario: Activity Found - No Notification
+#### Scenario: Tracker Reminder - Multiple Trackers
+- GIVEN user has multiple Awareness Trackers configured
+- WHEN creating a Tracker reminder
+- THEN user can select which Tracker(s) to include
+- AND each selected Tracker is checked independently
+- AND notification shows all un-logged Trackers
+
+### Requirement: Smart Condition
+The system SHALL check activity/log status before sending notifications.
+
+#### Scenario: Activity Found - No Notification (HealthKit Types)
 - GIVEN reminder time is reached
-- AND HealthKit contains activity for today (matching type)
+- AND HealthKit contains activity for today (matching type: Mindfulness, Workout, NoAlc)
 - WHEN smart check executes
 - THEN notification is NOT sent
 - AND next scheduled occurrence remains active
 
+#### Scenario: Tracker Logged - No Notification (Tracker Types)
+- GIVEN reminder time is reached
+- AND SwiftData contains TrackerLog for today (matching Tracker)
+- WHEN smart check executes
+- THEN notification is NOT sent for that Tracker
+- AND if multiple Trackers, only un-logged ones trigger notification
+
 #### Scenario: No Activity Found - Send Notification
 - GIVEN reminder time is reached
 - AND HealthKit contains NO activity for today (matching type)
+- OR SwiftData contains NO TrackerLog for today (matching Tracker)
 - WHEN smart check executes
 - THEN notification IS sent
-- AND notification content matches activity type
+- AND notification content matches activity/tracker type
 
 #### Scenario: Activity Completed Just Before Reminder
 - GIVEN user completes activity
@@ -105,13 +139,35 @@ The system SHALL use notification categories for actionable notifications.
 - GIVEN Mindfulness notification is delivered
 - WHEN notification appears
 - THEN "Start Meditation" action is available
-- AND tapping opens app to Offen-Tab
+- AND tapping opens app to Meditation Tab
 
 #### Scenario: Workout Actions
 - GIVEN Workout notification is delivered
 - WHEN notification appears
 - THEN "Start Workout" action is available
-- AND tapping opens app to Workout-Tab
+- AND tapping opens app to Workout Tab
+
+#### Scenario: Tracker Actions (Awareness Trackers)
+- GIVEN Tracker notification is delivered
+- AND Tracker is selection type (e.g., Stimmung, Gefühle)
+- WHEN notification appears
+- THEN emoji quick-select actions are available (e.g., 😊 😐 😔)
+- AND tapping logs selection directly to SwiftData
+- AND notification dismisses after action
+
+#### Scenario: Tracker Actions (Log + Note Type)
+- GIVEN Tracker notification is delivered
+- AND Tracker is log + note type (e.g., Dankbarkeit)
+- WHEN notification appears
+- THEN "Reflektieren" action is available
+- AND tapping opens app to Tracker Tab with Tracker selected
+
+#### Scenario: Saboteur Tracker Actions
+- GIVEN Saboteur Tracker notification is delivered
+- AND Tracker is in Awareness mode
+- WHEN notification appears
+- THEN "Bemerkt" action is available (non-judgmental)
+- AND tapping logs awareness moment with timestamp
 
 #### Scenario: Notification Tap (No Action)
 - GIVEN any smart reminder notification is delivered
@@ -200,11 +256,21 @@ The system SHALL cancel reminders when activity is completed.
 ## Technical Notes
 
 - **Scheduling:** `UNCalendarNotificationTrigger` is reliable; `BGTaskScheduler` is NOT (iOS throttles)
-- **Weekday Loop:** One notification per weekday with unique identifiers (lines 124-156 in SmartReminderEngine)
+- **Weekday Loop:** One notification per weekday with unique identifiers
 - **Date Components:** Extract `.hour` AND `.minute` (not just hour with :00)
 - **Categories:** `UNNotificationCategory` with `UNNotificationAction` for quick actions
-- **Reverse Reminders:** `cancelMatchingReminders(for:completedAt:)` called from HealthKitManager
+- **Reverse Reminders:** `cancelMatchingReminders(for:completedAt:)` called from HealthKitManager AND TrackerManager
+- **Tracker Check:** SwiftData query for `TrackerLog` entries matching date and Tracker ID
 
 Reference Standards:
 - `.agent-os/standards/healthkit/date-semantics.md`
 - `.agent-os/standards/global/analysis-first.md` (Notification Debugging Protocol)
+
+---
+
+## References
+
+- `openspec/specs/app-vision.md` - "Smart, Not Annoying" design principle
+- `openspec/specs/features/tracker-widget.md` - Widget + Smart Reminder Synergy
+- `openspec/specs/features/trackers.md` - Awareness Tracker types
+- `openspec/specs/features/noalc-tracker.md` - NoAlc reminder specifics

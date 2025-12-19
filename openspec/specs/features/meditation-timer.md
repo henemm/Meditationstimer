@@ -1,8 +1,10 @@
-# Meditation Timer (Offen-Tab)
+# Meditation Timer (Meditation Tab - Freie Meditation)
 
 ## Overview
 
-Two-phase meditation timer with customizable durations, audio cues, HealthKit logging, and Live Activity support. The timer runs in foreground-only mode to avoid iOS background execution limits.
+Two-phase meditation timer with customizable durations, audio cues, HealthKit logging, and Live Activity support. Located in the **top section** of the Meditation Tab. The timer runs in foreground-only mode to avoid iOS background execution limits.
+
+See `app-navigation.md` for tab structure.
 
 ## UI Labels (Updated)
 
@@ -26,7 +28,7 @@ Note: Phase 2 uses "Ausklang"/"Closing" in both contexts as it describes both th
 The system SHALL provide a meditation timer with two sequential phases.
 
 #### Scenario: Start Phase 1 (Meditation)
-- GIVEN user is on Offen-Tab
+- GIVEN user is on Meditation Tab (free meditation section)
 - AND timer is in idle state
 - WHEN user taps "Start" button
 - THEN timer transitions to Phase 1 state
@@ -71,7 +73,7 @@ The system SHALL provide a meditation timer with two sequential phases.
 The system SHALL allow users to configure Phase 1 duration.
 
 #### Scenario: Duration Selection
-- GIVEN user is on Offen-Tab
+- GIVEN user is on Meditation Tab (free meditation section)
 - AND timer is in idle state
 - WHEN user adjusts time picker wheel
 - THEN Phase 1 duration updates (1-60 minutes)
@@ -158,10 +160,10 @@ The system SHALL display progress on Dynamic Island and Lock Screen.
 
 #### Scenario: Live Activity Conflict Resolution
 - GIVEN another tab's Live Activity is active
-- WHEN user starts meditation on Offen-Tab
+- WHEN user starts meditation on Meditation Tab
 - THEN previous Live Activity ends
-- AND new Offen-Tab activity starts
-- AND ownership transfers to Offen-Tab
+- AND new meditation activity starts
+- AND ownership transfers to Meditation Tab
 
 #### Scenario: Live Activity on App Background
 - GIVEN timer is running
