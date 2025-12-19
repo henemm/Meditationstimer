@@ -26,10 +26,13 @@ struct TrackerRow: View {
                 Text(tracker.icon)
                     .font(.system(size: 42))
 
-                // Name + Today's status
+                // Name + Today's status + Streak
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(tracker.name)
-                        .font(.headline)
+                    HStack(spacing: 8) {
+                        Text(tracker.name)
+                            .font(.headline)
+                        streakBadge
+                    }
                     todayStatusView
                 }
 
@@ -92,6 +95,29 @@ struct TrackerRow: View {
                 Text(String(format: NSLocalizedString("%d days", comment: "Avoidance streak"), streak))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    // MARK: - Streak Badge
+
+    @ViewBuilder
+    private var streakBadge: some View {
+        // Don't show badge for avoidance (streak shown in status)
+        if tracker.trackingMode != .avoidance {
+            let streak = manager.streak(for: tracker, in: modelContext)
+            if streak > 0 {
+                HStack(spacing: 2) {
+                    Image(systemName: "flame.fill")
+                        .font(.caption2)
+                    Text("\(streak)")
+                        .font(.caption.bold())
+                }
+                .foregroundStyle(.orange)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .background(.orange.opacity(0.15))
+                .cornerRadius(8)
             }
         }
     }
