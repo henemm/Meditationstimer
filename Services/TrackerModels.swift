@@ -156,7 +156,7 @@ extension TrackerPreset {
             localizedName: "Stimmung",
             icon: "😊",
             type: .good,
-            trackingMode: .yesNo,
+            trackingMode: .awareness,  // Fixed: must be .awareness to show Notice button & open MoodSelectionView
             healthKitType: "HKStateOfMind",
             dailyGoal: nil,
             category: .awareness
@@ -166,7 +166,7 @@ extension TrackerPreset {
             localizedName: "Gefühle",
             icon: "💭",
             type: .good,
-            trackingMode: .yesNo,
+            trackingMode: .awareness,  // Fixed: must be .awareness to show Notice button & open FeelingsSelectionView
             healthKitType: "HKStateOfMind",
             dailyGoal: nil,
             category: .awareness
@@ -176,7 +176,7 @@ extension TrackerPreset {
             localizedName: "Dankbarkeit",
             icon: "🙏",
             type: .good,
-            trackingMode: .yesNo,
+            trackingMode: .awareness,  // Fixed: must be .awareness to show Notice button & open GratitudeLogView
             healthKitType: nil,
             dailyGoal: nil,
             category: .awareness
