@@ -122,11 +122,20 @@
 | `Meditationstimer_iOSApp.swift` | ModelContainer + Schema |
 | `Meditationstimer.xcodeproj/project.pbxproj` | Neue Dateien registriert |
 
+### UI-Test Phase 2.4: Streak-Badge
+
+| Test | Schritte | Erwartet | Status |
+|------|----------|----------|--------|
+| Badge bei neuem Tracker | 1. Neuen Tracker hinzufügen | Kein Badge (Streak = 0) | ⏳ |
+| Badge nach erstem Log | 1. Tracker loggen 2. Tab neu öffnen | 🔥 1 Badge erscheint | ⏳ |
+| Badge bei Avoidance | 1. Saboteur-Tracker hinzufügen | Kein Badge (Streak im Status) | ⏳ |
+| Badge verschwindet | 1. Tag ohne Log warten | Badge verschwindet | ⏳ |
+
 ### Nächste Schritte (Phase 2.x)
 - [x] Phase 2.1: TrackerTab Liste + Quick-Log
 - [x] Phase 2.2: Add Tracker aus Presets
-- [ ] Phase 2.3: Edit/Delete Tracker
-- [ ] Phase 2.4: Streak-Anzeige
+- [x] Phase 2.3: Edit/Delete Tracker
+- [x] Phase 2.4: Streak-Anzeige (Gate nachgeholt)
 - [ ] Phase 2.5: Custom Tracker erstellen
 - [ ] Phase 2.6: Mood/Feelings/Gratitude UIs
 - [ ] HealthKit Sync für Tracker
