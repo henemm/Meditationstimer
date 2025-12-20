@@ -4391,22 +4391,25 @@
         }
       }
     },
-    "Go to: Settings → HHHaven\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access" : {
+    "Go to: Settings → Healthy Habits\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gehe zu: Einstellungen → HHHaven\n• Benachrichtigungen: Erlauben\n• Hintergrundaktualisierung: Aktivieren\n• Health → Achtsamkeit: Lesen erlauben"
+            "value" : "Gehe zu: Einstellungen → Healthy Habits\n• Benachrichtigungen: Erlauben\n• Hintergrundaktualisierung: Aktivieren\n• Health → Achtsamkeit: Lesen erlauben"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Go to: Settings → HHHaven\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access"
+            "value" : "Go to: Settings → Healthy Habits\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access"
           }
         }
       }
+    },
+    "Go to: Settings → Lean Health Timer\n• Notifications: Allow\n• Background Refresh: Enable\n• Health → Mindfulness: Allow Read Access" : {
+
     },
     "Goal" : {
       "comment" : "Goal section header"

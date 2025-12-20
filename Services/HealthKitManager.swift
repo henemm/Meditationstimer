@@ -200,7 +200,7 @@ final class HealthKitManager {
         try await builder.endCollection(at: end)
 
         // Add metadata before finishing
-        let metadata: [String: Any] = ["appSource": "HHHaven"]
+        let metadata: [String: Any] = ["appSource": "HealthyHabits"]
         try await builder.addMetadata(metadata)
 
         // CRITICAL: Add activeEnergyBurned sample for MOVE ring / Fitness app integration
@@ -216,7 +216,7 @@ final class HealthKitManager {
             start: start,
             end: end,
             device: .local(),
-            metadata: ["appSource": "HHHaven"]
+            metadata: ["appSource": "HealthyHabits"]
         )
 
         // Add the energy sample to the workout
