@@ -46,7 +46,7 @@ final class BackgroundNotifier {
     /// Plant eine einfache Benachrichtigung nach `seconds` Sekunden.
     func schedule(message: String, in seconds: TimeInterval, identifier: String = UUID().uuidString) {
         let content = UNMutableNotificationContent()
-        content.title = "Meditationstimer"
+        content.title = "HHHaven"
         content.body = message
         content.sound = .default
 

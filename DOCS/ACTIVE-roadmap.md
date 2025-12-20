@@ -1,4 +1,4 @@
-# Feature Roadmap - Meditationstimer
+# Feature Roadmap - HHHaven
 
 **Letzte Aktualisierung:** 23. November 2025
 **Regel:** Geplante Features. Nach Implementation → löschen und feature-*.md erstellen

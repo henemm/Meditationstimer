@@ -387,7 +387,7 @@ private func phaseLabel(_ phase: Int) -> String {
 #if DEBUG
 extension MeditationAttributes {
     static var preview: MeditationAttributes {
-        MeditationAttributes(title: "Meditationstimer")
+        MeditationAttributes(title: "HHHaven")
     }
 }
 

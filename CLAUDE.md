@@ -28,7 +28,7 @@ ERST DANN: Code schreiben
 
 ## Overview
 
-**Meditationstimer** is a meditation and wellness app built with SwiftUI for iOS 18.5+, watchOS 9.0+, and Widget Extension.
+**Healthy Habits Haven (HHHaven)** is a meditation and wellness app built with SwiftUI for iOS 18.5+, watchOS 9.0+, and Widget Extension.
 
 **Features:**
 - Free meditation timer with two phases (meditation + reflection)

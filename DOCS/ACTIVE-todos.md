@@ -1,4 +1,4 @@
-# Active Todos - Meditationstimer
+# Active Todos - HHHaven
 
 **Letzte Aktualisierung:** 19. Dezember 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
