@@ -24,7 +24,8 @@ EXEMPT_EXTENSIONS = {
 EXEMPT_PATHS = {
     'DOCS/', 'docs/', '.claude/', '.agent-os/',
     'openspec/', 'Scripts/', 'README', 'CHANGELOG',
-    'Contents.json'  # Asset catalog configs
+    'Contents.json',  # Asset catalog configs
+    'Tests/', 'LeanHealthTimerTests/', 'LeanHealthTimerUITests/'  # Tests sind TDD!
 }
 
 # Dateitypen, die das Gate IMMER benötigen
@@ -71,26 +72,21 @@ def main():
 
         # Code-Dateien benötigen das Gate!
         if is_code_file(file_path):
-            # JSON-Output für Claude mit Warnung
-            output = {
-                "hookSpecificOutput": {
-                    "hookEventName": "PreToolUse",
-                    "permissionDecision": "ask",
-                    "permissionDecisionReason": (
-                        "⚠️ IMPLEMENTATION GATE REMINDER ⚠️\\n"
-                        "Vor Code-Änderungen MUSS das Gate durchlaufen werden:\\n"
-                        "1. [ ] Bestehende Tests ausgeführt (xcodebuild test)\\n"
-                        "2. [ ] Neue Tests definiert/geschrieben\\n"
-                        "3. [ ] XCUITests für UI-Änderungen\\n"
-                        "\\n"
-                        "Siehe: .agent-os/standards/global/implementation-gate.md\\n"
-                        "\\n"
-                        "Bestätige, dass das Gate durchlaufen wurde."
-                    )
-                }
-            }
-            print(json.dumps(output))
-            sys.exit(0)
+            # BLOCKIEREN statt nur warnen!
+            error_msg = (
+                "⛔ IMPLEMENTATION GATE BLOCKIERT ⛔\n\n"
+                "Code-Änderung an: {}\n\n"
+                "BEVOR du Code änderst, MUSST du:\n"
+                "1. Bestehende Tests ausführen (xcodebuild test)\n"
+                "2. Einen TDD RED Test schreiben (der fehlschlägt)\n"
+                "3. Den Test-Output hier zeigen\n\n"
+                "Erst NACH diesen Schritten darfst du Code ändern.\n"
+                "Siehe: .agent-os/standards/global/implementation-gate.md"
+            ).format(file_path)
+
+            # Exit code 2 = BLOCKIEREN mit Fehlermeldung
+            print(error_msg, file=sys.stderr)
+            sys.exit(2)
 
         # Andere Dateien erlauben
         sys.exit(0)

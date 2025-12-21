@@ -12,7 +12,7 @@
 //   Features audio cues, progress tracking, and HealthKit logging as mindfulness sessions.
 //
 // Files & Responsibilities (where to look next):
-//   • SoundPlayer (local)       – Workout-specific audio system with cues and speech
+//   • WorkoutSoundPlayer.swift  – Testable audio system with cues and speech (extracted from SoundPlayer)
 //   • WorkoutRunnerView (local) – Full-screen workout execution overlay
 //   • CircularRing.swift        – Dual-ring progress visualization (session + phase)
 //   • HealthKitManager          – Logs completed workouts as mindfulness sessions
@@ -58,165 +58,8 @@ import UIKit
 
 #if os(iOS)
 
-// MARK: - Sound Cues for Workout
-private enum Cue: String {
-    case countdownTransition = "countdown-transition" // 3x beep + long tone (combined)
-    case auftakt    // pre-start cue before first work
-    case ausklang   // final chime at end of last work
-    case lastRound = "last-round"  // announcement for final round
-}
-
-private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
-    private var urls: [Cue: URL] = [:]  // Cache URLs, not players
-    private var activePlayers: [AVAudioPlayer] = []  // Currently playing sounds
-    private var prepared = false
-    private let speech = AVSpeechSynthesizer()
-    private var roundUrls: [Int: URL] = [:]  // Cache URLs for round-1..round-20
-
-    func prepare() {
-        guard !prepared else { return }
-        #if os(iOS)
-        let session = AVAudioSession.sharedInstance()
-        do {
-            try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
-            try session.setActive(true)
-            print("[Sound] Audio session configured successfully")
-        } catch {
-            print("[Sound] Audio session configuration failed: \(error)")
-        }
-        #endif
-        // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
-        for cue in [Cue.countdownTransition, .auftakt, .ausklang, .lastRound] {
-            let name = cue.rawValue
-            let exts = ["caff", "caf", "wav", "mp3", "aiff"]
-            var found: URL? = nil
-            for ext in exts {
-                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
-                    found = url
-                    break
-                }
-            }
-            if let url = found {
-                urls[cue] = url
-                print("[Sound] found \(name)")
-            } else {
-                print("[Sound] MISSING \(name).(caff|caf|wav|mp3|aiff)")
-            }
-        }
-        prepared = true
-    }
-
-    func play(_ cue: Cue) {
-        prepare()
-        guard let url = urls[cue] else {
-            print("[Sound] cannot play \(cue.rawValue): URL not found")
-            return
-        }
-
-        // Create NEW player for each playback (allows parallel sounds)
-        do {
-            let p = try AVAudioPlayer(contentsOf: url)
-            p.delegate = self
-            p.prepareToPlay()
-            p.play()
-            activePlayers.append(p)
-            print("[Sound] play \(cue.rawValue) (active players: \(activePlayers.count))")
-        } catch {
-            print("[Sound] failed to create player for \(cue.rawValue): \(error)")
-        }
-    }
-
-    // MARK: - AVAudioPlayerDelegate
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if let idx = activePlayers.firstIndex(where: { $0 === player }) {
-            activePlayers.remove(at: idx)
-            print("[Sound] removed finished player (remaining: \(activePlayers.count))")
-        }
-    }
-
-    func playRound(_ number: Int) {
-        guard number >= 1 && number <= 20 else { return }
-        prepare()
-
-        // Cache URL if not already cached
-        if roundUrls[number] == nil {
-            let name = "round-\(number)"
-            let exts = ["caff", "caf", "wav", "mp3", "aiff"]
-            for ext in exts {
-                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
-                    roundUrls[number] = url
-                    print("[Sound] found \(name)")
-                    break
-                }
-            }
-        }
-
-        guard let url = roundUrls[number] else {
-            print("[Sound] MISSING round-\(number).(caff|caf|wav|mp3|aiff)")
-            return
-        }
-
-        // Create NEW player for each playback (allows parallel sounds)
-        do {
-            let p = try AVAudioPlayer(contentsOf: url)
-            p.delegate = self
-            p.prepareToPlay()
-            p.play()
-            activePlayers.append(p)
-            print("[Sound] play round-\(number) (active players: \(activePlayers.count))")
-        } catch {
-            print("[Sound] failed to create player for round-\(number): \(error)")
-        }
-    }
-
-    func play(_ cue: Cue, after delay: TimeInterval) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            self?.play(cue)
-        }
-    }
-
-    /// Returns the appropriate TTS language code based on device locale
-    private var currentTTSLanguage: String {
-        let languageCode = Locale.current.language.languageCode?.identifier ?? "de"
-        switch languageCode {
-        case "en": return "en-US"
-        case "de": return "de-DE"
-        default: return "de-DE"
-        }
-    }
-
-    func speak(_ text: String, language: String? = nil) {
-        prepare()
-        let u = AVSpeechUtterance(string: text)
-        u.voice = AVSpeechSynthesisVoice(language: language ?? currentTTSLanguage)
-        u.rate = AVSpeechUtteranceDefaultSpeechRate
-        speech.speak(u)
-    }
-
-    func speak(_ text: String, after delay: TimeInterval, language: String? = nil) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            self?.speak(text, language: language)
-        }
-    }
-
-    func stopAll() {
-        for p in activePlayers {
-            p.stop()
-        }
-        activePlayers.removeAll()
-        speech.stopSpeaking(at: .immediate)
-    }
-
-    func duration(of cue: Cue) -> TimeInterval {
-        prepare()
-        guard let url = urls[cue] else { return 0 }
-        // Create temporary player to get duration
-        guard let p = try? AVAudioPlayer(contentsOf: url) else { return 0 }
-        return p.duration
-    }
-}
-
 // MARK: - Workout Runner (identisch zu vorher; kein Layout-Tuning)
+// NOTE: Audio handling moved to WorkoutSoundPlayer.swift for testability
 private enum IntervalPhase: String { case work, rest }
 
 private struct WorkoutRunnerView: View {
@@ -226,7 +69,7 @@ private struct WorkoutRunnerView: View {
     @Binding var repeats: Int
     let onClose: () -> Void
 
-    @StateObject private var sounds = SoundPlayer()
+    private let sounds = WorkoutSoundPlayer.shared
 
     @State private var workoutStart: Date?
     @State private var saveFailed = false
@@ -271,7 +114,7 @@ private struct WorkoutRunnerView: View {
             // Trigger sound when remaining time <= 3.0s
             if remaining <= triggerThreshold && remaining > 0 {
                 self.countdownSoundTriggered = true
-                self.sounds.play(.countdownTransition)
+                self.sounds.play(WorkoutCue.countdownTransition)
                 print("[Workout] countdown-transition triggered (remaining: \(String(format: "%.2f", remaining))s)")
             }
         }
@@ -439,9 +282,9 @@ private struct WorkoutRunnerView: View {
             setIdleTimer(true)
 
             // AUFTAKT: play, then start workout exactly at first work
-            let aDur = sounds.duration(of: .auftakt)
+            let aDur = sounds.duration(of: WorkoutCue.auftakt)
             if aDur > 0 {
-                sounds.play(.auftakt)
+                sounds.play(WorkoutCue.auftakt)
                 schedule(aDur) {
                     started = true
                     sessionStart = Date()
@@ -554,7 +397,7 @@ private struct WorkoutRunnerView: View {
         }
         else if phase == .rest {
             // Pre-roll: play Auftakt so that it ENDS exactly at the next work start
-            let aDur = sounds.duration(of: .auftakt)
+            let aDur = sounds.duration(of: WorkoutCue.auftakt)
             let dur = max(1, cfgRest)
             let now = Date()
             let elapsed = max(0, now.timeIntervalSince(start) - pausedPhaseAccum)
@@ -563,7 +406,7 @@ private struct WorkoutRunnerView: View {
             if aDur > 0, aDur < Double(dur) {
                 if delay > 0.001 {
                     schedule(delay) {
-                        self.sounds.play(.auftakt)
+                        self.sounds.play(WorkoutCue.auftakt)
                         print("[Workout] Auftakt triggered (delay was: \(String(format: "%.2f", delay))s)")
                     }
                 }
@@ -580,7 +423,7 @@ private struct WorkoutRunnerView: View {
                             if speakExerciseNames {
                                 self.sounds.speak(NSLocalizedString("Last round", comment: "TTS for last round in free workout"))
                             } else {
-                                self.sounds.play(.lastRound)
+                                self.sounds.play(WorkoutCue.lastRound)
                             }
                             print("[Workout] Last round announcement (round \(nextRound))")
                         } else {
@@ -611,8 +454,8 @@ private struct WorkoutRunnerView: View {
                 finished = true
 
                 // Play ausklang, then close after sound duration
-                sounds.play(.ausklang)
-                let ausklangDuration = sounds.duration(of: .ausklang)
+                sounds.play(WorkoutCue.ausklang)
+                let ausklangDuration = sounds.duration(of: WorkoutCue.ausklang)
                 let delay = max(0.5, ausklangDuration)  // Minimum 0.5s delay
                 schedule(delay) {
                     Task { await self.endSession(completed: true) }

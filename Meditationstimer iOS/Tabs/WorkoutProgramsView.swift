@@ -55,18 +55,20 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
     private var prepared = false
     private let speech = AVSpeechSynthesizer()
 
-    func prepare() {
-        guard !prepared else { return }
+    /// Aktiviert die Audio-Session vor jeder Wiedergabe (EXAKT wie GongPlayer!)
+    private func activateSession() {
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
-        do {
-            try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
-            try session.setActive(true)
-            print("[Sound] Audio session configured successfully")
-        } catch {
-            print("[Sound] Audio session configuration failed: \(error)")
-        }
+        // WICHTIG: Exakt wie GongPlayer - OHNE mode: Parameter!
+        try? session.setCategory(.playback, options: [.mixWithOthers])
+        try? session.setActive(true, options: [])
         #endif
+    }
+
+    func prepare() {
+        guard !prepared else { return }
+        activateSession()
+        print("[Sound] Audio session configured successfully")
         // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
         for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
             let name = cue.rawValue
@@ -90,6 +92,7 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
 
     func play(_ cue: Cue) {
         prepare()
+        activateSession()  // Reaktiviere Audio-Session vor jeder Wiedergabe
         guard let url = urls[cue] else {
             print("[Sound] cannot play \(cue.rawValue): URL not found")
             return
@@ -124,6 +127,7 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
 
     func speak(_ text: String) {
         prepare()
+        activateSession()  // Reaktiviere Audio-Session vor jeder Wiedergabe
         let u = AVSpeechUtterance(string: text)
         // Sprache automatisch aus App-Locale ermitteln
         let languageCode = Locale.current.language.languageCode?.identifier ?? "de"
