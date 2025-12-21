@@ -1,102 +1,30 @@
 #!/usr/bin/env python3
 """
-Implementation Gate Hook für Meditationstimer/HHHaven
-
-Dieser Hook wird VOR jedem Write/Edit-Aufruf ausgeführt und erinnert
-Claude an das Implementation Gate gemäß .agent-os/standards/global/implementation-gate.md
-
-Exit Codes:
-- 0 = Erlaubt (Dokumentation, Config, etc.)
-- 2 = BLOCKIERT mit Fehlermeldung an Claude
+Wrapper - leitet an workflow_gate.py weiter.
+Existiert nur für Rückwärtskompatibilität mit gecachten Sessions.
 """
-import json
+import subprocess
 import sys
-import os
 from pathlib import Path
 
-# Dateitypen, die KEIN Gate benötigen (Dokumentation, Config)
-EXEMPT_EXTENSIONS = {
-    '.md', '.txt', '.json', '.yml', '.yaml', '.xml',
-    '.gitignore', '.gitattributes'
-}
+# stdin komplett lesen
+stdin_data = sys.stdin.read()
 
-# Pfade, die KEIN Gate benötigen
-EXEMPT_PATHS = {
-    'DOCS/', 'docs/', '.claude/', '.agent-os/',
-    'openspec/', 'Scripts/', 'README', 'CHANGELOG',
-    'Contents.json',  # Asset catalog configs
-    'Tests/', 'LeanHealthTimerTests/', 'LeanHealthTimerUITests/'  # Tests sind TDD!
-}
+# workflow_gate.py aufrufen
+new_hook = Path(__file__).parent / "workflow_gate.py"
+result = subprocess.run(
+    ["python3", str(new_hook)],
+    input=stdin_data,
+    text=True,
+    capture_output=True
+)
 
-# Dateitypen, die das Gate IMMER benötigen
-CODE_EXTENSIONS = {
-    '.swift', '.m', '.h', '.c', '.cpp',
-    '.py', '.js', '.ts', '.tsx', '.jsx'
-}
+# stderr ausgeben (Fehlermeldungen)
+if result.stderr:
+    print(result.stderr, file=sys.stderr)
 
-def is_exempt(file_path: str) -> bool:
-    """Prüft ob die Datei vom Gate ausgenommen ist"""
-    path = Path(file_path)
+# stdout ausgeben falls vorhanden
+if result.stdout:
+    print(result.stdout)
 
-    # Extension-basierte Ausnahme
-    if path.suffix.lower() in EXEMPT_EXTENSIONS:
-        return True
-
-    # Pfad-basierte Ausnahme
-    for exempt in EXEMPT_PATHS:
-        if exempt in file_path:
-            return True
-
-    return False
-
-def is_code_file(file_path: str) -> bool:
-    """Prüft ob es sich um eine Code-Datei handelt"""
-    path = Path(file_path)
-    return path.suffix.lower() in CODE_EXTENSIONS
-
-def main():
-    try:
-        # JSON-Input von Claude Code lesen
-        input_data = json.load(sys.stdin)
-        tool_name = input_data.get("tool_name", "")
-        tool_input = input_data.get("tool_input", {})
-        file_path = tool_input.get("file_path", "")
-
-        # Nur Write und Edit prüfen
-        if tool_name not in ["Write", "Edit"]:
-            sys.exit(0)
-
-        # Ausnahmen prüfen
-        if is_exempt(file_path):
-            sys.exit(0)
-
-        # Code-Dateien benötigen das Gate!
-        if is_code_file(file_path):
-            # BLOCKIEREN statt nur warnen!
-            error_msg = (
-                "⛔ IMPLEMENTATION GATE BLOCKIERT ⛔\n\n"
-                "Code-Änderung an: {}\n\n"
-                "BEVOR du Code änderst, MUSST du:\n"
-                "1. Bestehende Tests ausführen (xcodebuild test)\n"
-                "2. Einen TDD RED Test schreiben (der fehlschlägt)\n"
-                "3. Den Test-Output hier zeigen\n\n"
-                "Erst NACH diesen Schritten darfst du Code ändern.\n"
-                "Siehe: .agent-os/standards/global/implementation-gate.md"
-            ).format(file_path)
-
-            # Exit code 2 = BLOCKIEREN mit Fehlermeldung
-            print(error_msg, file=sys.stderr)
-            sys.exit(2)
-
-        # Andere Dateien erlauben
-        sys.exit(0)
-
-    except json.JSONDecodeError:
-        print("ERROR: Invalid JSON input", file=sys.stderr)
-        sys.exit(1)
-    except Exception as e:
-        print(f"Hook error: {e}", file=sys.stderr)
-        sys.exit(1)
-
-if __name__ == "__main__":
-    main()
+sys.exit(result.returncode)
