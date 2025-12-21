@@ -233,24 +233,20 @@ Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eig
 ### Workout Bugs
 
 **Bug 32: Freie Workouts ohne Sound (weder Ansagen noch Töne)**
-- Location: `WorkoutsView.swift` → `WorkoutSoundPlayer.swift`
+- Location: `WorkoutsView.swift` Zeilen 284-298
 - **Ursprüngliches Problem:** Keine Sounds mehr bei freien Workouts - weder Auftakt/Ausklang noch TTS-Ansagen
-- **Root Cause Analyse (TDD):**
-  - Erster Verdacht (falsch): Audio-Session-Aktivierung nur bei `prepare()`
-  - **Echte Ursache:** Audio-Session-Konfiguration unterschiedlich:
-    - GongPlayer (funktioniert): `setCategory(.playback, options: [.mixWithOthers])` + `setActive(true, options: [])`
-    - SoundPlayer (kaputt): `setCategory(.playback, mode: .default, options: [.mixWithOthers])` + `setActive(true)`
-- **Fix v2 (21.12.2025):**
-  - TDD-Ansatz: Erst Tests geschrieben (WorkoutSoundPlayerTests.swift)
-  - Neue Klasse `WorkoutSoundPlayer.swift` erstellt mit GongPlayer-identischer Audio-Session-Konfiguration
-  - `WorkoutsView.swift` verwendet jetzt `WorkoutSoundPlayer.shared` statt interner `SoundPlayer`
-  - Alter toter Code (private SoundPlayer Klasse) entfernt
-  - 5 Unit Tests bestätigen: Audio-Files existieren, Session korrekt, Player funktioniert
+- **Root Cause Analyse:**
+  - ❌ Erster Verdacht (falsch): Audio-Session-Konfiguration
+  - ❌ Zweiter Verdacht (falsch): Singleton vs @StateObject
+  - ✅ **ECHTE Ursache:** `if duration() > 0` Check vor dem Abspielen
+    - WorkoutsView (kaputt): `if aDur > 0 { sounds.play(.auftakt) }`
+    - WorkoutProgramsView (funktioniert): `sounds.play(.auftakt)` - OHNE Check
+- **Fix (21.12.2025):**
+  - Sound unconditionally abspielen (wie WorkoutProgramsView)
+  - `sounds.play(WorkoutCue.auftakt)` OHNE vorherige duration-Prüfung
+  - `delay = max(0.5, duration)` als Fallback
 - Status: **GEFIXT, WARTET AUF USER-TEST**
-- **Geänderte Dateien:**
-  - NEU: `Meditationstimer iOS/WorkoutSoundPlayer.swift`
-  - NEU: `LeanHealthTimerTests/WorkoutSoundPlayerTests.swift`
-  - GEÄNDERT: `Meditationstimer iOS/Tabs/WorkoutsView.swift` (SoundPlayer → WorkoutSoundPlayer)
+- **Geänderte Datei:** `Meditationstimer iOS/Tabs/WorkoutsView.swift`
 
 ### NoAlc Bugs
 
