@@ -281,23 +281,11 @@ private struct WorkoutRunnerView: View {
             // Disable idle timer to keep display on during workout
             setIdleTimer(true)
 
-            // AUFTAKT: play, then start workout exactly at first work
+            // AUFTAKT: play unconditionally, then start workout (wie WorkoutProgramsView)
+            sounds.play(WorkoutCue.auftakt)
             let aDur = sounds.duration(of: WorkoutCue.auftakt)
-            if aDur > 0 {
-                sounds.play(WorkoutCue.auftakt)
-                schedule(aDur) {
-                    started = true
-                    sessionStart = Date()
-                    workoutStart = sessionStart // Store for HealthKit logging
-
-                    // LiveActivity: Endzeit aus sessionStart + sessionTotal
-                    let endDate = sessionStart.addingTimeInterval(sessionTotal)
-                    let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
-                    setPhase(.work)
-                    // scheduleCuesForCurrentPhase() wird bereits in setPhase() aufgerufen
-                }
-            } else {
-                // No file present → start immediately
+            let delay = max(0.5, aDur)  // Minimum 0.5s falls duration 0
+            schedule(delay) {
                 started = true
                 sessionStart = Date()
                 workoutStart = sessionStart // Store for HealthKit logging
