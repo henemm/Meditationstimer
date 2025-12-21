@@ -486,6 +486,11 @@ private struct WorkoutRunnerView: View {
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
 
+    // Effort Score (iOS 18+)
+    @State private var showEffortSheet = false
+    @State private var effortScore: Double = 7
+    @State private var lastWorkout: HKWorkout?
+
     @State private var phase: IntervalPhase = .work
     @State private var phaseStart: Date? = nil
     @State private var phaseDuration: Double = 1
@@ -629,6 +634,90 @@ private struct WorkoutRunnerView: View {
             sounds.stopAll()
             setIdleTimer(false)
         }
+        .sheet(isPresented: $showEffortSheet) {
+            effortScoreSheet
+        }
+    }
+
+    // MARK: - Effort Score Sheet (iOS 18+)
+    @available(iOS 18.0, *)
+    private var effortScoreSheet: some View {
+        VStack(spacing: 24) {
+            Text(NSLocalizedString("How hard was that?", comment: "Effort score prompt"))
+                .font(.title2.bold())
+                .padding(.top, 24)
+
+            Text(effortLabel)
+                .font(.largeTitle.bold())
+                .foregroundStyle(effortColor)
+
+            Slider(value: $effortScore, in: 1...10, step: 1)
+                .tint(effortColor)
+                .padding(.horizontal, 32)
+
+            HStack {
+                Text("1").font(.caption).foregroundStyle(.secondary)
+                Spacer()
+                Text("10").font(.caption).foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 40)
+
+            Button(action: saveEffortScore) {
+                Text(NSLocalizedString("Save", comment: "Save button"))
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.accentColor)
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+            }
+            .padding(.horizontal, 32)
+
+            Button(NSLocalizedString("Skip", comment: "Skip button")) {
+                showEffortSheet = false
+                onClose()
+            }
+            .foregroundStyle(.secondary)
+            .padding(.bottom, 24)
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+    }
+
+    private var effortLabel: String {
+        let score = Int(effortScore)
+        switch score {
+        case 1...3: return "💚 \(NSLocalizedString("Easy", comment: "Effort easy"))"
+        case 4...6: return "💛 \(NSLocalizedString("Moderate", comment: "Effort moderate"))"
+        case 7...8: return "🧡 \(NSLocalizedString("Hard", comment: "Effort hard"))"
+        case 9...10: return "❤️ \(NSLocalizedString("Very Hard", comment: "Effort very hard"))"
+        default: return "🧡 \(NSLocalizedString("Hard", comment: "Effort hard"))"
+        }
+    }
+
+    private var effortColor: Color {
+        let score = Int(effortScore)
+        switch score {
+        case 1...3: return .green
+        case 4...6: return .yellow
+        case 7...8: return .orange
+        case 9...10: return .red
+        default: return .orange
+        }
+    }
+
+    private func saveEffortScore() {
+        showEffortSheet = false
+        if #available(iOS 18.0, *), let workout = lastWorkout {
+            Task {
+                do {
+                    try await HealthKitManager.shared.relateEffortScore(Int(effortScore), to: workout)
+                } catch {
+                    print("[EffortScore] Fehler: \(error)")
+                }
+            }
+        }
+        onClose()
     }
 
     private func setIdleTimer(_ disabled: Bool) {
@@ -692,19 +781,40 @@ private struct WorkoutRunnerView: View {
     private func endSession(completed: Bool) async {
         setIdleTimer(false)
         let endDate = Date()
-        if let start = workoutStart {
-            Task.detached(priority: .userInitiated) { [logWorkoutsAsMindfulness] in
-                do {
-                    if logWorkoutsAsMindfulness {
-                        try await HealthKitManager.shared.logMindfulness(start: start, end: endDate)
-                    } else {
-                        try await HealthKitManager.shared.logWorkout(start: start, end: endDate, activity: HKWorkoutActivityType.highIntensityIntervalTraining)
-                    }
-                } catch {}
-            }
-        }
         await liveActivity.end(immediate: true)
-        onClose()
+
+        // Workout speichern
+        if let start = workoutStart {
+            if logWorkoutsAsMindfulness {
+                // Mindfulness hat keinen Effort Score
+                Task {
+                    try? await HealthKitManager.shared.logMindfulness(start: start, end: endDate)
+                }
+                onClose()
+            } else {
+                // HIIT Workout: speichern und Effort Sheet zeigen (iOS 18+)
+                do {
+                    let workout = try await HealthKitManager.shared.logWorkout(
+                        start: start,
+                        end: endDate,
+                        activity: HKWorkoutActivityType.highIntensityIntervalTraining
+                    )
+                    // iOS 18+: Effort Score abfragen
+                    if #available(iOS 18.0, *), let workout = workout {
+                        lastWorkout = workout
+                        showEffortSheet = true
+                        // onClose() wird von Sheet aufgerufen
+                    } else {
+                        onClose()
+                    }
+                } catch {
+                    print("[Workout] Fehler beim Speichern: \(error)")
+                    onClose()
+                }
+            }
+        } else {
+            onClose()
+        }
     }
 }
 

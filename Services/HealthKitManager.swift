@@ -90,6 +90,11 @@ final class HealthKitManager {
         if let energyType = energyType {
             toShare.insert(energyType)  // Required for logging workout calories
         }
+        // iOS 18+: Workout Effort Score für Training Load
+        if #available(iOS 18.0, *) {
+            let effortType = HKQuantityType(.workoutEffortScore)
+            toShare.insert(effortType)
+        }
 
         var toRead = Set<HKObjectType>()
         toRead.insert(mindfulType)
@@ -167,7 +172,8 @@ final class HealthKitManager {
     /// Standardaktivität: HIIT (High Intensity Interval Training).
     /// Verwendet HKWorkoutBuilder (moderne API seit iOS 17.0).
     /// WICHTIG: Fügt activeEnergyBurned hinzu für MOVE Ring und Fitness App Integration.
-    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws {
+    @discardableResult
+    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws -> HKWorkout? {
         #if os(iOS)
         // Calculate workout duration in minutes
         let durationMinutes = end.timeIntervalSince(start) / 60.0
@@ -223,10 +229,11 @@ final class HealthKitManager {
         try await builder.addSamples([energySample])
 
         // Finalize workout (saves to HealthKit automatically)
-        _ = try await builder.finishWorkout()
+        let workout = try await builder.finishWorkout()
 
         // Reverse Smart Reminders: Cancel matching reminders after successful log
         SmartReminderEngine.shared.cancelMatchingReminders(for: .workout, completedAt: end)
+        return workout
         #else
         throw HealthKitError.healthDataUnavailable
         #endif
@@ -825,5 +832,32 @@ final class HealthKitManager {
         }
 
         return alcoholDays
+    }
+
+    // MARK: - Workout Effort Score (iOS 18+)
+
+    /// Verknüpft einen Effort Score (1-10) mit einem Workout für Apple Training Load.
+    /// - Parameters:
+    ///   - score: Anstrengung 1-10 (1=leicht, 7=schwer, 10=maximal)
+    ///   - workout: Das HKWorkout-Objekt
+    @available(iOS 18.0, *)
+    func relateEffortScore(_ score: Int, to workout: HKWorkout) async throws {
+        guard (1...10).contains(score) else {
+            print("[HealthKit] Effort Score \(score) außerhalb Bereich 1-10, übersprungen")
+            return
+        }
+
+        let unit = HKUnit.appleEffortScore()
+        let quantity = HKQuantity(unit: unit, doubleValue: Double(score))
+        let type = HKQuantityType(.workoutEffortScore)
+        let sample = HKQuantitySample(
+            type: type,
+            quantity: quantity,
+            start: workout.startDate,
+            end: workout.endDate
+        )
+
+        try await healthStore.relateWorkoutEffortSample(sample, with: workout, activity: nil)
+        print("[HealthKit] Effort Score \(score) mit Workout verknüpft")
     }
 }

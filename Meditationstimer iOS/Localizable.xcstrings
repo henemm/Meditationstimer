@@ -6894,7 +6894,7 @@
       }
     },
     "Round %d" : {
-      "comment" : "TTS for round number in free workout",
+      "comment" : "TTS for round number",
       "localizations" : {
         "de" : {
           "stringUnit" : {
