@@ -26,6 +26,25 @@ ERST DANN: Code schreiben
 
 ---
 
+## ⚠️ VERIFY ACTIVE CODE - ZWEITE PFLICHT
+
+**VOR JEDER CODE-ÄNDERUNG prüfen: Bearbeite ich die RICHTIGE Datei?**
+
+Siehe: `.agent-os/standards/global/verify-active-code.md`
+
+```
+PFLICHT-CHECK:
+1. [ ] Welche View verwendet ContentView.swift? (grep "Tab\|View" ContentView.swift)
+2. [ ] Gibt es Duplikate? (grep -rn "struct MyView" .)
+3. [ ] Wird meine Datei überhaupt verwendet?
+
+WARNUNG: Es gibt oft parallele Implementierungen (z.B. WorkoutsView vs WorkoutTab)!
+```
+
+**Bug 32 Lesson:** Stundenlang falsche Datei bearbeitet weil Duplikat existierte.
+
+---
+
 ## Overview
 
 **Healthy Habits Haven (HHHaven)** is a meditation and wellness app built with SwiftUI for iOS 18.5+, watchOS 9.0+, and Widget Extension.

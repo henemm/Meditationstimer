@@ -15,6 +15,7 @@
 
 import SwiftUI
 import HealthKit
+import AVFoundation
 
 #if os(iOS)
 
@@ -398,6 +399,80 @@ struct WorkoutTab: View {
     }
 }
 
+// MARK: - Sound Cues für Free Workout
+private enum Cue: String {
+    case countdownTransition = "countdown-transition"
+    case auftakt
+    case ausklang
+}
+
+// MARK: - SoundPlayer für Free Workout (kopiert aus WorkoutProgramsView)
+private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
+    private var urls: [Cue: URL] = [:]
+    private var activePlayers: [AVAudioPlayer] = []
+    private var prepared = false
+
+    private func activateSession() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playback, options: [.mixWithOthers])
+        try? session.setActive(true, options: [])
+    }
+
+    func prepare() {
+        guard !prepared else { return }
+        activateSession()
+        print("[Sound] Audio session configured (WorkoutTab)")
+        for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
+            let name = cue.rawValue
+            for ext in ["caff", "caf", "wav", "mp3", "aiff"] {
+                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
+                    urls[cue] = url
+                    print("[Sound] found \(name)")
+                    break
+                }
+            }
+        }
+        prepared = true
+    }
+
+    func play(_ cue: Cue) {
+        prepare()
+        activateSession()
+        guard let url = urls[cue] else {
+            print("[Sound] cannot play \(cue.rawValue): URL not found")
+            return
+        }
+        do {
+            let p = try AVAudioPlayer(contentsOf: url)
+            p.delegate = self
+            p.prepareToPlay()
+            p.play()
+            activePlayers.append(p)
+            print("[Sound] play \(cue.rawValue) (active: \(activePlayers.count))")
+        } catch {
+            print("[Sound] failed: \(cue.rawValue) - \(error)")
+        }
+    }
+
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if let idx = activePlayers.firstIndex(where: { $0 === player }) {
+            activePlayers.remove(at: idx)
+        }
+    }
+
+    func duration(of cue: Cue) -> TimeInterval {
+        prepare()
+        guard let url = urls[cue] else { return 0 }
+        guard let p = try? AVAudioPlayer(contentsOf: url) else { return 0 }
+        return p.duration
+    }
+
+    func stopAll() {
+        for p in activePlayers { p.stop() }
+        activePlayers.removeAll()
+    }
+}
+
 // MARK: - WorkoutRunnerView (embedded from WorkoutsView)
 private struct WorkoutRunnerView: View {
     let intervalSec: Int
@@ -406,6 +481,7 @@ private struct WorkoutRunnerView: View {
     let onClose: () -> Void
 
     @EnvironmentObject private var liveActivity: LiveActivityController
+    @StateObject private var sounds = SoundPlayer()
     @State private var workoutStart: Date?
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
@@ -526,11 +602,21 @@ private struct WorkoutRunnerView: View {
         }
         .task {
             do { try await HealthKitManager.shared.requestAuthorization() } catch {}
+
+            // Sound vorbereiten und Auftakt spielen
+            sounds.prepare()
+            sounds.play(.auftakt)
+            let auftaktDuration = sounds.duration(of: .auftakt)
+            let delay = max(0.5, auftaktDuration)
+
             plannedRepeats = max(1, repeats)
             cfgRepeats = plannedRepeats
             cfgInterval = intervalSec
             cfgRest = restSec
             setIdleTimer(true)
+
+            // Warte auf Auftakt-Ende, dann starte Workout
+            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
 
             started = true
             sessionStart = Date()
@@ -540,6 +626,7 @@ private struct WorkoutRunnerView: View {
             setPhase(.work)
         }
         .onDisappear {
+            sounds.stopAll()
             setIdleTimer(false)
         }
     }
