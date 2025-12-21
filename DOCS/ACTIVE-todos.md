@@ -228,6 +228,46 @@ Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eig
 
 ---
 
+## ✅ Neue Features (validiert)
+
+### Workout Effort Score (iOS 18+)
+**Datum:** 21. Dezember 2025
+**Status:** ✅ IMPLEMENTIERT, WARTET AUF DEVICE-TEST
+
+**Implementierung:**
+- Sheet mit Slider (1-10) erscheint nach jedem HIIT Workout
+- Default: 7 (Hard) - vorbelegt für HIIT
+- Effort Score wird mit HKWorkout verknüpft (Apple Training Load)
+- Skip-Option für User die nicht bewerten möchten
+- Graceful Degradation: Bei iOS < 18 erscheint kein Sheet
+
+**Geänderte Dateien:**
+| Datei | Änderung |
+|-------|----------|
+| `Services/HealthKitManager.swift` | `relateEffortScore()` + Permission |
+| `Meditationstimer iOS/Tabs/WorkoutTab.swift` | Effort Sheet UI |
+| `LeanHealthTimerTests/WorkoutEffortScoreTests.swift` | 5 Unit Tests |
+| `openspec/changes/workout-effort-score/` | Spec-Dokumentation |
+
+**Device-Test Anweisungen:**
+1. Free Workout starten (kurz: 3x 5s/5s)
+2. Workout beenden (X-Button oder natürliches Ende)
+3. Sheet sollte erscheinen mit Slider (vorbelegt: 7)
+4. Score wählen → Speichern
+5. In **Fitness App → Workouts → [das Workout]** prüfen:
+   - Effort Score sollte angezeigt werden
+   - Training Load sollte aktualisiert werden
+
+**Tests:**
+| Test | Status |
+|------|--------|
+| Unit Tests (5 Tests) | ✅ GRÜN |
+| Debug Build | ✅ SUCCEEDED |
+| Release Build | ✅ SUCCEEDED |
+| Device Test | ⏳ Ausstehend |
+
+---
+
 ## 🐛 aktive Bugs
 
 ### Workout Bugs
