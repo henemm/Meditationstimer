@@ -57,6 +57,34 @@ final class WorkoutSoundPlayerTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
+    // MARK: - Bug 32: Play sollte IMMER funktionieren (ohne Duration-Check)
+
+    /// Dieser Test dokumentiert Bug 32:
+    /// WorkoutsView hatte `if duration() > 0 { play() }` - falsch!
+    /// WorkoutProgramsView hat `play()` direkt - richtig!
+    /// Play muss IMMER funktionieren, unabhängig von duration()
+    func testPlayWorksWithoutDurationCheck() {
+        let player = WorkoutSoundPlayer()
+        player.reset()
+
+        // Simuliere das RICHTIGE Pattern (wie WorkoutProgramsView):
+        // Erst play(), dann duration() für delay
+        let initialCount = player.activePlayerCount
+        player.play(.auftakt)  // Unconditional!
+        let duration = player.duration(of: .auftakt)
+        let delay = max(0.5, duration)
+
+        // Player sollte erstellt worden sein
+        let expectation = XCTestExpectation(description: "Player created unconditionally")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            XCTAssertGreaterThan(player.activePlayerCount, initialCount,
+                "play() muss IMMER einen Player erstellen, OHNE vorherigen duration-Check")
+            XCTAssertGreaterThan(delay, 0, "delay sollte mindestens 0.5 sein")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2.0)
+    }
+
     // MARK: - Vergleich mit GongPlayer
 
     func testAudioSessionConfigurationMatchesGongPlayer() {
