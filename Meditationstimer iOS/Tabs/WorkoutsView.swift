@@ -69,7 +69,7 @@ private struct WorkoutRunnerView: View {
     @Binding var repeats: Int
     let onClose: () -> Void
 
-    private let sounds = WorkoutSoundPlayer.shared
+    @StateObject private var sounds = WorkoutSoundPlayer()
 
     @State private var workoutStart: Date?
     @State private var saveFailed = false

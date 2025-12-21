@@ -23,8 +23,13 @@ public enum WorkoutCue: String {
 
 public final class WorkoutSoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
 
-    // MARK: - Singleton
+    // MARK: - Singleton (for backward compatibility with tests)
     public static let shared = WorkoutSoundPlayer()
+
+    // MARK: - Init (public for @StateObject usage in SwiftUI)
+    public override init() {
+        super.init()
+    }
 
     // MARK: - Properties
     private var urls: [WorkoutCue: URL] = [:]
