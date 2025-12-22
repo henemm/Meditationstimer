@@ -273,20 +273,19 @@ Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eig
 ### Workout Bugs
 
 **Bug 32: Freie Workouts ohne Sound (weder Ansagen noch Töne)**
-- Location: `WorkoutsView.swift` Zeilen 284-298
+- Location: `WorkoutTab.swift` (ehemals WorkoutsView.swift)
 - **Ursprüngliches Problem:** Keine Sounds mehr bei freien Workouts - weder Auftakt/Ausklang noch TTS-Ansagen
-- **Root Cause Analyse:**
-  - ❌ Erster Verdacht (falsch): Audio-Session-Konfiguration
-  - ❌ Zweiter Verdacht (falsch): Singleton vs @StateObject
-  - ✅ **ECHTE Ursache:** `if duration() > 0` Check vor dem Abspielen
-    - WorkoutsView (kaputt): `if aDur > 0 { sounds.play(.auftakt) }`
-    - WorkoutProgramsView (funktioniert): `sounds.play(.auftakt)` - OHNE Check
-- **Fix (21.12.2025):**
-  - Sound unconditionally abspielen (wie WorkoutProgramsView)
-  - `sounds.play(WorkoutCue.auftakt)` OHNE vorherige duration-Prüfung
-  - `delay = max(0.5, duration)` als Fallback
-- Status: **GEFIXT, WARTET AUF USER-TEST**
-- **Geänderte Datei:** `Meditationstimer iOS/Tabs/WorkoutsView.swift`
+- **Root Cause (erweitert 22.12.2025):**
+  - Lokaler `SoundPlayer` hatte KEINE TTS-Funktion
+  - Nur Auftakt wurde gespielt, kein Countdown/Ausklang/TTS
+- **Vollständiger Fix (22.12.2025):**
+  - Lokalen `SoundPlayer` entfernt, `WorkoutSoundPlayer` wiederverwendet (DRY)
+  - Countdown-Sound bei 3 Sekunden vor Work-Ende
+  - TTS-Ansagen "Round X" / "Last round" bei Runden-Wechsel
+  - Auftakt pre-roll vor jeder neuen Work-Phase
+  - Ausklang am Session-Ende
+- Status: **✅ GEFIXT UND VERIFIZIERT** (22.12.2025)
+- **Geänderte Datei:** `Meditationstimer iOS/Tabs/WorkoutTab.swift` (-76/+50 LoC)
 
 ### NoAlc Bugs
 
