@@ -62,31 +62,51 @@ struct TrackerTab: View {
 
     private var noAlcSection: some View {
         GlassCard {
-            VStack(spacing: 16) {
+            VStack(spacing: 12) {
                 HStack {
+                    Text("🍷")
+                        .font(.system(size: 28))
                     Text("NoAlc")
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+                        .font(.headline)
                     Spacer()
-                }
-                .padding(.horizontal, 4)
-
-                Button(action: { showingNoAlcLog = true }) {
-                    HStack {
-                        Image(systemName: "drop.fill")
-                            .font(.system(size: 24))
-                        Text(NSLocalizedString("Log Today", comment: "NoAlc log button"))
-                            .font(.headline)
+                    // Info button for detailed view
+                    Button(action: { showingNoAlcLog = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 18))
+                            .foregroundStyle(.secondary)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(12)
                 }
-                .buttonStyle(.plain)
+
+                // Quick-Log Buttons
+                HStack(spacing: 10) {
+                    noAlcButton(.steady, label: NSLocalizedString("Steady", comment: "NoAlc steady"), color: .green)
+                    noAlcButton(.easy, label: NSLocalizedString("Easy", comment: "NoAlc easy"), color: .yellow)
+                    noAlcButton(.wild, label: NSLocalizedString("Wild", comment: "NoAlc wild"), color: .red)
+                }
             }
+            .padding(.vertical, 4)
         }
+    }
+
+    private func noAlcButton(_ level: NoAlcManager.ConsumptionLevel, label: String, color: Color) -> some View {
+        Button(action: {
+            Task {
+                do {
+                    try await NoAlcManager.shared.logConsumption(level, for: Date())
+                } catch {
+                    print("[NoAlc] Log failed: \(error)")
+                }
+            }
+        }) {
+            Text(label)
+                .font(.subheadline.weight(.medium))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(color.opacity(0.2))
+                .foregroundStyle(color)
+                .cornerRadius(10)
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Trackers Section
