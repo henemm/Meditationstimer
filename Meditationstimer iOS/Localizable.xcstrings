@@ -397,6 +397,9 @@
     "00:00" : {
 
     },
+    "1" : {
+
+    },
     "1 hour" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -447,6 +450,9 @@
           }
         }
       }
+    },
+    "10" : {
+
     },
     "A an example control that runs a timer." : {
       "comment" : "Description of a control widget that runs a timer.",
@@ -4571,6 +4577,17 @@
         }
       }
     },
+    "Hard" : {
+      "comment" : "Effort hard",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwer"
+          }
+        }
+      }
+    },
     "Harp" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4745,6 +4762,17 @@
     },
     "How are you feeling?" : {
       "comment" : "Mood selection prompt"
+    },
+    "How hard was that?" : {
+      "comment" : "Effort score prompt",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie anstrengend war das?"
+          }
+        }
+      }
     },
     "How it works:" : {
       "comment" : "A label displayed above a list of usage tips in the info sheet.",
@@ -5137,6 +5165,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leg Raises"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "comment" : "Effort light",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leicht"
           }
         }
       }
@@ -5549,6 +5588,17 @@
     },
     "Mode" : {
       "comment" : "Mode section header\nTracking mode label\nTracking mode picker"
+    },
+    "Moderate" : {
+      "comment" : "Effort moderate",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moderat"
+          }
+        }
+      }
     },
     "Mon" : {
       "comment" : "Monday abbreviation",
@@ -7448,6 +7498,9 @@
         }
       }
     },
+    "Skip" : {
+      "comment" : "Skip button"
+    },
     "Smart Reminder Debug" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8457,6 +8510,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uses the system language for announcements (German/English)."
+          }
+        }
+      }
+    },
+    "Very Hard" : {
+      "comment" : "Effort very hard",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sehr schwer"
           }
         }
       }

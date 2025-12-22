@@ -802,13 +802,18 @@ public struct WorkoutProgramsView: View {
         // MARK: - Effort Score Sheet (iOS 18+)
         @available(iOS 18.0, *)
         private var effortScoreSheet: some View {
-            VStack(spacing: 24) {
+            VStack(spacing: 20) {
                 Text(NSLocalizedString("How hard was that?", comment: "Effort score prompt"))
-                    .font(.title2.bold())
-                    .padding(.top, 24)
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 20)
+
+                Text("\(Int(effortScore))")
+                    .font(.system(size: 48, weight: .light, design: .rounded))
+                    .foregroundStyle(effortColor)
 
                 Text(effortLabel)
-                    .font(.largeTitle.bold())
+                    .font(.subheadline.weight(.medium))
                     .foregroundStyle(effortColor)
 
                 Slider(value: $effortScore, in: 1...10, step: 1)
@@ -816,20 +821,20 @@ public struct WorkoutProgramsView: View {
                     .padding(.horizontal, 32)
 
                 HStack {
-                    Text("1").font(.caption).foregroundStyle(.secondary)
+                    Text(NSLocalizedString("Light", comment: "Effort light")).font(.caption2).foregroundStyle(.secondary)
                     Spacer()
-                    Text("10").font(.caption).foregroundStyle(.secondary)
+                    Text(NSLocalizedString("Very Hard", comment: "Effort very hard")).font(.caption2).foregroundStyle(.secondary)
                 }
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 36)
 
                 Button(action: saveEffortScore) {
                     Text(NSLocalizedString("Save", comment: "Save button"))
-                        .font(.headline)
+                        .font(.body.weight(.medium))
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.accentColor)
+                        .padding(.vertical, 14)
+                        .background(effortColor)
                         .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .padding(.horizontal, 32)
 
@@ -837,8 +842,9 @@ public struct WorkoutProgramsView: View {
                     showEffortSheet = false
                     close()
                 }
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
-                .padding(.bottom, 24)
+                .padding(.bottom, 16)
             }
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
@@ -847,11 +853,11 @@ public struct WorkoutProgramsView: View {
         private var effortLabel: String {
             let score = Int(effortScore)
             switch score {
-            case 1...3: return "💚 \(NSLocalizedString("Easy", comment: "Effort easy"))"
-            case 4...6: return "💛 \(NSLocalizedString("Moderate", comment: "Effort moderate"))"
-            case 7...8: return "🧡 \(NSLocalizedString("Hard", comment: "Effort hard"))"
-            case 9...10: return "❤️ \(NSLocalizedString("Very Hard", comment: "Effort very hard"))"
-            default: return "🧡 \(NSLocalizedString("Hard", comment: "Effort hard"))"
+            case 1...3: return NSLocalizedString("Light", comment: "Effort light")
+            case 4...6: return NSLocalizedString("Moderate", comment: "Effort moderate")
+            case 7...8: return NSLocalizedString("Hard", comment: "Effort hard")
+            case 9...10: return NSLocalizedString("Very Hard", comment: "Effort very hard")
+            default: return NSLocalizedString("Hard", comment: "Effort hard")
             }
         }
 
