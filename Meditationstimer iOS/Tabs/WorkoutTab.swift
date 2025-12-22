@@ -399,79 +399,7 @@ struct WorkoutTab: View {
     }
 }
 
-// MARK: - Sound Cues für Free Workout
-private enum Cue: String {
-    case countdownTransition = "countdown-transition"
-    case auftakt
-    case ausklang
-}
-
-// MARK: - SoundPlayer für Free Workout (kopiert aus WorkoutProgramsView)
-private final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
-    private var urls: [Cue: URL] = [:]
-    private var activePlayers: [AVAudioPlayer] = []
-    private var prepared = false
-
-    private func activateSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playback, options: [.mixWithOthers])
-        try? session.setActive(true, options: [])
-    }
-
-    func prepare() {
-        guard !prepared else { return }
-        activateSession()
-        print("[Sound] Audio session configured (WorkoutTab)")
-        for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
-            let name = cue.rawValue
-            for ext in ["caff", "caf", "wav", "mp3", "aiff"] {
-                if let url = Bundle.main.url(forResource: name, withExtension: ext) {
-                    urls[cue] = url
-                    print("[Sound] found \(name)")
-                    break
-                }
-            }
-        }
-        prepared = true
-    }
-
-    func play(_ cue: Cue) {
-        prepare()
-        activateSession()
-        guard let url = urls[cue] else {
-            print("[Sound] cannot play \(cue.rawValue): URL not found")
-            return
-        }
-        do {
-            let p = try AVAudioPlayer(contentsOf: url)
-            p.delegate = self
-            p.prepareToPlay()
-            p.play()
-            activePlayers.append(p)
-            print("[Sound] play \(cue.rawValue) (active: \(activePlayers.count))")
-        } catch {
-            print("[Sound] failed: \(cue.rawValue) - \(error)")
-        }
-    }
-
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if let idx = activePlayers.firstIndex(where: { $0 === player }) {
-            activePlayers.remove(at: idx)
-        }
-    }
-
-    func duration(of cue: Cue) -> TimeInterval {
-        prepare()
-        guard let url = urls[cue] else { return 0 }
-        guard let p = try? AVAudioPlayer(contentsOf: url) else { return 0 }
-        return p.duration
-    }
-
-    func stopAll() {
-        for p in activePlayers { p.stop() }
-        activePlayers.removeAll()
-    }
-}
+// MARK: - Sound: Verwendet WorkoutSoundPlayer (gleich wie WorkoutProgramsView)
 
 // MARK: - WorkoutRunnerView (embedded from WorkoutsView)
 private struct WorkoutRunnerView: View {
@@ -481,7 +409,7 @@ private struct WorkoutRunnerView: View {
     let onClose: () -> Void
 
     @EnvironmentObject private var liveActivity: LiveActivityController
-    @StateObject private var sounds = SoundPlayer()
+    @StateObject private var sounds = WorkoutSoundPlayer()
     @State private var workoutStart: Date?
     @State private var sessionStart: Date = .now
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
@@ -501,6 +429,7 @@ private struct WorkoutRunnerView: View {
     @State private var pausedSessionAccum: TimeInterval = 0
     @State private var pausedPhaseAccum: TimeInterval = 0
     @State private var phaseEndFired = false
+    @State private var countdownTriggered = false
     @State private var repIndex: Int = 1
     @State private var plannedRepeats: Int = 0
     @State private var cfgRepeats: Int = 0
@@ -568,6 +497,15 @@ private struct WorkoutRunnerView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .onChange(of: fractionPhase) { _, newVal in
+                            // Countdown bei 3 Sekunden vor Ende (nur während Work-Phase, wie WorkoutProgramsView)
+                            if phase == .work && !countdownTriggered && !isPaused {
+                                let remaining = phaseDuration * (1.0 - newVal)
+                                if remaining <= 3.0 && remaining > 0 {
+                                    countdownTriggered = true
+                                    sounds.play(WorkoutCue.countdownTransition)
+                                }
+                            }
+
                             if newVal >= 1.0 && !phaseEndFired {
                                 phaseEndFired = true
                                 advance()
@@ -610,8 +548,8 @@ private struct WorkoutRunnerView: View {
 
             // Sound vorbereiten und Auftakt spielen
             sounds.prepare()
-            sounds.play(.auftakt)
-            let auftaktDuration = sounds.duration(of: .auftakt)
+            sounds.play(WorkoutCue.auftakt)
+            let auftaktDuration = sounds.duration(of: WorkoutCue.auftakt)
             let delay = max(0.5, auftaktDuration)
 
             plannedRepeats = max(1, repeats)
@@ -736,6 +674,7 @@ private struct WorkoutRunnerView: View {
         phase = p
         pausedPhaseAccum = 0
         phaseEndFired = false
+        countdownTriggered = false  // Reset für nächste Phase
         phaseStart = Date()
         phaseDuration = Double(p == .work ? max(1, cfgInterval) : max(1, cfgRest))
 
@@ -757,9 +696,36 @@ private struct WorkoutRunnerView: View {
                 return
             }
             if cfgRest > 0 {
+                // TTS-Ansage für nächste Runde (wie WorkoutProgramsView)
+                let nextRound = repIndex + 1
+                if nextRound == cfgRepeats {
+                    sounds.speak(NSLocalizedString("Last round", comment: "TTS for last round"))
+                } else {
+                    let text = String(format: NSLocalizedString("Round %d", comment: "TTS for round number"), nextRound)
+                    sounds.speak(text)
+                }
+
+                // Auftakt pre-roll am Ende der Rest-Phase planen (wie WorkoutProgramsView)
+                let restDuration = Double(cfgRest)
+                let auftaktDuration = sounds.duration(of: WorkoutCue.auftakt)
+                let delay = max(0, restDuration - auftaktDuration)
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
+                    if !finished && !isPaused {
+                        sounds.play(WorkoutCue.auftakt)
+                    }
+                }
+
                 setPhase(.rest)
             } else {
                 repIndex = min(cfgRepeats, repIndex + 1)
+                // TTS + Auftakt für nächste Runde (ohne Rest-Phase)
+                if repIndex == cfgRepeats {
+                    sounds.speak(NSLocalizedString("Last round", comment: "TTS for last round"))
+                } else {
+                    let text = String(format: NSLocalizedString("Round %d", comment: "TTS for round number"), repIndex)
+                    sounds.speak(text)
+                }
+                sounds.play(WorkoutCue.auftakt)
                 setPhase(.work)
             }
         case .rest:
@@ -788,6 +754,14 @@ private struct WorkoutRunnerView: View {
         setIdleTimer(false)
         let endDate = Date()
         await liveActivity.end(immediate: true)
+
+        // Ausklang spielen wenn Session vollständig beendet (wie WorkoutProgramsView)
+        if completed {
+            let soundDuration = sounds.duration(of: WorkoutCue.ausklang)
+            sounds.play(WorkoutCue.ausklang)
+            // Kurz warten bis Sound fertig ist
+            try? await Task.sleep(nanoseconds: UInt64((soundDuration + 0.3) * 1_000_000_000))
+        }
 
         // Workout speichern
         if let start = workoutStart {
