@@ -698,6 +698,11 @@ public struct WorkoutProgramsView: View {
         @AppStorage("countdownBeforeStart") private var countdownBeforeStart: Int = 0
         @State private var showCountdown = false
 
+        // Effort Score (iOS 18+)
+        @State private var showEffortSheet = false
+        @State private var effortScore: Double = 7
+        @State private var lastWorkout: HKWorkout?
+
         var body: some View {
             ZStack {
                 Color(.systemGray6).ignoresSafeArea()
@@ -789,6 +794,90 @@ public struct WorkoutProgramsView: View {
                     await endSession(manual: true)
                 }
             }
+            .sheet(isPresented: $showEffortSheet) {
+                effortScoreSheet
+            }
+        }
+
+        // MARK: - Effort Score Sheet (iOS 18+)
+        @available(iOS 18.0, *)
+        private var effortScoreSheet: some View {
+            VStack(spacing: 24) {
+                Text(NSLocalizedString("How hard was that?", comment: "Effort score prompt"))
+                    .font(.title2.bold())
+                    .padding(.top, 24)
+
+                Text(effortLabel)
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(effortColor)
+
+                Slider(value: $effortScore, in: 1...10, step: 1)
+                    .tint(effortColor)
+                    .padding(.horizontal, 32)
+
+                HStack {
+                    Text("1").font(.caption).foregroundStyle(.secondary)
+                    Spacer()
+                    Text("10").font(.caption).foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 40)
+
+                Button(action: saveEffortScore) {
+                    Text(NSLocalizedString("Save", comment: "Save button"))
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.accentColor)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+                .padding(.horizontal, 32)
+
+                Button(NSLocalizedString("Skip", comment: "Skip button")) {
+                    showEffortSheet = false
+                    close()
+                }
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 24)
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
+
+        private var effortLabel: String {
+            let score = Int(effortScore)
+            switch score {
+            case 1...3: return "💚 \(NSLocalizedString("Easy", comment: "Effort easy"))"
+            case 4...6: return "💛 \(NSLocalizedString("Moderate", comment: "Effort moderate"))"
+            case 7...8: return "🧡 \(NSLocalizedString("Hard", comment: "Effort hard"))"
+            case 9...10: return "❤️ \(NSLocalizedString("Very Hard", comment: "Effort very hard"))"
+            default: return "🧡 \(NSLocalizedString("Hard", comment: "Effort hard"))"
+            }
+        }
+
+        private var effortColor: Color {
+            let score = Int(effortScore)
+            switch score {
+            case 1...3: return .green
+            case 4...6: return .yellow
+            case 7...8: return .orange
+            case 9...10: return .red
+            default: return .orange
+            }
+        }
+
+        private func saveEffortScore() {
+            showEffortSheet = false
+            if #available(iOS 18.0, *), let workout = lastWorkout {
+                Task {
+                    do {
+                        try await HealthKitManager.shared.relateEffortScore(Int(effortScore), to: workout)
+                    } catch {
+                        print("[EffortScore] Fehler: \(error)")
+                    }
+                }
+            }
+            close()
         }
 
         private func setIdleTimer(_ disabled: Bool) {
@@ -835,50 +924,51 @@ public struct WorkoutProgramsView: View {
             // GongPlayer handles cleanup automatically via delegate
             // Scheduled sounds cancelled by ProgressRingsView.onDisappear
 
-            // 3. HealthKit Logging if session > 3s (runs in background)
-            let endDate = Date()
-            if sessionStart.distance(to: endDate) > 3 {
-                // Mark session as ended BEFORE async logging starts
-                sessionEnded = true
-
-                Task.detached(priority: .userInitiated) {
-                    do {
-                        try await HealthKitManager.shared.logWorkout(
-                            start: sessionStart,
-                            end: endDate,
-                            activity: .highIntensityIntervalTraining
-                        )
-                        print("[WorkoutPrograms] HealthKit workout logged")
-
-                        // 4. Update streaks after successful HealthKit log
-                        await streakManager.updateStreaks()
-                    } catch {
-                        print("[WorkoutPrograms] HealthKit logging failed: \(error)")
-                    }
-                }
-            } else {
-                // Session < 3s: no HealthKit logging, but still mark as ended
-                sessionEnded = true
-            }
-
-            // 5. End Live Activity
+            // 3. End Live Activity
             await liveActivity.end(immediate: true)
             print("[WorkoutPrograms] LiveActivity ended")
 
-            // 6. Play end sound if session completed naturally
-            // Wait for sound to finish before closing (prevents cutoff)
+            // 4. Play end sound if session completed naturally
             if !manual {
                 let soundDuration = sounds.duration(of: .ausklang)
                 sounds.play(.ausklang)
-                // Wait for sound duration + 0.3s buffer
                 let waitNanoseconds = UInt64((soundDuration + 0.3) * 1_000_000_000)
                 try? await Task.sleep(nanoseconds: waitNanoseconds)
             } else {
-                // Manual stop: small delay for UI feedback
                 try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
             }
 
-            // 7. Close the view
+            // 5. HealthKit Logging if session > 3s
+            let endDate = Date()
+            if sessionStart.distance(to: endDate) > 3 {
+                sessionEnded = true
+
+                do {
+                    let workout = try await HealthKitManager.shared.logWorkout(
+                        start: sessionStart,
+                        end: endDate,
+                        activity: .highIntensityIntervalTraining
+                    )
+                    print("[WorkoutPrograms] HealthKit workout logged")
+
+                    // Update streaks
+                    await streakManager.updateStreaks()
+
+                    // iOS 18+: Show Effort Score Sheet
+                    if #available(iOS 18.0, *), let workout = workout {
+                        lastWorkout = workout
+                        showEffortSheet = true
+                        // close() wird vom Sheet aufgerufen
+                        return
+                    }
+                } catch {
+                    print("[WorkoutPrograms] HealthKit logging failed: \(error)")
+                }
+            } else {
+                sessionEnded = true
+            }
+
+            // 6. Close the view (wenn kein Sheet angezeigt wird)
             print("[WorkoutPrograms] close() called")
             close()
         }
