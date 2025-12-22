@@ -1,49 +1,99 @@
 {
-  "current_phase": "validating",
-  "workflow_type": "feature",
-  "feature_name": "Workout Effort Score",
+  "current_phase": "implementing",
+  "workflow_type": "bug",
+  "feature_name": "NoAlc als separater Tracker + Quick-Log Buttons",
   "spec_file": null,
   "spec_approved": true,
   "tests_written": true,
   "tests_passing": true,
   "implementation_done": true,
   "validated": true,
-  "last_updated": "2025-12-21T21:24:40.285957",
+  "last_updated": "2025-12-22T08:39:58.301599",
   "phase_history": [
     {
       "from": "idle",
       "to": "analysing",
-      "timestamp": "2025-12-21T18:31:17.839977"
+      "timestamp": "2025-12-22T07:38:03.627656"
     },
     {
       "from": "analysing",
       "to": "spec_written",
-      "timestamp": "2025-12-21T18:59:43.593943"
+      "timestamp": "2025-12-22T07:40:51.284849"
     },
     {
       "from": "spec_written",
-      "to": "spec_approved",
-      "timestamp": "2025-12-21T19:03:21.664443"
-    },
-    {
-      "from": "spec_approved",
       "to": "implementing",
-      "timestamp": "2025-12-21T19:04:01.273813"
+      "timestamp": "2025-12-22T07:41:33.292479"
     },
     {
       "from": "implementing",
       "to": "implementing",
-      "timestamp": "2025-12-21T21:10:38.236906"
+      "timestamp": "2025-12-22T07:41:39.663513"
+    },
+    {
+      "from": "implementing",
+      "to": "implementing",
+      "timestamp": "2025-12-22T07:44:02.177529"
     },
     {
       "from": "implementing",
       "to": "validating",
-      "timestamp": "2025-12-21T21:12:21.625721"
+      "timestamp": "2025-12-22T07:44:34.218511"
     },
     {
       "from": "validating",
       "to": "validating",
-      "timestamp": "2025-12-21T21:24:40.285947"
+      "timestamp": "2025-12-22T07:46:35.480497"
+    },
+    {
+      "from": "validating",
+      "to": "implementing",
+      "timestamp": "2025-12-22T08:12:05.593857"
+    },
+    {
+      "from": "implementing",
+      "to": "validating",
+      "timestamp": "2025-12-22T08:15:54.762255"
+    },
+    {
+      "from": "validating",
+      "to": "analysing",
+      "timestamp": "2025-12-22T08:19:55.078821"
+    },
+    {
+      "from": "analysing",
+      "to": "analysing",
+      "timestamp": "2025-12-22T08:23:47.154720"
+    },
+    {
+      "from": "analysing",
+      "to": "implementing",
+      "timestamp": "2025-12-22T08:24:13.022582"
+    },
+    {
+      "from": "implementing",
+      "to": "implementing",
+      "timestamp": "2025-12-22T08:24:31.944232"
+    },
+    {
+      "from": "implementing",
+      "to": "implementing",
+      "timestamp": "2025-12-22T08:25:46.159323"
+    },
+    {
+      "from": "implementing",
+      "to": "validating",
+      "timestamp": "2025-12-22T08:31:51.537349"
+    },
+    {
+      "from": "validating",
+      "to": "validating",
+      "timestamp": "2025-12-22T08:35:19.290695"
+    },
+    {
+      "from": "validating",
+      "to": "implementing",
+      "timestamp": "2025-12-22T08:39:58.301592"
     }
   ]
 }

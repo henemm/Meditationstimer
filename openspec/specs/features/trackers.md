@@ -128,6 +128,47 @@ The system SHALL allow users to create custom trackers.
 
 ---
 
+### Requirement: Tracker Management
+The system SHALL allow users to edit, deactivate, and delete custom trackers.
+
+#### Scenario: Edit Tracker
+- GIVEN user has an existing tracker
+- WHEN user opens tracker settings (swipe or context menu)
+- THEN user can edit name and icon
+- AND changes are saved immediately
+- AND historical logs remain unchanged
+
+#### Scenario: Deactivate Tracker (Soft Delete)
+- GIVEN user wants to hide a tracker temporarily
+- WHEN user selects "Deactivate" / "Deaktivieren"
+- THEN tracker is hidden from main view and widget
+- AND historical logs and streaks are preserved
+- AND tracker can be reactivated from Settings
+
+#### Scenario: Reactivate Tracker
+- GIVEN user has deactivated trackers
+- WHEN user opens Settings > Deactivated Trackers
+- THEN list of deactivated trackers is shown
+- AND user can reactivate any tracker
+- AND streak continues from last state
+
+#### Scenario: Delete Tracker Permanently
+- GIVEN user wants to permanently remove a tracker
+- WHEN user selects "Delete" / "Löschen"
+- THEN confirmation dialog appears with warning:
+  - "This will permanently delete [Tracker] and all [X] logs. This cannot be undone."
+  - "Dies löscht [Tracker] und alle [X] Einträge dauerhaft. Dies kann nicht rückgängig gemacht werden."
+- AND after confirmation, tracker and all logs are deleted
+- AND HealthKit data remains (if synced)
+
+#### Scenario: Reorder Trackers
+- GIVEN user has multiple trackers
+- WHEN user enters edit mode (long press or edit button)
+- THEN trackers can be reordered via drag & drop
+- AND new order is saved and reflected in widget
+
+---
+
 ## Presets
 
 ### Awareness Tracker Presets (Logging = The Exercise)
@@ -422,6 +463,16 @@ The system SHALL recognize patterns in Saboteur Tracker data.
    - Als User möchte ich erinnert werden, wenn ich eine Gewohnheit vergesse
 4. As a user, I want to see my progress in the calendar
    - Als User möchte ich meinen Fortschritt im Kalender sehen
+
+### Tracker Management / Tracker-Verwaltung
+1. As a user, I want to edit a tracker's name and icon
+   - Als User möchte ich Name und Icon eines Trackers ändern können
+2. As a user, I want to temporarily hide a tracker without losing my data
+   - Als User möchte ich einen Tracker temporär ausblenden ohne meine Daten zu verlieren
+3. As a user, I want to permanently delete a tracker I no longer need
+   - Als User möchte ich einen Tracker dauerhaft löschen können, den ich nicht mehr brauche
+4. As a user, I want to reorder my trackers to prioritize what's important
+   - Als User möchte ich meine Tracker umsortieren können, um Wichtiges zu priorisieren
 
 ### Saboteur Trackers / Saboteur-Tracker
 1. As a user, I want to consciously notice when I fall into autopilot behaviors

@@ -30,13 +30,8 @@ struct TrackerTab: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // NoAlc Quick Log Section (built-in tracker)
-                    noAlcSection
-
-                    // Custom Trackers Section
-                    if !trackers.isEmpty {
-                        trackersSection
-                    }
+                    // Unified Trackers Section (NoAlc + Custom Trackers)
+                    trackersSection
 
                     // Add Tracker Card
                     addTrackerCard
@@ -55,36 +50,6 @@ struct TrackerTab: View {
             .sheet(item: $trackerToEdit) { tracker in
                 TrackerEditorSheet(tracker: tracker)
             }
-        }
-    }
-
-    // MARK: - NoAlc Section
-
-    private var noAlcSection: some View {
-        GlassCard {
-            VStack(spacing: 12) {
-                HStack {
-                    Text("🍷")
-                        .font(.system(size: 28))
-                    Text("NoAlc")
-                        .font(.headline)
-                    Spacer()
-                    // Info button for detailed view
-                    Button(action: { showingNoAlcLog = true }) {
-                        Image(systemName: "info.circle")
-                            .font(.system(size: 18))
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                // Quick-Log Buttons
-                HStack(spacing: 10) {
-                    noAlcButton(.steady, label: NSLocalizedString("Steady", comment: "NoAlc steady"), color: .green)
-                    noAlcButton(.easy, label: NSLocalizedString("Easy", comment: "NoAlc easy"), color: .yellow)
-                    noAlcButton(.wild, label: NSLocalizedString("Wild", comment: "NoAlc wild"), color: .red)
-                }
-            }
-            .padding(.vertical, 4)
         }
     }
 
@@ -119,11 +84,45 @@ struct TrackerTab: View {
                 .textCase(.uppercase)
                 .padding(.horizontal, 4)
 
+            // NoAlc as built-in tracker (always first)
+            noAlcCard
+
+            // Custom Trackers
             ForEach(trackers) { tracker in
                 TrackerRow(tracker: tracker) {
                     trackerToEdit = tracker
                 }
             }
+        }
+    }
+
+    // MARK: - NoAlc Card (within Trackers section)
+
+    private var noAlcCard: some View {
+        GlassCard {
+            VStack(spacing: 12) {
+                HStack {
+                    Text("🍷")
+                        .font(.system(size: 28))
+                    Text("NoAlc")
+                        .font(.headline)
+                    Spacer()
+                    // Info button for detailed view
+                    Button(action: { showingNoAlcLog = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 18))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                // Quick-Log Buttons
+                HStack(spacing: 10) {
+                    noAlcButton(.steady, label: NSLocalizedString("Steady", comment: "NoAlc steady"), color: .green)
+                    noAlcButton(.easy, label: NSLocalizedString("Easy", comment: "NoAlc easy"), color: .yellow)
+                    noAlcButton(.wild, label: NSLocalizedString("Wild", comment: "NoAlc wild"), color: .red)
+                }
+            }
+            .padding(.vertical, 4)
         }
     }
 

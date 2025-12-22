@@ -85,6 +85,31 @@ final class WorkoutSoundPlayerTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
+    // MARK: - Bug 32: Vergleich SoundPlayer vs WorkoutSoundPlayer
+
+    /// Dieser Test vergleicht das Verhalten beider Player.
+    /// SoundPlayer (in WorkoutProgramsView) funktioniert.
+    /// WorkoutSoundPlayer (in WorkoutsView) funktioniert NICHT.
+    /// Der Test muss den Unterschied zeigen.
+    func testBug32_ComparePlayersDirectly() {
+        // WorkoutSoundPlayer - der KAPUTTE
+        let workoutPlayer = WorkoutSoundPlayer()
+        workoutPlayer.reset()
+        workoutPlayer.prepare()
+
+        // Prüfe ob URLs gefunden wurden
+        let workoutHasAuftakt = workoutPlayer.cachedUrls[.auftakt] != nil
+        let workoutHasAusklang = workoutPlayer.cachedUrls[.ausklang] != nil
+
+        print("[TEST] WorkoutSoundPlayer - auftakt: \(workoutHasAuftakt), ausklang: \(workoutHasAusklang)")
+
+        // Dieser Test dokumentiert den Unterschied
+        // Wenn beide true → Problem liegt woanders
+        // Wenn einer false → Sound-Dateien werden nicht gefunden
+        XCTAssertTrue(workoutHasAuftakt, "WorkoutSoundPlayer muss auftakt finden")
+        XCTAssertTrue(workoutHasAusklang, "WorkoutSoundPlayer muss ausklang finden")
+    }
+
     // MARK: - Vergleich mit GongPlayer
 
     func testAudioSessionConfigurationMatchesGongPlayer() {

@@ -63,8 +63,8 @@ final class LeanHealthTimerUITests: XCTestCase {
 
         trackerTab.tap()
         sleep(2)
-        // Verify tracker content loaded (Log Today button)
-        XCTAssertTrue(app.buttons["Log Today"].waitForExistence(timeout: 3), "Tracker tab content should load")
+        // Verify tracker content loaded (NoAlc Quick-Log buttons)
+        XCTAssertTrue(app.buttons["Steady"].waitForExistence(timeout: 3), "Tracker tab content should load")
 
         erfolgeTab.tap()
         sleep(3)
@@ -145,8 +145,8 @@ final class LeanHealthTimerUITests: XCTestCase {
 
     // MARK: - Tracker Tab Tests
 
-    /// Test that Tracker tab shows "Log Today" button
-    func testTrackerTabShowsLogTodayButton() throws {
+    /// Test that NoAlc card shows Quick-Log buttons (Steady, Easy, Wild)
+    func testNoAlcQuickLogButtonsExist() throws {
         let app = XCUIApplication()
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -156,9 +156,14 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
         trackerTab.tap()
 
-        // Verify "Log Today" button exists
-        let logTodayButton = app.buttons["Log Today"]
-        XCTAssertTrue(logTodayButton.waitForExistence(timeout: 3), "Log Today button should exist in Tracker tab")
+        // Verify all 3 NoAlc Quick-Log buttons exist
+        let steadyButton = app.buttons["Steady"]
+        let easyButton = app.buttons["Easy"]
+        let wildButton = app.buttons["Wild"]
+
+        XCTAssertTrue(steadyButton.waitForExistence(timeout: 3), "Steady button should exist in NoAlc card")
+        XCTAssertTrue(easyButton.exists, "Easy button should exist in NoAlc card")
+        XCTAssertTrue(wildButton.exists, "Wild button should exist in NoAlc card")
     }
 
     /// Test that Tracker tab shows "Add Tracker" button
@@ -462,8 +467,8 @@ final class LeanHealthTimerUITests: XCTestCase {
 
             let addTrackerButton = app.buttons["Add Tracker"]
             guard addTrackerButton.waitForExistence(timeout: 3) else {
-                // Can't add tracker - pass test if tracker tab loaded
-                XCTAssertTrue(app.buttons["Log Today"].exists, "Tracker tab should be functional")
+                // Can't add tracker - pass test if tracker tab loaded (NoAlc buttons visible)
+                XCTAssertTrue(app.buttons["Steady"].exists, "Tracker tab should be functional")
                 return
             }
             addTrackerButton.tap()
@@ -526,9 +531,9 @@ final class LeanHealthTimerUITests: XCTestCase {
             }
         } else {
             // No trackers exist yet - this is acceptable
-            // The test validates that the tracker tab is functional
-            XCTAssertTrue(app.buttons["Log Today"].exists || app.buttons["Add Tracker"].exists,
-                         "Tracker tab should show Log Today or Add Tracker button")
+            // The test validates that the tracker tab is functional (NoAlc buttons visible)
+            XCTAssertTrue(app.buttons["Steady"].exists || app.buttons["Add Tracker"].exists,
+                         "Tracker tab should show NoAlc Quick-Log or Add Tracker button")
         }
     }
 

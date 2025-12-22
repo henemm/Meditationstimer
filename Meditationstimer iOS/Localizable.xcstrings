@@ -324,6 +324,9 @@
     "🍃" : {
 
     },
+    "🍷" : {
+
+    },
     "🔥" : {
 
     },
@@ -450,9 +453,6 @@
           }
         }
       }
-    },
-    "10" : {
-
     },
     "A an example control that runs a timer." : {
       "comment" : "Description of a control widget that runs a timer.",
@@ -5169,17 +5169,6 @@
         }
       }
     },
-    "Light" : {
-      "comment" : "Effort light",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leicht"
-          }
-        }
-      }
-    },
     "Leg Swing Left" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5243,6 +5232,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Push-Ups"
+          }
+        }
+      }
+    },
+    "Light" : {
+      "comment" : "Effort light",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leicht"
           }
         }
       }
