@@ -106,18 +106,28 @@ final class TrackerManager {
 
     // MARK: - Streak Calculation
 
-    /// Calculate current streak for a tracker
+    /// Calculate current streak for a tracker (legacy method - returns Int only)
     func streak(for tracker: Tracker, in context: ModelContext) -> Int {
-        switch tracker.trackingMode {
-        case .counter, .yesNo, .awareness:
-            return calculateActiveStreak(for: tracker)
-        case .avoidance:
-            return calculateAvoidanceStreak(for: tracker)
-        }
+        return calculateStreakResult(for: tracker).currentStreak
+    }
+
+    /// Calculate full streak result using the generic StreakCalculator
+    /// Returns streak, rewards, and other metrics
+    func calculateStreakResult(for tracker: Tracker) -> StreakResult {
+        let calculator = StreakCalculator(calendar: calendar)
+
+        return calculator.calculate(
+            logs: tracker.logs,
+            valueType: tracker.effectiveValueType,
+            successCondition: tracker.effectiveSuccessCondition,
+            dayAssignment: tracker.effectiveDayAssignment,
+            rewardConfig: tracker.rewardConfig
+        )
     }
 
     /// Calculate streak for trackers where logging = activity (counter, yesNo, awareness)
     /// Streak = consecutive days with at least 1 log
+    /// @available(*, deprecated, message: "Use calculateStreakResult instead")
     private func calculateActiveStreak(for tracker: Tracker) -> Int {
         let today = calendar.startOfDay(for: Date())
         let todayHasLog = tracker.logs.contains { log in
@@ -146,6 +156,7 @@ final class TrackerManager {
 
     /// Calculate streak for avoidance trackers
     /// Streak = consecutive days WITHOUT any log
+    /// @available(*, deprecated, message: "Use calculateStreakResult instead")
     private func calculateAvoidanceStreak(for tracker: Tracker) -> Int {
         let today = calendar.startOfDay(for: Date())
 

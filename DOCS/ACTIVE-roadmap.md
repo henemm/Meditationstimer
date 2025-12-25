@@ -1,6 +1,6 @@
 # Feature Roadmap - HHHaven
 
-**Letzte Aktualisierung:** 23. November 2025
+**Letzte Aktualisierung:** 25. Dezember 2025
 **Regel:** Geplante Features. Nach Implementation → löschen und feature-*.md erstellen
 
 ---
@@ -29,6 +29,40 @@
 ---
 
 ## 🔄 In Planung
+
+### Generic Tracker System
+**Status:** Spec fertig, Implementierung geplant
+**Priorität:** Hoch
+**Kategorie:** Architektur-Refactoring
+**Aufwand:** Groß (mehrere Dateien, Migration)
+**Spec:** `openspec/specs/features/generic-tracker-system.md`
+
+**Kurzbeschreibung:**
+Abstrahiertes, konfigurierbares Tracker-System das alle Tracker-Typen (inkl. NoAlc) vereinheitlicht.
+
+**Kernkomponenten:**
+- `TrackerLevel` - 2-5 Levels mit Icon + StreakEffect
+- `TrackerValueType` - boolean / integer / levels
+- `SuccessCondition` - Wann ist ein Tag erfolgreich?
+- `RewardConfig` - Optionales Joker-System
+- `DayAssignment` - Tag-Zuordnungslogik (timestamp vs cutoffHour)
+- `StorageStrategy` - local / healthKit / both
+- `StreakCalculator` - Universelle Streak-Berechnung
+
+**Ziele:**
+- NoAlc migriert ins generische System
+- Neue Tracker-Typen ohne Code-Änderungen
+- SmartReminder-Integration für alle Tracker
+- Mindfulness/Workout bleiben separat (timer-basiert)
+
+**Phasen:**
+1. [ ] Core Components implementieren (Enums, Structs)
+2. [ ] TrackerModels.swift erweitern
+3. [ ] StreakCalculator implementieren
+4. [ ] SmartReminder ActivityType erweitern
+5. [ ] NoAlc Migration (später)
+
+---
 
 ### Label-Umbenennung Offene Meditation
 **Status:** ✅ Implementiert - UI-Test ausstehend

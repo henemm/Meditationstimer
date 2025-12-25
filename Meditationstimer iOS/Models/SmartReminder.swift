@@ -44,7 +44,23 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
     public var isEnabled: Bool
     public var selectedDays: Set<Weekday>
     public var activityType: ActivityType
-    
+
+    // MARK: - Generic Tracker System Support
+
+    /// Optional: Links to a Tracker.id for generic tracker reminders
+    /// When set, this reminder is for a custom tracker instead of built-in activity types
+    public var trackerID: UUID?
+
+    /// Tracker name for display (only set when trackerID is set)
+    public var trackerName: String?
+
+    /// Returns true if this reminder is for a generic tracker
+    public var isTrackerReminder: Bool {
+        trackerID != nil
+    }
+
+    // MARK: - Computed Properties
+
     // Computed properties für Engine-Kompatibilität
     public var triggerHour: Int {
         Calendar.current.component(.hour, from: triggerTime)
@@ -91,7 +107,15 @@ public struct SmartReminder: Identifiable, Codable, Equatable {
 
         // Activity description
         let activityDescription: String
-        if hoursInactive == 1 {
+
+        // Handle tracker reminders (generic tracker system)
+        if let name = trackerName {
+            if hoursInactive == 1 {
+                activityDescription = String(format: NSLocalizedString("no %@ logged in the last hour", comment: "Tracker reminder condition singular"), name)
+            } else {
+                activityDescription = String(format: NSLocalizedString("no %@ logged in the last %d hours", comment: "Tracker reminder condition plural"), name, hoursInactive)
+            }
+        } else if hoursInactive == 1 {
             // Singular: "in the last hour"
             switch activityType {
             case .mindfulness: activityDescription = NSLocalizedString("no meditation in the last hour", comment: "Mindfulness reminder condition singular")
