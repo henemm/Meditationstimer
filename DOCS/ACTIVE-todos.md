@@ -1,13 +1,42 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 21. Dezember 2025
+**Letzte Aktualisierung:** 25. Dezember 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
 
 ## 🚨 KRITISCHE Bugs
 
-*Aktuell keine kritischen Bugs*
+### Bug 33: SmartReminder "Reverse Cancel" funktioniert nicht mehr
+**Datum:** 25. Dezember 2025
+**Status:** ✅ BEHOBEN - Fix implementiert
+**Gemeldet von:** User-Feedback
+
+**Problem:**
+Das "Smarte" an SmartReminders funktionierte nicht mehr:
+- Wenn eine Aktivität geloggt wurde, sollten zukünftige Reminder automatisch gecancelled werden
+- Reminder feuerten trotzdem
+
+**Root Cause (identifiziert):**
+Bei einem früheren Fix für "Next-Week Scheduling" wurde `scheduleNotifications()` nicht mehr nach `cancelMatchingReminders()` aufgerufen. Das bedeutete:
+- `cancelMatchingReminders()` fügte nur zur `cancelled`-Liste hinzu
+- Die **bereits geplante iOS-Notification wurde NICHT entfernt**
+- Ergebnis: Notification feuerte trotzdem
+
+**Fix (implementiert):**
+In `SmartReminderEngine.swift` Zeile 191-198:
+```swift
+// Bug 33 Fix: Remove the pending notification from iOS immediately
+#if os(iOS)
+let identifier = "activity-reminder-\(reminder.id.uuidString)-\(weekday.rawValue)"
+UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+#endif
+```
+
+**Verifizierung:**
+- [x] Build erfolgreich
+- [x] 66 Unit Tests GRÜN
+- [ ] Manueller Test auf Device (ausstehend)
 
 ---
 
@@ -198,41 +227,11 @@ Details siehe Commit c89163d und git history.
 
 ---
 
-## 🔍 Offene Untersuchungen
-
-### User-Feedback: Lautstärke muss jedes Mal neu eingestellt werden
-**Status:** Analyse abgeschlossen, Rückfrage beim User nötig
-**Datum:** 14.12.2025
-
-**User-Zitat:**
-> "Jedes Mal wenn ich die App verwende stelle ich die Lautstärke für Gong, Wellen, etc. ein, damit die nicht so aufdringlich sind. Wenn die App sich die merken und beim Start wieder einstellen würde, das wäre cool."
-
-**Analyse-Ergebnis:**
-- **Ambient Sound Volume (Wellen, etc.):** Wird gespeichert ✅ (`@AppStorage("ambientSoundVolume")`)
-- **Gong Volume:** Existiert NICHT ❌ – kein Slider, keine Einstellung
-
-**Technischer Befund:**
-- `GongPlayer.swift` hat keine Volume-Property
-- `SettingsSheet.swift` hat nur Slider für Ambient, nicht für Gong
-- Gong spielt immer mit 100% der System-Lautstärke
-
-**Vermutung:**
-User meint die Gong-Lautstärke, die nur über iPhone-Lautstärketasten einstellbar ist (= System-Lautstärke). Diese ändert sich durch andere Apps (YouTube, Telefon, etc.).
-
-**Offene Frage an User:**
-Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eigener Slider in Settings).
-
-**Falls Feature gewünscht:**
-- Aufwand: Klein (~50 LoC, 4 Dateien)
-- `GongPlayer.swift` + `SettingsSheet.swift` + `OffenView.swift` + `AtemView.swift`
-
----
-
 ## ✅ Neue Features (validiert)
 
 ### Workout Effort Score (iOS 18+)
 **Datum:** 21. Dezember 2025
-**Status:** ✅ IMPLEMENTIERT, WARTET AUF DEVICE-TEST
+**Status:** ✅ ABGESCHLOSSEN UND VERIFIZIERT (25.12.2025)
 
 **Implementierung:**
 - Sheet mit Slider (1-10) erscheint nach jedem HIIT Workout
@@ -241,30 +240,11 @@ Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eig
 - Skip-Option für User die nicht bewerten möchten
 - Graceful Degradation: Bei iOS < 18 erscheint kein Sheet
 
-**Geänderte Dateien:**
-| Datei | Änderung |
-|-------|----------|
-| `Services/HealthKitManager.swift` | `relateEffortScore()` + Permission |
-| `Meditationstimer iOS/Tabs/WorkoutTab.swift` | Effort Sheet UI |
-| `LeanHealthTimerTests/WorkoutEffortScoreTests.swift` | 5 Unit Tests |
-| `openspec/changes/workout-effort-score/` | Spec-Dokumentation |
-
-**Device-Test Anweisungen:**
-1. Free Workout starten (kurz: 3x 5s/5s)
-2. Workout beenden (X-Button oder natürliches Ende)
-3. Sheet sollte erscheinen mit Slider (vorbelegt: 7)
-4. Score wählen → Speichern
-5. In **Fitness App → Workouts → [das Workout]** prüfen:
-   - Effort Score sollte angezeigt werden
-   - Training Load sollte aktualisiert werden
-
 **Tests:**
 | Test | Status |
 |------|--------|
 | Unit Tests (5 Tests) | ✅ GRÜN |
-| Debug Build | ✅ SUCCEEDED |
-| Release Build | ✅ SUCCEEDED |
-| Device Test | ⏳ Ausstehend |
+| Device Test | ✅ VERIFIZIERT |
 
 ---
 
@@ -291,16 +271,10 @@ Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eig
 
 **Bug 27: NoAlc Joker-System ignorierte nicht berichtete Tage**
 - Location: `NoAlcManager.swift` (neu: `calculateStreakAndRewards()`)
-- **Ursprüngliches Problem:** Streak-Berechnung iterierte nur über existierende Einträge → Lücken (nicht berichtete Tage) wurden ignoriert
 - **Root Cause:** Code verwendete `alcoholDays.keys.sorted()` statt über ALLE Tage zu iterieren
-- **Fix (19.12.2025):**
-  - Neue testbare Methode `NoAlcManager.calculateStreakAndRewards()` erstellt
-  - Iteriert über ALLE Tage vom ersten Eintrag bis heute/gestern
-  - Lücken werden wie Easy/Wild behandelt (brauchen Joker)
-  - "Heute nicht geloggt" wird ignoriert (kein Penalty)
-  - 16 Unit Tests für Joker-System erstellt
-- **Getestet:** ✅ Alle 16 NoAlcStreakTests GRÜN
-- Status: **GEFIXT, WARTET AUF USER-TEST**
+- **Fix (19.12.2025):** Neue testbare Methode iteriert über ALLE Tage
+- **Getestet:** ✅ 16 Unit Tests GRÜN + Device-Test
+- Status: **✅ GEFIXT UND VERIFIZIERT** (25.12.2025)
 
 ---
 
@@ -318,9 +292,8 @@ Meinst du die **Gong-Lautstärke**? Die können wir als Feature hinzufügen (eig
 
 **Bug 12: AirPods Static Noise während Meditation**
 - Location: `Meditationstimer iOS/BackgroundAudioKeeper.swift` Zeile 32
-- **Fix existiert:** Volume wurde auf `0.0` gesetzt (war vorher 0.01)
-- Test: AirPods + ANC aktivieren, Meditation OHNE Ambient Sound starten, auf Fiepen achten
-- Status: **FIX EXISTIERT, BITTE AUF DEVICE TESTEN**
+- **Fix:** Volume auf `0.0` gesetzt (war vorher 0.01)
+- Status: **✅ GEFIXT UND VERIFIZIERT** (25.12.2025)
 
 **Bug 26: Free Workout TTS sagt "Round Eins" statt "Round one" (EN)**
 - Location: `Meditationstimer iOS/Tabs/WorkoutsView.swift` Zeilen 178-200

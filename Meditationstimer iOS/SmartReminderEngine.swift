@@ -187,8 +187,17 @@ public final class SmartReminderEngine {
                     // Only add if not already cancelled
                     if !cancelled.contains(cancelledNotification) {
                         cancelled.append(cancelledNotification)
-                        cancelledCount += 1
+
+                        // Bug 33 Fix: Remove the pending notification from iOS immediately
+                        #if os(iOS)
+                        let identifier = "activity-reminder-\(reminder.id.uuidString)-\(weekday.rawValue)"
+                        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+                        logger.info("    ✅ CANCELLED reminder '\(reminder.title)' for \(weekday.displayName) (notification removed)")
+                        #else
                         logger.info("    ✅ CANCELLED reminder '\(reminder.title)' for \(weekday.displayName)")
+                        #endif
+
+                        cancelledCount += 1
                     } else {
                         logger.info("    ℹ️ Already cancelled")
                     }
