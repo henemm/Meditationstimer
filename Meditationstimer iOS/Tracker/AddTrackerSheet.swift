@@ -159,6 +159,8 @@ struct PresetRow: View {
             return NSLocalizedString("Awareness logging", comment: "Awareness mode")
         case .avoidance:
             return NSLocalizedString("Avoidance streak", comment: "Avoidance mode")
+        case .levels:
+            return NSLocalizedString("Custom levels", comment: "Levels mode")
         }
     }
 }

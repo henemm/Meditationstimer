@@ -184,6 +184,8 @@ struct TrackerEditorSheet: View {
             return NSLocalizedString("Awareness", comment: "Awareness mode")
         case .avoidance:
             return NSLocalizedString("Avoidance", comment: "Avoidance mode")
+        case .levels:
+            return NSLocalizedString("Levels", comment: "Levels mode")
         }
     }
 

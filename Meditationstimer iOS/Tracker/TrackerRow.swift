@@ -164,6 +164,9 @@ struct TrackerRow: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+        case .levels:
+            // Handled by levelStatusView, this is a fallback
+            EmptyView()
         }
     }
 
@@ -274,6 +277,10 @@ struct TrackerRow: View {
                 .cornerRadius(16)
             }
             .buttonStyle(.plain)
+
+        case .levels:
+            // Handled by levelQuickLogButton, this is a fallback
+            EmptyView()
         }
     }
 

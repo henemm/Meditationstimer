@@ -73,6 +73,9 @@ final class TrackerManager {
         case .avoidance:
             // Log = relapse (breaks streak)
             return logEntry(for: tracker, in: context)
+        case .levels:
+            // For levels, user should use LevelSelectionView; this is fallback
+            return logEntry(for: tracker, in: context)
         }
     }
 

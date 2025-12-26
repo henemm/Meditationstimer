@@ -26,6 +26,7 @@ enum TrackingMode: String, Codable, CaseIterable {
     case yesNo       // Single tap = done for today
     case awareness   // Saboteur: Log when noticed (streak = days aware)
     case avoidance   // Saboteur: Streak = days without logging
+    case levels      // Custom levels with configurable streak effects
 }
 
 // MARK: - Generic Tracker System Components
@@ -301,6 +302,9 @@ final class Tracker {
             return .integer(goal: dailyGoal)
         case .yesNo, .awareness, .avoidance:
             return .boolean
+        case .levels:
+            // If trackingMode is .levels but levels array is nil, use boolean as fallback
+            return .boolean
         }
     }
 
@@ -321,6 +325,9 @@ final class Tracker {
             return .logExists
         case .avoidance:
             return .logNotExists
+        case .levels:
+            // If trackingMode is .levels but no levels defined, use logExists as fallback
+            return .logExists
         }
     }
 
