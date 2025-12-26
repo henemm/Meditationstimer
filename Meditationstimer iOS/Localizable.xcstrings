@@ -5828,6 +5828,20 @@
         }
       }
     },
+    "no %@ logged in the last %d hours" : {
+      "comment" : "Tracker reminder condition plural",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "no %1$@ logged in the last %2$d hours"
+          }
+        }
+      }
+    },
+    "no %@ logged in the last hour" : {
+      "comment" : "Tracker reminder condition singular"
+    },
     "no alcohol logged in the last %d hours" : {
       "comment" : "NoAlc reminder condition plural",
       "extractionState" : "manual",

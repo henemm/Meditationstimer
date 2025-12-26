@@ -23,11 +23,25 @@ struct TrackerRow: View {
     @State private var showingMoodSheet = false
     @State private var showingFeelingsSheet = false
     @State private var showingGratitudeSheet = false
+    @State private var showingLevelSheet = false
 
     // Check if this is a special awareness preset
     private var isSpecialAwareness: Bool {
         tracker.trackingMode == .awareness &&
         ["Mood", "Feelings", "Gratitude"].contains(tracker.name)
+    }
+
+    // Check if this is a level-based tracker (Generic Tracker System)
+    private var isLevelBased: Bool {
+        if case .levels = tracker.effectiveValueType {
+            return true
+        }
+        return false
+    }
+
+    // Get levels for level-based tracker
+    private var trackerLevels: [TrackerLevel] {
+        tracker.levels ?? []
     }
 
     var body: some View {
@@ -72,12 +86,46 @@ struct TrackerRow: View {
         .sheet(isPresented: $showingGratitudeSheet) {
             GratitudeLogView(tracker: tracker, onSave: {})
         }
+        .sheet(isPresented: $showingLevelSheet) {
+            LevelSelectionView(tracker: tracker, onSave: {})
+        }
     }
 
     // MARK: - Today Status View
 
     @ViewBuilder
     private var todayStatusView: some View {
+        // Level-based tracker takes precedence
+        if isLevelBased {
+            levelStatusView
+        } else {
+            legacyStatusView
+        }
+    }
+
+    @ViewBuilder
+    private var levelStatusView: some View {
+        let todayLogs = manager.todayLogs(for: tracker, in: modelContext)
+        if let lastLog = todayLogs.last,
+           let levelId = lastLog.value,
+           let level = trackerLevels.first(where: { $0.id == levelId }) {
+            // Show today's logged level
+            HStack(spacing: 4) {
+                Text(level.icon)
+                Text(level.localizedLabel)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        } else {
+            // Not logged today
+            Text(NSLocalizedString("Not logged", comment: "Level tracker not logged"))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private var legacyStatusView: some View {
         switch tracker.trackingMode {
         case .counter:
             let total = manager.todayTotal(for: tracker, in: modelContext)
@@ -146,6 +194,31 @@ struct TrackerRow: View {
 
     @ViewBuilder
     private var quickLogButton: some View {
+        // Level-based tracker takes precedence
+        if isLevelBased {
+            levelQuickLogButton
+        } else {
+            legacyQuickLogButton
+        }
+    }
+
+    @ViewBuilder
+    private var levelQuickLogButton: some View {
+        // Open level selection sheet
+        Button(action: { showingLevelSheet = true }) {
+            Text(NSLocalizedString("Log", comment: "Level tracker log button"))
+                .font(.subheadline.bold())
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(.blue)
+                .foregroundStyle(.white)
+                .cornerRadius(16)
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var legacyQuickLogButton: some View {
         switch tracker.trackingMode {
         case .counter:
             HStack(spacing: 4) {
