@@ -586,7 +586,7 @@ extension TrackerPreset {
             localizedName: "NoAlc",
             icon: "🍷",
             type: .saboteur,
-            trackingMode: .yesNo,  // Fallback, überschrieben durch levels
+            trackingMode: .levels,  // Level-basierter Tracker
             healthKitType: "HKQuantityTypeIdentifierNumberOfAlcoholicBeverages",
             dailyGoal: nil,
             category: .levelBased,
