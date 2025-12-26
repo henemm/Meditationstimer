@@ -5264,6 +5264,9 @@
         }
       }
     },
+    "Log" : {
+      "comment" : "Level tracker log button"
+    },
     "Log Drinks" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6120,6 +6123,9 @@
     },
     "NoAlc: Streak %lld Day" : {
       "comment" : "NoAlc streak count"
+    },
+    "Not logged" : {
+      "comment" : "Level tracker not logged"
     },
     "Not yet" : {
       "comment" : "Tracker not logged"
@@ -7223,6 +7229,9 @@
           }
         }
       }
+    },
+    "Select level" : {
+      "comment" : "Level selection prompt"
     },
     "Session Already Running" : {
       "extractionState" : "manual",

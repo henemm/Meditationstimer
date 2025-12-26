@@ -434,10 +434,43 @@ struct TrackerPreset: Identifiable {
     let dailyGoal: Int?
     let category: PresetCategory
 
+    // Generic Tracker System extensions
+    let levels: [TrackerLevel]?
+    let rewardConfig: RewardConfig?
+    let dayAssignmentRaw: String?
+
     enum PresetCategory: String, CaseIterable {
         case awareness   // Stimmung, Gefühle, Dankbarkeit
         case activity    // Wasser
         case saboteur    // Doomscrolling, etc.
+        case levelBased  // Level-basierte Tracker wie NoAlc
+    }
+
+    // Default initializer for legacy presets (without levels)
+    init(
+        name: String,
+        localizedName: String,
+        icon: String,
+        type: TrackerType,
+        trackingMode: TrackingMode,
+        healthKitType: String?,
+        dailyGoal: Int?,
+        category: PresetCategory,
+        levels: [TrackerLevel]? = nil,
+        rewardConfig: RewardConfig? = nil,
+        dayAssignmentRaw: String? = nil
+    ) {
+        self.name = name
+        self.localizedName = localizedName
+        self.icon = icon
+        self.type = type
+        self.trackingMode = trackingMode
+        self.healthKitType = healthKitType
+        self.dailyGoal = dailyGoal
+        self.category = category
+        self.levels = levels
+        self.rewardConfig = rewardConfig
+        self.dayAssignmentRaw = dayAssignmentRaw
     }
 }
 
@@ -538,12 +571,27 @@ extension TrackerPreset {
             healthKitType: nil,
             dailyGoal: nil,
             category: .saboteur
+        ),
+
+        // Level-Based Trackers (Generic Tracker System)
+        TrackerPreset(
+            name: "NoAlc",
+            localizedName: "NoAlc",
+            icon: "🍷",
+            type: .saboteur,
+            trackingMode: .yesNo,  // Fallback, überschrieben durch levels
+            healthKitType: "HKQuantityTypeIdentifierNumberOfAlcoholicBeverages",
+            dailyGoal: nil,
+            category: .levelBased,
+            levels: TrackerLevel.noAlcLevels,
+            rewardConfig: .noAlcDefault,
+            dayAssignmentRaw: "cutoffHour:18"
         )
     ]
 
     /// Create a Tracker from this preset
     func createTracker() -> Tracker {
-        Tracker(
+        let tracker = Tracker(
             name: name,
             icon: icon,
             type: type,
@@ -552,6 +600,19 @@ extension TrackerPreset {
             saveToHealthKit: healthKitType != nil,
             dailyGoal: dailyGoal
         )
+
+        // Generic Tracker System: Set levels, reward config, day assignment
+        if let levels = levels {
+            tracker.levels = levels
+        }
+        if let rewardConfig = rewardConfig {
+            tracker.rewardConfig = rewardConfig
+        }
+        if let dayAssignmentRaw = dayAssignmentRaw {
+            tracker.dayAssignmentRaw = dayAssignmentRaw
+        }
+
+        return tracker
     }
 }
 

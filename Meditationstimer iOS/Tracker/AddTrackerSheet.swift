@@ -60,6 +60,19 @@ struct AddTrackerSheet: View {
                     Text(NSLocalizedString("Track autopilot behaviors to build awareness.", comment: "Saboteur explanation"))
                 }
 
+                // Level-Based Section (NoAlc, etc.)
+                Section {
+                    ForEach(TrackerManager.presets(for: .levelBased)) { preset in
+                        PresetRow(preset: preset) {
+                            createTracker(from: preset)
+                        }
+                    }
+                } header: {
+                    Text(NSLocalizedString("Level-Based", comment: "Preset category"))
+                } footer: {
+                    Text(NSLocalizedString("Track with intensity levels and joker system.", comment: "Level-based explanation"))
+                }
+
                 // Custom Tracker Section
                 Section {
                     Button(action: { showingCustomTracker = true }) {
@@ -129,6 +142,11 @@ struct PresetRow: View {
     }
 
     private var modeDescription: String {
+        // Level-based tracker takes precedence
+        if preset.levels != nil {
+            return NSLocalizedString("Levels with joker system", comment: "Level-based mode")
+        }
+
         switch preset.trackingMode {
         case .counter:
             if let goal = preset.dailyGoal {
