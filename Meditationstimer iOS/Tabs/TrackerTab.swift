@@ -145,6 +145,7 @@ struct TrackerTab: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("addTrackerButton")
     }
 }
 

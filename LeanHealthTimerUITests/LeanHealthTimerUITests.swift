@@ -537,6 +537,113 @@ final class LeanHealthTimerUITests: XCTestCase {
         }
     }
 
+    // MARK: - Custom Level-Tracker Tests
+
+    /// Test that Custom Tracker sheet shows Levels mode option
+    func testCustomTrackerShowsLevelsMode() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Find and tap Add Tracker (using accessibility identifier)
+        let addTracker = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addTracker.waitForExistence(timeout: 3), "Add Tracker button should exist")
+        addTracker.tap()
+        sleep(1)
+
+        // Scroll down to find Custom Tracker and tap it (using accessibility identifier)
+        let customTracker = app.buttons["customTrackerButton"]
+        if !customTracker.exists {
+            app.swipeUp()
+            Thread.sleep(forTimeInterval: 0.5)
+        }
+
+        XCTAssertTrue(customTracker.waitForExistence(timeout: 3), "Custom Tracker button should exist")
+        customTracker.tap()
+        sleep(1)
+
+        // Verify Custom Tracker sheet opens
+        let customTrackerTitle = app.navigationBars["Custom Tracker"]
+        XCTAssertTrue(customTrackerTitle.waitForExistence(timeout: 3), "Custom Tracker sheet should open")
+
+        // Check for "Levels" mode option in segmented picker
+        // Segmented controls contain buttons that XCUITest can find
+        let segmentedControl = app.segmentedControls.firstMatch
+        XCTAssertTrue(segmentedControl.waitForExistence(timeout: 3), "Mode picker should exist")
+
+        // Look for "Levels" in the segmented control's buttons
+        let levelsSegment = segmentedControl.buttons["Levels"]
+        XCTAssertTrue(levelsSegment.exists, "Custom Tracker should have 'Levels' mode option")
+
+        // Cancel to close
+        let cancelButton = app.buttons["Cancel"]
+        if cancelButton.exists {
+            cancelButton.tap()
+        }
+    }
+
+    /// Test that selecting Levels mode shows Level Editor sections
+    func testLevelsModeShowsEditorSections() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Find and tap Add Tracker (using accessibility identifier)
+        let addTracker = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addTracker.waitForExistence(timeout: 3), "Add Tracker button should exist")
+        addTracker.tap()
+        sleep(1)
+
+        // Scroll down and tap Custom Tracker (using accessibility identifier)
+        app.swipeUp()
+        Thread.sleep(forTimeInterval: 0.5)
+
+        let customTracker = app.buttons["customTrackerButton"]
+        XCTAssertTrue(customTracker.waitForExistence(timeout: 3), "Custom Tracker button should exist")
+        customTracker.tap()
+        sleep(1)
+
+        // Select "Levels" mode from segmented control
+        let segmentedControl = app.segmentedControls.firstMatch
+        XCTAssertTrue(segmentedControl.waitForExistence(timeout: 3), "Mode picker should exist")
+
+        let levelsSegment = segmentedControl.buttons["Levels"]
+        XCTAssertTrue(levelsSegment.waitForExistence(timeout: 3), "Levels mode should exist")
+        levelsSegment.tap()
+        Thread.sleep(forTimeInterval: 0.5)
+
+        // Verify Level Editor sections appear
+        // Scroll to see more sections
+        app.swipeUp()
+        Thread.sleep(forTimeInterval: 0.5)
+
+        // Check for Level Editor UI elements
+        let jokerSection = app.staticTexts["Joker System"]
+        let dayBoundarySection = app.staticTexts["Day Boundary"]
+        let addLevelButton = app.buttons["Add Level"]
+
+        let hasLevelEditorUI = jokerSection.exists || dayBoundarySection.exists || addLevelButton.exists
+        XCTAssertTrue(hasLevelEditorUI, "Levels mode should show Level Editor sections")
+
+        // Cancel to close
+        let cancelButton = app.buttons["Cancel"]
+        if cancelButton.exists {
+            cancelButton.tap()
+        }
+    }
+
     // MARK: - Erfolge Tab Tests
 
     /// Test that Erfolge tab shows content (not empty)

@@ -49,7 +49,7 @@
       }
     },
     "%d days" : {
-      "comment" : "Avoidance streak"
+      "comment" : "Avoidance streak\nDays count"
     },
     "%d hours" : {
       "extractionState" : "manual",
@@ -165,6 +165,9 @@
           }
         }
       }
+    },
+    "%lld/5" : {
+
     },
     "%lld×" : {
 
@@ -314,6 +317,9 @@
     },
     "↻" : {
 
+    },
+    "⚠️ At least one level must be \"Success\" for streaks to work." : {
+      "comment" : "Missing success level warning"
     },
     "⭐" : {
 
@@ -590,6 +596,9 @@
           }
         }
       }
+    },
+    "Add Level" : {
+      "comment" : "Add level button"
     },
     "Add new preset" : {
       "extractionState" : "manual",
@@ -1017,6 +1026,9 @@
           }
         }
       }
+    },
+    "Breaks" : {
+      "comment" : "Breaks streak effect"
     },
     "Breathe" : {
       "extractionState" : "manual",
@@ -1722,6 +1734,15 @@
         }
       }
     },
+    "Custom hour" : {
+      "comment" : "Custom hour option"
+    },
+    "Custom levels" : {
+      "comment" : "Levels mode"
+    },
+    "Custom levels with joker system (e.g., NoAlc, Energy)." : {
+      "comment" : "Levels mode explanation"
+    },
     "Custom Tracker" : {
       "comment" : "Custom tracker option\nCustom tracker sheet title"
     },
@@ -1742,6 +1763,9 @@
           }
         }
       }
+    },
+    "Cutoff hour" : {
+      "comment" : "Cutoff hour label"
     },
     "Daily" : {
       "comment" : "All days selected",
@@ -1855,6 +1879,12 @@
         }
       }
     },
+    "Day Boundary" : {
+      "comment" : "Day boundary section header"
+    },
+    "Day changes at" : {
+      "comment" : "Day boundary label"
+    },
     "days" : {
       "comment" : "Days label in ErfolgeTab streak badge",
       "extractionState" : "manual",
@@ -1892,6 +1922,9 @@
     },
     "Deep calming through gentle rhythm. Promotes mental clarity." : {
       "comment" : "Deep Calm preset description"
+    },
+    "Define 2-5 levels with different streak effects." : {
+      "comment" : "Levels explanation"
     },
     "Delete" : {
       "extractionState" : "manual",
@@ -2159,6 +2192,9 @@
         }
       }
     },
+    "Earn every" : {
+      "comment" : "Joker earn label"
+    },
     "Easy" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2310,6 +2346,9 @@
           }
         }
       }
+    },
+    "Enable Joker System" : {
+      "comment" : "Joker system toggle"
     },
     "Enable Smart Reminders" : {
       "extractionState" : "manual",
@@ -4982,6 +5021,12 @@
         }
       }
     },
+    "Joker System" : {
+      "comment" : "Joker section header"
+    },
+    "Jokers can heal \"Needs Joker\" days to continue streaks." : {
+      "comment" : "Joker explanation"
+    },
     "Jump Rope" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5203,6 +5248,18 @@
         }
       }
     },
+    "Level name" : {
+      "comment" : "Level name placeholder"
+    },
+    "Level-Based" : {
+      "comment" : "Preset category"
+    },
+    "Levels" : {
+      "comment" : "Levels mode\nLevels section header"
+    },
+    "Levels with joker system" : {
+      "comment" : "Level-based mode"
+    },
     "Levels:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5305,6 +5362,9 @@
         }
       }
     },
+    "Logs before this hour count for the previous day." : {
+      "comment" : "Day boundary explanation"
+    },
     "Look-back Period" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5405,6 +5465,9 @@
           }
         }
       }
+    },
+    "Max on hand" : {
+      "comment" : "Joker max label"
     },
     "Meditation" : {
       "extractionState" : "manual",
@@ -5572,6 +5635,9 @@
         }
       }
     },
+    "Midnight (00:00)" : {
+      "comment" : "Midnight option"
+    },
     "Missing Permissions" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5706,6 +5772,9 @@
     },
     "Navy SEAL technique for stress reduction. Proven effective at lowering cortisol levels." : {
       "comment" : "Box Breathing preset description"
+    },
+    "Needs Joker" : {
+      "comment" : "Needs joker streak effect"
     },
     "Neues Workout" : {
       "localizations" : {
@@ -7924,6 +7993,9 @@
         }
       }
     },
+    "Success" : {
+      "comment" : "Success streak effect"
+    },
     "Sun" : {
       "comment" : "Sunday abbreviation",
       "extractionState" : "manual",
@@ -8365,6 +8437,9 @@
     },
     "Track positive habits you want to build." : {
       "comment" : "Good type explanation"
+    },
+    "Track with intensity levels and joker system." : {
+      "comment" : "Level-based explanation"
     },
     "Track your alcohol consumption daily." : {
       "extractionState" : "manual",

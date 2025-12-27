@@ -84,6 +84,7 @@ struct AddTrackerSheet: View {
                                 .foregroundStyle(.blue)
                         }
                     }
+                    .accessibilityIdentifier("customTrackerButton")
                 } footer: {
                     Text(NSLocalizedString("Create your own tracker with custom settings.", comment: "Custom tracker explanation"))
                 }
