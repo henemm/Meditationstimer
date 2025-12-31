@@ -381,6 +381,110 @@ final class TrackerModelTests: XCTestCase {
         XCTAssertEqual(streak, 2)
     }
 
+    // MARK: - DayAssignment Tests
+
+    func testDayAssignmentTimestamp() {
+        // Given: Default assignment (timestamp)
+        let assignment = DayAssignment.timestamp
+        let calendar = Calendar.current
+
+        // When: Log at 9:00 on Tuesday
+        var components = DateComponents()
+        components.year = 2025
+        components.month = 12
+        components.day = 31 // Tuesday
+        components.hour = 9
+        components.minute = 0
+        let tuesdayMorning = calendar.date(from: components)!
+
+        let assignedDay = assignment.assignedDay(for: tuesdayMorning, calendar: calendar)
+
+        // Then: Should be Tuesday (same day)
+        let expectedDay = calendar.startOfDay(for: tuesdayMorning)
+        XCTAssertEqual(assignedDay, expectedDay)
+    }
+
+    func testDayAssignmentCutoffHourBeforeCutoff() {
+        // Given: Cutoff at 18:00
+        let assignment = DayAssignment.cutoffHour(18)
+        let calendar = Calendar.current
+
+        // When: Log at 9:00 on Tuesday (BEFORE cutoff)
+        var components = DateComponents()
+        components.year = 2025
+        components.month = 12
+        components.day = 31 // Tuesday
+        components.hour = 9
+        components.minute = 0
+        let tuesdayMorning = calendar.date(from: components)!
+
+        let assignedDay = assignment.assignedDay(for: tuesdayMorning, calendar: calendar)
+
+        // Then: Should be Monday (previous day)
+        let tuesdayStart = calendar.startOfDay(for: tuesdayMorning)
+        let expectedMonday = calendar.date(byAdding: .day, value: -1, to: tuesdayStart)!
+        XCTAssertEqual(assignedDay, expectedMonday)
+    }
+
+    func testDayAssignmentCutoffHourAtCutoff() {
+        // Given: Cutoff at 18:00
+        let assignment = DayAssignment.cutoffHour(18)
+        let calendar = Calendar.current
+
+        // When: Log at exactly 18:00 on Tuesday (AT cutoff)
+        var components = DateComponents()
+        components.year = 2025
+        components.month = 12
+        components.day = 31 // Tuesday
+        components.hour = 18
+        components.minute = 0
+        let tuesdayEvening = calendar.date(from: components)!
+
+        let assignedDay = assignment.assignedDay(for: tuesdayEvening, calendar: calendar)
+
+        // Then: Should be Tuesday (current day, cutoff hour counts as current day)
+        let expectedTuesday = calendar.startOfDay(for: tuesdayEvening)
+        XCTAssertEqual(assignedDay, expectedTuesday)
+    }
+
+    func testDayAssignmentCutoffHourAfterCutoff() {
+        // Given: Cutoff at 18:00
+        let assignment = DayAssignment.cutoffHour(18)
+        let calendar = Calendar.current
+
+        // When: Log at 20:00 on Tuesday (AFTER cutoff)
+        var components = DateComponents()
+        components.year = 2025
+        components.month = 12
+        components.day = 31 // Tuesday
+        components.hour = 20
+        components.minute = 0
+        let tuesdayNight = calendar.date(from: components)!
+
+        let assignedDay = assignment.assignedDay(for: tuesdayNight, calendar: calendar)
+
+        // Then: Should be Tuesday (current day)
+        let expectedTuesday = calendar.startOfDay(for: tuesdayNight)
+        XCTAssertEqual(assignedDay, expectedTuesday)
+    }
+
+    func testTrackerEffectiveDayAssignmentParsesCorrectly() {
+        // Given: NoAlc preset with cutoffHour:18
+        let noAlcPreset = TrackerPreset.all.first { $0.name == "NoAlc" }!
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // When
+        let dayAssignment = tracker.effectiveDayAssignment
+
+        // Then: Should parse as cutoffHour(18)
+        if case .cutoffHour(let hour) = dayAssignment {
+            XCTAssertEqual(hour, 18)
+        } else {
+            XCTFail("Expected .cutoffHour(18), got \(dayAssignment)")
+        }
+    }
+
     // MARK: - Delete Cascade Test
 
     func testDeleteTrackerCascadesLogs() {

@@ -334,6 +334,10 @@ final class Tracker {
     /// Effective day assignment (from explicit config or default)
     var effectiveDayAssignment: DayAssignment {
         guard let raw = dayAssignmentRaw else { return .timestamp }
+        // Support both formats: "cutoffHour:18" (preset format) and "cutoff:18" (legacy)
+        if raw.hasPrefix("cutoffHour:"), let hour = Int(raw.replacingOccurrences(of: "cutoffHour:", with: "")) {
+            return .cutoffHour(hour)
+        }
         if raw.hasPrefix("cutoff:"), let hour = Int(raw.replacingOccurrences(of: "cutoff:", with: "")) {
             return .cutoffHour(hour)
         }
