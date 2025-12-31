@@ -1,11 +1,44 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 25. Dezember 2025
+**Letzte Aktualisierung:** 31. Dezember 2025
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
 
 ## 🚨 KRITISCHE Bugs
+
+### Bug 34: NoAlc DayAssignment Parser erkannte cutoffHour-Prefix nicht
+**Datum:** 31. Dezember 2025
+**Status:** ✅ BEHOBEN
+
+**Problem:**
+NoAlc Tracking ordnete Einträge dem falschen Tag zu:
+- Dienstag 9:00 Uhr Eintrag → wurde auf Dienstag geschrieben (falsch)
+- Sollte aber auf Montag geschrieben werden (Cutoff 18:00)
+
+**Root Cause:**
+- NoAlc Preset speicherte `"cutoffHour:18"`
+- Parser suchte nur nach `"cutoff:"` → Prefix-Mismatch!
+- Fallback auf `.timestamp` → Cutoff wurde ignoriert
+
+**Fix:**
+`TrackerModels.swift:338-343` - Parser unterstützt jetzt beide Formate:
+```swift
+if raw.hasPrefix("cutoffHour:"), let hour = Int(...) {
+    return .cutoffHour(hour)
+}
+if raw.hasPrefix("cutoff:"), let hour = Int(...) {
+    return .cutoffHour(hour)
+}
+```
+
+**Verifizierung:**
+- [x] 5 neue Unit Tests für DayAssignment-Logik
+- [x] Build erfolgreich (Debug + Release)
+- [x] Alle 71 Unit Tests GRÜN
+- [ ] Manueller Test auf Device (ausstehend)
+
+---
 
 ### Bug 33: SmartReminder "Reverse Cancel" funktioniert nicht mehr
 **Datum:** 25. Dezember 2025

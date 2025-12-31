@@ -1,14 +1,14 @@
 {
-  "current_phase": "implementing",
-  "workflow_type": "feature",
-  "feature_name": "Generic Tracker System Phase 4: NoAlc Preset",
+  "current_phase": "validating",
+  "workflow_type": "bug",
+  "feature_name": "NoAlc Tracking Datums-Zuordnung bei morgendlicher Eingabe",
   "spec_file": null,
   "spec_approved": true,
   "tests_written": true,
   "tests_passing": true,
   "implementation_done": true,
   "validated": true,
-  "last_updated": "2025-12-26T12:50:45.161537",
+  "last_updated": "2025-12-31T09:26:42.534657",
   "phase_history": [
     {
       "from": "idle",
@@ -144,6 +144,31 @@
       "from": "implementing",
       "to": "implementing",
       "timestamp": "2025-12-26T12:50:45.161503"
+    },
+    {
+      "from": "implementing",
+      "to": "analysing",
+      "timestamp": "2025-12-31T08:22:34.714751"
+    },
+    {
+      "from": "analysing",
+      "to": "implementing",
+      "timestamp": "2025-12-31T08:28:33.389135"
+    },
+    {
+      "from": "implementing",
+      "to": "implementing",
+      "timestamp": "2025-12-31T09:08:59.886895"
+    },
+    {
+      "from": "implementing",
+      "to": "validating",
+      "timestamp": "2025-12-31T09:23:28.111179"
+    },
+    {
+      "from": "validating",
+      "to": "validating",
+      "timestamp": "2025-12-31T09:26:42.534648"
     }
   ]
 }
