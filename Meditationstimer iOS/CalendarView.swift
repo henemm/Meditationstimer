@@ -14,7 +14,10 @@ struct CalendarView: View {
         case workout
         case both
     }
-    
+
+    /// When true, hides NavigationView wrapper and toolbar (for embedded use in ErfolgeTab)
+    var isEmbedded: Bool = false
+
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
     @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
@@ -92,9 +95,28 @@ struct CalendarView: View {
     }
 
     var body: some View {
-        NavigationView {
-            VStack {
-                // Scrollbare Monatsliste
+        if isEmbedded {
+            calendarContent
+        } else {
+            NavigationView {
+                calendarContent
+                    .navigationTitle("Calendar")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Done") {
+                                dismiss()
+                            }
+                        }
+                    }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var calendarContent: some View {
+        VStack {
+            // Scrollbare Monatsliste
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 20) {
@@ -304,16 +326,6 @@ struct CalendarView: View {
                     loadActivityDays()
                 }
             }
-        }
-        .navigationTitle("Calendar")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
-                    dismiss()
-                }
-            }
-        }
         }
     }
 

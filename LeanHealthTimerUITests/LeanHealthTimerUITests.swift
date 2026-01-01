@@ -646,6 +646,34 @@ final class LeanHealthTimerUITests: XCTestCase {
 
     // MARK: - Erfolge Tab Tests
 
+    /// TDD: Test that Erfolge tab has clean layout without redundant navigation elements
+    /// Expected: NO "Done"/"Fertig" button, NO "Calendar"/"Kalender" title in embedded mode
+    func testErfolgeTabHasCleanLayoutWithoutSheetNavigation() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Erfolge tab
+        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        XCTAssertTrue(erfolgeTab.waitForExistence(timeout: 5))
+        erfolgeTab.tap()
+
+        // Wait for content to load
+        sleep(3)
+
+        // VERIFY: No "Done" button should exist (sheet navigation removed)
+        let doneButton = app.buttons["Done"]
+        XCTAssertFalse(doneButton.exists, "Erfolge tab should NOT have 'Done' button (not a sheet)")
+
+        // VERIFY: No "Calendar" navigation title in nav bar
+        let calendarTitle = app.navigationBars["Calendar"]
+        XCTAssertFalse(calendarTitle.exists, "Erfolge tab should NOT have 'Calendar' navigation title")
+
+        // VERIFY: Streak info section IS visible (bottom section with info buttons)
+        let infoButton = app.buttons["Meditation Streak Info"]
+        XCTAssertTrue(infoButton.waitForExistence(timeout: 3), "Streak info section should be visible")
+    }
+
     /// Test that Erfolge tab shows content (not empty)
     func testErfolgeTabShowsContent() throws {
         let app = XCUIApplication()
