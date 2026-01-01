@@ -1,7 +1,36 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 31. Dezember 2025
+**Letzte Aktualisierung:** 1. Januar 2026
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
+
+---
+
+## ✅ Erfolge Tab Cleanup - ABGESCHLOSSEN
+
+**Datum:** 1. Januar 2026
+**Status:** ✅ IMPLEMENTIERT & VALIDIERT
+
+**Problem:**
+- Redundante Streak-Anzeige (Header + untere Sektion)
+- Verschachtelte Navigation (NavigationStack + NavigationView)
+- Sinnloser "Fertig" Button (CalendarView war als Sheet designed, aber eingebettet)
+
+**Lösung:**
+1. `CalendarView.swift`: `isEmbedded` Parameter hinzugefügt
+   - `isEmbedded=true`: ohne NavigationView/Toolbar (für ErfolgeTab)
+   - `isEmbedded=false`: mit Navigation (für Sheet-Aufrufe)
+2. `ErfolgeTab.swift`: StreakHeaderSection komplett entfernt
+
+**Tests:**
+- [x] XCUITest `testErfolgeTabHasCleanLayoutWithoutSheetNavigation` hinzugefügt
+- [x] XCUITest `testErfolgeTabShowsEmbeddedCalendar` angepasst
+- [x] Alle Unit Tests GRÜN
+- [x] Release Build erfolgreich
+- [ ] Manueller Test auf Device
+
+**Commits:**
+- `a7f816b` refactor: Erfolge Tab Cleanup - redundante Navigation entfernt
+- `60af509` test: XCUITest für Erfolge Tab an neues Layout angepasst
 
 ---
 
