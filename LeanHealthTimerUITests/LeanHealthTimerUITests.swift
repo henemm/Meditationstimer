@@ -693,7 +693,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(hasContent, "Erfolge tab should have content")
     }
 
-    /// Test that Erfolge tab shows embedded calendar (Phase 1.1 - calendar now embedded directly)
+    /// Test that Erfolge tab shows embedded calendar with streak info section
     func testErfolgeTabShowsEmbeddedCalendar() throws {
         let app = XCUIApplication()
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
@@ -704,20 +704,17 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(erfolgeTab.waitForExistence(timeout: 5))
         erfolgeTab.tap()
 
-        // Verify streak badges are visible in header (emoji + "days" label)
-        // The header shows compact streak badges like "🧘 0 days"
-        let meditationEmoji = app.staticTexts["🧘"]
-        let workoutEmoji = app.staticTexts["💪"]
-
         // Wait for content to load
-        sleep(2)
+        sleep(3)
 
-        // Check for streak-related content or calendar weekday headers
-        let hasMeditationBadge = meditationEmoji.exists
-        let hasWorkoutBadge = workoutEmoji.exists
+        // Verify streak info section is visible (bottom section with info buttons)
+        // The streak info is now in CalendarView's bottom section, not a separate header
+        let meditationInfoButton = app.buttons["Meditation Streak Info"]
+        let workoutInfoButton = app.buttons["Workout Streak Info"]
 
-        // At least one streak badge should be visible
-        XCTAssertTrue(hasMeditationBadge || hasWorkoutBadge, "Erfolge tab should show streak badges")
+        // At least one streak info button should be visible
+        XCTAssertTrue(meditationInfoButton.exists || workoutInfoButton.exists,
+            "Erfolge tab should show streak info section")
     }
 
     // MARK: - Info Sheet Tests
