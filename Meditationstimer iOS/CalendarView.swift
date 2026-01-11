@@ -18,6 +18,9 @@ struct CalendarView: View {
     /// When true, hides NavigationView wrapper and toolbar (for embedded use in ErfolgeTab)
     var isEmbedded: Bool = false
 
+    /// StreakManager for Joker-based streak calculation
+    @EnvironmentObject var streakManager: StreakManager
+
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
     @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
@@ -50,48 +53,24 @@ struct CalendarView: View {
         return noAlcStreakResult.rewards
     }
 
+    /// Meditation streak using Joker-based calculation from StreakManager
     private var meditationStreak: Int {
-        let today = calendar.startOfDay(for: Date())
-        let todayMinutes = dailyMinutes[today]?.mindfulnessMinutes ?? 0
-        let hasDataToday = round(todayMinutes) >= 2.0
-
-        var currentStreak = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        while true {
-            let minutes = dailyMinutes[checkDate]?.mindfulnessMinutes ?? 0
-            if round(minutes) >= 2.0 {
-                currentStreak += 1
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
-                checkDate = previousDate
-            } else {
-                break
-            }
-        }
-
-        return currentStreak
+        streakManager.meditationStreak.currentStreakDays
     }
 
+    /// Meditation rewards (Jokers) available
+    private var meditationRewards: Int {
+        streakManager.meditationStreak.availableRewards
+    }
+
+    /// Workout streak using Joker-based calculation from StreakManager
     private var workoutStreak: Int {
-        let today = calendar.startOfDay(for: Date())
-        let todayMinutes = dailyMinutes[today]?.workoutMinutes ?? 0
-        let hasDataToday = round(todayMinutes) >= 2.0
+        streakManager.workoutStreak.currentStreakDays
+    }
 
-        var currentStreak = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        while true {
-            let minutes = dailyMinutes[checkDate]?.workoutMinutes ?? 0
-            if round(minutes) >= 2.0 {
-                currentStreak += 1
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
-                checkDate = previousDate
-            } else {
-                break
-            }
-        }
-
-        return currentStreak
+    /// Workout rewards (Jokers) available
+    private var workoutRewards: Int {
+        streakManager.workoutStreak.availableRewards
     }
 
     var body: some View {
@@ -148,7 +127,7 @@ struct CalendarView: View {
                     Text("Meditation: Streak \(meditationStreak) Day", comment: "Meditation streak count")
                         .font(.subheadline)
                     Spacer()
-                    rewardsView(for: min(3, meditationStreak / 7), icon: "leaf.fill", color: .blue)
+                    rewardsView(for: meditationRewards, icon: "leaf.fill", color: .blue)
                 }
                 .sheet(isPresented: $showMeditationInfo) {
                     NavigationStack {
@@ -199,7 +178,7 @@ struct CalendarView: View {
                     Text("Workouts: Streak \(workoutStreak) Day", comment: "Workout streak count")
                         .font(.subheadline)
                     Spacer()
-                    rewardsView(for: min(3, workoutStreak / 7), icon: "flame.fill", color: .purple)
+                    rewardsView(for: workoutRewards, icon: "flame.fill", color: .purple)
                 }
                 .sheet(isPresented: $showWorkoutInfo) {
                     NavigationStack {
@@ -319,11 +298,13 @@ struct CalendarView: View {
                     do {
                         try await hk.requestAuthorization()
                         loadActivityDays()
+                        await streakManager.updateStreaks()
                     } catch {
                         errorMessage = "HealthKit-Berechtigung erforderlich: \(error.localizedDescription)"
                     }
                 } else {
                     loadActivityDays()
+                    await streakManager.updateStreaks()
                 }
             }
         }
