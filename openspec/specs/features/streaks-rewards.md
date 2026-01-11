@@ -2,12 +2,64 @@
 
 ## Overview
 
-Streak tracking system that counts consecutive days of activity for meditation, workouts, NoAlc, and custom Trackers. Includes a reward system for NoAlc that provides "forgiveness" credits for occasional moderate days.
+Streak tracking system that counts consecutive days of activity for meditation, workouts, NoAlc, and custom Trackers. Includes a **universal reward system (Joker)** that provides "forgiveness" credits to heal missed or imperfect days.
 
 **Streak Types:**
 - **Timer-based:** Meditation, Workout (consecutive days with ≥2 min activity)
-- **Level-based:** NoAlc (consecutive Steady/healed Easy days with reward system)
+- **Level-based:** NoAlc (consecutive Steady/healed days with reward system)
 - **Tracker-based:** Custom Trackers (consecutive days with log entry, optional per Tracker)
+
+**Core Principle:** Rewards are not decorative - they are functional Jokers that can heal failed days and save streaks.
+
+---
+
+## Universal Reward System (Joker)
+
+### Grundprinzip
+
+```
+Streak verdienen → Rewards sammeln → Bei Fehltag: Reward konsumieren → Streak gerettet
+```
+
+### Universelle Regeln
+
+| Regel | Beschreibung |
+|-------|--------------|
+| **Verdienen** | Alle 7 konsekutive gute Tage → +1 Reward |
+| **Maximum** | 3 Rewards gleichzeitig (Cap) |
+| **Heilen** | Fehltag + verfügbarer Reward → -1 Reward, Streak fortsetzt |
+| **Kein Reward** | Fehltag ohne Reward → Streak = 0 |
+| **Forward Iteration** | Chronologisch verdienen, dann konsumieren |
+
+### Was ist ein "Fehltag"?
+
+| Streak-Typ | Guter Tag | Fehltag (braucht Joker) |
+|------------|-----------|-------------------------|
+| **Meditation** | ≥2 min geloggt | <2 min oder nichts |
+| **Workout** | ≥2 min geloggt | <2 min oder nichts |
+| **NoAlc** | Steady (0-1 Drinks) | Easy, Wild, oder Gap |
+| **Tracker** | Eintrag vorhanden | Kein Eintrag |
+
+### Edge Cases (alle Typen)
+
+| Situation | Verhalten |
+|-----------|-----------|
+| **Heute nicht geloggt** | Toleriert (kein Penalty) |
+| **Gap (Lücke in Historie)** | = Fehltag, braucht Joker |
+| **Tag 7 ist Fehltag** | Erst Joker verdienen, dann konsumieren |
+| **Mehrere Fehltage** | Jeder braucht eigenen Joker |
+
+### Formel
+
+```
+verfügbareRewards = min(3, verdienteRewards - konsumierteRewards)
+
+Streak fortsetzt wenn:
+  - Tag ist gut, ODER
+  - Tag ist Fehltag UND verfügbareRewards > 0
+```
+
+---
 
 ## Requirements
 
@@ -53,38 +105,60 @@ The system SHALL calculate NoAlc streaks with reward-based forgiveness.
 #### Scenario: NoAlc Streak Definition
 - GIVEN user has NoAlc entries
 - WHEN calculating streak
-- THEN streak = consecutive days with Steady or healed Easy entries
-- AND Wild entries always break streak
+- THEN streak = consecutive days with Steady or healed (Easy/Wild/Gap) entries
+- AND unhealed Easy/Wild/Gap entries break streak
 
 #### Scenario: Reward Earning
 - GIVEN user has active NoAlc streak
-- AND 7 consecutive Steady days are reached
+- AND 7 consecutive good days are reached (Steady or healed)
 - WHEN milestone is reached
 - THEN 1 reward is earned
 - AND rewards cap at 3 maximum
-- AND reward milestone resets (next reward at day 14)
+- AND reward milestone resets (next reward at day 14, 21, etc.)
 
-#### Scenario: Reward Usage (Healing)
-- GIVEN user has Easy day entry
+#### Scenario: Reward Usage - Healing Easy Day
+- GIVEN day has Easy level entry (2-5 drinks)
 - AND available rewards > 0
 - WHEN streak is calculated
 - THEN 1 reward is consumed
 - AND streak continues (Easy day is "healed")
-- AND available rewards decrease by 1
+
+#### Scenario: Reward Usage - Healing Wild Day
+- GIVEN day has Wild level entry (6+ drinks)
+- AND available rewards > 0
+- WHEN streak is calculated
+- THEN 1 reward is consumed
+- AND streak continues (Wild day is "healed")
+
+#### Scenario: Reward Usage - Healing Gap (Missing Day)
+- GIVEN day has no NoAlc entry (Gap)
+- AND available rewards > 0
+- WHEN streak is calculated
+- THEN 1 reward is consumed
+- AND streak continues (Gap is "healed")
 
 #### Scenario: No Reward Available
-- GIVEN user has Easy day entry
+- GIVEN day has Easy, Wild, or Gap
 - AND available rewards = 0
 - WHEN streak is calculated
 - THEN streak breaks
-- AND streak counter resets
+- AND streak counter resets to 0
 
-#### Scenario: Wild Day Always Breaks
-- GIVEN user has Wild day entry
+#### Scenario: Earn Before Consume (Day 7 Edge Case)
+- GIVEN user has 6 consecutive Steady days
+- AND day 7 is Easy/Wild/Gap
 - WHEN streak is calculated
-- THEN streak breaks immediately
-- AND rewards are NOT consumed for Wild
-- AND reward count decreases by 1 (penalty)
+- THEN reward is earned FIRST (day 7 milestone reached)
+- AND reward is consumed IMMEDIATELY to heal day 7
+- AND streak = 7 (continues)
+
+#### Scenario: Today Not Logged (Grace Period)
+- GIVEN yesterday has Steady entry
+- AND today has no entry yet
+- WHEN streak is calculated
+- THEN today is ignored (no penalty)
+- AND streak counts from yesterday
+- AND user has until end of day to log
 
 ### Requirement: Custom Tracker Streaks
 The system SHALL calculate streaks for custom Trackers when enabled.
@@ -138,7 +212,7 @@ The system SHALL calculate streaks for custom Trackers when enabled.
 - AND default is OFF for Activity Trackers (Wasser)
 
 ### Requirement: Forward Chronological Iteration
-The system SHALL iterate forward (past → present) for NoAlc streak calculation.
+The system SHALL iterate forward (past → present) over ALL days for streak calculation.
 
 #### Scenario: Why Forward Iteration
 - GIVEN streak data spans multiple days
@@ -146,6 +220,13 @@ The system SHALL iterate forward (past → present) for NoAlc streak calculation
 - THEN iterate from earliest date to today
 - AND earn rewards chronologically as milestones are reached
 - AND consume rewards after they are earned
+
+#### Scenario: Iterate Over ALL Days (Not Just Entries)
+- GIVEN user has entries on days 1, 2, 3, 5, 6 (day 4 missing)
+- WHEN calculating streak
+- THEN iterate over days 1, 2, 3, 4, 5, 6 (including gap)
+- AND day 4 is treated as Gap (requires Joker)
+- AND do NOT just iterate over `entries.keys.sorted()` (Bug!)
 
 #### Scenario: Backward Iteration Bug
 - GIVEN backwards iteration is used
