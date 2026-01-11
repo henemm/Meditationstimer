@@ -252,40 +252,39 @@ struct MeditationTab: View {
 
     // MARK: - Open Meditation Card
     private var openMeditationCard: some View {
-        GlassCard {
-            VStack(spacing: 16) {
-                HStack(spacing: 8) {
-                    Text(NSLocalizedString("Open Meditation", comment: "Tab title"))
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
-                    InfoButton { showOffenInfo = true }
-                    Spacer()
-                }
-                .padding(.horizontal, 4)
+        VStack(spacing: 8) {
+            // Section Header (outside card, like "Breathing Exercises")
+            HStack(spacing: 8) {
+                Text(NSLocalizedString("Open Meditation", comment: "Tab title"))
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                InfoButton { showOffenInfo = true }
+                Spacer()
+            }
+            .padding(.horizontal, 4)
 
-                // Picker Section
-                HStack(alignment: .center, spacing: 20) {
-                    // Left column: Emojis + Labels
-                    VStack(spacing: 28) {
-                        VStack(spacing: 6) {
-                            Text("🧘")
-                                .font(.system(size: 56))
-                            Text(NSLocalizedString("Duration", comment: "Phase 1 label"))
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                                .textCase(.uppercase)
+            GlassCard {
+                VStack(spacing: 16) {
+                    // Picker Section
+                    HStack(alignment: .center, spacing: 20) {
+                        // Left column: Emojis + Labels
+                        VStack(spacing: 28) {
+                            VStack(spacing: 6) {
+                                Text("🧘")
+                                    .font(.system(size: 56))
+                                Text(NSLocalizedString("Duration", comment: "Phase 1 label"))
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                            }
+                            VStack(spacing: 6) {
+                                Text("🪷")
+                                    .font(.system(size: 56))
+                                Text(NSLocalizedString("Closing", comment: "Phase 2 label"))
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
-                        VStack(spacing: 6) {
-                            Text("🪷")
-                                .font(.system(size: 56))
-                            Text(NSLocalizedString("Closing", comment: "Phase 2 label"))
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                                .textCase(.uppercase)
-                        }
-                    }
-                    .frame(minWidth: 110, alignment: .center)
+                        .frame(minWidth: 110, alignment: .center)
 
                     // Right column: Wheel pickers
                     VStack(spacing: 24) {

@@ -242,52 +242,49 @@ struct WorkoutTab: View {
 
     // MARK: - Free Workout Card
     private var freeWorkoutCard: some View {
-        GlassCard {
-            VStack(spacing: 16) {
-                HStack(spacing: 8) {
-                    Text(NSLocalizedString("Free Workout", comment: "Card title"))
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
-                    InfoButton { showFreiInfo = true }
-                    Spacer()
-                }
-                .padding(.horizontal, 4)
-                .padding(.top, 4)
+        VStack(spacing: 8) {
+            // Section Header (outside card, like "Workout Programs")
+            HStack(spacing: 8) {
+                Text(NSLocalizedString("Free Workout", comment: "Card title"))
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                InfoButton { showFreiInfo = true }
+                Spacer()
+            }
+            .padding(.horizontal, 4)
 
-                // Picker Section
-                HStack(alignment: .center, spacing: 20) {
-                    // Left column: Emojis + Labels
-                    VStack(spacing: 28) {
-                        VStack(spacing: 6) {
-                            Text("🔥").font(.system(size: 50))
-                            Text("Work")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                                .textCase(.uppercase)
-                                .frame(maxWidth: .infinity, alignment: .center)
+            GlassCard {
+                VStack(spacing: 16) {
+                    // Picker Section
+                    HStack(alignment: .center, spacing: 20) {
+                        // Left column: Emojis + Labels
+                        VStack(spacing: 28) {
+                            VStack(spacing: 6) {
+                                Text("🔥").font(.system(size: 50))
+                                Text("Work")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                            }
+                            .frame(height: 90, alignment: .center)
+                            VStack(spacing: 6) {
+                                Text("🧊").font(.system(size: 50))
+                                Text("Rest")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                            }
+                            .frame(height: 90, alignment: .center)
+                            VStack(spacing: 6) {
+                                Text("↻").font(.system(size: 50))
+                                Text("Repetitions")
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                            }
+                            .frame(height: 90, alignment: .center)
                         }
-                        .frame(height: 90, alignment: .center)
-                        VStack(spacing: 6) {
-                            Text("🧊").font(.system(size: 50))
-                            Text("Rest")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                                .textCase(.uppercase)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                        .frame(height: 90, alignment: .center)
-                        VStack(spacing: 6) {
-                            Text("↻").font(.system(size: 50))
-                            Text("Repetitions")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                                .textCase(.uppercase)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                        .frame(height: 90, alignment: .center)
-                    }
-                    .frame(minWidth: 110, alignment: .center)
+                        .frame(minWidth: 110, alignment: .center)
 
                     // Right column: Wheel pickers
                     VStack(spacing: 24) {
@@ -323,7 +320,6 @@ struct WorkoutTab: View {
                     Text("Total Duration")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
                     Spacer()
                     Text(totalString)
                         .font(.footnote)

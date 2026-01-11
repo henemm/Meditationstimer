@@ -167,24 +167,28 @@ def get_phase_error(phase: str, file_path: str) -> str:
     return messages.get(phase, f"Phase '{phase}' erlaubt keine Code-Änderungen.")
 
 
-def get_tdd_error(file_path: str) -> str:
-    """Generiert TDD-Fehlermeldung wenn Tests fehlen."""
+def get_tdd_error(file_path: str, reason: str = "keine Tests") -> str:
+    """Generiert TDD-Fehlermeldung wenn Tests fehlen oder nicht verifiziert."""
     return f"""
 ╔══════════════════════════════════════════════════════════════════╗
-║  🔴 TDD GATE: Erst Tests schreiben!                              ║
+║  🔴 TDD GATE: Echter TDD RED Test fehlt!                         ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  Du versuchst Produktions-Code zu ändern OHNE vorherigen Test!  ║
+║  Problem: {reason[:50]}
 ║                                                                  ║
-║  TDD-WORKFLOW:                                                   ║
-║    1. Test schreiben der das erwartete Verhalten prüft           ║
-║    2. Test ausführen → muss ROT sein (fehlschlagen)              ║
-║    3. Dann: python3 .claude/hooks/update_state.py tests_written  ║
-║    4. JETZT darfst du den Produktions-Code ändern                ║
+║  ECHTER TDD-WORKFLOW:                                            ║
+║    1. Test schreiben der BESTEHENDES Verhalten prüft             ║
+║    2. Test MUSS mit aktuellem Code KOMPILIEREN                   ║
+║    3. Test MUSS im VERHALTEN fehlschlagen (nicht Compile-Error!) ║
+║    4. User führt Tests aus: xcodebuild test ...                  ║
+║    5. Dann: python3 .claude/hooks/update_state.py tests_written  ║
+║             --proof <test_output.log>                            ║
+║             ODER --user-verified (wenn User lokal testet)        ║
+║    6. JETZT darfst du den Produktions-Code ändern                ║
 ║                                                                  ║
 ║  Datei: {file_path[:50]}...
 ║                                                                  ║
-║  ⚠️  KEIN Trial-and-Error! Erst analysieren, dann testen!        ║
+║  ⚠️  Compile-Error ist KEIN TDD RED! Tests müssen kompilieren!  ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 """
@@ -227,9 +231,6 @@ def main():
 
     # NUR in "implementing" Phase sind Code-Änderungen erlaubt!
     if current_phase == "implementing":
-        # ZUSÄTZLICH: TDD-Check - Tests müssen VORHER geschrieben sein!
-        tests_written = state.get("tests_written", False)
-
         # Unterscheide zwischen Test-Dateien und Produktion-Code
         is_test_file = "Tests/" in file_path or "Test" in file_path
 
@@ -237,13 +238,22 @@ def main():
             # Test-Dateien immer erlauben (das ist ja der RED-Schritt)
             sys.exit(0)
 
+        # ZUSÄTZLICH: TDD-Check mit BEWEIS!
+        tests_written = state.get("tests_written", False)
+        tdd_proof = state.get("tdd_proof", None)
+
         if not tests_written:
-            # Produktion-Code ohne vorherige Tests → BLOCKIEREN
-            error_msg = get_tdd_error(file_path)
+            error_msg = get_tdd_error(file_path, "Tests noch nicht geschrieben")
             print(error_msg, file=sys.stderr)
             sys.exit(2)
 
-        # Tests geschrieben → Code-Änderungen erlaubt
+        if not tdd_proof:
+            # tests_written=True aber KEIN Beweis → Fake TDD!
+            error_msg = get_tdd_error(file_path, "Kein TDD-Beweis vorhanden (--proof oder --user-verified fehlt)")
+            print(error_msg, file=sys.stderr)
+            sys.exit(2)
+
+        # Echter TDD-Beweis vorhanden → Code-Änderungen erlaubt
         sys.exit(0)
 
     # Alle anderen Phasen: BLOCKIEREN
