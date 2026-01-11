@@ -147,9 +147,10 @@ class StreakManager: ObservableObject {
     }
     
     func updateStreaks(for date: Date = Date()) async {
-        // Get daily minutes for the past 30 days or so
+        // Get daily minutes for the past 90 days to support long streaks
+        // Bug 35: 30 days was too short, causing 56-day streaks to be truncated to 30
         let calendar = Calendar.current
-        let startDate = calendar.date(byAdding: .day, value: -30, to: date)!
+        let startDate = calendar.date(byAdding: .day, value: -90, to: date)!
 
         // CRITICAL FIX: Use start of tomorrow as endDate to include ALL samples from today
         // With .strictStartDate, samples must start BEFORE endDate (exclusive)

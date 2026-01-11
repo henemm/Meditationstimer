@@ -154,4 +154,79 @@ final class CalendarViewStreakMigrationTests: XCTestCase {
         XCTAssertEqual(newResult.streak, 1, "Neue Logik: Kein Joker verfügbar, Gap bricht")
         XCTAssertEqual(newResult.rewardsEarned, 0, "Kein Joker verdient (< 7 Tage)")
     }
+
+    // MARK: - TDD RED: Bug 35 - Streak-Truncation bei langen Streaks
+
+    func testLongStreak56Days_DataTruncationBug() {
+        // SZENARIO (Bug von Henning gemeldet):
+        // - User hat 56 konsekutive gute Tage
+        // - Aber updateStreaks() holt nur 30 Tage Daten
+        // - Ergebnis: Streak wird auf 30 reduziert statt 56 zu zeigen
+        //
+        // Dieser Test beweist: calculateStreakAndRewards() funktioniert korrekt,
+        // aber WENN nur 30 Tage Daten übergeben werden, ist das Ergebnis falsch.
+
+        // ========== SZENARIO 1: Alle 56 Tage Daten vorhanden ==========
+        var fullEntries: [(daysAgo: Int, minutes: Double)] = []
+        for i in 0...55 {  // 56 Tage
+            fullEntries.append((i, 5.0))
+        }
+        let fullDailyMinutes = buildDailyMinutes(fullEntries)
+
+        let fullResult = StreakManager.calculateStreakAndRewards(
+            dailyMinutes: fullDailyMinutes,
+            minMinutes: 2,
+            calendar: calendar
+        )
+
+        XCTAssertEqual(fullResult.streak, 56,
+            "Mit allen 56 Tagen Daten: Streak sollte 56 sein")
+
+        // ========== SZENARIO 2: Nur 30 Tage Daten (Bug!) ==========
+        var truncatedEntries: [(daysAgo: Int, minutes: Double)] = []
+        for i in 0...29 {  // Nur 30 Tage (wie updateStreaks mit -30)
+            truncatedEntries.append((i, 5.0))
+        }
+        let truncatedDailyMinutes = buildDailyMinutes(truncatedEntries)
+
+        let truncatedResult = StreakManager.calculateStreakAndRewards(
+            dailyMinutes: truncatedDailyMinutes,
+            minMinutes: 2,
+            calendar: calendar
+        )
+
+        // BUG: Mit nur 30 Tagen Daten wird der Streak auf 30 begrenzt!
+        XCTAssertEqual(truncatedResult.streak, 30,
+            "BUG BEWEIS: Mit nur 30 Tagen Daten wird Streak auf 30 begrenzt")
+
+        // ========== BEWEIS: Daten-Truncation verursacht Streak-Reduktion ==========
+        XCTAssertNotEqual(fullResult.streak, truncatedResult.streak,
+            "TRUNCATION BUG: 56 Tage Streak wird auf 30 reduziert wenn nur 30 Tage Daten geholt werden!")
+
+        // Die Differenz ist genau 26 Tage (56 - 30)
+        XCTAssertEqual(fullResult.streak - truncatedResult.streak, 26,
+            "Genau 26 Tage gehen durch die 30-Tage-Begrenzung verloren")
+    }
+
+    func testLongStreakWith90DaysData_NoTruncation() {
+        // LÖSUNG: Wenn wir 90 Tage Daten holen, passt ein 56-Tage-Streak
+        var entries: [(daysAgo: Int, minutes: Double)] = []
+        for i in 0...55 {  // 56 Tage
+            entries.append((i, 5.0))
+        }
+        let dailyMinutes = buildDailyMinutes(entries)
+
+        let result = StreakManager.calculateStreakAndRewards(
+            dailyMinutes: dailyMinutes,
+            minMinutes: 2,
+            calendar: calendar
+        )
+
+        XCTAssertEqual(result.streak, 56,
+            "Mit 56 Tagen Daten: Streak = 56 (keine Truncation)")
+
+        // Joker-Berechnung: 56 / 7 = 8 Joker verdient, max 3 auf Hand
+        XCTAssertEqual(result.availableRewards, 3,
+            "Nach 56 Tagen: 3 Joker auf Hand (gedeckelt)")
+    }
 }
