@@ -1066,4 +1066,107 @@ final class LeanHealthTimerUITests: XCTestCase {
         let dropButton = app.buttons["drop.fill"]
         XCTAssertFalse(dropButton.exists, "NoAlc (drop) button should NOT exist in toolbar")
     }
+
+    // MARK: - UI Consistency Tests (Header Position & Text Formatting)
+
+    /// TDD RED: Test that MeditationTab labels are NOT in uppercase
+    /// After fix: Labels "Duration" and "Closing" should be normal case, not "DURATION" / "CLOSING"
+    func testMeditationLabelsNotUppercase() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Meditation tab
+        let meditationTab = app.tabBars.buttons["Meditation"]
+        XCTAssertTrue(meditationTab.waitForExistence(timeout: 5))
+        meditationTab.tap()
+
+        // Labels should be normal case (not uppercase)
+        // These tests will FAIL until .textCase(.uppercase) is removed
+        let durationLabel = app.staticTexts["Duration"]
+        let closingLabel = app.staticTexts["Closing"]
+
+        XCTAssertTrue(durationLabel.waitForExistence(timeout: 3), "Duration label should exist in normal case")
+        XCTAssertTrue(closingLabel.waitForExistence(timeout: 3), "Closing label should exist in normal case")
+
+        // UPPERCASE versions should NOT exist after fix
+        let uppercaseDuration = app.staticTexts["DURATION"]
+        let uppercaseClosing = app.staticTexts["CLOSING"]
+
+        XCTAssertFalse(uppercaseDuration.exists, "DURATION (uppercase) should NOT exist after fix")
+        XCTAssertFalse(uppercaseClosing.exists, "CLOSING (uppercase) should NOT exist after fix")
+    }
+
+    /// TDD RED: Test that WorkoutTab labels are NOT in uppercase
+    /// After fix: Labels "Work", "Rest", "Repetitions" should be normal case
+    func testWorkoutLabelsNotUppercase() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Workout tab
+        let workoutTab = app.tabBars.buttons["Workout"]
+        XCTAssertTrue(workoutTab.waitForExistence(timeout: 5))
+        workoutTab.tap()
+
+        // Labels should be normal case (not uppercase)
+        let workLabel = app.staticTexts["Work"]
+        let restLabel = app.staticTexts["Rest"]
+        let repetitionsLabel = app.staticTexts["Repetitions"]
+
+        XCTAssertTrue(workLabel.waitForExistence(timeout: 3), "Work label should exist in normal case")
+        XCTAssertTrue(restLabel.waitForExistence(timeout: 3), "Rest label should exist in normal case")
+        XCTAssertTrue(repetitionsLabel.waitForExistence(timeout: 3), "Repetitions label should exist in normal case")
+
+        // UPPERCASE versions should NOT exist after fix
+        let uppercaseWork = app.staticTexts["WORK"]
+        let uppercaseRest = app.staticTexts["REST"]
+        let uppercaseRepetitions = app.staticTexts["REPETITIONS"]
+
+        XCTAssertFalse(uppercaseWork.exists, "WORK (uppercase) should NOT exist after fix")
+        XCTAssertFalse(uppercaseRest.exists, "REST (uppercase) should NOT exist after fix")
+        XCTAssertFalse(uppercaseRepetitions.exists, "REPETITIONS (uppercase) should NOT exist after fix")
+    }
+
+    /// TDD RED: Test that "Open Meditation" header is outside the GlassCard (headline style)
+    /// After fix: Header should be formatted like "Breathing Exercises" section header
+    func testOpenMeditationHeaderStyle() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Meditation tab
+        let meditationTab = app.tabBars.buttons["Meditation"]
+        XCTAssertTrue(meditationTab.waitForExistence(timeout: 5))
+        meditationTab.tap()
+
+        // "Open Meditation" should exist in normal case (headline style)
+        let openMeditationHeader = app.staticTexts["Open Meditation"]
+        XCTAssertTrue(openMeditationHeader.waitForExistence(timeout: 3), "Open Meditation header should exist in normal case")
+
+        // UPPERCASE version should NOT exist after fix
+        let uppercaseHeader = app.staticTexts["OPEN MEDITATION"]
+        XCTAssertFalse(uppercaseHeader.exists, "OPEN MEDITATION (uppercase) should NOT exist after fix")
+    }
+
+    /// TDD RED: Test that "Free Workout" header is outside the GlassCard (headline style)
+    /// After fix: Header should be formatted like "Workout Programs" section header
+    func testFreeWorkoutHeaderStyle() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Workout tab
+        let workoutTab = app.tabBars.buttons["Workout"]
+        XCTAssertTrue(workoutTab.waitForExistence(timeout: 5))
+        workoutTab.tap()
+
+        // "Free Workout" should exist in normal case (headline style)
+        let freeWorkoutHeader = app.staticTexts["Free Workout"]
+        XCTAssertTrue(freeWorkoutHeader.waitForExistence(timeout: 3), "Free Workout header should exist in normal case")
+
+        // UPPERCASE version should NOT exist after fix
+        let uppercaseHeader = app.staticTexts["FREE WORKOUT"]
+        XCTAssertFalse(uppercaseHeader.exists, "FREE WORKOUT (uppercase) should NOT exist after fix")
+    }
 }
