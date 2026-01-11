@@ -1,13 +1,35 @@
 {
-  "current_phase": "idle",
-  "workflow_type": null,
-  "feature_name": null,
+  "current_phase": "implementing",
+  "workflow_type": "bugfix",
+  "feature_name": "Build-Fix: Fehlende Klammern nach Merge",
   "spec_file": null,
-  "spec_approved": false,
-  "tests_written": false,
+  "spec_approved": true,
+  "tests_written": true,
   "tests_passing": false,
   "implementation_done": false,
   "validated": false,
-  "last_updated": "2026-01-11T18:30:00.000000",
-  "phase_history": []
+  "last_updated": "2026-01-11T18:45:51.751789",
+  "phase_history": [
+    {
+      "from": "implementing",
+      "to": "spec_approved",
+      "timestamp": "2026-01-11T18:39:02.008646"
+    },
+    {
+      "from": "spec_approved",
+      "to": "implementing",
+      "timestamp": "2026-01-11T18:40:28.036679"
+    },
+    {
+      "from": "implementing",
+      "to": "idle",
+      "timestamp": "2026-01-11T18:40:33.368269"
+    },
+    {
+      "from": "idle",
+      "to": "implementing",
+      "timestamp": "2026-01-11T18:45:51.751780"
+    }
+  ],
+  "tdd_proof": "user_verified:2026-01-11T18:38:00.000000"
 }

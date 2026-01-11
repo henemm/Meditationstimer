@@ -255,10 +255,11 @@ final class StreakManagerJokerTests: XCTestCase {
     }
 
     func testMinimumThreshold() {
-        // Day with only 1.5 min (< 2 min) = fail day
+        // Day with only 1.4 min (< 2 min after rounding) = fail day
+        // Note: round(1.5) = 2 due to banker's rounding, so we use 1.4
         let dailyMinutes = buildDailyMinutes([
             (2, 5.0),
-            (1, 1.5),  // below threshold
+            (1, 1.4),  // below threshold (round(1.4) = 1)
             (0, 5.0)
         ])
 

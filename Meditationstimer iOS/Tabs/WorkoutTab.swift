@@ -313,7 +313,8 @@ struct WorkoutTab: View {
                         .clipped()
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                }
+                }  // HStack (Picker Section)
+            }  // VStack(spacing: 16)
 
                 // Total Duration
                 HStack {

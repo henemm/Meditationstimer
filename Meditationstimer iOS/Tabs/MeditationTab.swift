@@ -309,7 +309,8 @@ struct MeditationTab: View {
                         .clipped()
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                }
+                }  // HStack (Picker Section)
+            }  // VStack(spacing: 16)
 
                 // Start Button
                 Button(action: startOpenMeditation) {
