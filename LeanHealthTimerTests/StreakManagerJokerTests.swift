@@ -286,4 +286,66 @@ final class StreakManagerJokerTests: XCTestCase {
 
         XCTAssertEqual(result.streak, 2, "1.8 rounds to 2, should count as good day")
     }
+
+    // MARK: - Screenshot Scenario Test (January 11, 2026)
+
+    func testScreenshotScenario_33DaysGapThen8Days() {
+        // Scenario from Screenshot:
+        // - 31 days December + 2 days Jan (1st, 2nd) = 33 workout days
+        // - Jan 3rd: NO WORKOUT (gap)
+        // - Jan 4th-11th: 8 workout days
+        // - Today = Jan 11th
+        //
+        // Expected with Joker system:
+        // - After 7 days: 1 Joker, after 14: 2 Jokers, after 21: 3 Jokers (cap)
+        // - At day 34 (Jan 3rd gap): consume 1 Joker → streak continues
+        // - Total streak: 33 + 1 (healed) + 8 = 42 days
+        // - Jokers: earned at 7,14,21,35,42 = 5, consumed = 1, available = min(3, 4) = 3
+
+        var entries: [(daysAgo: Int, minutes: Double)] = []
+
+        // Today is Jan 11th = daysAgo(0)
+        // Jan 4th-11th = daysAgo(0-7) = 8 days
+        for i in 0...7 {
+            entries.append((i, 5.0))
+        }
+
+        // Jan 3rd = daysAgo(8) = GAP (no entry!)
+
+        // Jan 1st-2nd = daysAgo(9-10) = 2 days
+        entries.append((9, 5.0))
+        entries.append((10, 5.0))
+
+        // December 1st-31st = daysAgo(11-41) = 31 days
+        for i in 11...41 {
+            entries.append((i, 5.0))
+        }
+
+        let dailyMinutes = buildDailyMinutes(entries)
+        let result = StreakManager.calculateStreakAndRewards(
+            dailyMinutes: dailyMinutes,
+            minMinutes: 2,
+            calendar: calendar
+        )
+
+        // With Joker healing: 33 days + 1 healed gap + 8 days = 42
+        XCTAssertEqual(result.streak, 42, "Gap on Jan 3rd should be healed by Joker")
+
+        // After 42 days: earned at days 7,14,21,35,42 = 5 Jokers
+        // (day 28 and beyond cap doesn't earn because cap=3)
+        // Wait, let me recalculate:
+        // Days 1-7: earn 1 (total: 1)
+        // Days 8-14: earn 1 (total: 2)
+        // Days 15-21: earn 1 (total: 3, capped)
+        // Days 22-28: would earn but capped
+        // Days 29-33: no milestone
+        // Day 34 (gap): consume 1 → available: 2
+        // Days 35: 35%7=0, available<3 → earn 1 (total: 4)
+        // Days 36-41: no milestone
+        // Day 42: 42%7=0, available<3 → earn 1 (total: 5)
+        // Final: earned=5, consumed=1, available=min(3, 4)=3
+
+        XCTAssertEqual(result.availableRewards, 3, "Should have 3 available (capped)")
+        XCTAssertEqual(result.rewardsConsumed, 1, "1 Joker consumed for Jan 3rd gap")
+    }
 }
