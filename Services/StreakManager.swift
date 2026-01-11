@@ -10,28 +10,140 @@ import HealthKit
 
 struct StreakData: Codable {
     var currentStreakDays: Int
-    var rewardsEarned: Int // max 3
+    var rewardsEarned: Int // total earned
+    var rewardsConsumed: Int // total consumed for healing
     var lastActivityDate: Date?
-    
+
+    /// Available rewards (earned - consumed), max 3
+    var availableRewards: Int {
+        min(3, rewardsEarned - rewardsConsumed)
+    }
+
     init() {
         self.currentStreakDays = 0
         self.rewardsEarned = 0
+        self.rewardsConsumed = 0
         self.lastActivityDate = nil
+    }
+
+    // Migration: handle old data without rewardsConsumed
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        currentStreakDays = try container.decode(Int.self, forKey: .currentStreakDays)
+        rewardsEarned = try container.decode(Int.self, forKey: .rewardsEarned)
+        rewardsConsumed = try container.decodeIfPresent(Int.self, forKey: .rewardsConsumed) ?? 0
+        lastActivityDate = try container.decodeIfPresent(Date.self, forKey: .lastActivityDate)
+    }
+}
+
+/// Result from streak calculation with Joker system
+struct StreakResult {
+    let streak: Int
+    let rewardsEarned: Int
+    let rewardsConsumed: Int
+
+    var availableRewards: Int {
+        min(3, rewardsEarned - rewardsConsumed)
     }
 }
 
 class StreakManager: ObservableObject {
     private let healthKitManager = HealthKitManager.shared
-    
+
     // Separate streaks for meditation and workout
     @Published var meditationStreak = StreakData()
     @Published var workoutStreak = StreakData()
-    
+
     private let streakThreshold = 7 // days to earn a reward
     private let minMinutes = 2 // minimum minutes to count as activity
-    
+
     init() {
         loadStreaks()
+    }
+
+    // MARK: - Static Calculation (Testable)
+
+    /// Calculate streak and rewards using forward iteration with Joker healing
+    /// - Parameters:
+    ///   - dailyMinutes: Dictionary of date -> minutes of activity
+    ///   - minMinutes: Minimum minutes to count as a "good" day
+    ///   - calendar: Calendar for date calculations
+    /// - Returns: StreakResult with streak count and reward info
+    static func calculateStreakAndRewards(
+        dailyMinutes: [Date: Double],
+        minMinutes: Int,
+        calendar: Calendar = .current
+    ) -> StreakResult {
+        let today = calendar.startOfDay(for: Date())
+
+        // Find first day with data
+        guard let firstDate = dailyMinutes.keys.min() else {
+            return StreakResult(streak: 0, rewardsEarned: 0, rewardsConsumed: 0)
+        }
+
+        // Determine end date: today if logged, otherwise yesterday
+        // (don't penalize for not having logged today yet)
+        let hasEntryToday = dailyMinutes[today] != nil &&
+                           round(dailyMinutes[today]!) >= Double(minMinutes)
+        let endDate = hasEntryToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        // Don't process if first date is after end date
+        guard firstDate <= endDate else {
+            return StreakResult(streak: 0, rewardsEarned: 0, rewardsConsumed: 0)
+        }
+
+        var consecutiveDays = 0
+        var earnedRewards = 0
+        var consumedRewards = 0
+
+        // Forward iteration: iterate over ALL days from first entry to end date
+        var currentDate = firstDate
+        while currentDate <= endDate {
+            let minutes = dailyMinutes[currentDate] ?? 0
+            let isGoodDay = round(minutes) >= Double(minMinutes)
+
+            if isGoodDay {
+                // Good day: count it
+                consecutiveDays += 1
+
+                // Earn Joker at every 7-day milestone (max 3 on hand)
+                if consecutiveDays % 7 == 0 && (earnedRewards - consumedRewards) < 3 {
+                    earnedRewards += 1
+                }
+            } else {
+                // Gap or insufficient minutes: needs Joker to continue
+
+                // First check if we would earn a Joker at this milestone
+                // (earn before consume rule for day 7)
+                let wouldBeMilestone = (consecutiveDays + 1) % 7 == 0
+                if wouldBeMilestone && (earnedRewards - consumedRewards) < 3 {
+                    earnedRewards += 1
+                }
+
+                // Now try to heal with available Joker
+                let availableJokers = earnedRewards - consumedRewards
+                if availableJokers > 0 {
+                    consumedRewards += 1
+                    consecutiveDays += 1  // Streak continues (healed)
+                } else {
+                    // No Joker available: streak breaks
+                    consecutiveDays = 0
+                    earnedRewards = 0
+                    consumedRewards = 0
+                }
+            }
+
+            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else {
+                break
+            }
+            currentDate = nextDate
+        }
+
+        return StreakResult(
+            streak: consecutiveDays,
+            rewardsEarned: earnedRewards,
+            rewardsConsumed: consumedRewards
+        )
     }
     
     func updateStreaks(for date: Date = Date()) async {
@@ -80,48 +192,24 @@ class StreakManager: ObservableObject {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
-        // Check if today has data
+        // Use new Joker-based calculation
+        let result = StreakManager.calculateStreakAndRewards(
+            dailyMinutes: dailyMinutes,
+            minMinutes: minMinutes,
+            calendar: calendar
+        )
+
+        print("🔍 updateStreak() - streak: \(result.streak), earned: \(result.rewardsEarned), consumed: \(result.rewardsConsumed)")
+
+        // Update streak data
+        streak.currentStreakDays = result.streak
+        streak.rewardsEarned = result.rewardsEarned
+        streak.rewardsConsumed = result.rewardsConsumed
+
+        // Update lastActivityDate if today has data
         let todayMinutes = dailyMinutes[today] ?? 0
-        let hasDataToday = round(todayMinutes) >= Double(minMinutes)
-
-        print("🔍 updateStreak() - today: \(today), todayMinutes: \(todayMinutes), hasDataToday: \(hasDataToday)")
-
-        // Calculate current streak: consecutive days with at least minMinutes
-        // Start from yesterday if today has no data (don't break streak for incomplete today)
-        var currentStreak = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        print("🔍 Starting streak calculation from: \(checkDate)")
-
-        while true {
-            let minutes = dailyMinutes[checkDate] ?? 0
-            print("🔍   Checking \(checkDate): \(minutes) min (rounded: \(round(minutes)))")
-            if round(minutes) >= Double(minMinutes) {
-                currentStreak += 1
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else {
-                    print("🔍   Reached beginning of calendar")
-                    break
-                }
-                checkDate = previousDate
-            } else {
-                print("🔍   Day has < \(minMinutes) min, stopping. Final streak: \(currentStreak)")
-                break
-            }
-        }
-
-        // Calculate rewards based on streak
-        let newRewards = min(3, currentStreak / streakThreshold)
-
-        if hasDataToday {
-            // Update streak and rewards
-            streak.currentStreakDays = currentStreak
-            streak.rewardsEarned = newRewards
+        if round(todayMinutes) >= Double(minMinutes) {
             streak.lastActivityDate = today
-        } else {
-            // No data today: show streak from yesterday (don't penalize for incomplete day)
-            streak.currentStreakDays = currentStreak
-            streak.rewardsEarned = newRewards
-            // Keep lastActivityDate as is (don't update)
         }
     }
     

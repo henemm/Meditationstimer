@@ -1,14 +1,14 @@
 {
-  "current_phase": "spec_written",
+  "current_phase": "implementing",
   "workflow_type": "feature",
   "feature_name": "Meditation und Workout Rewards/Streaks - Pr\u00fcfung ob Code der aktualisierten Spec entspricht (Universal Joker System)",
   "spec_file": null,
   "spec_approved": true,
-  "tests_written": false,
+  "tests_written": true,
   "tests_passing": false,
   "implementation_done": false,
   "validated": false,
-  "last_updated": "2026-01-11T11:30:49.663025",
+  "last_updated": "2026-01-11T11:35:50.299856",
   "phase_history": [
     {
       "from": "idle",
@@ -104,6 +104,16 @@
       "from": "analysing",
       "to": "spec_written",
       "timestamp": "2026-01-11T11:30:49.663006"
+    },
+    {
+      "from": "spec_written",
+      "to": "spec_approved",
+      "timestamp": "2026-01-11T11:33:02.014311"
+    },
+    {
+      "from": "spec_approved",
+      "to": "implementing",
+      "timestamp": "2026-01-11T11:33:12.615848"
     }
   ]
 }
