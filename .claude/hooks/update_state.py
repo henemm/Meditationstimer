@@ -7,14 +7,21 @@ Aufruf:
 
 Phasen:
   idle, analysing, spec_written, spec_approved, implementing, validating
+
+TDD-Befehle:
+  tests_written --proof <log_file>   # Markiert Tests als RED (mit Beweis!)
+  tests_written --user-verified      # User bestätigt manuell (für lokale Tests)
+  tests_passing                      # Markiert Tests als GREEN
 """
 
 import json
 import sys
+import re
 from datetime import datetime
 from pathlib import Path
 
 STATE_FILE = Path(__file__).parent.parent / "workflow_state.json"
+TDD_LOG_FILE = Path(__file__).parent.parent / "tdd_proof.log"
 
 
 def load_state() -> dict:
@@ -28,6 +35,7 @@ def load_state() -> dict:
             "spec_approved": False,
             "tests_written": False,
             "tests_passing": False,
+            "tdd_proof": None,  # NEU: Beweis für TDD RED
             "implementation_done": False,
             "validated": False,
             "last_updated": None,
@@ -45,11 +53,50 @@ def save_state(state: dict) -> None:
         json.dump(state, f, indent=2)
 
 
+def verify_test_failure(log_content: str) -> tuple[bool, str]:
+    """
+    Prüft ob der Test-Log echte Test-Failures enthält.
+
+    Returns: (is_valid, reason)
+    """
+    # Muster für echte Test-Failures (nicht nur Compile-Errors!)
+    failure_patterns = [
+        r"Test Case .* failed",
+        r"XCTAssert.*failed",
+        r"expected .* but got",
+        r"Executed \d+ tests?, with \d+ failure",
+        r"\*\* TEST FAILED \*\*",
+        r"FAILED.*\d+ test",
+    ]
+
+    # Muster für Compile-Errors (das ist KEIN echter TDD RED!)
+    compile_error_patterns = [
+        r"error:.*has no member",
+        r"error:.*cannot find .* in scope",
+        r"error:.*undeclared type",
+        r"Build Failed",
+    ]
+
+    has_test_failure = any(re.search(p, log_content, re.IGNORECASE) for p in failure_patterns)
+    has_compile_error = any(re.search(p, log_content, re.IGNORECASE) for p in compile_error_patterns)
+
+    if has_compile_error and not has_test_failure:
+        return False, "Compile-Error ist KEIN echter TDD RED! Tests müssen kompilieren aber im Verhalten fehlschlagen."
+
+    if has_test_failure:
+        return True, "Echte Test-Failures gefunden."
+
+    return False, "Keine Test-Failures im Log gefunden. Tests müssen ausgeführt werden und fehlschlagen."
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: update_state.py <phase> [--feature <name>] [--type <bug|feature>]")
-        print("       update_state.py tests_written   # Markiert Tests als geschrieben (RED)")
-        print("       update_state.py tests_passing   # Markiert Tests als bestanden (GREEN)")
+        print("")
+        print("TDD-Befehle:")
+        print("  tests_written --proof <log_file>   # Beweis für echte Test-Failures")
+        print("  tests_written --user-verified      # User bestätigt manuell")
+        print("  tests_passing                      # Tests sind jetzt grün")
         sys.exit(1)
 
     command = sys.argv[1]
@@ -57,12 +104,62 @@ def main():
 
     # Spezielle TDD-Befehle
     if command == "tests_written":
-        state = load_state()
-        state["tests_written"] = True
-        save_state(state)
-        print("✓ Tests als geschrieben markiert (RED-Phase abgeschlossen)")
-        print("  → Du darfst jetzt Produktions-Code ändern")
-        return
+        args = sys.argv[2:]
+
+        # PFLICHT: Beweis oder User-Bestätigung
+        if "--proof" in args:
+            proof_idx = args.index("--proof")
+            if proof_idx + 1 >= len(args):
+                print("❌ --proof benötigt eine Log-Datei als Argument")
+                sys.exit(1)
+
+            log_file = Path(args[proof_idx + 1])
+            if not log_file.exists():
+                print(f"❌ Log-Datei nicht gefunden: {log_file}")
+                sys.exit(1)
+
+            log_content = log_file.read_text()
+            is_valid, reason = verify_test_failure(log_content)
+
+            if not is_valid:
+                print(f"❌ TDD RED ABGELEHNT: {reason}")
+                print("")
+                print("Ein echter TDD RED Test muss:")
+                print("  1. Mit dem bestehenden Code KOMPILIEREN")
+                print("  2. Im VERHALTEN fehlschlagen (XCTAssert fails)")
+                print("  3. Nicht nur 'Methode existiert nicht' prüfen")
+                sys.exit(1)
+
+            # Beweis speichern
+            TDD_LOG_FILE.write_text(log_content)
+
+            state = load_state()
+            state["tests_written"] = True
+            state["tdd_proof"] = f"log_verified:{datetime.now().isoformat()}"
+            save_state(state)
+            print("✓ TDD RED verifiziert: Echte Test-Failures gefunden")
+            print("  → Du darfst jetzt Produktions-Code ändern")
+            return
+
+        elif "--user-verified" in args:
+            state = load_state()
+            state["tests_written"] = True
+            state["tdd_proof"] = f"user_verified:{datetime.now().isoformat()}"
+            save_state(state)
+            print("✓ User hat TDD RED manuell bestätigt")
+            print("  → Du darfst jetzt Produktions-Code ändern")
+            return
+
+        else:
+            print("❌ TDD RED benötigt Beweis!")
+            print("")
+            print("Optionen:")
+            print("  --proof <log_file>   Log mit Test-Output (muss Failures zeigen)")
+            print("  --user-verified      User bestätigt manuell (für lokale Tests)")
+            print("")
+            print("WICHTIG: Ein Compile-Error ist KEIN echter TDD RED!")
+            print("Tests müssen kompilieren aber im Verhalten fehlschlagen.")
+            sys.exit(1)
 
     if command == "tests_passing":
         state = load_state()
