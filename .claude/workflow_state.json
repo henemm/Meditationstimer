@@ -1,5 +1,5 @@
 {
-  "current_phase": "analysing",
+  "current_phase": "spec_written",
   "workflow_type": "feature",
   "feature_name": "UI-Konsistenz: \u00dcberschriften und Textformatierung vereinheitlichen",
   "spec_file": null,
@@ -8,7 +8,7 @@
   "tests_passing": false,
   "implementation_done": false,
   "validated": false,
-  "last_updated": "2026-01-11T12:42:03.164007",
+  "last_updated": "2026-01-11T12:44:02.246510",
   "phase_history": [
     {
       "from": "idle",
@@ -124,6 +124,11 @@
       "from": "implementing",
       "to": "analysing",
       "timestamp": "2026-01-11T12:42:03.163984"
+    },
+    {
+      "from": "analysing",
+      "to": "spec_written",
+      "timestamp": "2026-01-11T12:44:02.246492"
     }
   ],
   "tdd_proof": "log_verified:2026-01-11T11:54:05.900370"
