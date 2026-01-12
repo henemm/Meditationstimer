@@ -1301,4 +1301,69 @@ final class LeanHealthTimerUITests: XCTestCase {
         let uppercaseHeader = app.staticTexts["FREE WORKOUT"]
         XCTAssertFalse(uppercaseHeader.exists, "FREE WORKOUT (uppercase) should NOT exist after fix")
     }
+
+    // MARK: - Header Position Tests (Outside GlassCard)
+
+    /// TDD: Test that "Open Meditation" header is positioned ABOVE the card content
+    /// The header should have a smaller Y coordinate than the first emoji (🧘)
+    func testOpenMeditationHeaderIsAboveCardContent() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Meditation tab
+        let meditationTab = app.tabBars.buttons["Meditation"]
+        XCTAssertTrue(meditationTab.waitForExistence(timeout: 5))
+        meditationTab.tap()
+        sleep(2)
+
+        // Find header and first card content element
+        let header = app.staticTexts["Open Meditation"]
+        let cardEmoji = app.staticTexts["🧘"]
+
+        // Debug: Print all static texts to see what's available
+        print("DEBUG: Available staticTexts:")
+        for text in app.staticTexts.allElementsBoundByIndex {
+            print("  - '\(text.label)' at Y=\(text.frame.minY)")
+        }
+
+        XCTAssertTrue(header.waitForExistence(timeout: 5), "Header 'Open Meditation' should exist")
+        XCTAssertTrue(cardEmoji.waitForExistence(timeout: 5), "Card emoji '🧘' should exist")
+
+        // Header should be ABOVE card content (smaller Y coordinate)
+        let headerY = header.frame.minY
+        let cardY = cardEmoji.frame.minY
+
+        print("DEBUG: Header Y = \(headerY), Card Y = \(cardY)")
+
+        XCTAssertLessThan(headerY, cardY,
+            "Header Y (\(headerY)) should be less than card content Y (\(cardY)) - header should be ABOVE card")
+    }
+
+    /// TDD: Test that "Free Workout" header is positioned ABOVE the card content
+    /// The header should have a smaller Y coordinate than the first emoji (🔥)
+    func testFreeWorkoutHeaderIsAboveCardContent() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Workout tab
+        let workoutTab = app.tabBars.buttons["Workout"]
+        XCTAssertTrue(workoutTab.waitForExistence(timeout: 5))
+        workoutTab.tap()
+
+        // Find header and first card content element
+        let header = app.staticTexts["Free Workout"]
+        let cardEmoji = app.staticTexts["🔥"]
+
+        XCTAssertTrue(header.waitForExistence(timeout: 3), "Header should exist")
+        XCTAssertTrue(cardEmoji.waitForExistence(timeout: 3), "Card emoji should exist")
+
+        // Header should be ABOVE card content (smaller Y coordinate)
+        let headerY = header.frame.minY
+        let cardY = cardEmoji.frame.minY
+
+        XCTAssertLessThan(headerY, cardY,
+            "Header Y (\(headerY)) should be less than card content Y (\(cardY)) - header should be ABOVE card")
+    }
 }
