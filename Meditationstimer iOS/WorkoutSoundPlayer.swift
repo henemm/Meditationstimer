@@ -145,14 +145,14 @@ public final class WorkoutSoundPlayer: NSObject, ObservableObject, AVAudioPlayer
         }
     }
 
-    // MARK: - Round Announcement (legacy support - now uses TTS)
+    // MARK: - Round Announcement (TTS: "Round X of Y")
 
-    public func playRound(_ number: Int) {
-        guard number >= 1 && number <= 20 else { return }
+    public func playRound(_ number: Int, of total: Int) {
+        guard number >= 1 && number <= 99 else { return }
+        guard total >= 1 && total <= 99 else { return }
         prepare()
         activateSession()
-        // Round-Dateien werden nicht mehr verwendet - TTS stattdessen
-        let text = String(format: NSLocalizedString("Round %d", comment: "TTS for round number"), number)
+        let text = String(format: NSLocalizedString("Round %d of %d", comment: "TTS for round X of Y"), number, total)
         speak(text)
     }
 

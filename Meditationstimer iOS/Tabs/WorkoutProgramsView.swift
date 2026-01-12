@@ -1368,7 +1368,7 @@ public struct WorkoutProgramsView: View {
                 if nextRound == set.repetitions {
                     return String(format: NSLocalizedString("Last round: %@", comment: "TTS for last round"), firstExercise)
                 } else {
-                    return String(format: NSLocalizedString("Round %d: %@", comment: "TTS for round number"), nextRound, firstExercise)
+                    return String(format: NSLocalizedString("Round %d of %d: %@", comment: "TTS for round X of Y with exercise"), nextRound, set.repetitions, firstExercise)
                 }
             } else {
                 return ""  // No next (shouldn't happen)

@@ -125,4 +125,43 @@ final class WorkoutSoundPlayerTests: XCTestCase {
             XCTFail("Audio-Session-Konfiguration sollte funktionieren: \(error)")
         }
     }
+
+    // MARK: - TDD RED: Round Announcement "X of Y" Format
+
+    /// TDD RED: Test für neues "Round X of Y" Format
+    /// Dieser Test prüft, dass playRound mit total-Parameter existiert
+    func testPlayRoundWithTotalParameter() {
+        let player = WorkoutSoundPlayer.shared
+        player.reset()
+        player.prepare()
+
+        // Diese Funktion muss existieren: playRound(_ number: Int, of total: Int)
+        // TDD RED: Wird fehlschlagen bis Signatur geändert ist
+        player.playRound(3, of: 10)
+
+        // Test passed = Funktion existiert mit korrekter Signatur
+        XCTAssertTrue(true, "playRound(_:of:) sollte existieren")
+    }
+
+    /// TDD RED: Test für Format-String "Round X of Y"
+    func testRoundAnnouncementFormatEN() {
+        // Format-String Test (EN)
+        let formatted = String(format: NSLocalizedString("Round %d of %d", comment: "TTS for round X of Y"), 3, 10)
+
+        // Muss "Round 3 of 10" oder lokalisierte Version enthalten
+        XCTAssertTrue(formatted.contains("3"), "Format sollte Rundennummer enthalten")
+        XCTAssertTrue(formatted.contains("10"), "Format sollte Gesamtzahl enthalten")
+    }
+
+    /// TDD RED: Test für Format mit verschiedenen Werten
+    func testRoundAnnouncementFormatVariousValues() {
+        // Test mit verschiedenen Werten
+        let format1 = String(format: NSLocalizedString("Round %d of %d", comment: ""), 1, 5)
+        let format2 = String(format: NSLocalizedString("Round %d of %d", comment: ""), 5, 5)
+        let format3 = String(format: NSLocalizedString("Round %d of %d", comment: ""), 10, 20)
+
+        XCTAssertTrue(format1.contains("1") && format1.contains("5"), "Round 1 of 5")
+        XCTAssertTrue(format2.contains("5"), "Round 5 of 5")
+        XCTAssertTrue(format3.contains("10") && format3.contains("20"), "Round 10 of 20")
+    }
 }

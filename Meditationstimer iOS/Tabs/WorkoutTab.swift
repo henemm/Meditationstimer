@@ -697,7 +697,7 @@ private struct WorkoutRunnerView: View {
                 if nextRound == cfgRepeats {
                     sounds.speak(NSLocalizedString("Last round", comment: "TTS for last round"))
                 } else {
-                    let text = String(format: NSLocalizedString("Round %d", comment: "TTS for round number"), nextRound)
+                    let text = String(format: NSLocalizedString("Round %d of %d", comment: "TTS for round X of Y"), nextRound, cfgRepeats)
                     sounds.speak(text)
                 }
 
@@ -718,7 +718,7 @@ private struct WorkoutRunnerView: View {
                 if repIndex == cfgRepeats {
                     sounds.speak(NSLocalizedString("Last round", comment: "TTS for last round"))
                 } else {
-                    let text = String(format: NSLocalizedString("Round %d", comment: "TTS for round number"), repIndex)
+                    let text = String(format: NSLocalizedString("Round %d of %d", comment: "TTS for round X of Y"), repIndex, cfgRepeats)
                     sounds.speak(text)
                 }
                 sounds.play(WorkoutCue.auftakt)

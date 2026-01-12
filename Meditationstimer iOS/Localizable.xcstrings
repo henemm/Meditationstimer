@@ -7033,7 +7033,7 @@
       }
     },
     "Round %d" : {
-      "comment" : "TTS for round number",
+      "comment" : "TTS for round number\nTTS for round number in free workout",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7045,6 +7045,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Round %d"
+          }
+        }
+      }
+    },
+    "Round %d of %d" : {
+      "comment" : "TTS for round X of Y",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Runde %d von %d"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Round %d of %d"
+          }
+        }
+      }
+    },
+    "Round %d of %d: %@" : {
+      "comment" : "TTS for round X of Y with exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Runde %d von %d: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Round %d of %d: %@"
           }
         }
       }
