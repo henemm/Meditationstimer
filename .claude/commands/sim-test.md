@@ -1,26 +1,66 @@
 # Simulator UI Tests durchfuehren
 
-Starte den `simulator-tester` Agenten aus `.agent-os/agents/simulator-tester.md`.
+## ⛔ DIESER BEFEHL IST PFLICHT!
+
+**XCUITests MÜSSEN vor JEDER Validierung laufen!**
 
 ---
 
-## Dieser Befehl ist PFLICHT
+## Wann ausführen?
 
-Bevor du dem User etwas zum manuellen Testen gibst, MUSS dieser Befehl ausgefuehrt werden.
+| Situation | XCUITest Pflicht? |
+|-----------|-------------------|
+| Nach Implementation | ✅ JA |
+| Vor `/4-validate` | ✅ JA |
+| Vor Device-Test für Henning | ✅ JA |
+| Bei UI-Änderungen | ✅ JA |
+| Bei Workflow-Änderungen (Timer, Workout) | ✅ JA |
 
-**Befolge den Workflow aus `.agent-os/agents/simulator-tester.md`**
+**NIEMALS dem User etwas zum manuellen Testen geben OHNE vorher XCUITests auszuführen!**
 
-**Injizierte Standards:**
-- `.agent-os/standards/testing/ui-testing.md`
-- `.agent-os/standards/global/documentation-rules.md`
+---
 
-**Schritte:**
-1. Simulator booten (iPhone 17 Pro empfohlen)
-2. Deutsche Sprache setzen
-3. App bauen und installieren
-4. App starten und Screenshot machen
-5. Screenshot gegen Akzeptanzkriterien pruefen
-6. Bei Lokalisierung: Fuer EN wiederholen
-7. Ergebnis dokumentieren
+## XCUITest Befehl
 
-**Bei FAIL:** Nicht zum User gehen, erst fixen!
+```bash
+xcodebuild test \
+  -project Meditationstimer.xcodeproj \
+  -scheme "Lean Health Timer" \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -only-testing:LeanHealthTimerUITests \
+  2>&1 | grep -E "(Test Case|passed|failed|error:)"
+```
+
+---
+
+## Was XCUITests testen MÜSSEN
+
+Für jedes Feature/Fix muss ein XCUITest existieren der:
+1. **Den Anwendungsfall simuliert** (so nah wie möglich am echten Nutzer)
+2. **Die erwartete UI verifiziert** (Elemente existieren, richtige Position)
+3. **Den Workflow durchläuft** (Start → Aktion → Ende)
+
+**Beispiel für "Round X of Y" Feature:**
+- Workout Tab öffnen
+- Free Workout konfigurieren (3 Runden)
+- Start drücken
+- Warten bis Rest-Phase
+- Verifizieren dass UI korrekt aktualisiert
+
+---
+
+## Bei FAIL
+
+❌ **NICHT zum User gehen!**
+❌ **NICHT Device-Test-Anweisungen geben!**
+
+✅ Erst fixen, dann erneut testen!
+
+---
+
+## Device-Test ist NUR für
+
+- Voice/TTS Ausgabe (kann Simulator nicht)
+- Haptic Feedback (kann Simulator nicht)
+- HealthKit echte Daten
+- Watch Connectivity

@@ -31,29 +31,43 @@ python3 .claude/hooks/update_state.py validating
 
 ---
 
+## ⚠️ ALLE TESTS SIND PFLICHT!
+
+**Validierung ist NICHT abgeschlossen ohne:**
+1. ✅ Unit Tests GRÜN
+2. ✅ XCUITests GRÜN (im Simulator!)
+3. ✅ Release Build erfolgreich
+4. ✅ Device-Test NUR für Audio/Haptics (was Simulator nicht kann)
+
+**XCUITests ersetzen manuelle Test-Checklisten!**
+
+---
+
 ## Validierungs-Schritte
 
-### 1. Unit Tests ausführen
+### 1. Unit Tests ausführen (PFLICHT)
 
 ```bash
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
   -only-testing:LeanHealthTimerTests \
   2>&1 | grep -E "(Test Case|passed|failed|error:)"
 ```
 
-### 2. UI Tests ausführen (falls vorhanden)
+### 2. XCUITests ausführen (PFLICHT!)
 
 ```bash
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
   -only-testing:LeanHealthTimerUITests \
   2>&1 | grep -E "(Test Case|passed|failed|error:)"
 ```
+
+**⛔ KEIN Überspringen! XCUITests MÜSSEN laufen und GRÜN sein!**
 
 ### 3. Release Build
 
@@ -61,7 +75,7 @@ xcodebuild test \
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
   -configuration Release \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
   build
 ```
 
@@ -69,7 +83,7 @@ xcodebuild -project Meditationstimer.xcodeproj \
 
 ## Ergebnis-Handling
 
-### ✅ Alle Tests grün
+### ✅ Alle Tests grün (Unit + XCUITests)
 
 ```bash
 python3 .claude/hooks/update_state.py validating --tests-passing --validated
@@ -78,7 +92,7 @@ python3 .claude/hooks/update_state.py validating --tests-passing --validated
 Dann:
 1. **ACTIVE-todos.md aktualisieren**
 2. **Commit erstellen**
-3. **Test-Anweisungen für Henning** (Device-Test)
+3. **Device-Test NUR für:** Audio-Ausgabe, Haptics, Watch-Sync
 
 ### ❌ Tests fehlgeschlagen
 
@@ -91,6 +105,22 @@ python3 .claude/hooks/update_state.py implementing
 
 ---
 
+## Was gehört in XCUITests vs. Device-Test?
+
+| Test-Typ | XCUITest (Simulator) | Device-Test (Henning) |
+|----------|---------------------|----------------------|
+| UI Layout | ✅ PFLICHT | ❌ |
+| Navigation | ✅ PFLICHT | ❌ |
+| Button-Taps | ✅ PFLICHT | ❌ |
+| Timer-Start/Stop | ✅ PFLICHT | ❌ |
+| Workout-Ablauf | ✅ PFLICHT | ❌ |
+| Voice/TTS Output | ❌ | ✅ PFLICHT |
+| Haptic Feedback | ❌ | ✅ PFLICHT |
+| HealthKit Sync | ❌ | ✅ PFLICHT |
+| Watch Connectivity | ❌ | ✅ PFLICHT |
+
+---
+
 ## Nächster Schritt
 
-Nach erfolgreichem Device-Test → `/0-reset`
+Nach ALLEN Tests grün → `/0-reset`

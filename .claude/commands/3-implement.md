@@ -48,6 +48,23 @@ Feature-Workflow:
 
 ---
 
+## ⚠️ XCUITESTS SIND PFLICHT!
+
+**Bei JEDER UI-Änderung MÜSSEN XCUITests geschrieben werden!**
+
+| Änderungstyp | Test-Pflicht |
+|--------------|--------------|
+| UI-Änderung (Views, Layout) | XCUITest PFLICHT |
+| Business Logic | Unit Test PFLICHT |
+| Voice/Audio | XCUITest für Workflow + manueller Device-Test |
+
+**KEIN Feature ist fertig ohne:**
+1. Unit Tests für Logic (TDD RED → GREEN)
+2. XCUITests für UI-Verhalten (im Simulator ausführen!)
+3. Device-Test NUR für Dinge die Simulator nicht kann (Audio, Haptics)
+
+---
+
 ## Implementierungs-Regeln
 
 **Constraints (aus Scoping-Limits):**
@@ -59,8 +76,9 @@ Feature-Workflow:
 **Vorgehen:**
 1. Lies die Spec / Root Cause Analyse nochmal
 2. Implementiere **exakt** das Geplante (keine Extras!)
-3. Bei jedem sinnvollen Zwischenstand: **Commit**
-4. Jeder Commit muss **compilieren**
+3. **XCUITests schreiben die das Feature testen!**
+4. Bei jedem sinnvollen Zwischenstand: **Commit**
+5. Jeder Commit muss **compilieren**
 
 ---
 
@@ -70,11 +88,20 @@ Feature-Workflow:
    ```bash
    xcodebuild -project Meditationstimer.xcodeproj \
      -scheme "Lean Health Timer" \
-     -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+     -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
      build
    ```
 
-2. **State aktualisieren:**
+2. **XCUITests ausführen (PFLICHT!):**
+   ```bash
+   xcodebuild test \
+     -project Meditationstimer.xcodeproj \
+     -scheme "Lean Health Timer" \
+     -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+     -only-testing:LeanHealthTimerUITests
+   ```
+
+3. **State aktualisieren:**
    ```bash
    python3 .claude/hooks/update_state.py implementing --implemented
    ```
@@ -83,4 +110,4 @@ Feature-Workflow:
 
 ## Nächster Schritt
 
-Nach erfolgreichem Build → `/4-validate`
+Nach erfolgreichem Build UND XCUITests → `/4-validate`
