@@ -92,11 +92,21 @@ struct MeditationTab: View {
             NavigationStack {
                 ScrollView {
                     VStack(spacing: 16) {
+                        // MARK: - Open Meditation Section Header (outside card)
+                        HStack(spacing: 8) {
+                            Text(NSLocalizedString("Open Meditation", comment: "Section title"))
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            InfoButton { showOffenInfo = true }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+
                         // MARK: - Open Meditation Card
                         openMeditationCard
                             .padding(.horizontal, 16)
 
-                        // MARK: - Section Divider
+                        // MARK: - Breathing Exercises Section Header
                         HStack {
                             Text(NSLocalizedString("Breathing Exercises", comment: "Section title"))
                                 .font(.headline)
@@ -252,39 +262,29 @@ struct MeditationTab: View {
 
     // MARK: - Open Meditation Card
     private var openMeditationCard: some View {
-        VStack(spacing: 8) {
-            // Section Header (outside card, like "Breathing Exercises")
-            HStack(spacing: 8) {
-                Text(NSLocalizedString("Open Meditation", comment: "Tab title"))
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                InfoButton { showOffenInfo = true }
-                Spacer()
-            }
-            .padding(.horizontal, 4)
-
-            GlassCard {
-                VStack(spacing: 16) {
-                    // Picker Section
-                    HStack(alignment: .center, spacing: 20) {
-                        // Left column: Emojis + Labels
-                        VStack(spacing: 28) {
-                            VStack(spacing: 6) {
-                                Text("🧘")
-                                    .font(.system(size: 56))
-                                Text(NSLocalizedString("Duration", comment: "Phase 1 label"))
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
-                            VStack(spacing: 6) {
-                                Text("🪷")
-                                    .font(.system(size: 56))
-                                Text(NSLocalizedString("Closing", comment: "Phase 2 label"))
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                            }
+        // Card only - header is now in body (like "Breathing Exercises" pattern)
+        GlassCard {
+            VStack(spacing: 16) {
+                // Picker Section
+                HStack(alignment: .center, spacing: 20) {
+                    // Left column: Emojis + Labels
+                    VStack(spacing: 28) {
+                        VStack(spacing: 6) {
+                            Text("🧘")
+                                .font(.system(size: 56))
+                            Text(NSLocalizedString("Duration", comment: "Phase 1 label"))
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
                         }
-                        .frame(minWidth: 110, alignment: .center)
+                        VStack(spacing: 6) {
+                            Text("🪷")
+                                .font(.system(size: 56))
+                            Text(NSLocalizedString("Closing", comment: "Phase 2 label"))
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .frame(minWidth: 110, alignment: .center)
 
                     // Right column: Wheel pickers
                     VStack(spacing: 24) {
@@ -309,8 +309,7 @@ struct MeditationTab: View {
                         .clipped()
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                }  // HStack (Picker Section)
-            }  // VStack(spacing: 16)
+                }
 
                 // Start Button
                 Button(action: startOpenMeditation) {

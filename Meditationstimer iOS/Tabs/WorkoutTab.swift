@@ -63,11 +63,21 @@ struct WorkoutTab: View {
             NavigationStack {
                 ScrollView {
                     VStack(spacing: 16) {
+                        // MARK: - Free Workout Section Header (outside card)
+                        HStack(spacing: 8) {
+                            Text(NSLocalizedString("Free Workout", comment: "Section title"))
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            InfoButton { showFreiInfo = true }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+
                         // MARK: - Free Workout Card
                         freeWorkoutCard
                             .padding(.horizontal, 16)
 
-                        // MARK: - Section Divider
+                        // MARK: - Workout Programs Section Header
                         HStack {
                             Text(NSLocalizedString("Workout Programs", comment: "Section title"))
                                 .font(.headline)
@@ -242,49 +252,39 @@ struct WorkoutTab: View {
 
     // MARK: - Free Workout Card
     private var freeWorkoutCard: some View {
-        VStack(spacing: 8) {
-            // Section Header (outside card, like "Workout Programs")
-            HStack(spacing: 8) {
-                Text(NSLocalizedString("Free Workout", comment: "Card title"))
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                InfoButton { showFreiInfo = true }
-                Spacer()
-            }
-            .padding(.horizontal, 4)
-
-            GlassCard {
-                VStack(spacing: 16) {
-                    // Picker Section
-                    HStack(alignment: .center, spacing: 20) {
-                        // Left column: Emojis + Labels
-                        VStack(spacing: 28) {
-                            VStack(spacing: 6) {
-                                Text("🔥").font(.system(size: 50))
-                                Text("Work")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                            }
-                            .frame(height: 90, alignment: .center)
-                            VStack(spacing: 6) {
-                                Text("🧊").font(.system(size: 50))
-                                Text("Rest")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                            }
-                            .frame(height: 90, alignment: .center)
-                            VStack(spacing: 6) {
-                                Text("↻").font(.system(size: 50))
-                                Text("Repetitions")
-                                    .font(.footnote)
-                                    .foregroundStyle(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                            }
-                            .frame(height: 90, alignment: .center)
+        // Card only - header is now in body (like "Workout Programs" pattern)
+        GlassCard {
+            VStack(spacing: 16) {
+                // Picker Section
+                HStack(alignment: .center, spacing: 20) {
+                    // Left column: Emojis + Labels
+                    VStack(spacing: 28) {
+                        VStack(spacing: 6) {
+                            Text("🔥").font(.system(size: 50))
+                            Text("Work")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
                         }
-                        .frame(minWidth: 110, alignment: .center)
+                        .frame(height: 90, alignment: .center)
+                        VStack(spacing: 6) {
+                            Text("🧊").font(.system(size: 50))
+                            Text("Rest")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
+                        .frame(height: 90, alignment: .center)
+                        VStack(spacing: 6) {
+                            Text("↻").font(.system(size: 50))
+                            Text("Repetitions")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
+                        .frame(height: 90, alignment: .center)
+                    }
+                    .frame(minWidth: 110, alignment: .center)
 
                     // Right column: Wheel pickers
                     VStack(spacing: 24) {
@@ -313,8 +313,7 @@ struct WorkoutTab: View {
                         .clipped()
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                }  // HStack (Picker Section)
-            }  // VStack(spacing: 16)
+                }
 
                 // Total Duration
                 HStack {
