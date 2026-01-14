@@ -1,5 +1,5 @@
 # Agent OS Configuration for Meditationstimer
-# Version: 1.0.0
+# Version: 2.0.0
 
 project_name: Meditationstimer
 description: iOS/watchOS Meditation & Wellness App
@@ -37,12 +37,41 @@ standards:
 agents:
   enabled: true
   path: .agent-os/agents/
-  available:
+  core_agents:
+    - core/bug-intake
+    - core/docs-updater
+    - core/implementation-validator
+    - core/spec-validator
+    - core/spec-writer
+  ios_agents:
     - bug-investigator
     - feature-planner
     - localizer
     - test-runner
     - ui-test-guide
+    - simulator-tester
+
+# Commands Configuration
+commands:
+  enabled: true
+  path: .claude/commands/
+  core_commands:
+    - core/0-reset
+    - core/1-context
+    - core/2-analyse
+    - core/3-write-spec
+    - core/4-tdd-red
+    - core/5-implement
+    - core/6-validate
+    - core/7-deploy
+    - core/add-artifact
+    - core/bug
+    - core/workflow
+  ios_commands:
+    - test
+    - sim-test
+    - localize
+    - ui-test
 
 # Workflows Configuration
 workflows:
@@ -52,6 +81,11 @@ workflows:
     - bug-fix-workflow
     - feature-workflow
     - release-workflow
+  version: "2.0"
+  phases: 8
+  multi_workflow: true
+  tdd_enforcement: true
+  state_file: .claude/workflow_state.json
 
 # OpenSpec Integration
 openspec:
