@@ -1,0 +1,60 @@
+# Agent OS Configuration for Meditationstimer
+# Version: 1.0.0
+
+project_name: Meditationstimer
+description: iOS/watchOS Meditation & Wellness App
+
+# Claude Code Integration
+claude_code_commands: true
+use_claude_code_subagents: true
+standards_as_claude_code_skills: true
+
+# Profile
+profile: meditationstimer
+
+# Tech Stack
+tech_stack:
+  platform: iOS/watchOS
+  framework: SwiftUI
+  language: Swift 6.2
+  minimum_ios: "18.5"
+  minimum_watchos: "9.0"
+  ide: Xcode 26
+  test_framework: XCTest
+
+# Standards Configuration
+standards:
+  enabled: true
+  auto_inject: true
+  categories:
+    - global         # Analysis-First, Scoping, Documentation
+    - swiftui        # Lifecycle, Localization, State
+    - healthkit      # Date Semantics, Consistency
+    - audio          # Completion Handlers
+    - testing        # Unit Tests, UI Testing
+
+# Agents Configuration
+agents:
+  enabled: true
+  path: .agent-os/agents/
+  available:
+    - bug-investigator
+    - feature-planner
+    - localizer
+    - test-runner
+    - ui-test-guide
+
+# Workflows Configuration
+workflows:
+  enabled: true
+  path: .agent-os/workflows/
+  available:
+    - bug-fix-workflow
+    - feature-workflow
+    - release-workflow
+
+# OpenSpec Integration
+openspec:
+  enabled: true
+  specs_path: openspec/specs/
+  changes_path: openspec/changes/
