@@ -6,8 +6,76 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/secrets_guard.py\"",
+            "timeout": 5,
+            "description": "Priority 5: Secrets Guard"
+          },
+          {
+            "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/workflow_gate.py\"",
-            "timeout": 10
+            "timeout": 10,
+            "description": "Priority 10: Workflow Gate (8-phase)"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/spec_enforcement.py\"",
+            "timeout": 10,
+            "description": "Priority 20: Spec Enforcement"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/tdd_enforcement.py\"",
+            "timeout": 10,
+            "description": "Priority 35: TDD Enforcement"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/scope_guard.py\"",
+            "timeout": 10,
+            "description": "Priority 50: Scope Guard"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/claude_md_protection.py\"",
+            "timeout": 5,
+            "description": "Claude.md Protection"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre_commit_gate.py\"",
+            "timeout": 10,
+            "description": "Pre-Commit Gate"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/track_changes.py\"",
+            "timeout": 5,
+            "description": "Track Changes"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/workflow_state_updater.py\"",
+            "timeout": 10,
+            "description": "Workflow State Updater (detects 'approved')"
           }
         ]
       }
