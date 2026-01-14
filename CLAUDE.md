@@ -107,15 +107,53 @@ Specialized agents with injected standards:
 
 ---
 
-## Slash Commands
+## Slash Commands (Agent OS v2.0)
+
+### Core Commands (plattform-unabhängig)
+
+| Command | Phase | Purpose |
+|---------|-------|---------|
+| `/context` | 1 | Kontext sammeln für Feature/Bug |
+| `/analyse` | 2 | Analyse durchführen |
+| `/write-spec` | 3 | Spezifikation erstellen |
+| `/tdd-red` | 5 | Failing Tests schreiben (TDD RED) |
+| `/implement` | 6 | Code implementieren (Tests grün machen) |
+| `/validate` | 7 | Manuelle Validierung |
+| `/workflow` | - | Workflow-Status & Multi-Workflow-Manager |
+| `/add-artifact` | - | Test-Artefakt hinzufügen |
+| `/bug` | - | Bug aufnehmen & analysieren |
+| `/0-reset` | - | Workflow zurücksetzen |
+
+### iOS-Spezifische Commands
 
 | Command | Agent | Purpose |
 |---------|-------|---------|
-| `/bug [desc]` | bug-investigator | Analyze bug with Analysis-First |
-| `/feature [name]` | feature-planner | Plan feature with OpenSpec |
-| `/test` | test-runner | Run unit tests |
-| `/localize` | localizer | Check/add localizations |
-| `/ui-test` | ui-test-guide | Create UI test checklist |
+| `/test` | test-runner | Unit Tests ausführen |
+| `/sim-test` | simulator-tester | Simulator UI Tests |
+| `/localize` | localizer | Lokalisierung prüfen (DE/EN) |
+| `/ui-test` | ui-test-guide | UI-Test-Checkliste erstellen |
+
+### 8-Phasen-Workflow (v2.0)
+
+```
+phase0_idle → phase1_context → phase2_analyse → phase3_spec →
+phase4_approved → phase5_tdd_red → phase6_implement → phase7_validate → phase8_complete
+```
+
+**Kritische Phasen:**
+- **Phase 4 (Approved):** User muss Spec freigeben (sag "approved")
+- **Phase 5 (TDD RED):** Tests schreiben die fehlschlagen - ECHTE Artefakte erforderlich
+- **Phase 6 (Implement):** Code schreiben um Tests grün zu machen
+
+### Multi-Workflow Support (v2.0)
+
+Agent OS v2.0 unterstützt **mehrere parallele Workflows**:
+
+```bash
+/workflow status        # Alle aktiven Workflows anzeigen
+/workflow switch <id>   # Zu anderem Workflow wechseln
+/workflow complete      # Aktuellen Workflow abschließen
+```
 
 ---
 

@@ -1,35 +1,31 @@
 {
-  "current_phase": "implementing",
-  "workflow_type": "bugfix",
-  "feature_name": "Build-Fix: Fehlende Klammern nach Merge",
-  "spec_file": null,
-  "spec_approved": true,
-  "tests_written": true,
-  "tests_passing": false,
-  "implementation_done": false,
-  "validated": false,
-  "last_updated": "2026-01-11T18:45:51.751789",
-  "phase_history": [
-    {
-      "from": "implementing",
-      "to": "spec_approved",
-      "timestamp": "2026-01-11T18:39:02.008646"
-    },
-    {
-      "from": "spec_approved",
-      "to": "implementing",
-      "timestamp": "2026-01-11T18:40:28.036679"
-    },
-    {
-      "from": "implementing",
-      "to": "idle",
-      "timestamp": "2026-01-11T18:40:33.368269"
-    },
-    {
-      "from": "idle",
-      "to": "implementing",
-      "timestamp": "2026-01-11T18:45:51.751780"
+  "version": "2.0",
+  "workflows": {
+    "voice-announcement-round-x-of-y-statt-round-x": {
+      "current_phase": "phase6_implement",
+      "created": "2026-01-12T09:52:30.659840",
+      "last_updated": "2026-01-14T19:59:33.780479",
+      "spec_file": null,
+      "spec_approved": true,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "log",
+          "path": null,
+          "description": "XCUITests written during v1.x workflow",
+          "created": "2026-01-14T19:59:33.780481",
+          "phase": "phase5_tdd_red"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": true,
+      "red_test_result": "Tests written but failing",
+      "green_test_done": false,
+      "green_test_result": null,
+      "analysis_findings": null,
+      "phases_completed": [],
+      "backlog_status": "in_progress"
     }
-  ],
-  "tdd_proof": "user_verified:2026-01-11T18:38:00.000000"
+  },
+  "active_workflow": "voice-announcement-round-x-of-y-statt-round-x"
 }

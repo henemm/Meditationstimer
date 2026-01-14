@@ -1,265 +1,250 @@
 #!/usr/bin/env python3
 """
-Workflow Gate Hook - Erzwingt Phasen-basiertes Arbeiten
+OpenSpec Framework - Workflow Gate Hook
 
-Phasen:
-  idle          → Keine aktive Arbeit
-  analysing     → Bug/Feature wird analysiert
-  spec_written  → Spezifikation geschrieben
-  spec_approved → User hat Spec freigegeben
-  implementing  → Code wird geschrieben (EINZIGE Phase für Edit/Write!)
-  validating    → Tests laufen, Validierung
+Enforces the 4-phase workflow for protected files:
+1. idle -> analyse_done (/analyse)
+2. analyse_done -> spec_written (/write-spec)
+3. spec_written -> spec_approved (user says "approved")
+4. spec_approved -> implemented (/implement)
+5. implemented -> validated (/validate)
+
+Blocks Edit/Write on protected files unless workflow phase allows it.
 
 Exit Codes:
-  0 = Erlaubt
-  2 = Blockiert (Tool wird nicht ausgeführt)
+- 0: Allowed
+- 2: Blocked (stderr shown to Claude)
 """
 
 import json
 import os
 import sys
 import re
-from datetime import datetime
 from pathlib import Path
 
-# Pfade relativ zum Projekt
-SCRIPT_DIR = Path(__file__).parent
-PROJECT_DIR = SCRIPT_DIR.parent.parent
-STATE_FILE = SCRIPT_DIR.parent / "workflow_state.json"
-
-# Dateien die IMMER erlaubt sind (auch ohne Workflow)
-ALWAYS_ALLOWED_PATTERNS = [
-    r"\.claude/.*",           # Claude config
-    r"\.agent-os/.*",         # Agent OS config
-    r"DOCS/.*\.md",           # Dokumentation
-    r"openspec/.*",           # Specs
-    r".*\.xcstrings",         # Lokalisierung (via /localize)
-    r"\.gitignore",
-    r"README\.md",
-    r"CLAUDE\.md",
-]
-
-# Geschützte Pfade die Workflow erfordern
-PROTECTED_PATTERNS = [
-    r".*\.swift$",            # Swift Code
-    r".*\.xcdatamodeld/.*",   # Core Data
-    r".*\.xcodeproj/.*",      # Projekt-Dateien
-]
+# Import shared config loader
+try:
+    from config_loader import (
+        load_config, get_state_file_path, get_project_root,
+        get_protected_paths, get_always_allowed
+    )
+except ImportError:
+    # Fallback for direct execution
+    sys.path.insert(0, str(Path(__file__).parent))
+    from config_loader import (
+        load_config, get_state_file_path, get_project_root,
+        get_protected_paths, get_always_allowed
+    )
 
 
 def load_state() -> dict:
-    """Lädt den aktuellen Workflow-State."""
-    if not STATE_FILE.exists():
-        return {"current_phase": "idle"}
+    """Load current workflow state."""
+    state_file = get_state_file_path()
 
-    try:
-        with open(STATE_FILE, "r") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, IOError):
-        return {"current_phase": "idle"}
+    if not state_file.exists():
+        return {
+            "current_phase": "idle",
+            "feature_name": None,
+            "spec_file": None,
+            "spec_approved": False,
+            "implementation_done": False,
+            "validation_done": False,
+        }
+
+    with open(state_file, 'r') as f:
+        return json.load(f)
 
 
 def is_always_allowed(file_path: str) -> bool:
-    """Prüft ob Datei immer erlaubt ist."""
-    rel_path = file_path
-    if file_path.startswith(str(PROJECT_DIR)):
-        rel_path = file_path[len(str(PROJECT_DIR)):].lstrip("/")
-
-    for pattern in ALWAYS_ALLOWED_PATTERNS:
-        if re.match(pattern, rel_path):
+    """Check if file is always allowed without workflow."""
+    patterns = get_always_allowed()
+    for pattern in patterns:
+        if re.search(pattern, file_path):
             return True
     return False
 
 
 def requires_workflow(file_path: str) -> bool:
-    """Prüft ob Datei den Workflow erfordert."""
-    rel_path = file_path
-    if file_path.startswith(str(PROJECT_DIR)):
-        rel_path = file_path[len(str(PROJECT_DIR)):].lstrip("/")
-
-    for pattern in PROTECTED_PATTERNS:
-        if re.match(pattern, rel_path):
+    """Check if file requires workflow."""
+    protected = get_protected_paths()
+    for item in protected:
+        pattern = item.get("pattern", item) if isinstance(item, dict) else item
+        if re.search(pattern, file_path):
             return True
     return False
 
 
-def get_phase_error(phase: str, file_path: str) -> str:
-    """Generiert kontextabhängige Fehlermeldung."""
+def get_phase_error(state: dict, file_path: str) -> str | None:
+    """Generate error message based on current state."""
+    phase = state.get("current_phase", "idle")
 
-    messages = {
-        "idle": f"""
+    # Support both old (v1) and new (v2) phase names
+    if phase in ["idle", "phase0_idle"]:
+        return """
 ╔══════════════════════════════════════════════════════════════════╗
-║  ⛔ WORKFLOW GATE: Keine aktive Phase                            ║
+║  WORKFLOW NOT STARTED!                                           ║
 ╠══════════════════════════════════════════════════════════════════╣
+║  You're trying to modify code without starting the workflow.     ║
 ║                                                                  ║
-║  Du versuchst Code zu ändern ohne aktiven Workflow!              ║
+║  REQUIRED WORKFLOW:                                              ║
+║  ┌─────────────────────────────────────────────────────────────┐ ║
+║  │ /context    → Gather relevant context         (Phase 1)     │ ║
+║  │ /analyse    → Analyse requirements            (Phase 2)     │ ║
+║  │ /write-spec → Create specification            (Phase 3)     │ ║
+║  │ "approved"  → User approval                   (Phase 4)     │ ║
+║  │ /tdd-red    → Write FAILING tests             (Phase 5)     │ ║
+║  │ /implement  → Make tests GREEN                (Phase 6)     │ ║
+║  │ /validate   → Manual validation               (Phase 7)     │ ║
+║  └─────────────────────────────────────────────────────────────┘ ║
 ║                                                                  ║
-║  STARTE ZUERST:                                                  ║
-║    • /bug [beschreibung]     → für Bug-Fixes                     ║
-║    • /feature [name]         → für neue Features                 ║
-║                                                                  ║
-║  Datei: {file_path[:50]}...
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-""",
-        "analysing": f"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ⛔ WORKFLOW GATE: Noch in Analyse-Phase                         ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Die Analyse ist noch nicht abgeschlossen!                       ║
-║                                                                  ║
-║  NÄCHSTE SCHRITTE:                                               ║
-║    1. Analyse abschließen (Root Cause identifizieren)            ║
-║    2. /spec schreiben oder Approval einholen                     ║
-║    3. DANN erst /implement aufrufen                              ║
-║                                                                  ║
-║  Datei: {file_path[:50]}...
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-""",
-        "spec_written": f"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ⛔ WORKFLOW GATE: Spec noch nicht freigegeben                   ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Die Spezifikation wartet auf User-Approval!                     ║
-║                                                                  ║
-║  NÄCHSTER SCHRITT:                                               ║
-║    → User muss "Approved" oder "Freigegeben" sagen               ║
-║    → DANN erst /implement aufrufen                               ║
-║                                                                  ║
-║  Datei: {file_path[:50]}...
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-""",
-        "spec_approved": f"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ⛔ WORKFLOW GATE: /implement noch nicht aufgerufen              ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Die Spec ist freigegeben - aber die Implementierungs-Phase      ║
-║  wurde noch nicht gestartet!                                     ║
-║                                                                  ║
-║  NÄCHSTER SCHRITT:                                               ║
-║    → /implement aufrufen um Code-Änderungen zu erlauben          ║
-║                                                                  ║
-║  Datei: {file_path[:50]}...
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-""",
-        "validating": f"""
-╔══════════════════════════════════════════════════════════════════╗
-║  ⛔ WORKFLOW GATE: In Validierungs-Phase                         ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Die Implementierung ist abgeschlossen - jetzt wird validiert!   ║
-║                                                                  ║
-║  Wenn Fixes nötig sind:                                          ║
-║    → /implement erneut aufrufen                                  ║
-║                                                                  ║
-║  Datei: {file_path[:50]}...
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-""",
-    }
-
-    return messages.get(phase, f"Phase '{phase}' erlaubt keine Code-Änderungen.")
-
-
-def get_tdd_error(file_path: str, reason: str = "keine Tests") -> str:
-    """Generiert TDD-Fehlermeldung wenn Tests fehlen oder nicht verifiziert."""
-    return f"""
-╔══════════════════════════════════════════════════════════════════╗
-║  🔴 TDD GATE: Echter TDD RED Test fehlt!                         ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Problem: {reason[:50]}
-║                                                                  ║
-║  ECHTER TDD-WORKFLOW:                                            ║
-║    1. Test schreiben der BESTEHENDES Verhalten prüft             ║
-║    2. Test MUSS mit aktuellem Code KOMPILIEREN                   ║
-║    3. Test MUSS im VERHALTEN fehlschlagen (nicht Compile-Error!) ║
-║    4. User führt Tests aus: xcodebuild test ...                  ║
-║    5. Dann: python3 .claude/hooks/update_state.py tests_written  ║
-║             --proof <test_output.log>                            ║
-║             ODER --user-verified (wenn User lokal testet)        ║
-║    6. JETZT darfst du den Produktions-Code ändern                ║
-║                                                                  ║
-║  Datei: {file_path[:50]}...
-║                                                                  ║
-║  ⚠️  Compile-Error ist KEIN TDD RED! Tests müssen kompilieren!  ║
-║                                                                  ║
+║  START WITH: /context or /analyse                                ║
 ╚══════════════════════════════════════════════════════════════════╝
 """
 
+    if phase in ["phase1_context"]:
+        return """
+╔══════════════════════════════════════════════════════════════════╗
+║  CONTEXT PHASE - Analysis Required                               ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Context is being gathered, but analysis isn't complete.         ║
+║                                                                  ║
+║  NEXT: /analyse                                                  ║
+║                                                                  ║
+║  Complete the analysis before modifying code!                    ║
+╚══════════════════════════════════════════════════════════════════╝
+"""
+
+    if phase in ["analyse_done", "phase2_analyse"]:
+        return """
+╔══════════════════════════════════════════════════════════════════╗
+║  SPEC MISSING!                                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Analysis is complete, but no spec has been written.             ║
+║                                                                  ║
+║  NEXT: /write-spec                                               ║
+║                                                                  ║
+║  The spec defines WHAT to build and HOW to test it.              ║
+║  NO implementation without a spec!                               ║
+╚══════════════════════════════════════════════════════════════════╝
+"""
+
+    if phase in ["spec_written", "phase3_spec"]:
+        spec_file = state.get("spec_file", "unknown")
+        return f"""
+╔══════════════════════════════════════════════════════════════════╗
+║  SPEC NOT APPROVED!                                              ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Spec exists but USER hasn't approved it yet.                    ║
+║                                                                  ║
+║  Spec: {spec_file[:55]:<55}║
+║                                                                  ║
+║  USER must confirm with one of:                                  ║
+║    "approved" | "freigabe" | "spec ok" | "lgtm"                  ║
+║                                                                  ║
+║  Claude CANNOT approve specs - only the user can!                ║
+╚══════════════════════════════════════════════════════════════════╝
+"""
+
+    if phase in ["spec_approved", "phase4_approved"]:
+        red_done = state.get("red_test_done", False)
+        if not red_done:
+            return """
+╔══════════════════════════════════════════════════════════════════╗
+║  TDD RED PHASE REQUIRED!                                         ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Spec is approved, but you must write FAILING tests first!       ║
+║                                                                  ║
+║  TDD = Test-Driven Development:                                  ║
+║  ┌─────────────────────────────────────────────────────────────┐ ║
+║  │  RED   → Write tests that FAIL (feature doesn't exist)      │ ║
+║  │  GREEN → Write code to make tests PASS                      │ ║
+║  │  REFACTOR → Clean up (optional)                             │ ║
+║  └─────────────────────────────────────────────────────────────┘ ║
+║                                                                  ║
+║  NEXT: /tdd-red                                                  ║
+║                                                                  ║
+║  Write tests, run them, capture the FAILURE as artifact!         ║
+╚══════════════════════════════════════════════════════════════════╝
+"""
+
+    if phase in ["phase5_tdd_red"]:
+        return """
+╔══════════════════════════════════════════════════════════════════╗
+║  TDD RED PHASE - Capture Failure First!                          ║
+╠══════════════════════════════════════════════════════════════════╣
+║  You're in the RED phase but haven't captured test failure yet.  ║
+║                                                                  ║
+║  REQUIRED:                                                       ║
+║  1. Write tests for the new functionality                        ║
+║  2. Run tests - they MUST FAIL                                   ║
+║  3. Capture failure: /add-artifact                               ║
+║                                                                  ║
+║  Only after capturing RED failure can you implement!             ║
+╚══════════════════════════════════════════════════════════════════╝
+"""
+
+    if phase in ["implemented", "phase6_implement"]:
+        if not state.get("validation_done", False) and not state.get("green_test_done", False):
+            return """
+╔══════════════════════════════════════════════════════════════════╗
+║  VALIDATION REQUIRED!                                            ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Implementation done, but not validated yet.                     ║
+║                                                                  ║
+║  NEXT: /validate                                                 ║
+║                                                                  ║
+║  Verify tests are GREEN and do manual testing!                   ║
+╚══════════════════════════════════════════════════════════════════╝
+"""
+
+    return None
+
 
 def main():
-    """Hauptlogik des Workflow Gates."""
+    # Get tool input from environment or stdin
+    tool_input = os.environ.get("CLAUDE_TOOL_INPUT", "")
 
-    # Input von Claude Code lesen (JSON auf stdin)
+    if not tool_input:
+        try:
+            data = json.load(sys.stdin)
+            tool_input = json.dumps(data.get("tool_input", {}))
+        except (json.JSONDecodeError, Exception):
+            sys.exit(0)
+
     try:
-        input_data = json.loads(sys.stdin.read())
+        data = json.loads(tool_input) if isinstance(tool_input, str) else tool_input
+        file_path = data.get("file_path", "")
     except json.JSONDecodeError:
-        # Kein gültiger Input - erlauben (Fallback)
-        sys.exit(0)
+        file_path = ""
 
-    # Tool und Parameter extrahieren
-    tool_name = input_data.get("tool_name", "")
-    tool_input = input_data.get("tool_input", {})
-
-    # Nur Edit und Write prüfen
-    if tool_name not in ["Edit", "Write"]:
-        sys.exit(0)
-
-    # Dateipfad extrahieren
-    file_path = tool_input.get("file_path", "")
     if not file_path:
-        sys.exit(0)
+        sys.exit(0)  # No file_path, allow through
 
-    # Immer erlaubte Dateien durchlassen
+    # Check if file is always allowed
     if is_always_allowed(file_path):
         sys.exit(0)
 
-    # Prüfen ob Datei Workflow erfordert
+    # Check if file requires workflow
     if not requires_workflow(file_path):
         sys.exit(0)
 
-    # State laden und Phase prüfen
+    # Load state and check phase
     state = load_state()
-    current_phase = state.get("current_phase", "idle")
+    phase = state.get("current_phase", "idle")
 
-    # NUR in "implementing" Phase sind Code-Änderungen erlaubt!
-    if current_phase == "implementing":
-        # Unterscheide zwischen Test-Dateien und Produktion-Code
-        is_test_file = "Tests/" in file_path or "Test" in file_path
+    # Allowed phases for implementation
+    allowed_phases = ["spec_approved", "implemented", "validated"]
 
-        if is_test_file:
-            # Test-Dateien immer erlauben (das ist ja der RED-Schritt)
-            sys.exit(0)
+    if phase in allowed_phases:
+        sys.exit(0)  # Workflow correct, allow through
 
-        # ZUSÄTZLICH: TDD-Check mit BEWEIS!
-        tests_written = state.get("tests_written", False)
-        tdd_proof = state.get("tdd_proof", None)
+    # Block with appropriate error message
+    error = get_phase_error(state, file_path)
+    if error:
+        print(error, file=sys.stderr)
+        sys.exit(2)
 
-        if not tests_written:
-            error_msg = get_tdd_error(file_path, "Tests noch nicht geschrieben")
-            print(error_msg, file=sys.stderr)
-            sys.exit(2)
-
-        if not tdd_proof:
-            # tests_written=True aber KEIN Beweis → Fake TDD!
-            error_msg = get_tdd_error(file_path, "Kein TDD-Beweis vorhanden (--proof oder --user-verified fehlt)")
-            print(error_msg, file=sys.stderr)
-            sys.exit(2)
-
-        # Echter TDD-Beweis vorhanden → Code-Änderungen erlaubt
-        sys.exit(0)
-
-    # Alle anderen Phasen: BLOCKIEREN
-    error_msg = get_phase_error(current_phase, file_path)
-    print(error_msg, file=sys.stderr)
-    sys.exit(2)
+    sys.exit(0)
 
 
 if __name__ == "__main__":
