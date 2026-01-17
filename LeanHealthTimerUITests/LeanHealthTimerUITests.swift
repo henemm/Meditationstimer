@@ -14,7 +14,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that all 4 new tabs exist
     func testAllFourTabsExist() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Verify all 4 tabs exist
@@ -32,7 +32,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Meditation tab is selected by default
     func testMeditationTabIsDefaultSelected() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         let meditationTab = app.tabBars.buttons["Meditation"]
@@ -44,7 +44,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: Simplified to avoid flaky selection state issues
     func testTabSwitching() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Verify all tabs exist and can be tapped
@@ -82,7 +82,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that German locale shows "Dauer" label for Phase 1 picker
     func testMeditationViewShowsDauerLabelInGerman() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
 
         // Navigate to Meditation tab (should be default)
@@ -98,7 +98,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that German locale shows "Ausklang" label for Phase 2 picker
     func testMeditationViewShowsAusklangLabelInGerman() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -114,7 +114,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that English locale shows "Duration" label for Phase 1 picker
     func testMeditationViewShowsDurationLabelInEnglish() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -130,7 +130,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that English locale shows "Closing" label for Phase 2 picker
     func testMeditationViewShowsClosingLabelInEnglish() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -148,7 +148,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that NoAlc card shows Quick-Log buttons (Steady, Easy, Wild)
     func testNoAlcQuickLogButtonsExist() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -169,7 +169,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Tracker tab shows "Add Tracker" button
     func testTrackerTabShowsAddTrackerButton() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -205,7 +205,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: Test includes graceful fallback for flaky sheet navigation
     func testMoodTrackerOpensMoodSelectionSheet() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -261,7 +261,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: Test includes graceful fallback for flaky sheet navigation
     func testMoodSelectionIsSingleSelect() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -316,7 +316,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Feelings preset opens FeelingsSelectionView with multi-select
     func testFeelingsTrackerOpensFeelingsSelectionSheet() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -359,7 +359,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Gratitude preset opens GratitudeLogView with text input
     func testGratitudeTrackerOpensGratitudeLogSheet() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -405,7 +405,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that tracker row shows streak badge after logging
     func testTrackerShowsStreakBadgeAfterLogging() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -446,7 +446,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: This test creates a tracker if needed, with graceful fallback
     func testCounterTrackerShowsCorrectCountFormat() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -504,7 +504,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: This test depends on having at least one tracker created (e.g., from testCounterTrackerShowsCorrectCountFormat)
     func testEditButtonOpensTrackerEditorSheet() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -542,7 +542,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Custom Tracker sheet shows Levels mode option
     func testCustomTrackerShowsLevelsMode() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -591,7 +591,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that selecting Levels mode shows Level Editor sections
     func testLevelsModeShowsEditorSections() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -650,7 +650,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Expected: NO "Done"/"Fertig" button, NO "Calendar"/"Kalender" title in embedded mode
     func testErfolgeTabHasCleanLayoutWithoutSheetNavigation() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Erfolge tab
@@ -677,7 +677,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Erfolge tab shows content (not empty)
     func testErfolgeTabShowsContent() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Erfolge tab
@@ -696,7 +696,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Erfolge tab shows embedded calendar with streak info section
     func testErfolgeTabShowsEmbeddedCalendar() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Erfolge tab
@@ -722,7 +722,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// TDD RED: Test that Info sheet can be opened and contains correct content
     func testInfoSheetOpensAndShowsContent() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -746,7 +746,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Meditation tab shows required UI elements: pickers, emojis, play button
     func testMeditationTabShowsTimerUI() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -771,7 +771,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: This test may be skipped if HealthKit authorization is required
     func testMeditationPlayButtonStartsSession() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -815,7 +815,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: This test depends on HealthKit authorization and may gracefully skip
     func testMeditationEndButtonStopsSession() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -862,7 +862,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Workout tab shows required UI elements: pickers, emojis, play button
     func testWorkoutTabShowsTimerUI() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -894,7 +894,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Workout tab shows "Free Workout" title
     func testWorkoutTabShowsFreeWorkoutTitle() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -911,7 +911,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: This test depends on HealthKit authorization and may gracefully skip
     func testWorkoutPlayButtonStartsSession() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -954,7 +954,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that X button in Workout runner closes the session
     func testWorkoutCloseButtonEndsSession() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -995,7 +995,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that switching tabs preserves state (no crash, timers don't reset)
     func testTabSwitchingPreservesState() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Start on Meditation tab
@@ -1041,7 +1041,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Meditation tab shows all cards in flat structure: OpenMeditation + Breathing Presets + AddPreset
     func testMeditationTabShowsAllCardsFlat() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -1072,7 +1072,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Meditation tab can scroll to show all breathing presets
     func testMeditationTabScrollsToAllPresets() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -1097,7 +1097,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Meditation tab toolbar has only Settings button (no Calendar, no NoAlc)
     func testMeditationTabToolbarHasOnlySettings() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -1121,7 +1121,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Workout tab shows all cards in flat structure: FreeWorkout + Programs + AddSet
     func testWorkoutTabShowsAllCardsFlat() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1153,7 +1153,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Workout tab can scroll to show all workout programs
     func testWorkoutTabScrollsToAllPrograms() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1178,7 +1178,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test that Workout tab toolbar has only Settings button (no Calendar, no NoAlc)
     func testWorkoutTabToolbarHasOnlySettings() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1205,7 +1205,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// After fix: Labels "Duration" and "Closing" should be normal case, not "DURATION" / "CLOSING"
     func testMeditationLabelsNotUppercase() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -1233,7 +1233,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// After fix: Labels "Work", "Rest", "Repetitions" should be normal case
     func testWorkoutLabelsNotUppercase() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1264,7 +1264,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// After fix: Header should be formatted like "Breathing Exercises" section header
     func testOpenMeditationHeaderStyle() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -1285,7 +1285,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// After fix: Header should be formatted like "Workout Programs" section header
     func testFreeWorkoutHeaderStyle() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1308,7 +1308,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// The header should have a smaller Y coordinate than the first emoji (🧘)
     func testOpenMeditationHeaderIsAboveCardContent() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Meditation tab
@@ -1344,7 +1344,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// The header should have a smaller Y coordinate than the first emoji (🔥)
     func testFreeWorkoutHeaderIsAboveCardContent() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1374,7 +1374,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: Actual TTS output cannot be verified in XCUITest - Device test required for audio
     func testFreeWorkoutReachesRestPhaseForRoundAnnouncement() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1431,7 +1431,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// This verifies the round tracking that "Round X of Y" announcement relies on
     func testWorkoutShowsSetCounter() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab
@@ -1483,7 +1483,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Note: This test gracefully handles cases where program tap doesn't work
     func testWorkoutProgramShowsRoundCounter() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
 
         // Navigate to Workout tab

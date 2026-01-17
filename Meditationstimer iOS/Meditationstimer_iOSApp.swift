@@ -27,9 +27,17 @@ struct Meditationstimer_iOSApp: App {
     let modelContainer: ModelContainer
 
     init() {
+        // Detect UI test mode - use in-memory storage to avoid disk conflicts
+        var inMemory = false
+        #if DEBUG
+        if CommandLine.arguments.contains("enable-testing") {
+            inMemory = true
+        }
+        #endif
+
         do {
             let schema = Schema([Tracker.self, TrackerLog.self])
-            let config = ModelConfiguration(isStoredInMemoryOnly: false)
+            let config = ModelConfiguration(isStoredInMemoryOnly: inMemory)
             modelContainer = try ModelContainer(for: schema, configurations: [config])
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
