@@ -2,6 +2,42 @@ import XCTest
 
 final class LeanHealthTimerUITests: XCTestCase {
 
+    /// MANUAL UI TEST: Verify Tracker Tab loads and displays correctly
+    /// This test accepts HealthKit permission and navigates to Tracker Tab
+    func testManualTrackerTabVisualInspection() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing"]
+        app.launch()
+
+        // Handle HealthKit permission dialog
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let allowButton = springboard.buttons["Erlauben"]
+        if allowButton.waitForExistence(timeout: 5) {
+            allowButton.tap()
+        }
+
+        // Wait for app to settle
+        sleep(2)
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
+        trackerTab.tap()
+
+        // Wait for content to load
+        sleep(3)
+
+        // Verify basic elements exist (this will tell us if it crashes)
+        let addTrackerButton = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addTrackerButton.exists || app.staticTexts.count > 0,
+                     "Tracker tab should load with content (either add button or trackers)")
+
+        // If we get here without crash, Tracker Tab works!
+        print("✅ SUCCESS: Tracker Tab loaded without crashing")
+        print("   - Tab exists: \(trackerTab.exists)")
+        print("   - Content loaded: \(app.staticTexts.count) text elements visible")
+    }
+
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
