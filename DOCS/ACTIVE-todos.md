@@ -81,8 +81,23 @@ UI Tests crashten beim Öffnen des Tracker Tabs:
 **Commit:** `68c4f9f` fix: SwiftData in-memory config for UI tests prevents crashes
 
 **Bekannte Einschränkungen:**
-- `testTabSwitching()` hat separates Timing-Problem (nicht SwiftData-related)
-- 9 weitere Tests FAILED (separate Bugs, nicht Teil dieses Fixes)
+8 UI Tests sind weiterhin FAILED (81% Success Rate, war 71%):
+
+| # | Test | Kategorie | Problem |
+|---|------|-----------|---------|
+| 1 | testTabSwitching | FLAKY | Timing-abhängig, Content-Loading unsicher |
+| 2 | testCustomTrackerShowsLevelsMode | TEST-BUG | Falsche API für Segmented Controls |
+| 3 | testLevelsModeShowsEditorSections | TEST-BUG | Falsche API für Segmented Controls |
+| 4 | testFreeWorkoutHeaderIsAboveCardContent | KRITISCH | Y-Koordinaten Layout-Check zu früh |
+| 5 | testOpenMeditationHeaderIsAboveCardContent | KRITISCH | Y-Koordinaten Layout-Check zu früh |
+| 6 | testNoAlcQuickLogButtonsExist | KRITISCH | Button-Namen evtl. geändert |
+| 7 | testGratitudeTrackerOpensGratitudeLogSheet | FLAKY | Zu viele sleep() Calls |
+| 8 | testErfolgeTabShowsEmbeddedCalendar | UNKRITISCH | Feature nicht essentiell |
+
+**Nächste Schritte (separat):**
+- TEST-BUG #2+#3: Segmented Control API korrigieren
+- KRITISCH #4+#5: Layout-Timing erhöhen oder Debug
+- KRITISCH #6: Button-Namen prüfen (Steady/Easy/Wild)
 
 ---
 
