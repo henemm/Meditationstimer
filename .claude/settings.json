@@ -47,9 +47,15 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/ui_test_gate.py\"",
+            "timeout": 5,
+            "description": "Priority 1: UI Test Gate (FORCE UI testing)"
+          },
+          {
+            "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre_commit_gate.py\"",
             "timeout": 10,
-            "description": "Pre-Commit Gate"
+            "description": "Priority 2: Pre-Commit Gate (tests must pass)"
           }
         ]
       }

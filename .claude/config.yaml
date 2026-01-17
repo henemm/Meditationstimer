@@ -1,5 +1,23 @@
 # OpenSpec Framework Configuration for Meditationstimer (iOS Project)
 
+# UI Test Gate - FORCE UI testing for UI changes
+ui_test_gate:
+  enabled: true
+  ui_patterns:
+    - "Meditationstimer iOS/Tabs/"
+    - "Meditationstimer iOS/Views/"
+    - "Meditationstimer iOS/Tracker/"
+    - ".swift"  # All Swift files are potentially UI
+  ui_test_patterns:
+    - "LeanHealthTimerUITests/"
+    - "UITests.swift"
+  exemptions:
+    - "Services/"  # Business logic
+    - "Models/"    # Data models
+    - "Tests/"     # Unit tests
+    - ".md"        # Documentation
+    - "Watch"      # Watch app (separate testing)
+
 pre_commit:
   enabled: true
   # iOS/Xcode test command - run UI tests before committing
