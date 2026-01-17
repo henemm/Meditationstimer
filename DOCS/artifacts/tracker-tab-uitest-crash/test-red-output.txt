@@ -1,0 +1,189 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project Meditationstimer.xcodeproj -scheme "Lean Health Timer" -destination "platform=iOS Simulator,name=iPhone 17 Pro" "-only-testing:LeanHealthTimerUITests/LeanHealthTimerUITests/testTabSwitching"
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (4 targets)
+    Target 'LeanHealthTimerUITests' in project 'Meditationstimer'
+        ➜ Explicit dependency on target 'Lean Health Timer' in project 'Meditationstimer'
+    Target 'LeanHealthTimerTests' in project 'Meditationstimer'
+        ➜ Explicit dependency on target 'Lean Health Timer' in project 'Meditationstimer'
+    Target 'Lean Health Timer' in project 'Meditationstimer'
+        ➜ Explicit dependency on target 'MeditationstimerWidgetExtension' in project 'Meditationstimer'
+    Target 'MeditationstimerWidgetExtension' in project 'Meditationstimer' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/xcstringstool compile --dry-run --output-directory /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer iOS/Localizable.xcstrings
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer iOS/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/xcstringstool compile --dry-run --output-directory /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/Lean Health Timer.build /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer iOS/Localizable.xcstrings
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: c5d700d286276656043c1a05dbed3c05
+Build description path: /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/XCBuildData/c5d700d286276656043c1a05dbed3c05.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk /Users/hem/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -o /Users/hem/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+
+CompileXCStrings /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/ /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer\ iOS/Localizable.xcstrings (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcstringstool compile --output-directory /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer\ iOS/Localizable.xcstrings
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/Info.plist /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/MeditationstimerWidget/Info.plist (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-infoPlistUtility /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/MeditationstimerWidget/Info.plist -producttype com.apple.product-type.app-extension -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/assetcatalog_generated_info.plist -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/Info.plist
+
+CopyStringsFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/de.lproj/Localizable.stringsdict /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/de.lproj/Localizable.stringsdict (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-copyStrings --validate --outputencoding binary --outfilename Localizable.stringsdict --outdir /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/de.lproj -- /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/de.lproj/Localizable.stringsdict
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/de.lproj/Localizable.stringsdict:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+
+CopyStringsFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/en.lproj/Localizable.strings /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/en.lproj/Localizable.strings (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-copyStrings --validate --outputencoding binary --outfilename Localizable.strings --outdir /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/en.lproj -- /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/en.lproj/Localizable.strings
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/en.lproj/Localizable.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+
+CopyStringsFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/en.lproj/Localizable.stringsdict /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/en.lproj/Localizable.stringsdict (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-copyStrings --validate --outputencoding binary --outfilename Localizable.stringsdict --outdir /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/en.lproj -- /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/en.lproj/Localizable.stringsdict
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/en.lproj/Localizable.stringsdict:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+
+CopyStringsFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/de.lproj/Localizable.strings /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/de.lproj/Localizable.strings (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-copyStrings --validate --outputencoding binary --outfilename Localizable.strings --outdir /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/de.lproj -- /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/de.lproj/Localizable.strings
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/de.lproj/Localizable.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+
+Copy /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/MeditationstimerWidgetExtension.appex /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -exclude Headers -exclude PrivateHeaders -exclude Modules -exclude \*.tbd -resolve-src-symlinks -remove-static-executable /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Info.plist /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer-iOS-Info.plist (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-infoPlistUtility /Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer-iOS-Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/Lean\ Health\ Timer.build/assetcatalog_generated_info.plist -scanforprivacyfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/MeditationstimerWidgetExtension.appex -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Info.plist
+
+CopySwiftLibs /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Lean\ Health\ Timer.debug.dylib --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Frameworks --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/SystemExtensions --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/Lean\ Health\ Timer.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Info.plist /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerTests.build/empty-LeanHealthTimerTests.plist (in target 'LeanHealthTimerTests' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-infoPlistUtility /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerTests.build/empty-LeanHealthTimerTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Info.plist
+
+CopySwiftLibs /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest (in target 'LeanHealthTimerTests' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/LeanHealthTimerTests --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Frameworks --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/PlugIns --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/SystemExtensions --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Extensions --scan-folder /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk/System/Library/Frameworks/SwiftUI.framework --scan-folder /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk/System/Library/Frameworks/WidgetKit.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Lean\ Health\ Timer.debug.dylib (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Lean\ Health\ Timer.debug.dylib
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean Health Timer.app/Lean Health Timer.debug.dylib: replacing existing signature
+
+CodeSign /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/__preview.dylib (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/__preview.dylib
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean Health Timer.app/__preview.dylib: replacing existing signature
+
+CodeSign /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --entitlements /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/Lean\ Health\ Timer.build/Lean\ Health\ Timer.app.xcent --timestamp\=none --generate-entitlement-der /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app
+/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean Health Timer.app: replacing existing signature
+
+ValidateEmbeddedBinary /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/MeditationstimerWidgetExtension.appex (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    /Applications/Xcode.app/Contents/Developer/usr/bin/embeddedBinaryValidationUtility /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/MeditationstimerWidgetExtension.appex -signing-cert - -info-plist-path /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Info.plist
+
+Validate /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-validationUtility /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app -shallow-bundle -infoplist-subpath Info.plist
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Info.plist /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/empty-LeanHealthTimerUITests.plist (in target 'LeanHealthTimerUITests' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-infoPlistUtility /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/empty-LeanHealthTimerUITests.plist -producttype com.apple.product-type.bundle.ui-testing -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/ProductTypeInfoPlistAdditions.plist -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Info.plist
+
+CopySwiftLibs /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest (in target 'LeanHealthTimerUITests' from project 'Meditationstimer')
+    cd /Users/hem/Documents/opt/Meditationstimer/Meditationstimer
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/LeanHealthTimerUITests --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Frameworks --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/PlugIns --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/SystemExtensions --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+2026-01-16 11:15:14.161 xcodebuild[42334:17953588]  iOSSimulator: 031C073F-BF21-4E6C-A02D-DF7210BF48EA: Failed to launch app with identifier: henemm.LeanHealthTimerUITests.xctrunner and options: {
+    "activate_suspended" = 1;
+    arguments =     (
+    );
+    environment =     {
+        "APP_DISTRIBUTOR_ID_OVERRIDE" = "com.apple.AppStore";
+        "CA_ASSERT_MAIN_THREAD_TRANSACTIONS" = 0;
+        "CA_DEBUG_TRANSACTIONS" = 0;
+        "DYLD_FRAMEWORK_PATH" = "/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks";
+        "DYLD_INSERT_LIBRARIES" = "/usr/lib/libRPAC.dylib:/Library/Developer/CoreSimulator/Volumes/iOS_23C54/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.2.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib:/usr/lib/libRPAC.dylib";
+        "DYLD_LIBRARY_PATH" = "/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib";
+        "LLVM_PROFILE_FILE" = "/var/folders/dk/p4qd3_xx6ls6_xybmqzfgs1h0000gn/T/henemm.LeanHealthTimerUITests.xctrunner/8EA933B0-B22A-4195-B658-3C0315F08E48-42334-0000198A0594A64F/57EDAA71-9380-40B4-964B-A627DA0E75B5-%p%c.profraw";
+        NSApplicationQuitWithoutSuddenTermination = YES;
+        NSUnbufferedIO = YES;
+        "OS_ACTIVITY_DT_MODE" = YES;
+        "PERFC_ENABLE_EXTENDED_DIAGNOSTIC_FORMAT" = 1;
+        "PERFC_ENABLE_PROFILE_MODE" = 1;
+        "PERFC_RESET_INSERT_LIBRARIES" = 1;
+        "PERFC_SUPPRESS_SYSTEM_REPORTS" = 1;
+        "RUN_DESTINATION_DEVICE_NAME" = "Clone 2 of iPhone 17 Pro";
+        "RUN_DESTINATION_DEVICE_PLATFORM_IDENTIFIER" = "com.apple.platform.iphonesimulator";
+        "RUN_DESTINATION_DEVICE_UDID" = "031C073F-BF21-4E6C-A02D-DF7210BF48EA";
+        "SQLITE_ENABLE_THREAD_ASSERTIONS" = 1;
+        TERM = dumb;
+        "XCODE_SCHEME_NAME" = "Lean Health Timer";
+        "XCODE_TEST_PLAN_NAME" = "Lean Health Timer";
+        XCTestBundleInjectPath = "/usr/lib/libRPAC.dylib:/Library/Developer/CoreSimulator/Volumes/iOS_23C54/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.2.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib:/usr/lib/libRPAC.dylib";
+        XCTestBundlePath = "PlugIns/LeanHealthTimerUITests.xctest";
+        XCTestConfigurationFilePath = "";
+        XCTestSessionIdentifier = "8FC733B0-408E-4CB5-9370-B0DEC86D9470";
+        "__XCODE_BUILT_PRODUCTS_DIR_PATHS" = "/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator";
+        "__XPC_DYLD_FRAMEWORK_PATH" = "/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator";
+        "__XPC_DYLD_LIBRARY_PATH" = "/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Build/Products/Debug-iphonesimulator";
+        "__XPC_LLVM_PROFILE_FILE" = "/var/folders/dk/p4qd3_xx6ls6_xybmqzfgs1h0000gn/T/henemm.LeanHealthTimerUITests.xctrunner/8EA933B0-B22A-4195-B658-3C0315F08E48-42334-0000198A0594A64F/57EDAA71-9380-40B4-964B-A627DA0E75B5-%p%c.profraw";
+    };
+    stderr = "/dev/ttys011";
+    stdout = "/dev/ttys011";
+    "terminate_running_process" = 1;
+    "wait_for_debugger" = 1;
+} (error = Error Domain=FBSOpenApplicationServiceErrorDomain Code=1 "Simulator device failed to launch henemm.LeanHealthTimerUITests.xctrunner." UserInfo={NSLocalizedDescription=Simulator device failed to launch henemm.LeanHealthTimerUITests.xctrunner., NSUnderlyingError=0x791de4030 {Error Domain=FBSOpenApplicationServiceErrorDomain Code=1 "The request to open "henemm.LeanHealthTimerUITests.xctrunner" failed." UserInfo={BSErrorCodeDescription=RequestDenied, NSLocalizedDescription=The request to open "henemm.LeanHealthTimerUITests.xctrunner" failed., NSUnderlyingError=0x791de4570 {Error Domain=FBProcessExit Code=64 "The process failed to launch." UserInfo={NSUnderlyingError=0x791de43f0 {Error Domain=RBSRequestErrorDomain Code=5 "Launch failed." UserInfo=0x79903adc0 (not displayed)}, BSErrorCodeDescription=launch-failed, NSLocalizedFailureReason=The process failed to launch.}}, FBSOpenApplicationRequestID=0xbc0, NSLocalizedFailureReason=The request was denied by service delegate (SBMainWorkspace).}}, NSLocalizedFailureReason=The request was denied by service delegate (SBMainWorkspace)., FBSOpenApplicationRequestID=0xbc0, SimCallingSelector=launchApplicationWithID:options:pid:error:, BSErrorCodeDescription=RequestDenied})
+2026-01-16 11:15:37.369 xcodebuild[42334:17950187] [MT] IDETestOperationsObserverDebug: 109.902 elapsed -- Testing started completed.
+2026-01-16 11:15:37.369 xcodebuild[42334:17950187] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-01-16 11:15:37.369 xcodebuild[42334:17950187] [MT] IDETestOperationsObserverDebug: 109.902 sec, +109.902 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-bwtiszqlwvdsashczykbobvwjeip/Logs/Test/Test-Lean Health Timer-2026.01.16_11-13-43-+0100.xcresult
+
+** TEST FAILED **
+
+Testing started
+Test suite 'LeanHealthTimerUITests' started on 'Clone 1 of iPhone 17 Pro - LeanHealthTimerUITests-Runner (42657)'
+Test case 'LeanHealthTimerUITests.testTabSwitching()' failed on 'Clone 1 of iPhone 17 Pro - LeanHealthTimerUITests-Runner (42657)' (38.147 seconds)
+Exit code: 65

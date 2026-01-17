@@ -1,0 +1,23 @@
+# OpenSpec Framework Configuration for Meditationstimer (iOS Project)
+
+pre_commit:
+  enabled: true
+  # iOS/Xcode test command - run UI tests before committing
+  test_command:
+    - "xcodebuild"
+    - "test"
+    - "-project"
+    - "Meditationstimer.xcodeproj"
+    - "-scheme"
+    - "Lean Health Timer"
+    - "-destination"
+    - "platform=iOS Simulator,name=iPhone 17 Pro"
+    - "-only-testing:LeanHealthTimerUITests"
+  timeout: 1200  # 20 minutes for iOS UI tests
+  allow_amend: true
+  ui_patterns:
+    - "Meditationstimer iOS/"
+    - ".swift"
+    - "Tabs/"
+    - "Views/"
+  screenshot_reminder: true
