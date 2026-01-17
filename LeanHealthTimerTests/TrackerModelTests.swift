@@ -31,6 +31,56 @@ final class TrackerModelTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - TDD RED Phase Tests (Generic Tracker System)
+
+    // Test 6: Mood Preset Exists
+    func testMoodPresetExists() {
+        // GIVEN: TrackerPreset.all array
+        let allPresets = TrackerPreset.all
+
+        // WHEN: Searching for "Mood" preset
+        let moodPreset = allPresets.first { $0.name == "Mood" }
+
+        // THEN: Preset exists with 5 mood levels
+        // NOTE: This will FAIL because Mood preset doesn't exist yet
+        XCTAssertNotNil(moodPreset, "Mood preset should exist in TrackerPreset.all")
+
+        if let preset = moodPreset {
+            XCTAssertEqual(preset.localizedName, "Stimmung")
+            XCTAssertEqual(preset.icon, "😊")
+            XCTAssertEqual(preset.type, .good)
+            XCTAssertEqual(preset.trackingMode, .levels)
+            XCTAssertEqual(preset.healthKitType, "HKStateOfMind")
+            XCTAssertEqual(preset.levels?.count, 5, "Mood should have 5 levels")
+            XCTAssertNil(preset.rewardConfig, "Mood should not have reward config")
+        }
+    }
+
+    // Test 7: NoAlc Labels Localized
+    func testNoAlcLabelsLocalized() {
+        // GIVEN: NoAlc TrackerLevel
+        let noAlcLevels = TrackerLevel.noAlcLevels
+
+        XCTAssertEqual(noAlcLevels.count, 3, "NoAlc should have 3 levels")
+
+        // THEN: Labels should use localization keys
+        // NOTE: This will FAIL because labels are still "Steady"/"Easy"/"Wild" instead of "NoAlc.Steady" etc
+        let steady = noAlcLevels[0]
+        XCTAssertEqual(steady.labelKey, "NoAlc.Steady", "Should use localization key")
+        XCTAssertEqual(steady.key, "steady")
+        XCTAssertEqual(steady.icon, "💧")
+
+        let easy = noAlcLevels[1]
+        XCTAssertEqual(easy.labelKey, "NoAlc.Easy", "Should use localization key")
+        XCTAssertEqual(easy.key, "easy")
+        XCTAssertEqual(easy.icon, "✨")
+
+        let wild = noAlcLevels[2]
+        XCTAssertEqual(wild.labelKey, "NoAlc.Wild", "Should use localization key")
+        XCTAssertEqual(wild.key, "wild")
+        XCTAssertEqual(wild.icon, "💥")
+    }
+
     // MARK: - Tracker Creation Tests
 
     func testCreateTracker() {

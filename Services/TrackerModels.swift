@@ -159,9 +159,9 @@ struct StreakResult: Equatable {
 extension TrackerLevel {
     /// NoAlc consumption levels (for migration)
     static let noAlcLevels: [TrackerLevel] = [
-        TrackerLevel(id: 0, key: "steady", icon: "💧", labelKey: "Steady", streakEffect: .success),
-        TrackerLevel(id: 1, key: "easy", icon: "✨", labelKey: "Easy", streakEffect: .needsGrace),
-        TrackerLevel(id: 2, key: "wild", icon: "💥", labelKey: "Wild", streakEffect: .needsGrace)
+        TrackerLevel(id: 0, key: "steady", icon: "💧", labelKey: "NoAlc.Steady", streakEffect: .success),
+        TrackerLevel(id: 1, key: "easy", icon: "✨", labelKey: "NoAlc.Easy", streakEffect: .needsGrace),
+        TrackerLevel(id: 2, key: "wild", icon: "💥", labelKey: "NoAlc.Wild", streakEffect: .needsGrace)
     ]
 
     /// Mood levels (5 levels, all count as success - logging is the exercise)
@@ -494,10 +494,13 @@ extension TrackerPreset {
             localizedName: "Stimmung",
             icon: "😊",
             type: .good,
-            trackingMode: .awareness,  // Fixed: must be .awareness to show Notice button & open MoodSelectionView
+            trackingMode: .levels,  // Level-based tracker with 5 mood levels
             healthKitType: "HKStateOfMind",
             dailyGoal: nil,
-            category: .awareness
+            category: .levelBased,
+            levels: TrackerLevel.moodLevels,
+            rewardConfig: nil,  // No rewards for mood tracking
+            dayAssignmentRaw: nil  // Default: timestamp-based
         ),
         TrackerPreset(
             name: "Feelings",
@@ -788,5 +791,90 @@ final class StreakCalculator {
             return 0
         }
         return 1
+    }
+}
+
+// MARK: - TrackerMigration
+
+/// Migration service for transitioning from NoAlcManager to Generic Tracker System
+final class TrackerMigration {
+
+    // MARK: - Singleton
+
+    static let shared = TrackerMigration()
+
+    private init() {}
+
+    // MARK: - NoAlc Migration
+
+    /// Migrates existing NoAlc data from HealthKit to Tracker system
+    /// - Parameter context: SwiftData ModelContext to insert Tracker and TrackerLogs
+    /// - Throws: HealthKit or SwiftData errors
+    ///
+    /// This migration is idempotent - it checks if NoAlc Tracker already exists
+    /// and skips migration if found.
+    func migrateNoAlcIfNeeded(context: ModelContext) async throws {
+        // Check if NoAlc Tracker already exists
+        let descriptor = FetchDescriptor<Tracker>(
+            predicate: #Predicate { $0.name == "NoAlc" }
+        )
+
+        if let _ = try context.fetch(descriptor).first {
+            print("[TrackerMigration] NoAlc Tracker already exists, skipping migration")
+            return
+        }
+
+        print("[TrackerMigration] Starting NoAlc migration...")
+
+        // Create NoAlc Tracker from preset
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            print("[TrackerMigration] ERROR: NoAlc preset not found in TrackerPreset.all")
+            return
+        }
+
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // TODO: Fetch historical NoAlc data from HealthKit and create TrackerLogs
+        // For now, we just create the tracker structure
+        // Future implementation: NoAlcManager.shared.fetchHistoricalData()
+
+        try context.save()
+        print("[TrackerMigration] NoAlc Tracker created successfully")
+    }
+
+    // MARK: - Default Trackers
+
+    /// Creates default trackers (NoAlc + Mood) if no trackers exist
+    /// - Parameter context: SwiftData ModelContext
+    /// - Throws: SwiftData errors
+    func createDefaultTrackersIfNeeded(context: ModelContext) throws {
+        // Check if any trackers exist
+        let descriptor = FetchDescriptor<Tracker>()
+        let existingCount = try context.fetchCount(descriptor)
+
+        if existingCount > 0 {
+            print("[TrackerMigration] Trackers already exist (\(existingCount)), skipping default creation")
+            return
+        }
+
+        print("[TrackerMigration] Creating default trackers (NoAlc + Mood)...")
+
+        // Create NoAlc tracker
+        if let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) {
+            let noAlc = noAlcPreset.createTracker()
+            context.insert(noAlc)
+            print("[TrackerMigration] ✓ NoAlc tracker created")
+        }
+
+        // Create Mood tracker
+        if let moodPreset = TrackerPreset.all.first(where: { $0.name == "Mood" }) {
+            let mood = moodPreset.createTracker()
+            context.insert(mood)
+            print("[TrackerMigration] ✓ Mood tracker created")
+        }
+
+        try context.save()
+        print("[TrackerMigration] Default trackers created successfully")
     }
 }
