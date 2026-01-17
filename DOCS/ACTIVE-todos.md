@@ -1,6 +1,6 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 1. Januar 2026
+**Letzte Aktualisierung:** 16. Januar 2026
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -35,6 +35,56 @@
 ---
 
 ## 🚨 KRITISCHE Bugs
+
+### Bug 36: UI Tests crashten beim Tracker Tab (SwiftData Disk-Konflikt)
+**Datum:** 16. Januar 2026
+**Status:** ✅ BEHOBEN
+
+**Problem:**
+UI Tests crashten beim Öffnen des Tracker Tabs:
+- `testTabSwitching()` und 6 weitere Tests: FAILED mit "(ipc/mig) server died"
+- App crashte beim Zugriff auf SwiftData `@Query` Properties
+- Test Success Rate: nur 71% (32/45 Tests)
+
+**Root Cause:**
+- SwiftData `ModelContainer` verwendete persistente Disk-Storage auch während UI Tests
+- Test-Runner und App-Prozess konkurrierten um dieselben Datenbankdateien
+- SwiftData `@Query` crashte ohne sauberen in-memory Container
+
+**Lösung:**
+1. `Meditationstimer_iOSApp.swift`: In-memory Config für UI Tests
+   ```swift
+   #if DEBUG
+   if CommandLine.arguments.contains("enable-testing") {
+       inMemory = true
+   }
+   #endif
+   let config = ModelConfiguration(isStoredInMemoryOnly: inMemory)
+   ```
+2. `LeanHealthTimerUITests.swift`: "enable-testing" Launch Argument zu allen 44 Tests hinzugefügt
+
+**Verbesserung:**
+- ✅ Test Success Rate: 71% → 81% (+10%)
+- ✅ 6 Tests von FAILED → PASSED:
+  - `testTabSwitchingPreservesState()`
+  - `testEditButtonOpensTrackerEditorSheet()`
+  - `testFeelingsTrackerOpensFeelingsSelectionSheet()`
+  - `testWorkoutLabelsNotUppercase()`
+  - `testWorkoutProgramShowsRoundCounter()`
+  - `testWorkoutTabScrollsToAllPrograms()`
+
+**Verifizierung:**
+- [x] Build erfolgreich (Debug + Release)
+- [x] UI Tests durchgeführt: 38/47 PASSED (war 32/45)
+- [x] Production-App unverändert (nur `#if DEBUG` + Launch Arg)
+
+**Commit:** `68c4f9f` fix: SwiftData in-memory config for UI tests prevents crashes
+
+**Bekannte Einschränkungen:**
+- `testTabSwitching()` hat separates Timing-Problem (nicht SwiftData-related)
+- 9 weitere Tests FAILED (separate Bugs, nicht Teil dieses Fixes)
+
+---
 
 ### Bug 34: NoAlc DayAssignment Parser erkannte cutoffHour-Prefix nicht
 **Datum:** 31. Dezember 2025
