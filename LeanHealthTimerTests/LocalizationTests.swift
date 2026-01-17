@@ -106,4 +106,58 @@ final class LocalizationTests: XCTestCase {
             )
         }
     }
+
+    // MARK: - TDD RED Phase: NoAlc Tracker Localization (Generic Tracker System Phase 2-4)
+
+    /// Test 8: NoAlc level labels should be localized (German)
+    /// This test will FAIL until Localizable.xcstrings has the NoAlc.* keys
+    func testNoAlcLevelLabelsLocalizedInGerman() throws {
+        // Use Bundle(for:) with a type from the main app to get the correct bundle
+        let bundle = Bundle(for: Tracker.self)
+
+        // These keys must exist in Localizable.xcstrings
+        let noAlcKeys = [
+            ("NoAlc.Steady", "Kaum"),
+            ("NoAlc.Easy", "Überschaubar"),
+            ("NoAlc.Wild", "Party")
+        ]
+
+        for (key, expectedGerman) in noAlcKeys {
+            let localized = NSLocalizedString(key, bundle: bundle, comment: "NoAlc level")
+
+            // If key is not in .xcstrings, NSLocalizedString returns the key itself
+            XCTAssertNotEqual(
+                localized,
+                key,
+                "Key '\(key)' should be localized (not return raw key). Add it to Localizable.xcstrings"
+            )
+        }
+    }
+
+    /// Test 9: Mood level labels should be localized (German)
+    /// This test will FAIL until Localizable.xcstrings has the Mood.* keys
+    func testMoodLevelLabelsLocalizedInGerman() throws {
+        // Use Bundle(for:) with a type from the main app to get the correct bundle
+        let bundle = Bundle(for: Tracker.self)
+
+        // These keys must exist in Localizable.xcstrings
+        let moodKeys = [
+            ("Mood.Awful", "Mies"),
+            ("Mood.Bad", "Schlecht"),
+            ("Mood.Okay", "Okay"),
+            ("Mood.Good", "Gut"),
+            ("Mood.Great", "Super")
+        ]
+
+        for (key, _) in moodKeys {
+            let localized = NSLocalizedString(key, bundle: bundle, comment: "Mood level")
+
+            // If key is not in .xcstrings, NSLocalizedString returns the key itself
+            XCTAssertNotEqual(
+                localized,
+                key,
+                "Key '\(key)' should be localized (not return raw key). Add it to Localizable.xcstrings"
+            )
+        }
+    }
 }
