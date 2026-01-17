@@ -17,9 +17,18 @@ struct TrackerTab: View {
     @EnvironmentObject var streakManager: StreakManager
     @Environment(\.modelContext) private var modelContext
 
-    // SwiftData Query for active trackers
-    @Query(filter: #Predicate<Tracker> { $0.isActive }, sort: \Tracker.createdAt)
-    private var trackers: [Tracker]
+    // SwiftData Query for active trackers (excludes NoAlc which is shown separately)
+    @Query(filter: #Predicate<Tracker> { $0.isActive && $0.name != "NoAlc" }, sort: \Tracker.createdAt)
+    private var customTrackers: [Tracker]
+
+    // NoAlc tracker query (separate for special handling)
+    @Query(filter: #Predicate<Tracker> { $0.name == "NoAlc" })
+    private var noAlcTrackers: [Tracker]
+
+    /// The NoAlc tracker from SwiftData (created on first access if missing)
+    private var noAlcTracker: Tracker? {
+        noAlcTrackers.first
+    }
 
     // Sheet states
     @State private var showingNoAlcLog = false
@@ -53,17 +62,32 @@ struct TrackerTab: View {
         }
     }
 
-    private func noAlcButton(_ level: NoAlcManager.ConsumptionLevel, label: String, color: Color) -> some View {
+    private func noAlcButton(_ level: TrackerLevel, color: Color) -> some View {
         Button(action: {
             Task {
+                // Log to SwiftData via Generic Tracker System
+                if let tracker = noAlcTracker {
+                    tracker.logLevel(level, context: modelContext)
+                    try? modelContext.save()
+                }
+
+                // Also log to HealthKit (preserves existing behavior)
                 do {
-                    try await NoAlcManager.shared.logConsumption(level, for: Date())
+                    // Map TrackerLevel to legacy ConsumptionLevel
+                    let legacyLevel: NoAlcManager.ConsumptionLevel
+                    switch level.key {
+                    case "steady": legacyLevel = .steady
+                    case "easy": legacyLevel = .easy
+                    case "wild": legacyLevel = .wild
+                    default: legacyLevel = .steady
+                    }
+                    try await NoAlcManager.shared.logConsumption(legacyLevel, for: Date())
                 } catch {
-                    print("[NoAlc] Log failed: \(error)")
+                    print("[NoAlc] HealthKit log failed: \(error)")
                 }
             }
         }) {
-            Text(label)
+            Text(NSLocalizedString(level.labelKey, comment: "NoAlc level"))
                 .font(.subheadline.weight(.medium))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
@@ -88,7 +112,7 @@ struct TrackerTab: View {
             noAlcCard
 
             // Custom Trackers
-            ForEach(trackers) { tracker in
+            ForEach(customTrackers) { tracker in
                 TrackerRow(tracker: tracker) {
                     trackerToEdit = tracker
                 }
@@ -115,11 +139,11 @@ struct TrackerTab: View {
                     }
                 }
 
-                // Quick-Log Buttons
+                // Quick-Log Buttons (using TrackerLevel from Generic Tracker System)
                 HStack(spacing: 10) {
-                    noAlcButton(.steady, label: NSLocalizedString("Steady", comment: "NoAlc steady"), color: .green)
-                    noAlcButton(.easy, label: NSLocalizedString("Easy", comment: "NoAlc easy"), color: .yellow)
-                    noAlcButton(.wild, label: NSLocalizedString("Wild", comment: "NoAlc wild"), color: .red)
+                    noAlcButton(TrackerLevel.noAlcLevels[0], color: .green)  // Steady
+                    noAlcButton(TrackerLevel.noAlcLevels[1], color: .yellow) // Easy
+                    noAlcButton(TrackerLevel.noAlcLevels[2], color: .red)    // Wild
                 }
             }
             .padding(.vertical, 4)

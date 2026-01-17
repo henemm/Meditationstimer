@@ -9,6 +9,12 @@ import Foundation
 import HealthKit
 
 /// Manages alcohol consumption tracking via HealthKit
+///
+/// - Important: This class is deprecated. Use the Generic Tracker System instead:
+///   - `TrackerPreset.noAlc` for creating NoAlc trackers
+///   - `Tracker.logLevel()` for logging consumption
+///   - `TrackerMigration` for data migration
+@available(*, deprecated, message: "Use Generic Tracker System (TrackerPreset, Tracker.logLevel) instead")
 final class NoAlcManager {
     static let shared = NoAlcManager()
 

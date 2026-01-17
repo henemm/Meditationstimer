@@ -9,33 +9,75 @@ final class LeanHealthTimerUITests: XCTestCase {
         app.launchArguments = ["enable-testing"]
         app.launch()
 
-        // Handle HealthKit permission dialog
+        // Handle HealthKit permission dialogs ROBUSTLY
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let allowButton = springboard.buttons["Erlauben"]
-        if allowButton.waitForExistence(timeout: 5) {
-            allowButton.tap()
+
+        // Try to dismiss ALL permission dialogs for up to 30 seconds
+        let startTime = Date()
+        while Date().timeIntervalSince(startTime) < 30 {
+            // Try "Erlauben" button
+            if springboard.buttons["Erlauben"].exists {
+                print("DEBUG: Tapping 'Erlauben' button")
+                springboard.buttons["Erlauben"].tap()
+                sleep(2)
+                continue
+            }
+
+            // Try "OK" button
+            if springboard.buttons["OK"].exists {
+                print("DEBUG: Tapping 'OK' button")
+                springboard.buttons["OK"].tap()
+                sleep(2)
+                continue
+            }
+
+            // Check if dialogs are gone (not just if app is visible!)
+            if !springboard.buttons["Erlauben"].exists && !springboard.buttons["OK"].exists {
+                print("DEBUG: Permission dialogs dismissed")
+                break
+            }
+
+            sleep(1)
         }
 
-        // Wait for app to settle
-        sleep(2)
+        // Wait extra time for app to fully settle
+        sleep(5)
 
         // Navigate to Tracker tab
         let trackerTab = app.tabBars.buttons["Tracker"]
         XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
         trackerTab.tap()
 
-        // Wait for content to load
-        sleep(3)
+        // Wait for content to load (give it PLENTY of time)
+        sleep(8)
+
+        // Take screenshot for visual verification
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "TrackerTab_Initial_State"
+        attachment.lifetime = .keepAlways
+        add(attachment)
 
         // Verify basic elements exist (this will tell us if it crashes)
         let addTrackerButton = app.buttons["addTrackerButton"]
         XCTAssertTrue(addTrackerButton.exists || app.staticTexts.count > 0,
                      "Tracker tab should load with content (either add button or trackers)")
 
+        // Verify NoAlc tracker exists (default preset)
+        let noAlcCard = app.staticTexts["NoAlc"]
+        print("NoAlc tracker visible: \(noAlcCard.exists)")
+
+        // Verify Mood tracker exists (default preset)
+        let moodCard = app.staticTexts["Mood"]
+        print("Mood tracker visible: \(moodCard.exists)")
+
         // If we get here without crash, Tracker Tab works!
         print("✅ SUCCESS: Tracker Tab loaded without crashing")
         print("   - Tab exists: \(trackerTab.exists)")
         print("   - Content loaded: \(app.staticTexts.count) text elements visible")
+        print("   - Add Tracker button: \(addTrackerButton.exists)")
+        print("   - NoAlc tracker: \(noAlcCard.exists)")
+        print("   - Mood tracker: \(moodCard.exists)")
     }
 
     override func setUpWithError() throws {

@@ -48,9 +48,25 @@ struct Meditationstimer_iOSApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(sharedLiveActivity)
+                .environmentObject(streakManager)
                 .modelContainer(modelContainer)
+                .task {
+                    // Generic Tracker System: Create default trackers on first launch
+                    await runTrackerMigration()
+                }
         }
         // Live Activity background cleanup removed
+    }
+
+    /// Runs the Generic Tracker System migration on app launch
+    @MainActor
+    private func runTrackerMigration() async {
+        let context = modelContainer.mainContext
+        do {
+            try TrackerMigration.shared.createDefaultTrackersIfNeeded(context: context)
+        } catch {
+            print("[TrackerMigration] Failed: \(error)")
+        }
     }
 }
 
