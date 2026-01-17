@@ -181,7 +181,7 @@ Agent OS v2.0 unterstützt **mehrere parallele Workflows**:
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -destination 'platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00' \
   -only-testing:LeanHealthTimerUITests
 ```
 
@@ -231,12 +231,16 @@ iOS / watchOS / Widget Apps (UI)
 
 ## Build Commands
 
+**⚠️ WICHTIG: Immer den "Healthy Habits" Simulator verwenden!**
+- **Simulator Name:** `Healthy Habits`
+- **Identifier:** `EEF5B0DE-6B96-47CE-AA57-2EE024371F00`
+
 **Build iOS app:**
 ```bash
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
   -configuration Debug \
-  -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
+  -destination 'platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00' \
   build
 ```
 
@@ -244,8 +248,9 @@ xcodebuild -project Meditationstimer.xcodeproj \
 ```bash
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
-  -scheme "MeditationstimerTests" \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+  -scheme "Lean Health Timer" \
+  -destination 'platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00' \
+  -only-testing:LeanHealthTimerTests
 ```
 
 ---

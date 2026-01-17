@@ -390,6 +390,34 @@ final class Tracker {
     }
 }
 
+// MARK: - Tracker Convenience Methods
+
+extension Tracker {
+    /// Log a level for this tracker (creates a TrackerLog with level.id as value)
+    /// - Parameters:
+    ///   - level: The TrackerLevel to log
+    ///   - context: The ModelContext to insert the log into
+    ///   - timestamp: The timestamp for the log (defaults to now)
+    func logLevel(_ level: TrackerLevel, context: ModelContext, timestamp: Date = Date()) {
+        let log = TrackerLog(
+            timestamp: timestamp,
+            value: level.id,
+            tracker: self
+        )
+        context.insert(log)
+        self.logs.append(log)
+    }
+
+    /// Returns today's log if it exists (based on Calendar.current)
+    var todayLog: TrackerLog? {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return logs.first { log in
+            calendar.isDate(log.timestamp, inSameDayAs: today)
+        }
+    }
+}
+
 // MARK: - TrackerLog Model
 
 /// A single log entry for a tracker

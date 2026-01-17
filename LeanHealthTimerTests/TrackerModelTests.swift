@@ -569,4 +569,81 @@ final class TrackerModelTests: XCTestCase {
         XCTAssertEqual(trackersAfterDelete.count, 0)
         XCTAssertEqual(logsAfterDelete.count, 0, "Logs should be cascade deleted with tracker")
     }
+
+    // MARK: - TDD RED Phase 2-3: Generic Level Logging
+
+    /// Test 10: Tracker has logLevel convenience method
+    /// This test will FAIL until Tracker.logLevel() is implemented
+    func testTrackerHasLogLevelMethod() {
+        // GIVEN: A NoAlc tracker created from preset
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+        try! context.save()
+
+        // WHEN: We try to log a level using the convenience method
+        // This method should create a TrackerLog with the level's id as value
+        let steadyLevel = TrackerLevel.noAlcLevels[0] // "steady"
+
+        // THEN: The method should exist and work
+        // NOTE: This will FAIL because logLevel() doesn't exist yet
+        tracker.logLevel(steadyLevel, context: context)
+
+        // Verify log was created
+        XCTAssertEqual(tracker.logs.count, 1, "Should have created 1 log")
+        XCTAssertEqual(tracker.logs.first?.value, steadyLevel.id, "Log value should be level id")
+    }
+
+    /// Test 11: NoAlc tracker can log different levels
+    /// This test will FAIL until Tracker.logLevel() is implemented
+    func testNoAlcTrackerCanLogAllLevels() {
+        // GIVEN: A NoAlc tracker
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // WHEN: Logging each level
+        for level in TrackerLevel.noAlcLevels {
+            tracker.logLevel(level, context: context)
+        }
+        try! context.save()
+
+        // THEN: Should have 3 logs with correct values
+        XCTAssertEqual(tracker.logs.count, 3, "Should have 3 logs")
+
+        let logValues = tracker.logs.map { $0.value }.compactMap { $0 }
+        XCTAssertTrue(logValues.contains(0), "Should have log with steady level (0)")
+        XCTAssertTrue(logValues.contains(1), "Should have log with easy level (1)")
+        XCTAssertTrue(logValues.contains(2), "Should have log with wild level (2)")
+    }
+
+    /// Test 12: Tracker.todayLog returns today's log if exists
+    /// This test will FAIL until Tracker.todayLog is implemented
+    func testTrackerTodayLogProperty() {
+        // GIVEN: A NoAlc tracker with a log for today
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        let steadyLevel = TrackerLevel.noAlcLevels[0]
+        tracker.logLevel(steadyLevel, context: context)
+        try! context.save()
+
+        // WHEN: Accessing todayLog property
+        // THEN: Should return today's log
+        // NOTE: This will FAIL because todayLog doesn't exist yet
+        let todayLog = tracker.todayLog
+
+        XCTAssertNotNil(todayLog, "Should have a log for today")
+        XCTAssertEqual(todayLog?.value, steadyLevel.id)
+    }
 }
