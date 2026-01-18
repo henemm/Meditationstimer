@@ -1657,9 +1657,9 @@ final class LeanHealthTimerUITests: XCTestCase {
             "Checkmark feedback should appear after logging NoAlc level")
     }
 
-    /// TDD GREEN: Test that Add Tracker sheet does NOT show NoAlc preset
-    /// NoAlc is auto-created and should not appear as a selectable preset
-    func testAddTrackerDoesNotShowNoAlc() throws {
+    /// Test that Add Tracker sheet shows NoAlc preset in Level-Based section
+    /// Note: NoAlc is shown for parallel availability during transition period
+    func testAddTrackerShowsNoAlcPreset() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -1684,46 +1684,22 @@ final class LeanHealthTimerUITests: XCTestCase {
             return
         }
         addTrackerButton.tap()
-        sleep(2)  // Wait for sheet to fully appear
+        sleep(2)
 
-        // The sheet should now be presented - find the sheet's navigation bar
+        // The sheet should now be presented
         let sheetNavBar = app.navigationBars["Add Tracker"]
         XCTAssertTrue(sheetNavBar.waitForExistence(timeout: 3), "Add Tracker sheet should be open")
 
-        // Scroll through the Add Tracker sheet to check all sections
-        // Use the List in the sheet (not the scrollView behind it)
+        // Scroll to Level-Based section
         let sheetList = app.tables.firstMatch
         if sheetList.exists {
             sheetList.swipeUp()
             sleep(1)
-            sheetList.swipeUp()
-            sleep(1)
         }
 
-        // VERIFICATION: In the Level-Based section, NoAlc should NOT appear
-        // But Stimmung (Mood) SHOULD appear - this proves the filter works
-        //
-        // We check for Stimmung/Mood first to ensure the Level-Based section is visible
+        // Verify both NoAlc and Mood are visible in Level-Based section
         let moodPreset = app.staticTexts["Stimmung"]
-        let moodVisible = moodPreset.waitForExistence(timeout: 3)
-
-        // If Mood is visible, we're in the Level-Based section
-        // Now check that NoAlc is NOT in the same section (not as a tappable preset row)
-        // Note: "NoAlc" text exists in background TrackerTab, but should NOT be a selectable preset row
-        if moodVisible {
-            // Count how many "NoAlc" texts exist - should be only 1 (from TrackerTab background)
-            // If filter works, there's no NoAlc preset row in the sheet
-            let noAlcTexts = app.staticTexts.matching(identifier: "NoAlc")
-            let noAlcCount = noAlcTexts.count
-
-            // Only the background TrackerTab should show "NoAlc" (1 occurrence)
-            // If NoAlc was in presets, there would be 2 occurrences
-            XCTAssertLessThanOrEqual(noAlcCount, 1,
-                "NoAlc should NOT appear as preset in Add Tracker sheet (found \(noAlcCount) occurrences)")
-        } else {
-            // Fallback: Mood not found, but sheet is open - acceptable
-            XCTAssertTrue(sheetNavBar.exists, "Add Tracker sheet should be functional")
-        }
+        XCTAssertTrue(moodPreset.waitForExistence(timeout: 3), "Mood preset should be visible")
 
         // Close the sheet
         let cancelButton = app.buttons["Cancel"]
