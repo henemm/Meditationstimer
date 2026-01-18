@@ -1,6 +1,6 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 16. Januar 2026
+**Letzte Aktualisierung:** 18. Januar 2026
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -714,6 +714,37 @@ Alle bisherigen Tests liefen im Simulator oder via Unit Tests. HealthKit verhäl
 - User testet auf echtem Device → realistische Bedingungen
 - HealthKit Simulator != HealthKit Device
 - Catch Edge-Cases die nur auf Hardware auftreten
+
+---
+
+### Generic Tracker System - Verbleibende Migration
+**Status:** Offen (Low Priority)
+**Priorität:** Niedrig
+**Aufwand:** ~2h
+
+**Was erledigt ist:**
+- ✅ TrackerModels.swift: SwiftData Models (Tracker, TrackerLog, TrackerLevel)
+- ✅ TrackerMigration.swift: Automatische NoAlc-Tracker Erstellung beim App-Start
+- ✅ TrackerTab.swift: Dual-Write (SwiftData + HealthKit)
+- ✅ NoAlcManager: `@available(*, deprecated)` Annotation
+
+**Was noch zu migrieren ist (NoAlcManager-Referenzen entfernen):**
+
+| Datei | Referenzen | Beschreibung |
+|-------|------------|--------------|
+| `CalendarView.swift` | 4× | `NoAlcManager.ConsumptionLevel`, `fetchConsumption`, `calculateStreakAndRewards` |
+| `DayDetailSheet.swift` | 3× | `ConsumptionLevel`, `logConsumption`, `fetchConsumption` |
+| `NoAlcLogSheet.swift` | 3× | `ConsumptionLevel`, `logConsumption`, `targetDay` |
+
+**Migrationsstrategie:**
+1. Views auf Generic Tracker System umstellen (SwiftData statt HealthKit)
+2. Streak-Berechnung in Tracker-Extensions verschieben
+3. NoAlcManager komplett entfernen (nach Device-Test)
+
+**Warum Low Priority:**
+- Dual-Write funktioniert aktuell (Daten werden korrekt gespeichert)
+- HealthKit bleibt als Backup
+- Cleanup kann nach vollständiger Validierung erfolgen
 
 ---
 
