@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import HealthKit
 
 struct CalendarView: View {
@@ -20,6 +21,15 @@ struct CalendarView: View {
 
     /// StreakManager for Joker-based streak calculation
     @EnvironmentObject var streakManager: StreakManager
+
+    /// SwiftData query for NoAlc tracker (Generic Tracker System)
+    @Query(filter: #Predicate<Tracker> { $0.name == "NoAlc" })
+    private var noAlcTrackers: [Tracker]
+
+    /// The NoAlc tracker from SwiftData
+    private var noAlcTracker: Tracker? {
+        noAlcTrackers.first
+    }
 
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
@@ -40,17 +50,29 @@ struct CalendarView: View {
     @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
 
-    // Use the testable streak calculator from NoAlcManager
-    private var noAlcStreakResult: NoAlcManager.StreakResult {
-        return NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
+    // Use the Generic Tracker System for NoAlc streak calculation
+    // Falls back to HealthKit-based calculation if no SwiftData tracker exists
+    private var noAlcStreakResult: StreakResult {
+        if let tracker = noAlcTracker {
+            return TrackerManager.shared.calculateStreakResult(for: tracker)
+        }
+        // Fallback to legacy calculation during migration period
+        let legacyResult = NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
+        return StreakResult(
+            currentStreak: legacyResult.streak,
+            longestStreak: legacyResult.streak,
+            availableRewards: legacyResult.rewards,
+            totalRewardsEarned: legacyResult.rewards,
+            totalRewardsUsed: 0
+        )
     }
 
     private var noAlcStreak: Int {
-        return noAlcStreakResult.streak
+        return noAlcStreakResult.currentStreak
     }
 
     private var noAlcStreakPoints: Int {
-        return noAlcStreakResult.rewards
+        return noAlcStreakResult.availableRewards
     }
 
     /// Meditation streak using Joker-based calculation from StreakManager
