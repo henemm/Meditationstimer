@@ -35,6 +35,9 @@ struct TrackerTab: View {
     @State private var showingAddTracker = false
     @State private var trackerToEdit: Tracker?
 
+    // NoAlc feedback state
+    @State private var loggedLevel: TrackerLevel? = nil
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -85,17 +88,44 @@ struct TrackerTab: View {
                 } catch {
                     print("[NoAlc] HealthKit log failed: \(error)")
                 }
+
+                // Show feedback animation
+                await MainActor.run {
+                    withAnimation(.spring(duration: 0.3)) {
+                        loggedLevel = level
+                    }
+                }
+
+                // Reset feedback after 1.5 seconds
+                try? await Task.sleep(for: .seconds(1.5))
+                await MainActor.run {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        loggedLevel = nil
+                    }
+                }
             }
         }) {
-            Text(NSLocalizedString(level.labelKey, comment: "NoAlc level"))
-                .font(.subheadline.weight(.medium))
+            // FIX 1: Show EMOJI instead of text label
+            Text(level.icon)
+                .font(.system(size: 32))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background(color.opacity(0.2))
-                .foregroundStyle(color)
                 .cornerRadius(10)
+                // FIX 2: Checkmark overlay when this level was just logged
+                .overlay {
+                    if loggedLevel?.id == level.id {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.green)
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
         }
         .buttonStyle(.plain)
+        .sensoryFeedback(.success, trigger: loggedLevel?.id == level.id)
+        .accessibilityLabel(level.localizedLabel)
+        .accessibilityIdentifier(level.icon)
     }
 
     // MARK: - Trackers Section
@@ -144,6 +174,21 @@ struct TrackerTab: View {
                     noAlcButton(TrackerLevel.noAlcLevels[0], color: .green)  // Steady
                     noAlcButton(TrackerLevel.noAlcLevels[1], color: .yellow) // Easy
                     noAlcButton(TrackerLevel.noAlcLevels[2], color: .red)    // Wild
+                }
+
+                // FIX 3: Show today's logged level
+                if let tracker = noAlcTracker,
+                   let todayLog = tracker.todayLog,
+                   let levelId = todayLog.value,
+                   let level = TrackerLevel.noAlcLevels.first(where: { $0.id == levelId }) {
+                    HStack(spacing: 4) {
+                        Text(NSLocalizedString("Today:", comment: "Today's log prefix"))
+                        Text(level.icon)
+                        Text(level.localizedLabel)
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .transition(.opacity)
                 }
             }
             .padding(.vertical, 4)

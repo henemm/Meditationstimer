@@ -60,9 +60,10 @@ struct AddTrackerSheet: View {
                     Text(NSLocalizedString("Track autopilot behaviors to build awareness.", comment: "Saboteur explanation"))
                 }
 
-                // Level-Based Section (NoAlc, etc.)
+                // Level-Based Section (excludes NoAlc which is auto-created)
                 Section {
-                    ForEach(TrackerManager.presets(for: .levelBased)) { preset in
+                    // FIX 4: Filter out NoAlc - it's automatically created and shown in TrackerTab
+                    ForEach(TrackerManager.presets(for: .levelBased).filter { $0.name != "NoAlc" }) { preset in
                         PresetRow(preset: preset) {
                             createTracker(from: preset)
                         }
