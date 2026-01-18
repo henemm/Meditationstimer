@@ -38,6 +38,14 @@ struct TrackerTab: View {
     // NoAlc feedback state
     @State private var loggedLevel: TrackerLevel? = nil
 
+    // MARK: - Computed Properties
+
+    /// Calculates streak result for NoAlc tracker (includes available rewards/jokers)
+    private var noAlcStreakResult: StreakResult {
+        guard let tracker = noAlcTracker else { return .zero }
+        return TrackerManager.shared.calculateStreakResult(for: tracker)
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -128,6 +136,20 @@ struct TrackerTab: View {
         .accessibilityIdentifier(level.icon)
     }
 
+    /// Displays available rewards/jokers as drop icons (0-3)
+    private func rewardsView(for count: Int) -> some View {
+        HStack(spacing: 2) {
+            // Always show at least 1 icon (empty if count is 0)
+            ForEach(0..<max(1, count), id: \.self) { i in
+                Image(systemName: count > 0 && i < count ? "drop.fill" : "drop")
+                    .foregroundColor(.green)
+                    .font(.caption)
+            }
+        }
+        .accessibilityIdentifier("noAlcRewards")
+        .accessibilityLabel("\(count) Joker verfügbar")
+    }
+
     // MARK: - Trackers Section
 
     private var trackersSection: some View {
@@ -167,6 +189,8 @@ struct TrackerTab: View {
                             .font(.system(size: 18))
                             .foregroundStyle(.secondary)
                     }
+                    // Joker/Reward icons (0-3 drops)
+                    rewardsView(for: noAlcStreakResult.availableRewards)
                 }
 
                 // Quick-Log Buttons (using TrackerLevel from Generic Tracker System)

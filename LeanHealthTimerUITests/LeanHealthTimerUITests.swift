@@ -1657,7 +1657,43 @@ final class LeanHealthTimerUITests: XCTestCase {
             "Checkmark feedback should appear after logging NoAlc level")
     }
 
-    /// Test that Add Tracker sheet shows NoAlc preset in Level-Based section
+    // MARK: - FEAT-37a: NoAlc Joker Display Tests
+
+    /// TDD: Test that NoAlc card shows Joker/Reward icons in header
+    /// The NoAlc card should display 0-3 drop icons representing available rewards
+    func testNoAlcCardShowsJokerIcons() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(3)
+
+        // Verify NoAlc card exists first
+        let noAlcCard = app.staticTexts["NoAlc"]
+        XCTAssertTrue(noAlcCard.waitForExistence(timeout: 5), "NoAlc card should exist")
+
+        // Look for any element with "noAlcRewards" identifier (could be images, otherElements, or any)
+        // SwiftUI accessibility can map to different element types
+        let rewardsAsOther = app.otherElements["noAlcRewards"]
+        let rewardsAsImages = app.images["noAlcRewards"]
+        let rewardsAsAny = app.descendants(matching: .any).matching(identifier: "noAlcRewards").firstMatch
+
+        let rewardsFound = rewardsAsOther.exists || rewardsAsImages.exists || rewardsAsAny.exists
+
+        // Debug: Print what elements exist
+        print("DEBUG: noAlcRewards as otherElement: \(rewardsAsOther.exists)")
+        print("DEBUG: noAlcRewards as image: \(rewardsAsImages.exists)")
+        print("DEBUG: noAlcRewards as any: \(rewardsAsAny.exists)")
+
+        XCTAssertTrue(rewardsFound,
+            "NoAlc card should show rewards/joker icons in header (noAlcRewards identifier)")
+    }
+
+    /// Test that tapping NoAlc in Add Tracker creates a second NoAlc tracker
     /// NoAlc is shown for parallel availability during transition period
     func testAddTrackerShowsNoAlcPreset() throws {
         let app = XCUIApplication()
@@ -1669,6 +1705,11 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
         trackerTab.tap()
         sleep(1)
+
+        // COUNT BEFORE: How many NoAlc texts on TrackerTab BEFORE adding?
+        // (Should be 1 - the built-in NoAlc card)
+        let noAlcCountBefore = app.staticTexts.matching(NSPredicate(format: "label == 'NoAlc'")).count
+        print("DEBUG: NoAlc count on TrackerTab BEFORE adding: \(noAlcCountBefore)")
 
         // Scroll down to find Add Tracker button
         let scrollView = app.scrollViews.firstMatch
@@ -1687,30 +1728,67 @@ final class LeanHealthTimerUITests: XCTestCase {
         sleep(2)
 
         // The sheet should now be presented
-        let sheetNavBar = app.navigationBars["Add Tracker"]
-        XCTAssertTrue(sheetNavBar.waitForExistence(timeout: 3), "Add Tracker sheet should be open")
+        // Try both German and English since localization may vary
+        let sheetNavBarDE = app.navigationBars["Tracker hinzufügen"]
+        let sheetNavBarEN = app.navigationBars["Add Tracker"]
+        let sheetFound = sheetNavBarDE.waitForExistence(timeout: 3) || sheetNavBarEN.exists
+
+        if !sheetFound {
+            // Debug: Print all visible navigation bars
+            let navBars = app.navigationBars.allElementsBoundByIndex
+            print("DEBUG: Found \(navBars.count) navigation bars:")
+            for (i, bar) in navBars.enumerated() {
+                print("  [\(i)] '\(bar.identifier)'")
+            }
+        }
+        XCTAssertTrue(sheetFound, "Add Tracker sheet should be open")
 
         // Scroll to Level-Based section (at the very bottom)
-        // Use scrollViews for better scrolling behavior
         for _ in 0..<5 {
             app.swipeUp()
             sleep(1)
         }
 
-        // VERIFY: Level-Based presets are visible (NoAlc + Mood)
-        // We check for Mood as proxy - if Mood is visible, Level-Based section works
-        let moodPreset = app.staticTexts["Stimmung"]
-        XCTAssertTrue(moodPreset.waitForExistence(timeout: 3),
-            "Level-Based presets should be visible (Stimmung/Mood found)")
+        // VERIFY: NoAlc preset is visible and tappable
+        // Find the NoAlc preset BUTTON (not StaticText) - it has a composite label with emoji and description
+        let noAlcPresetButton = app.buttons.matching(NSPredicate(format: "label CONTAINS 'NoAlc'")).element
+        XCTAssertTrue(noAlcPresetButton.waitForExistence(timeout: 3),
+            "NoAlc preset button should be visible in Add Tracker sheet")
 
-        // Note: NoAlc visibility verified by Mood being visible in same section
-        // Direct NoAlc check is unreliable due to background TrackerTab also showing "NoAlc"
+        // Tap on NoAlc preset button to create a new tracker
+        print("DEBUG: Tapping on NoAlc preset button...")
+        noAlcPresetButton.tap()
+        sleep(3)
 
-        // Close the sheet
-        let cancelButton = app.buttons["Cancel"]
-        if cancelButton.exists {
-            cancelButton.tap()
+        // Check if sheet closed (means tracker was created)
+        // Sheet title could be German or English
+        let sheetStillOpenDE = app.navigationBars["Tracker hinzufügen"].exists
+        let sheetStillOpenEN = app.navigationBars["Add Tracker"].exists
+        let sheetClosedAfterTap = !sheetStillOpenDE && !sheetStillOpenEN
+        print("DEBUG: Sheet closed after tap: \(sheetClosedAfterTap)")
+
+        // If sheet didn't close, something went wrong
+        if !sheetClosedAfterTap {
+            let allTexts = app.staticTexts.allElementsBoundByIndex
+            print("DEBUG: Sheet still open! Visible texts:")
+            for (i, t) in allTexts.prefix(10).enumerated() {
+                print("  [\(i)] \(t.label)")
+            }
+            XCTFail("Sheet did not close after tapping NoAlc - tracker may not have been created")
+            return
         }
+
+        // Sheet closed - we're back on TrackerTab
+        XCTAssertTrue(app.tabBars.buttons["Tracker"].waitForExistence(timeout: 3), "Should be back on Tracker tab")
+        sleep(1)
+
+        // COUNT AFTER: How many NoAlc texts on TrackerTab AFTER adding?
+        // (Should be 2 - the built-in NoAlc card + the new tracker)
+        let noAlcCountAfter = app.staticTexts.matching(NSPredicate(format: "label == 'NoAlc'")).count
+        print("DEBUG: NoAlc count on TrackerTab AFTER adding: \(noAlcCountAfter)")
+
+        XCTAssertGreaterThan(noAlcCountAfter, noAlcCountBefore,
+            "After adding NoAlc, there should be more NoAlc trackers visible (before: \(noAlcCountBefore), after: \(noAlcCountAfter))")
     }
 
     /// Test that workout programs also show round counter

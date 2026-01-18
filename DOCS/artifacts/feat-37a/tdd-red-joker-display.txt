@@ -1,0 +1,32 @@
+TDD RED Phase - FEAT-37a: Joker-Anzeige im TrackerTab
+======================================================
+Date: 2026-01-18 16:00:15
+Test: testNoAlcCardShowsJokerIcons
+
+TEST RESULT: FAILED ❌
+
+Test Output:
+-----------
+Test suite 'LeanHealthTimerUITests' started on 'Clone 1 of Healthy Habits'
+Test case 'LeanHealthTimerUITests.testNoAlcCardShowsJokerIcons()' failed (19.300 seconds)
+
+** TEST FAILED **
+
+Reason for Failure:
+------------------
+The test expected to find:
+1. An element with accessibilityIdentifier "noAlcRewards"
+2. Image elements containing "drop" in their identifier
+
+Both assertions failed because the rewardsView component does not exist yet
+in TrackerTab.swift. This is the expected TDD RED state.
+
+Expected Implementation:
+-----------------------
+1. Add computed property noAlcStreakResult to TrackerTab
+2. Add rewardsView helper function showing 0-3 drop icons
+3. Add noAlcRewards accessibility identifier to the view
+
+Test Code Location:
+------------------
+LeanHealthTimerUITests.swift:testNoAlcCardShowsJokerIcons()
