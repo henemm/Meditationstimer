@@ -1,5 +1,67 @@
 # UI Testing Standards
 
+## XCUITest Standards (Automated)
+
+### Simulator-Konfiguration
+
+**IMMER verwenden:**
+```bash
+xcodebuild test ... -parallel-testing-enabled NO
+```
+
+Ohne `-parallel-testing-enabled NO` erstellt xcodebuild Simulator-Klone die oft fehlschlagen mit "Simulator device failed to launch".
+
+### Scrolling in UI Tests
+
+**NICHT verwenden:**
+```swift
+sheetList.swipeUp()  // Unzuverlässig
+```
+
+**STATTDESSEN verwenden:**
+```swift
+app.swipeUp()  // Zuverlässiger - scrollt den gesamten Bildschirm
+```
+
+Bei langen Listen mehrfach scrollen:
+```swift
+for _ in 0..<5 {
+    app.swipeUp()
+    sleep(1)
+}
+```
+
+### Sprach-Einstellungen
+
+Die App läuft standardmäßig auf **Deutsch**. Tests müssen passende Locale setzen:
+```swift
+app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+```
+
+Dann nach deutschen Texten suchen:
+```swift
+app.staticTexts["Stimmung"]  // NICHT "Mood"
+```
+
+### Debugging fehlschlagender Tests
+
+**Schritt 1:** Debug-Output hinzufügen
+```swift
+let allTexts = app.staticTexts.allElementsBoundByIndex
+print("DEBUG: Found \(allTexts.count) staticTexts:")
+for (index, text) in allTexts.prefix(30).enumerated() {
+    print("  [\(index)] '\(text.label)'")
+}
+```
+
+**Schritt 2:** Test-Logs lesen
+```bash
+RESULT_PATH=$(ls -dt ~/Library/Developer/Xcode/DerivedData/*/Logs/Test/*.xcresult | head -1)
+xcrun xcresulttool get --legacy --path "$RESULT_PATH" --format json | grep -i "XCTAssert"
+```
+
+---
+
 ## Manual UI Test Protocol
 
 Henning tests on real device (iPhone/Apple Watch). Follow these rules:
