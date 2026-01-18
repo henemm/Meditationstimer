@@ -62,7 +62,13 @@ struct TrackerTab: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showingNoAlcLog) {
-                NoAlcLogSheet()
+                // Show history using Generic Tracker System if tracker exists
+                if let tracker = noAlcTracker {
+                    TrackerHistorySheet(tracker: tracker)
+                } else {
+                    // Fallback to legacy NoAlcLogSheet during migration
+                    NoAlcLogSheet()
+                }
             }
             .sheet(isPresented: $showingAddTracker) {
                 AddTrackerSheet()
