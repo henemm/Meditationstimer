@@ -1,0 +1,12 @@
+=== FEAT-38 TDD RED Test Output ===
+Date: Mo. 19 Jan. 2026 12:22:20 CET
+
+Test: testLevelTrackerShowsInlineButtons
+Result: FAILED (as expected for TDD RED)
+
+Reason: TrackerRow shows 'Log' button instead of inline emoji buttons (💧 ✨ 💥)
+
+Expected: After creating second NoAlc via preset, should have 2+ 💧 buttons
+Actual: Only 1 💧 button found (in hardcoded noAlcCard)
+
+Fix required: Implement inline level buttons in TrackerRow.swift

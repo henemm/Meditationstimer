@@ -25,6 +25,9 @@ struct TrackerRow: View {
     @State private var showingGratitudeSheet = false
     @State private var showingLevelSheet = false
 
+    // FEAT-38: Inline level button feedback state
+    @State private var loggedLevel: TrackerLevel? = nil
+
     // Check if this is a special awareness preset
     private var isSpecialAwareness: Bool {
         tracker.trackingMode == .awareness &&
@@ -205,19 +208,79 @@ struct TrackerRow: View {
         }
     }
 
+    // MARK: - FEAT-38: Inline Level Buttons
+
+    /// Inline level buttons for direct quick-logging (like noAlcCard)
     @ViewBuilder
     private var levelQuickLogButton: some View {
-        // Open level selection sheet
-        Button(action: { showingLevelSheet = true }) {
-            Text(NSLocalizedString("Log", comment: "Level tracker log button"))
-                .font(.subheadline.bold())
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(.blue)
-                .foregroundStyle(.white)
-                .cornerRadius(16)
+        HStack(spacing: 6) {
+            ForEach(trackerLevels) { level in
+                inlineLevelButton(level)
+            }
+        }
+    }
+
+    /// Single inline level button with feedback
+    private func inlineLevelButton(_ level: TrackerLevel) -> some View {
+        Button(action: {
+            Task { await logLevel(level) }
+        }) {
+            Text(level.icon)
+                .font(.system(size: levelIconSize))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .background(levelColor(for: level).opacity(0.2))
+                .cornerRadius(10)
+                .overlay {
+                    if loggedLevel?.id == level.id {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.green)
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
         }
         .buttonStyle(.plain)
+        .sensoryFeedback(.success, trigger: loggedLevel?.id == level.id)
+        .accessibilityLabel(level.localizedLabel)
+        .accessibilityIdentifier(level.icon)
+    }
+
+    /// Icon size based on number of levels (smaller for 4-5 levels)
+    private var levelIconSize: CGFloat {
+        trackerLevels.count > 3 ? 24 : 28
+    }
+
+    /// Color based on streak effect
+    private func levelColor(for level: TrackerLevel) -> Color {
+        switch level.streakEffect {
+        case .success: return .green
+        case .needsGrace: return .yellow
+        case .breaksStreak: return .red
+        }
+    }
+
+    /// Log a level with visual feedback
+    @MainActor
+    private func logLevel(_ level: TrackerLevel) async {
+        // Log entry
+        _ = manager.logEntry(
+            for: tracker,
+            value: level.id,
+            note: "\(level.icon) \(level.localizedLabel)",
+            in: modelContext
+        )
+
+        // Visual feedback
+        withAnimation(.spring(duration: 0.3)) {
+            loggedLevel = level
+        }
+
+        // Reset after 1.5 seconds
+        try? await Task.sleep(for: .seconds(1.5))
+        withAnimation(.easeOut(duration: 0.2)) {
+            loggedLevel = nil
+        }
     }
 
     @ViewBuilder

@@ -1,0 +1,45 @@
+# Hook Configuration for Meditationstimer iOS Project
+# This file configures the enforcement hooks
+
+pre_commit:
+  enabled: true
+  # iOS/Swift test command
+  test_command: ["xcodebuild", "test", "-project", "Meditationstimer.xcodeproj", "-scheme", "Lean Health Timer", "-destination", "platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00", "-only-testing:LeanHealthTimerUITests"]
+  timeout: 300
+  allow_amend: true
+  ui_patterns:
+    - "Tabs/"
+    - "Tracker/"
+    - "Views/"
+    - "iOS/"
+    - ".swift"
+  screenshot_reminder: true
+
+ui_test_gate:
+  enabled: true
+  ui_patterns:
+    - "Tabs/"
+    - "Views/"
+    - "Tracker/"
+    - "iOS/"
+  ui_test_patterns:
+    - "UITests/"
+    - "UITests.swift"
+  exemptions:
+    - "Services/"
+    - "Models/"
+    - ".md"
+    - "Tests/"
+
+# NEW: UI Test Enforcement - forces UI tests to PASS before completion
+ui_test_enforcement:
+  enabled: true
+  # Simulator ID
+  simulator_id: "EEF5B0DE-6B96-47CE-AA57-2EE024371F00"
+  # Project settings
+  project: "Meditationstimer.xcodeproj"
+  scheme: "Lean Health Timer"
+  # Test timeout in seconds
+  timeout: 300
+  # State file to track test results
+  state_file: ".claude/ui_test_state.json"

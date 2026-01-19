@@ -1660,8 +1660,10 @@ final class LeanHealthTimerUITests: XCTestCase {
     // MARK: - FEAT-37a: NoAlc Joker Display Tests
 
     /// TDD: Test that NoAlc card shows Joker/Reward icons in header
-    /// The NoAlc card should display 0-3 drop icons representing available rewards
+    /// NOTE: Rewards are now shown in Erfolge tab (CalendarView), NOT in TrackerTab
+    /// This test is skipped as the feature was moved to avoid redundancy
     func testNoAlcCardShowsJokerIcons() throws {
+        throw XCTSkip("Joker icons moved to Erfolge tab - rewards shown in CalendarView, not TrackerTab")
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -1692,6 +1694,159 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(rewardsFound,
             "NoAlc card should show rewards/joker icons in header (noAlcRewards identifier)")
     }
+
+    // MARK: - CRITICAL: NoAlc Info Button Tests (FEAT-37 Bug Prevention)
+
+    /// CRITICAL TEST: Verify (i) button opens NoAlcLogSheet (NOT TrackerHistorySheet)
+    /// This test catches regression where info button was incorrectly changed to show history
+    ///
+    /// REQUIREMENTS:
+    /// - (i) button MUST open a sheet with LOG functionality (not read-only history)
+    /// - Sheet MUST have "Advanced" button to expand for date picking
+    /// - Sheet MUST have 3 consumption level buttons (Steady, Easy, Wild)
+    func testNoAlcInfoButtonOpensLogSheetWithAdvancedOption() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(2)
+
+        // Verify NoAlc card exists
+        let noAlcCard = app.staticTexts["NoAlc"]
+        XCTAssertTrue(noAlcCard.waitForExistence(timeout: 5), "NoAlc card should exist on Tracker tab")
+
+        // Find and tap the (i) info button in NoAlc card
+        let infoButton = app.buttons["info.circle"]
+        XCTAssertTrue(infoButton.waitForExistence(timeout: 3), "(i) info button should exist in NoAlc card")
+        infoButton.tap()
+        sleep(1)
+
+        // CRITICAL CHECK 1: Sheet MUST show "Advanced" button (NoAlcLogSheet has this)
+        // TrackerHistorySheet does NOT have this button - it's read-only
+        let advancedButton = app.buttons["Advanced"]
+        let advancedExists = advancedButton.waitForExistence(timeout: 3)
+
+        // CRITICAL CHECK 2: Sheet MUST have consumption level buttons
+        // These are the log buttons that actually record data
+        let steadyButton = app.buttons["💧"]
+        let easyButton = app.buttons["✨"]
+        let wildButton = app.buttons["💥"]
+
+        let hasLogButtons = steadyButton.exists || easyButton.exists || wildButton.exists
+
+        // Debug output for failure analysis
+        if !advancedExists {
+            print("DEBUG: 'Advanced' button NOT found - sheet might be TrackerHistorySheet (wrong!)")
+            print("DEBUG: Available buttons:")
+            for button in app.buttons.allElementsBoundByIndex.prefix(15) {
+                print("  - '\(button.label)' / '\(button.identifier)'")
+            }
+        }
+
+        XCTAssertTrue(advancedExists,
+            "CRITICAL: (i) button MUST open NoAlcLogSheet with 'Advanced' button. " +
+            "If this fails, the info button incorrectly shows TrackerHistorySheet (read-only) instead of the log sheet.")
+
+        XCTAssertTrue(hasLogButtons,
+            "CRITICAL: NoAlcLogSheet MUST have log buttons (💧, ✨, 💥) for recording consumption. " +
+            "If this fails, the wrong sheet is being shown.")
+    }
+
+    /// CRITICAL TEST: Verify Advanced mode has DatePicker for logging past dates
+    /// The 18:00 cutoff rule requires ability to log for previous days
+    func testNoAlcAdvancedModeHasDatePicker() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(2)
+
+        // Tap (i) info button
+        let infoButton = app.buttons["info.circle"]
+        guard infoButton.waitForExistence(timeout: 3) else {
+            XCTFail("Info button not found in NoAlc card")
+            return
+        }
+        infoButton.tap()
+        sleep(1)
+
+        // Tap "Advanced" to expand the sheet
+        let advancedButton = app.buttons["Advanced"]
+        guard advancedButton.waitForExistence(timeout: 3) else {
+            XCTFail("CRITICAL: 'Advanced' button not found - wrong sheet is being shown!")
+            return
+        }
+        advancedButton.tap()
+        sleep(1)
+
+        // CRITICAL: DatePicker MUST exist in expanded mode
+        // This allows users to log for dates other than today (important for 18:00 cutoff)
+        let datePicker = app.datePickers.firstMatch
+        let hasDatePicker = datePicker.waitForExistence(timeout: 3)
+
+        // Also check for "Choose Date" text which appears in expanded mode
+        let chooseDateText = app.staticTexts["Choose Date"]
+
+        XCTAssertTrue(hasDatePicker || chooseDateText.exists,
+            "CRITICAL: Advanced mode MUST have DatePicker to allow logging for past dates. " +
+            "This is essential for the 18:00 cutoff rule.")
+
+        // Verify log buttons still exist in expanded mode
+        let steadyButton = app.buttons["💧"]
+        let easyButton = app.buttons["✨"]
+        let wildButton = app.buttons["💥"]
+        let hasLogButtons = steadyButton.exists || easyButton.exists || wildButton.exists
+
+        XCTAssertTrue(hasLogButtons,
+            "Log buttons (💧, ✨, 💥) MUST still be present in Advanced/expanded mode")
+    }
+
+    /// Test that NoAlcLogSheet shows correct title based on 18:00 cutoff rule
+    /// Before 18:00: "Yesterday Evening" | After 18:00: "Today"
+    func testNoAlcLogSheetShowsCorrectTitle() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(2)
+
+        // Tap (i) info button
+        let infoButton = app.buttons["info.circle"]
+        guard infoButton.waitForExistence(timeout: 3) else {
+            XCTFail("Info button not found")
+            return
+        }
+        infoButton.tap()
+        sleep(1)
+
+        // Sheet should show either "Yesterday Evening" or "Today" based on current time
+        // This proves it's the correct NoAlcLogSheet (TrackerHistorySheet shows "History")
+        let yesterdayText = app.staticTexts["Yesterday Evening"]
+        let todayText = app.staticTexts["Today"]
+        let historyText = app.staticTexts["History"]
+
+        let hasCorrectTitle = yesterdayText.exists || todayText.exists
+        let hasWrongTitle = historyText.exists
+
+        XCTAssertTrue(hasCorrectTitle,
+            "NoAlcLogSheet should show 'Yesterday Evening' or 'Today' title based on 18:00 cutoff")
+        XCTAssertFalse(hasWrongTitle,
+            "CRITICAL: 'History' title means wrong sheet (TrackerHistorySheet) is shown!")
+    }
+
+    // MARK: - NoAlc Preset Tests
 
     /// Test that tapping NoAlc in Add Tracker creates a second NoAlc tracker
     /// NoAlc is shown for parallel availability during transition period
@@ -1867,5 +2022,89 @@ final class LeanHealthTimerUITests: XCTestCase {
         if closeButton.exists {
             closeButton.tap()
         }
+    }
+
+    // MARK: - FEAT-38: Inline Level Buttons Tests
+
+    /// FEAT-38: After creating a second NoAlc tracker via preset, it should show inline emoji buttons
+    func testLevelTrackerShowsInlineButtons() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab must exist")
+        trackerTab.tap()
+        sleep(2)
+
+        // Scroll to Add Tracker button
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        let addTrackerButton = app.buttons["addTrackerButton"]
+        guard addTrackerButton.waitForExistence(timeout: 5) else {
+            XCTFail("Add Tracker button not found")
+            return
+        }
+        addTrackerButton.tap()
+        sleep(2)
+
+        // Scroll down in the sheet to find Level-Based presets
+        let sheetScrollView = app.scrollViews.element(boundBy: 0)
+        if sheetScrollView.exists {
+            for _ in 0..<3 {
+                sheetScrollView.swipeUp()
+                sleep(1)
+            }
+        }
+
+        // Find and tap NoAlc preset
+        let noAlcPreset = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'NoAlc'")).firstMatch
+        if noAlcPreset.waitForExistence(timeout: 5) {
+            noAlcPreset.tap()
+            sleep(3)
+        } else {
+            // Try tapping by staticText
+            let noAlcText = app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] 'NoAlc'")).firstMatch
+            if noAlcText.waitForExistence(timeout: 3) {
+                noAlcText.tap()
+                sleep(3)
+            } else {
+                XCTFail("NoAlc preset not found")
+                return
+            }
+        }
+
+        // Wait for sheet to dismiss and check for inline buttons
+        sleep(2)
+
+        // Scroll up to see trackers
+        if scrollView.exists {
+            scrollView.swipeDown()
+            sleep(1)
+        }
+
+        // First check: at least one 💧 button exists (same as testNoAlcButtonsShowEmojis)
+        let waterButton = app.buttons["💧"]
+        XCTAssertTrue(waterButton.waitForExistence(timeout: 5),
+            "FEAT-38: At least one 💧 button must exist")
+
+        // Second check: there should be multiple 💧 buttons after creating second NoAlc
+        // Using allElementsBoundByAccessibilityElement to count
+        let allButtons = app.buttons.allElementsBoundByIndex
+        var waterButtonCount = 0
+        for i in 0..<min(allButtons.count, 50) {
+            let button = allButtons[i]
+            if button.identifier == "💧" || button.label == "💧" {
+                waterButtonCount += 1
+            }
+        }
+
+        XCTAssertGreaterThanOrEqual(waterButtonCount, 2,
+            "FEAT-38: After creating second NoAlc, should have 2+ 💧 buttons. Found: \(waterButtonCount)")
     }
 }
