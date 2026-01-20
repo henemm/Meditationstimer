@@ -103,10 +103,48 @@ struct TrackerEditorSheet: View {
                 levelEditorSections
             }
             Group {
+                integrationSection  // FEAT-39 D1/D2
                 reminderSection
                 infoSection
                 deleteSection
             }
+        }
+    }
+
+    // MARK: - Integration Section (FEAT-39 D1/D2)
+
+    private var integrationSection: some View {
+        Section {
+            // D1: HealthKit Toggle (only show if tracker has HealthKit type)
+            if tracker.healthKitType != nil {
+                Toggle(isOn: $tracker.saveToHealthKit) {
+                    HStack {
+                        Image(systemName: "heart.fill")
+                            .foregroundStyle(.red)
+                        Text(NSLocalizedString("Sync to Health", comment: "HealthKit sync toggle"))
+                    }
+                }
+            }
+
+            // D2: Widget Toggle
+            Toggle(isOn: $tracker.showInWidget) {
+                HStack {
+                    Image(systemName: "rectangle.3.group")
+                        .foregroundStyle(.blue)
+                    Text(NSLocalizedString("Show in Widget", comment: "Widget toggle"))
+                }
+            }
+
+            // D2: Calendar Toggle
+            Toggle(isOn: $tracker.showInCalendar) {
+                HStack {
+                    Image(systemName: "calendar")
+                        .foregroundStyle(.orange)
+                    Text(NSLocalizedString("Show in Calendar", comment: "Calendar toggle"))
+                }
+            }
+        } header: {
+            Text(NSLocalizedString("Integrations", comment: "Integrations section header"))
         }
     }
 
