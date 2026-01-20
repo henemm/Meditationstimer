@@ -108,6 +108,12 @@ struct TrackerTab: View {
                 if let tracker = noAlcTracker {
                     tracker.logLevel(level, context: modelContext)
                     try? modelContext.save()
+
+                    // FEAT-39 B1: Cancel matching tracker reminders (reverse reminder)
+                    SmartReminderEngine.shared.cancelMatchingTrackerReminders(
+                        for: tracker.id,
+                        completedAt: Date()
+                    )
                 }
 
                 // Also log to HealthKit (preserves existing behavior)

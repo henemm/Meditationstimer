@@ -291,6 +291,12 @@ struct TrackerRow: View {
             in: modelContext
         )
 
+        // FEAT-39 B1: Cancel matching tracker reminders (reverse reminder)
+        SmartReminderEngine.shared.cancelMatchingTrackerReminders(
+            for: tracker.id,
+            completedAt: Date()
+        )
+
         // Visual feedback
         withAnimation(.spring(duration: 0.3)) {
             loggedLevel = level
