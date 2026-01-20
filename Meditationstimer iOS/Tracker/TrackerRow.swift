@@ -175,14 +175,33 @@ struct TrackerRow: View {
 
     // MARK: - Streak Badge
 
+    /// Calculate streak using Generic Tracker System for level-based trackers
+    private var trackerStreakResult: StreakResult {
+        guard isLevelBased else {
+            return .zero
+        }
+        let calculator = StreakCalculator()
+        return calculator.calculate(
+            logs: tracker.logs,
+            valueType: tracker.effectiveValueType,
+            successCondition: tracker.effectiveSuccessCondition,
+            dayAssignment: tracker.effectiveDayAssignment,
+            rewardConfig: tracker.rewardConfig
+        )
+    }
+
     @ViewBuilder
     private var streakBadge: some View {
         // Don't show badge for avoidance (streak shown in status)
         if tracker.trackingMode != .avoidance {
-            let streak = manager.streak(for: tracker, in: modelContext)
-            if streak > 0 {
+            // FEAT-39 A2: Use Generic Tracker System for level-based trackers
+            let streak = isLevelBased ? trackerStreakResult.currentStreak : manager.streak(for: tracker, in: modelContext)
+
+            // Level-based trackers always show badge (consistent with NoAlc card)
+            // Other trackers only show badge when streak > 0
+            if isLevelBased || streak > 0 {
                 HStack(spacing: 2) {
-                    Image(systemName: "flame.fill")
+                    Text("🔥")
                         .font(.caption2)
                     Text("\(streak)")
                         .font(.caption.bold())
@@ -192,6 +211,7 @@ struct TrackerRow: View {
                 .padding(.vertical, 2)
                 .background(.orange.opacity(0.15))
                 .cornerRadius(8)
+                .accessibilityIdentifier("trackerStreak")
             }
         }
     }
