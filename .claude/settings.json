@@ -24,6 +24,12 @@
           },
           {
             "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xcuitest_gate.py\"",
+            "timeout": 10,
+            "description": "Priority 30: XCUITest Gate (BLOCKT UI-Code ohne Test)"
+          },
+          {
+            "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/tdd_enforcement.py\"",
             "timeout": 10,
             "description": "Priority 35: TDD Enforcement"
@@ -47,15 +53,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/ui_test_gate.py\"",
-            "timeout": 5,
-            "description": "Priority 1: UI Test Gate (FORCE UI testing)"
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre_commit_gate.py\"",
-            "timeout": 10,
-            "description": "Priority 2: Pre-Commit Gate (tests must pass)"
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xcuitest_completion.py\"",
+            "timeout": 650,
+            "description": "XCUITest Completion (ERZWINGT Test-Durchführung + Bestehen)"
           }
         ]
       }
