@@ -24,9 +24,9 @@
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xcuitest_gate.py\"",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xcuitest_git_gate.py\"",
             "timeout": 10,
-            "description": "Priority 30: XCUITest Gate (BLOCKT UI-Code ohne Test)"
+            "description": "Priority 30: XCUITest Git Gate (GIT-BASIERT - NICHT UMGEHBAR!)"
           },
           {
             "type": "command",

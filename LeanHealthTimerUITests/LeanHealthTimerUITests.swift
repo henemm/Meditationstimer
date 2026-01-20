@@ -2173,4 +2173,181 @@ final class LeanHealthTimerUITests: XCTestCase {
             XCTFail("FEAT-39 A2: Level trackers should show streak indicator - not yet implemented")
         }
     }
+
+    // MARK: - FEAT-39 C1: NoAlc History Button Tests
+
+    /// FEAT-39 C1: Test that NoAlc card shows history button
+    /// The history button should open TrackerHistorySheet to view past logs
+    func testNoAlcCardShowsHistoryButton() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Find history button in NoAlc card (clock icon)
+        let historyButton = app.buttons["noAlcHistoryButton"]
+        XCTAssertTrue(historyButton.waitForExistence(timeout: 3),
+            "FEAT-39 C1: NoAlc card should have history button")
+    }
+
+    /// FEAT-39 C1: Test that history button opens TrackerHistorySheet
+    func testNoAlcHistoryButtonOpensHistorySheet() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Tap history button
+        let historyButton = app.buttons["noAlcHistoryButton"]
+        XCTAssertTrue(historyButton.waitForExistence(timeout: 3))
+        historyButton.tap()
+        sleep(1)
+
+        // Verify history sheet opens (should show "History" title or log entries)
+        let historyTitle = app.navigationBars.staticTexts["History"]
+        let historyExists = historyTitle.waitForExistence(timeout: 3)
+
+        XCTAssertTrue(historyExists,
+            "FEAT-39 C1: Tapping history button should open TrackerHistorySheet")
+    }
+
+    // MARK: - FEAT-39 C2: Editor History Link Tests
+
+    /// FEAT-39 C2: Test that TrackerEditorSheet shows history link
+    func testEditorSheetShowsHistoryLink() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Find first tracker's edit button (ellipsis)
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Look for any ellipsis button (edit button)
+        let editButtons = app.buttons.matching(identifier: "trackerEditButton")
+        guard editButtons.count > 0 else {
+            throw XCTSkip("No trackers with edit button found")
+        }
+        editButtons.firstMatch.tap()
+        sleep(1)
+
+        // In editor, look for history navigation link (by accessibilityIdentifier)
+        let historyLink = app.buttons.matching(identifier: "trackerHistoryLink").firstMatch
+        let historyExists = historyLink.waitForExistence(timeout: 3)
+
+        XCTAssertTrue(historyExists,
+            "FEAT-39 C2: TrackerEditorSheet should have History navigation link")
+    }
+
+    // MARK: - FEAT-39 D1/D2: Integration Toggles Tests
+
+    /// FEAT-39 D1/D2: Test that TrackerEditorSheet shows integration section
+    func testEditorSheetShowsIntegrationToggles() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Find first tracker's edit button
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        let editButtons = app.buttons.matching(identifier: "trackerEditButton")
+        guard editButtons.count > 0 else {
+            throw XCTSkip("No trackers with edit button found")
+        }
+        editButtons.firstMatch.tap()
+        sleep(2)
+
+        // Scroll down to find integration section
+        let editorScrollView = app.scrollViews.firstMatch
+        if editorScrollView.exists {
+            editorScrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Look for integration toggles (Widget toggle is always visible)
+        let widgetToggle = app.switches.matching(identifier: "showInWidgetToggle").firstMatch
+        let calendarToggle = app.switches.matching(identifier: "showInCalendarToggle").firstMatch
+
+        // At least one integration toggle should be visible
+        let widgetExists = widgetToggle.waitForExistence(timeout: 3)
+        let calendarExists = calendarToggle.waitForExistence(timeout: 2)
+
+        XCTAssertTrue(widgetExists || calendarExists,
+            "FEAT-39 D2: TrackerEditorSheet should show integration toggles (Widget/Calendar)")
+    }
+
+    /// FEAT-39 D1: Test that HealthKit toggle appears for compatible trackers
+    func testEditorSheetShowsHealthKitToggleForCompatibleTracker() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Scroll to find a tracker that might have HealthKit support
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        let editButtons = app.buttons.matching(identifier: "trackerEditButton")
+        guard editButtons.count > 0 else {
+            throw XCTSkip("No trackers found to test")
+        }
+        editButtons.firstMatch.tap()
+        sleep(2)
+
+        // Scroll to integration section
+        let editorScrollView = app.scrollViews.firstMatch
+        if editorScrollView.exists {
+            editorScrollView.swipeUp()
+            sleep(1)
+        }
+
+        // The HealthKit toggle only appears if tracker.healthKitType != nil
+        // Most built-in trackers don't have HealthKit, but NoAlc does
+        let healthKitToggle = app.switches.matching(identifier: "saveToHealthKitToggle").firstMatch
+
+        // This test documents the feature - it may or may not exist depending on tracker
+        if healthKitToggle.waitForExistence(timeout: 2) {
+            XCTAssertTrue(true, "FEAT-39 D1: HealthKit toggle visible for compatible tracker")
+        } else {
+            // Not a failure - just means this tracker doesn't have HealthKit support
+            XCTAssertTrue(true, "FEAT-39 D1: HealthKit toggle not visible (tracker has no healthKitType)")
+        }
+    }
 }

@@ -45,6 +45,27 @@ WARNUNG: Es gibt oft parallele Implementierungen (z.B. WorkoutsView vs WorkoutTa
 
 ---
 
+## 🚨 SIMULATOR VORBEREITUNG - DRITTE PFLICHT
+
+**VOR JEDEM XCUITest-Lauf MUSS das Simulator-Skript ausgeführt werden!**
+
+```bash
+./scripts/prepare-simulator.sh
+```
+
+**WARUM:** Der Simulator gerät regelmäßig in einen defekten Zustand ("Failed to launch xctrunner").
+Ohne dieses Skript werden viele Tokens für wiederholte Debugging-Versuche verschwendet.
+
+**Das Skript:**
+1. Stoppt alle Simulatoren
+2. Startet CoreSimulator Service neu
+3. Bootet den Ziel-Simulator
+4. Wartet bis er bereit ist
+
+**NIEMALS** XCUITests starten ohne vorher dieses Skript auszuführen!
+
+---
+
 ## Overview
 
 **Healthy Habits Haven (HHHaven)** is a meditation and wellness app built with SwiftUI for iOS 18.5+, watchOS 9.0+, and Widget Extension.

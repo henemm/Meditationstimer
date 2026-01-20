@@ -124,6 +124,7 @@ struct TrackerEditorSheet: View {
                         Text(NSLocalizedString("Sync to Health", comment: "HealthKit sync toggle"))
                     }
                 }
+                .accessibilityIdentifier("saveToHealthKitToggle")
             }
 
             // D2: Widget Toggle
@@ -134,6 +135,7 @@ struct TrackerEditorSheet: View {
                     Text(NSLocalizedString("Show in Widget", comment: "Widget toggle"))
                 }
             }
+            .accessibilityIdentifier("showInWidgetToggle")
 
             // D2: Calendar Toggle
             Toggle(isOn: $tracker.showInCalendar) {
@@ -143,6 +145,7 @@ struct TrackerEditorSheet: View {
                     Text(NSLocalizedString("Show in Calendar", comment: "Calendar toggle"))
                 }
             }
+            .accessibilityIdentifier("showInCalendarToggle")
         } header: {
             Text(NSLocalizedString("Integrations", comment: "Integrations section header"))
         }

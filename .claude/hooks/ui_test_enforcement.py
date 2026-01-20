@@ -50,7 +50,7 @@ def get_config() -> dict:
         "simulator_id": enforcement.get("simulator_id", "EEF5B0DE-6B96-47CE-AA57-2EE024371F00"),
         "project": enforcement.get("project", "Meditationstimer.xcodeproj"),
         "scheme": enforcement.get("scheme", "Lean Health Timer"),
-        "timeout": enforcement.get("timeout", 300),
+        "timeout": enforcement.get("timeout", 600),  # 10 minutes for full UI test suite
         "state_file": enforcement.get("state_file", ".claude/ui_test_state.json"),
         "ui_patterns": [
             "Tabs/",
@@ -127,9 +127,36 @@ def has_ui_changes(staged_files: list[str], config: dict) -> bool:
     return False
 
 
+def prepare_simulator(config: dict) -> bool:
+    """Run prepare-simulator.sh script if it exists."""
+    project_root = get_project_root()
+    script_path = project_root / "scripts" / "prepare-simulator.sh"
+
+    if not script_path.exists():
+        return True  # No script, continue anyway
+
+    print("Preparing simulator...", file=sys.stderr)
+
+    try:
+        result = subprocess.run(
+            [str(script_path), config["simulator_id"]],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        return result.returncode == 0
+    except Exception as e:
+        print(f"Warning: Could not prepare simulator: {e}", file=sys.stderr)
+        return True  # Continue anyway
+
+
 def run_ui_tests(config: dict) -> tuple[bool, str]:
     """Run UI tests and return (success, output)."""
     project_root = get_project_root()
+
+    # CRITICAL: Prepare simulator first to avoid "Failed to launch" errors
+    prepare_simulator(config)
 
     cmd = [
         "xcodebuild", "test",
