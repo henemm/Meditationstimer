@@ -1,0 +1,26 @@
+TDD RED - FEAT-39 A1: testNoAlcCardShowsStreakAndJokerInfo
+==========================================================
+
+Datum: 2026-01-20 08:02:29
+Status: TEST FAILED (wie erwartet)
+
+Test Output:
+------------
+Test case 'LeanHealthTimerUITests.testNoAlcCardShowsStreakAndJokerInfo()' failed on 'Clone 1 of Healthy Habits - LeanHealthTimerUITests-Runner (14215)' (20.905 seconds)
+
+** TEST FAILED **
+
+Erwartetes Verhalten (noch nicht implementiert):
+------------------------------------------------
+- NoAlc-Card im TrackerTab soll Streak-Anzeige haben (🔥 X)
+- NoAlc-Card im TrackerTab soll Joker-Anzeige haben (🃏 X/3)
+- Accessibility Identifier: "noAlcStreak" und "noAlcJokers"
+
+Grund des Fehlers:
+------------------
+Die Elemente "noAlcStreak" und "noAlcJokers" existieren noch nicht
+in der TrackerTab.swift noAlcCard View.
+
+Nächster Schritt:
+-----------------
+TDD GREEN: Implementiere Streak/Joker-Anzeige in TrackerTab.swift

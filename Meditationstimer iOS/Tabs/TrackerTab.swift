@@ -17,17 +17,31 @@ struct TrackerTab: View {
     @EnvironmentObject var streakManager: StreakManager
     @Environment(\.modelContext) private var modelContext
 
-    // SwiftData Query for active trackers (excludes NoAlc which is shown separately)
-    @Query(filter: #Predicate<Tracker> { $0.isActive && $0.name != "NoAlc" }, sort: \Tracker.createdAt)
-    private var customTrackers: [Tracker]
+    // SwiftData Query for ALL active trackers (including NoAlc for parallel operation)
+    @Query(filter: #Predicate<Tracker> { $0.isActive }, sort: \Tracker.createdAt)
+    private var allTrackers: [Tracker]
 
-    // NoAlc tracker query (separate for special handling)
+    // NoAlc tracker query (separate for special handling of the FIRST/original NoAlc)
     @Query(filter: #Predicate<Tracker> { $0.name == "NoAlc" })
     private var noAlcTrackers: [Tracker]
 
-    /// The NoAlc tracker from SwiftData (created on first access if missing)
+    /// The FIRST NoAlc tracker (shown in dedicated noAlcCard)
     private var noAlcTracker: Tracker? {
         noAlcTrackers.first
+    }
+
+    /// Custom trackers = all trackers EXCEPT the first NoAlc (which has its own card)
+    /// This allows parallel operation: first NoAlc in noAlcCard, additional NoAlcs in list
+    private var customTrackers: [Tracker] {
+        let firstNoAlcId = noAlcTracker?.id
+        return allTrackers.filter { tracker in
+            // Exclude the FIRST NoAlc (it has its own card)
+            // But include any ADDITIONAL NoAlc trackers created via preset
+            if tracker.name == "NoAlc" && tracker.id == firstNoAlcId {
+                return false
+            }
+            return true
+        }
     }
 
     // Sheet states
@@ -40,10 +54,20 @@ struct TrackerTab: View {
 
     // MARK: - Computed Properties
 
-    /// Calculates streak result for NoAlc tracker (includes available rewards/jokers)
+    /// Calculate NoAlc streak and joker info using Generic Tracker System
     private var noAlcStreakResult: StreakResult {
-        guard let tracker = noAlcTracker else { return .zero }
-        return TrackerManager.shared.calculateStreakResult(for: tracker)
+        guard let tracker = noAlcTracker else {
+            return .zero
+        }
+
+        let calculator = StreakCalculator()
+        return calculator.calculate(
+            logs: tracker.logs,
+            valueType: tracker.effectiveValueType,
+            successCondition: tracker.effectiveSuccessCondition,
+            dayAssignment: tracker.effectiveDayAssignment,
+            rewardConfig: tracker.rewardConfig
+        )
     }
 
     var body: some View {
@@ -62,13 +86,11 @@ struct TrackerTab: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showingNoAlcLog) {
-                // Show history using Generic Tracker System if tracker exists
-                if let tracker = noAlcTracker {
-                    TrackerHistorySheet(tracker: tracker)
-                } else {
-                    // Fallback to legacy NoAlcLogSheet during migration
-                    NoAlcLogSheet()
-                }
+                // CRITICAL: NoAlcLogSheet provides LOG functionality with:
+                // - Quick log buttons (Steady, Easy, Wild)
+                // - "Advanced" button for date picker (18:00 cutoff rule)
+                // TrackerHistorySheet is read-only and should NOT be used here!
+                NoAlcLogSheet()
             }
             .sheet(isPresented: $showingAddTracker) {
                 AddTrackerSheet()
@@ -142,20 +164,6 @@ struct TrackerTab: View {
         .accessibilityIdentifier(level.icon)
     }
 
-    /// Displays available rewards/jokers as drop icons (0-3)
-    private func rewardsView(for count: Int) -> some View {
-        HStack(spacing: 2) {
-            // Always show at least 1 icon (empty if count is 0)
-            ForEach(0..<max(1, count), id: \.self) { i in
-                Image(systemName: count > 0 && i < count ? "drop.fill" : "drop")
-                    .foregroundColor(.green)
-                    .font(.caption)
-            }
-        }
-        .accessibilityIdentifier("noAlcRewards")
-        .accessibilityLabel("\(count) Joker verfügbar")
-    }
-
     // MARK: - Trackers Section
 
     private var trackersSection: some View {
@@ -188,15 +196,37 @@ struct TrackerTab: View {
                         .font(.system(size: 28))
                     Text("NoAlc")
                         .font(.headline)
+
+                    // FEAT-39 A1: Streak and Joker display
                     Spacer()
-                    // Info button for detailed view
+
+                    // Streak indicator (🔥)
+                    HStack(spacing: 2) {
+                        Text("🔥")
+                        Text("\(noAlcStreakResult.currentStreak)")
+                            .font(.subheadline.monospacedDigit())
+                    }
+                    .accessibilityIdentifier("noAlcStreak")
+
+                    // Joker indicator (🃏) - only show if reward system is active
+                    if noAlcTracker?.rewardConfig != nil {
+                        HStack(spacing: 2) {
+                            Text("🃏")
+                            Text("\(noAlcStreakResult.availableRewards)/\(noAlcTracker?.rewardConfig?.maxOnHand ?? 3)")
+                                .font(.subheadline.monospacedDigit())
+                        }
+                        .padding(.leading, 8)
+                        .accessibilityIdentifier("noAlcJokers")
+                    }
+
+                    Spacer()
+
+                    // Info button for detailed view (opens NoAlcLogSheet with Advanced mode)
                     Button(action: { showingNoAlcLog = true }) {
                         Image(systemName: "info.circle")
                             .font(.system(size: 18))
                             .foregroundStyle(.secondary)
                     }
-                    // Joker/Reward icons (0-3 drops)
-                    rewardsView(for: noAlcStreakResult.availableRewards)
                 }
 
                 // Quick-Log Buttons (using TrackerLevel from Generic Tracker System)

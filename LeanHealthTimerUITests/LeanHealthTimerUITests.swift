@@ -2107,4 +2107,70 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertGreaterThanOrEqual(waterButtonCount, 2,
             "FEAT-38: After creating second NoAlc, should have 2+ 💧 buttons. Found: \(waterButtonCount)")
     }
+
+    // MARK: - FEAT-39: Generic Tracker Completion Tests
+
+    /// FEAT-39 A1: Test that NoAlc card shows streak and joker info in header
+    /// The NoAlc card should display:
+    /// - 🔥 with streak count (e.g., "🔥 5")
+    /// - 🃏 with available jokers (e.g., "🃏 2/3")
+    func testNoAlcCardShowsStreakAndJokerInfo() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
+        trackerTab.tap()
+        sleep(1)
+
+        // Look for streak indicator (🔥) in the NoAlc card area
+        // The streak display should have accessibility identifier "noAlcStreak"
+        let streakIndicator = app.staticTexts["noAlcStreak"]
+        XCTAssertTrue(streakIndicator.waitForExistence(timeout: 3),
+            "FEAT-39 A1: NoAlc card must show streak indicator (🔥)")
+
+        // Look for joker indicator (🃏) in the NoAlc card area
+        // The joker display should have accessibility identifier "noAlcJokers"
+        let jokerIndicator = app.staticTexts["noAlcJokers"]
+        XCTAssertTrue(jokerIndicator.waitForExistence(timeout: 3),
+            "FEAT-39 A1: NoAlc card must show joker indicator (🃏)")
+    }
+
+    /// FEAT-39 A2: Test that level-based trackers (not just NoAlc) show streak info
+    /// Any tracker with .levels mode and rewardConfig should show streak/joker info
+    func testLevelTrackerShowsStreakInfo() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Mood tracker is also a level-based tracker (but without joker system)
+        // It should show streak but not jokers
+        // Look for any tracker row with streak indicator
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Check that Mood tracker (if exists) shows streak
+        // Mood tracker uses .levels mode, so it should have streak display
+        let moodStreakIndicator = app.staticTexts.matching(identifier: "trackerStreak").firstMatch
+
+        // Note: This test may need adjustment based on whether Mood tracker exists
+        // For now, we just verify the infrastructure works
+        if moodStreakIndicator.waitForExistence(timeout: 2) {
+            XCTAssertTrue(true, "FEAT-39 A2: Level tracker shows streak indicator")
+        } else {
+            // If no level tracker with streak exists yet, that's expected in TDD RED phase
+            XCTFail("FEAT-39 A2: Level trackers should show streak indicator - not yet implemented")
+        }
+    }
 }

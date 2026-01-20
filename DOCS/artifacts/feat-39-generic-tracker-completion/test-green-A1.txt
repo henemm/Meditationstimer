@@ -1,0 +1,26 @@
+TDD GREEN - FEAT-39 A1: testNoAlcCardShowsStreakAndJokerInfo
+============================================================
+
+Datum: 2026-01-20 08:17:32
+Status: TEST SUCCEEDED ✅
+
+Test Output:
+------------
+Test case 'LeanHealthTimerUITests.testNoAlcCardShowsStreakAndJokerInfo()' passed on 'Clone 1 of Healthy Habits - LeanHealthTimerUITests-Runner (17837)' (24.294 seconds)
+
+** TEST SUCCEEDED **
+
+Implementierte Änderungen:
+--------------------------
+1. TrackerTab.swift Zeile 57-71: Neue computed property `noAlcStreakResult`
+   - Verwendet StreakCalculator aus dem Generic Tracker System
+   - Berechnet Streak, Joker, Rewards
+
+2. TrackerTab.swift Zeile 200-220: Streak/Joker-Anzeige im NoAlc-Card Header
+   - 🔥 mit Streak-Zahl (accessibilityIdentifier: "noAlcStreak")
+   - 🃏 mit Joker-Anzahl X/3 (accessibilityIdentifier: "noAlcJokers")
+   - Joker-Anzeige nur wenn rewardConfig vorhanden
+
+Nächster Schritt:
+-----------------
+A2: Streak-Anzeige für alle Level-Tracker (nicht nur NoAlc)
