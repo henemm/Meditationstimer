@@ -48,6 +48,7 @@ struct TrackerTab: View {
     @State private var showingNoAlcLog = false
     @State private var showingAddTracker = false
     @State private var trackerToEdit: Tracker?
+    @State private var showingNoAlcHistory = false  // FEAT-39 C1
 
     // NoAlc feedback state
     @State private var loggedLevel: TrackerLevel? = nil
@@ -91,6 +92,12 @@ struct TrackerTab: View {
                 // - "Advanced" button for date picker (18:00 cutoff rule)
                 // TrackerHistorySheet is read-only and should NOT be used here!
                 NoAlcLogSheet()
+            }
+            .sheet(isPresented: $showingNoAlcHistory) {
+                // FEAT-39 C1: History view for NoAlc tracker
+                if let tracker = noAlcTracker {
+                    TrackerHistorySheet(tracker: tracker)
+                }
             }
             .sheet(isPresented: $showingAddTracker) {
                 AddTrackerSheet()
@@ -226,6 +233,14 @@ struct TrackerTab: View {
                     }
 
                     Spacer()
+
+                    // FEAT-39 C1: History button
+                    Button(action: { showingNoAlcHistory = true }) {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.system(size: 18))
+                            .foregroundStyle(.secondary)
+                    }
+                    .accessibilityIdentifier("noAlcHistoryButton")
 
                     // Info button for detailed view (opens NoAlcLogSheet with Advanced mode)
                     Button(action: { showingNoAlcLog = true }) {
