@@ -79,37 +79,32 @@ Das Generic Tracker System soll **vollständige Feature-Parität** mit dem Legac
 
 ---
 
-### Phase E: CalendarView Migration (Mittel)
+### Phase E: ~~CalendarView Migration~~ ENTFÄLLT
 
-#### E1: CalendarView Daten-Quelle umstellen
-- **Datei:** `Meditationstimer iOS/CalendarView.swift`
-- **Was:**
-  1. `@Query` für NoAlc Tracker Logs hinzufügen
-  2. `alcoholDays` aus SwiftData statt HealthKit laden
-  3. `NoAlcManager.calculateStreakAndRewards()` → `StreakCalculator.calculate()`
-- **Aufwand:** Mittel (~1h)
-- **Test:** XCUITest `testCalendarShowsTrackerData`
+**WICHTIG:** HealthKit bleibt Single Source of Truth für Tracker mit HealthKit-Datentyp!
 
-#### E2: Farb-Mapping anpassen
-- **Datei:** `Meditationstimer iOS/CalendarView.swift`
-- **Was:** `alcoholColor()` nutzt `TrackerLevel` statt `ConsumptionLevel`
-- **Aufwand:** Klein (~15 Min)
+- CalendarView liest **weiterhin aus HealthKit** (nicht SwiftData)
+- Der "Dual-Write" ist **gewollt**:
+  - HealthKit: Basis-Daten (Steady/Easy/Wild)
+  - SwiftData: Metadaten (Joker, Rewards, Streak-History)
+- Das ist ein **USP der App** - Health-Daten sind auch in Apple Health sichtbar
+
+#### ~~E1: CalendarView Daten-Quelle umstellen~~ ENTFÄLLT
+#### ~~E2: Farb-Mapping anpassen~~ ENTFÄLLT
 
 ---
 
-### Phase F: Cleanup (Am Ende)
+### Phase F: Cleanup (Angepasst)
 
 #### F1: NoAlcManager als deprecated markieren
 - **Bereits erledigt:** `@available(*, deprecated)` ist gesetzt
 
-#### F2: Dual-Write entfernen
-- **Datei:** `Meditationstimer iOS/Tabs/TrackerTab.swift`
-- **Was:** HealthKit-Aufruf in `noAlcButton()` entfernen (Zeilen 96-108)
-- **Wann:** Erst wenn CalendarView migriert ist
+#### ~~F2: Dual-Write entfernen~~ ENTFÄLLT
+- Dual-Write ist **gewollt** (HealthKit = Single Source of Truth)
 
-#### F3: NoAlcManager.swift löschen
-- **Wann:** Erst wenn alle Referenzen entfernt sind
-- **Prüfen:** `grep -rn "NoAlcManager" --include="*.swift"`
+#### ~~F3: NoAlcManager.swift löschen~~ ENTFÄLLT
+- NoAlcManager wird **weiterhin benötigt** für HealthKit-Integration
+- Wird langfristig zu einem generischen `HealthKitSyncManager` refactored
 
 ---
 
@@ -133,17 +128,17 @@ A1 → A2 → B1 → C1 → C2 → D1 → D2 → E1 → E2 → F1 → F2 → F3
 | Phase | Task | Status | Datum |
 |-------|------|--------|-------|
 | A1 | Streak/Joker im NoAlc-Card | ✅ Erledigt | 2026-01-20 |
-| A2 | Streak für Level-Tracker | ⏳ Offen | |
-| B1 | Reverse Cancel | ⏳ Offen | |
-| C1 | History-Button NoAlc-Card | ⏳ Offen | |
-| C2 | History-Link Editor | ⏳ Offen | |
-| D1 | HealthKit Toggle | ⏳ Offen | |
-| D2 | Widget/Kalender Toggles | ⏳ Offen | |
-| E1 | CalendarView Daten | ⏳ Offen | |
-| E2 | CalendarView Farben | ⏳ Offen | |
+| A2 | Streak für Level-Tracker | ✅ Erledigt | 2026-01-20 |
+| B1 | Reverse Cancel | ✅ Erledigt | 2026-01-20 |
+| C1 | History-Button NoAlc-Card | ✅ Erledigt | 2026-01-20 |
+| C2 | History-Link Editor | ✅ Erledigt | 2026-01-20 |
+| D1 | HealthKit Toggle | ✅ Erledigt | 2026-01-20 |
+| D2 | Widget/Kalender Toggles | ✅ Erledigt | 2026-01-20 |
+| E1 | ~~CalendarView Daten~~ | ➖ Entfällt | HealthKit = SoT |
+| E2 | ~~CalendarView Farben~~ | ➖ Entfällt | HealthKit = SoT |
 | F1 | Deprecated Marker | ✅ Erledigt | |
-| F2 | Dual-Write entfernen | ⏳ Offen | |
-| F3 | NoAlcManager löschen | ⏳ Offen | |
+| F2 | ~~Dual-Write entfernen~~ | ➖ Entfällt | Dual-Write gewollt |
+| F3 | ~~NoAlcManager löschen~~ | ➖ Entfällt | Wird zu HealthKitSyncManager |
 
 ---
 
