@@ -73,7 +73,8 @@ struct TrackerTab: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
+            // BUG 1 FIX: Explicit .vertical axis prevents horizontal wobble
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 20) {
                     // Unified Trackers Section (NoAlc + Custom Trackers)
                     trackersSection
@@ -84,6 +85,7 @@ struct TrackerTab: View {
                 .padding(.horizontal)
                 .padding(.bottom, 100)
             }
+            .scrollBounceBehavior(.basedOnSize)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showingNoAlcLog) {

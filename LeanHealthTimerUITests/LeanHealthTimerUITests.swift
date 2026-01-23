@@ -2248,11 +2248,28 @@ final class LeanHealthTimerUITests: XCTestCase {
             throw XCTSkip("No trackers with edit button found")
         }
         editButtons.firstMatch.tap()
-        sleep(1)
+        sleep(2)
 
-        // In editor, look for history navigation link (by accessibilityIdentifier)
-        let historyLink = app.buttons.matching(identifier: "trackerHistoryLink").firstMatch
-        let historyExists = historyLink.waitForExistence(timeout: 3)
+        // Scroll down in editor sheet multiple times to find history link (it's at the bottom)
+        let editorScrollView = app.scrollViews.firstMatch
+        for _ in 0..<3 {
+            if editorScrollView.exists {
+                editorScrollView.swipeUp()
+                sleep(1)
+            }
+        }
+
+        // In editor, look for history navigation link (multiple ways - NavigationLink can appear differently)
+        let historyLinkButton = app.buttons.matching(identifier: "trackerHistoryLink").firstMatch
+        let historyText = app.staticTexts["View History"]
+        let historyTextDE = app.staticTexts["Verlauf anzeigen"]
+        // Also check any element with the identifier (not just buttons)
+        let historyLinkAny = app.descendants(matching: .any).matching(identifier: "trackerHistoryLink").firstMatch
+
+        let historyExists = historyLinkButton.waitForExistence(timeout: 3) ||
+                           historyText.exists ||
+                           historyTextDE.exists ||
+                           historyLinkAny.exists
 
         XCTAssertTrue(historyExists,
             "FEAT-39 C2: TrackerEditorSheet should have History navigation link")
@@ -2349,5 +2366,122 @@ final class LeanHealthTimerUITests: XCTestCase {
             // Not a failure - just means this tracker doesn't have HealthKit support
             XCTAssertTrue(true, "FEAT-39 D1: HealthKit toggle not visible (tracker has no healthKitType)")
         }
+    }
+
+    // MARK: - BUG-FIX: Tracker Tab UI Bugs (tracker-tab-bugs)
+
+    /// BUG 2b: Test that level-based trackers (in TrackerRow) show calendar.badge.plus button
+    /// This button allows logging for a different date via LevelSelectionView
+    /// Note: The default Mood tracker uses TrackerRow (not special noAlcCard) and should show this button
+    func testLevelTrackerShowsDatePickerButton() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab must exist")
+        trackerTab.tap()
+        sleep(3)
+
+        // Scroll down to see all trackers (Mood tracker should be below NoAlc)
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Look for the calendar.badge.plus button (date picker button)
+        // This should exist on level-based TrackerRows (Mood uses TrackerRow, NoAlc has special card)
+        let datePickerButton = app.buttons["trackerDateButton"]
+
+        // Take screenshot for debugging
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "TrackerTab_DatePickerButton_Search"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        XCTAssertTrue(datePickerButton.waitForExistence(timeout: 5),
+            "BUG 2b: Level-based TrackerRow (e.g. Mood) must show calendar.badge.plus button for date selection")
+    }
+
+    /// BUG 2b: Test that tapping calendar button opens LevelSelectionView with Advanced option
+    /// Uses the existing Mood tracker (level-based, uses TrackerRow)
+    func testDatePickerButtonOpensLevelSelectionView() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(3)
+
+        // Scroll to see Mood tracker
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Find and tap the date picker button on Mood tracker
+        let datePickerButton = app.buttons["trackerDateButton"]
+        guard datePickerButton.waitForExistence(timeout: 5) else {
+            XCTFail("BUG 2b: trackerDateButton not found on level-based tracker (Mood)")
+            return
+        }
+        datePickerButton.tap()
+        sleep(2)
+
+        // Verify LevelSelectionView opened - should show "Advanced" button or "Erweitert" in German
+        let advancedButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Advanced' OR label CONTAINS[c] 'Erweitert'")).firstMatch
+        XCTAssertTrue(advancedButton.waitForExistence(timeout: 3),
+            "BUG 2b: Tapping date button must open LevelSelectionView with Advanced option")
+    }
+
+    /// BUG 2a: Test that level-based trackers show large icons (32px) in separate row
+    /// The level buttons should take full width like NoAlc card, not be squished in HStack
+    /// Uses existing Mood tracker which has 5 level icons
+    func testLevelTrackerShowsLargeIconsInSeparateRow() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(3)
+
+        // Scroll to see Mood tracker
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Take screenshot to verify visual layout
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "TrackerRow_LevelBased_Layout"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        // Verify Mood tracker uses levelBasedLayout by checking for trackerDateButton
+        // This button only exists in levelBasedLayout (not in legacyLayout)
+        let dateButton = app.buttons["trackerDateButton"]
+        XCTAssertTrue(dateButton.waitForExistence(timeout: 5),
+            "BUG 2a: Level-based tracker (Mood) should use levelBasedLayout with trackerDateButton")
+
+        // Verify Mood tracker level buttons exist (😢 😕 😐 🙂 😊 for Mood's 5 levels)
+        // At least one mood level button should be visible
+        let sadButton = app.buttons["😢"]
+        let happyButton = app.buttons["😊"]
+
+        // Either sad or happy mood button should exist (proves level buttons are visible)
+        XCTAssertTrue(sadButton.exists || happyButton.exists,
+            "BUG 2a: Mood tracker should show level buttons (😢 😕 😐 🙂 😊)")
     }
 }

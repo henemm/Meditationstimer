@@ -1,0 +1,25 @@
+XCUITest TDD RED Phase - tracker-tab-bugs
+==========================================
+
+Test Run: 2026-01-23 15:19:39
+Simulator: Clone 1 of Healthy Habits (iOS 26.2)
+
+Test Results:
+-------------
+Test suite 'LeanHealthTimerUITests' started on 'Clone 1 of Healthy Habits - LeanHealthTimerUITests-Runner (210)'
+Test case 'LeanHealthTimerUITests.testLevelTrackerShowsDatePickerButton()' failed on 'Clone 1 of Healthy Habits - LeanHealthTimerUITests-Runner (210)' (42.023 seconds)
+
+** TEST FAILED **
+
+Failure Reason:
+---------------
+XCTAssertTrue failed - "BUG 2b: Level-based TrackerRow must show calendar.badge.plus button for date selection"
+
+The test searched for element with accessibilityIdentifier "trackerDateButton" which does not exist yet.
+This is expected behavior for TDD RED phase - the button will be implemented next.
+
+Test Code Excerpt:
+------------------
+let datePickerButton = app.buttons["trackerDateButton"]
+XCTAssertTrue(datePickerButton.waitForExistence(timeout: 5),
+    "BUG 2b: Level-based TrackerRow must show calendar.badge.plus button for date selection")

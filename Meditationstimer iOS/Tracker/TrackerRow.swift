@@ -49,37 +49,12 @@ struct TrackerRow: View {
 
     var body: some View {
         GlassCard {
-            HStack(alignment: .center, spacing: 14) {
-                // Icon
-                Text(tracker.icon)
-                    .font(.system(size: 42))
-
-                // Name + Today's status + Streak
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 8) {
-                        Text(tracker.name)
-                            .font(.headline)
-                        streakBadge
-                    }
-                    todayStatusView
-                }
-
-                Spacer()
-
-                // Quick-Log Button (mode-dependent)
-                quickLogButton
-
-                // Edit Button
-                Button(action: onEdit) {
-                    Image(systemName: "ellipsis")
-                        .font(.system(size: 20))
-                        .foregroundStyle(.secondary)
-                        .frame(width: 44, height: 44)
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("trackerEditButton")
+            // BUG 2a/2b FIX: Level-based trackers get 2-row layout like NoAlc card
+            if isLevelBased {
+                levelBasedLayout
+            } else {
+                legacyLayout
             }
-            .frame(minHeight: 80)
         }
         .sheet(isPresented: $showingMoodSheet) {
             MoodSelectionView(tracker: tracker, onSave: {})
@@ -93,6 +68,119 @@ struct TrackerRow: View {
         .sheet(isPresented: $showingLevelSheet) {
             LevelSelectionView(tracker: tracker, onSave: {})
         }
+    }
+
+    // MARK: - BUG 2a/2b: Level-Based Layout (like NoAlc card)
+
+    /// New 2-row layout for level-based trackers with larger icons and date picker
+    @ViewBuilder
+    private var levelBasedLayout: some View {
+        VStack(spacing: 12) {
+            // Row 1: Header (Icon, Name, Streak, Buttons)
+            HStack {
+                Text(tracker.icon)
+                    .font(.system(size: 28))
+                Text(tracker.name)
+                    .font(.headline)
+                streakBadge
+
+                Spacer()
+
+                // BUG 2b: Calendar button for date selection (opens LevelSelectionView)
+                Button(action: { showingLevelSheet = true }) {
+                    Image(systemName: "calendar.badge.plus")
+                        .font(.system(size: 18))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("trackerDateButton")
+
+                // Edit Button
+                Button(action: onEdit) {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 20))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("trackerEditButton")
+            }
+
+            // Row 2: Level buttons (full width, 32px icons like NoAlc card)
+            HStack(spacing: 10) {
+                ForEach(trackerLevels) { level in
+                    levelButtonLarge(level)
+                }
+            }
+
+            // Row 3: Today's status
+            levelStatusView
+        }
+        .padding(.vertical, 4)
+    }
+
+    /// Large level button (32px icon) for level-based layout
+    private func levelButtonLarge(_ level: TrackerLevel) -> some View {
+        Button(action: {
+            Task { await logLevel(level) }
+        }) {
+            Text(level.icon)
+                .font(.system(size: 32))  // BUG 2a FIX: Same size as NoAlc card
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(levelColor(for: level).opacity(0.2))
+                .cornerRadius(10)
+                .overlay {
+                    if loggedLevel?.id == level.id {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.green)
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
+        }
+        .buttonStyle(.plain)
+        .sensoryFeedback(.success, trigger: loggedLevel?.id == level.id)
+        .accessibilityLabel(level.localizedLabel)
+        .accessibilityIdentifier(level.icon)
+    }
+
+    // MARK: - Legacy Layout (for non-level trackers)
+
+    /// Original HStack layout for Counter, YesNo, Awareness, Avoidance trackers
+    @ViewBuilder
+    private var legacyLayout: some View {
+        HStack(alignment: .center, spacing: 14) {
+            // Icon
+            Text(tracker.icon)
+                .font(.system(size: 42))
+
+            // Name + Today's status + Streak
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 8) {
+                    Text(tracker.name)
+                        .font(.headline)
+                    streakBadge
+                }
+                todayStatusView
+            }
+
+            Spacer()
+
+            // Quick-Log Button (mode-dependent)
+            quickLogButton
+
+            // Edit Button
+            Button(action: onEdit) {
+                Image(systemName: "ellipsis")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("trackerEditButton")
+        }
+        .frame(minHeight: 80)
     }
 
     // MARK: - Today Status View
