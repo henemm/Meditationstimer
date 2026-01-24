@@ -123,6 +123,13 @@ struct TrackerTab: View {
                         for: tracker.id,
                         completedAt: Date()
                     )
+
+                    // Also cancel old-style NoAlc reminders (backwards compatibility)
+                    // Needed because legacy reminders use activityType = .noalc instead of trackerID
+                    SmartReminderEngine.shared.cancelMatchingReminders(
+                        for: .noalc,
+                        completedAt: Date()
+                    )
                 }
 
                 // Also log to HealthKit (preserves existing behavior)

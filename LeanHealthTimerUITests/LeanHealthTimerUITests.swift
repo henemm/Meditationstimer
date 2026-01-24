@@ -2,6 +2,12 @@ import XCTest
 
 final class LeanHealthTimerUITests: XCTestCase {
 
+    // MARK: - NoAlc Reminder Bug Fix (2026-01-24)
+    // Note: TrackerTab.swift now calls cancelMatchingReminders(for: .noalc)
+    // in addition to cancelMatchingTrackerReminders(for: trackerID)
+    // This ensures old-style NoAlc reminders (activityType-based) are also cancelled.
+    // The actual method is tested in SmartReminderEngineTests.testCancelMatchingReminders_NoAlcActivityType
+
     /// MANUAL UI TEST: Verify Tracker Tab loads and displays correctly
     /// This test accepts HealthKit permission and navigates to Tracker Tab
     func testManualTrackerTabVisualInspection() throws {
