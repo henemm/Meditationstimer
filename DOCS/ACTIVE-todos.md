@@ -1,6 +1,6 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 18. Januar 2026
+**Letzte Aktualisierung:** 18. Januar 2026 (Generic Tracker Feature-Parität Analyse)
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -191,6 +191,30 @@ UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentif
 ---
 
 ## 📚 Lessons Learned
+
+### 2026-01-18: Analysis-First bei UI Tests - Trial-and-Error verboten
+
+**Problem:** UI Test für NoAlc Parallel Availability lief in 5+ aufeinanderfolgende Fehler:
+1. "Simulator failed to launch" → falsche Diagnose (clone issues)
+2. Test fand Element nicht → geraten "mehr scrollen"
+3. Locale falsch → geraten "vielleicht englisch"
+4. NavigationBar nicht gefunden → geraten "deutsch oder englisch?"
+5. Mehrere NoAlc-Elemente → geraten "Button statt StaticText"
+
+**Root Cause:** Trial-and-Error statt Analysis-First. Ich habe gegen das Prinzip in CLAUDE.md verstoßen:
+- "Keine Quick Fixes ohne Analyse"
+- "Root Cause mit konkreten Daten identifizieren"
+
+**Korrekturplan - VOR jedem UI Test:**
+1. **UI-Hierarchie analysieren**: Debug-Output einbauen, alle sichtbaren Elemente auflisten
+2. **Lokalisierung prüfen**: Welche Sprache läuft? Welche Texte werden tatsächlich angezeigt?
+3. **Bestehende Tests studieren**: Wie machen andere Tests das?
+4. **Test-Plan erstellen**: Welche Schritte, welche Assertions?
+5. **ERST DANN** den Test schreiben und ausführen
+
+**Regel:** Bei UI Test Fehler STOPP. Erst vollständige Analyse, dann Fix. Kein Raten!
+
+---
 
 ### 2025-12-15: Implementation Gate eingeführt
 
@@ -395,6 +419,33 @@ Details siehe Commit c89163d und git history.
 |------|--------|
 | Unit Tests (5 Tests) | ✅ GRÜN |
 | Device Test | ✅ VERIFIZIERT |
+
+---
+
+## 🧪 Offene Test-Aufgaben
+
+### NoAlc Parallel Availability UI Test - NEU SCHREIBEN
+**Status:** Offen
+**Priorität:** Hoch
+**Aufwand:** ~30 Min (mit korrekter Analyse)
+
+**Problem:** Der aktuelle Test `testAddTrackerShowsNoAlcPreset` wurde mit Trial-and-Error geschrieben und ist fehlerhaft.
+
+**Was zu tun ist:**
+1. Test komplett verwerfen
+2. VOR dem neuen Test: UI-Hierarchie analysieren (Debug-Output)
+3. Korrekte Element-Namen identifizieren (NavigationBar-Titel, Button-Labels)
+4. Lokalisierung verifizieren (DE vs EN)
+5. Dann neuen Test schreiben mit korrekten Assertions
+
+**Zu testende Funktionalität:**
+- Tracker Tab öffnen
+- Add Tracker Button tappen
+- Zur Level-Based Section scrollen
+- NoAlc Preset tappen
+- Verifizieren: Zweiter NoAlc Tracker wurde erstellt
+
+**Blocker:** Test muss nach Analysis-First Prinzip neu geschrieben werden
 
 ---
 
@@ -717,34 +768,66 @@ Alle bisherigen Tests liefen im Simulator oder via Unit Tests. HealthKit verhäl
 
 ---
 
-### Generic Tracker System - Verbleibende Migration
-**Status:** Offen (Low Priority)
-**Priorität:** Niedrig
-**Aufwand:** ~2h
+### Generic Tracker System - Feature-Parität Migration
+**Status:** In Arbeit (Parallel-Betrieb)
+**Letztes Update:** 18. Januar 2026
+**Priorität:** Mittel
+**Entscheidung:** Parallel-Betrieb (Alt + Neu) bis vollständige Feature-Parität erreicht
 
-**Was erledigt ist:**
-- ✅ TrackerModels.swift: SwiftData Models (Tracker, TrackerLog, TrackerLevel)
-- ✅ TrackerMigration.swift: Automatische NoAlc-Tracker Erstellung beim App-Start
-- ✅ TrackerTab.swift: Dual-Write (SwiftData + HealthKit)
-- ✅ NoAlcManager: `@available(*, deprecated)` Annotation
+---
 
-**Was noch zu migrieren ist (NoAlcManager-Referenzen entfernen):**
+#### ✅ Was funktioniert (Neues System)
 
-| Datei | Referenzen | Beschreibung |
-|-------|------------|--------------|
-| `CalendarView.swift` | 4× | `NoAlcManager.ConsumptionLevel`, `fetchConsumption`, `calculateStreakAndRewards` |
-| `DayDetailSheet.swift` | 3× | `ConsumptionLevel`, `logConsumption`, `fetchConsumption` |
-| `NoAlcLogSheet.swift` | 3× | `ConsumptionLevel`, `logConsumption`, `targetDay` |
+| Feature | Status | Details |
+|---------|--------|---------|
+| TrackerModels (SwiftData) | ✅ | Tracker, TrackerLog, TrackerLevel |
+| StreakCalculator | ✅ | Joker verdienen/einsetzen funktioniert |
+| DayAssignment (18 Uhr Cutoff) | ✅ | Identische Logik wie NoAlcManager |
+| TrackerMigration | ✅ | Auto-Create NoAlc beim App-Start |
+| Quick-Log Buttons | ✅ | Emoji-Buttons mit Feedback |
+| Dual-Write | ✅ | SwiftData + HealthKit parallel |
+| Lokalisierung | ✅ | DE: Kaum/Überschaubar/Party |
 
-**Migrationsstrategie:**
-1. Views auf Generic Tracker System umstellen (SwiftData statt HealthKit)
-2. Streak-Berechnung in Tracker-Extensions verschieben
-3. NoAlcManager komplett entfernen (nach Device-Test)
+---
 
-**Warum Low Priority:**
-- Dual-Write funktioniert aktuell (Daten werden korrekt gespeichert)
-- HealthKit bleibt als Backup
-- Cleanup kann nach vollständiger Validierung erfolgen
+#### ❌ Was noch fehlt (für vollständige Migration)
+
+| Feature | Aufwand | Beschreibung |
+|---------|---------|--------------|
+| **Joker-Anzeige im TrackerTab** | Klein | StreakResult wird berechnet, aber nicht angezeigt |
+| **Kalender auf Generic System** | Mittel | CalendarView nutzt noch NoAlcManager.fetchConsumption() |
+| **History-Ansicht** | Mittel | Logs ansehen (letzte 30 Tage) - existiert in beiden Systemen nicht |
+| **NoAlcManager entfernen** | Klein | Erst wenn alle obigen Punkte erledigt sind |
+
+---
+
+#### 📂 Dateien die noch NoAlcManager nutzen
+
+| Datei | Referenzen | Muss umgestellt werden auf |
+|-------|------------|---------------------------|
+| `CalendarView.swift` | 4× | Generic Tracker Queries |
+| `DayDetailSheet.swift` | 3× | Tracker.logLevel() |
+| `NoAlcLogSheet.swift` | 3× | TrackerTab Logik |
+
+---
+
+#### 🔄 Aktueller Parallel-Betrieb
+
+```
+User loggt im TrackerTab:
+  ├── SwiftData: Tracker.logLevel() → TrackerLog gespeichert
+  └── HealthKit: NoAlcManager.logConsumption() → HKQuantitySample gespeichert
+
+Kalender liest Daten:
+  └── Noch von HealthKit via NoAlcManager.fetchConsumption()
+      (Generic System wird ignoriert!)
+```
+
+**Warum Parallel-Betrieb:**
+- HealthKit ist bewährt und zuverlässig
+- SwiftData ist neu und muss sich beweisen
+- Rollback möglich falls Probleme auftreten
+- Schrittweise Migration ohne Datenverlust
 
 ---
 

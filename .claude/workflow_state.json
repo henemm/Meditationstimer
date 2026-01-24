@@ -25,7 +25,256 @@
       "analysis_findings": null,
       "phases_completed": [],
       "backlog_status": "in_progress"
+    },
+    "generic-tracker-system": {
+      "current_phase": "phase6_implement",
+      "created": "2026-01-17T14:51:29.513231",
+      "last_updated": "2026-01-18T16:01:36.456400",
+      "spec_file": "DOCS/specs/features/generic-tracker-system.md",
+      "spec_approved": true,
+      "context_file": "DOCS/context/generic-tracker-system.md",
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "docs/artifacts/generic-tracker-system/test-green-output.txt",
+          "description": "All 7 tests PASSED: TrackerMigrationTests (5/5), TrackerModelTests (2/2) - TDD GREEN complete",
+          "phase": "phase6_implement",
+          "created": "2026-01-17T15:30:09.560499"
+        },
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/generic-tracker-system/test-green-localization.txt",
+          "description": "TDD GREEN: testNoAlcLevelLabelsLocalizedInGerman and testMoodLevelLabelsLocalizedInGerman both PASSED",
+          "phase": "phase6_implement",
+          "created": "2026-01-17T17:12:10.252278"
+        },
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/generic-tracker-system/test-green-phase2-3.txt",
+          "description": "TDD GREEN Phase 2-3: All 3 tests PASSED - Tracker.logLevel() and Tracker.todayLog implemented",
+          "phase": "phase6_implement",
+          "created": "2026-01-17T17:36:34.565986"
+        },
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/feat-37a/tdd-red-joker-display.txt",
+          "description": "TDD RED: testNoAlcCardShowsJokerIcons failed - noAlcRewards view does not exist yet",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-18T16:01:36.456391"
+        }
+      ],
+      "affected_files": [
+        "Services/TrackerModels.swift",
+        "Services/TrackerManager.swift",
+        "Services/TrackerMigration.swift",
+        "Meditationstimer iOS/Tabs/TrackerTab.swift",
+        "Meditationstimer iOS/Tracker/AddTrackerSheet.swift"
+      ],
+      "red_test_done": true,
+      "red_test_result": "Tests written and passing for Phase 1-3",
+      "green_test_done": true,
+      "green_test_result": "Phase 1-3 implemented: Models, Logging, Localization",
+      "analysis_findings": "2026-01-18 Feature-Parit\u00e4t Analyse: Streak/Joker-Berechnung funktioniert, aber UI-Anzeige fehlt. Kalender nutzt noch NoAlcManager. Parallel-Betrieb gew\u00fcnscht bis vollst\u00e4ndige Migration.",
+      "phases_completed": [
+        "phase1_context",
+        "phase2_analyse",
+        "phase3_spec",
+        "phase4_approved",
+        "phase5_tdd_red"
+      ],
+      "backlog_status": "in_progress",
+      "migration_status": {
+        "completed": [
+          "TrackerModels (Tracker, TrackerLog, TrackerLevel)",
+          "StreakCalculator mit Joker-System",
+          "DayAssignment (Cutoff 18 Uhr)",
+          "TrackerMigration (Auto-Create NoAlc)",
+          "TrackerTab Quick-Log Buttons mit Emoji",
+          "Dual-Write (SwiftData + HealthKit)",
+          "Lokalisierung (DE/EN)"
+        ],
+        "missing": [
+          "Joker-Anzeige im TrackerTab",
+          "Kalender auf Generic System umstellen",
+          "History-Ansicht f\u00fcr Logs",
+          "NoAlcManager entfernen (erst am Ende)"
+        ],
+        "decision": "Parallel-Betrieb bis vollst\u00e4ndige Feature-Parit\u00e4t erreicht"
+      }
+    },
+    "feat-37d-healthkit-integration": {
+      "current_phase": "phase7_validate",
+      "created": "2026-01-18T17:59:02.792125",
+      "last_updated": "2026-01-18T21:29:46.766534",
+      "spec_file": "DOCS/specs/features/FEAT-37d-healthkit-integration.md",
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/feat-37d-healthkit-integration/test-red-output.txt",
+          "description": "TDD RED: Tests fail with \"Value of type TrackerLevel has no member healthKitValue\" - property does not exist yet",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-18T18:15:43.028212"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": false,
+      "red_test_result": null,
+      "green_test_done": true,
+      "green_test_result": "Unit tests passed 199/199",
+      "analysis_findings": null,
+      "phases_completed": [
+        "phase7_validate"
+      ],
+      "backlog_status": "in_progress"
+    },
+    "feat-38-inline-level-buttons": {
+      "current_phase": "phase8_complete",
+      "created": "2026-01-19T12:04:34.697999",
+      "last_updated": "2026-01-19T18:23:11.425158",
+      "spec_file": "DOCS/specs/features/FEAT-38-inline-level-buttons.md",
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/feat-38-inline-level-buttons/test-red-summary.txt",
+          "description": "TDD RED: testLevelTrackerShowsInlineButtons FAILED - TrackerRow shows Log button instead of inline emoji buttons",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-19T12:22:23.114471"
+        },
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/feat-38-inline-level-buttons/full-uitests-output.txt",
+          "description": "UI TESTS PASSED: 57 tests executed, 0 failures - testLevelTrackerShowsInlineButtons PASSED",
+          "phase": "phase6_implement",
+          "created": "2026-01-19T18:21:04.858788"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": false,
+      "red_test_result": null,
+      "green_test_done": true,
+      "green_test_result": null,
+      "analysis_findings": null,
+      "phases_completed": [],
+      "backlog_status": "done",
+      "tdd_green_started": true,
+      "implementation_in_progress": true
+    },
+    "generic-tracker-completion": {
+      "current_phase": "phase6_implement",
+      "created": "2026-01-19T19:53:26.778154",
+      "last_updated": "2026-01-19T21:30:00.000000",
+      "spec_file": "DOCS/specs/features/FEAT-39-generic-tracker-completion.md",
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/feat-39-generic-tracker-completion/test-red-A1.txt",
+          "description": "TDD RED: testNoAlcCardShowsStreakAndJokerInfo FAILED - noAlcStreak/noAlcJokers elements not found",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-20T08:02:29.000000"
+        },
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/feat-39-generic-tracker-completion/test-green-A1.txt",
+          "description": "TDD GREEN: testNoAlcCardShowsStreakAndJokerInfo PASSED - Streak/Joker display implemented",
+          "phase": "phase6_implement",
+          "created": "2026-01-20T08:17:32.000000"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": true,
+      "red_test_result": "testNoAlcCardShowsStreakAndJokerInfo FAILED - TDD RED complete",
+      "green_test_done": false,
+      "green_test_result": null,
+      "analysis_findings": "2026-01-19 Vollst\u00e4ndige Analyse: Legacy NoAlcManager vs Generic Tracker verglichen. Kritisch fehlend: Streak/Joker-Anzeige im TrackerTab, Reverse Cancel f\u00fcr Reminders, CalendarView Migration. Plan erstellt mit 12 Tasks in 6 Phasen (A-F).",
+      "phases_completed": [
+        "phase1_context",
+        "phase2_analyse",
+        "phase3_spec",
+        "phase4_approved"
+      ],
+      "backlog_status": "in_progress",
+      "implementation_plan": {
+        "total_tasks": 12,
+        "phases": [
+          "A: UI-Anzeige",
+          "B: Reverse Cancel",
+          "C: History",
+          "D: Editor",
+          "E: CalendarView",
+          "F: Cleanup"
+        ],
+        "next_task": "A1: Streak/Joker im NoAlc-Card Header",
+        "critical_tasks": [
+          "A1",
+          "A2",
+          "B1"
+        ],
+        "estimated_effort": "3-4 Stunden total"
+      }
+    },
+    "tracker-tab-bugs": {
+      "current_phase": "phase8_complete",
+      "created": "2026-01-23T14:47:14.465137",
+      "last_updated": "2026-01-23T17:46:26.120223",
+      "spec_file": "DOCS/specs/bugfix/tracker-tab-bugs.md",
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/tracker-tab-bugs/tdd-red-test-output.txt",
+          "description": "Test FAILED: testLevelTrackerShowsDatePickerButton - trackerDateButton not found (42.023s) - XCTAssertTrue assertion failed",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-23T15:21:16.445597"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": false,
+      "red_test_result": null,
+      "green_test_done": false,
+      "green_test_result": null,
+      "analysis_findings": null,
+      "phases_completed": [],
+      "backlog_status": "done"
+    },
+    "noalc-reminder-cancel-bug": {
+      "current_phase": "phase8_complete",
+      "created": "2026-01-24T08:26:09.391202",
+      "last_updated": "2026-01-24T08:38:21.330504",
+      "spec_file": null,
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/noalc-reminder-cancel-bug/unit-test-output.txt",
+          "description": "SmartReminderEngineTests passed - testCancelMatchingReminders_NoAlcActivityType verifies cancelMatchingReminders(for: .noalc) works correctly",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-24T08:36:50.968969"
+        },
+        {
+          "type": "test_output",
+          "path": "DOCS/artifacts/noalc-reminder-cancel-bug/unit-test-output.txt",
+          "description": "Integration bug - cancelMatchingReminders(for: .noalc) method call NOT FOUND in TrackerTab. TrackerTab only calls cancelMatchingTrackerReminders but old NoAlc reminders use activityType.",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-24T08:37:13.359985"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": false,
+      "red_test_result": null,
+      "green_test_done": true,
+      "green_test_result": "Build succeeded - cancelMatchingReminders(for: .noalc) call added to TrackerTab",
+      "analysis_findings": null,
+      "phases_completed": [],
+      "backlog_status": "done"
     }
   },
-  "active_workflow": "voice-announcement-round-x-of-y-statt-round-x"
+  "active_workflow": "noalc-reminder-cancel-bug"
 }

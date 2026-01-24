@@ -1,0 +1,6 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test  -project Meditationstimer.xcodeproj  -scheme "Lean Health Timer"  -destination "platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00"  "-only-testing:LeanHealthTimerTests/SmartReminderEngineTests/testCancelMatchingReminders_NoAlcActivityType" 
+
+2026-01-24 08:34:16.673 xcodebuild[33816:31083691] Writing error result bundle to /var/folders/dk/p4qd3_xx6ls6_xybmqzfgs1h0000gn/T/ResultBundle_2026-24-01_08-34-0016.xcresult
+xcodebuild: error: Unknown build action ''.
+SmartReminderEngineTests passed - NoAlc cancel method verified
