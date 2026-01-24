@@ -24,6 +24,7 @@ struct TrackerRow: View {
     @State private var showingFeelingsSheet = false
     @State private var showingGratitudeSheet = false
     @State private var showingLevelSheet = false
+    @State private var showingLevelSheetWithDatePicker = false  // BUG 2b: Separate sheet for calendar button
 
     // FEAT-38: Inline level button feedback state
     @State private var loggedLevel: TrackerLevel? = nil
@@ -66,7 +67,11 @@ struct TrackerRow: View {
             GratitudeLogView(tracker: tracker, onSave: {})
         }
         .sheet(isPresented: $showingLevelSheet) {
-            LevelSelectionView(tracker: tracker, onSave: {})
+            LevelSelectionView(tracker: tracker, onSave: {}, initiallyExpanded: false)
+        }
+        .sheet(isPresented: $showingLevelSheetWithDatePicker) {
+            // BUG 2b: Calendar button opens with DatePicker immediately visible
+            LevelSelectionView(tracker: tracker, onSave: {}, initiallyExpanded: true)
         }
     }
 
@@ -86,8 +91,10 @@ struct TrackerRow: View {
 
                 Spacer()
 
-                // BUG 2b: Calendar button for date selection (opens LevelSelectionView)
-                Button(action: { showingLevelSheet = true }) {
+                // BUG 2b: Calendar button for date selection (opens LevelSelectionView with DatePicker)
+                Button(action: {
+                    showingLevelSheetWithDatePicker = true
+                }) {
                     Image(systemName: "calendar.badge.plus")
                         .font(.system(size: 18))
                         .foregroundStyle(.secondary)

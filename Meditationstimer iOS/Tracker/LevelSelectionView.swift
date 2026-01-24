@@ -20,7 +20,14 @@ struct LevelSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
-    @State private var isExpanded = false
+    @State private var isExpanded: Bool
+
+    // BUG 2b FIX: Init that allows starting with DatePicker visible
+    init(tracker: Tracker, onSave: @escaping () -> Void = {}, initiallyExpanded: Bool = false) {
+        self.tracker = tracker
+        self.onSave = onSave
+        self._isExpanded = State(initialValue: initiallyExpanded)
+    }
     @State private var selectedDate = Date()
     @State private var isLogging = false
     @State private var errorMessage: String?

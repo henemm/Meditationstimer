@@ -2370,6 +2370,73 @@ final class LeanHealthTimerUITests: XCTestCase {
 
     // MARK: - BUG-FIX: Tracker Tab UI Bugs (tracker-tab-bugs)
 
+    /// BUG 1: Test that TrackerTab content does NOT wobble horizontally during VERTICAL scroll
+    /// When scrolling vertically up/down, the content should stay at the same X position.
+    /// This test detects horizontal wobble/drift that occurs during vertical scrolling.
+    func testTrackerTabNoHorizontalWobbleDuringVerticalScroll() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab must exist")
+        trackerTab.tap()
+        sleep(2)
+
+        // Find the main ScrollView
+        let scrollView = app.scrollViews.firstMatch
+        XCTAssertTrue(scrollView.waitForExistence(timeout: 3), "ScrollView must exist")
+
+        // Find a reference element that will be visible throughout - the section header "Trackers"
+        let sectionHeader = app.staticTexts["Trackers"].firstMatch
+        guard sectionHeader.waitForExistence(timeout: 3) else {
+            XCTFail("BUG 1: Reference element (Trackers header) not found")
+            return
+        }
+
+        // Record initial horizontal position of the section header
+        let initialX = sectionHeader.frame.origin.x
+
+        // Perform multiple VERTICAL scrolls and check X position after each
+        var maxHorizontalDrift: CGFloat = 0.0
+
+        for i in 1...5 {
+            // Scroll down
+            scrollView.swipeUp()
+            sleep(1)
+
+            // Check X position after vertical scroll
+            if sectionHeader.exists {
+                let currentX = sectionHeader.frame.origin.x
+                let drift = abs(currentX - initialX)
+                maxHorizontalDrift = max(maxHorizontalDrift, drift)
+            }
+
+            // Scroll back up
+            scrollView.swipeDown()
+            sleep(1)
+
+            // Check X position again
+            if sectionHeader.exists {
+                let currentX = sectionHeader.frame.origin.x
+                let drift = abs(currentX - initialX)
+                maxHorizontalDrift = max(maxHorizontalDrift, drift)
+            }
+        }
+
+        // Take screenshot for debugging
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "TrackerTab_VerticalScroll_Wobble_Test"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        // Content X position should NOT drift during vertical scroll (allow 2px tolerance)
+        XCTAssertLessThan(maxHorizontalDrift, 3.0,
+            "BUG 1: Content wobbles horizontally during vertical scroll. Max drift: \(maxHorizontalDrift)px. Expected: stable X position during vertical-only scroll.")
+    }
+
     /// BUG 2b: Test that level-based trackers (in TrackerRow) show calendar.badge.plus button
     /// This button allows logging for a different date via LevelSelectionView
     /// Note: The default Mood tracker uses TrackerRow (not special noAlcCard) and should show this button
@@ -2406,9 +2473,10 @@ final class LeanHealthTimerUITests: XCTestCase {
             "BUG 2b: Level-based TrackerRow (e.g. Mood) must show calendar.badge.plus button for date selection")
     }
 
-    /// BUG 2b: Test that tapping calendar button opens LevelSelectionView with Advanced option
+    /// BUG 2b: Test that tapping calendar button opens LevelSelectionView with DatePicker IMMEDIATELY visible
+    /// The DatePicker should be shown directly without needing to tap "Advanced" first
     /// Uses the existing Mood tracker (level-based, uses TrackerRow)
-    func testDatePickerButtonOpensLevelSelectionView() throws {
+    func testDatePickerButtonOpensLevelSelectionViewWithDatePicker() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
@@ -2435,10 +2503,25 @@ final class LeanHealthTimerUITests: XCTestCase {
         datePickerButton.tap()
         sleep(2)
 
-        // Verify LevelSelectionView opened - should show "Advanced" button or "Erweitert" in German
-        let advancedButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Advanced' OR label CONTAINS[c] 'Erweitert'")).firstMatch
-        XCTAssertTrue(advancedButton.waitForExistence(timeout: 3),
-            "BUG 2b: Tapping date button must open LevelSelectionView with Advanced option")
+        // Take screenshot
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "LevelSelectionView_DatePicker_Immediate"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        // Verify LevelSelectionView opened with DatePicker IMMEDIATELY visible (expanded mode)
+        // Check for "Choose Date" / "Datum wählen" header OR the graphical date picker
+        let chooseDateEN = app.staticTexts["Choose Date"]
+        let chooseDateDE = app.staticTexts["Datum wählen"]
+        let datePicker = app.datePickers.firstMatch
+
+        let datePickerVisible = chooseDateEN.waitForExistence(timeout: 3) ||
+                               chooseDateDE.exists ||
+                               datePicker.exists
+
+        XCTAssertTrue(datePickerVisible,
+            "BUG 2b: Tapping calendar button must open LevelSelectionView with DatePicker IMMEDIATELY visible (not hidden behind 'Advanced' button)")
     }
 
     /// BUG 2a: Test that level-based trackers show large icons (32px) in separate row
