@@ -15,7 +15,7 @@ python3 .claude/hooks/update_state.py idle --reset
 |-----------|--------|
 | ✅ Workflow erfolgreich abgeschlossen | `/0-reset` |
 | ❌ Workflow abbrechen | `/0-reset` |
-| 🔄 Neuen Workflow starten | `/0-reset` dann `/1-analyse-*` |
+| 🔄 Neuen Workflow starten | `/0-reset` dann `/context` oder `/bug` |
 
 ---
 
@@ -32,8 +32,8 @@ python3 .claude/hooks/update_state.py idle --reset
 Nach Reset kannst du einen neuen Workflow starten:
 
 ```
-/1-analyse-bug [beschreibung]     → Bug-Workflow
-/1-analyse-feature [name]         → Feature-Workflow
+/bug [beschreibung]     → Bug-Workflow
+/context [feature-name] → Feature-Workflow
 ```
 
 ---

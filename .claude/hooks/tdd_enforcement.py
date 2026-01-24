@@ -231,6 +231,54 @@ def validate_red_phase(workflow: dict) -> tuple[bool, str]:
     return True, "TDD RED phase validated"
 
 
+def validate_green_phase(workflow: dict) -> tuple[bool, str]:
+    """
+    Validate that TDD GREEN phase is properly completed.
+    Returns (valid, reason).
+
+    GREEN phase requires:
+    - At least one artifact showing tests PASSED
+    - OR green_test_done flag is set
+    """
+    # Check if green_test_done flag is set
+    if workflow.get("green_test_done", False):
+        return True, "TDD GREEN phase validated (flag set)"
+
+    artifacts = workflow.get("test_artifacts", [])
+
+    # Filter to GREEN phase artifacts (or any artifact showing success)
+    green_artifacts = [a for a in artifacts if a.get("phase") == "phase6_implement"]
+
+    # Also accept artifacts with success indicators in description
+    success_indicators = ["pass", "success", "green", "✓", "✅", "all tests passed", "succeeded"]
+    has_success_evidence = False
+
+    for artifact in artifacts:
+        desc_lower = artifact.get("description", "").lower()
+        if any(indicator in desc_lower for indicator in success_indicators):
+            has_success_evidence = True
+            break
+
+    if not has_success_evidence and len(green_artifacts) == 0:
+        return False, f"""
++======================================================================+
+|  TDD GREEN PHASE INCOMPLETE!                                          |
++======================================================================+
+|  You implemented code, but didn't verify tests pass.                 |
+|                                                                      |
+|  Before continuing, you MUST:                                        |
+|  1. Run ALL tests (unit tests AND UI tests)                          |
+|  2. Verify they PASS (GREEN)                                         |
+|  3. Add artifact proving success:                                    |
+|     /add-artifact type=test_output file=... description="Tests PASS" |
+|                                                                      |
+|  Or run: python3 .claude/hooks/workflow_state_multi.py green PASSED  |
++======================================================================+
+"""
+
+    return True, "TDD GREEN phase validated"
+
+
 def check_tdd_requirements(file_path: str) -> tuple[bool, str]:
     """
     Check if TDD requirements are met for modifying a file.
@@ -248,7 +296,36 @@ def check_tdd_requirements(file_path: str) -> tuple[bool, str]:
         return True, f"Phase {phase} doesn't require TDD artifacts"
 
     # Validate RED phase completion
-    return validate_red_phase(workflow)
+    red_valid, red_reason = validate_red_phase(workflow)
+    if not red_valid:
+        return False, red_reason
+
+    # For phase7_validate, also check GREEN phase
+    if phase == "phase7_validate":
+        return validate_green_phase(workflow)
+
+    # For phase6_implement, check if code changes were made
+    # If so, require GREEN validation before more edits
+    if phase == "phase6_implement":
+        # Check validation_state.json for tracked changes
+        validation_state_file = Path(__file__).parent.parent / "validation_state.json"
+        if validation_state_file.exists():
+            try:
+                with open(validation_state_file, 'r') as f:
+                    validation_state = json.load(f)
+                files_changed = validation_state.get("files_changed", [])
+                # Filter to only code files (not test files)
+                code_changes = [f for f in files_changed
+                               if not any(p in f.lower() for p in ["test", "spec", "uitest"])]
+                if len(code_changes) > 0:
+                    # Code was modified - require GREEN before more edits
+                    green_valid, green_reason = validate_green_phase(workflow)
+                    if not green_valid:
+                        return False, green_reason
+            except (json.JSONDecodeError, Exception):
+                pass
+
+    return True, "TDD requirements met"
 
 
 def main():
