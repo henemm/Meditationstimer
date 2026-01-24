@@ -179,6 +179,18 @@ extension TrackerLevel {
         TrackerLevel(id: 2, key: "medium", icon: "⚡", labelKey: "Medium", streakEffect: .success),
         TrackerLevel(id: 3, key: "high", icon: "🔥", labelKey: "High", streakEffect: .success)
     ]
+
+    /// HealthKit value for this level (maps level.id to HealthKit-specific values)
+    /// For NoAlc: steady=0, easy=4, wild=6 (representing drink counts)
+    /// This mapping exists because TrackerLevel.id (0,1,2) differs from HealthKit values (0,4,6)
+    var healthKitValue: Int {
+        switch key {
+        case "steady": return 0   // 0-1 drinks
+        case "easy": return 4     // 2-5 drinks
+        case "wild": return 6     // 6+ drinks
+        default: return id        // Fallback: use level id as value
+        }
+    }
 }
 
 // MARK: - Tracker Model

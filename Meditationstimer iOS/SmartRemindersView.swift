@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import UserNotifications
 import HealthKit
 #if canImport(UIKit)
@@ -355,9 +356,33 @@ struct ReminderRow: View {
 
 // MARK: - Reminder Editor
 
+/// Represents the reminder source: built-in activity or custom tracker
+enum ReminderSource: Hashable {
+    case activity(ActivityType)
+    case tracker(UUID, String)  // trackerID, trackerName
+
+    var displayName: String {
+        switch self {
+        case .activity(let type):
+            switch type {
+            case .mindfulness: return NSLocalizedString("Meditation", comment: "Reminder source")
+            case .workout: return NSLocalizedString("Workout", comment: "Reminder source")
+            case .noalc: return NSLocalizedString("NoAlc", comment: "Reminder source")
+            }
+        case .tracker(_, let name):
+            return name
+        }
+    }
+}
+
 /// Editor-View für das Hinzufügen/Bearbeiten von Reminders
 struct ReminderEditorView: View {
     @Environment(\.dismiss) private var dismiss
+
+    // Query for active trackers (Generic Tracker System)
+    @Query(filter: #Predicate<Tracker> { $0.isActive }, sort: \Tracker.name)
+    private var trackers: [Tracker]
+
     @State private var title: String = ""
     @State private var message: String = ""
     @State private var hoursInactive: Int = 12  // Default: 12h look-back window
@@ -365,6 +390,9 @@ struct ReminderEditorView: View {
     @State private var isEnabled: Bool = true
     @State private var selectedDays: Set<Weekday> = Set(Weekday.allCases)
     @State private var activityType: ActivityType = .mindfulness
+
+    // Tracker selection
+    @State private var selectedSource: ReminderSource = .activity(.mindfulness)
 
     let reminder: SmartReminder?
     let onSave: (SmartReminder) -> Void
@@ -381,7 +409,28 @@ struct ReminderEditorView: View {
             _isEnabled = State(initialValue: reminder.isEnabled)
             _selectedDays = State(initialValue: reminder.selectedDays)
             _activityType = State(initialValue: reminder.activityType)
+
+            // Determine source from existing reminder
+            if let trackerID = reminder.trackerID, let trackerName = reminder.trackerName {
+                _selectedSource = State(initialValue: .tracker(trackerID, trackerName))
+            } else {
+                _selectedSource = State(initialValue: .activity(reminder.activityType))
+            }
         }
+    }
+
+    /// Available sources: built-in activities + custom trackers
+    private var availableSources: [ReminderSource] {
+        var sources: [ReminderSource] = [
+            .activity(.mindfulness),
+            .activity(.workout),
+            .activity(.noalc)
+        ]
+        // Add custom trackers
+        for tracker in trackers {
+            sources.append(.tracker(tracker.id, tracker.name))
+        }
+        return sources
     }
 
     var body: some View {
@@ -395,10 +444,24 @@ struct ReminderEditorView: View {
                 }
 
                 Section(header: Text("Schedule")) {
-                    Picker("Activity Type", selection: $activityType) {
-                        Text("Meditation").tag(ActivityType.mindfulness)
-                        Text("Workout").tag(ActivityType.workout)
-                        Text("NoAlc").tag(ActivityType.noalc)
+                    // Activity/Tracker Picker
+                    Picker("Activity", selection: $selectedSource) {
+                        // Built-in activities
+                        Section(header: Text("Built-in")) {
+                            Text("Meditation").tag(ReminderSource.activity(.mindfulness))
+                            Text("Workout").tag(ReminderSource.activity(.workout))
+                            Text("NoAlc").tag(ReminderSource.activity(.noalc))
+                        }
+
+                        // Custom Trackers (if any)
+                        if !trackers.isEmpty {
+                            Section(header: Text("Custom Trackers")) {
+                                ForEach(trackers) { tracker in
+                                    Text("\(tracker.icon) \(tracker.name)")
+                                        .tag(ReminderSource.tracker(tracker.id, tracker.name))
+                                }
+                            }
+                        }
                     }
 
                     DatePicker("Time", selection: $triggerTime, displayedComponents: .hourAndMinute)
@@ -445,23 +508,47 @@ struct ReminderEditorView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        let newReminder = SmartReminder(
-                            id: reminder?.id ?? UUID(),
-                            title: title,
-                            message: message,
-                            hoursInactive: hoursInactive,
-                            triggerTime: triggerTime,
-                            isEnabled: isEnabled,
-                            selectedDays: selectedDays,
-                            activityType: activityType
-                        )
-                        onSave(newReminder)
-                        dismiss()
+                        saveReminder()
                     }
                     .disabled(title.isEmpty || message.isEmpty || selectedDays.isEmpty)
                 }
             }
         }
+    }
+
+    private func saveReminder() {
+        // Determine trackerID and trackerName based on selected source
+        let trackerID: UUID?
+        let trackerName: String?
+        let effectiveActivityType: ActivityType
+
+        switch selectedSource {
+        case .activity(let type):
+            trackerID = nil
+            trackerName = nil
+            effectiveActivityType = type
+        case .tracker(let id, let name):
+            trackerID = id
+            trackerName = name
+            // Use mindfulness as default activity type for tracker reminders
+            // (the trackerID is the real identifier)
+            effectiveActivityType = .mindfulness
+        }
+
+        let newReminder = SmartReminder(
+            id: reminder?.id ?? UUID(),
+            title: title,
+            message: message,
+            hoursInactive: hoursInactive,
+            triggerTime: triggerTime,
+            isEnabled: isEnabled,
+            selectedDays: selectedDays,
+            activityType: effectiveActivityType,
+            trackerID: trackerID,
+            trackerName: trackerName
+        )
+        onSave(newReminder)
+        dismiss()
     }
 }
 

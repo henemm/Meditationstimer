@@ -16,11 +16,15 @@ import SwiftData
 // MARK: - Editable Level (UI State)
 
 /// Mutable level struct for the editor UI
-struct EditableLevel: Identifiable {
+struct EditableLevel: Identifiable, Equatable {
     let id = UUID()
     var icon: String
     var name: String
     var streakEffect: StreakEffect
+
+    static func == (lhs: EditableLevel, rhs: EditableLevel) -> Bool {
+        lhs.id == rhs.id && lhs.icon == rhs.icon && lhs.name == rhs.name && lhs.streakEffect == rhs.streakEffect
+    }
 
     /// Default level for new entries
     static func makeDefault(index: Int) -> EditableLevel {

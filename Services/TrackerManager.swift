@@ -9,12 +9,14 @@
 
 import Foundation
 import SwiftData
+import HealthKit
 
 /// Manages Custom Trackers and their logs
 final class TrackerManager {
     static let shared = TrackerManager()
 
     private let calendar = Calendar.current
+    private let healthStore = HKHealthStore()
 
     private init() {}
 
@@ -57,7 +59,65 @@ final class TrackerManager {
         )
         context.insert(log)
         tracker.logs.append(log)
+
+        // HealthKit-Write (async, fire-and-forget)
+        if tracker.saveToHealthKit, let logValue = value {
+            Task {
+                await saveToHealthKit(tracker: tracker, value: logValue, date: log.timestamp)
+            }
+        }
+
+        // Cancel matching Smart Reminders for this tracker (Reverse Smart Reminders)
+        #if os(iOS)
+        SmartReminderEngine.shared.cancelMatchingTrackerReminders(for: tracker.id, completedAt: log.timestamp)
+        #endif
+
         return log
+    }
+
+    // MARK: - HealthKit Integration
+
+    /// Saves a tracker value to HealthKit
+    /// - Parameters:
+    ///   - tracker: The tracker with HealthKit configuration
+    ///   - value: The value to save (TrackerLevel.id for level-based trackers)
+    ///   - date: The timestamp for the log
+    private func saveToHealthKit(
+        tracker: Tracker,
+        value: Int,
+        date: Date
+    ) async {
+        guard tracker.saveToHealthKit,
+              let hkTypeId = tracker.healthKitType,
+              let hkType = HKQuantityType.quantityType(
+                  forIdentifier: HKQuantityTypeIdentifier(rawValue: hkTypeId)
+              ) else { return }
+
+        // Check HealthKit authorization status
+        let authStatus = healthStore.authorizationStatus(for: hkType)
+        guard authStatus == .sharingAuthorized else {
+            print("[TrackerManager] HealthKit not authorized for \(tracker.name), skipping save")
+            return
+        }
+
+        // For level-based trackers: Get HealthKit value from level mapping
+        let hkValue: Int
+        if let levels = tracker.levels,
+           let level = levels.first(where: { $0.id == value }) {
+            hkValue = level.healthKitValue
+        } else {
+            hkValue = value
+        }
+
+        do {
+            let quantity = HKQuantity(unit: .count(), doubleValue: Double(hkValue))
+            let assignedDay = tracker.effectiveDayAssignment.assignedDay(for: date, calendar: calendar)
+            let sample = HKQuantitySample(type: hkType, quantity: quantity, start: assignedDay, end: assignedDay)
+            try await healthStore.save(sample)
+            print("[TrackerManager] HealthKit save succeeded: \(hkValue) for \(tracker.name)")
+        } catch {
+            print("[TrackerManager] HealthKit save failed: \(error)")
+        }
     }
 
     /// Quick log (for counter +1 or yesNo)

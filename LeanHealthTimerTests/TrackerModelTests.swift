@@ -646,4 +646,174 @@ final class TrackerModelTests: XCTestCase {
         XCTAssertNotNil(todayLog, "Should have a log for today")
         XCTAssertEqual(todayLog?.value, steadyLevel.id)
     }
+
+    // MARK: - FEAT-37d: HealthKit Value Mapping Tests (TDD RED)
+
+    /// Test: TrackerLevel.healthKitValue for "steady" returns 0
+    /// This test will FAIL because healthKitValue property doesn't exist yet
+    func testTrackerLevelHealthKitValueSteady() {
+        // GIVEN: NoAlc steady level
+        let steadyLevel = TrackerLevel.noAlcLevels[0]
+        XCTAssertEqual(steadyLevel.key, "steady")
+
+        // WHEN: Accessing healthKitValue
+        // THEN: Should return 0 (HealthKit encoding for steady)
+        XCTAssertEqual(steadyLevel.healthKitValue, 0,
+            "Steady level should map to HealthKit value 0")
+    }
+
+    /// Test: TrackerLevel.healthKitValue for "easy" returns 4
+    /// This test will FAIL because healthKitValue property doesn't exist yet
+    func testTrackerLevelHealthKitValueEasy() {
+        // GIVEN: NoAlc easy level
+        let easyLevel = TrackerLevel.noAlcLevels[1]
+        XCTAssertEqual(easyLevel.key, "easy")
+
+        // WHEN: Accessing healthKitValue
+        // THEN: Should return 4 (HealthKit encoding for easy)
+        XCTAssertEqual(easyLevel.healthKitValue, 4,
+            "Easy level should map to HealthKit value 4")
+    }
+
+    /// Test: TrackerLevel.healthKitValue for "wild" returns 6
+    /// This test will FAIL because healthKitValue property doesn't exist yet
+    func testTrackerLevelHealthKitValueWild() {
+        // GIVEN: NoAlc wild level
+        let wildLevel = TrackerLevel.noAlcLevels[2]
+        XCTAssertEqual(wildLevel.key, "wild")
+
+        // WHEN: Accessing healthKitValue
+        // THEN: Should return 6 (HealthKit encoding for wild)
+        XCTAssertEqual(wildLevel.healthKitValue, 6,
+            "Wild level should map to HealthKit value 6")
+    }
+
+    // MARK: - Edit-Mode Tests (Generic Tracker System Completion)
+
+    /// Test: Tracker levels can be modified
+    func testTrackerLevelsCanBeModified() {
+        // GIVEN: A NoAlc tracker
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // Verify initial levels
+        XCTAssertEqual(tracker.levels?.count, 3)
+
+        // WHEN: Modifying levels
+        let newLevels = [
+            TrackerLevel(id: 0, key: "perfect", icon: "🌟", labelKey: "Perfect", streakEffect: .success),
+            TrackerLevel(id: 1, key: "good", icon: "✅", labelKey: "Good", streakEffect: .success),
+            TrackerLevel(id: 2, key: "okay", icon: "😐", labelKey: "Okay", streakEffect: .needsGrace),
+            TrackerLevel(id: 3, key: "bad", icon: "❌", labelKey: "Bad", streakEffect: .breaksStreak)
+        ]
+        tracker.levels = newLevels
+        try! context.save()
+
+        // THEN: Levels should be updated
+        XCTAssertEqual(tracker.levels?.count, 4)
+        XCTAssertEqual(tracker.levels?[0].key, "perfect")
+        XCTAssertEqual(tracker.levels?[3].streakEffect, .breaksStreak)
+    }
+
+    /// Test: Tracker rewardConfig (Joker System) can be modified
+    func testTrackerJokerConfigCanBeModified() {
+        // GIVEN: A NoAlc tracker with default joker config
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // Verify initial joker config
+        XCTAssertNotNil(tracker.rewardConfig)
+        XCTAssertEqual(tracker.rewardConfig?.earnEveryDays, 7)
+        XCTAssertEqual(tracker.rewardConfig?.maxOnHand, 3)
+
+        // WHEN: Modifying joker config
+        tracker.rewardConfig = RewardConfig(
+            earnEveryDays: 14,
+            maxOnHand: 5,
+            canHealGrace: true
+        )
+        try! context.save()
+
+        // THEN: Config should be updated
+        XCTAssertEqual(tracker.rewardConfig?.earnEveryDays, 14)
+        XCTAssertEqual(tracker.rewardConfig?.maxOnHand, 5)
+    }
+
+    /// Test: Tracker rewardConfig can be disabled
+    func testTrackerJokerConfigCanBeDisabled() {
+        // GIVEN: A NoAlc tracker with joker config
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+        XCTAssertNotNil(tracker.rewardConfig)
+
+        // WHEN: Disabling joker config
+        tracker.rewardConfig = nil
+        try! context.save()
+
+        // THEN: Config should be nil
+        XCTAssertNil(tracker.rewardConfig)
+    }
+
+    /// Test: Tracker dayAssignmentRaw can be modified
+    func testTrackerDayBoundaryCanBeModified() {
+        // GIVEN: A NoAlc tracker with 18:00 cutoff
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // Verify initial day boundary
+        if case .cutoffHour(let hour) = tracker.effectiveDayAssignment {
+            XCTAssertEqual(hour, 18)
+        } else {
+            XCTFail("Expected cutoffHour(18)")
+        }
+
+        // WHEN: Changing to different cutoff hour
+        tracker.dayAssignmentRaw = "cutoffHour:20"
+        try! context.save()
+
+        // THEN: Day boundary should be updated
+        if case .cutoffHour(let hour) = tracker.effectiveDayAssignment {
+            XCTAssertEqual(hour, 20)
+        } else {
+            XCTFail("Expected cutoffHour(20)")
+        }
+    }
+
+    /// Test: Tracker dayAssignmentRaw can be set to midnight
+    func testTrackerDayBoundaryCanBeSetToMidnight() {
+        // GIVEN: A NoAlc tracker with 18:00 cutoff
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+
+        // WHEN: Setting to midnight (nil = timestamp/midnight)
+        tracker.dayAssignmentRaw = nil
+        try! context.save()
+
+        // THEN: Should use timestamp (midnight)
+        if case .timestamp = tracker.effectiveDayAssignment {
+            // Success
+        } else {
+            XCTFail("Expected .timestamp")
+        }
+    }
 }

@@ -128,6 +128,72 @@ public final class SmartReminderEngine {
 
     // MARK: - Reverse Smart Reminders Logic
 
+    /// Cancels matching reminders for a Generic Tracker (Reverse Smart Reminders approach).
+    /// Called from TrackerManager after logging an entry.
+    ///
+    /// - Parameters:
+    ///   - trackerID: UUID of the tracker that was logged
+    ///   - completedAt: Date when the log was created
+    public func cancelMatchingTrackerReminders(for trackerID: UUID, completedAt: Date) {
+        let now = Date()
+        let lookAheadEnd = now.addingTimeInterval(24 * 3600)  // 24h window
+        let calendar = Calendar.current
+
+        logger.info("🔍 cancelMatchingTrackerReminders called for tracker: \(trackerID)")
+
+        // Find reminders linked to this tracker
+        let matchingReminders = reminders.filter { $0.isEnabled && $0.trackerID == trackerID }
+        logger.info("  → Enabled tracker reminders: \(matchingReminders.count)")
+
+        var cancelledCount = 0
+
+        for reminder in matchingReminders {
+            logger.info("  🔎 Processing tracker reminder '\(reminder.title)'")
+
+            for weekday in reminder.selectedDays {
+                if isCancelled(reminder.id, weekday) {
+                    continue
+                }
+
+                guard let nextTrigger = calculateNextTrigger(reminder: reminder, weekday: weekday, after: now, calendar: calendar) else {
+                    continue
+                }
+
+                if nextTrigger > lookAheadEnd {
+                    continue
+                }
+
+                let lookBackStart = nextTrigger.addingTimeInterval(-Double(reminder.lookbackHours) * 3600)
+                let lookBackEnd = nextTrigger
+
+                if completedAt >= lookBackStart && completedAt <= lookBackEnd {
+                    let cancelledNotification = CancelledNotification(
+                        reminderID: reminder.id,
+                        weekday: weekday,
+                        cancelledUntil: nextTrigger
+                    )
+
+                    if !cancelled.contains(cancelledNotification) {
+                        cancelled.append(cancelledNotification)
+
+                        #if os(iOS)
+                        let identifier = "activity-reminder-\(reminder.id.uuidString)-\(weekday.rawValue)"
+                        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+                        logger.info("    ✅ CANCELLED tracker reminder '\(reminder.title)' for \(weekday.displayName)")
+                        #endif
+
+                        cancelledCount += 1
+                    }
+                }
+            }
+        }
+
+        if cancelledCount > 0 {
+            saveCancelled()
+            logger.info("🎯 Cancelled \(cancelledCount) tracker reminder(s)")
+        }
+    }
+
     /// Cancels matching reminders based on completed activity (Reverse Smart Reminders approach).
     /// Called from HealthKitManager after logging activity.
     ///
