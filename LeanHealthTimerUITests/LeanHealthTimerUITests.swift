@@ -2524,6 +2524,68 @@ final class LeanHealthTimerUITests: XCTestCase {
             "BUG 2b: Tapping calendar button must open LevelSelectionView with DatePicker IMMEDIATELY visible (not hidden behind 'Advanced' button)")
     }
 
+    /// BUG 2b REGRESSION: After closing DatePicker sheet, NO compact sheet should appear
+    /// This tests that dismissing the expanded sheet doesn't trigger the compact sheet
+    func testDatePickerSheetCloseDoesNotShowCompactSheet() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(2)
+
+        // Scroll to see level tracker
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Find and tap the date picker button
+        let datePickerButton = app.buttons["trackerDateButton"]
+        guard datePickerButton.waitForExistence(timeout: 5) else {
+            XCTFail("trackerDateButton not found")
+            return
+        }
+        datePickerButton.tap()
+        sleep(2)
+
+        // Verify DatePicker sheet opened (expanded)
+        let chooseDateDE = app.staticTexts["Datum wählen"]
+        XCTAssertTrue(chooseDateDE.waitForExistence(timeout: 3), "DatePicker sheet should open")
+
+        // Close the sheet by tapping the X button
+        let closeButton = app.buttons.matching(NSPredicate(format: "label CONTAINS 'xmark' OR label CONTAINS 'close' OR label CONTAINS 'Schließen'")).firstMatch
+        if closeButton.exists {
+            closeButton.tap()
+        } else {
+            // Try swiping down to dismiss
+            app.swipeDown()
+        }
+        sleep(2)
+
+        // Take screenshot
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "AfterDatePickerClose"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        // Verify NO sheet is visible (no "Advanced" button = no compact sheet)
+        let advancedButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Advanced' OR label CONTAINS[c] 'Erweitert'")).firstMatch
+        let todayText = app.staticTexts["Today"]
+        let heuteText = app.staticTexts["Heute"]
+
+        // None of these compact sheet elements should be visible
+        let compactSheetVisible = advancedButton.exists || todayText.exists || heuteText.exists
+
+        XCTAssertFalse(compactSheetVisible,
+            "BUG 2b REGRESSION: After closing DatePicker sheet, compact sheet should NOT appear")
+    }
+
     /// BUG 2a: Test that level-based trackers show large icons (32px) in separate row
     /// The level buttons should take full width like NoAlc card, not be squished in HStack
     /// Uses existing Mood tracker which has 5 level icons

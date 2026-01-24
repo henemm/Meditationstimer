@@ -150,9 +150,7 @@ struct LevelSelectionView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        withAnimation {
-                            isExpanded = false
-                        }
+                        dismiss()  // BUG 2b FIX: Close sheet, don't switch to compact
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .symbolRenderingMode(.hierarchical)
