@@ -1,15 +1,11 @@
 {
-  "last_run": "2026-01-24T16:17:58.000000",
+  "last_run": "2026-01-24T17:06:53.000000",
   "success": true,
   "tests_passed": [
-    "testLevelTrackerShowsDatePickerButton",
-    "testDatePickerButtonOpensLevelSelectionView",
-    "testLevelTrackerShowsLargeIconsInSeparateRow",
     "testTrackerTabEditButtonVisibility"
   ],
   "covered_files": [
-    "Meditationstimer iOS/Tabs/TrackerTab.swift",
-    "Services/TrackerModels.swift"
+    "Meditationstimer iOS/Tabs/TrackerTab.swift"
   ],
-  "note": "FEAT-tracker-drag-drop: displayOrder + EditButton - UI test passed"
+  "note": "Fix: List height calculation to prevent overlap"
 }

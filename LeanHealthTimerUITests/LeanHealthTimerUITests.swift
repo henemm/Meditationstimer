@@ -2641,6 +2641,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Test: EditButton appears only when there are >1 custom trackers
     /// In default state (only Mood tracker), EditButton should NOT appear
     /// This validates the conditional visibility logic in TrackerTab
+    /// Fix: List height calculation improved to prevent overlap with Add Tracker button
     func testTrackerTabEditButtonVisibility() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]

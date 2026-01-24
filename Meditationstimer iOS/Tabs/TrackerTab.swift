@@ -213,21 +213,24 @@ struct TrackerTab: View {
             noAlcCard
 
             // Custom Trackers (sortable via drag & drop)
-            List {
-                ForEach(customTrackers) { tracker in
-                    TrackerRow(tracker: tracker) {
-                        trackerToEdit = tracker
+            if !customTrackers.isEmpty {
+                List {
+                    ForEach(customTrackers) { tracker in
+                        TrackerRow(tracker: tracker) {
+                            trackerToEdit = tracker
+                        }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
                     }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+                    .onMove(perform: moveTrackers)
                 }
-                .onMove(perform: moveTrackers)
+                .listStyle(.plain)
+                .environment(\.editMode, $editMode)
+                // Each TrackerRow is ~90pt (card + spacing), plus List overhead
+                .frame(height: CGFloat(customTrackers.count) * 100 + 20)
+                .scrollDisabled(true)
             }
-            .listStyle(.plain)
-            .environment(\.editMode, $editMode)
-            .frame(minHeight: CGFloat(customTrackers.count) * 80)
-            .scrollDisabled(true)  // Parent ScrollView handles scrolling
         }
     }
 
