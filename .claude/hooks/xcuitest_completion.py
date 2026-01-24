@@ -179,9 +179,40 @@ def save_xcuitest_state(state: dict):
         pass
 
 
-def run_xcuitests() -> tuple[bool, str, str]:
+def reset_simulator() -> bool:
+    """
+    Reset simulator to fix common issues (Exit Code 64, launch failures).
+    Returns True if reset was successful.
+    """
+    print("🔄 Simulator wird zurückgesetzt...", file=sys.stderr)
+
+    try:
+        # Shutdown all simulators
+        subprocess.run(["xcrun", "simctl", "shutdown", "all"],
+                      capture_output=True, timeout=30)
+
+        # Wait a moment
+        import time
+        time.sleep(2)
+
+        # Boot the target simulator
+        subprocess.run(["xcrun", "simctl", "boot", SIMULATOR_ID],
+                      capture_output=True, timeout=30)
+
+        # Wait for boot
+        time.sleep(5)
+
+        print("✅ Simulator zurückgesetzt", file=sys.stderr)
+        return True
+    except Exception as e:
+        print(f"⚠️ Simulator-Reset fehlgeschlagen: {e}", file=sys.stderr)
+        return False
+
+
+def run_xcuitests(retry_on_simulator_error: bool = True) -> tuple[bool, str, str]:
     """
     Run XCUITests and return (success, output, summary).
+    Will automatically reset simulator and retry on Exit Code 64.
     """
     project_root = get_project_root()
 
@@ -231,6 +262,13 @@ def run_xcuitests() -> tuple[bool, str, str]:
         if result.returncode == 0:
             return True, output, "✅ UI-Tests bestanden"
 
+        # Exit Code 64 = Simulator crash - try to fix automatically
+        if result.returncode == 64 and retry_on_simulator_error:
+            print(f"\n⚠️ Simulator-Fehler (Exit Code 64) - versuche automatische Reparatur...", file=sys.stderr)
+            if reset_simulator():
+                print("🔄 Wiederhole Tests nach Simulator-Reset...", file=sys.stderr)
+                return run_xcuitests(retry_on_simulator_error=False)  # One retry only
+
         return False, output, f"❌ UI-Tests fehlgeschlagen (Exit Code: {result.returncode})"
 
     except subprocess.TimeoutExpired:
@@ -243,31 +281,17 @@ def check_xcuitest_completion() -> tuple[bool, str]:
     """
     Check if XCUITests were run and passed.
     Returns (allowed, reason).
+
+    STRENGE REGEL: Tests werden IMMER ausgeführt wenn UI-Dateien geändert wurden.
+    JSON-State wird NICHT als Beweis akzeptiert (kann manuell manipuliert werden).
     """
     ui_files = get_changed_ui_files()
 
     if not ui_files:
         return True, "Keine UI-Dateien geändert"
 
-    # UI files changed - check XCUITest state
-    state = get_xcuitest_state()
-
-    last_run = state.get("last_run")
-    last_success = state.get("success", False)
-    last_files = set(state.get("tested_files", []))
-
-    # Check if we have a recent successful run that covers all changed files
-    if last_run and last_success:
-        try:
-            last_run_dt = datetime.fromisoformat(last_run)
-            # Must be within last hour
-            if datetime.now() - last_run_dt < timedelta(hours=1):
-                # Check if all UI files were tested
-                current_files = set(ui_files)
-                if current_files.issubset(last_files):
-                    return True, f"✅ UI-Tests bereits bestanden ({last_run_dt.strftime('%H:%M')})"
-        except:
-            pass
+    # UI files changed - IMMER Tests ausführen
+    # KEIN Skip basierend auf xcuitest_state.json (kann manipuliert werden!)
 
     # Need to run tests
     print(f"\n📋 UI-Dateien geändert:", file=sys.stderr)
