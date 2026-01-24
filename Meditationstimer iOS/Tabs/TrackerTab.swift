@@ -227,9 +227,9 @@ struct TrackerTab: View {
                 }
                 .listStyle(.plain)
                 .environment(\.editMode, $editMode)
-                // Each TrackerRow is ~90pt (card + spacing), plus List overhead
-                .frame(height: CGFloat(customTrackers.count) * 100 + 20)
                 .scrollDisabled(true)
+                // Let List take its natural height based on content
+                .fixedSize(horizontal: false, vertical: true)
             }
         }
     }

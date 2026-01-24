@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-01-24T17:06:53.000000",
+  "last_run": "2026-01-24T17:28:04.000000",
   "success": true,
   "tests_passed": [
     "testTrackerTabEditButtonVisibility"
@@ -7,5 +7,5 @@
   "covered_files": [
     "Meditationstimer iOS/Tabs/TrackerTab.swift"
   ],
-  "note": "Fix: List height calculation to prevent overlap"
+  "note": "Fix: Use fixedSize() for dynamic List height"
 }
