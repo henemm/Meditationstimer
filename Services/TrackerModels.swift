@@ -212,6 +212,7 @@ final class Tracker {
     var saveToHealthKit: Bool     // User toggle (default: true if healthKitType exists)
     var showInWidget: Bool        // Show in Tracker Widget
     var widgetOrder: Int          // Position in Widget (lower = higher priority)
+    var displayOrder: Int = 0     // Position in TrackerTab (for drag & drop sorting)
     var dailyGoal: Int?           // Target for counter-based trackers
     var showInCalendar: Bool      // Show as Focus Tracker ring in calendar
 
@@ -254,6 +255,7 @@ final class Tracker {
         saveToHealthKit: Bool = false,
         showInWidget: Bool = false,
         widgetOrder: Int = 999,
+        displayOrder: Int = 0,
         dailyGoal: Int? = nil,
         showInCalendar: Bool = false,
         supportsReminders: Bool = false,
@@ -271,6 +273,7 @@ final class Tracker {
         self.saveToHealthKit = saveToHealthKit
         self.showInWidget = showInWidget
         self.widgetOrder = widgetOrder
+        self.displayOrder = displayOrder
         self.dailyGoal = dailyGoal
         self.showInCalendar = showInCalendar
         self.supportsReminders = supportsReminders

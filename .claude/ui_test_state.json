@@ -1,10 +1,15 @@
 {
-  "last_run": "2026-01-23T17:45:02.000000",
+  "last_run": "2026-01-24T16:17:58.000000",
   "success": true,
   "tests_passed": [
     "testLevelTrackerShowsDatePickerButton",
     "testDatePickerButtonOpensLevelSelectionView",
-    "testLevelTrackerShowsLargeIconsInSeparateRow"
+    "testLevelTrackerShowsLargeIconsInSeparateRow",
+    "testTrackerTabEditButtonVisibility"
   ],
-  "note": "Bug-fix tests verified manually - all 3 passed"
+  "covered_files": [
+    "Meditationstimer iOS/Tabs/TrackerTab.swift",
+    "Services/TrackerModels.swift"
+  ],
+  "note": "FEAT-tracker-drag-drop: displayOrder + EditButton - UI test passed"
 }

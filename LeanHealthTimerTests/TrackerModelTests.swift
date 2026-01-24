@@ -816,4 +816,82 @@ final class TrackerModelTests: XCTestCase {
             XCTFail("Expected .timestamp")
         }
     }
+
+    // MARK: - TDD RED: Drag & Drop Sorting (FEAT-tracker-drag-drop)
+
+    /// Test: Tracker has displayOrder property that defaults to 0
+    /// This test will FAIL because displayOrder property doesn't exist yet
+    func testTrackerHasDisplayOrderProperty() {
+        // GIVEN: A new tracker
+        let tracker = Tracker(
+            name: "Test",
+            icon: "📝",
+            type: .good,
+            trackingMode: .yesNo
+        )
+        context.insert(tracker)
+        try! context.save()
+
+        // THEN: displayOrder should exist and default to 0
+        // NOTE: This will FAIL because displayOrder doesn't exist yet
+        XCTAssertEqual(tracker.displayOrder, 0,
+            "New tracker should have displayOrder = 0")
+    }
+
+    /// Test: Tracker displayOrder can be modified
+    /// This test will FAIL because displayOrder property doesn't exist yet
+    func testTrackerDisplayOrderCanBeModified() {
+        // GIVEN: Two trackers
+        let tracker1 = Tracker(
+            name: "First",
+            icon: "1️⃣",
+            type: .good,
+            trackingMode: .yesNo
+        )
+        let tracker2 = Tracker(
+            name: "Second",
+            icon: "2️⃣",
+            type: .good,
+            trackingMode: .yesNo
+        )
+        context.insert(tracker1)
+        context.insert(tracker2)
+
+        // WHEN: Setting displayOrder
+        tracker1.displayOrder = 2
+        tracker2.displayOrder = 1
+        try! context.save()
+
+        // THEN: Order should be persisted
+        XCTAssertEqual(tracker1.displayOrder, 2)
+        XCTAssertEqual(tracker2.displayOrder, 1)
+    }
+
+    /// Test: Trackers can be sorted by displayOrder
+    /// This test will FAIL because displayOrder property doesn't exist yet
+    func testTrackersSortByDisplayOrder() {
+        // GIVEN: Three trackers with different displayOrder
+        let trackerA = Tracker(name: "A", icon: "🅰️", type: .good, trackingMode: .yesNo)
+        let trackerB = Tracker(name: "B", icon: "🅱️", type: .good, trackingMode: .yesNo)
+        let trackerC = Tracker(name: "C", icon: "©️", type: .good, trackingMode: .yesNo)
+
+        context.insert(trackerA)
+        context.insert(trackerB)
+        context.insert(trackerC)
+
+        trackerA.displayOrder = 3
+        trackerB.displayOrder = 1
+        trackerC.displayOrder = 2
+        try! context.save()
+
+        // WHEN: Sorting by displayOrder
+        let sortDescriptor = SortDescriptor(\Tracker.displayOrder)
+        let descriptor = FetchDescriptor<Tracker>(sortBy: [sortDescriptor])
+        let sortedTrackers = try! context.fetch(descriptor)
+
+        // THEN: Should be sorted B, C, A
+        XCTAssertEqual(sortedTrackers[0].name, "B", "First should be B (order=1)")
+        XCTAssertEqual(sortedTrackers[1].name, "C", "Second should be C (order=2)")
+        XCTAssertEqual(sortedTrackers[2].name, "A", "Third should be A (order=3)")
+    }
 }

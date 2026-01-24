@@ -18,8 +18,12 @@ struct TrackerTab: View {
     @Environment(\.modelContext) private var modelContext
 
     // SwiftData Query for ALL active trackers (including NoAlc for parallel operation)
-    @Query(filter: #Predicate<Tracker> { $0.isActive }, sort: \Tracker.createdAt)
+    // FEAT-tracker-drag-drop: Sort by displayOrder for user-defined ordering
+    @Query(filter: #Predicate<Tracker> { $0.isActive }, sort: \Tracker.displayOrder)
     private var allTrackers: [Tracker]
+
+    // Edit mode for drag & drop reordering
+    @State private var editMode: EditMode = .inactive
 
     // NoAlc tracker query (separate for special handling of the FIRST/original NoAlc)
     @Query(filter: #Predicate<Tracker> { $0.name == "NoAlc" })
@@ -88,6 +92,15 @@ struct TrackerTab: View {
             .scrollBounceBehavior(.basedOnSize)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                // FEAT-tracker-drag-drop: EditButton for reordering (only with >1 custom trackers)
+                ToolbarItem(placement: .topBarTrailing) {
+                    if customTrackers.count > 1 {
+                        EditButton()
+                            .environment(\.editMode, $editMode)
+                    }
+                }
+            }
             .sheet(isPresented: $showingNoAlcLog) {
                 // CRITICAL: NoAlcLogSheet provides LOG functionality with:
                 // - Quick log buttons (Steady, Easy, Wild)
@@ -196,16 +209,44 @@ struct TrackerTab: View {
                 .textCase(.uppercase)
                 .padding(.horizontal, 4)
 
-            // NoAlc as built-in tracker (always first)
+            // NoAlc as built-in tracker (always first, NOT sortable)
             noAlcCard
 
-            // Custom Trackers
-            ForEach(customTrackers) { tracker in
-                TrackerRow(tracker: tracker) {
-                    trackerToEdit = tracker
+            // Custom Trackers (sortable via drag & drop)
+            List {
+                ForEach(customTrackers) { tracker in
+                    TrackerRow(tracker: tracker) {
+                        trackerToEdit = tracker
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
                 }
+                .onMove(perform: moveTrackers)
             }
+            .listStyle(.plain)
+            .environment(\.editMode, $editMode)
+            .frame(minHeight: CGFloat(customTrackers.count) * 80)
+            .scrollDisabled(true)  // Parent ScrollView handles scrolling
         }
+    }
+
+    // MARK: - Drag & Drop Handler
+
+    private func moveTrackers(from source: IndexSet, to destination: Int) {
+        // Create mutable copy of current order
+        var trackers = customTrackers
+
+        // Perform the move
+        trackers.move(fromOffsets: source, toOffset: destination)
+
+        // Update displayOrder for all trackers
+        for (index, tracker) in trackers.enumerated() {
+            tracker.displayOrder = index
+        }
+
+        // Persist changes
+        try? modelContext.save()
     }
 
     // MARK: - NoAlc Card (within Trackers section)
