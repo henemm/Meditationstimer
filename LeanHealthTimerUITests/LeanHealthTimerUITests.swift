@@ -275,8 +275,49 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3), "Add Tracker button should exist in Tracker tab")
     }
 
+    /// Test that tapping a preset creates a tracker that appears in the list
+    /// This is the EXACT user scenario: tap preset -> sheet closes -> tracker should appear
+    func testPresetTapCreatesVisibleTracker() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Go to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Scroll to Add Tracker button
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Tap Add Tracker
+        let addButton = app.buttons["Add Tracker"]
+        XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
+        addButton.tap()
+        sleep(1)
+
+        // Tap on "Dankbarkeit" preset (unique name, won't conflict)
+        let preset = app.staticTexts["Dankbarkeit"]
+        XCTAssertTrue(preset.waitForExistence(timeout: 3), "Dankbarkeit preset should exist")
+        preset.tap()
+        sleep(2)
+
+        // Sheet should close automatically - verify we're back on Tracker tab
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 3), "Should be back on Tracker tab")
+
+        // THE CRITICAL CHECK: Dankbarkeit tracker should now appear in the list
+        let newTracker = app.staticTexts["Dankbarkeit"]
+        XCTAssertTrue(newTracker.waitForExistence(timeout: 5), "🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!")
+    }
+
     /// Test that creating a tracker from a preset persists the tracker after app restart
     /// Verifies the critical bug fix: modelContext.save() before dismiss()
+    /// Bug: Trackers don't appear after creation - sheet closes but no tracker in list
     func testTrackerCreationFromPresetPersistsAfterRestart() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]

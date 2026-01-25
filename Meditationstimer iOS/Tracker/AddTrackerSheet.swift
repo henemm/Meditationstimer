@@ -106,6 +106,7 @@ struct AddTrackerSheet: View {
 
     private func createTracker(from preset: TrackerPreset) {
         _ = manager.createFromPreset(preset, in: modelContext)
+        try? modelContext.save()
         dismiss()
     }
 }

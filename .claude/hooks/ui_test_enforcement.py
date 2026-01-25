@@ -47,7 +47,7 @@ def get_config() -> dict:
 
     return {
         "enabled": enforcement.get("enabled", True),
-        "simulator_id": enforcement.get("simulator_id", "EEF5B0DE-6B96-47CE-AA57-2EE024371F00"),
+        "simulator_id": enforcement.get("simulator_id", "D9F59FE4-BAD3-4F33-B684-2A1299C9200C"),
         "project": enforcement.get("project", "Meditationstimer.xcodeproj"),
         "scheme": enforcement.get("scheme", "Lean Health Timer"),
         "timeout": enforcement.get("timeout", 600),  # 10 minutes for full UI test suite

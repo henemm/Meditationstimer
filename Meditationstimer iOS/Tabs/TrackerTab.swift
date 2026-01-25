@@ -255,8 +255,8 @@ struct TrackerTab: View {
                 .listStyle(.plain)
                 .environment(\.editMode, $editMode)
                 .scrollDisabled(true)
-                // Let List take its natural height based on content
-                .fixedSize(horizontal: false, vertical: true)
+                // FIX: Calculate height based on number of trackers (150pt each for trackers with emoji buttons)
+                .frame(height: CGFloat(customTrackers.count) * 150)
             }
         }
     }
