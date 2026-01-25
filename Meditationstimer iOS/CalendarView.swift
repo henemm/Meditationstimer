@@ -50,19 +50,16 @@ struct CalendarView: View {
     @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
 
-    // Use the Generic Tracker System for NoAlc streak calculation
-    // Falls back to HealthKit-based calculation if no SwiftData tracker exists
+    // NoAlc streak calculation: ALWAYS use HealthKit data (alcoholDays)
+    // Per spec: "Same HealthKit query for calendar display AND streak calculation"
+    // The Generic Tracker System is for local-only trackers, not HealthKit-based ones
     private var noAlcStreakResult: StreakResult {
-        if let tracker = noAlcTracker {
-            return TrackerManager.shared.calculateStreakResult(for: tracker)
-        }
-        // Fallback to legacy calculation during migration period
-        let legacyResult = NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
+        let healthKitResult = NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
         return StreakResult(
-            currentStreak: legacyResult.streak,
-            longestStreak: legacyResult.streak,
-            availableRewards: legacyResult.rewards,
-            totalRewardsEarned: legacyResult.rewards,
+            currentStreak: healthKitResult.streak,
+            longestStreak: healthKitResult.streak,
+            availableRewards: healthKitResult.rewards,
+            totalRewardsEarned: healthKitResult.rewards,
             totalRewardsUsed: 0
         )
     }

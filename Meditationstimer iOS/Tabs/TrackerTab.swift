@@ -57,21 +57,22 @@ struct TrackerTab: View {
     // NoAlc feedback state
     @State private var loggedLevel: TrackerLevel? = nil
 
+    // HealthKit data for NoAlc streak calculation (per spec: HealthKit is source of truth)
+    @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
+    private let calendar = Calendar.current
+
     // MARK: - Computed Properties
 
-    /// Calculate NoAlc streak and joker info using Generic Tracker System
+    /// Calculate NoAlc streak using HealthKit data (NOT SwiftData logs!)
+    /// Per spec: "Same HealthKit query for calendar display AND streak calculation"
     private var noAlcStreakResult: StreakResult {
-        guard let tracker = noAlcTracker else {
-            return .zero
-        }
-
-        let calculator = StreakCalculator()
-        return calculator.calculate(
-            logs: tracker.logs,
-            valueType: tracker.effectiveValueType,
-            successCondition: tracker.effectiveSuccessCondition,
-            dayAssignment: tracker.effectiveDayAssignment,
-            rewardConfig: tracker.rewardConfig
+        let healthKitResult = NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
+        return StreakResult(
+            currentStreak: healthKitResult.streak,
+            longestStreak: healthKitResult.streak,
+            availableRewards: healthKitResult.rewards,
+            totalRewardsEarned: healthKitResult.rewards,
+            totalRewardsUsed: 0
         )
     }
 
@@ -120,6 +121,29 @@ struct TrackerTab: View {
             .sheet(item: $trackerToEdit) { tracker in
                 TrackerEditorSheet(tracker: tracker)
             }
+            .task {
+                await loadNoAlcData()
+            }
+        }
+    }
+
+    /// Load NoAlc data from HealthKit for streak calculation
+    /// Per spec: "HealthKit is source of truth for NoAlc"
+    private func loadNoAlcData() async {
+        var loadedDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
+
+        // Load last 90 days of NoAlc data from HealthKit
+        for dayOffset in 0..<90 {
+            guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: Date()) else { continue }
+            let dayStart = calendar.startOfDay(for: date)
+
+            if let level = try? await NoAlcManager.shared.fetchConsumption(for: dayStart) {
+                loadedDays[dayStart] = level
+            }
+        }
+
+        await MainActor.run {
+            self.alcoholDays = loadedDays
         }
     }
 
@@ -156,6 +180,9 @@ struct TrackerTab: View {
                     default: legacyLevel = .steady
                     }
                     try await NoAlcManager.shared.logConsumption(legacyLevel, for: Date())
+
+                    // Reload HealthKit data to update streak display
+                    await loadNoAlcData()
                 } catch {
                     print("[NoAlc] HealthKit log failed: \(error)")
                 }

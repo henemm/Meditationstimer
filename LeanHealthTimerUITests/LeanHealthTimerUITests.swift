@@ -275,6 +275,73 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 3), "Add Tracker button should exist in Tracker tab")
     }
 
+    /// Test that creating a tracker from a preset persists the tracker after app restart
+    /// Verifies the critical bug fix: modelContext.save() before dismiss()
+    func testTrackerCreationFromPresetPersistsAfterRestart() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Scroll down to find Add Tracker button
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Open Add Tracker sheet
+        let addTrackerButton = app.buttons["Add Tracker"]
+        guard addTrackerButton.waitForExistence(timeout: 3) else {
+            XCTFail("Add Tracker button should exist")
+            return
+        }
+        addTrackerButton.tap()
+        sleep(1)
+
+        // Select Doomscrolling preset (same name in EN/DE, saboteur category)
+        let doomscrollingPreset = app.staticTexts["Doomscrolling"]
+        guard doomscrollingPreset.waitForExistence(timeout: 3) else {
+            let cancelButton = app.buttons["Cancel"]
+            if cancelButton.exists { cancelButton.tap() }
+            XCTFail("Doomscrolling preset should exist in Add Tracker sheet")
+            return
+        }
+        doomscrollingPreset.tap()
+        sleep(1)
+
+        // Verify we're back on Tracker tab (sheet dismissed)
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 3), "Should be back on Tracker tab after creating tracker")
+
+        // Verify the tracker was created (Doomscrolling should appear)
+        let doomscrollingTracker = app.staticTexts["Doomscrolling"]
+        // May need to scroll up to see it
+        if scrollView.exists {
+            scrollView.swipeDown()
+            sleep(1)
+        }
+        XCTAssertTrue(doomscrollingTracker.waitForExistence(timeout: 3), "Doomscrolling tracker should appear after creation")
+
+        // CRITICAL TEST: Restart app and verify persistence
+        app.terminate()
+        sleep(1)
+        app.launch()
+
+        // Navigate back to Tracker tab
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Verify Doomscrolling tracker still exists after restart
+        let persistedTracker = app.staticTexts["Doomscrolling"]
+        XCTAssertTrue(persistedTracker.waitForExistence(timeout: 5), "Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()")
+    }
+
     // MARK: - Phase 2.5: Custom Tracker Tests
     // Note: Custom Tracker sheet tests are tested indirectly via:
     // - testCounterTrackerShowsCorrectCountFormat (creates Water tracker)
