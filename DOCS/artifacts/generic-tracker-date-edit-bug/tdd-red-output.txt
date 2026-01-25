@@ -1,0 +1,10 @@
+TDD RED: Test testLogEntryWithCustomTimestamp FAILED
+
+Compiler Error:
+/Users/hem/Documents/opt/Meditationstimer/Meditationstimer/LeanHealthTimerTests/TrackerModelTests.swift:892:24: error: extra argument 'timestamp' in call
+            timestamp: yesterday,
+	Extra argument 'timestamp' in call
+** TEST FAILED **
+
+This proves the timestamp parameter does not exist yet in TrackerManager.logEntry().
+Date: So. 25 Jan. 2026 17:47:45 CET

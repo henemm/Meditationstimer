@@ -867,6 +867,66 @@ final class TrackerModelTests: XCTestCase {
         XCTAssertEqual(tracker2.displayOrder, 1)
     }
 
+    // MARK: - TDD RED: Custom Timestamp for logEntry (Date Edit Bug Fix)
+
+    /// Test: TrackerManager.logEntry accepts custom timestamp
+    /// This test will FAIL because timestamp parameter doesn't exist yet
+    func testLogEntryWithCustomTimestamp() {
+        // GIVEN: A tracker
+        let tracker = Tracker(
+            name: "Test",
+            icon: "📝",
+            type: .good,
+            trackingMode: .counter
+        )
+        context.insert(tracker)
+
+        // WHEN: Logging with a custom timestamp (yesterday)
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
+
+        // NOTE: This will FAIL because timestamp parameter doesn't exist yet
+        let log = TrackerManager.shared.logEntry(
+            for: tracker,
+            value: 1,
+            timestamp: yesterday,
+            in: context
+        )
+        try! context.save()
+
+        // THEN: Log should have the custom timestamp
+        XCTAssertTrue(
+            calendar.isDate(log.timestamp, inSameDayAs: yesterday),
+            "Log timestamp should be yesterday, not today"
+        )
+    }
+
+    /// Test: TrackerManager.logEntry defaults to now when no timestamp given
+    func testLogEntryDefaultsToNow() {
+        // GIVEN: A tracker
+        let tracker = Tracker(
+            name: "Test",
+            icon: "📝",
+            type: .good,
+            trackingMode: .counter
+        )
+        context.insert(tracker)
+
+        // WHEN: Logging without timestamp (default behavior)
+        let beforeLog = Date()
+        let log = TrackerManager.shared.logEntry(
+            for: tracker,
+            value: 1,
+            in: context
+        )
+        let afterLog = Date()
+        try! context.save()
+
+        // THEN: Log should have current timestamp
+        XCTAssertTrue(log.timestamp >= beforeLog && log.timestamp <= afterLog,
+            "Log timestamp should be between beforeLog and afterLog (i.e., now)")
+    }
+
     /// Test: Trackers can be sorted by displayOrder
     /// This test will FAIL because displayOrder property doesn't exist yet
     func testTrackersSortByDisplayOrder() {

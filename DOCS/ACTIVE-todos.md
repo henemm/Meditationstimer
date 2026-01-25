@@ -1,7 +1,39 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 18. Januar 2026 (Generic Tracker Feature-Parität Analyse)
+**Letzte Aktualisierung:** 25. Januar 2026 (Generic Tracker Date Edit Bug Fix)
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
+
+---
+
+## ✅ Bug: Generic Tracker Date Edit - GEFIXT
+
+**Datum:** 25. Januar 2026
+**Status:** ✅ IMPLEMENTIERT (Tests pending wegen Simulator-Infrastruktur)
+
+**Problem:**
+Generic NoAlc Tracker ignorierte das vom User gewählte Datum im "Erweitert"-Modus.
+Änderungen wurden immer für HEUTE gespeichert, nicht für das ausgewählte Datum.
+
+**Reproduktion:**
+1. Tracker Tab → Generic NoAlc Tracker
+2. "Erweitert" (oder Kalender-Button) antippen
+3. Anderes Datum wählen (z.B. gestern)
+4. Level auswählen → Speichern
+5. **Erwartet:** Eintrag bei gewähltem Datum
+6. **Tatsächlich:** Eintrag bei HEUTE (Bug!)
+
+**Root Cause:**
+`LevelSelectionView.swift:207-215` - Die Variable `dateToLog` wurde berechnet aber nie an `logEntry()` übergeben.
+`TrackerManager.logEntry()` hatte keinen `timestamp`-Parameter.
+
+**Fix:**
+1. `TrackerManager.swift`: Neuer `timestamp: Date = Date()` Parameter
+2. `LevelSelectionView.swift`: `timestamp: dateToLog` an logEntry übergeben
+
+**Tests:**
+- [x] Unit Test `testLogEntryWithCustomTimestamp` geschrieben
+- [x] Build erfolgreich
+- [ ] Manueller Test auf Device (Simulator hat Infrastruktur-Probleme)
 
 ---
 

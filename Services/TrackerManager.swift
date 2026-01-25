@@ -42,15 +42,25 @@ final class TrackerManager {
     // MARK: - Logging
 
     /// Log an entry for a tracker
+    /// - Parameters:
+    ///   - tracker: The tracker to log for
+    ///   - value: Optional value (for counter/level trackers)
+    ///   - note: Optional note text
+    ///   - trigger: Optional trigger description (for saboteur trackers)
+    ///   - location: Optional location
+    ///   - timestamp: The timestamp for the log (defaults to now)
+    ///   - context: The ModelContext to insert into
     func logEntry(
         for tracker: Tracker,
         value: Int? = nil,
         note: String? = nil,
         trigger: String? = nil,
         location: String? = nil,
+        timestamp: Date = Date(),
         in context: ModelContext
     ) -> TrackerLog {
         let log = TrackerLog(
+            timestamp: timestamp,
             value: value,
             note: note,
             trigger: trigger,

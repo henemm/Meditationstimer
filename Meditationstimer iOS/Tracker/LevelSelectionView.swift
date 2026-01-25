@@ -206,11 +206,12 @@ struct LevelSelectionView: View {
         // Use selected date if expanded, otherwise today
         let dateToLog = isExpanded ? selectedDate : Date()
 
-        // Log entry with level ID as value
+        // Log entry with level ID as value and selected timestamp
         _ = manager.logEntry(
             for: tracker,
             value: level.id,
             note: "\(level.icon) \(level.localizedLabel)",
+            timestamp: dateToLog,
             in: modelContext
         )
 
