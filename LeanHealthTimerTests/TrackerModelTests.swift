@@ -953,6 +953,31 @@ final class TrackerModelTests: XCTestCase {
             "Tracker without levels should use value as-is (fallback)")
     }
 
+    // MARK: - Notification Action to Level ID Mapping
+
+    /// Test: Valid notification actions map to correct level IDs
+    func testMapNotificationActionToLevelId() {
+        // NOALC_STEADY → 0
+        XCTAssertEqual(TrackerManager.levelIdForNotificationAction("NOALC_STEADY"), 0,
+            "NOALC_STEADY should map to level ID 0")
+        // NOALC_EASY → 1
+        XCTAssertEqual(TrackerManager.levelIdForNotificationAction("NOALC_EASY"), 1,
+            "NOALC_EASY should map to level ID 1")
+        // NOALC_WILD → 2
+        XCTAssertEqual(TrackerManager.levelIdForNotificationAction("NOALC_WILD"), 2,
+            "NOALC_WILD should map to level ID 2")
+    }
+
+    /// Test: Unknown notification actions return nil
+    func testMapNotificationActionInvalid() {
+        XCTAssertNil(TrackerManager.levelIdForNotificationAction("UNKNOWN_ACTION"),
+            "Unknown action should return nil")
+        XCTAssertNil(TrackerManager.levelIdForNotificationAction(""),
+            "Empty action should return nil")
+        XCTAssertNil(TrackerManager.levelIdForNotificationAction("UNNotificationDefaultActionIdentifier"),
+            "Default action should return nil")
+    }
+
     // MARK: - TDD RED: Custom Timestamp for logEntry (Date Edit Bug Fix)
 
     /// Test: TrackerManager.logEntry accepts custom timestamp

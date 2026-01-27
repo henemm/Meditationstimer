@@ -26,6 +26,9 @@ struct Meditationstimer_iOSApp: App {
     // SwiftData ModelContainer for Custom Trackers
     let modelContainer: ModelContainer
 
+    // Static access for notification action handler (AppDelegate needs SwiftData access)
+    static var sharedModelContainer: ModelContainer!
+
     init() {
         // Detect UI test mode - use in-memory storage to avoid disk conflicts
         var inMemory = false
@@ -42,6 +45,8 @@ struct Meditationstimer_iOSApp: App {
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
         }
+
+        Self.sharedModelContainer = modelContainer
     }
 
     var body: some Scene {
@@ -129,7 +134,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        // Handle NoAlc direct logging
+        // Handle NoAlc direct logging (dual-log: Legacy + Generic Tracker)
         Task { @MainActor in
             switch response.actionIdentifier {
             case "NOALC_STEADY":
@@ -141,8 +146,34 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             default:
                 break
             }
+
+            // Dual-log: Also log to Generic Tracker (SwiftData) if trackerID present
+            let userInfo = response.notification.request.content.userInfo
+            if let trackerIDString = userInfo["trackerID"] as? String,
+               let trackerID = UUID(uuidString: trackerIDString) {
+                await logTrackerFromNotification(trackerID: trackerID, actionIdentifier: response.actionIdentifier)
+            }
+
             completionHandler()
         }
+    }
+
+    /// Log to Generic Tracker (SwiftData) from notification action
+    @MainActor
+    private func logTrackerFromNotification(trackerID: UUID, actionIdentifier: String) async {
+        // Map notification action → level ID (centralized in TrackerManager)
+        guard let levelId = TrackerManager.levelIdForNotificationAction(actionIdentifier) else { return }
+
+        guard let container = Meditationstimer_iOSApp.sharedModelContainer else { return }
+        let context = container.mainContext
+
+        let descriptor = FetchDescriptor<Tracker>(predicate: #Predicate { $0.id == trackerID })
+        guard let tracker = try? context.fetch(descriptor).first else { return }
+
+        let _ = TrackerManager.shared.logEntry(for: tracker, value: levelId, in: context)
+        try? context.save()
+
+        print("✅ Dual-logged Generic Tracker: level \(levelId) for tracker \(tracker.name)")
     }
 
     /// Log NoAlc consumption from notification action

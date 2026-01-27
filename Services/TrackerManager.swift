@@ -254,6 +254,19 @@ final class TrackerManager {
         return max(0, daysSinceLastLog)
     }
 
+    // MARK: - Notification Action Mapping
+
+    /// Maps a notification action identifier to a NoAlc level ID.
+    /// Returns nil for unknown actions.
+    static func levelIdForNotificationAction(_ actionIdentifier: String) -> Int? {
+        switch actionIdentifier {
+        case "NOALC_STEADY": return 0
+        case "NOALC_EASY":   return 1
+        case "NOALC_WILD":   return 2
+        default: return nil
+        }
+    }
+
     // MARK: - Preset Access
 
     /// Get all predefined presets

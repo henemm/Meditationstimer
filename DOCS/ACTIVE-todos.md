@@ -818,6 +818,7 @@ Alle bisherigen Tests liefen im Simulator oder via Unit Tests. HealthKit verhäl
 | TrackerMigration | ✅ | Auto-Create NoAlc beim App-Start |
 | Quick-Log Buttons | ✅ | Emoji-Buttons mit Feedback |
 | Dual-Write | ✅ | SwiftData + HealthKit parallel |
+| Notification-Action Dual-Log | ✅ | SmartReminder Actions → Legacy + Generic Tracker |
 | Lokalisierung | ✅ | DE: Kaum/Überschaubar/Party |
 
 ---
@@ -849,6 +850,10 @@ Alle bisherigen Tests liefen im Simulator oder via Unit Tests. HealthKit verhäl
 User loggt im TrackerTab:
   ├── SwiftData: Tracker.logLevel() → TrackerLog gespeichert
   └── HealthKit: NoAlcManager.logConsumption() → HKQuantitySample gespeichert
+
+User tippt Notification-Action (💧/✨/💥):
+  ├── Legacy: NoAlcManager.logConsumption() → HKQuantitySample gespeichert
+  └── Generic: TrackerManager.logEntry() → SwiftData + HealthKit + Reverse Cancel
 
 Kalender liest Daten:
   └── Noch von HealthKit via NoAlcManager.fetchConsumption()

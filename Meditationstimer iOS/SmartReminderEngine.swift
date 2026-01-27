@@ -402,6 +402,11 @@ public final class SmartReminderEngine {
                 content.categoryIdentifier = "NOALC_LOG_CATEGORY"
             }
 
+            // Generic Tracker: Include trackerID for dual-logging in action handler
+            if let trackerID = reminder.trackerID {
+                content.userInfo["trackerID"] = trackerID.uuidString
+            }
+
             // Unique identifier per weekday
             let identifier = "activity-reminder-\(reminder.id.uuidString)-\(weekday.rawValue)"
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
