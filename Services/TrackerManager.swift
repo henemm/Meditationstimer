@@ -71,9 +71,15 @@ final class TrackerManager {
         tracker.logs.append(log)
 
         // HealthKit-Write (async, fire-and-forget)
+        // Resolve all values on MainActor BEFORE Task boundary to avoid SwiftData actor-isolation issues
         if tracker.saveToHealthKit, let logValue = value {
+            let hkValue = resolveHealthKitValue(for: tracker, levelId: logValue)
+            let hkTypeId = tracker.healthKitType
+            let trackerName = tracker.name
+            let dayAssignment = tracker.effectiveDayAssignment
+
             Task {
-                await saveToHealthKit(tracker: tracker, value: logValue, date: log.timestamp)
+                await saveToHealthKitDirect(hkTypeId: hkTypeId, hkValue: hkValue, date: log.timestamp, dayAssignment: dayAssignment, trackerName: trackerName)
             }
         }
 
@@ -87,44 +93,45 @@ final class TrackerManager {
 
     // MARK: - HealthKit Integration
 
-    /// Saves a tracker value to HealthKit
-    /// - Parameters:
-    ///   - tracker: The tracker with HealthKit configuration
-    ///   - value: The value to save (TrackerLevel.id for level-based trackers)
-    ///   - date: The timestamp for the log
-    private func saveToHealthKit(
-        tracker: Tracker,
-        value: Int,
-        date: Date
+    /// Resolves the HealthKit value for a tracker level.
+    /// For level-based trackers, maps level.id to level.healthKitValue (e.g., wild id=2 → drink count 6).
+    /// For non-level trackers, returns the value as-is (fallback).
+    ///
+    /// IMPORTANT: Call this on MainActor where tracker.levels is accessible via SwiftData.
+    func resolveHealthKitValue(for tracker: Tracker, levelId: Int) -> Int {
+        if let levels = tracker.levels,
+           let level = levels.first(where: { $0.id == levelId }) {
+            return level.healthKitValue
+        }
+        return levelId
+    }
+
+    /// Saves a resolved HealthKit value. Only accepts primitive types (no @Model objects)
+    /// to avoid SwiftData actor-isolation issues across Task boundaries.
+    private func saveToHealthKitDirect(
+        hkTypeId: String?,
+        hkValue: Int,
+        date: Date,
+        dayAssignment: DayAssignment,
+        trackerName: String
     ) async {
-        guard tracker.saveToHealthKit,
-              let hkTypeId = tracker.healthKitType,
+        guard let hkTypeId,
               let hkType = HKQuantityType.quantityType(
                   forIdentifier: HKQuantityTypeIdentifier(rawValue: hkTypeId)
               ) else { return }
 
-        // Check HealthKit authorization status
         let authStatus = healthStore.authorizationStatus(for: hkType)
         guard authStatus == .sharingAuthorized else {
-            print("[TrackerManager] HealthKit not authorized for \(tracker.name), skipping save")
+            print("[TrackerManager] HealthKit not authorized for \(trackerName), skipping save")
             return
-        }
-
-        // For level-based trackers: Get HealthKit value from level mapping
-        let hkValue: Int
-        if let levels = tracker.levels,
-           let level = levels.first(where: { $0.id == value }) {
-            hkValue = level.healthKitValue
-        } else {
-            hkValue = value
         }
 
         do {
             let quantity = HKQuantity(unit: .count(), doubleValue: Double(hkValue))
-            let assignedDay = tracker.effectiveDayAssignment.assignedDay(for: date, calendar: calendar)
+            let assignedDay = dayAssignment.assignedDay(for: date, calendar: calendar)
             let sample = HKQuantitySample(type: hkType, quantity: quantity, start: assignedDay, end: assignedDay)
             try await healthStore.save(sample)
-            print("[TrackerManager] HealthKit save succeeded: \(hkValue) for \(tracker.name)")
+            print("[TrackerManager] HealthKit save succeeded: \(hkValue) for \(trackerName)")
         } catch {
             print("[TrackerManager] HealthKit save failed: \(error)")
         }

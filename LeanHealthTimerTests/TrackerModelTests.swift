@@ -867,6 +867,92 @@ final class TrackerModelTests: XCTestCase {
         XCTAssertEqual(tracker2.displayOrder, 1)
     }
 
+    // MARK: - TDD RED: HealthKit Value Resolution (NoAlc HealthKit Value Bug)
+
+    /// Test: resolveHealthKitValue for NoAlc "wild" (id=2) returns 6, not 2
+    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
+    func testResolveHealthKitValueWild() {
+        // GIVEN: A NoAlc tracker with levels
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+        try! context.save()
+
+        // WHEN: Resolving HealthKit value for "wild" level (id=2)
+        let hkValue = TrackerManager.shared.resolveHealthKitValue(for: tracker, levelId: 2)
+
+        // THEN: Should return 6 (drink count), NOT 2 (level id)
+        XCTAssertEqual(hkValue, 6,
+            "Wild level (id=2) should resolve to HealthKit value 6, not 2")
+    }
+
+    /// Test: resolveHealthKitValue for NoAlc "easy" (id=1) returns 4, not 1
+    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
+    func testResolveHealthKitValueEasy() {
+        // GIVEN: A NoAlc tracker with levels
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+        try! context.save()
+
+        // WHEN: Resolving HealthKit value for "easy" level (id=1)
+        let hkValue = TrackerManager.shared.resolveHealthKitValue(for: tracker, levelId: 1)
+
+        // THEN: Should return 4, NOT 1
+        XCTAssertEqual(hkValue, 4,
+            "Easy level (id=1) should resolve to HealthKit value 4, not 1")
+    }
+
+    /// Test: resolveHealthKitValue for NoAlc "steady" (id=0) returns 0
+    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
+    func testResolveHealthKitValueSteady() {
+        // GIVEN: A NoAlc tracker with levels
+        guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
+            XCTFail("NoAlc preset should exist")
+            return
+        }
+        let tracker = noAlcPreset.createTracker()
+        context.insert(tracker)
+        try! context.save()
+
+        // WHEN: Resolving HealthKit value for "steady" level (id=0)
+        let hkValue = TrackerManager.shared.resolveHealthKitValue(for: tracker, levelId: 0)
+
+        // THEN: Should return 0
+        XCTAssertEqual(hkValue, 0,
+            "Steady level (id=0) should resolve to HealthKit value 0")
+    }
+
+    /// Test: resolveHealthKitValue for tracker WITHOUT levels uses fallback (value = levelId)
+    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
+    func testResolveHealthKitValueFallbackNoLevels() {
+        // GIVEN: A counter tracker WITHOUT levels
+        let tracker = Tracker(
+            name: "Water",
+            icon: "💧",
+            type: .good,
+            trackingMode: .counter,
+            healthKitType: "HKQuantityTypeIdentifierDietaryWater",
+            saveToHealthKit: true,
+            dailyGoal: 8
+        )
+        context.insert(tracker)
+        try! context.save()
+
+        // WHEN: Resolving HealthKit value for value 5
+        let hkValue = TrackerManager.shared.resolveHealthKitValue(for: tracker, levelId: 5)
+
+        // THEN: Should return 5 (fallback: value = levelId)
+        XCTAssertEqual(hkValue, 5,
+            "Tracker without levels should use value as-is (fallback)")
+    }
+
     // MARK: - TDD RED: Custom Timestamp for logEntry (Date Edit Bug Fix)
 
     /// Test: TrackerManager.logEntry accepts custom timestamp
