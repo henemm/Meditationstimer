@@ -33,7 +33,7 @@ struct CalendarView: View {
 
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
-    @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
+    @State private var alcoholDays: [Date: TrackerLevel] = [:]
     @State private var isLoading = false
     @State private var errorMessage: String?
     @Environment(\.dismiss) private var dismiss
@@ -52,16 +52,8 @@ struct CalendarView: View {
 
     // NoAlc streak calculation: ALWAYS use HealthKit data (alcoholDays)
     // Per spec: "Same HealthKit query for calendar display AND streak calculation"
-    // The Generic Tracker System is for local-only trackers, not HealthKit-based ones
     private var noAlcStreakResult: StreakResult {
-        let healthKitResult = NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
-        return StreakResult(
-            currentStreak: healthKitResult.streak,
-            longestStreak: healthKitResult.streak,
-            availableRewards: healthKitResult.rewards,
-            totalRewardsEarned: healthKitResult.rewards,
-            totalRewardsUsed: 0
-        )
+        TrackerManager.calculateNoAlcStreakFromHealthKit(alcoholDays: alcoholDays, calendar: calendar)
     }
 
     private var noAlcStreak: Int {
@@ -376,7 +368,7 @@ struct CalendarView: View {
         Task {
             var allActivityDays = [Date: ActivityType]()
             var allDailyMinutes = [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]()
-            var allAlcoholDays = [Date: NoAlcManager.ConsumptionLevel]()
+            var allAlcoholDays = [Date: TrackerLevel]()
             for monthOffset in -6...6 {
                 let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
                 do {
@@ -412,7 +404,7 @@ struct CalendarView: View {
                     // Fetch NoAlc data for each day in the month
                     let monthDays = generateDays(for: monthDate).compactMap { $0 }
                     for day in monthDays {
-                        if let level = try? await NoAlcManager.shared.fetchConsumption(for: day) {
+                        if let level = await TrackerManager.shared.fetchNoAlcLevelFromHealthKit(for: day) {
                             allAlcoholDays[calendar.startOfDay(for: day)] = level
                         }
                     }
@@ -458,7 +450,7 @@ struct MonthView: View {
     let month: Date
     let activityDays: [Date: CalendarView.ActivityType]
     let dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)]
-    let alcoholDays: [Date: NoAlcManager.ConsumptionLevel]
+    let alcoholDays: [Date: TrackerLevel]
     let meditationGoalMinutes: Double
     let workoutGoalMinutes: Double
     private let calendar = Calendar.current
@@ -608,14 +600,16 @@ struct MonthView: View {
         return formatter.string(from: date)
     }
 
-    private func alcoholColor(for level: NoAlcManager.ConsumptionLevel) -> Color {
-        switch level {
-        case .steady:
+    private func alcoholColor(for level: TrackerLevel) -> Color {
+        switch level.key {
+        case "steady":
             return .alcoholSteady
-        case .easy:
+        case "easy":
             return .alcoholEasy
-        case .wild:
+        case "wild":
             return .alcoholWild
+        default:
+            return .gray
         }
     }
 
@@ -630,7 +624,7 @@ struct MonthView: View {
             texts.append(Text("Workouts: \(rounded)/\(Int(workoutGoalMinutes)) Min").foregroundColor(Color.purple))
         }
         if let alcoholLevel = alcoholDays[date] {
-            let label = "\(alcoholLevel.emoji) \(alcoholLevel.label)"
+            let label = "\(alcoholLevel.icon) \(alcoholLevel.localizedLabel)"
             texts.append(Text("NoAlc: \(label)").foregroundColor(.green))
         }
         if texts.isEmpty { return nil }
