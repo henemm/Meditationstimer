@@ -13,6 +13,7 @@ This specification defines the **abstracted, configurable Tracker architecture**
 
 | Goal | Description |
 |------|-------------|
+| **HealthKit First** | ⚠️ **PFLICHT:** Wenn HealthKit-Typ existiert, MUSS er verwendet werden |
 | **Unification** | NoAlc migrates into the generic system |
 | **Configuration over Code** | Tracker behavior defined by properties, not subclasses |
 | **Extensibility** | New tracker types without code changes |
@@ -167,17 +168,34 @@ Defines where tracker data is stored.
 
 ```swift
 enum StorageStrategy: Codable, Hashable {
-    case local                     // SwiftData only
+    case local                     // SwiftData only (NUR wenn kein HK-Typ existiert!)
     case healthKit(String)         // HealthKit only (identifier)
     case both(String)              // SwiftData + HealthKit sync
 }
 ```
 
+#### ⚠️ REQUIREMENT: HealthKit First
+
+**PFLICHT:** Wenn ein passender HealthKit-Typ existiert, MUSS er verwendet werden!
+
+| HealthKit Typ | Tracker |
+|---------------|---------|
+| `numberOfAlcoholicBeverages` | NoAlc |
+| `dietaryWater` | Wasser |
+| `dietaryCaffeine` | Kaffee |
+| `stateOfMind` | Stimmung/Mood |
+| `sleepAnalysis` | Schlaf |
+| `mindfulSession` | Achtsamkeit (bereits via Timer) |
+
+**`local` ist NUR erlaubt wenn:**
+- Kein passender HealthKit-Typ existiert (z.B. Doomscrolling, Saboteurs, Gratitude)
+- Der Tracker rein app-intern ist und keine Gesundheitsdaten trackt
+
 | Strategy | Primary Store | HealthKit | Use Case |
 |----------|---------------|-----------|----------|
-| `local` | SwiftData | No | Saboteurs, Gratitude |
-| `healthKit("...")` | HealthKit | Yes (only) | NoAlc (migration) |
-| `both("...")` | SwiftData | Yes (sync) | Water, Mood |
+| `local` | SwiftData | No | **NUR** wenn kein HK-Typ existiert (Saboteurs, custom habits) |
+| `healthKit("...")` | HealthKit | Yes (only) | NoAlc, Standard-Tracker |
+| `both("...")` | SwiftData | Yes (sync) | Wenn lokaler Cache nötig ist |
 
 ---
 

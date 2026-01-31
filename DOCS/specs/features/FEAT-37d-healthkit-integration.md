@@ -2,13 +2,13 @@
 entity_id: feat-37d-healthkit-integration
 type: feature
 created: 2026-01-18
-status: draft
+status: complete
 workflow: feat-37d-healthkit-integration
 ---
 
 # FEAT-37d: HealthKit-Integration für Generic Tracker System
 
-- [ ] Approved for implementation
+- [x] Approved for implementation (31. Januar 2026)
 
 ## Purpose
 
@@ -142,12 +142,12 @@ func logEntry(...) -> TrackerLog {
 
 ## Acceptance Criteria
 
-- [ ] **AC1:** TrackerLevel hat `healthKitValue` Property mit korrektem Mapping
-- [ ] **AC2:** TrackerManager.logEntry() schreibt in HealthKit wenn `saveToHealthKit: true`
-- [ ] **AC3:** HealthKit-Write verwendet `effectiveDayAssignment` für korrektes Datum
-- [ ] **AC4:** Dual-Write in TrackerTab ist entfernt
-- [ ] **AC5:** Build erfolgreich (keine Compile-Errors)
-- [ ] **AC6:** Alle bestehenden Unit Tests grün (66/66)
+- [x] **AC1:** TrackerLevel hat `healthKitValue` Property mit korrektem Mapping ✅ (bereits implementiert)
+- [x] **AC2:** TrackerManager.logEntry() schreibt in HealthKit wenn `saveToHealthKit: true` ✅ (bereits implementiert)
+- [x] **AC3:** HealthKit-Write verwendet `effectiveDayAssignment` für korrektes Datum ✅ (bereits implementiert)
+- [x] **AC4:** Dual-Write in TrackerTab ist entfernt ✅ (31.01.2026)
+- [x] **AC5:** Build erfolgreich (keine Compile-Errors) ✅
+- [x] **AC6:** Alle bestehenden Unit Tests grün ✅
 
 ## Nicht im Scope
 

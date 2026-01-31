@@ -45,24 +45,81 @@ WARNUNG: Es gibt oft parallele Implementierungen (z.B. WorkoutsView vs WorkoutTa
 
 ---
 
-## 🚨 SIMULATOR VORBEREITUNG - DRITTE PFLICHT
+## 📖 NoAlc Tracker Terminologie
 
-**VOR JEDEM XCUITest-Lauf MUSS das Simulator-Skript ausgeführt werden!**
+**WICHTIG: Diese Begriffe sind verbindlich!**
+
+| Begriff | Bedeutung | Code-Location | UI-Merkmal |
+|---------|-----------|---------------|------------|
+| **Legacy NoAlc Tracker** | Der alte, eingebaute NoAlc Tracker | `TrackerTab.swift` → `noAlcCard` | Zeigt 🃏 Joker-Anzeige (z.B. "0/3") |
+| **Generic NoAlc Tracker** | Der neue, generische NoAlc Tracker | `TrackerRow.swift` → `levelBasedLayout` | Zeigt Level-Status (z.B. "✨ Überschaubar") |
+
+**Unterschiede:**
+
+| Eigenschaft | Legacy NoAlc | Generic NoAlc |
+|-------------|--------------|---------------|
+| HealthKit-Logging | ✅ Ja | ✅ Ja (via TrackerManager.logEntry) |
+| Joker-System | ✅ Sichtbar | ❌ Nicht sichtbar |
+| Position im UI | Immer oben (erste Karte) | In der Tracker-Liste (TrackerRow) |
+| Buttons | `noAlcButton()` in TrackerTab | `levelButtonLarge()` in TrackerRow |
+
+---
+
+## ⚠️ HEALTHKIT FIRST - DRITTE PFLICHT
+
+**Wenn ein passender HealthKit-Typ existiert, MUSS er verwendet werden!**
+
+Siehe: `.agent-os/standards/healthkit/healthkit-first.md`
+
+| HealthKit Typ | Tracker |
+|---------------|---------|
+| `numberOfAlcoholicBeverages` | NoAlc |
+| `dietaryWater` | Wasser |
+| `dietaryCaffeine` | Kaffee |
+| `stateOfMind` | Stimmung/Mood |
+
+**SwiftData-only (`local`) ist NUR erlaubt wenn:**
+- Kein passender HealthKit-Typ existiert (Doomscrolling, Saboteurs)
+- Tracker trackt keine Gesundheitsdaten
+
+**Bei Verstoß:** Feature-Review blockiert, Migration erforderlich.
+
+---
+
+## 🚨🚨🚨 XCUITEST - NUR MIT SKRIPT! 🚨🚨🚨
+
+### ⛔ NIEMALS `xcodebuild test` MANUELL AUFRUFEN!
+
+**IMMER das Wrapper-Skript verwenden:**
 
 ```bash
-./scripts/prepare-simulator.sh
+./Scripts/run-uitests.sh                    # Alle UI Tests
+./Scripts/run-uitests.sh testMethodName     # Einzelner Test
 ```
 
-**WARUM:** Der Simulator gerät regelmäßig in einen defekten Zustand ("Failed to launch xctrunner").
-Ohne dieses Skript werden viele Tokens für wiederholte Debugging-Versuche verschwendet.
+### Was das Skript macht:
 
-**Das Skript:**
-1. Stoppt alle Simulatoren
-2. Startet CoreSimulator Service neu
-3. Bootet den Ziel-Simulator
-4. Wartet bis er bereit ist
+1. ✅ Simulator vorbereiten (shutdown, boot, wait)
+2. ✅ CoreSimulator Service neustarten
+3. ✅ Tests mit Retry-Logik ausführen
+4. ✅ **Bei Exit Code 64: DerivedData automatisch löschen + erneut versuchen**
+5. ✅ Ergebnis klar anzeigen
 
-**NIEMALS** XCUITests starten ohne vorher dieses Skript auszuführen!
+### Exit Code 64 - Root Cause (25.01.2026)
+
+**Problem:** "Simulator device failed to launch xctrunner" (FBSOpenApplicationServiceErrorDomain)
+
+**Root Cause:** Korrupte DerivedData nach Xcode/System-Updates
+
+**Lösung:** `rm -rf ~/Library/Developer/Xcode/DerivedData` (macht das Skript automatisch)
+
+### Aktueller Simulator
+
+| Variable | Wert |
+|----------|------|
+| SIMULATOR_ID | E3EB58E9-E42B-4455-99AE-795F189FFCE0 |
+| Name | XCUITest-Fresh |
+| iOS Version | 26.2 |
 
 ---
 
@@ -202,7 +259,7 @@ Agent OS v2.0 unterstützt **mehrere parallele Workflows**:
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00' \
+  -destination 'platform=iOS Simulator,id=6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919' \
   -only-testing:LeanHealthTimerUITests
 ```
 
@@ -254,14 +311,14 @@ iOS / watchOS / Widget Apps (UI)
 
 **⚠️ WICHTIG: Immer den "Healthy Habits" Simulator verwenden!**
 - **Simulator Name:** `Healthy Habits`
-- **Identifier:** `EEF5B0DE-6B96-47CE-AA57-2EE024371F00`
+- **Identifier:** `6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919`
 
 **Build iOS app:**
 ```bash
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
   -configuration Debug \
-  -destination 'platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00' \
+  -destination 'platform=iOS Simulator,id=6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919' \
   build
 ```
 
@@ -270,7 +327,7 @@ xcodebuild -project Meditationstimer.xcodeproj \
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,id=EEF5B0DE-6B96-47CE-AA57-2EE024371F00' \
+  -destination 'platform=iOS Simulator,id=6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919' \
   -only-testing:LeanHealthTimerTests
 ```
 

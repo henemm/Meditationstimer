@@ -490,6 +490,18 @@ The system SHALL recognize patterns in Saboteur Tracker data.
 
 ## Technical Notes
 
+### ⚠️ REQUIREMENT: HealthKit First
+
+**PFLICHT:** Wenn ein passender HealthKit-Typ existiert, MUSS er verwendet werden!
+
+Siehe: `.agent-os/standards/healthkit/healthkit-first.md`
+
+SwiftData-only ist **NUR** erlaubt wenn:
+- Kein passender HealthKit-Typ existiert (z.B. Doomscrolling, Prokrastination)
+- Der Tracker rein app-intern ist und keine Gesundheitsdaten trackt
+
+---
+
 ### Storage: Hybrid Approach (SwiftData + HealthKit)
 
 Custom Trackers use **SwiftData** for definitions and **HealthKit** for logging where a matching type exists.

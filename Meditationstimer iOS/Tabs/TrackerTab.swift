@@ -150,16 +150,14 @@ struct TrackerTab: View {
     private func noAlcButton(_ level: TrackerLevel, color: Color) -> some View {
         Button(action: {
             Task {
-                // Log to SwiftData via Generic Tracker System
+                // FEAT-37d: Log via TrackerManager (handles SwiftData + HealthKit + Reminders)
                 if let tracker = noAlcTracker {
-                    tracker.logLevel(level, context: modelContext)
-                    try? modelContext.save()
-
-                    // FEAT-39 B1: Cancel matching tracker reminders (reverse reminder)
-                    SmartReminderEngine.shared.cancelMatchingTrackerReminders(
-                        for: tracker.id,
-                        completedAt: Date()
+                    _ = TrackerManager.shared.logEntry(
+                        for: tracker,
+                        value: level.id,
+                        in: modelContext
                     )
+                    try? modelContext.save()
 
                     // Also cancel old-style NoAlc reminders (backwards compatibility)
                     // Needed because legacy reminders use activityType = .noalc instead of trackerID
@@ -167,24 +165,9 @@ struct TrackerTab: View {
                         for: .noalc,
                         completedAt: Date()
                     )
-                }
-
-                // Also log to HealthKit (preserves existing behavior)
-                do {
-                    // Map TrackerLevel to legacy ConsumptionLevel
-                    let legacyLevel: NoAlcManager.ConsumptionLevel
-                    switch level.key {
-                    case "steady": legacyLevel = .steady
-                    case "easy": legacyLevel = .easy
-                    case "wild": legacyLevel = .wild
-                    default: legacyLevel = .steady
-                    }
-                    try await NoAlcManager.shared.logConsumption(legacyLevel, for: Date())
 
                     // Reload HealthKit data to update streak display
                     await loadNoAlcData()
-                } catch {
-                    print("[NoAlc] HealthKit log failed: \(error)")
                 }
 
                 // Show feedback animation
@@ -223,7 +206,7 @@ struct TrackerTab: View {
         .buttonStyle(.plain)
         .sensoryFeedback(.success, trigger: loggedLevel?.id == level.id)
         .accessibilityLabel(level.localizedLabel)
-        .accessibilityIdentifier(level.icon)
+        .accessibilityIdentifier("legacy_\(level.icon)")
     }
 
     // MARK: - Trackers Section
@@ -255,10 +238,31 @@ struct TrackerTab: View {
                 .listStyle(.plain)
                 .environment(\.editMode, $editMode)
                 .scrollDisabled(true)
-                // FIX: Calculate height based on number of trackers (150pt each for trackers with emoji buttons)
-                .frame(height: CGFloat(customTrackers.count) * 150)
+                // FIX: Calculate height based on tracker types
+                // Level-based trackers (3 rows: header, buttons, status) need ~180pt
+                // Legacy trackers (1 row) need ~100pt
+                .frame(height: calculateListHeight())
             }
         }
+    }
+
+    // MARK: - List Height Calculation
+
+    /// Calculate the total height needed for the custom trackers list
+    /// Level-based trackers need more height (3 rows) than legacy trackers (1 row)
+    private func calculateListHeight() -> CGFloat {
+        var totalHeight: CGFloat = 0
+        for tracker in customTrackers {
+            // Check if tracker is level-based (has levels array)
+            if tracker.levels != nil && !(tracker.levels?.isEmpty ?? true) {
+                // Level-based: header + buttons + status + GlassCard padding + list row insets
+                totalHeight += 200
+            } else {
+                // Legacy: single row + GlassCard padding + list row insets
+                totalHeight += 130
+            }
+        }
+        return totalHeight
     }
 
     // MARK: - Drag & Drop Handler
