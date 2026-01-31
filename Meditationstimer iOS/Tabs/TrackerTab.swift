@@ -58,7 +58,7 @@ struct TrackerTab: View {
     @State private var loggedLevel: TrackerLevel? = nil
 
     // HealthKit data for NoAlc streak calculation (per spec: HealthKit is source of truth)
-    @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
+    @State private var alcoholDays: [Date: TrackerLevel] = [:]
     private let calendar = Calendar.current
 
     // MARK: - Computed Properties
@@ -66,14 +66,7 @@ struct TrackerTab: View {
     /// Calculate NoAlc streak using HealthKit data (NOT SwiftData logs!)
     /// Per spec: "Same HealthKit query for calendar display AND streak calculation"
     private var noAlcStreakResult: StreakResult {
-        let healthKitResult = NoAlcManager.calculateStreakAndRewards(alcoholDays: alcoholDays, calendar: calendar)
-        return StreakResult(
-            currentStreak: healthKitResult.streak,
-            longestStreak: healthKitResult.streak,
-            availableRewards: healthKitResult.rewards,
-            totalRewardsEarned: healthKitResult.rewards,
-            totalRewardsUsed: 0
-        )
+        TrackerManager.calculateNoAlcStreakFromHealthKit(alcoholDays: alcoholDays, calendar: calendar)
     }
 
     var body: some View {
@@ -130,14 +123,14 @@ struct TrackerTab: View {
     /// Load NoAlc data from HealthKit for streak calculation
     /// Per spec: "HealthKit is source of truth for NoAlc"
     private func loadNoAlcData() async {
-        var loadedDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
+        var loadedDays: [Date: TrackerLevel] = [:]
 
         // Load last 90 days of NoAlc data from HealthKit
         for dayOffset in 0..<90 {
             guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: Date()) else { continue }
             let dayStart = calendar.startOfDay(for: date)
 
-            if let level = try? await NoAlcManager.shared.fetchConsumption(for: dayStart) {
+            if let level = await TrackerManager.shared.fetchNoAlcLevelFromHealthKit(for: dayStart) {
                 loadedDays[dayStart] = level
             }
         }

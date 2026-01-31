@@ -278,4 +278,117 @@ final class TrackerManager {
     static func presets(for category: TrackerPreset.PresetCategory) -> [TrackerPreset] {
         return TrackerPreset.all.filter { $0.category == category }
     }
+
+    // MARK: - HealthKit NoAlc Queries (for backward compatibility during migration)
+
+    /// Fetches NoAlc level from HealthKit for a specific day.
+    /// Returns TrackerLevel from noAlcLevels or nil if no data.
+    func fetchNoAlcLevelFromHealthKit(for date: Date) async -> TrackerLevel? {
+        guard let alcoholType = HKQuantityType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
+            return nil
+        }
+
+        let targetDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: targetDay)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: targetDay, end: endOfDay, options: .strictStartDate)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(sampleType: alcoholType, predicate: predicate, limit: 1, sortDescriptors: [sortDescriptor]) { _, samples, error in
+                if error != nil {
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                guard let sample = samples?.first as? HKQuantitySample else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                let value = Int(sample.quantity.doubleValue(for: .count()))
+                // Map HealthKit value to TrackerLevel: 0=steady, 4=easy, 6=wild
+                let level = TrackerLevel.noAlcLevels.first { $0.healthKitValue == value }
+                    ?? TrackerLevel.noAlcLevels.first { $0.key == "steady" } // Fallback for unknown values
+                continuation.resume(returning: level)
+            }
+
+            healthStore.execute(query)
+        }
+    }
+
+    /// Calculates NoAlc streak from HealthKit data.
+    /// Uses forward iteration with Joker system (earn every 7 days, max 3).
+    ///
+    /// - Parameter alcoholDays: Dictionary of dates to TrackerLevel
+    /// - Returns: StreakResult with current streak and available rewards
+    static func calculateNoAlcStreakFromHealthKit(
+        alcoholDays: [Date: TrackerLevel],
+        calendar: Calendar = .current
+    ) -> StreakResult {
+        let today = calendar.startOfDay(for: Date())
+
+        guard let firstDate = alcoholDays.keys.min() else {
+            return .zero
+        }
+
+        // End date: today if logged, otherwise yesterday (don't penalize for not logging today)
+        let hasEntryToday = alcoholDays[today] != nil
+        let endDate = hasEntryToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+
+        guard firstDate <= endDate else {
+            return .zero
+        }
+
+        var consecutiveDays = 0
+        var earnedRewards = 0
+        var consumedRewards = 0
+
+        // Forward iteration: first entry → end date
+        var currentDate = firstDate
+        while currentDate <= endDate {
+            let level = alcoholDays[currentDate]
+
+            if level?.streakEffect == .success {
+                // Steady day: count it
+                consecutiveDays += 1
+
+                // Earn Joker at every 7-day milestone (max 3 on hand)
+                if consecutiveDays % 7 == 0 && (earnedRewards - consumedRewards) < 3 {
+                    earnedRewards += 1
+                }
+            } else {
+                // Easy, Wild, or nil (gap): needs Joker to continue
+
+                // Earn before consume rule for day 7
+                let wouldBeMilestone = (consecutiveDays + 1) % 7 == 0
+                if wouldBeMilestone && (earnedRewards - consumedRewards) < 3 {
+                    earnedRewards += 1
+                }
+
+                // Try to heal with available Joker
+                let availableJokers = earnedRewards - consumedRewards
+                if availableJokers > 0 {
+                    consumedRewards += 1
+                    consecutiveDays += 1
+                } else {
+                    // No Joker available → streak breaks
+                    consecutiveDays = 0
+                    earnedRewards = 0
+                    consumedRewards = 0
+                }
+            }
+
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+
+        let availableRewards = max(0, earnedRewards - consumedRewards)
+        return StreakResult(
+            currentStreak: consecutiveDays,
+            longestStreak: consecutiveDays, // Not tracking longest in this migration path
+            availableRewards: availableRewards,
+            totalRewardsEarned: earnedRewards,
+            totalRewardsUsed: consumedRewards
+        )
+    }
 }
