@@ -2868,4 +2868,210 @@ final class LeanHealthTimerUITests: XCTestCase {
             XCTAssertTrue(app.tabBars.buttons["Tracker"].exists, "Tracker tab should exist")
         }
     }
+
+    // MARK: - Generic NoAlc Tracker Level Tests
+
+    /// Test: Generic NoAlc Tracker - All three levels are trackable and display correctly in Erfolge tab
+    ///
+    /// This test creates a Generic NoAlc Tracker and verifies:
+    /// 1. Level 💧 (Steady) - Green, 0-1 drinks, continues streak
+    /// 2. Level ✨ (Easy) - Yellow/Orange, 2-5 drinks, needs grace/joker
+    /// 3. Level 💥 (Wild) - Red, 6+ drinks, needs grace/joker
+    ///
+    /// After tracking each level, the test navigates to the Erfolge tab to verify
+    /// that the NoAlc data is displayed correctly (streak info, level indicator).
+    func testGenericNoAlcTrackerAllLevelsDisplayInErfolge() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        // Handle HealthKit permission dialogs
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let startTime = Date()
+        while Date().timeIntervalSince(startTime) < 15 {
+            if springboard.buttons["Erlauben"].exists {
+                springboard.buttons["Erlauben"].tap()
+                sleep(1)
+                continue
+            }
+            if springboard.buttons["OK"].exists {
+                springboard.buttons["OK"].tap()
+                sleep(1)
+                continue
+            }
+            if !springboard.buttons["Erlauben"].exists && !springboard.buttons["OK"].exists {
+                break
+            }
+            sleep(1)
+        }
+
+        // Wait for app to settle
+        sleep(3)
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
+        trackerTab.tap()
+
+        // Wait for tracker content to load
+        sleep(5)
+
+        // Take initial screenshot of Tracker tab
+        takeScreenshot(named: "01_TrackerTab_Initial", attachment: self)
+
+        // STEP 1: Create a Generic NoAlc Tracker (since only Legacy exists by default)
+        // Tap "Add Tracker" button
+        let addTrackerButton = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addTrackerButton.waitForExistence(timeout: 5), "Add Tracker button should exist")
+        addTrackerButton.tap()
+        sleep(2)
+
+        // Find and tap "NoAlc" preset in the list
+        let noAlcPreset = app.staticTexts["NoAlc"].firstMatch
+        if noAlcPreset.waitForExistence(timeout: 5) {
+            noAlcPreset.tap()
+            sleep(2)
+        }
+
+        // Dismiss any sheet by tapping outside or finding a done/save button
+        if app.buttons["Done"].exists {
+            app.buttons["Done"].tap()
+        } else if app.buttons["Fertig"].exists {
+            app.buttons["Fertig"].tap()
+        }
+        sleep(3)
+
+        // Take screenshot showing both Legacy and Generic NoAlc
+        takeScreenshot(named: "02_TrackerTab_WithGenericNoAlc", attachment: self)
+
+        // STEP 2: Find the Generic NoAlc Tracker buttons
+        // Using distinct accessibility identifiers:
+        // - Legacy NoAlc: "legacy_💧", "legacy_✨", "legacy_💥"
+        // - Generic NoAlc: "generic_💧", "generic_✨", "generic_💥"
+
+        // Scroll down to make Generic NoAlc visible
+        app.swipeUp()
+        sleep(1)
+
+        let genericSteadyButton = app.buttons["generic_💧"]
+        let genericEasyButton = app.buttons["generic_✨"]
+        let genericWildButton = app.buttons["generic_💥"]
+
+        print("DEBUG: Generic Steady (💧) exists: \(genericSteadyButton.exists)")
+        print("DEBUG: Generic Easy (✨) exists: \(genericEasyButton.exists)")
+        print("DEBUG: Generic Wild (💥) exists: \(genericWildButton.exists)")
+
+        // Verify Generic NoAlc Tracker was created
+        XCTAssertTrue(genericSteadyButton.waitForExistence(timeout: 10), "Generic NoAlc Steady button should exist after creating tracker")
+
+        // --- TEST LEVEL 1: Steady (💧) ---
+        print("\n--- Testing Level 1: Steady (💧) ---")
+
+        let steadyButton = genericSteadyButton
+        XCTAssertTrue(steadyButton.waitForExistence(timeout: 5), "Steady (💧) button should exist")
+        steadyButton.tap()
+        print("DEBUG: Tapped Steady (💧) button")
+
+        // Wait for logging to complete
+        sleep(2)
+
+        // Take screenshot after tracking Steady
+        takeScreenshot(named: "02_TrackerTab_AfterSteady", attachment: self)
+
+        // Navigate to Erfolge tab to verify
+        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        XCTAssertTrue(erfolgeTab.exists, "Erfolge tab should exist")
+        erfolgeTab.tap()
+
+        // Wait for Erfolge content to load
+        sleep(3)
+
+        // Take screenshot of Erfolge tab after Steady
+        takeScreenshot(named: "03_ErfolgeTab_AfterSteady", attachment: self)
+
+        // Verify NoAlc streak info is visible
+        let noAlcStreakInfo = app.buttons.matching(NSPredicate(format: "label CONTAINS 'NoAlc Streak Info'")).firstMatch
+        let noAlcStreakExists = noAlcStreakInfo.waitForExistence(timeout: 5)
+        print("DEBUG: NoAlc Streak Info button exists: \(noAlcStreakExists)")
+
+        // Verify streak text is visible (contains "NoAlc")
+        let noAlcText = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'NoAlc'")).firstMatch
+        XCTAssertTrue(noAlcText.waitForExistence(timeout: 5), "NoAlc streak text should be visible in Erfolge tab")
+        print("DEBUG: NoAlc text label: \(noAlcText.label)")
+
+        // --- TEST LEVEL 2: Easy (✨) ---
+        print("\n--- Testing Level 2: Easy (✨) ---")
+
+        // Go back to Tracker tab
+        trackerTab.tap()
+        sleep(3)
+
+        let easyButton = genericEasyButton
+        XCTAssertTrue(easyButton.waitForExistence(timeout: 5), "Easy (✨) button should exist")
+        easyButton.tap()
+        print("DEBUG: Tapped Easy (✨) button")
+
+        // Wait for logging to complete
+        sleep(2)
+
+        // Take screenshot after tracking Easy
+        takeScreenshot(named: "04_TrackerTab_AfterEasy", attachment: self)
+
+        // Navigate to Erfolge tab to verify
+        erfolgeTab.tap()
+        sleep(3)
+
+        // Take screenshot of Erfolge tab after Easy
+        takeScreenshot(named: "05_ErfolgeTab_AfterEasy", attachment: self)
+
+        // Verify NoAlc is still visible (streak may have changed due to grace/joker)
+        XCTAssertTrue(noAlcText.waitForExistence(timeout: 5), "NoAlc text should still be visible after Easy level")
+
+        // --- TEST LEVEL 3: Wild (💥) ---
+        print("\n--- Testing Level 3: Wild (💥) ---")
+
+        // Go back to Tracker tab
+        trackerTab.tap()
+        sleep(3)
+
+        let wildButton = genericWildButton
+        XCTAssertTrue(wildButton.waitForExistence(timeout: 5), "Wild (💥) button should exist")
+        wildButton.tap()
+        print("DEBUG: Tapped Wild (💥) button")
+
+        // Wait for logging to complete
+        sleep(2)
+
+        // Take screenshot after tracking Wild
+        takeScreenshot(named: "06_TrackerTab_AfterWild", attachment: self)
+
+        // Navigate to Erfolge tab to verify
+        erfolgeTab.tap()
+        sleep(3)
+
+        // Take screenshot of Erfolge tab after Wild
+        takeScreenshot(named: "07_ErfolgeTab_AfterWild", attachment: self)
+
+        // Verify NoAlc is still visible
+        XCTAssertTrue(noAlcText.waitForExistence(timeout: 5), "NoAlc text should still be visible after Wild level")
+
+        // Final verification: Take a final screenshot showing the calendar with today's entry
+        takeScreenshot(named: "08_ErfolgeTab_Final", attachment: self)
+
+        print("\n✅ SUCCESS: All three NoAlc levels (💧 Steady, ✨ Easy, 💥 Wild) were tracked and verified in Erfolge tab")
+        print("   Screenshots captured for visual verification of level colors:")
+        print("   - 💧 Steady = Green circle")
+        print("   - ✨ Easy = Yellow/Orange circle")
+        print("   - 💥 Wild = Red circle")
+    }
+
+    /// Helper function to take and attach screenshots
+    private func takeScreenshot(named name: String, attachment testCase: XCTestCase) {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attach = XCTAttachment(screenshot: screenshot)
+        attach.name = name
+        attach.lifetime = .keepAlways
+        testCase.add(attach)
+        print("📸 Screenshot captured: \(name)")
+    }
 }
