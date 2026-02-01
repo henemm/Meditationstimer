@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NoAlcLogSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @State private var isExpanded = false
     @State private var selectedDate = Date()
     @State private var isLogging = false
     @State private var errorMessage: String?
     @State private var showNoAlcInfo = false
 
-    private let noAlc = NoAlcManager.shared
+    private let calendar = Calendar.current
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,23 +45,13 @@ struct NoAlcLogSheet: View {
 
                     // Quick Log Buttons
                     HStack(spacing: 12) {
-                        ConsumptionButton(
-                            level: .steady,
-                            isLogging: isLogging,
-                            action: { await logConsumption(.steady, dismissImmediately: true) }
-                        )
-
-                        ConsumptionButton(
-                            level: .easy,
-                            isLogging: isLogging,
-                            action: { await logConsumption(.easy, dismissImmediately: true) }
-                        )
-
-                        ConsumptionButton(
-                            level: .wild,
-                            isLogging: isLogging,
-                            action: { await logConsumption(.wild, dismissImmediately: true) }
-                        )
+                        ForEach(TrackerLevel.noAlcLevels) { level in
+                            ConsumptionButton(
+                                level: level,
+                                isLogging: isLogging,
+                                action: { await logConsumption(level, dismissImmediately: true) }
+                            )
+                        }
                     }
                     .padding(.horizontal, 16)
 
@@ -114,23 +106,13 @@ struct NoAlcLogSheet: View {
                                 .foregroundColor(.secondary)
 
                             HStack(spacing: 12) {
-                                ConsumptionButton(
-                                    level: .steady,
-                                    isLogging: isLogging,
-                                    action: { await logConsumption(.steady, dismissImmediately: false) }
-                                )
-
-                                ConsumptionButton(
-                                    level: .easy,
-                                    isLogging: isLogging,
-                                    action: { await logConsumption(.easy, dismissImmediately: false) }
-                                )
-
-                                ConsumptionButton(
-                                    level: .wild,
-                                    isLogging: isLogging,
-                                    action: { await logConsumption(.wild, dismissImmediately: false) }
-                                )
+                                ForEach(TrackerLevel.noAlcLevels) { level in
+                                    ConsumptionButton(
+                                        level: level,
+                                        isLogging: isLogging,
+                                        action: { await logConsumption(level, dismissImmediately: false) }
+                                    )
+                                }
                             }
                         }
                         .padding(.horizontal)
@@ -190,37 +172,67 @@ struct NoAlcLogSheet: View {
     }
 
     private var subtitleText: String {
-        let targetDay = noAlc.targetDay()
+        let targetDay = targetDayForLogging()
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: targetDay)
     }
 
+    /// Determines target day based on current time (matches NoAlc cutoff logic)
+    /// - Rule: < 18:00 = yesterday, >= 18:00 = today
+    private func targetDayForLogging() -> Date {
+        let hour = calendar.component(.hour, from: Date())
+        let today = calendar.startOfDay(for: Date())
+
+        if hour < 18 {
+            return calendar.date(byAdding: .day, value: -1, to: today)!
+        } else {
+            return today
+        }
+    }
+
     @MainActor
-    private func logConsumption(_ level: NoAlcManager.ConsumptionLevel, dismissImmediately: Bool) async {
+    private func logConsumption(_ level: TrackerLevel, dismissImmediately: Bool) async {
         isLogging = true
         errorMessage = nil
 
+        // Find NoAlc tracker by healthKitType
+        let descriptor = FetchDescriptor<Tracker>(predicate: #Predicate {
+            $0.healthKitType == "HKQuantityTypeIdentifierNumberOfAlcoholicBeverages"
+        })
+
+        guard let noAlcTracker = try? modelContext.fetch(descriptor).first else {
+            errorMessage = NSLocalizedString("NoAlc tracker not found", comment: "")
+            isLogging = false
+            return
+        }
+
+        // Use selected date if expanded, otherwise use target day
+        let dateToLog = isExpanded ? selectedDate : targetDayForLogging()
+
+        // Log consumption via TrackerManager (handles HealthKit + SwiftData)
+        let _ = TrackerManager.shared.logEntry(
+            for: noAlcTracker,
+            value: level.id,
+            timestamp: dateToLog,
+            in: modelContext
+        )
+
+        // Save context
         do {
-            // Request authorization if needed
-            try await noAlc.requestAuthorization()
-
-            // Use selected date if expanded, otherwise use target day
-            let dateToLog = isExpanded ? selectedDate : noAlc.targetDay()
-
-            // Log consumption
-            try await noAlc.logConsumption(level, for: dateToLog)
-
-            // Dismiss immediately (quick mode) or after delay (extended mode)
-            if dismissImmediately {
-                dismiss()
-            } else {
-                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-                dismiss()
-            }
+            try modelContext.save()
         } catch {
             errorMessage = String(format: NSLocalizedString("Error: %@", comment: ""), error.localizedDescription)
             isLogging = false
+            return
+        }
+
+        // Dismiss immediately (quick mode) or after delay (extended mode)
+        if dismissImmediately {
+            dismiss()
+        } else {
+            try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+            dismiss()
         }
     }
 }
@@ -228,7 +240,7 @@ struct NoAlcLogSheet: View {
 // MARK: - Consumption Button
 
 struct ConsumptionButton: View {
-    let level: NoAlcManager.ConsumptionLevel
+    let level: TrackerLevel
     let isLogging: Bool
     let action: () async -> Void
 
@@ -239,9 +251,9 @@ struct ConsumptionButton: View {
             }
         } label: {
             VStack(spacing: 8) {
-                Text(level.emoji)
+                Text(level.icon)
                     .font(.system(size: 40))
-                Text(level.label)
+                Text(level.localizedLabel)
                     .font(.caption)
                     .fontWeight(.medium)
             }

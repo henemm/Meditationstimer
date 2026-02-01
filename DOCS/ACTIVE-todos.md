@@ -1,6 +1,6 @@
 # Active Todos - HHHaven
 
-**Letzte Aktualisierung:** 25. Januar 2026 (Generic Tracker Date Edit Bug Fix)
+**Letzte Aktualisierung:** 31. Januar 2026 (NoAlcManager Migration abgeschlossen)
 **Regel:** Nur OFFENE und AKTIVE Aufgaben. Abgeschlossene Bugs/Tasks werden gelöscht.
 
 ---
@@ -503,10 +503,11 @@ Details siehe Commit c89163d und git history.
 ### NoAlc Bugs
 
 **Bug 27: NoAlc Joker-System ignorierte nicht berichtete Tage**
-- Location: `NoAlcManager.swift` (neu: `calculateStreakAndRewards()`)
+- Location: `TrackerManager.swift` → `calculateNoAlcStreakFromHealthKit()`
 - **Root Cause:** Code verwendete `alcoholDays.keys.sorted()` statt über ALLE Tage zu iterieren
 - **Fix (19.12.2025):** Neue testbare Methode iteriert über ALLE Tage
-- **Getestet:** ✅ 16 Unit Tests GRÜN + Device-Test
+- **Migration (31.01.2026):** NoAlcManager.swift entfernt, Logik in TrackerManager
+- **Getestet:** ✅ 15 Unit Tests GRÜN (NoAlcStreakTests.swift)
 - Status: **✅ GEFIXT UND VERIFIZIERT** (25.12.2025)
 
 ---
@@ -725,12 +726,13 @@ Nach erfolgreichem Testing des Smart Reminders Bug-Fixes (commit 2fb6792):
 
 **Was erledigt wurde:**
 - ✅ Test Target `LeanHealthTimerTests` erstellt und konfiguriert
-- ✅ 53 Unit Tests erfolgreich integriert:
+- ✅ 66+ Unit Tests erfolgreich integriert:
   - `HealthKitManagerTests.swift` (25 Tests)
   - `StreakManagerTests.swift` (15 Tests)
-  - `NoAlcManagerTests.swift` (10 Tests)
+  - `NoAlcStreakTests.swift` (15 Tests) - migriert von NoAlcManagerTests
   - `MockHealthKitManagerTests.swift` (2 Tests)
   - `LeanHealthTimerTests.swift` (1 Test)
+  - ...weitere Tests
 - ✅ Alle Tests laufen via `⌘U` oder xcodebuild
 - ✅ 100% Test Success Rate
 
@@ -800,11 +802,10 @@ Alle bisherigen Tests liefen im Simulator oder via Unit Tests. HealthKit verhäl
 
 ---
 
-### Generic Tracker System - Feature-Parität Migration
-**Status:** In Arbeit (Parallel-Betrieb)
-**Letztes Update:** 18. Januar 2026
-**Priorität:** Mittel
-**Entscheidung:** Parallel-Betrieb (Alt + Neu) bis vollständige Feature-Parität erreicht
+### Generic Tracker System - ✅ Migration abgeschlossen
+**Status:** ✅ Abgeschlossen (31. Januar 2026)
+**Letztes Update:** 31. Januar 2026
+**Priorität:** —
 
 ---
 
@@ -814,57 +815,48 @@ Alle bisherigen Tests liefen im Simulator oder via Unit Tests. HealthKit verhäl
 |---------|--------|---------|
 | TrackerModels (SwiftData) | ✅ | Tracker, TrackerLog, TrackerLevel |
 | StreakCalculator | ✅ | Joker verdienen/einsetzen funktioniert |
-| DayAssignment (18 Uhr Cutoff) | ✅ | Identische Logik wie NoAlcManager |
+| DayAssignment (18 Uhr Cutoff) | ✅ | In TrackerLevel/DayAssignment |
 | TrackerMigration | ✅ | Auto-Create NoAlc beim App-Start |
 | Quick-Log Buttons | ✅ | Emoji-Buttons mit Feedback |
 | Dual-Write | ✅ | SwiftData + HealthKit parallel |
-| Notification-Action Dual-Log | ✅ | SmartReminder Actions → Legacy + Generic Tracker |
+| Notification-Action Dual-Log | ✅ | SmartReminder Actions → Generic Tracker |
 | Lokalisierung | ✅ | DE: Kaum/Überschaubar/Party |
+| **NoAlcManager entfernt** | ✅ | Migration vollständig (31.01.2026) |
+| **CalendarView migriert** | ✅ | Nutzt TrackerManager |
+| **TrackerTab migriert** | ✅ | Nutzt TrackerManager |
 
 ---
 
-#### ❌ Was noch fehlt (für vollständige Migration)
+#### ✅ NoAlcManager Migration abgeschlossen (31.01.2026)
 
-| Feature | Aufwand | Beschreibung |
-|---------|---------|--------------|
-| **Joker-Anzeige im TrackerTab** | Klein | StreakResult wird berechnet, aber nicht angezeigt |
-| **Kalender auf Generic System** | Mittel | CalendarView nutzt noch NoAlcManager.fetchConsumption() |
-| **History-Ansicht** | Mittel | Logs ansehen (letzte 30 Tage) - existiert in beiden Systemen nicht |
-| **NoAlcManager entfernen** | Klein | Erst wenn alle obigen Punkte erledigt sind |
+Alle Dateien wurden auf das Generic Tracker System migriert:
+- `DayDetailSheet.swift` → `TrackerManager.fetchNoAlcLevelFromHealthKit()`
+- `NoAlcLogSheet.swift` → `TrackerManager.logEntry()`
+- `Meditationstimer_iOSApp.swift` → `TrackerManager.levelIdForNotificationAction()`
+- `CalendarView.swift` → `TrackerManager`
+- `TrackerTab.swift` → `TrackerManager`
 
----
-
-#### 📂 Dateien die noch NoAlcManager nutzen
-
-| Datei | Referenzen | Muss umgestellt werden auf |
-|-------|------------|---------------------------|
-| `CalendarView.swift` | 4× | Generic Tracker Queries |
-| `DayDetailSheet.swift` | 3× | Tracker.logLevel() |
-| `NoAlcLogSheet.swift` | 3× | TrackerTab Logik |
+`NoAlcManager.swift` und `NoAlcManagerTests.swift` wurden gelöscht.
 
 ---
 
-#### 🔄 Aktueller Parallel-Betrieb
+#### 🔄 Aktuelles System (nach Migration)
 
 ```
 User loggt im TrackerTab:
-  ├── SwiftData: Tracker.logLevel() → TrackerLog gespeichert
-  └── HealthKit: NoAlcManager.logConsumption() → HKQuantitySample gespeichert
+  └── TrackerManager.logEntry() → SwiftData + HealthKit parallel
 
 User tippt Notification-Action (💧/✨/💥):
-  ├── Legacy: NoAlcManager.logConsumption() → HKQuantitySample gespeichert
-  └── Generic: TrackerManager.logEntry() → SwiftData + HealthKit + Reverse Cancel
+  └── TrackerManager.logEntry() → SwiftData + HealthKit + Reverse Cancel
 
 Kalender liest Daten:
-  └── Noch von HealthKit via NoAlcManager.fetchConsumption()
-      (Generic System wird ignoriert!)
+  └── TrackerManager.fetchNoAlcLevelFromHealthKit() → HealthKit Queries
 ```
 
-**Warum Parallel-Betrieb:**
-- HealthKit ist bewährt und zuverlässig
-- SwiftData ist neu und muss sich beweisen
-- Rollback möglich falls Probleme auftreten
-- Schrittweise Migration ohne Datenverlust
+**Migration abgeschlossen:**
+- HealthKit bleibt Source of Truth für historische Daten
+- SwiftData speichert zusätzliche Tracker-Metadaten
+- Einheitlicher Code-Pfad über TrackerManager
 
 ---
 

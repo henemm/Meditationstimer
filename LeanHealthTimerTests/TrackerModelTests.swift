@@ -867,10 +867,9 @@ final class TrackerModelTests: XCTestCase {
         XCTAssertEqual(tracker2.displayOrder, 1)
     }
 
-    // MARK: - TDD RED: HealthKit Value Resolution (NoAlc HealthKit Value Bug)
+    // MARK: - HealthKit Value Resolution (NoAlc HealthKit Value Bug - FIXED)
 
     /// Test: resolveHealthKitValue for NoAlc "wild" (id=2) returns 6, not 2
-    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
     func testResolveHealthKitValueWild() {
         // GIVEN: A NoAlc tracker with levels
         guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
@@ -890,7 +889,6 @@ final class TrackerModelTests: XCTestCase {
     }
 
     /// Test: resolveHealthKitValue for NoAlc "easy" (id=1) returns 4, not 1
-    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
     func testResolveHealthKitValueEasy() {
         // GIVEN: A NoAlc tracker with levels
         guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
@@ -910,7 +908,6 @@ final class TrackerModelTests: XCTestCase {
     }
 
     /// Test: resolveHealthKitValue for NoAlc "steady" (id=0) returns 0
-    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
     func testResolveHealthKitValueSteady() {
         // GIVEN: A NoAlc tracker with levels
         guard let noAlcPreset = TrackerPreset.all.first(where: { $0.name == "NoAlc" }) else {
@@ -930,7 +927,6 @@ final class TrackerModelTests: XCTestCase {
     }
 
     /// Test: resolveHealthKitValue for tracker WITHOUT levels uses fallback (value = levelId)
-    /// This test will FAIL because resolveHealthKitValue() doesn't exist yet
     func testResolveHealthKitValueFallbackNoLevels() {
         // GIVEN: A counter tracker WITHOUT levels
         let tracker = Tracker(

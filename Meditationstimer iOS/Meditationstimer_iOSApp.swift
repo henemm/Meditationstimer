@@ -134,24 +134,19 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        // Handle NoAlc direct logging (dual-log: Legacy + Generic Tracker)
+        // Handle NoAlc direct logging via TrackerManager (unified logging)
         Task { @MainActor in
-            switch response.actionIdentifier {
-            case "NOALC_STEADY":
-                await logNoAlc(.steady)
-            case "NOALC_EASY":
-                await logNoAlc(.easy)
-            case "NOALC_WILD":
-                await logNoAlc(.wild)
-            default:
-                break
-            }
-
-            // Dual-log: Also log to Generic Tracker (SwiftData) if trackerID present
             let userInfo = response.notification.request.content.userInfo
+
+            // Check if notification includes specific trackerID (Generic Tracker SmartReminder)
             if let trackerIDString = userInfo["trackerID"] as? String,
                let trackerID = UUID(uuidString: trackerIDString) {
+                // Log to specific tracker (includes HealthKit via TrackerManager.logEntry)
                 await logTrackerFromNotification(trackerID: trackerID, actionIdentifier: response.actionIdentifier)
+            } else if let levelId = TrackerManager.levelIdForNotificationAction(response.actionIdentifier) {
+                // Fallback: Legacy NoAlc notification without trackerID
+                // Find NoAlc tracker by HealthKit type
+                await logNoAlc(levelId: levelId)
             }
 
             completionHandler()
@@ -176,21 +171,32 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         print("✅ Dual-logged Generic Tracker: level \(levelId) for tracker \(tracker.name)")
     }
 
-    /// Log NoAlc consumption from notification action
+    /// Log NoAlc consumption from notification action via TrackerManager
     @MainActor
-    private func logNoAlc(_ level: NoAlcManager.ConsumptionLevel) async {
-        do {
-            let noAlc = NoAlcManager.shared
-            try await noAlc.requestAuthorization()
-
-            // Use target day (yesterday evening if before 18:00)
-            let dateToLog = noAlc.targetDay()
-            try await noAlc.logConsumption(level, for: dateToLog)
-
-            print("✅ Logged NoAlc: \(level.label) for \(dateToLog)")
-        } catch {
-            print("❌ Failed to log NoAlc: \(error.localizedDescription)")
+    private func logNoAlc(levelId: Int) async {
+        guard let container = Meditationstimer_iOSApp.sharedModelContainer else {
+            print("❌ Failed to log NoAlc: No ModelContainer available")
+            return
         }
+
+        let context = container.mainContext
+
+        // Find NoAlc tracker by healthKitType
+        let descriptor = FetchDescriptor<Tracker>(predicate: #Predicate {
+            $0.healthKitType == "HKQuantityTypeIdentifierNumberOfAlcoholicBeverages"
+        })
+
+        guard let noAlcTracker = try? context.fetch(descriptor).first else {
+            print("❌ Failed to log NoAlc: No NoAlc tracker found")
+            return
+        }
+
+        // Log entry via TrackerManager (handles HealthKit + SwiftData)
+        let _ = TrackerManager.shared.logEntry(for: noAlcTracker, value: levelId, in: context)
+        try? context.save()
+
+        let levelLabel = TrackerLevel.noAlcLevels.first { $0.id == levelId }?.localizedLabel ?? "Unknown"
+        print("✅ Logged NoAlc: \(levelLabel) via TrackerManager")
     }
 
     /// Called when notification arrives while app is in foreground

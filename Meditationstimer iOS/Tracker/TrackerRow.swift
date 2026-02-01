@@ -116,6 +116,7 @@ struct TrackerRow: View {
             // Row 2: Level buttons (full width, 32px icons like NoAlc card)
             HStack(spacing: 10) {
                 ForEach(trackerLevels) { level in
+                    let _ = print("[TrackerRow.ForEach] Rendering level: id=\(level.id), key=\(level.key), icon=\(level.icon)")
                     levelButtonLarge(level)
                 }
             }
@@ -149,7 +150,7 @@ struct TrackerRow: View {
         .buttonStyle(.plain)
         .sensoryFeedback(.success, trigger: loggedLevel?.id == level.id)
         .accessibilityLabel(level.localizedLabel)
-        .accessibilityIdentifier(level.icon)
+        .accessibilityIdentifier("generic_\(level.icon)")
     }
 
     // MARK: - Legacy Layout (for non-level trackers)
@@ -379,6 +380,9 @@ struct TrackerRow: View {
     /// Log a level with visual feedback
     @MainActor
     private func logLevel(_ level: TrackerLevel) async {
+        // DEBUG: Print what level is being logged
+        print("[TrackerRow.logLevel] Tracker: \(tracker.name), Level: id=\(level.id), key=\(level.key), icon=\(level.icon)")
+
         // Log entry
         _ = manager.logEntry(
             for: tracker,

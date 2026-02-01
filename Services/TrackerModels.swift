@@ -839,7 +839,7 @@ final class StreakCalculator {
 
 // MARK: - TrackerMigration
 
-/// Migration service for transitioning from NoAlcManager to Generic Tracker System
+/// Migration service for Generic Tracker System (creates default trackers on first launch)
 final class TrackerMigration {
 
     // MARK: - Singleton
@@ -878,9 +878,8 @@ final class TrackerMigration {
         let tracker = noAlcPreset.createTracker()
         context.insert(tracker)
 
-        // TODO: Fetch historical NoAlc data from HealthKit and create TrackerLogs
-        // For now, we just create the tracker structure
-        // Future implementation: NoAlcManager.shared.fetchHistoricalData()
+        // Note: Historical NoAlc data remains in HealthKit and is read via
+        // TrackerManager.fetchNoAlcLevelFromHealthKit() when needed
 
         try context.save()
         print("[TrackerMigration] NoAlc Tracker created successfully")

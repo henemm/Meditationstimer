@@ -16,12 +16,11 @@ struct DayDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var sessions: [ActivitySession] = []
-    @State private var noAlcLevel: NoAlcManager.ConsumptionLevel? = nil
+    @State private var noAlcLevel: TrackerLevel? = nil
     @State private var isLoading = false
     @State private var errorMessage: String?
 
     private let healthStore = HKHealthStore()
-    private let noAlcManager = NoAlcManager.shared
     private let calendar = Calendar.current
 
     var body: some View {
@@ -148,7 +147,7 @@ struct DayDetailSheet: View {
         guard let level = noAlcLevel else {
             return "Keine Daten"
         }
-        return "\(level.emoji) \(level.label)"
+        return "\(level.icon) \(level.localizedLabel)"
     }
 
     private var noAlcColor: Color {
@@ -156,13 +155,15 @@ struct DayDetailSheet: View {
             return .gray
         }
         // Use spec colors: Steady: #0EBF6E, Easy: #89D6B2, Wild: #B6B6B6
-        switch level {
-        case .steady:
+        switch level.key {
+        case "steady":
             return Color(red: 0x0E/255, green: 0xBF/255, blue: 0x6E/255)
-        case .easy:
+        case "easy":
             return Color(red: 0x89/255, green: 0xD6/255, blue: 0xB2/255)
-        case .wild:
+        case "wild":
             return Color(red: 0xB6/255, green: 0xB6/255, blue: 0xB6/255)
+        default:
+            return .gray
         }
     }
 
@@ -177,8 +178,8 @@ struct DayDetailSheet: View {
                 // Fetch mindfulness and workout sessions
                 let rawSessions = try await fetchSessions(from: startOfDay, to: endOfDay)
 
-                // Fetch NoAlc data
-                let fetchedNoAlcLevel = try? await noAlcManager.fetchConsumption(for: date)
+                // Fetch NoAlc data from HealthKit via TrackerManager
+                let fetchedNoAlcLevel = await TrackerManager.shared.fetchNoAlcLevelFromHealthKit(for: date)
                 noAlcLevel = fetchedNoAlcLevel
 
                 // Add NoAlc as a "session" if it exists (for display in sessions list)
@@ -381,13 +382,15 @@ struct SessionRow: View {
             return .purple
         case .noalc(let level):
             // Use spec colors
-            switch level {
-            case .steady:
+            switch level.key {
+            case "steady":
                 return Color(red: 0x0E/255, green: 0xBF/255, blue: 0x6E/255)
-            case .easy:
+            case "easy":
                 return Color(red: 0x89/255, green: 0xD6/255, blue: 0xB2/255)
-            case .wild:
+            case "wild":
                 return Color(red: 0xB6/255, green: 0xB6/255, blue: 0xB6/255)
+            default:
+                return .gray
             }
         }
     }
@@ -405,7 +408,7 @@ struct SessionRow: View {
 
     private var noAlcInfo: String {
         if case .noalc(let level) = session.type {
-            return "\(level.emoji) \(level.label)"
+            return "\(level.icon) \(level.localizedLabel)"
         }
         return ""
     }
@@ -430,7 +433,7 @@ struct ActivitySession: Identifiable {
     enum ActivityType {
         case mindfulness
         case workout
-        case noalc(NoAlcManager.ConsumptionLevel)
+        case noalc(TrackerLevel)
     }
 }
 
