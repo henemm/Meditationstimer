@@ -161,7 +161,7 @@ extension TrackerLevel {
     static let noAlcLevels: [TrackerLevel] = [
         TrackerLevel(id: 0, key: "steady", icon: "💧", labelKey: "NoAlc.Steady", streakEffect: .success),
         TrackerLevel(id: 1, key: "easy", icon: "✨", labelKey: "NoAlc.Easy", streakEffect: .needsGrace),
-        TrackerLevel(id: 2, key: "wild", icon: "💥", labelKey: "NoAlc.Wild", streakEffect: .needsGrace)
+        TrackerLevel(id: 2, key: "wild", icon: "💥", labelKey: "NoAlc.Wild", streakEffect: .breaksStreak)
     ]
 
     /// Mood levels (5 levels, all count as success - logging is the exercise)
