@@ -3087,6 +3087,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// The Legacy NoAlc card should be completely removed.
     func testOnlyOneNoAlcTrackerVisible() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["enable-testing"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -3120,6 +3121,7 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// (Generic NoAlc uses level-based display instead)
     func testLegacyJokerDisplayRemoved() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["enable-testing"]
         app.launch()
 
         // Navigate to Tracker tab
