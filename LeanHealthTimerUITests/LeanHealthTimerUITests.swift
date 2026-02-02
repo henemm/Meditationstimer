@@ -3074,4 +3074,79 @@ final class LeanHealthTimerUITests: XCTestCase {
         testCase.add(attach)
         print("📸 Screenshot captured: \(name)")
     }
+
+    // MARK: - Bug Fix: Remove Legacy NoAlc Tracker Duplicate
+
+    /// BUG FIX: Verify only ONE NoAlc tracker is visible (no duplicates)
+    ///
+    /// Previously, TrackerTab showed TWO NoAlc trackers:
+    /// 1. Legacy NoAlc card (hard-coded with Joker display "0/3")
+    /// 2. Generic NoAlc tracker from SwiftData (level-based)
+    ///
+    /// After fix: Only the Generic NoAlc Tracker should be visible.
+    /// The Legacy NoAlc card should be completely removed.
+    func testOnlyOneNoAlcTrackerVisible() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
+        trackerTab.tap()
+
+        // Wait for tracker tab to load
+        sleep(2)
+
+        // Count how many "NoAlc" texts are visible
+        // Each NoAlc tracker card has a "NoAlc" label
+        let noAlcTexts = app.staticTexts.matching(NSPredicate(format: "label == 'NoAlc'"))
+        let noAlcCount = noAlcTexts.count
+        print("DEBUG: Found \(noAlcCount) NoAlc texts on TrackerTab")
+
+        // Take screenshot for debugging
+        takeScreenshot(named: "NoAlc_Duplicate_Check", attachment: self)
+
+        // CRITICAL ASSERTION: Only ONE NoAlc should be visible
+        // If this fails, there's still a duplicate (Legacy + Generic)
+        XCTAssertEqual(noAlcCount, 1,
+            "BUG: Found \(noAlcCount) NoAlc trackers but expected exactly 1. " +
+            "Legacy NoAlc card should be removed, only Generic NoAlc Tracker should remain.")
+    }
+
+    /// BUG FIX: Verify the Joker display "X/3" from Legacy NoAlc is gone
+    ///
+    /// The Legacy NoAlc card showed joker count like "0/3" in the header.
+    /// After removing Legacy NoAlc, this format should NOT appear.
+    /// (Generic NoAlc uses level-based display instead)
+    func testLegacyJokerDisplayRemoved() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Navigate to Tracker tab
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
+        trackerTab.tap()
+
+        // Wait for tracker tab to load
+        sleep(2)
+
+        // Look for the Legacy joker display pattern "X/3" where X is 0-3
+        // This was displayed in the Legacy NoAlc card header
+        let jokerDisplayPatterns = ["0/3", "1/3", "2/3", "3/3"]
+
+        for pattern in jokerDisplayPatterns {
+            let jokerText = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", pattern)).firstMatch
+            XCTAssertFalse(jokerText.exists,
+                "BUG: Found Legacy joker display '\(pattern)'. " +
+                "Legacy NoAlc card should be completely removed.")
+        }
+
+        // Also check the accessibility identifier used by Legacy NoAlc
+        let legacyJokerElement = app.staticTexts["noAlcJokers"]
+        XCTAssertFalse(legacyJokerElement.exists,
+            "BUG: Found 'noAlcJokers' accessibility identifier. " +
+            "This belongs to Legacy NoAlc and should be removed.")
+
+        print("✅ Legacy Joker display patterns not found - Legacy NoAlc successfully removed")
+    }
 }
