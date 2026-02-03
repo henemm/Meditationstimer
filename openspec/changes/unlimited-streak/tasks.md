@@ -26,14 +26,14 @@
 
 **Datei:** `Meditationstimer iOS/CalendarView.swift`
 
-1. Lokale `meditationStreak` computed property anpassen:
-   - Aktuell: Iteriert nur über geladene `dailyMinutes`
-   - Neu: Nutzt StreakManager oder eigene expanding Logik
+**Empfohlene Lösung:** CalendarView soll StreakManager nutzen statt lokal zu berechnen.
 
-2. Lokale `workoutStreak` computed property anpassen:
-   - Gleiche Änderung wie meditationStreak
+1. `@EnvironmentObject var streakManager: StreakManager` hinzufügen
+2. Lokale `meditationStreak` computed property ersetzen durch `streakManager.meditationStreak.currentStreakDays`
+3. Lokale `workoutStreak` computed property ersetzen durch `streakManager.workoutStreak.currentStreakDays`
+4. `streakManager.updateStreaks()` in `onAppear` aufrufen
 
-**Alternative:** CalendarView könnte direkt StreakManager.meditationStreak nutzen statt lokal zu berechnen.
+**Vorteil:** Eine zentrale Streak-Berechnung, keine Duplikation der Logik.
 
 ### Task 3: Spec aktualisieren
 

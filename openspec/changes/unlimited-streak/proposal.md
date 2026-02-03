@@ -6,12 +6,12 @@ Die Streak-Berechnung für Meditation und Workout soll nicht mehr auf 30 Tage be
 
 ## Problem
 
-Aktuell lädt der StreakManager nur 30 Tage HealthKit-Daten. User mit längeren Streaks sehen ihren echten Fortschritt nicht - der Streak stoppt immer bei ~30 Tagen.
+Die Streak-Berechnung für Meditation und Workout stoppt bei ca. 90 Tagen, obwohl User längere Streaks haben. Die Limitierung entsteht durch:
 
-**Betroffene Stelle:** `Services/StreakManager.swift:40`
-```swift
-let startDate = calendar.date(byAdding: .day, value: -30, to: date)!
-```
+1. **StreakManager** (`Services/StreakManager.swift:40`): Lädt nur 30 Tage
+2. **CalendarView** (`CalendarView.swift:368`): Lädt nur -6 Monate, Streak-Berechnung nutzt nur geladene Daten
+
+**Beobachtung:** User sieht im Frontend (ErfolgeTab/CalendarView) maximal ~90 Tage Streak für Meditation und Workout.
 
 ## Lösung: Expand-on-Demand
 
