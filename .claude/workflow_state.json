@@ -1,14 +1,14 @@
 {
-  "current_phase": "implementing",
-  "workflow_type": "bug",
-  "feature_name": "NoAlc als separater Tracker + Quick-Log Buttons",
+  "current_phase": "analysing",
+  "workflow_type": "feature",
+  "feature_name": "Unbegrenzte Streak-Berechnung: Expand-on-Demand f\u00fcr performante unbegrenzte Streaks",
   "spec_file": null,
   "spec_approved": true,
-  "tests_written": true,
-  "tests_passing": true,
-  "implementation_done": true,
-  "validated": true,
-  "last_updated": "2025-12-22T08:39:58.301599",
+  "tests_written": false,
+  "tests_passing": false,
+  "implementation_done": false,
+  "validated": false,
+  "last_updated": "2026-02-03T10:05:40.498555",
   "phase_history": [
     {
       "from": "idle",
@@ -94,6 +94,11 @@
       "from": "validating",
       "to": "implementing",
       "timestamp": "2025-12-22T08:39:58.301592"
+    },
+    {
+      "from": "implementing",
+      "to": "analysing",
+      "timestamp": "2026-02-03T10:05:40.497240"
     }
   ]
 }
