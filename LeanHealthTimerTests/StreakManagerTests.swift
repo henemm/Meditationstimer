@@ -260,6 +260,117 @@ final class StreakManagerTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(streakDays, 0, "Should handle rounding")
     }
 
+    // MARK: - Expand-on-Demand Tests (Unbegrenzte Streaks)
+
+    func testExpandOnDemand_ShortStreak() {
+        // Test: 15 consecutive days should work with single batch
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var dailyMinutes: [Date: Double] = [:]
+        for i in 0..<15 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+
+        let (streakDays, rewards) = calculateStreak(dailyMinutes: dailyMinutes, today: today)
+
+        XCTAssertEqual(streakDays, 15, "Short streak (15 days) should work")
+        XCTAssertEqual(rewards, 2, "15 days = 2 rewards (15/7 = 2)")
+    }
+
+    func testExpandOnDemand_LongStreak45Days() {
+        // Test: 45 consecutive days (would need 2 batches in expand-on-demand)
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var dailyMinutes: [Date: Double] = [:]
+        for i in 0..<45 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+
+        let (streakDays, rewards) = calculateStreak(dailyMinutes: dailyMinutes, today: today)
+
+        XCTAssertEqual(streakDays, 45, "Long streak (45 days) should work")
+        XCTAssertEqual(rewards, 3, "45 days = 3 rewards (max capped)")
+    }
+
+    func testExpandOnDemand_VeryLongStreak100Days() {
+        // Test: 100 consecutive days (would need 4 batches in expand-on-demand)
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var dailyMinutes: [Date: Double] = [:]
+        for i in 0..<100 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+
+        let (streakDays, rewards) = calculateStreak(dailyMinutes: dailyMinutes, today: today)
+
+        XCTAssertEqual(streakDays, 100, "Very long streak (100 days) should work - no 90-day limit!")
+        XCTAssertEqual(rewards, 3, "100 days = 3 rewards (max capped)")
+    }
+
+    func testExpandOnDemand_StreakAtBatchBoundary() {
+        // Test: Exactly 30 days (at batch boundary)
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var dailyMinutes: [Date: Double] = [:]
+        for i in 0..<30 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+        // Day 31 has no activity (streak should be exactly 30)
+
+        let (streakDays, _) = calculateStreak(dailyMinutes: dailyMinutes, today: today)
+
+        XCTAssertEqual(streakDays, 30, "Streak at batch boundary (30 days) should work")
+    }
+
+    func testExpandOnDemand_StreakBreaksInMiddle() {
+        // Test: Gap at day 50, streak should be counted from most recent
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var dailyMinutes: [Date: Double] = [:]
+        // Days 0-40 have activity
+        for i in 0..<41 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+        // Day 41 has no activity (gap)
+        // Days 42-50 have activity (but won't count due to gap)
+        for i in 42..<51 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+
+        let (streakDays, _) = calculateStreak(dailyMinutes: dailyMinutes, today: today)
+
+        XCTAssertEqual(streakDays, 41, "Streak should stop at gap, count only 41 consecutive days")
+    }
+
+    func testExpandOnDemand_TodayGrace() {
+        // Test: No activity today, but yesterday starts a long streak
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        var dailyMinutes: [Date: Double] = [:]
+        // No activity today
+        // Days 1-50 (yesterday to 50 days ago) have activity
+        for i in 1..<51 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            dailyMinutes[date] = 10.0
+        }
+
+        let (streakDays, _) = calculateStreakWithTodayGrace(dailyMinutes: dailyMinutes, today: today)
+
+        XCTAssertEqual(streakDays, 50, "Should count 50 days starting from yesterday (today grace)")
+    }
+
     // MARK: - Helper Functions
 
     /// Helper that replicates the streak calculation logic from StreakManager
@@ -285,6 +396,33 @@ final class StreakManagerTests: XCTestCase {
         // Calculate rewards (7 days per reward, max 3)
         let rewards = min(3, currentStreak / 7)
 
+        return (currentStreak, rewards)
+    }
+
+    /// Helper with "today grace" - starts from yesterday if today has no activity
+    private func calculateStreakWithTodayGrace(dailyMinutes: [Date: Double], today: Date) -> (streakDays: Int, rewards: Int) {
+        let calendar = Calendar.current
+        let todayStart = calendar.startOfDay(for: today)
+
+        let todayMinutes = dailyMinutes[todayStart] ?? 0
+        let hasDataToday = round(todayMinutes) >= minMinutes
+
+        var currentStreak = 0
+        var checkDate = hasDataToday ? todayStart : calendar.date(byAdding: .day, value: -1, to: todayStart)!
+
+        // Count consecutive days
+        while true {
+            let minutes = dailyMinutes[checkDate] ?? 0
+            if round(minutes) >= minMinutes {
+                currentStreak += 1
+                guard let newDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                checkDate = newDate
+            } else {
+                break
+            }
+        }
+
+        let rewards = min(3, currentStreak / 7)
         return (currentStreak, rewards)
     }
 }

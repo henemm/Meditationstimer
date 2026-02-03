@@ -35,94 +35,112 @@ class StreakManager: ObservableObject {
     }
     
     func updateStreaks(for date: Date = Date()) async {
-        // Get daily minutes for the past 30 days or so
         let calendar = Calendar.current
-        let startDate = calendar.date(byAdding: .day, value: -30, to: date)!
-
-        // CRITICAL FIX: Use start of tomorrow as endDate to include ALL samples from today
-        // With .strictStartDate, samples must start BEFORE endDate (exclusive)
-        // If we pass Date() (now), samples from later today won't be found
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: date))!
 
         do {
-            let dailyMinutes = try await healthKitManager.fetchDailyMinutesFiltered(from: startDate, to: tomorrow)
+            // Calculate meditation streak with expand-on-demand
+            let meditationDays = try await calculateExpandingStreak(
+                endDate: tomorrow,
+                fetchMinutes: { start, end in
+                    let data = try await self.healthKitManager.fetchDailyMinutesFiltered(from: start, to: end)
+                    return data.mapValues { $0.mindfulnessMinutes }
+                }
+            )
 
-            print("🔍 StreakManager - Fetched \(dailyMinutes.count) days of data")
-            print("🔍 Date range: \(startDate) to \(tomorrow)")
-
-            // Debug: Print meditation minutes
-            let meditationMinutes = dailyMinutes.mapValues { $0.mindfulnessMinutes }
-            let meditationDaysWithData = meditationMinutes.filter { $0.value >= Double(minMinutes) }
-            print("🔍 Meditation days with >= \(minMinutes) min: \(meditationDaysWithData.count)")
-            for (date, mins) in meditationDaysWithData.sorted(by: { $0.key > $1.key }).prefix(5) {
-                let formatter = DateFormatter()
-                formatter.dateStyle = .short
-                print("   \(formatter.string(from: date)): \(mins) min")
-            }
+            // Calculate workout streak with expand-on-demand
+            let workoutDays = try await calculateExpandingStreak(
+                endDate: tomorrow,
+                fetchMinutes: { start, end in
+                    let data = try await self.healthKitManager.fetchDailyMinutesFiltered(from: start, to: end)
+                    return data.mapValues { $0.workoutMinutes }
+                }
+            )
 
             await MainActor.run {
-                // Update meditation streak
-                updateStreak(&meditationStreak, dailyMinutes: dailyMinutes.mapValues { $0.mindfulnessMinutes })
-                print("🔍 After update - Meditation streak: \(meditationStreak.currentStreakDays) days")
+                let today = calendar.startOfDay(for: Date())
 
-                // Update workout streak
-                updateStreak(&workoutStreak, dailyMinutes: dailyMinutes.mapValues { $0.workoutMinutes })
-                print("🔍 After update - Workout streak: \(workoutStreak.currentStreakDays) days")
+                meditationStreak.currentStreakDays = meditationDays
+                meditationStreak.rewardsEarned = min(3, meditationDays / streakThreshold)
+                if meditationDays > 0 { meditationStreak.lastActivityDate = today }
+
+                workoutStreak.currentStreakDays = workoutDays
+                workoutStreak.rewardsEarned = min(3, workoutDays / streakThreshold)
+                if workoutDays > 0 { workoutStreak.lastActivityDate = today }
 
                 saveStreaks()
+                print("🔍 Streak update: Meditation=\(meditationDays), Workout=\(workoutDays)")
             }
         } catch {
             print("Error updating streaks: \(error)")
         }
     }
-    
-    private func updateStreak(_ streak: inout StreakData, dailyMinutes: [Date: Double]) {
+
+    /// Calculates streak using expand-on-demand: loads 30-day batches until streak breaks.
+    /// Performant for short streaks (1 query), scales for long streaks.
+    private func calculateExpandingStreak(
+        endDate: Date,
+        fetchMinutes: @escaping (Date, Date) async throws -> [Date: Double]
+    ) async throws -> Int {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
+        let batchSize = 30
+        let maxBatches = 40 // Safety limit: ~3.3 years
 
-        // Check if today has data
-        let todayMinutes = dailyMinutes[today] ?? 0
-        let hasDataToday = round(todayMinutes) >= Double(minMinutes)
+        var allMinutes: [Date: Double] = [:]
+        var batchesLoaded = 0
 
-        print("🔍 updateStreak() - today: \(today), todayMinutes: \(todayMinutes), hasDataToday: \(hasDataToday)")
+        while batchesLoaded < maxBatches {
+            // Calculate batch range (going backwards)
+            let batchEnd = calendar.date(byAdding: .day, value: -(batchesLoaded * batchSize), to: endDate)!
+            let batchStart = calendar.date(byAdding: .day, value: -batchSize, to: batchEnd)!
 
-        // Calculate current streak: consecutive days with at least minMinutes
-        // Start from yesterday if today has no data (don't break streak for incomplete today)
-        var currentStreak = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+            // Fetch this batch
+            let batchData = try await fetchMinutes(batchStart, batchEnd)
+            allMinutes.merge(batchData) { existing, _ in existing }
+            batchesLoaded += 1
 
-        print("🔍 Starting streak calculation from: \(checkDate)")
+            // Calculate streak with all loaded data
+            let todayMinutes = allMinutes[today] ?? 0
+            let hasDataToday = round(todayMinutes) >= Double(minMinutes)
+            var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+            var streakCount = 0
 
-        while true {
-            let minutes = dailyMinutes[checkDate] ?? 0
-            print("🔍   Checking \(checkDate): \(minutes) min (rounded: \(round(minutes)))")
-            if round(minutes) >= Double(minMinutes) {
-                currentStreak += 1
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else {
-                    print("🔍   Reached beginning of calendar")
+            while true {
+                let minutes = allMinutes[checkDate] ?? 0
+                if round(minutes) >= Double(minMinutes) {
+                    streakCount += 1
+                    guard let prev = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                    checkDate = prev
+                } else {
+                    // Streak broken - return result
+                    return streakCount
+                }
+
+                // Check if we've reached the edge of loaded data
+                if checkDate < batchStart {
+                    // Need more data - break inner loop to load next batch
                     break
                 }
-                checkDate = previousDate
-            } else {
-                print("🔍   Day has < \(minMinutes) min, stopping. Final streak: \(currentStreak)")
-                break
+            }
+
+            // If streak continues to edge, load more; otherwise we found the break
+            if checkDate >= batchStart {
+                return streakCount
             }
         }
 
-        // Calculate rewards based on streak
-        let newRewards = min(3, currentStreak / streakThreshold)
-
-        if hasDataToday {
-            // Update streak and rewards
-            streak.currentStreakDays = currentStreak
-            streak.rewardsEarned = newRewards
-            streak.lastActivityDate = today
-        } else {
-            // No data today: show streak from yesterday (don't penalize for incomplete day)
-            streak.currentStreakDays = currentStreak
-            streak.rewardsEarned = newRewards
-            // Keep lastActivityDate as is (don't update)
+        // Reached max batches - calculate final streak from all loaded data
+        let todayMinutes = allMinutes[today] ?? 0
+        let hasDataToday = round(todayMinutes) >= Double(minMinutes)
+        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
+        var finalStreak = 0
+        while let minutes = allMinutes[checkDate], round(minutes) >= Double(minMinutes) {
+            finalStreak += 1
+            guard let prev = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+            checkDate = prev
         }
+        return finalStreak
     }
     
     private func loadStreaks() {

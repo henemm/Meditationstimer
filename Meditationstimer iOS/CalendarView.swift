@@ -14,7 +14,9 @@ struct CalendarView: View {
         case workout
         case both
     }
-    
+
+    @EnvironmentObject var streakManager: StreakManager
+
     @State private var activityDays: [Date: ActivityType] = [:]
     @State private var dailyMinutes: [Date: (mindfulnessMinutes: Double, workoutMinutes: Double)] = [:]
     @State private var alcoholDays: [Date: NoAlcManager.ConsumptionLevel] = [:]
@@ -47,48 +49,13 @@ struct CalendarView: View {
         return noAlcStreakResult.rewards
     }
 
+    // Use StreakManager for unlimited streak calculation (expand-on-demand)
     private var meditationStreak: Int {
-        let today = calendar.startOfDay(for: Date())
-        let todayMinutes = dailyMinutes[today]?.mindfulnessMinutes ?? 0
-        let hasDataToday = round(todayMinutes) >= 2.0
-
-        var currentStreak = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        while true {
-            let minutes = dailyMinutes[checkDate]?.mindfulnessMinutes ?? 0
-            if round(minutes) >= 2.0 {
-                currentStreak += 1
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
-                checkDate = previousDate
-            } else {
-                break
-            }
-        }
-
-        return currentStreak
+        return streakManager.meditationStreak.currentStreakDays
     }
 
     private var workoutStreak: Int {
-        let today = calendar.startOfDay(for: Date())
-        let todayMinutes = dailyMinutes[today]?.workoutMinutes ?? 0
-        let hasDataToday = round(todayMinutes) >= 2.0
-
-        var currentStreak = 0
-        var checkDate = hasDataToday ? today : calendar.date(byAdding: .day, value: -1, to: today)!
-
-        while true {
-            let minutes = dailyMinutes[checkDate]?.workoutMinutes ?? 0
-            if round(minutes) >= 2.0 {
-                currentStreak += 1
-                guard let previousDate = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
-                checkDate = previousDate
-            } else {
-                break
-            }
-        }
-
-        return currentStreak
+        return streakManager.workoutStreak.currentStreakDays
     }
 
     var body: some View {
@@ -297,11 +264,13 @@ struct CalendarView: View {
                     do {
                         try await hk.requestAuthorization()
                         loadActivityDays()
+                        await streakManager.updateStreaks()
                     } catch {
                         errorMessage = "HealthKit-Berechtigung erforderlich: \(error.localizedDescription)"
                     }
                 } else {
                     loadActivityDays()
+                    await streakManager.updateStreaks()
                 }
             }
         }

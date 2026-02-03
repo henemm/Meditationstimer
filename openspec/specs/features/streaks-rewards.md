@@ -223,11 +223,12 @@ The system SHALL update streaks at appropriate times.
 - THEN streaks are recalculated from HealthKit
 - AND display updates with fresh data
 
-#### Scenario: Batch Update
+#### Scenario: Expand-on-Demand Update
 - GIVEN streak update is triggered
 - WHEN updateStreaks() runs
-- THEN fetches last 30 days of activity
-- AND calculates current streak
+- THEN fetches activity data in 30-day batches
+- AND expands backwards until streak breaks or safety limit (40 batches = ~3.3 years)
+- AND calculates current streak (unlimited length)
 - AND calculates reward count (for NoAlc)
 
 ### Requirement: Minimum Activity Threshold
@@ -249,7 +250,9 @@ The system SHALL enforce minimum activity duration for streak eligibility.
 ## Technical Notes
 
 - **StreakManager:** Singleton service with `@Published` properties for reactive updates
-- **CalendarView Calculation:** Inline calculation using `calculateNoAlcStreakAndRewards()` for NoAlc
+- **Expand-on-Demand:** `calculateExpandingStreak()` loads 30-day batches until streak breaks (performant for short streaks, scales for long streaks)
+- **CalendarView:** Uses `@EnvironmentObject var streakManager` for Meditation/Workout streaks (not local calculation)
+- **CalendarView NoAlc:** Still uses inline `calculateNoAlcStreakAndRewards()` (based on loaded calendar data)
 - **HealthKit Query:** Uses `fetchDailyMinutesFiltered(from:to:)` with tomorrow as endDate
 - **Tracker Query:** SwiftData query for `TrackerLog` grouped by date
 - **Forward Iteration:** CRITICAL for NoAlc - see CLAUDE.md "Forward vs. Backward Iteration"
