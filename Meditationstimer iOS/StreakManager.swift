@@ -147,10 +147,13 @@ class StreakManager: ObservableObject {
     }
     
     func updateStreaks(for date: Date = Date()) async {
-        // Get daily minutes for the past 90 days to support long streaks
-        // Bug 35: 30 days was too short, causing 56-day streaks to be truncated to 30
+        // ADAPTIVE LOADING: Load enough days based on current streak + buffer
+        // This ensures long streaks (100+ days) are never truncated
+        // Minimum 90 days, but grows with the streak
         let calendar = Calendar.current
-        let startDate = calendar.date(byAdding: .day, value: -90, to: date)!
+        let currentMaxStreak = max(meditationStreak.currentStreakDays, workoutStreak.currentStreakDays)
+        let daysToLoad = max(90, currentMaxStreak + 30)
+        let startDate = calendar.date(byAdding: .day, value: -daysToLoad, to: date)!
 
         // CRITICAL FIX: Use start of tomorrow as endDate to include ALL samples from today
         // With .strictStartDate, samples must start BEFORE endDate (exclusive)
@@ -160,6 +163,7 @@ class StreakManager: ObservableObject {
         do {
             let dailyMinutes = try await healthKitManager.fetchDailyMinutesFiltered(from: startDate, to: tomorrow)
 
+            print("🔍 StreakManager - ADAPTIVE: Loading \(daysToLoad) days (current max streak: \(currentMaxStreak))")
             print("🔍 StreakManager - Fetched \(dailyMinutes.count) days of data")
             print("🔍 Date range: \(startDate) to \(tomorrow)")
 

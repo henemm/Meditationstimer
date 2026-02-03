@@ -71,7 +71,7 @@ struct TrackerTab: View {
             Text(NSLocalizedString("Trackers", comment: "Trackers section header"))
                 .font(.title3)
                 .foregroundStyle(.secondary)
-                .textCase(.uppercase)
+                .textCase(nil)
                 .padding(.horizontal, 4)
 
             // All Trackers (including NoAlc) - sortable via drag & drop

@@ -136,7 +136,8 @@ struct CalendarView: View {
                     .accessibilityLabel("Meditation Streak Info")
 
                     Text("Meditation: Streak \(meditationStreak) Day", comment: "Meditation streak count")
-                        .font(.subheadline)
+                        .font(.callout)
+                        .textCase(nil)
                     Spacer()
                     rewardsView(for: meditationRewards, icon: "leaf.fill", color: .blue)
                 }
@@ -187,7 +188,8 @@ struct CalendarView: View {
                     .accessibilityLabel("Workout Streak Info")
 
                     Text("Workouts: Streak \(workoutStreak) Day", comment: "Workout streak count")
-                        .font(.subheadline)
+                        .font(.callout)
+                        .textCase(nil)
                     Spacer()
                     rewardsView(for: workoutRewards, icon: "flame.fill", color: .purple)
                 }
@@ -238,7 +240,8 @@ struct CalendarView: View {
                     .accessibilityLabel("NoAlc Streak Info")
 
                     Text("NoAlc: Streak \(noAlcStreak) Day", comment: "NoAlc streak count")
-                        .font(.subheadline)
+                        .font(.callout)
+                        .textCase(nil)
                     Spacer()
                     rewardsView(for: noAlcStreakPoints, icon: "drop.fill", color: .green)
                 }
