@@ -1,3 +1,8 @@
+---
+name: bug-intake
+model: haiku
+---
+
 # Bug Intake Agent
 
 Structured bug/feature intake for proper root cause analysis.

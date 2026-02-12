@@ -274,7 +274,41 @@
       "analysis_findings": null,
       "phases_completed": [],
       "backlog_status": "done"
+    },
+    "generic-tracker-date-edit-bug": {
+      "current_phase": "phase8_complete",
+      "created": "2026-01-25T17:29:15.010654",
+      "last_updated": "2026-01-27T16:30:46.714256",
+      "spec_file": "docs/specs/bugfix/noalc-healthkit-value-bug.md",
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "docs/artifacts/noalc-healthkit-value-bug/test-red-output.txt",
+          "description": "Test FAILED: TrackerManager has no member resolveHealthKitValue - compilation error (4 tests)",
+          "phase": "phase5_tdd_red",
+          "created": "2026-01-27T08:51:21.672573"
+        },
+        {
+          "type": "test_output",
+          "path": "docs/artifacts/noalc-healthkit-value-bug/test-green-output.txt",
+          "description": "All 212 tests PASSED: resolveHealthKitValue correctly maps wild\u21926, easy\u21924, steady\u21920",
+          "phase": "phase6_implement",
+          "created": "2026-01-27T15:35:37.827122"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": true,
+      "red_test_result": "testLogEntryWithCustomTimestamp FAILED - timestamp parameter not found",
+      "green_test_done": true,
+      "green_test_result": "TrackerManager.logEntry now accepts timestamp parameter - unit test validates data flow",
+      "analysis_findings": null,
+      "phases_completed": [
+        "phase5_tdd_red"
+      ],
+      "backlog_status": "done"
     }
   },
-  "active_workflow": "noalc-reminder-cancel-bug"
+  "active_workflow": "generic-tracker-date-edit-bug"
 }

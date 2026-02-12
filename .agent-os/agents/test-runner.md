@@ -1,6 +1,7 @@
 ---
 name: test-runner
 description: Fuehrt Unit Tests aus und analysiert Ergebnisse verstaendlich
+model: haiku
 tools:
   - Bash
   - Read

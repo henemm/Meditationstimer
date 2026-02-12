@@ -88,9 +88,9 @@ let variants: [IconVariant] = [
 ]
 
 let outputDirs = [
-    "/Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer iOS/Assets.xcassets/AppIcon.appiconset",
-    "/Users/hem/Documents/opt/Meditationstimer/Meditationstimer/Meditationstimer Watch App/Assets.xcassets/AppIcon.appiconset",
-    "/Users/hem/Documents/opt/Meditationstimer/Meditationstimer/MeditationstimerWidget/Assets.xcassets/AppIcon.appiconset"
+    "/Users/hem/Developer/Meditationstimer/Meditationstimer/Meditationstimer iOS/Assets.xcassets/AppIcon.appiconset",
+    "/Users/hem/Developer/Meditationstimer/Meditationstimer/Meditationstimer Watch App/Assets.xcassets/AppIcon.appiconset",
+    "/Users/hem/Developer/Meditationstimer/Meditationstimer/MeditationstimerWidget/Assets.xcassets/AppIcon.appiconset"
 ]
 
 @MainActor

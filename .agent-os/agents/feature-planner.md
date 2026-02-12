@@ -1,6 +1,7 @@
 ---
 name: feature-planner
 description: Plant neue Features UND Änderungen an bestehenden Features - erst verstehen, dann dokumentieren, dann implementieren
+model: sonnet
 tools:
   - Read
   - Grep

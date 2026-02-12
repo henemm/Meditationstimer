@@ -1,6 +1,7 @@
 ---
 name: localizer
 description: Spezialisiert auf DE<->EN Lokalisierung fuer die Meditationstimer App
+model: sonnet
 tools:
   - Read
   - Grep

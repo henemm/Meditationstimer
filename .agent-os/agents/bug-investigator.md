@@ -1,6 +1,7 @@
 ---
 name: bug-investigator
 description: Analysiert Bugs nach Analysis-First Prinzip - erst verstehen, dann fixen
+model: sonnet
 tools:
   - Read
   - Grep

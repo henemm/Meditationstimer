@@ -324,9 +324,6 @@
     "⭐" : {
 
     },
-    "🃏" : {
-
-    },
     "🌬️" : {
 
     },
@@ -6288,6 +6285,9 @@
         }
       }
     },
+    "NoAlc tracker not found" : {
+
+    },
     "NoAlc: %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8640,9 +8640,6 @@
           }
         }
       }
-    },
-    "Today:" : {
-      "comment" : "Today's log prefix"
     },
     "Total Duration" : {
       "extractionState" : "manual",

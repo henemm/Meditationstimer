@@ -1,3 +1,8 @@
+---
+name: docs-updater
+model: sonnet
+---
+
 # Docs Updater Agent
 
 Updates documentation after code changes to maintain consistency.
