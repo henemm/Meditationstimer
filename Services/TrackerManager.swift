@@ -50,6 +50,9 @@ final class TrackerManager {
     ///   - location: Optional location
     ///   - timestamp: The timestamp for the log (defaults to now)
     ///   - context: The ModelContext to insert into
+    /// - Parameter dayAssignmentOverride: When set, overrides the tracker's dayAssignment for HealthKit.
+    ///   Use `.timestamp` when the user explicitly picks a date from a calendar picker,
+    ///   so the cutoffHour logic doesn't shift the chosen date.
     func logEntry(
         for tracker: Tracker,
         value: Int? = nil,
@@ -57,6 +60,7 @@ final class TrackerManager {
         trigger: String? = nil,
         location: String? = nil,
         timestamp: Date = Date(),
+        dayAssignmentOverride: DayAssignment? = nil,
         in context: ModelContext
     ) -> TrackerLog {
         let log = TrackerLog(
@@ -76,7 +80,7 @@ final class TrackerManager {
             let hkValue = resolveHealthKitValue(for: tracker, levelId: logValue)
             let hkTypeId = tracker.healthKitType
             let trackerName = tracker.name
-            let dayAssignment = tracker.effectiveDayAssignment
+            let dayAssignment = dayAssignmentOverride ?? tracker.effectiveDayAssignment
 
             Task {
                 await saveToHealthKitDirect(hkTypeId: hkTypeId, hkValue: hkValue, date: log.timestamp, dayAssignment: dayAssignment, trackerName: trackerName)
@@ -129,6 +133,17 @@ final class TrackerManager {
         do {
             let quantity = HKQuantity(unit: .count(), doubleValue: Double(hkValue))
             let assignedDay = dayAssignment.assignedDay(for: date, calendar: calendar)
+
+            // Delete existing entries for the same day (last entry wins)
+            // Separate do/catch so delete failure never blocks the save
+            let endOfDay = calendar.date(byAdding: .day, value: 1, to: assignedDay)!
+            let dayPredicate = HKQuery.predicateForSamples(withStart: assignedDay, end: endOfDay, options: .strictStartDate)
+            do {
+                try await healthStore.deleteObjects(of: hkType, predicate: dayPredicate)
+            } catch {
+                print("[TrackerManager] HealthKit delete failed (continuing with save): \(error)")
+            }
+
             let sample = HKQuantitySample(type: hkType, quantity: quantity, start: assignedDay, end: assignedDay)
             try await healthStore.save(sample)
             print("[TrackerManager] HealthKit save succeeded: \(hkValue) for \(trackerName)")
@@ -282,7 +297,9 @@ final class TrackerManager {
     // MARK: - HealthKit NoAlc Queries (for backward compatibility during migration)
 
     /// Fetches NoAlc level from HealthKit for a specific day.
-    /// Returns TrackerLevel from noAlcLevels or nil if no data.
+    /// Sums ALL entries for the day and maps the total to the highest matching level.
+    /// With delete-before-write there should only be one entry per day;
+    /// the sum is a safe fallback if the delete ever fails.
     func fetchNoAlcLevelFromHealthKit(for date: Date) async -> TrackerLevel? {
         guard let alcoholType = HKQuantityType.quantityType(forIdentifier: .numberOfAlcoholicBeverages) else {
             return nil
@@ -292,24 +309,27 @@ final class TrackerManager {
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: targetDay)!
 
         let predicate = HKQuery.predicateForSamples(withStart: targetDay, end: endOfDay, options: .strictStartDate)
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
 
         return await withCheckedContinuation { continuation in
-            let query = HKSampleQuery(sampleType: alcoholType, predicate: predicate, limit: 1, sortDescriptors: [sortDescriptor]) { _, samples, error in
+            let query = HKSampleQuery(sampleType: alcoholType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
                 if error != nil {
                     continuation.resume(returning: nil)
                     return
                 }
 
-                guard let sample = samples?.first as? HKQuantitySample else {
+                guard let quantitySamples = samples as? [HKQuantitySample], !quantitySamples.isEmpty else {
                     continuation.resume(returning: nil)
                     return
                 }
 
-                let value = Int(sample.quantity.doubleValue(for: .count()))
-                // Map HealthKit value to TrackerLevel: 0=steady, 4=easy, 6=wild
-                let level = TrackerLevel.noAlcLevels.first { $0.healthKitValue == value }
-                    ?? TrackerLevel.noAlcLevels.first { $0.key == "steady" } // Fallback for unknown values
+                // Sum all entries for the day (multiple logs = total drink count)
+                let total = quantitySamples.reduce(0) { $0 + Int($1.quantity.doubleValue(for: .count())) }
+
+                // Map total to highest matching level (steady=0, easy=4, wild=6+)
+                let level = TrackerLevel.noAlcLevels
+                    .sorted { $0.healthKitValue > $1.healthKitValue }
+                    .first { $0.healthKitValue <= total }
+                    ?? TrackerLevel.noAlcLevels.first { $0.key == "steady" }
                 continuation.resume(returning: level)
             }
 

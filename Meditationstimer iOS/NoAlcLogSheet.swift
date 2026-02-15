@@ -54,6 +54,7 @@ struct NoAlcLogSheet: View {
                         }
                     }
                     .padding(.horizontal, 16)
+                    .sensoryFeedback(.success, trigger: isLogging)
 
                     // Erweitert Button
                     Button {
@@ -114,6 +115,7 @@ struct NoAlcLogSheet: View {
                                     )
                                 }
                             }
+                            .sensoryFeedback(.success, trigger: isLogging)
                         }
                         .padding(.horizontal)
 
@@ -211,10 +213,12 @@ struct NoAlcLogSheet: View {
         let dateToLog = isExpanded ? selectedDate : targetDayForLogging()
 
         // Log consumption via TrackerManager (handles HealthKit + SwiftData)
+        // When calendar picker is used (isExpanded), bypass cutoffHour so the explicit date is kept
         let _ = TrackerManager.shared.logEntry(
             for: noAlcTracker,
             value: level.id,
             timestamp: dateToLog,
+            dayAssignmentOverride: isExpanded ? .timestamp : nil,
             in: modelContext
         )
 

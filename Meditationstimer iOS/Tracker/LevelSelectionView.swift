@@ -173,6 +173,7 @@ struct LevelSelectionView: View {
                 )
             }
         }
+        .sensoryFeedback(.success, trigger: isLogging)
     }
 
     // MARK: - Computed Properties
@@ -207,11 +208,13 @@ struct LevelSelectionView: View {
         let dateToLog = isExpanded ? selectedDate : Date()
 
         // Log entry with level ID as value and selected timestamp
+        // When calendar picker is used (isExpanded), bypass cutoffHour so the explicit date is kept
         _ = manager.logEntry(
             for: tracker,
             value: level.id,
             note: "\(level.icon) \(level.localizedLabel)",
             timestamp: dateToLog,
+            dayAssignmentOverride: isExpanded ? .timestamp : nil,
             in: modelContext
         )
 

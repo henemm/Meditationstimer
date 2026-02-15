@@ -919,4 +919,30 @@ final class TrackerMigration {
         try context.save()
         print("[TrackerMigration] Default trackers created successfully")
     }
+
+    // MARK: - Level Sync
+
+    /// Syncs stored TrackerLevel data with current static defaults.
+    /// Fixes stale levels frozen in SwiftData (e.g. Wild .needsGrace → .breaksStreak).
+    func syncLevelsWithDefaults(context: ModelContext) throws {
+        let presetMap: [String: [TrackerLevel]] = [
+            "NoAlc": TrackerLevel.noAlcLevels,
+            "Mood": TrackerLevel.moodLevels,
+            "Energy": TrackerLevel.energyLevels,
+        ]
+
+        let descriptor = FetchDescriptor<Tracker>()
+        let trackers = try context.fetch(descriptor)
+
+        for tracker in trackers {
+            guard let expectedLevels = presetMap[tracker.name],
+                  let storedLevels = tracker.levels,
+                  storedLevels != expectedLevels else { continue }
+
+            tracker.levels = expectedLevels
+            print("[TrackerMigration] Synced levels for \(tracker.name)")
+        }
+
+        try context.save()
+    }
 }
