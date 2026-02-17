@@ -90,6 +90,10 @@ final class TrackerManager {
         // Cancel matching Smart Reminders for this tracker (Reverse Smart Reminders)
         #if os(iOS)
         SmartReminderEngine.shared.cancelMatchingTrackerReminders(for: tracker.id, completedAt: log.timestamp)
+        // Also cancel old-style NoAlc reminders that use activityType instead of trackerID
+        if tracker.healthKitType == HKQuantityTypeIdentifier.numberOfAlcoholicBeverages.rawValue {
+            SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: log.timestamp)
+        }
         #endif
 
         return log
