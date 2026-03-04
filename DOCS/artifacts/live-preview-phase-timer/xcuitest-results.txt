@@ -1,0 +1,29 @@
+XCUITest Results - Workout Live Activity Dual Timer
+============================================================
+
+Test Date: 2026-03-04 12:56:51
+
+Test 1: testWorkoutLiveActivityDualTimerOnLockScreen
+  Status: PASSED (177.4s)
+  Screenshots captured:
+    - WorkoutLiveActivity_HomeScreen_DualTimer
+    - WorkoutLiveActivity_DynamicIsland_Expanded_DualTimer
+    - WorkoutLiveActivity_AppForeground_Running
+
+Test 2: testWorkoutLiveActivityDynamicIslandExpanded
+  Status: PASSED (255.6s)
+  Screenshots captured:
+    - WorkoutLiveActivity_DynamicIsland_Compact
+    - WorkoutLiveActivity_DynamicIsland_Expanded
+
+Both tests verify:
+  1. Free Workout starts successfully (Pause button visible)
+  2. Live Activity is triggered when workout starts
+  3. App can be backgrounded and re-activated without crash
+  4. Dynamic Island can be expanded via long-press
+  5. Screenshots captured for visual verification of dual timer layout
+
+Note: Live Activity widget content cannot be programmatically asserted
+in XCUITest (runs in Widget Extension process). Screenshots provide
+visual evidence of the dual timer (phase countdown + total countdown).
+

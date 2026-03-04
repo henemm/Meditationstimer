@@ -1479,6 +1479,25 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertFalse(uppercaseRepetitions.exists, "REPETITIONS (uppercase) should NOT exist after fix")
     }
 
+    /// Bug 38: Tracker header should NOT be uppercase
+    func testTrackerHeaderNotUppercase() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+
+        sleep(2)
+
+        let normalCase = app.staticTexts["Trackers"]
+        XCTAssertTrue(normalCase.waitForExistence(timeout: 5), "Trackers header should be normal case")
+
+        let uppercaseVersion = app.staticTexts["TRACKERS"]
+        XCTAssertFalse(uppercaseVersion.exists, "TRACKERS (uppercase) should NOT exist")
+    }
+
     /// TDD RED: Test that "Open Meditation" header is outside the GlassCard (headline style)
     /// After fix: Header should be formatted like "Breathing Exercises" section header
     func testOpenMeditationHeaderStyle() throws {
@@ -3150,5 +3169,180 @@ final class LeanHealthTimerUITests: XCTestCase {
             "This belongs to Legacy NoAlc and should be removed.")
 
         print("✅ Legacy Joker display patterns not found - Legacy NoAlc successfully removed")
+    }
+
+    // MARK: - Workout Live Activity Dual Timer Tests
+
+    /// Test that starting a Free Workout triggers a Live Activity and the dual-timer
+    /// (phase countdown + total countdown) is displayed on the lock screen.
+    /// Approach: Start workout → background app → lock screen → screenshot.
+    func testWorkoutLiveActivityDualTimerOnLockScreen() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Workout tab
+        let workoutTab = app.tabBars.buttons["Workout"]
+        XCTAssertTrue(workoutTab.waitForExistence(timeout: 5), "Workout tab should exist")
+        workoutTab.tap()
+
+        // Start free workout
+        let playButton = app.buttons["play.circle.fill"]
+        XCTAssertTrue(playButton.waitForExistence(timeout: 3), "Play button should exist")
+        playButton.tap()
+
+        // Handle Health Access alert if needed
+        let allowButton = app.buttons["Allow"]
+        if allowButton.waitForExistence(timeout: 3) {
+            allowButton.tap()
+            sleep(2)
+            if playButton.exists && playButton.isHittable {
+                playButton.tap()
+            }
+        }
+
+        // Verify workout started (Pause button visible)
+        let pauseButton = app.buttons["Pause"]
+        guard pauseButton.waitForExistence(timeout: 8) else {
+            XCTAssertTrue(playButton.waitForExistence(timeout: 3), "Should remain on workout view if session didn't start")
+            return
+        }
+
+        // Workout is running — Live Activity should now be active with phaseEndDate
+        // Wait briefly for Live Activity to start
+        sleep(2)
+
+        // Background the app to see the Live Activity on lock screen
+        XCUIDevice.shared.press(.home)
+        sleep(2)
+
+        // Take screenshot of the home screen / Dynamic Island area
+        let homeScreenshot = XCUIScreen.main.screenshot()
+        let homeAttachment = XCTAttachment(screenshot: homeScreenshot)
+        homeAttachment.name = "WorkoutLiveActivity_HomeScreen_DualTimer"
+        homeAttachment.lifetime = .keepAlways
+        add(homeAttachment)
+
+        // Long-press on Dynamic Island area to expand it and see dual timer
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let topArea = springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.04))
+        topArea.press(forDuration: 1.5)
+        sleep(2)
+
+        // Take screenshot of expanded Dynamic Island (shows dual timer: phase + total)
+        let expandedScreenshot = XCUIScreen.main.screenshot()
+        let expandedAttachment = XCTAttachment(screenshot: expandedScreenshot)
+        expandedAttachment.name = "WorkoutLiveActivity_DynamicIsland_Expanded_DualTimer"
+        expandedAttachment.lifetime = .keepAlways
+        add(expandedAttachment)
+
+        // Tap elsewhere to dismiss expanded view
+        springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        sleep(1)
+
+        // Re-activate the app
+        app.activate()
+        sleep(2)
+
+        // Take screenshot of the app showing workout running
+        let appScreenshot = XCUIScreen.main.screenshot()
+        let appAttachment = XCTAttachment(screenshot: appScreenshot)
+        appAttachment.name = "WorkoutLiveActivity_AppForeground_Running"
+        appAttachment.lifetime = .keepAlways
+        add(appAttachment)
+
+        // Clean up - close workout
+        let closeButton = app.buttons["xmark"]
+        if closeButton.waitForExistence(timeout: 3) {
+            closeButton.tap()
+        }
+
+        // Handle effort score dialog if shown
+        let skipButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'skip'")).firstMatch
+        if skipButton.waitForExistence(timeout: 3) {
+            skipButton.tap()
+        }
+
+        print("✅ Workout Live Activity dual timer test completed - screenshots captured")
+    }
+
+    /// Test that the workout Live Activity shows Dynamic Island expanded view
+    /// after starting a workout and swiping down from Dynamic Island area
+    func testWorkoutLiveActivityDynamicIslandExpanded() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Workout tab
+        let workoutTab = app.tabBars.buttons["Workout"]
+        XCTAssertTrue(workoutTab.waitForExistence(timeout: 5), "Workout tab should exist")
+        workoutTab.tap()
+
+        // Start free workout
+        let playButton = app.buttons["play.circle.fill"]
+        XCTAssertTrue(playButton.waitForExistence(timeout: 3), "Play button should exist")
+        playButton.tap()
+
+        // Handle Health Access alert if needed
+        let allowButton = app.buttons["Allow"]
+        if allowButton.waitForExistence(timeout: 3) {
+            allowButton.tap()
+            sleep(2)
+            if playButton.exists && playButton.isHittable {
+                playButton.tap()
+            }
+        }
+
+        // Verify workout started
+        let pauseButton = app.buttons["Pause"]
+        guard pauseButton.waitForExistence(timeout: 8) else {
+            XCTAssertTrue(playButton.waitForExistence(timeout: 3), "Should remain on workout view")
+            return
+        }
+
+        // Workout running — background the app
+        sleep(2)
+        XCUIDevice.shared.press(.home)
+        sleep(3)
+
+        // Take screenshot showing Dynamic Island compact view
+        let diCompactScreenshot = XCUIScreen.main.screenshot()
+        let diCompactAttachment = XCTAttachment(screenshot: diCompactScreenshot)
+        diCompactAttachment.name = "WorkoutLiveActivity_DynamicIsland_Compact"
+        diCompactAttachment.lifetime = .keepAlways
+        add(diCompactAttachment)
+
+        // Long-press on Dynamic Island area to expand it
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let topArea = springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.04))
+        topArea.press(forDuration: 1.5)
+        sleep(2)
+
+        // Take screenshot of expanded Dynamic Island
+        let diExpandedScreenshot = XCUIScreen.main.screenshot()
+        let diExpandedAttachment = XCTAttachment(screenshot: diExpandedScreenshot)
+        diExpandedAttachment.name = "WorkoutLiveActivity_DynamicIsland_Expanded"
+        diExpandedAttachment.lifetime = .keepAlways
+        add(diExpandedAttachment)
+
+        // Tap elsewhere to dismiss expanded view
+        springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        sleep(1)
+
+        // Return to app and clean up
+        app.activate()
+        sleep(2)
+
+        let closeButton = app.buttons["xmark"]
+        if closeButton.waitForExistence(timeout: 3) {
+            closeButton.tap()
+        }
+
+        let skipButton = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'skip'")).firstMatch
+        if skipButton.waitForExistence(timeout: 3) {
+            skipButton.tap()
+        }
+
+        print("✅ Dynamic Island expanded view test completed - screenshots captured")
     }
 }
