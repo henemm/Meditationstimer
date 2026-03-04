@@ -88,11 +88,14 @@ final class TrackerManager {
         }
 
         // Cancel matching Smart Reminders for this tracker (Reverse Smart Reminders)
+        // Use Date() (now) instead of log.timestamp — cancellation checks "did the user just interact?"
+        // not "what date was the entry for?" (log.timestamp can be yesterday via cutoffHour/targetDay)
         #if os(iOS)
-        SmartReminderEngine.shared.cancelMatchingTrackerReminders(for: tracker.id, completedAt: log.timestamp)
+        let cancellationDate = Date()
+        SmartReminderEngine.shared.cancelMatchingTrackerReminders(for: tracker.id, completedAt: cancellationDate)
         // Also cancel old-style NoAlc reminders that use activityType instead of trackerID
         if tracker.healthKitType == HKQuantityTypeIdentifier.numberOfAlcoholicBeverages.rawValue {
-            SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: log.timestamp)
+            SmartReminderEngine.shared.cancelMatchingReminders(for: .noalc, completedAt: cancellationDate)
         }
         #endif
 
