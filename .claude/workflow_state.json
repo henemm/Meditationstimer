@@ -308,7 +308,56 @@
         "phase5_tdd_red"
       ],
       "backlog_status": "done"
+    },
+    "bug38-uppercase-fix": {
+      "current_phase": "phase1_context",
+      "created": "2026-02-14T22:28:48.227019",
+      "last_updated": "2026-02-14T22:28:48.227024",
+      "spec_file": null,
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [],
+      "affected_files": [],
+      "red_test_done": false,
+      "red_test_result": null,
+      "green_test_done": false,
+      "green_test_result": null,
+      "analysis_findings": null,
+      "phases_completed": [],
+      "backlog_status": "open"
+    },
+    "live-preview-phase-timer": {
+      "current_phase": "phase7_validate",
+      "created": "2026-03-04T09:33:19.507718",
+      "last_updated": "2026-03-04T11:40:42.275048",
+      "spec_file": null,
+      "spec_approved": false,
+      "context_file": null,
+      "test_artifacts": [
+        {
+          "type": "test_output",
+          "path": "docs/artifacts/live-preview-phase-timer/test-output-red.txt",
+          "description": "Tests fail to compile: 11 errors - Extra argument phaseEndDate in call + has no member phaseEndDate - ContentState.phaseEndDate field does not exist yet",
+          "phase": "phase5_tdd_red",
+          "created": "2026-03-04T10:04:45.170674"
+        },
+        {
+          "type": "test_output",
+          "path": "docs/artifacts/live-preview-phase-timer/test-output-green.txt",
+          "description": "All tests passed: 6 new LiveActivityContentStateTests + all existing unit tests GREEN. TEST SUCCEEDED.",
+          "phase": "phase6_implement",
+          "created": "2026-03-04T11:40:42.246758"
+        }
+      ],
+      "affected_files": [],
+      "red_test_done": false,
+      "red_test_result": null,
+      "green_test_done": false,
+      "green_test_result": null,
+      "analysis_findings": null,
+      "phases_completed": [],
+      "backlog_status": "in_progress"
     }
   },
-  "active_workflow": "generic-tracker-date-edit-bug"
+  "active_workflow": "live-preview-phase-timer"
 }

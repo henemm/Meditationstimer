@@ -29,7 +29,8 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                            endDate: context.state.endDate,
                            phase: context.state.phase,
                            ownerId: context.state.ownerId,
-                           isPaused: context.state.isPaused)
+                           isPaused: context.state.isPaused,
+                           phaseEndDate: context.state.phaseEndDate)
             .activityBackgroundTint(.black.opacity(0.2))
             .activitySystemActionForegroundColor(.white)
 
@@ -100,32 +101,64 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                     .padding(.vertical, 12)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    VStack {
-                        if context.state.isPaused {
-                            Text(timeString(from: context.state.endDate))
-                                .font(.system(size: 36, weight: .semibold, design: .rounded))
-                                .monospacedDigit()
-                                .minimumScaleFactor(0.6)
-                                .lineLimit(1)
-                                .foregroundStyle(.white)
-                                .layoutPriority(1)
-                                .padding(.top, 4)
-                                .padding(.trailing, 16)
-                        } else {
-                            Text(context.state.endDate, style: .timer)
-                                .font(.system(size: 36, weight: .semibold, design: .rounded))
-                                .monospacedDigit()
-                                .minimumScaleFactor(0.6)
-                                .lineLimit(1)
-                                .foregroundStyle(.white)
-                                .layoutPriority(1)
-                                .padding(.top, 4)
-                                .padding(.trailing, 16)
+                    if let phaseEnd = context.state.phaseEndDate {
+                        // Dual Timer: Phase (groß) + Gesamt (klein)
+                        VStack(alignment: .trailing, spacing: 2) {
+                            if context.state.isPaused {
+                                Text(timeString(from: phaseEnd))
+                                    .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.white)
+                                Text(timeString(from: context.state.endDate))
+                                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.white.opacity(0.6))
+                            } else {
+                                Text(phaseEnd, style: .timer)
+                                    .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.white)
+                                Text(context.state.endDate, style: .timer)
+                                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                                    .monospacedDigit()
+                                    .foregroundStyle(.white.opacity(0.6))
+                            }
                         }
+                        .minimumScaleFactor(0.6)
+                        .lineLimit(1)
+                        .layoutPriority(1)
+                        .padding(.trailing, 16)
+                        .padding(.vertical, 12)
+                        .padding(.top, 4)
+                    } else {
+                        // Single Timer (bestehend)
+                        VStack {
+                            if context.state.isPaused {
+                                Text(timeString(from: context.state.endDate))
+                                    .font(.system(size: 36, weight: .semibold, design: .rounded))
+                                    .monospacedDigit()
+                                    .minimumScaleFactor(0.6)
+                                    .lineLimit(1)
+                                    .foregroundStyle(.white)
+                                    .layoutPriority(1)
+                                    .padding(.top, 4)
+                                    .padding(.trailing, 16)
+                            } else {
+                                Text(context.state.endDate, style: .timer)
+                                    .font(.system(size: 36, weight: .semibold, design: .rounded))
+                                    .monospacedDigit()
+                                    .minimumScaleFactor(0.6)
+                                    .lineLimit(1)
+                                    .foregroundStyle(.white)
+                                    .layoutPriority(1)
+                                    .padding(.top, 4)
+                                    .padding(.trailing, 16)
+                            }
+                        }
+                        .padding(.trailing, 16)
+                        .padding(.vertical, 12)
+                        .padding(.top, 4)
                     }
-                    .padding(.trailing, 16)
-                    .padding(.vertical, 12)
-                    .padding(.top, 4)
                 }
             } compactLeading: {
                 // Compact Leading: show phase icon instead of static app icon
@@ -188,16 +221,18 @@ struct MeditationstimerWidgetLiveActivity: Widget {
                 }
             } compactTrailing: {
                 // Rechts: Timer mit OVERLAY-TRICK gegen Width-Bug
+                // Bei Workout: Phase-Timer (relevanter), sonst Gesamt-Timer
+                let timerDate = context.state.phaseEndDate ?? context.state.endDate
                 Text("00:00")
                     .hidden()
                     .overlay(alignment: .leading) {
                         if context.state.isPaused {
-                            Text(timeString(from: context.state.endDate))
+                            Text(timeString(from: timerDate))
                                 .font(.system(size: 12, weight: .semibold, design: .rounded))
                                 .monospacedDigit()
                                 .foregroundStyle(.white)
                         } else {
-                            Text(context.state.endDate, style: .timer)
+                            Text(timerDate, style: .timer)
                                 .font(.system(size: 12, weight: .semibold, design: .rounded))
                                 .monospacedDigit()
                                 .foregroundStyle(.white)
@@ -276,50 +311,87 @@ private struct LockScreenView: View {
     let phase: Int
     let ownerId: String?
     let isPaused: Bool
+    let phaseEndDate: Date?
 
     var body: some View {
         HStack {
-            // Links: Phase-Icon für AtemTab
-            if let owner = ownerId {
-                if owner == "AtemTab" {
-                    let iconName: String = {
-                        if phase == 1 { return "arrow.up" }
-                        if phase == 2 { return "arrow.right" }
-                        if phase == 3 { return "arrow.down" }
-                        return "arrow.right" // Phase 4: hold out
-                    }()
-                    ZStack {
-                        Circle()
-                            .fill(Color.green.opacity(0.28))
-                            .frame(width: 40, height: 40)
-                        Image(systemName: iconName)
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.white)
+            if let phaseEnd = phaseEndDate {
+                // Dual Timer Layout (Workout): Phase links groß, Gesamt rechts klein
+                // Kein Icon, kein Label — selbsterklärend
+                if isPaused {
+                    Text(timeString(from: phaseEnd))
+                        .font(.system(size: 40, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white)
+                    Spacer()
+                    Text(timeString(from: endDate))
+                        .font(.system(size: 24, weight: .medium, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white.opacity(0.6))
+                } else {
+                    Text(phaseEnd, style: .timer)
+                        .font(.system(size: 40, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white)
+                    Spacer()
+                    Text(endDate, style: .timer)
+                        .font(.system(size: 24, weight: .medium, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white.opacity(0.6))
+                }
+            } else {
+                // Single Timer Layout (Meditation/Atem): Icon + Timer
+                if let owner = ownerId {
+                    if owner == "AtemTab" {
+                        let iconName: String = {
+                            if phase == 1 { return "arrow.up" }
+                            if phase == 2 { return "arrow.right" }
+                            if phase == 3 { return "arrow.down" }
+                            return "arrow.right"
+                        }()
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.28))
+                                .frame(width: 40, height: 40)
+                            Image(systemName: iconName)
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.leading)
+                    } else if owner == "OffenTab" {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.28))
+                                .frame(width: 40, height: 40)
+                            Text(phase == 1 ? "🧘‍♂️" : "🍃")
+                                .font(.title2)
+                        }
+                        .padding(.leading)
+                    } else if owner == "WorkoutsTab" {
+                        let iconName: String = {
+                            if phase == 1 { return "flame" }
+                            return "pause"
+                        }()
+                        ZStack {
+                            Circle()
+                                .fill(Color.orange.opacity(0.28))
+                                .frame(width: 40, height: 40)
+                            Image(systemName: iconName)
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.leading)
+                    } else {
+                        ZStack {
+                            Circle()
+                                .fill(Color("AccentColor"))
+                                .frame(width: 40, height: 40)
+                            Image(systemName: "figure.mind.and.body")
+                                .font(.system(size: 16))
+                                .foregroundColor(.white)
+                        }
+                        .padding(.leading)
                     }
-                    .padding(.leading)
-                } else if owner == "OffenTab" {
-                    ZStack {
-                        Circle()
-                            .fill(Color.green.opacity(0.28))
-                            .frame(width: 40, height: 40)
-                        Text(phase == 1 ? "🧘‍♂️" : "🍃")
-                            .font(.title2)
-                    }
-                    .padding(.leading)
-                } else if owner == "WorkoutsTab" {
-                    let iconName: String = {
-                        if phase == 1 { return "flame" } // work phase
-                        return "pause" // rest phase or default
-                    }()
-                    ZStack {
-                        Circle()
-                            .fill(Color.orange.opacity(0.28))
-                            .frame(width: 40, height: 40)
-                        Image(systemName: iconName)
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.white)
-                    }
-                    .padding(.leading)
                 } else {
                     ZStack {
                         Circle()
@@ -331,38 +403,28 @@ private struct LockScreenView: View {
                     }
                     .padding(.leading)
                 }
-            } else {
-                ZStack {
-                    Circle()
-                        .fill(Color("AccentColor"))
-                        .frame(width: 40, height: 40)
-                    Image(systemName: "figure.mind.and.body")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
+
+                Spacer()
+                if isPaused {
+                    Text(timeString(from: endDate))
+                        .font(.system(size: 40, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text(endDate, style: .timer)
+                        .font(.system(size: 40, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
                 }
-                .padding(.leading)
+                Spacer()
             }
-            
-            Spacer()
-            // Mitte: Timer oder statische Restzeit
-            if isPaused {
-                Text(timeString(from: endDate))
-                    .font(.system(size: 40, weight: .semibold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
-            } else {
-                Text(endDate, style: .timer)
-                    .font(.system(size: 40, weight: .semibold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
-            }
-            Spacer()
         }
         .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16)
         .padding(.vertical, 12)
     }
 // MARK: - Timer Helper
@@ -398,6 +460,9 @@ extension MeditationAttributes.ContentState {
     static var sampleP2: MeditationAttributes.ContentState {
         .init(endDate: Date().addingTimeInterval(12), phase: 2, ownerId: nil, isPaused: false)
     }
+    static var sampleWorkout: MeditationAttributes.ContentState {
+        .init(endDate: Date().addingTimeInterval(734), phase: 1, ownerId: "WorkoutsTab", isPaused: false, phaseEndDate: Date().addingTimeInterval(28))
+    }
 }
 
 #Preview("Lock Screen – Phase 1", as: .content, using: MeditationAttributes.preview) {
@@ -412,16 +477,28 @@ extension MeditationAttributes.ContentState {
     MeditationAttributes.ContentState.sampleP2
 }
 
+#Preview("Lock Screen – Workout", as: .content, using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: {
+    MeditationAttributes.ContentState.sampleWorkout
+}
+
 #Preview("Dynamic Island – Phase 1", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
 } contentStates: {
     MeditationAttributes.ContentState.sampleP1
 }
 
-#Preview("Dynamic Island – Phase 2", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
+#Preview("Dynamic Island – Workout Expanded", as: .dynamicIsland(.expanded), using: MeditationAttributes.preview) {
     MeditationstimerWidgetLiveActivity()
 } contentStates: {
-    MeditationAttributes.ContentState.sampleP2
+    MeditationAttributes.ContentState.sampleWorkout
+}
+
+#Preview("Dynamic Island – Workout Compact", as: .dynamicIsland(.compact), using: MeditationAttributes.preview) {
+    MeditationstimerWidgetLiveActivity()
+} contentStates: {
+    MeditationAttributes.ContentState.sampleWorkout
 }
 #else
 // Live Activities are not supported on non-iOS platforms

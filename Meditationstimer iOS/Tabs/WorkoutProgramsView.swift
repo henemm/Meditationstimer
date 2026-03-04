@@ -733,6 +733,22 @@ public struct WorkoutProgramsView: View {
                             Text(NSLocalizedString("Done", comment: "Session completed")).font(.subheadline.weight(.semibold))
                         }
                     }
+                }
+                .onChange(of: currentPhase) { _, newPhase in
+                    guard !finished, !isPaused else { return }
+                    let now = Date()
+                    let elapsedSession = max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum)
+                    let remaining = max(0, TimeInterval(set.totalSeconds) - elapsedSession)
+                    let updatedEndDate = now.addingTimeInterval(remaining)
+                    let phaseDur: Double = {
+                        let idx = newPhase.phaseIndex
+                        return Double(newPhase.isWork ? set.phases[idx].workDuration : set.phases[idx].restDuration)
+                    }()
+                    let phaseEnd = now.addingTimeInterval(phaseDur)
+                    Task { await liveActivity.update(phase: newPhase.isWork ? 1 : 2, endDate: updatedEndDate, phaseEndDate: phaseEnd, isPaused: false) }
+                }
+
+                VStack {
 
                     Button(isPaused ? NSLocalizedString("Continue", comment: "Button") : NSLocalizedString("Pause", comment: "Button")) {
                         togglePause()
@@ -906,10 +922,13 @@ public struct WorkoutProgramsView: View {
 
             // 3. Start Live Activity
             let endDate = sessionStart.addingTimeInterval(TimeInterval(set.totalSeconds))
+            let firstPhaseDuration = TimeInterval(set.phases.first?.workDuration ?? 30)
+            let firstPhaseEnd = sessionStart.addingTimeInterval(firstPhaseDuration)
             liveActivity.start(
                 title: set.name,
                 phase: 1,
                 endDate: endDate,
+                phaseEndDate: firstPhaseEnd,
                 ownerId: "WorkoutsTab"
             )
         }
@@ -992,7 +1011,14 @@ public struct WorkoutProgramsView: View {
                 let elapsedSession = max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum)
                 let remaining = max(0, TimeInterval(set.totalSeconds) - elapsedSession)
                 let pausedEndDate = now.addingTimeInterval(remaining)
-                Task { await liveActivity.update(phase: currentPhase.isWork ? 1 : 2, endDate: pausedEndDate, isPaused: true) }
+                let elapsedPhase = max(0, now.timeIntervalSince(phaseStart) - pausedPhaseAccum)
+                let phaseDur: Double = {
+                    let idx = currentPhase.phaseIndex
+                    return Double(currentPhase.isWork ? set.phases[idx].workDuration : set.phases[idx].restDuration)
+                }()
+                let remainingPhase = max(0, phaseDur - elapsedPhase)
+                let pausedPhaseEnd = now.addingTimeInterval(remainingPhase)
+                Task { await liveActivity.update(phase: currentPhase.isWork ? 1 : 2, endDate: pausedEndDate, phaseEndDate: pausedPhaseEnd, isPaused: true) }
             } else {
                 // RESUME
                 if let p = pausedAt {
@@ -1026,7 +1052,14 @@ public struct WorkoutProgramsView: View {
                 let elapsedSession = max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum)
                 let remaining = max(0, TimeInterval(set.totalSeconds) - elapsedSession)
                 let resumedEndDate = now.addingTimeInterval(remaining)
-                Task { await liveActivity.update(phase: currentPhase.isWork ? 1 : 2, endDate: resumedEndDate, isPaused: false) }
+                let elapsedPhaseR = max(0, now.timeIntervalSince(phaseStart) - pausedPhaseAccum)
+                let phaseDurR: Double = {
+                    let idx = currentPhase.phaseIndex
+                    return Double(currentPhase.isWork ? set.phases[idx].workDuration : set.phases[idx].restDuration)
+                }()
+                let remainingPhaseR = max(0, phaseDurR - elapsedPhaseR)
+                let resumedPhaseEnd = now.addingTimeInterval(remainingPhaseR)
+                Task { await liveActivity.update(phase: currentPhase.isWork ? 1 : 2, endDate: resumedEndDate, phaseEndDate: resumedPhaseEnd, isPaused: false) }
             }
         }
     }

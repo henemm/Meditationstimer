@@ -47,7 +47,7 @@ final class LiveActivityController: ObservableObject {
 
     /// Start a Live Activity. Pass an optional `ownerId` to identify the caller.
     /// When another owner already holds the activity, this will end the previous activity and start a new one.
-    func start(title: String, phase: Int, endDate: Date, ownerId: String? = nil) {
+    func start(title: String, phase: Int, endDate: Date, phaseEndDate: Date? = nil, ownerId: String? = nil) {
         guard !isPreview else { 
             print("🔍 [LiveActivity] PREVIEW MODE - start skipped")
             return 
@@ -64,7 +64,7 @@ final class LiveActivityController: ObservableObject {
         }
         if #available(iOS 16.1, *), ActivityAuthorizationInfo().areActivitiesEnabled {
             let attributes = MeditationAttributes(title: title)
-            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: ownerId, isPaused: false)
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: ownerId, isPaused: false, phaseEndDate: phaseEndDate)
             // Small retry loop for transient visibility/entitlement errors when requesting an Activity.
             var lastError: Error?
             for attempt in 1...2 {
@@ -99,7 +99,7 @@ final class LiveActivityController: ObservableObject {
 
     /// Request to start a Live Activity. If another owner holds the activity, returns `.conflict`.
     /// The caller (UI) should prompt the user and call `forceStart` if the user confirms.
-    func requestStart(title: String, phase: Int, endDate: Date, ownerId: String?) -> StartResult {
+    func requestStart(title: String, phase: Int, endDate: Date, phaseEndDate: Date? = nil, ownerId: String?) -> StartResult {
         print("📋 [LiveActivity] REQUEST START: owner=\(ownerId ?? "nil"), currentOwner=\(self.ownerId ?? "nil"), hasActivity=\(activity != nil)")
         // If there's an existing active activity owned by someone else, report conflict
         if let existingOwner = self.ownerId, existingOwner != ownerId, activity != nil {
@@ -109,13 +109,13 @@ final class LiveActivityController: ObservableObject {
         // No conflict — invoke the existing start path asynchronously
         print("✅ [LiveActivity] NO CONFLICT: starting activity for owner=\(ownerId ?? "nil")")
         Task { @MainActor in
-            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+            self.start(title: title, phase: phase, endDate: endDate, phaseEndDate: phaseEndDate, ownerId: ownerId)
         }
         return .started
     }
 
     /// Forcefully end any existing activity and start a new one for `ownerId`.
-    func forceStart(title: String, phase: Int, endDate: Date, ownerId: String?) {
+    func forceStart(title: String, phase: Int, endDate: Date, phaseEndDate: Date? = nil, ownerId: String?) {
         Task { @MainActor in
             #if DEBUG
             print("[LiveActivity] forceStart requested by owner=\(ownerId ?? "nil") title=\(title) phase=\(phase)")
@@ -129,11 +129,11 @@ final class LiveActivityController: ObservableObject {
                 self.ownerId = nil
                 self.ownerTitle = nil
             }
-            self.start(title: title, phase: phase, endDate: endDate, ownerId: ownerId)
+            self.start(title: title, phase: phase, endDate: endDate, phaseEndDate: phaseEndDate, ownerId: ownerId)
         }
     }
 
-    func update(phase: Int, endDate: Date, isPaused: Bool = false) async {
+    func update(phase: Int, endDate: Date, phaseEndDate: Date? = nil, isPaused: Bool = false) async {
         guard !isPreview else { 
             print("🔍 [LiveActivity] PREVIEW MODE - update skipped")
             return 
@@ -144,7 +144,7 @@ final class LiveActivityController: ObservableObject {
                 print("⚠️ [LiveActivity] UPDATE called but NO ACTIVE ACTIVITY (ignored)")
                 return
             }
-            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused)
+            let state = MeditationAttributes.ContentState(endDate: endDate, phase: phase, ownerId: self.ownerId, isPaused: isPaused, phaseEndDate: phaseEndDate)
             // For background updates, set staleDate to ensure the update is processed
             // staleDate tells the system when this content becomes stale and needs updating
             // Use reasonable staleDate for Atem phase updates

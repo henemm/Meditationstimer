@@ -561,7 +561,8 @@ private struct WorkoutRunnerView: View {
             sessionStart = Date()
             workoutStart = sessionStart
             let endDate = sessionStart.addingTimeInterval(sessionTotal)
-            let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
+            let firstPhaseEnd = sessionStart.addingTimeInterval(Double(max(1, cfgInterval)))
+            let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, phaseEndDate: firstPhaseEnd, ownerId: "WorkoutsTab")
             setPhase(.work)
         }
         .onDisappear {
@@ -679,7 +680,8 @@ private struct WorkoutRunnerView: View {
         let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
         let remaining = max(0, sessionTotal - elapsedSession)
         let updatedEndDate = now.addingTimeInterval(remaining)
-        Task { await liveActivity.update(phase: phaseNumber, endDate: updatedEndDate, isPaused: isPaused) }
+        let phaseEnd = now.addingTimeInterval(phaseDuration)
+        Task { await liveActivity.update(phase: phaseNumber, endDate: updatedEndDate, phaseEndDate: phaseEnd, isPaused: isPaused) }
     }
 
     private func advance() {

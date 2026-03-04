@@ -292,7 +292,8 @@ private struct WorkoutRunnerView: View {
 
                 // LiveActivity: Endzeit aus sessionStart + sessionTotal
                 let endDate = sessionStart.addingTimeInterval(sessionTotal)
-                let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, ownerId: "WorkoutsTab")
+                let firstPhaseEnd = sessionStart.addingTimeInterval(Double(max(1, cfgInterval)))
+                let _ = liveActivity.requestStart(title: "Workout", phase: 1, endDate: endDate, phaseEndDate: firstPhaseEnd, ownerId: "WorkoutsTab")
                 setPhase(.work)
                 // scheduleCuesForCurrentPhase() wird bereits in setPhase() aufgerufen
             }
@@ -371,8 +372,9 @@ private struct WorkoutRunnerView: View {
         let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
         let remaining = max(0, sessionTotal - elapsedSession)
         let updatedEndDate = now.addingTimeInterval(remaining)
+        let phaseEnd = now.addingTimeInterval(phaseDuration)
         print("🏋️ [WorkoutsView] PHASE CHANGED: \(p.rawValue) → phaseNumber=\(phaseNumber)")
-        Task { await liveActivity.update(phase: phaseNumber, endDate: updatedEndDate, isPaused: isPaused) }
+        Task { await liveActivity.update(phase: phaseNumber, endDate: updatedEndDate, phaseEndDate: phaseEnd, isPaused: isPaused) }
     }
 
     private func scheduleCuesForCurrentPhase() {
@@ -477,7 +479,10 @@ private struct WorkoutRunnerView: View {
             let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
             let remaining = max(0, sessionTotal - elapsedSession)
             let pausedEndDate = now.addingTimeInterval(remaining)
-            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: pausedEndDate, isPaused: true) }
+            let elapsedPhase = phaseStart.map { max(0, now.timeIntervalSince($0) - pausedPhaseAccum) } ?? 0
+            let remainingPhase = max(0, phaseDuration - elapsedPhase)
+            let pausedPhaseEndDate = now.addingTimeInterval(remainingPhase)
+            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: pausedEndDate, phaseEndDate: pausedPhaseEndDate, isPaused: true) }
         } else {
             if let p = pausedAt {
                 let delta = Date().timeIntervalSince(p)
@@ -492,7 +497,10 @@ private struct WorkoutRunnerView: View {
             let elapsedSession = started ? max(0, now.timeIntervalSince(sessionStart) - pausedSessionAccum) : 0
             let remaining = max(0, sessionTotal - elapsedSession)
             let resumedEndDate = now.addingTimeInterval(remaining)
-            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: resumedEndDate, isPaused: false) }
+            let elapsedPhaseR = phaseStart.map { max(0, now.timeIntervalSince($0) - pausedPhaseAccum) } ?? 0
+            let remainingPhaseR = max(0, phaseDuration - elapsedPhaseR)
+            let resumedPhaseEndDate = now.addingTimeInterval(remainingPhaseR)
+            Task { await liveActivity.update(phase: phase == .work ? 1 : 2, endDate: resumedEndDate, phaseEndDate: resumedPhaseEndDate, isPaused: false) }
         }
     }
 }

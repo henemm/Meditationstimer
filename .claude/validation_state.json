@@ -1,23 +1,9 @@
 {
   "files_changed": [
-    "Meditationstimer iOS/Tracker/LevelSelectionView.swift",
-    "LeanHealthTimerTests/TrackerModelTests.swift",
-    "Services/TrackerManager.swift",
-    "Meditationstimer iOS/SmartReminderEngine.swift",
-    "Meditationstimer iOS/Meditationstimer_iOSApp.swift",
-    "LeanHealthTimerUITests/LeanHealthTimerUITests.swift",
-    "Meditationstimer iOS/Tabs/TrackerTab.swift",
-    "Meditationstimer iOS/Tracker/TrackerRow.swift",
-    "Meditationstimer iOS/CalendarView.swift",
-    "Meditationstimer iOS/Views/DayDetailSheet.swift",
-    "Meditationstimer iOS/NoAlcLogSheet.swift",
-    "LeanHealthTimerTests/NoAlcStreakTests.swift",
-    "Services/TrackerModels.swift",
-    "Meditationstimer iOS/StreakManager.swift",
-    "LeanHealthTimerTests/CalendarViewStreakMigrationTests.swift"
+    "MeditationstimerWidget/MeditationstimerWidgetLiveActivity.swift"
   ],
-  "last_validation": "2026-01-25T18:20:00.000000",
-  "last_change": "2026-02-03T13:43:44.405563",
+  "last_validation": "2026-03-04T11:36:00.000000",
+  "last_change": "2026-03-04T11:36:03.471935",
   "ui_tests_passed": true,
-  "note": "TDD GREEN: TrackerManager.logEntry timestamp parameter added"
+  "note": "Implementation in progress: live-preview-phase-timer"
 }

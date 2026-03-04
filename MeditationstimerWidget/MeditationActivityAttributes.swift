@@ -17,6 +17,8 @@ struct MeditationAttributes: ActivityAttributes {
     var phase: Int // 1 = Meditation, 2 = Besinnung
     var ownerId: String?
     var isPaused: Bool
+    /// Optional: Ende des aktuellen Workout-Intervalls (Work/Rest).
+    var phaseEndDate: Date?
     }
     var title: String
 }

@@ -1,0 +1,24 @@
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:30:27: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:45:27: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:45:27: error: 'nil' requires a contextual type
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:64:27: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:93:28: error: value of type 'MeditationAttributes.ContentState' has no member 'phaseEndDate'
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:110:31: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:118:31: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:133:27: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:133:27: error: 'nil' requires a contextual type
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:141:27: error: extra argument 'phaseEndDate' in call
+/Users/hem/Developer/Meditationstimer/Meditationstimer/LeanHealthTimerTests/LiveActivityContentStateTests.swift:141:27: error: 'nil' requires a contextual type
+Testing failed:
+	Extra argument 'phaseEndDate' in call
+	Extra argument 'phaseEndDate' in call
+	'nil' requires a contextual type
+	Extra argument 'phaseEndDate' in call
+	Value of type 'MeditationAttributes.ContentState' has no member 'phaseEndDate'
+	Extra argument 'phaseEndDate' in call
+	Extra argument 'phaseEndDate' in call
+	Extra argument 'phaseEndDate' in call
+	'nil' requires a contextual type
+	Extra argument 'phaseEndDate' in call
+	'nil' requires a contextual type
+** TEST FAILED **

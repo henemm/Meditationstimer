@@ -21,6 +21,9 @@ struct MeditationAttributes: ActivityAttributes {
     var ownerId: String?
     /// Zeigt an, ob die Aktivität pausiert ist
     var isPaused: Bool
+    /// Optional: Ende des aktuellen Workout-Intervalls (Work/Rest).
+    /// Wenn gesetzt, zeigt das Widget zwei Timer: Intervall-Countdown + Gesamt-Countdown.
+    var phaseEndDate: Date?
     }
 
     /// Titel oder Bezeichnung der Aktivität
