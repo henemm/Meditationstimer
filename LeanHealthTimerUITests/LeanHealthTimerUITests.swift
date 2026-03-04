@@ -3171,11 +3171,28 @@ final class LeanHealthTimerUITests: XCTestCase {
         print("✅ Legacy Joker display patterns not found - Legacy NoAlc successfully removed")
     }
 
+    // MARK: - Screenshot Helper
+
+    /// Saves a screenshot as PNG to /tmp/ for easy extraction and adds as XCTAttachment
+    private func saveScreenshot(_ screenshot: XCUIScreenshot, name: String) {
+        // Save as XCTAttachment (in xcresult bundle)
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        // Also save to /tmp/ for direct access
+        let pngData = screenshot.pngRepresentation
+        let path = "/tmp/\(name).png"
+        try? pngData.write(to: URL(fileURLWithPath: path))
+        print("📸 Screenshot saved: \(path) (\(pngData.count) bytes)")
+    }
+
     // MARK: - Workout Live Activity Dual Timer Tests
 
     /// Test that starting a Free Workout triggers a Live Activity and the dual-timer
     /// (phase countdown + total countdown) is displayed on the lock screen.
-    /// Approach: Start workout → background app → lock screen → screenshot.
+    /// Approach: Start workout → background app → expand Dynamic Island → screenshot.
     func testWorkoutLiveActivityDualTimerOnLockScreen() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
@@ -3217,11 +3234,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         sleep(2)
 
         // Take screenshot of the home screen / Dynamic Island area
-        let homeScreenshot = XCUIScreen.main.screenshot()
-        let homeAttachment = XCTAttachment(screenshot: homeScreenshot)
-        homeAttachment.name = "WorkoutLiveActivity_HomeScreen_DualTimer"
-        homeAttachment.lifetime = .keepAlways
-        add(homeAttachment)
+        saveScreenshot(XCUIScreen.main.screenshot(), name: "WorkoutLiveActivity_HomeScreen_DualTimer")
 
         // Long-press on Dynamic Island area to expand it and see dual timer
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
@@ -3230,11 +3243,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         sleep(2)
 
         // Take screenshot of expanded Dynamic Island (shows dual timer: phase + total)
-        let expandedScreenshot = XCUIScreen.main.screenshot()
-        let expandedAttachment = XCTAttachment(screenshot: expandedScreenshot)
-        expandedAttachment.name = "WorkoutLiveActivity_DynamicIsland_Expanded_DualTimer"
-        expandedAttachment.lifetime = .keepAlways
-        add(expandedAttachment)
+        saveScreenshot(XCUIScreen.main.screenshot(), name: "WorkoutLiveActivity_DynamicIsland_Expanded_DualTimer")
 
         // Tap elsewhere to dismiss expanded view
         springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
@@ -3245,11 +3254,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         sleep(2)
 
         // Take screenshot of the app showing workout running
-        let appScreenshot = XCUIScreen.main.screenshot()
-        let appAttachment = XCTAttachment(screenshot: appScreenshot)
-        appAttachment.name = "WorkoutLiveActivity_AppForeground_Running"
-        appAttachment.lifetime = .keepAlways
-        add(appAttachment)
+        saveScreenshot(XCUIScreen.main.screenshot(), name: "WorkoutLiveActivity_AppForeground_Running")
 
         // Clean up - close workout
         let closeButton = app.buttons["xmark"]
@@ -3263,7 +3268,7 @@ final class LeanHealthTimerUITests: XCTestCase {
             skipButton.tap()
         }
 
-        print("✅ Workout Live Activity dual timer test completed - screenshots captured")
+        print("✅ Workout Live Activity dual timer test completed - screenshots saved to /tmp/")
     }
 
     /// Test that the workout Live Activity shows Dynamic Island expanded view
@@ -3306,11 +3311,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         sleep(3)
 
         // Take screenshot showing Dynamic Island compact view
-        let diCompactScreenshot = XCUIScreen.main.screenshot()
-        let diCompactAttachment = XCTAttachment(screenshot: diCompactScreenshot)
-        diCompactAttachment.name = "WorkoutLiveActivity_DynamicIsland_Compact"
-        diCompactAttachment.lifetime = .keepAlways
-        add(diCompactAttachment)
+        saveScreenshot(XCUIScreen.main.screenshot(), name: "WorkoutLiveActivity_DynamicIsland_Compact")
 
         // Long-press on Dynamic Island area to expand it
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
@@ -3319,11 +3320,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         sleep(2)
 
         // Take screenshot of expanded Dynamic Island
-        let diExpandedScreenshot = XCUIScreen.main.screenshot()
-        let diExpandedAttachment = XCTAttachment(screenshot: diExpandedScreenshot)
-        diExpandedAttachment.name = "WorkoutLiveActivity_DynamicIsland_Expanded"
-        diExpandedAttachment.lifetime = .keepAlways
-        add(diExpandedAttachment)
+        saveScreenshot(XCUIScreen.main.screenshot(), name: "WorkoutLiveActivity_DynamicIsland_Expanded")
 
         // Tap elsewhere to dismiss expanded view
         springboard.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
