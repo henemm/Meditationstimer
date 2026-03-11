@@ -18,8 +18,12 @@ struct GlassCard<Content: View>: View {
     var body: some View {
         content()
             .padding()
-            .background(.ultraThinMaterial)
-            .cornerRadius(16)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(Color.white.opacity(0.32), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 2)
     }
 }
 
