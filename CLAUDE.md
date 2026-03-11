@@ -136,7 +136,7 @@ Siehe: `.agent-os/standards/healthkit/healthkit-first.md`
 - Live Activities / Dynamic Island support
 - Apple Watch companion app with heart rate monitoring
 
-**Current Version:** 2.8.2
+**Current Version:** 3.1.0
 
 **Development Target:**
 - **Xcode 26.0.1 / Swift 6.2** (iOS 26.0 SDK)
@@ -362,7 +362,7 @@ Meditationstimer/
 
 ## Quick Reference
 
-**Version:** 2.8.2
+**Version:** 3.1.0
 
 **Main Schemes:**
 - "Lean Health Timer" - iOS + Watch + Widget
