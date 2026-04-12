@@ -725,6 +725,15 @@ public struct WorkoutProgramsView: View {
                             pausedSessionAccum: $pausedSessionAccum,
                             onSessionEnd: { await endSession(manual: false) }
                         )
+
+                        Button(isPaused ? NSLocalizedString("Continue", comment: "Button") : NSLocalizedString("Pause", comment: "Button")) {
+                            togglePause()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.red)
+                        .controlSize(.large)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 4)
                     } else {
                         VStack {
                             Image(systemName: "checkmark.circle.fill")
@@ -746,18 +755,6 @@ public struct WorkoutProgramsView: View {
                     }()
                     let phaseEnd = now.addingTimeInterval(phaseDur)
                     Task { await liveActivity.update(phase: newPhase.isWork ? 1 : 2, endDate: updatedEndDate, phaseEndDate: phaseEnd, isPaused: false) }
-                }
-
-                VStack {
-
-                    Button(isPaused ? NSLocalizedString("Continue", comment: "Button") : NSLocalizedString("Pause", comment: "Button")) {
-                        togglePause()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.red)
-                    .controlSize(.large)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 8)
                 }
                 .frame(minWidth: 280, maxWidth: 360)
                 .padding(16)
