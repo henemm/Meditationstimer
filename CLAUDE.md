@@ -117,9 +117,9 @@ Siehe: `.agent-os/standards/healthkit/healthkit-first.md`
 
 | Variable | Wert |
 |----------|------|
-| SIMULATOR_ID | E3EB58E9-E42B-4455-99AE-795F189FFCE0 |
-| Name | XCUITest-Fresh |
-| iOS Version | 26.2 |
+| SIMULATOR_ID | C2B2472D-F80A-4AD4-A1D9-571948F0B106 |
+| Name | iPhone 17 Pro |
+| iOS Version | 26.4 |
 
 ---
 
