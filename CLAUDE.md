@@ -259,7 +259,7 @@ Agent OS v2.0 unterstützt **mehrere parallele Workflows**:
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,id=6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919' \
+  -destination 'platform=iOS Simulator,id=C2B2472D-F80A-4AD4-A1D9-571948F0B106' \
   -only-testing:LeanHealthTimerUITests
 ```
 
@@ -271,9 +271,12 @@ xcodebuild test \
 
 **SOFORT aktualisieren wenn Arbeit erledigt ist:**
 
-1. Nach jedem Fix: ACTIVE-todos.md aktualisieren
+1. Nach jedem Fix: GitHub Issue schließen (`gh issue close #N`)
 2. Nach jedem Test: Ergebnis dokumentieren
-3. Nach Feature: ACTIVE-roadmap.md aktualisieren
+3. Nach Feature: GitHub Issue schließen, ggf. neues Issue für Follow-ups
+
+**⛔ NICHT in `DOCS/ACTIVE-todos.md` oder `DOCS/ACTIVE-roadmap.md` schreiben!**
+→ Bugs & Tasks werden ausschließlich über **GitHub Issues** verwaltet (`gh issue list`, `gh issue create`).
 
 **Standards:** Siehe `.agent-os/standards/global/documentation-rules.md`
 
@@ -309,16 +312,16 @@ iOS / watchOS / Widget Apps (UI)
 
 ## Build Commands
 
-**⚠️ WICHTIG: Immer den "Healthy Habits" Simulator verwenden!**
-- **Simulator Name:** `Healthy Habits`
-- **Identifier:** `6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919`
+**⚠️ WICHTIG: Immer den "iPhone 17 Pro" Simulator verwenden!**
+- **Simulator Name:** `iPhone 17 Pro`
+- **Identifier:** `C2B2472D-F80A-4AD4-A1D9-571948F0B106`
 
 **Build iOS app:**
 ```bash
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
   -configuration Debug \
-  -destination 'platform=iOS Simulator,id=6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919' \
+  -destination 'platform=iOS Simulator,id=C2B2472D-F80A-4AD4-A1D9-571948F0B106' \
   build
 ```
 
@@ -327,7 +330,7 @@ xcodebuild -project Meditationstimer.xcodeproj \
 xcodebuild test \
   -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,id=6653EEF7-8DAB-42A5-ABBA-73C0B8DCA919' \
+  -destination 'platform=iOS Simulator,id=C2B2472D-F80A-4AD4-A1D9-571948F0B106' \
   -only-testing:LeanHealthTimerTests
 ```
 
@@ -388,8 +391,7 @@ Meditationstimer/
 | `.agent-os/agents/` | Specialized agents with standards |
 | `.agent-os/workflows/` | Bug fix, feature, release workflows |
 | `openspec/specs/` | Feature specifications |
-| `DOCS/ACTIVE-todos.md` | Current bugs and tasks |
-| `DOCS/ACTIVE-roadmap.md` | Planned features |
+| **GitHub Issues** | Bugs, Tasks & Feature-Backlog (`gh issue list`) |
 | `DOCS/bug-index.md` | Bug pattern reference |
 
 ---
