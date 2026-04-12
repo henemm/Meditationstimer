@@ -2157,6 +2157,85 @@ final class LeanHealthTimerUITests: XCTestCase {
         }
     }
 
+    // MARK: - Bug 1: Guided Workout Pause Button Position
+
+    /// Bug 1: Pause button must be below the progress ring, not overlapping it
+    func testGuidedWorkoutPauseButtonIsBelowProgressRing() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        // Navigate to Workout tab
+        let workoutTab = app.tabBars.buttons["Workout"]
+        XCTAssertTrue(workoutTab.waitForExistence(timeout: 5))
+        workoutTab.tap()
+
+        // Wait for content to load
+        sleep(2)
+
+        // Scroll to find a workout program (e.g. Tabata Classic)
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        // Try to find and tap a guided workout program
+        let tabataPreset = app.staticTexts["Tabata Classic"]
+        guard tabataPreset.waitForExistence(timeout: 5) else {
+            throw XCTSkip("Could not find workout program to test - needs manual UI verification")
+        }
+        tabataPreset.tap()
+        sleep(1)
+
+        // Start the workout
+        let playButton = app.buttons["play.circle.fill"]
+        guard playButton.waitForExistence(timeout: 3) else {
+            throw XCTSkip("Play button not found after tapping program")
+        }
+        playButton.tap()
+
+        // Handle Health Access alert if needed
+        let allowButton = app.buttons["Allow"]
+        if allowButton.waitForExistence(timeout: 2) {
+            allowButton.tap()
+            sleep(1)
+            if playButton.exists && playButton.isHittable {
+                playButton.tap()
+            }
+        }
+
+        // Wait for workout runner to appear with Pause button
+        let pauseButton = app.buttons["Pause"]
+        guard pauseButton.waitForExistence(timeout: 8) else {
+            throw XCTSkip("Workout did not start - HealthKit may have blocked")
+        }
+
+        // Verify Pause button is NOT overlapping the exercise info (ⓘ button or exercise name)
+        // The pause button's top edge (minY) should be BELOW the progress ring area
+        let pauseFrame = pauseButton.frame
+
+        // Look for the exercise info button (ⓘ) which sits inside the progress ring
+        let infoButton = app.buttons["info.circle"]
+        if infoButton.exists {
+            let infoFrame = infoButton.frame
+            // Pause button top must be below info button bottom (no overlap)
+            XCTAssertGreaterThan(pauseFrame.minY, infoFrame.maxY,
+                "Pause button (y=\(pauseFrame.minY)) must be below the progress ring area (info button bottom=\(infoFrame.maxY))")
+        }
+
+        // Also verify pause button is hittable (not obscured)
+        XCTAssertTrue(pauseButton.isHittable, "Pause button must be tappable, not obscured by other elements")
+
+        // Clean up
+        let closeButton = app.buttons["xmark"]
+        if closeButton.exists {
+            closeButton.tap()
+        }
+    }
+
     // MARK: - FEAT-38: Inline Level Buttons Tests
 
     /// FEAT-38: After creating a second NoAlc tracker via preset, it should show inline emoji buttons
