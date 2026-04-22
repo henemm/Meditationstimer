@@ -68,4 +68,11 @@ xcuserdata/
 .AppleDesktop
 Network Trash Folder
 Temporary Items
-.apdisk.claude/xcuitest_results/
+.apdisk
+
+# Claude Code - transient workflow state
+.claude/xcuitest_results/
+.claude/workflows/.active
+.claude/workflows/.sessions.json
+.claude/workflows/*.json
+DOCS/artifacts/
