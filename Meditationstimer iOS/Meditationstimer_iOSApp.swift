@@ -69,6 +69,7 @@ struct Meditationstimer_iOSApp: App {
         let context = modelContainer.mainContext
         do {
             try TrackerMigration.shared.createDefaultTrackersIfNeeded(context: context)
+            try TrackerMigration.shared.syncLevelsWithDefaults(context: context)
         } catch {
             print("[TrackerMigration] Failed: \(error)")
         }
