@@ -101,7 +101,14 @@ echo ""
 
 # Test-Target bestimmen
 if [ -n "$1" ]; then
-    TEST_FILTER="-only-testing:$UITEST_TARGET/$UITEST_TARGET/$1"
+    # Wenn der Parameter einen "/" enthält, wird er als "Klasse/Methode" interpretiert
+    # z.B. "BackgroundMeditationUITests/test_foo" → -only-testing:LeanHealthTimerUITests/BackgroundMeditationUITests/test_foo
+    # Andernfalls wird die Default-Klasse (LeanHealthTimerUITests) verwendet
+    if [[ "$1" == *"/"* ]]; then
+        TEST_FILTER="-only-testing:$UITEST_TARGET/$1"
+    else
+        TEST_FILTER="-only-testing:$UITEST_TARGET/$UITEST_TARGET/$1"
+    fi
     echo "📋 Einzelner Test: $1"
 else
     TEST_FILTER="-only-testing:$UITEST_TARGET"

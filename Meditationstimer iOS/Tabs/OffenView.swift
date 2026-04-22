@@ -479,7 +479,6 @@ struct OffenView: View {
             }
             .onDisappear {
                 notifier.stop()
-                resetSession(logPartialSession: true)
             }
             .onReceive(NotificationCenter.default.publisher(for: .startMeditationSession)) { _ in
                 Task { @MainActor in

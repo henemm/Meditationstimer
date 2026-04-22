@@ -199,6 +199,7 @@ CHECKPOINT3_PHRASES = [
 APPROVAL_PHRASES = [
     "approved", "freigabe", "lgtm", "spec ok", "genehmigt",
     "abgenommen", "passt", "sieht gut aus", "ja", "einverstanden",
+    "go", "los", "mach",
 ]
 FINDING_FIX_PHRASES = ["fixen", "fix", "beheben", "reparieren"]
 FINDING_ACCEPT_PHRASES = ["akzeptabel", "akzeptieren", "ok so", "passt so"]

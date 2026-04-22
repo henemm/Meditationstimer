@@ -678,6 +678,9 @@ public struct WorkoutProgramsView: View {
         let set: WorkoutSet
         var close: () -> Void
 
+        @Environment(\.scenePhase) private var scenePhase
+        @State private var isInBackground = false
+
         @EnvironmentObject private var liveActivity: LiveActivityController
         @EnvironmentObject private var streakManager: StreakManager
 
@@ -801,8 +804,13 @@ public struct WorkoutProgramsView: View {
                     }
                 )
             }
+            .onChange(of: scenePhase) { _, newPhase in
+                isInBackground = (newPhase == .background)
+            }
             .onDisappear {
-                // Cleanup when session card closes
+                // Only end session when truly navigating away, not on background transition
+                // isInBackground is set via .onChange which fires before .onDisappear
+                guard !isInBackground else { return }
                 Task {
                     await endSession(manual: true)
                 }
