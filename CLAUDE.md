@@ -129,7 +129,7 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 
 | Variable | Wert |
 |----------|------|
-| SIMULATOR_ID | C2B2472D-F80A-4AD4-A1D9-571948F0B106 |
+| SIMULATOR_ID | 082B5651-70F0-47DF-9E73-93CF2DA2D123 |
 | Name | iPhone 17 Pro |
 | iOS Version | 26.4 |
 
@@ -139,7 +139,7 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 
 **Healthy Habits Haven (HHHaven)** — Meditation & Wellness App (SwiftUI)
 
-**Version:** 3.1.0 | **Xcode 26.0.1 / Swift 6.2** | **iOS 18.5+, watchOS 9.0+**
+**Version:** 3.2.0 | **Xcode 26.0.1 / Swift 6.2** | **iOS 18.5+, watchOS 9.0+**
 
 ### Architecture
 
@@ -159,12 +159,12 @@ iOS / watchOS / Widget Apps (UI)
 # Build
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" -configuration Debug \
-  -destination 'platform=iOS Simulator,id=C2B2472D-F80A-4AD4-A1D9-571948F0B106' build
+  -destination 'platform=iOS Simulator,id=082B5651-70F0-47DF-9E73-93CF2DA2D123' build
 
 # Unit Tests
 xcodebuild test -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,id=C2B2472D-F80A-4AD4-A1D9-571948F0B106' \
+  -destination 'platform=iOS Simulator,id=082B5651-70F0-47DF-9E73-93CF2DA2D123' \
   -only-testing:LeanHealthTimerTests
 ```
 
