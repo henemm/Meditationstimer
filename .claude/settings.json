@@ -8,46 +8,22 @@
     "PreToolUse": [
       {
         "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/edit_gate.py",
-            "timeout": 5
-          }
-        ]
+        "hooks": []
       },
       {
         "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/bash_gate.py",
-            "timeout": 300
-          }
-        ]
+        "hooks": []
       }
     ],
     "PostToolUse": [
       {
         "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/post_bash.py",
-            "timeout": 5
-          }
-        ]
+        "hooks": []
       }
     ],
     "UserPromptSubmit": [
       {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 .claude/hooks/phase_listener.py",
-            "timeout": 5
-          }
-        ]
+        "hooks": []
       }
     ],
     "SessionStart": [
@@ -55,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/session_start.py",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session_start.py\"",
             "timeout": 5
           }
         ]

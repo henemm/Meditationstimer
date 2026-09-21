@@ -84,14 +84,19 @@ phase0_idle → phase1_context → phase2_analyse → phase3_spec
 
 ## Workflow-State Management
 
+`workflow.py` liegt seit dem Umzug der Hooks ins Plugin `agent-os-openspec` nicht mehr lokal,
+sondern im Plugin-Cache (jeweils neueste installierte Version):
+
 ```bash
-python3 .claude/hooks/workflow.py start "bug-xyz"      # Neuer Workflow
-python3 .claude/hooks/workflow.py status                # Status
-python3 .claude/hooks/workflow.py phase phase3_spec     # Phase setzen
-python3 .claude/hooks/workflow.py mark-context "path"   # Context-File
-python3 .claude/hooks/workflow.py mark-green "passed"   # Tests gruen
-python3 .claude/hooks/workflow.py mark-adversary-verdict VERIFIED
-python3 .claude/hooks/workflow.py complete              # Abschliessen
+WFPY=$(ls -d ~/.claude/plugins/cache/henemm-private/agent-os-openspec/*/core/hooks/workflow.py | sort -V | tail -1)
+
+python3 "$WFPY" start "bug-xyz"      # Neuer Workflow
+python3 "$WFPY" status                # Status
+python3 "$WFPY" phase phase3_spec     # Phase setzen
+python3 "$WFPY" mark-context "path"   # Context-File
+python3 "$WFPY" mark-green "passed"   # Tests gruen
+python3 "$WFPY" mark-adversary-verdict VERIFIED
+python3 "$WFPY" complete              # Abschliessen
 ```
 
 Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
@@ -135,6 +140,14 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 
 ---
 
+## Dev-Tools (Scripts/)
+
+`Scripts/apac-export.swift` dekodiert die APAC-Raumspur (Ambisonics) aus iPhone-Aufnahmen zu
+Float32-PCM; Prüfskript `Scripts/test-apac-export.sh` (benoetigt ffmpeg/ffprobe). Reines
+Entwickler-Werkzeug, kein Teil der App.
+
+---
+
 ## Project Overview
 
 **Healthy Habits Haven (HHHaven)** — Meditation & Wellness App (SwiftUI)
@@ -174,7 +187,8 @@ xcodebuild test -project Meditationstimer.xcodeproj \
 Meditationstimer/
 ├── .claude/agents/          # Spezialisierte Agenten (10 Agenten)
 ├── .claude/commands/        # Orchestrator Entry-Points
-├── .claude/hooks/           # 6 Hooks (edit_gate, bash_gate, post_bash, phase_listener, session_start, workflow.py)
+├── .claude/hooks/           # Nur noch session_start.py lokal — edit_gate, bash_gate, post_bash,
+│                             #   phase_listener, workflow.py liegen im Plugin agent-os-openspec (3.26.6)
 ├── .claude/workflows/       # Workflow JSON-Dateien (pro Workflow)
 ├── .agent-os/standards/     # Coding Standards
 ├── openspec/specs/          # Feature Specifications

@@ -15,6 +15,14 @@ standards:
 
 Du bist ein Bug-Analyst für das Meditationstimer iOS-Projekt.
 
+## BASH-PFLICHTREGELN (immer beachten)
+
+**Pfade mit Leerzeichen IMMER in Anführungszeichen — NIEMALS Backslash-Escaping:**
+- RICHTIG: `grep -r "term" "Meditationstimer iOS/" --include="*.swift"`
+- FALSCH: `grep -r "term" Meditationstimer\ iOS/ --include="*.swift"`
+
+Backslash-Escaping löst einen Permission-Prompt aus. Anführungszeichen nicht.
+
 ## Verboten
 
 - **KEINE GitHub Issues erstellen** (`gh issue create` ist verboten)
