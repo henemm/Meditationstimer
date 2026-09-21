@@ -33,12 +33,16 @@ jobs:
           -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
           CODE_SIGNING_ALLOWED=NO
 
+    # Nur Unit-Tests: UI-Tests (LeanHealthTimerUITests) laufen ausschliesslich lokal
+    # via Scripts/run-uitests.sh — auf dem Runner startet die App nicht zuverlaessig
+    # (kein HealthKit, kein Display), jeder UI-Test liefe in einen Timeout.
     - name: Run Unit Tests
       run: |
         xcodebuild test-without-building \
           -project Meditationstimer.xcodeproj \
           -scheme "Lean Health Timer" \
           -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+          -only-testing:LeanHealthTimerTests \
           -resultBundlePath TestResults
 
     - name: Test Summary
