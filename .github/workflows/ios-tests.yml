@@ -9,14 +9,14 @@ on:
 jobs:
   test:
     name: Run Tests
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
     - name: Select Xcode Version
-      run: sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
 
     - name: Show Xcode Version
       run: xcodebuild -version
@@ -24,24 +24,30 @@ jobs:
     - name: Show Available Simulators
       run: xcrun simctl list devices available
 
+    # Ad-hoc-Signatur statt CODE_SIGNING_ALLOWED=NO: Auf dem Simulator liegen die
+    # Entitlements (HealthKit) im __entitlements-Abschnitt der App und werden nur beim
+    # Signieren eingebettet. Ohne sie wirft HKSource.defaultSource() beim App-Start eine
+    # NSException -> jeder Testlauf stirbt mit SIGABRT (#17).
     - name: Build for Testing
       run: |
         xcodebuild clean build-for-testing \
           -project Meditationstimer.xcodeproj \
           -scheme "Lean Health Timer" \
           -configuration Debug \
-          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-          CODE_SIGNING_ALLOWED=NO \
-          | xcpretty && exit ${PIPESTATUS[0]}
+          -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+          CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO
 
+    # Nur Unit-Tests: UI-Tests (LeanHealthTimerUITests) laufen ausschliesslich lokal
+    # via Scripts/run-uitests.sh — auf dem Runner startet die App nicht zuverlaessig
+    # (kein HealthKit, kein Display), jeder UI-Test liefe in einen Timeout.
     - name: Run Unit Tests
       run: |
         xcodebuild test-without-building \
           -project Meditationstimer.xcodeproj \
           -scheme "Lean Health Timer" \
-          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-          -resultBundlePath TestResults \
-          | xcpretty && exit ${PIPESTATUS[0]}
+          -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+          -only-testing:LeanHealthTimerTests \
+          -resultBundlePath TestResults
 
     - name: Test Summary
       if: always()
@@ -64,7 +70,7 @@ jobs:
 
   lint:
     name: Code Quality Checks
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
     - name: Checkout Code
@@ -91,14 +97,14 @@ jobs:
 
   build-verification:
     name: Build All Targets
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
     - name: Select Xcode Version
-      run: sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
 
     - name: Build iOS App
       run: |
@@ -106,9 +112,8 @@ jobs:
           -project Meditationstimer.xcodeproj \
           -scheme "Lean Health Timer" \
           -configuration Release \
-          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-          CODE_SIGNING_ALLOWED=NO \
-          | xcpretty && exit ${PIPESTATUS[0]}
+          -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+          CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO
 
     - name: Build Summary
       run: |
