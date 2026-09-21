@@ -40,5 +40,6 @@
 
 ## 4. Dokumentation (optional, kein Architektur-Umbau)
 
-- [ ] Ein Zeile in Scripts/-Übersicht (falls vorhanden) ergänzen, dass
-      `apac-export.swift` existiert
+- [x] Ein Zeile in Scripts/-Übersicht ergänzen, dass `apac-export.swift` existiert
+      → `CLAUDE.md`, Abschnitt „Dev-Tools (Scripts/)" (es gibt kein separates
+      `Scripts/README.md`)
