@@ -164,6 +164,25 @@ Korrelationsprüfung als benannter Folgeschritt, sobald eine räumliche Testaufn
 
 ### Offen für die Spec
 
-- [ ] Zielpfad der Testdatei im Repository festlegen (z. B. `Tests/Fixtures/`)
-- [ ] Ob die Korrelationsprüfung mit dieser Aufnahme aussagekräftig ist — sie braucht
-      hörbare Rauminformation, sonst erscheinen auch korrekt dekodierte Kanäle ähnlich
+- [x] Zielpfad der Testdatei im Repository festlegen → `Scripts/Fixtures/` (siehe unten)
+- [x] Ob die Korrelationsprüfung mit dieser Aufnahme aussagekräftig ist — unbewiesen,
+      daher verschoben (siehe unten)
+
+### Entscheidungen aus Spec und Umsetzung (2026-09-21)
+
+- **Fixture-Ablage:** `Scripts/Fixtures/spatial-sample.qta` (unveränderte Kopie von
+  `Port-Cros National Park.qta`, 986 KB). Das Fixture gehört zum Shell-Prüfskript unter
+  `Scripts/`, nicht zu XCTest — `Tests/` enthält Quellcode, keine Testdaten für Shell-Skripte.
+- **Korrelationsprüfung verschoben:** Ob die Aufnahme hörbare Rauminformation trägt, ist
+  unbewiesen; ohne diesen Nachweis belegt die Prüfung weder Erfolg noch Misserfolg. Ersetzt
+  durch die harte Kanallayout-Zusicherung im Werkzeug (`HOA_ACN_SN3D | 4`, sonst Abbruch).
+  Rückverpacken + `afinfo`-Gegenprüfung entfällt ebenfalls (zirkulär). Beleg im Artefakt:
+  RMS der vier dekodierten Kanäle ist unterschiedlich (0,0085 / 0,0041 / 0,0045 / 0,0049).
+- **Test-Hook `APAC_EXPORT_EXPECT_LAYOUT_TAG`:** Umgebungsvariable überschreibt den erwarteten
+  Layout-Tag, damit das Prüfskript den Abbruchpfad ohne zweites Binär-Fixture nachweist
+  (`ffmpeg` kann keine APAC-Spur synthetisieren). Kein Nutzerfeature.
+- **Präsentationsdauer statt Mediendauer:** Die APAC-Spur trägt eine Edit-Liste (`elst`,
+  13,845 s), das Medium ist 13,909 s lang (3088 Frames = 49.408 Byte mehr, über der Toleranz).
+  `AVAssetReader` liefert per Design die editierte Präsentation — in allen Modi, auch
+  Composition und Passthrough. Das Prüfskript rechnet daher mit `ffprobe format=duration`
+  (13,845 s), wie in der Spec („tatsächliche AVAsset-Dauer"); Ergebnis: 0 Byte Abweichung.

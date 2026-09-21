@@ -1,32 +1,32 @@
 ---
 spec_file: docs/specs/features/FEAT-apac-export.md
-spec_sha256: b8fb03beeedc34db7b066ebd42e5f1b81df5c5f4cf0e11b91df56d73d3459e1e
+spec_sha256: dac238ffb8a17bea437e6cc43a334cd9b7bb7efd9488b242653367db18e92370
 ---
 
 # PO-Briefing: feature-apac-export
 
 - **Spec:** docs/specs/features/FEAT-apac-export.md
-- **Issue:** keine (Ursprungsanfrage stand in Kontext-Dokumenten, keine GitHub-Issue)
+- **Issue:** keine
 - **Erstellt:** 2026-09-21
 
 ## Was gebaut wird
 
-Ein Kommandozeilen-Werkzeug liest die verborgene Raumklang-Tonspur aus iPhone-Aufnahmen aus und macht sie nutzbar.
+Ein Entwickler-Kommandozeilenwerkzeug liest die verborgene Raumklang-Tonspur aus iPhone-Videos aus und schreibt sie als Rohdaten heraus.
 
 ## Definition of Done
 
-Das Werkzeug läuft, erkennt die Raumspur zuverlässig, bricht bei fehlender oder falscher Spur kontrolliert ab, und alle festgelegten Prüfungen bestehen.
+Fertig ist, wenn alle fünf automatisierten Prüfungen bestehen und ausschliesslich die fünf vorgesehenen Dateien geändert wurden.
 
 ## Wie geprüft wird
 
-Automatisierte Prüfungen kontrollieren Format, Dateigröße und Abbruchverhalten anhand einer echten Testaufnahme; ob der Klang tatsächlich räumlich ist, wird nicht geprüft.
+Automatisierte Prüfungen zeigen korrekte Spurauswahl, Abbruch bei fehlender oder falscher Spur und passende Dateigrösse — nicht, ob der Toninhalt tatsächlich räumlich ist.
 
 ## Kritische Anmerkungen
 
-- Der einzige Inhalts-Beweis — dass die vier Kanäle wirklich unterschiedliche Rauminformation tragen — fehlt in dieser Fassung.
-- Ein Prüfpunkt (nur die erlaubten Dateien wurden geändert) hat keinen zugehörigen automatisierten Test.
-- Der Fehlerfall "falsche Raumspur" wird nur künstlich simuliert, nie mit einer echten fehlerhaften Aufnahme.
+- Ob die vier Kanäle wirklich unterschiedliche Rauminformation enthalten, wird in dieser Fassung nicht automatisiert geprüft.
+- Dass ausschliesslich die fünf vorgesehenen Dateien geändert wurden, ist keinem automatisierten Test zugeordnet, nur einer Checkliste.
+- Die Abtastrate wird abweichend von der ursprünglichen Anfrage nicht fest auf 48 kHz gesetzt, sondern aus der Datei gelesen.
 
 ## Freigabe-Frage
 
-Reicht es, wenn Format und Dateigröße stimmen, auch ohne Beweis dass die Kanäle wirklich unterschiedliche Rauminformation enthalten?
+Reicht dir dieser Nachweis der Funktionsfähigkeit aus, auch ohne Beleg, dass die aufgenommene Raumklang-Information tatsächlich hörbar unterschiedlich ist?

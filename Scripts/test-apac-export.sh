@@ -26,7 +26,8 @@ if [ ! -f "$TOOL" ]; then
                    "4:Ausgabegroesse entspricht Dauer x Rate x 4 x 4 Byte"; do
         report 1 "${nr_desc%%:*}" "${nr_desc#*:}" "Werkzeug fehlt"
     done
-    echo ""; echo "Ergebnis: $PASS bestanden, $FAIL fehlgeschlagen"; exit 1
+    echo ""; echo "Ergebnis: $PASS bestanden, $FAIL fehlgeschlagen"
+    echo "$PASS passed, $FAIL failed"; exit 1
 fi
 [ -f "$FIXTURE" ] || { echo "FEHLER: Fixture $FIXTURE fehlt."; exit 1; }
 
@@ -72,7 +73,10 @@ fi
 # Test 4: Ausgabegroesse = Dauer x tatsaechliche Abtastrate x 4 Kanaele x 4 Byte, +/-32768 Byte.
 BLOCK="$(afinfo "$FIXTURE" | awk 'BEGIN{RS="----\n"} /apac/{print}')"
 RATE=$(printf '%s\n' "$BLOCK" | grep -oE '[0-9]+ Hz' | grep -oE '[0-9]+')
-DURATION=$(printf '%s\n' "$BLOCK" | grep "estimated duration:" | grep -oE '[0-9]+\.[0-9]+')
+# Dauer = Praesentationsdauer (AVAsset-Dauer laut Spec), nicht die afinfo-Mediendauer: die
+# Edit-Liste (elst) der Spur schneidet 3088 Frames = 49408 Byte ab (> Toleranz), und
+# AVAssetReader liefert per Design die editierte Praesentation.
+DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$FIXTURE")
 EXPECTED=$(awk -v d="$DURATION" -v r="$RATE" 'BEGIN{printf "%.0f", d*r*4*4}')
 "$TOOL" "$FIXTURE" "$TMPDIR/decoded.pcm" 2>"$TMPDIR/4.err"; RC=$?
 if [ "$RC" -eq 0 ] && [ -f "$TMPDIR/decoded.pcm" ]; then
@@ -86,4 +90,5 @@ fi
 
 # Test 5: Skript-Rueckgabewert selbst - 0 nur wenn alle Einzelpruefungen bestanden haben.
 echo ""; echo "Ergebnis: $PASS bestanden, $FAIL fehlgeschlagen"
+echo "$PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ]

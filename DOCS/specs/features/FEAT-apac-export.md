@@ -228,19 +228,19 @@ ohne strukturelle Fehler zu verdecken.
 
 ## Acceptance Criteria
 
-- [ ] Sondiermodus (`--probe`) listet für `Scripts/Fixtures/spatial-sample.qta` beide Tonspuren
+- **AC-1:** Sondiermodus (`--probe`) listet für `Scripts/Fixtures/spatial-sample.qta` beide Tonspuren
       mit Format-Kennung und Kanallayout auf.
-- [ ] Werkzeug bricht mit Rückgabewert ≠ 0 ab, wenn keine APAC-Spur in der Eingabedatei vorhanden
+- **AC-2:** Werkzeug bricht mit Rückgabewert ≠ 0 ab, wenn keine APAC-Spur in der Eingabedatei vorhanden
       ist; die Meldung auf stderr enthält die Zeichenkette `APAC` (maschinell per `grep` prüfbar),
       und es wird keine Ausgabedatei erzeugt.
-- [ ] Werkzeug bricht mit Rückgabewert ≠ 0 ab, wenn das ausgelesene Kanallayout nicht
+- **AC-3:** Werkzeug bricht mit Rückgabewert ≠ 0 ab, wenn das ausgelesene Kanallayout nicht
       `HOA_ACN_SN3D | 4` entspricht (nachgewiesen über den Test-Hook
       `APAC_EXPORT_EXPECT_LAYOUT_TAG`).
-- [ ] Größe der erzeugten Ausgabedatei entspricht
+- **AC-4:** Größe der erzeugten Ausgabedatei entspricht
       `Dauer × tatsächliche Abtastrate × 4 Kanäle × 4 Byte` innerhalb ±32.768 Byte.
-- [ ] `Scripts/test-apac-export.sh` läuft ohne Argumente durch, liefert Rückgabewert 0 bei Erfolg
+- **AC-5:** `Scripts/test-apac-export.sh` läuft ohne Argumente durch, liefert Rückgabewert 0 bei Erfolg
       und ≠ 0 bei jedem Fehlschlag.
-- [ ] `git diff --name-only` nennt keinen Pfad unterhalb von `Meditationstimer.xcodeproj`,
+- **AC-6:** `git diff --name-only` nennt keinen Pfad unterhalb von `Meditationstimer.xcodeproj`,
       `Services/`, `Meditationstimer iOS/` oder `Meditationstimer Watch/` (maschinell prüfbar).
 
 ## Nicht in dieser Fassung
@@ -271,3 +271,4 @@ ohne strukturelle Fehler zu verdecken.
 - 2026-09-21: Initial spec created
 - 2026-09-21: Sektionen Source und Definition of Done ergänzt; zwei Acceptance Criteria
   maschinell prüfbar formuliert (Validator-Befund)
+- 2026-09-21: Acceptance Criteria in AC-N-Format umformatiert (Edit-Gate-Vorgabe); Inhalt unverändert
