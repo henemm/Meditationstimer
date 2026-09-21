@@ -24,6 +24,10 @@ jobs:
     - name: Show Available Simulators
       run: xcrun simctl list devices available
 
+    # Ad-hoc-Signatur statt CODE_SIGNING_ALLOWED=NO: Auf dem Simulator liegen die
+    # Entitlements (HealthKit) im __entitlements-Abschnitt der App und werden nur beim
+    # Signieren eingebettet. Ohne sie wirft HKSource.defaultSource() beim App-Start eine
+    # NSException -> jeder Testlauf stirbt mit SIGABRT (#17).
     - name: Build for Testing
       run: |
         xcodebuild clean build-for-testing \
@@ -31,7 +35,7 @@ jobs:
           -scheme "Lean Health Timer" \
           -configuration Debug \
           -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO
 
     # Nur Unit-Tests: UI-Tests (LeanHealthTimerUITests) laufen ausschliesslich lokal
     # via Scripts/run-uitests.sh — auf dem Runner startet die App nicht zuverlaessig
@@ -109,7 +113,7 @@ jobs:
           -scheme "Lean Health Timer" \
           -configuration Release \
           -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO
 
     - name: Build Summary
       run: |
