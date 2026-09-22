@@ -2,6 +2,19 @@ import XCTest
 
 final class LeanHealthTimerUITests: XCTestCase {
 
+    // MARK: - Bug #21: positionsbasierter Tab-Zugriff
+    // Labels sind sprachabhängig (DE "Erfolge" / EN "Achievements"), und ein
+    // .accessibilityIdentifier kommt auf der iPhone-Tab-Bar nachweislich nicht an
+    // (siehe openspec/specs/bug-21-uitest-erfolge-tab.md).
+    private func tab(_ index: Int, in app: XCUIApplication) -> XCUIElement {
+        let count = app.tabBars.buttons.count
+        guard count == 4 else {
+            XCTFail("Erwartet 4 Tabs (Meditation/Workout/Tracker/Erfolge), gefunden \(count) — Tab-Reihenfolge geändert?")
+            return app.tabBars.buttons.firstMatch
+        }
+        return app.tabBars.buttons.element(boundBy: index)
+    }
+
     // MARK: - NoAlc Reminder Bug Fix (2026-01-24)
     // Note: TrackerTab.swift now calls cancelMatchingReminders(for: .noalc)
     // in addition to cancelMatchingTrackerReminders(for: trackerID)
@@ -105,7 +118,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         let meditationTab = app.tabBars.buttons["Meditation"]
         let workoutTab = app.tabBars.buttons["Workout"]
         let trackerTab = app.tabBars.buttons["Tracker"]
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
 
         XCTAssertTrue(meditationTab.waitForExistence(timeout: 5), "Meditation tab should exist")
         XCTAssertTrue(workoutTab.exists, "Workout tab should exist")
@@ -137,7 +150,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         let meditationTab = app.tabBars.buttons["Meditation"]
         let workoutTab = app.tabBars.buttons["Workout"]
         let trackerTab = app.tabBars.buttons["Tracker"]
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
 
         XCTAssertTrue(meditationTab.waitForExistence(timeout: 5))
 
@@ -857,7 +870,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         app.launch()
 
         // Navigate to Erfolge tab
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
         XCTAssertTrue(erfolgeTab.waitForExistence(timeout: 5))
         erfolgeTab.tap()
 
@@ -884,7 +897,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         app.launch()
 
         // Navigate to Erfolge tab
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
         XCTAssertTrue(erfolgeTab.waitForExistence(timeout: 5))
         erfolgeTab.tap()
 
@@ -896,6 +909,48 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(hasContent, "Erfolge tab should have content")
     }
 
+    /// Verhalten: Der vierte Tab wird über seine Position gefunden (nicht über den Labeltext) und
+    /// zeigt bei englischer Spracheinstellung das Label "Achievements". Die Inhalts-Prüfung nach
+    /// dem Tap wurde entfernt (Issue #24: HealthKit-Berechtigungsdialog beim Kaltstart blockiert
+    /// den Erfolge-Inhalt, unabhängig vom Tab-Zugriff dieses Bugs).
+    func test_tabIndex3_onEnglish_isAchievements() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        let achievementsTab = tab(3, in: app)
+        XCTAssertTrue(achievementsTab.waitForExistence(timeout: 5))
+        XCTAssertEqual(achievementsTab.label, "Achievements", "Tab an Index 3 sollte auf EN 'Achievements' heißen")
+    }
+
+    /// Verhalten: Derselbe positionsbasierte Zugriff funktioniert unabhängig von der Sprache — bei
+    /// deutscher Spracheinstellung zeigt Tab-Index 3 das Label "Erfolge".
+    func test_tabIndex3_onGerman_isErfolge() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        let erfolgeTab = tab(3, in: app)
+        XCTAssertTrue(erfolgeTab.waitForExistence(timeout: 5))
+        XCTAssertEqual(erfolgeTab.label, "Erfolge", "Tab an Index 3 sollte auf DE 'Erfolge' heißen")
+    }
+
+    /// Verhalten: Die Tab-Bar enthält genau vier Tabs mit paarweise unterschiedlichen Labels — kein
+    /// stiller Fehltreffer durch fehlende oder doppelte Tabs.
+    func test_tabBar_hasExactlyFourTabsWithDistinctLabels() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+
+        XCTAssertTrue(app.tabBars.buttons.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertEqual(app.tabBars.buttons.count, 4, "Tab-Bar sollte genau vier Tabs enthalten")
+
+        let labels = (0..<4).map { tab($0, in: app).label }
+        XCTAssertEqual(Set(labels).count, labels.count, "Alle vier Tab-Labels sollten sich unterscheiden: \(labels)")
+        // Der Fehlerfall "nicht vier Tabs" ist ohne App-Änderung nicht auslösbar und wird per
+        // Code-Review geprüft (siehe Spec AC4).
+    }
+
     /// Test that Erfolge tab shows embedded calendar with streak info section
     func testErfolgeTabShowsEmbeddedCalendar() throws {
         throw XCTSkip("Test flaky - UI elements not consistently available. Needs manual investigation with Xcode Accessibility Inspector.")
@@ -904,7 +959,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         app.launch()
 
         // Navigate to Erfolge tab
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
         XCTAssertTrue(erfolgeTab.waitForExistence(timeout: 5))
         erfolgeTab.tap()
 
@@ -1210,7 +1265,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         let meditationTab = app.tabBars.buttons["Meditation"]
         let workoutTab = app.tabBars.buttons["Workout"]
         let trackerTab = app.tabBars.buttons["Tracker"]
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
 
         XCTAssertTrue(meditationTab.waitForExistence(timeout: 5))
 
@@ -3077,7 +3132,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         takeScreenshot(named: "02_TrackerTab_AfterSteady", attachment: self)
 
         // Navigate to Erfolge tab to verify
-        let erfolgeTab = app.tabBars.buttons["Erfolge"]
+        let erfolgeTab = tab(3, in: app)
         XCTAssertTrue(erfolgeTab.exists, "Erfolge tab should exist")
         erfolgeTab.tap()
 

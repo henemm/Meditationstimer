@@ -71,12 +71,15 @@ run_tests() {
     echo ""
 
     # Tests mit Retry ausführen
+    # -parallel-testing-enabled NO: Runner startet unter Xcode 27.0 sonst auf einem
+    # Simulator-Klon nicht (Issue #23)
     xcodebuild test \
       -project "$PROJECT" \
       -scheme "$SCHEME" \
       -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
       -retry-tests-on-failure \
       -test-iterations 3 \
+      -parallel-testing-enabled NO \
       $test_filter \
       2>&1 | tee /tmp/xcuitest_output.log | grep -E "(Test Case|passed|failed|error:|TEST SUCCEEDED|TEST FAILED|Code=64)"
 
