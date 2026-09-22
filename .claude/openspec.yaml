@@ -1,0 +1,20 @@
+# Projekt-Konfiguration für das Plugin agent-os-openspec (edit_gate, workflow.py).
+# Grund (2026-09-22, Bug #21): Das Edit-Gate erkennt Test-Verzeichnisse nur über exakte
+# Segmentnamen. Das UI-Test-Target heißt nach Xcode-Konvention `LeanHealthTimerUITests/`
+# und wurde deshalb in der TDD-RED-Phase als App-Code behandelt und blockiert.
+# Die Liste ERSETZT die Plugin-Defaults, deshalb stehen diese hier vollständig mit drin.
+strict_code_gate:
+  always_allowed_dirs:
+    - "Tests/"
+    - "UITests/"
+    - "Test/"
+    - "test/"
+    - "__tests__/"
+    - "tests/"
+    - "spec/"
+    - "docs/"
+    - ".claude/commands/"
+    - "scripts/"
+    - "tools/"
+    - "LeanHealthTimerUITests/"
+    - "LeanHealthTimerTests/"
