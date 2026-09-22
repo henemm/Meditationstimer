@@ -134,9 +134,12 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 
 | Variable | Wert |
 |----------|------|
-| SIMULATOR_ID | 082B5651-70F0-47DF-9E73-93CF2DA2D123 |
 | Name | iPhone 17 Pro |
-| iOS Version | 26.4 |
+| iOS Version | 26.5 |
+| Destination | `platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5` |
+
+Immer per **Name + OS** adressieren, nie per fester UDID — die ändert sich mit jedem
+Runtime-Update (#19). `run-uitests.sh` löst die UDID zur Laufzeit selbst auf.
 
 ---
 
@@ -152,7 +155,7 @@ Entwickler-Werkzeug, kein Teil der App.
 
 **Healthy Habits Haven (HHHaven)** — Meditation & Wellness App (SwiftUI)
 
-**Version:** 3.2.0 | **Xcode 26.0.1 / Swift 6.2** | **iOS 18.5+, watchOS 9.0+**
+**Version:** 3.2.0 | **Xcode 27.0 / Swift 6.4** | **iOS 18.5+, watchOS 9.0+**
 
 ### Architecture
 
@@ -172,12 +175,12 @@ iOS / watchOS / Widget Apps (UI)
 # Build
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" -configuration Debug \
-  -destination 'platform=iOS Simulator,id=082B5651-70F0-47DF-9E73-93CF2DA2D123' build
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' build
 
 # Unit Tests
 xcodebuild test -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,id=082B5651-70F0-47DF-9E73-93CF2DA2D123' \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
   -only-testing:LeanHealthTimerTests
 ```
 

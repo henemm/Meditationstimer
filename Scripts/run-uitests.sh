@@ -13,7 +13,20 @@
 # 4. Zeigt Ergebnis an
 #
 
-SIMULATOR_ID="082B5651-70F0-47DF-9E73-93CF2DA2D123"
+# Simulator per Name + OS statt fester UDID — UDIDs ändern sich mit jedem
+# Runtime-Update (siehe #19). Die UDID wird zur Laufzeit aufgelöst, weil
+# simctl boot/bootstatus/erase eine UDID brauchen.
+SIMULATOR_NAME="iPhone 17 Pro"
+SIMULATOR_OS="26.5"
+SIMULATOR_ID=$(xcrun simctl list devices available "iOS $SIMULATOR_OS" \
+    | grep "^    $SIMULATOR_NAME (" \
+    | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' \
+    | head -1)
+if [ -z "$SIMULATOR_ID" ]; then
+    echo "❌ Kein verfügbarer Simulator '$SIMULATOR_NAME' mit iOS $SIMULATOR_OS gefunden."
+    echo "   Verfügbare Geräte: xcrun simctl list devices available"
+    exit 1
+fi
 PROJECT="Meditationstimer.xcodeproj"
 SCHEME="Lean Health Timer"
 UITEST_TARGET="LeanHealthTimerUITests"
@@ -37,7 +50,7 @@ prepare_simulator() {
     sleep 3
 
     # Ziel-Simulator booten
-    echo "   → Boote Simulator $SIMULATOR_ID..."
+    echo "   → Boote Simulator $SIMULATOR_NAME (iOS $SIMULATOR_OS, $SIMULATOR_ID)..."
     xcrun simctl boot "$SIMULATOR_ID" 2>/dev/null || true
 
     # WARTEN bis Simulator bereit ist
@@ -176,7 +189,7 @@ else
         echo "  2. Mac neu starten"
         echo "  3. Simulator manuell löschen und neu erstellen:"
         echo "     xcrun simctl delete $SIMULATOR_ID"
-        echo "     xcrun simctl create 'XCUITest' 'iPhone 16 Pro'"
+        echo "     xcrun simctl create '$SIMULATOR_NAME' '$SIMULATOR_NAME' 'iOS $SIMULATOR_OS'"
         echo ""
     fi
 
