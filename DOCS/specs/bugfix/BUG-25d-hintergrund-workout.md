@@ -104,7 +104,7 @@ in `WorkoutTab.swift` (Zeilen 800-810, angewandt in Zeile 201); der gleichnamige
 `WorkoutProgramsView.swift` ist `private` und läuft im Produkt nie — ebenso wenig wie die dortige
 Liste. Aus `WorkoutProgramsView.swift` werden produktiv die Sitzungs-Karte
 (`WorkoutProgramSessionCard`) sowie `WorkoutSetRow`, `AddSetCard`, `SetEditorView` und
-`PresetInfoSheet` wiederverwendet (`WorkoutTab.swift:92, 100, 143, 163`). Der „Start"-Knopf stammt
+`PresetInfoSheet` wiederverwendet (`WorkoutTab.swift:92, 102, 143, 163`). Der „Start"-Knopf stammt
 aus `WorkoutSetRow`. Da beide Überlagerungs-Effekte identisch aufgebaut sind, bleibt die
 Schlussfolgerung über den Bedienhilfen-Baum unverändert gültig; berichtigt ist nur die
 Quellenangabe.
@@ -155,7 +155,7 @@ zurückgenommen; der Guard ist im Code vorhanden und bleibt es.
 
 | Entity | Type | Purpose |
 |--------|------|---------|
-| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | MODIFY (nur Kommentar) | Der `scenePhase`-Guard in `WorkoutProgramSessionCard` ist **vorhanden und bleibt es** (`:682`, `:807-808`, `:823-825`). Die Entfernung wurde am 2026-09-23 zurückgenommen. Geändert ist ausschließlich der Kommentar: Die widerlegte Begründung über die Callback-Reihenfolge ist durch den gemessenen Befund ersetzt. |
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | MODIFY (nur Kommentar) | Der `scenePhase`-Guard in `WorkoutProgramSessionCard` ist **vorhanden und bleibt es** (`:682`, `:807-808`, `:824-826`). Die Entfernung wurde am 2026-09-23 zurückgenommen. Geändert ist ausschließlich der Kommentar: Die widerlegte Begründung über die Callback-Reihenfolge ist durch den gemessenen Befund ersetzt. |
 | SwiftUI `scenePhase` / `onDisappear` (`WorkoutProgramSessionCard`) | System-Lebenszyklus | Gegenstand der widerlegten Ursachenannahme. Beim Hintergrund-Wechsel feuert `onDisappear` nicht; im Vordergrund (Reiterwechsel per Kurzbefehl, abgebrochener Startvorlauf) ist der Pfad die einzige Aufräumstelle und wird gebraucht — gemessen, siehe `gegenprobe-ruecknahme-guard.txt`. |
 | HealthKit | System-Framework | Ziel der Dauer-Prüfung in AC-3 (voller Eintrag bei regulärem Abschluss) — für diesen Pfad besteht **kein** automatisierter Nachweis, ausgelagert als Issue #35. |
 | `Meditationstimer iOS/Tabs/WorkoutTab.swift` | Projekt-Kontext | Tatsächlich genutzter Workout-Tab mit eigenem `runningSet` (Zeile 38) und eigener Kopie des Überlagerungs-Effekts (Zeilen 800-810, angewandt in Zeile 201); erklärt, warum der Start-Knopf während der gesamten Sitzung im Bedienhilfen-Baum steht. |
@@ -192,7 +192,7 @@ zurückgenommen; der Guard ist im Code vorhanden und bleibt es.
 
 **Produktcode: unverändert.** `WorkoutProgramSessionCard` enthält weiterhin `@State isInBackground`
 (`:682`), `.onChange(of: scenePhase)` (`:807-808`) und den `.onDisappear`-Block mit
-`guard !isInBackground` + `endSession(manual: true)` (`:823-825`). Die Wege, eine Sitzung zu
+`guard !isInBackground` + `endSession(manual: true)` (`:824-826`). Die Wege, eine Sitzung zu
 beenden, bleiben damit wie bisher: der Abbruch-Knopf (`xmark`), der natürliche Abschluss über
 `onSessionEnd` und — im Vordergrund — das Aufräumen über `onDisappear`. Am Quellcode ändert dieses
 Vorhaben nur den Kommentar an dieser Stelle.
@@ -325,7 +325,7 @@ Alle drei grün. Kein HealthKit, kein Testdoppel, keine Produktivcode-Änderung.
 2026-09-23 hat das nachgewiesen, und die frühere Formulierung „mittelbar belegt" war falsch:
 
 `SessionDurationTests` prüft `TwoPhaseTimerEngine`. Dort steht der Endzeitpunkt **beim Start fest**.
-Das geführte Workout-Programm macht das Gegenteil: `WorkoutProgramsView.swift:958` setzt
+Das geführte Workout-Programm macht das Gegenteil: `WorkoutProgramsView.swift:983` setzt
 `let endDate = Date()` erst **beim Beenden**. Das sind zwei verschiedene Entwürfe, keine gemeinsame
 Zeitquelle — ein Test des einen sagt nichts über den anderen.
 

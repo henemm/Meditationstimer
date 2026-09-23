@@ -89,7 +89,7 @@ final class BackgroundMeditationUITests: XCTestCase {
     /// Beide Teilbedingungen zusammen grenzen sauber ab:
     /// - `xmark` trägt die Karte in jedem ihrer Zustände (laufend, pausiert, Abschluss),
     /// - der Fortschrittszähler fehlt im Abschluss-Zustand, der laut
-    ///   `messlauf-vollprotokoll.log`, Zeilen 1988-1990, nur `checkmark.circle.fill` +
+    ///   `messlauf-vollprotokoll.log`, Zeilen 1986-1988, nur `checkmark.circle.fill` +
     ///   "Fertig" + `xmark` zeigt.
     /// Zusammen heißt das: Karte da UND noch nicht fertig.
     private func sessionCardVisible() -> Bool {
