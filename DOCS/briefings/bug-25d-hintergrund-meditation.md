@@ -1,32 +1,32 @@
 ---
 spec_file: docs/specs/bugfix/BUG-25d-hintergrund-workout.md
-spec_sha256: 7ecbc5abca725215824f77ac12addcd39706eef4b210ba0bebc809e57945d0bb
+spec_sha256: 966b3fcf34e989861ce8f44c6db3d6386ec99c3071acea10de0193346e0e5cba
 ---
 
 # PO-Briefing: bug-25d-hintergrund-meditation
 
-- **Spec:** docs/specs/bugfix/BUG-25d-hintergrund-workout.md
+- **Spec:** DOCS/specs/bugfix/BUG-25d-hintergrund-workout.md
 - **Issue:** #25 (Cluster D)
-- **Erstellt:** 2026-09-22
+- **Erstellt:** 2026-09-23
 
 ## Was gebaut wird
 
-Ein geführtes Workout läuft beim App-Wechsel im Hintergrund weiter, statt vorzeitig mit falscher Dauer zu enden.
+Zwei fehlerhafte Prüfungen bei Hintergrund-Wechseln im geführten Workout werden korrigiert — kein Produktfehler wird behoben, es gab keinen.
 
 ## Definition of Done
 
-Der bereits rote Hintergrund-Test wird grün, der Abbruch-Knopf funktioniert weiterhin, und ein durchlaufendes Workout schreibt die volle Dauer.
+Beide korrigierten Tests laufen grün, der nicht führbare lange Test ist entfernt, und Ersatz sowie Aufräumarbeit sind eindeutig als solche gekennzeichnet.
 
 ## Wie geprüft wird
 
-Drei automatisierte Tests bestätigen es, einer läuft real bis zu 5 Minuten; ob die Anzeige sichtbar bleibt, bleibt ungeprüft.
+Zwei UI-Tests prüfen den tatsächlichen Sitzungszustand statt eines untauglichen Knopfs; ein Unit-Test belegt nur die Zeitrechnung, nicht den echten Workout-Pfad.
 
 ## Kritische Anmerkungen
 
-- Cluster D bleibt nur halb erledigt: der zweite rote Test (falsche Atem-Preset-Namen) wird nicht repariert, nur verschoben.
-- Der neue Test hängt an einem bestimmten Workout-Programm und einer versteckten Anzeigeschwelle — beide könnten unbemerkt brechen.
-- Ob die Live Activity beim Hintergrund-Wechsel sichtbar bleibt, kann kein Test beweisen — nur der HealthKit-Eintrag.
+- Der eigentliche Nachweis der geschriebenen Workout-Dauer fehlt weiterhin — nur die Zeitquelle ist getestet, nicht der reale Schreibweg.
+- Der zweite im Ticket genannte Test (Atemübung) wird hier nicht behoben, sondern in ein anderes Ticket verschoben.
+- Beide Punkte stehen in der Spec, sind aber nicht hervorgehoben — echte Lücken bleiben trotzdem bestehen.
 
 ## Freigabe-Frage
 
-Reicht es, den bekannten Fehler zu beheben, während der zweite kaputte Test in diesem Cluster offen bleibt?
+Reicht dir die teilweise Testabdeckung mit offen ausgewiesenen Lücken, oder soll nachgebessert werden?

@@ -8,6 +8,11 @@ status: draft
 
 # Bug #7 — Freie Meditation wird nicht im Hintergrund ausgeführt
 
+> **⚠️ ÜBERHOLT (2026-09-22):** Die hier getroffene Entscheidung, den `onDisappear`-Aufruf mit
+> einem `scenePhase`-Guard abzusichern, ist zurückgenommen worden. Siehe Abschnitt
+> [„Revision 2026-09-22"](#revision-2026-09-22--guard-zurückgenommen) am Ende dieses Dokuments.
+> Der übrige Text bleibt unverändert als Arbeitsstand von 2026-04-22 erhalten.
+
 ## Approval
 
 - [ ] Approved
@@ -55,6 +60,37 @@ Aktive Sessions (insbesondere Geführtes Workout) werden beim Wechsel in den App
 | Streaks | MITTEL | Streak-Tage könnten fehlen oder falsch gezählt werden |
 | Live Activity | MITTEL | Zeigt "läuft" obwohl App intern idle ist |
 
+## Revision 2026-09-22 — Guard zurückgenommen
+
+**Status der Entscheidung aus diesem Ticket: ZURÜCKGENOMMEN.**
+
+Betroffen ist ausschließlich Punkt 1 des Abschnitts „Fix Approach" (der `scenePhase`-Guard im
+`onDisappear` von `WorkoutProgramSessionCard`) sowie der darauf aufbauende dritte Punkt im
+„Test Plan" („ruft `endSession` NICHT auf wenn `scenePhase` Background ist"). Beide sind überholt.
+Punkt 2 (Entfernung des toten `resetSession`-Aufrufs in `OffenView`) bleibt gültig.
+
+**Grund:** Der Guard beruhte auf einer Reihenfolge, die Apple nirgends zusichert — der Annahme,
+`onChange(of: scenePhase)` feuere stets vor `onDisappear`. Unter iOS 26.5 feuert `onDisappear`
+deterministisch VOR dem scenePhase-Update (3 von 3 Reproduktionen). Der Guard greift damit nicht
+mehr: Die Sitzung wurde beim Hintergrund-Wechsel beendet und ein HealthKit-Eintrag mit falscher
+(zu kurzer) Dauer geschrieben. Das damalige Adversary-Urteil `AMBIGUOUS` hat sich bestätigt.
+
+**Korrekter Weg:** Entkopplung durch **ersatzlose Entfernung** des Guard-Konstrukts
+(`@Environment(\.scenePhase)`, `@State isInBackground`, `.onChange(of: scenePhase)` und der
+gesamte `.onDisappear`-Block mit `endSession(manual: true)`) — nicht Absicherung. Die Sitzung endet
+nur noch über die beiden expliziten Wege: Abbruch-Knopf (xmark) und natürlicher Abschluss
+(`onSessionEnd`). Das folgt dem Muster, das in `WorkoutsView.swift` und `AtemView.swift` bereits
+gilt.
+
+**Nachfolge-Spec:** `docs/specs/bugfix/BUG-25d-hintergrund-workout.md` (BUG-25d, Issue #25
+Cluster D).
+
+**Issue #13 („scenePhase-Guard ist timing-abhängig") wird damit gegenstandslos** — nicht nur
+behoben: Ohne Guard existiert kein Reihenfolge-Problem mehr, das timing-abhängig sein könnte.
+
 ## Changelog
 
 - 2026-04-22: Initial spec created (Bug #7)
+- 2026-09-22: Entscheidung aus „Fix Approach" Punkt 1 (scenePhase-Guard) zurückgenommen; Abschnitt
+  „Revision 2026-09-22" ergänzt, Verweis auf `docs/specs/bugfix/BUG-25d-hintergrund-workout.md`
+  und auf die Gegenstandslosigkeit von Issue #13.

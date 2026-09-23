@@ -7,7 +7,7 @@ status: draft
 workflow: bug-25d-hintergrund-meditation
 ---
 
-# BUG-25d: Hintergrund-Wechsel beendet geführtes Workout
+# BUG-25d: Rote Hintergrund-Tests beim geführten Workout waren Testschuld, kein Produktfehler
 
 ## Approval
 
@@ -15,12 +15,21 @@ workflow: bug-25d-hintergrund-meditation
 
 ## Purpose
 
-Drückt der Nutzer während eines laufenden geführten Workouts den Home-Knopf, beendet die App die
-Sitzung sofort und schreibt einen verfrühten HealthKit-Eintrag — obwohl der Nutzer nichts gestoppt
-hat, sondern nur kurz zu einer anderen App gewechselt ist. Der Fix entfernt die fehlerhafte
-Sicherung, die das auslöst, und stellt damit das Verhalten wieder her, das für freies Workout und
-Atemübung bereits gilt: Eine Sitzung läuft im Hintergrund weiter, bis der Nutzer sie aktiv beendet
-oder sie regulär abgeschlossen ist.
+Zwei UI-Tests in `BackgroundMeditationUITests.swift` behaupten, ein geführtes Workout werde
+beendet, sobald der Nutzer kurz zu einer anderen App wechselt. **Eine Messung in der laufenden App
+widerlegt das:** Die Sitzung läuft unverändert weiter, `endSession` wird beim Hintergrund-Wechsel
+nicht aufgerufen. Rot wurde der Test aus einem anderen Grund: Die Programmliste hinter der
+Sitzungs-Karte wird nur weich ausgeblendet (Unschärfe + Antipp-Sperre), bleibt dabei aber im
+Bedienhilfen-Baum bestehen — der Start-Knopf ist deshalb während der gesamten Sitzung technisch
+vorhanden, unabhängig davon, ob sie läuft oder beendet ist. Der Test prüfte also etwas, das sich
+nie ändert.
+
+Dieser Fix korrigiert die beiden betroffenen Tests, sodass sie tatsächlich den Zustand der
+Sitzung prüfen (Sitzungs-Karte mit Pause-Knopf vorhanden oder nicht), statt sich auf den
+irreführenden Start-Knopf zu verlassen. Zusätzlich enthält er eine Aufräumarbeit: Eine
+Absicherung im Sitzungskarten-Code, die auf einer von Apple nicht zugesicherten Reihenfolge zweier
+Systemereignisse beruhte, bleibt entfernt — nicht als Fehlerbehebung, sondern weil sie ohnehin nie
+wirksam war und im Projekt an zwei anderen Stellen bereits ersatzlos gestrichen ist.
 
 ## Source
 
@@ -29,49 +38,96 @@ oder sie regulär abgeschlossen ist.
 | Entity | `BUG-25d-hintergrund-workout` |
 | Spec-Datei | `docs/specs/bugfix/BUG-25d-hintergrund-workout.md` |
 | Kontext & Analyse | `docs/context/bug-25d-hintergrund-meditation.md` |
+| Messbeleg | `docs/artifacts/bug-25d-hintergrund-meditation/diagnose-endSession-aufrufe.txt` |
 | Workflow | `bug-25d-hintergrund-meditation` |
 | Ursprung | Issue #25, Cluster D (Bestandsaufnahme rote UI-Tests) |
-| Datei | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` |
-| Identifier | `struct WorkoutProgramSessionCard`, Zeilen 681-682 und 807-817 |
+| Tatsächliche Ursache des roten Tests | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `struct OverlayBackgroundEffect` (Zeilen 596-605) |
+| Betroffene Tests | `LeanHealthTimerUITests/BackgroundMeditationUITests.swift`: `test_backgroundForeground_sessionStillRunning` (Zeile 183), `test_explicitStop_endsSession` (Zeile 297) |
+| Widerlegte Ursachenannahme | `struct WorkoutProgramSessionCard` — betroffener Code bereits entfernt, siehe unten |
 
-## Root Cause
+## Root Cause (gemessen)
 
-`WorkoutProgramSessionCard` koppelt die Sitzungsdauer an den View-Lebenszyklus statt an eine
-explizite Nutzerhandlung. Ein `@State isInBackground`, gesetzt über `.onChange(of: scenePhase)`,
-soll in `.onDisappear` verhindern, dass die Sitzung beim Hintergrund-Wechsel beendet wird. Der
-Kommentar im Code geht davon aus, dass `onChange(of: scenePhase)` immer vor `onDisappear` feuert —
-eine Reihenfolge, die Apple nirgends zusichert.
+Eine gezielte Messung in der laufenden App widerlegt die ursprüngliche Ursachen-Annahme aus
+Phase 2 dieses Workflows (siehe „Widerlegte Ursachenannahme" unten). Eine temporäre Protokollierung
+an allen Stellen, die eine Sitzung beenden könnten (`endSession`, `close()`, `runningSet`-Zugriffe,
+`card.onAppear`/`onDisappear`, Szenenphasen-Wechsel) zeigt über drei Durchgänge identisch:
 
-Unter Xcode 27.0 / iOS 26.5 feuert `onDisappear` deterministisch vor dem scenePhase-Update
-(3 von 3 Reproduktionen in dieser Sitzung, zusätzlich 2 von 2 in einem früheren Lauf). Der Guard
-greift dadurch nie: `endSession(manual: true)` läuft durch, die Live Activity endet, ein
-HealthKit-Eintrag mit der bis dahin verstrichenen (falschen) Dauer wird geschrieben, und die
-Übersicht mit dem Start-Knopf erscheint wieder — obwohl der Nutzer die Sitzung nicht beendet hat.
+```
+[BUG25D] card.task gestartet (sessionEnded=false)
+[BUG25D] card.onAppear
+[BUG25D] scene: willResignActive
+[BUG25D] scene: didEnterBackground
+[BUG25D] scene: willEnterForeground
+[BUG25D] scene: didBecomeActive
+```
 
-Der `onDisappear`-Aufruf von `endSession` ist zudem nachweislich redundant: Es gibt in dieser
-Ansicht keinen anderen Weg aus der Sitzungs-Karte heraus, den er auffangen müsste. Sie ist ein
-Overlay ohne Navigation, die Tab-Leiste ist während der Sitzung ausgeblendet, und beide regulären
-Enden (Abbruch-Knopf, natürlicher Abschluss) rufen `endSession` bereits direkt auf.
+Danach passiert nichts mehr — kein `endSession`-Eintrag, kein `close()`, kein
+`card.onDisappear`. Die Sitzungs-Karte überlebt den Hintergrund-Wechsel unversehrt, die Sitzung
+läuft weiter. Beleg: `docs/artifacts/bug-25d-hintergrund-meditation/diagnose-endSession-aufrufe.txt`
+(3 Durchgänge, alle identisch).
 
-**Ergänzender Code-Befund (Hintergrundwissen, keine Testgrundlage):** `endSession()`
-(Zeilen 941-1004) bündelt in einem einzigen, durch ein `sessionEnded`-Flag vor Doppelausführung
-geschütztem Aufruf drei Effekte: das Beenden der Live Activity, das Schreiben des
-HealthKit-Eintrags und das Wiedereinblenden der Übersicht mit dem Start-Knopf. Das erklärt, warum
-im Bug-Fall überhaupt nur EIN (zu kurzer) Eintrag entsteht, statt zweier. Dieser Zusammenhang wird
-im Test Plan bewusst NICHT als Beweisgrundlage verwendet — er gilt nur für den heutigen Code und
-bricht bei einem künftigen Umbau von `endSession()`, ohne dass ein Test das anzeigen würde. Der
-Test Plan misst stattdessen direkt auf HealthKit-Ebene (siehe unten), was auch nach einem Umbau
-noch aussagekräftig bleibt.
+**Der tatsächliche Grund für den roten Test:** Die Sitzungs-Karte (`WorkoutProgramSessionCard`)
+liegt als Überlagerung über der Programmliste. `OverlayBackgroundEffect`
+(`WorkoutProgramsView.swift`, Zeilen 596-605) blendet die Liste darunter nur per
+`.blur(radius: 6)` weich aus und sperrt sie über `.allowsHitTesting(false)` gegen Antippen — beides
+entfernt sie **nicht** aus dem Bedienhilfen-Baum, den XCUITest abfragt. `app.buttons["Start"]`
+existiert deshalb während der **gesamten** Sitzung: vor Sitzungsbeginn, während sie läuft, und
+danach — der Hintergrund-Wechsel ändert daran nichts. Der Test prüfte
+`XCTAssertFalse(startButtonAfterReturn.exists)` und schloss daraus fälschlich auf ein
+Sitzungsende. Diese Prüfung konnte unabhängig vom tatsächlichen Sitzungszustand nie bestehen.
+
+**Zusatzbefund:** Der Workout-Tab, den Nutzer tatsächlich sehen, ist `WorkoutTab.swift` mit einer
+eigenen Liste und einem eigenen `runningSet` (Zeile 38). Aus `WorkoutProgramsView.swift` wird
+produktiv nur die Sitzungs-Karte (`WorkoutProgramSessionCard`) und der Überlagerungs-Effekt
+(`OverlayBackgroundEffect`) wiederverwendet — die Liste und der Überlagerungs-Zustand in
+`WorkoutProgramsView` selbst laufen im Produkt nie.
+
+### Widerlegte Ursachenannahme (zur Nachvollziehbarkeit erhalten, NICHT die tatsächliche Ursache)
+
+> **Status: WIDERLEGT durch Messung am 2026-09-22.** Der folgende Abschnitt beschreibt die
+> ursprüngliche Analyse aus Phase 2 dieses Workflows. Er wird nicht gelöscht, sondern bewusst als
+> Irrweg stehen gelassen, damit spätere Leser nachvollziehen können, wie plausibel die Annahme
+> wirkte und woran sie tatsächlich scheiterte.
+
+Die ursprüngliche Analyse ging davon aus, `WorkoutProgramSessionCard` koppele die Sitzungsdauer
+fälschlich an den View-Lebenszyklus: Ein `@State isInBackground`, gesetzt über
+`.onChange(of: scenePhase)`, sollte in `.onDisappear` verhindern, dass die Sitzung beim
+Hintergrund-Wechsel beendet wird. Der Kommentar im Code ging davon aus, dass
+`onChange(of: scenePhase)` immer vor `onDisappear` feuert — eine Reihenfolge, die Apple nirgends
+zusichert. Die Annahme lautete: Unter Xcode 27.0 / iOS 26.5 feuere `onDisappear` deterministisch
+vor dem scenePhase-Update, der Guard greife dadurch nie, `endSession(manual: true)` laufe durch und
+beende die Sitzung vorzeitig.
+
+**Warum die Annahme plausibel wirkte:**
+
+- Der Code enthielt einen verdächtigen Kommentar, der eine nicht zugesicherte
+  Callback-Reihenfolge als gegeben voraussetzte — ein klassisches Zeichen für eine Wette auf
+  undokumentiertes Verhalten.
+- Es gab eine passende Vorgeschichte: Bug #7 (2026-04-22) hatte genau diesen Guard eingeführt, mit
+  Adversary-Urteil `AMBIGUOUS` — der Zweifel war also bereits protokolliert, bevor der Test je
+  scharf gestellt wurde.
+- Der Test war deterministisch rot (3 von 3 Durchgängen, identische Fehlermeldung „Session wurde
+  beim Hintergrund-Wechsel beendet"), was eher für eine echte, reproduzierbare Produktregression
+  sprach als für einen Test-Defekt.
+- Zwei andere Ansichten (`AtemView`, `WorkoutsView`) trugen denselben Kommentar über eine bereits
+  entfernte „scenePhase-Automatik, die zu unerwünschten Beendigungen führte" — ein scheinbar
+  bestätigendes Muster im eigenen Code.
+
+**Was die Annahme übersah:** Ein deterministisch roter Test entsteht genauso zuverlässig durch
+einen deterministisch fehlerhaften Test wie durch einen deterministisch fehlerhaften Produktcode.
+Die naheliegende Erklärung — der Code passt exakt zum Symptom — wurde nie gegen eine direkte
+Messung der tatsächlichen Methodenaufrufe geprüft, bevor der Fix geschrieben wurde. Genau diese
+Messung (siehe oben) hat den Irrtum aufgedeckt.
 
 ## Dependencies
 
 | Entity | Type | Purpose |
 |--------|------|---------|
-| SwiftUI `scenePhase` / `onDisappear` | System-Lebenszyklus | Ursache des Fehlers; wird durch den Fix aus dem Sitzungs-Ende entkoppelt |
-| ActivityKit (Live Activity) | System-Framework | Wird fälschlich beendet, solange der Guard nicht greift |
-| HealthKit | System-Framework | Erhält den verfrühten, falschen Eintrag |
-| `Meditationstimer iOS/Tabs/WorkoutsView.swift` (Zeile 66) | Projekt-Präzedenzfall | Gleiches Problem bereits durch ersatzlose Streichung gelöst |
-| `Meditationstimer iOS/Tabs/AtemView.swift` (Zeile 567) | Projekt-Präzedenzfall | Gleiches Problem bereits durch ersatzlose Streichung gelöst |
+| `OverlayBackgroundEffect` (`WorkoutProgramsView.swift:596-605`) | Projekt-Baustein | Tatsächliche Ursache des roten Tests: `.blur` + `.allowsHitTesting(false)` entfernen die Liste nicht aus dem Bedienhilfen-Baum |
+| SwiftUI `scenePhase` / `onDisappear` (`WorkoutProgramSessionCard`) | System-Lebenszyklus | Gegenstand der widerlegten Ursachenannahme; die zugehörige Absicherung ist bereits entfernt und bleibt es (Aufräumen) |
+| HealthKit | System-Framework | Ziel der Dauer-Prüfung in AC-3 (voller Eintrag bei regulärem Abschluss) |
+| `Meditationstimer iOS/Tabs/WorkoutTab.swift` (Zeile 38) | Projekt-Kontext | Tatsächlich genutzter Workout-Tab mit eigenem `runningSet`; erklärt, warum Liste und Überlagerungs-Zustand in `WorkoutProgramsView` selbst nie produktiv laufen |
+| `Meditationstimer iOS/Tabs/WorkoutsView.swift`, `AtemView.swift` | Projekt-Präzedenzfall | Gleiches Guard-Muster dort bereits ersatzlos entfernt — Vorbild für das Aufräumen in `WorkoutProgramsView` |
 
 ## Scope
 
@@ -79,124 +135,120 @@ noch aussagekräftig bleibt.
 
 | Datei | Change Type | Beschreibung |
 |-------|-------------|--------------|
-| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | MODIFY | Zeilen 681-682 und 807-817: `@State isInBackground`, `.onChange(of: scenePhase)` und der `.onDisappear`-Block mit `endSession(manual: true)` werden ersatzlos entfernt. Kein neuer Code. |
-| `openspec/specs/bug-7-background-meditation.md` | MODIFY | Die dort getroffene Entscheidung (Guard einführen) wird als überholt vermerkt; Abgrenzung zu Issue #13 (wird gegenstandslos), #14 und #15 ergänzt. |
-| `LeanHealthTimerUITests/BackgroundMeditationUITests.swift` | MODIFY | Ein neuer Test ergänzt, der AC-2 und AC-4 gemeinsam über die tatsächlich geschriebene HealthKit-Dauer belegt (siehe Test Plan). Die beiden bestehenden Tests (`test_backgroundForeground_sessionStillRunning`, `test_explicitStop_endsSession`) bleiben unverändert und dienen weiterhin als Abnahmenachweis. |
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | MODIFY (bereits umgesetzt) | Aufräumen, kein Fehlerbehebung: `@State isInBackground`, `.onChange(of: scenePhase)` und der `.onDisappear`-Block mit `endSession(manual: true)` in `WorkoutProgramSessionCard` bleiben entfernt (ca. −14 LoC). Begründung: Die Konstruktion beruhte auf einer nicht zugesicherten Callback-Reihenfolge, der Pfad wird im Produkt nachweislich nie durchlaufen (siehe Root Cause), und dieselbe Streichung ist in `AtemView` und `WorkoutsView` bereits gelebte Praxis. |
+| `openspec/specs/bug-7-background-meditation.md` | MODIFY (bereits erfolgt) | Die dortige Entscheidung (Guard einführen) ist als zurückgenommen vermerkt, mit Verweis auf diese Spec und auf die Gegenstandslosigkeit von Issue #13. |
+| `LeanHealthTimerUITests/BackgroundMeditationUITests.swift` | MODIFY | Testkorrektur: `test_backgroundForeground_sessionStillRunning` und `test_explicitStop_endsSession` werden umgeschrieben, sodass sie den tatsächlichen Zustand der Sitzungs-Karte (Pause-Knopf) prüfen statt sich auf `app.buttons["Start"]` zu verlassen (siehe Test Plan). |
 
 ### Estimated Changes
 
 - Dateien: 3 (eine Quelldatei, eine bestehende Spec, eine UI-Testdatei)
-- LoC Produktänderung: +0 / −12 (unverändert — es wird ausschließlich Code entfernt)
-- LoC Testdatei: +~90 / −0 (ein neuer, kombinierter Test mit Hintergrund-Zyklus, Wartezeit bis zum
-  natürlichen Abschluss und HealthKit-Dauerprüfung; bestehende Tests unverändert)
-- Risiko: NIEDRIG für die Produktänderung (nur Entfernung, kein neuer Code). Für den neuen Test:
-  bewusst in Kauf genommene Laufzeit von ca. 4-5 Minuten (siehe Test Plan) — kein funktionales
-  Risiko, aber ein Laufzeit-Kostenpunkt für die Test-Suite.
+- LoC Produktänderung (`WorkoutProgramsView.swift`): bereits umgesetzt, ca. −14 LoC, kein weiterer
+  Aufwand offen.
+- LoC Testkorrektur (`BackgroundMeditationUITests.swift`): ca. +10/−15 — Ersetzen der beiden
+  Start-Knopf-Prüfungen durch Pause-Knopf-Prüfungen, Kommentare aktualisiert (der Verweis auf
+  „Bug: onDisappear ruft endSession auf" wird durch den tatsächlichen Befund ersetzt).
+- Risiko: NIEDRIG. Es wird kein neues Produktverhalten eingeführt, nur eine bestehende, bereits
+  vollzogene Aufräumarbeit dokumentiert und zwei fehlerhafte Testprüfungen korrigiert.
 
 ## Implementation Details
 
-Entfernt werden in `WorkoutProgramSessionCard`:
+Die Produktänderung ist bereits vollzogen: `WorkoutProgramSessionCard` enthält keinen
+`@State isInBackground`, kein `.onChange(of: scenePhase)` und keinen `.onDisappear`-Block mit
+`endSession` mehr. Die beiden regulären Wege, eine Sitzung zu beenden, bleiben unverändert
+bestehen und rufen `endSession` weiterhin direkt auf: der Abbruch-Knopf (xmark) und der natürliche
+Abschluss über `onSessionEnd`.
 
-- die Zustandsvariable `isInBackground` (Zeilen 681-682)
-- der `.onChange(of: scenePhase)`-Block, der sie setzt
-- der `.onDisappear`-Block, der bei `!isInBackground` `endSession(manual: true)` auslöst
-  (Zeilen 807-817)
+Die verbleibende Arbeit betrifft ausschließlich die Testdatei:
 
-Die beiden regulären Wege, eine Sitzung zu beenden, bleiben unverändert bestehen und rufen
-`endSession` weiterhin direkt auf: der Abbruch-Knopf (xmark, Zeilen 766-771) und der natürliche
-Abschluss über `onSessionEnd` (Zeile 729). Kein Ersatzmechanismus wird eingeführt — genau das ist
-der Kern des Fixes.
+- `test_backgroundForeground_sessionStillRunning`: Die Prüfung
+  `XCTAssertFalse(startButtonAfterReturn.exists)` entfällt ersatzlos. Die bereits vorhandene,
+  bislang nur als „Cleanup"-Kommentar geführte Prüfung `XCTAssertTrue(pauseButton.exists)` nach dem
+  Hintergrund-Zyklus wird zur eigentlichen, alleinigen Prüfung des Tests. Kommentare, die den
+  scenePhase-Guard als Ursache benennen, werden durch den tatsächlichen Befund ersetzt.
+- `test_explicitStop_endsSession`: Die Prüfung `XCTAssertTrue(startButton.waitForExistence(...))`
+  entfällt, weil sie nichts beweist — der Start-Knopf existierte technisch schon vor dem Tap auf
+  den Abbruch-Knopf. Ersetzt wird sie durch eine Prüfung, dass der Pause-Knopf (Sitzungs-Karte)
+  nach dem Abbruch nicht mehr existiert.
+- `test_backgroundDuringSession_thenNaturalCompletion_writesFullDurationEntry` wird **gelöscht**,
+  samt der nur von ihm genutzten Hilfsmethoden — sein Nachweis ist im Simulator nicht führbar
+  (siehe Test Plan). AC-3 belegt stattdessen der neue Unit-Test
+  `LeanHealthTimerTests/SessionDurationTests.swift`, mit der dort ausgewiesenen Einschränkung.
 
 ### Geprüfte Alternativen
 
 | # | Ansatz | Bewertung |
 |---|--------|-----------|
-| A | Guard härten: `scenePhase` direkt im `onDisappear` lesen statt über `onChange` zwischenzuspeichern | **Abgelehnt.** Verlässt sich weiterhin auf eine von Apple nicht zugesicherte Reihenfolge zweier Callbacks — dieselbe Wette, nur neu verpackt. Ist zwischen iOS 18.5 und 26.5 bereits einmal still gebrochen. |
-| **B (gewählt)** | Kopplung auflösen: Guard-Konstrukt ersatzlos entfernen | Behebt die Ursache, führt keinen neuen Code ein, folgt dem im Projekt an zwei anderen Stellen bereits etablierten Muster (`WorkoutsView`, `AtemView`). |
-| C | Sitzung in ein vom View unabhängiges Modell/Service auslagern | **Abgelehnt für diesen Fix.** Architektonisch der Idealzustand, sprengt aber die Umfangsgrenze (2-3 Dateien, 300-500+ LoC statt 4-5 Dateien / ±250 LoC). Kein erprobtes Vorbild im Projekt — gehört als eigenes Architektur-Vorhaben in ein separates Ticket. |
-| D | Nur die Testerwartung im RED-Test ändern | **Abgelehnt.** Die Reproduktion ist deterministisch und bildet alltägliches Nutzerverhalten ab (Home-Knopf während eines Workouts). Das würde nur das Test-Signal verfälschen, ohne das Produktverhalten zu ändern. |
-
-**Gekippte frühere Entscheidung:** Bug #7 (`openspec/specs/bug-7-background-meditation.md`,
-2026-04-22) hat genau diesen Guard eingeführt, mit Adversary-Urteil `AMBIGUOUS`. Der damalige
-Zweifel ist mit der heutigen Reproduktion bestätigt. Issue #13 („scenePhase-Guard ist
-timing-abhängig") wird durch die Entfernung gegenstandslos, nicht nur vermutlich behoben: Ohne
-Guard gibt es kein Reihenfolge-Problem mehr, das timing-abhängig sein könnte.
+| A | Aufräumarbeit rückgängig machen: Guard in `WorkoutProgramSessionCard` wiederherstellen, nur die Tests anpassen | **Abgelehnt.** Der Guard beruhte auf einer nicht zugesicherten Reihenfolge und ist im Produkt nachweislich nie wirksam (siehe Root Cause). Eine Wiedereinführung wäre ein Rückschritt ohne Nutzen. |
+| **B (gewählt)** | Aufräumarbeit behalten, beide betroffenen Tests auf den tatsächlichen Sitzungszustand (Pause-Knopf) statt auf den irreführenden Start-Knopf umstellen | Behebt die eigentliche Ursache des roten Tests, folgt dem Befund der Messung, ändert kein Produktverhalten. |
+| C | Bedienhilfen-Baum reparieren: Liste bei laufender Sitzung vollständig aus dem Baum entfernen (z. B. `.accessibilityHidden(true)` statt nur `.blur` + `.allowsHitTesting`) | **Zurückgestellt.** Würde `app.buttons["Start"]` wieder brauchbar als Kriterium machen, ist aber eine Produktänderung außerhalb des Scopes dieses Testschuld-Fixes und behebt keinen bekannten Nutzer-Fehler. Kandidat für ein eigenes, kleines Aufräum-Ticket, falls künftig weitere Tests denselben Fallstrick treffen. |
 
 ## Test Plan
 
-### Automated Tests — bestehend (unverändert, dienen weiterhin als Abnahme)
+### Automated Tests (Korrektur bestehender Tests)
 
-- [ ] Test 1 (bestehend, RED): GIVEN ein geführtes Workout wurde gestartet und die Sitzungs-Karte
-      mit Pause-Knopf ist sichtbar WHEN der Nutzer den Home-Knopf drückt und die App danach wieder
-      aktiviert THEN ist der Start-Knopf NICHT sichtbar und der Pause-Knopf ist weiterhin da
-      (`BackgroundMeditationUITests.test_backgroundForeground_sessionStillRunning`).
-- [ ] Test 2 (bestehend, Regression): GIVEN ein geführtes Workout läuft WHEN der Nutzer den
-      Abbruch-Knopf (xmark) antippt THEN wird die Sitzung sofort beendet und der Start-Knopf
-      erscheint wieder (`BackgroundMeditationUITests.test_explicitStop_endsSession`).
+- [ ] Test 1 (korrigiert): GIVEN ein geführtes Workout wurde gestartet und die Sitzungs-Karte mit
+      Pause-Knopf ist sichtbar WHEN der Nutzer den Home-Knopf drückt und die App danach wieder
+      aktiviert THEN ist die Sitzungs-Karte mit Pause-Knopf weiterhin sichtbar
+      (`BackgroundMeditationUITests.test_backgroundForeground_sessionStillRunning`). Die bisherige
+      Prüfung `XCTAssertFalse(app.buttons["Start"].exists)` entfällt ersatzlos.
+- [ ] Test 2 (korrigiert): GIVEN ein geführtes Workout läuft WHEN der Nutzer den Abbruch-Knopf
+      (xmark) antippt THEN ist die Sitzungs-Karte mit Pause-Knopf nicht mehr sichtbar
+      (`BackgroundMeditationUITests.test_explicitStop_endsSession`). Die bisherige Prüfung
+      `XCTAssertTrue(app.buttons["Start"].waitForExistence(...))` entfällt, weil sie nichts
+      beweist — der Start-Knopf existierte technisch schon vor dem Tap.
 
-Beide Tests bleiben unverändert. Nach Entfernung des Guard-Konstrukts muss Test 1 von FAILED auf
-PASSED wechseln, Test 2 muss PASSED bleiben.
+### Warum `app.buttons["Start"]` als Kriterium untauglich ist
 
-### Machbarkeitsprüfung zur Testlücke (AC-2 / AC-4)
+`OverlayBackgroundEffect` (`WorkoutProgramsView.swift:596-605`) blendet die Programmliste hinter
+der Sitzungs-Karte nur per `.blur(radius: 6)` weich aus und sperrt sie über
+`.allowsHitTesting(false)` gegen Antippen. Beides entfernt den Start-Knopf **nicht** aus dem
+Bedienhilfen-Baum. `app.buttons["Start"].exists` ist deshalb während der gesamten Sitzung wahr —
+vor Sitzungsbeginn, während sie läuft, und danach. Eine Prüfung, die auf diesem Zustand aufbaut
+(gleich ob als „darf nicht existieren" oder „muss existieren"), unterscheidet nicht zwischen
+laufender und beendeter Sitzung und ist als Kriterium wertlos. Die Sitzungs-Karte selbst
+(Pause-Knopf) dagegen existiert ausschließlich, während die Sitzung tatsächlich läuft — sie ist das
+einzige verlässliche Signal und wird deshalb künftig als alleiniges Kriterium verwendet.
 
-Die einzige App-Stelle, die geschriebene HealthKit-Workout-Einträge mit Datum und Dauer sichtbar
-macht, ist `DayDetailSheet` (erreichbar über Erfolge-Tab → Tag im Kalender antippen). Dabei gilt:
+### Der lange UI-Test wurde gelöscht — Ersatz durch einen Unit-Test
 
-- Diese Ansicht ist **während einer laufenden Sitzung nicht erreichbar** — die Tab-Leiste ist
-  während der Sitzung ausgeblendet (siehe Root-Cause-Abschnitt oben). Ein Test kann den Verlauf
-  deshalb nur nach dem Ende der Sitzung einsehen, nie während sie noch läuft.
-- Diese Ansicht **blendet jeden Eintrag unter 2 Minuten Dauer komplett aus**
-  (`DayDetailSheet.fetchSessions()`: `if duration < 2.0 { continue }`).
-- Es gibt **keinen Reset-Mechanismus für HealthKit** im Simulator — nur die Tracker-Datenbank wird
-  über das Launch-Argument `enable-testing` in-memory geschaltet, nicht HealthKit.
+`test_backgroundDuringSession_thenNaturalCompletion_writesFullDurationEntry` wurde in einer
+früheren Runde dieses Workflows ergänzt und am 2026-09-23 **ersatzlos entfernt**.
 
-**Wichtige Korrektur gegenüber einer früheren Fassung dieser Spec:** Die 2-Minuten-Schwelle ist
-hier **kein Hindernis, sondern Teil des Messverfahrens** und wird bewusst genutzt: Lässt man das
-kürzeste verfügbare Workout-Programm „Tabata Classic" (8 Runden à 30s, keine Wiederholung,
-≈ 3:50 Min Gesamtdauer) real bis zum natürlichen Ende laufen und baut in der Mitte einen
-Hintergrund-Wechsel ein, unterscheidet sich das Ergebnis auf HealthKit-Ebene unmittelbar und ohne
-Umweg über einen Bildschirm-Proxy:
+**Grund:** Er sollte die geschriebene Dauer über die Erfolge-Ansicht belegen. Das ist im Simulator
+nicht führbar. Gemessen (`DOCS/artifacts/bug-25d-hintergrund-meditation/`):
 
-- **Bug aktiv:** Die Sitzung endet beim Hintergrund-Wechsel nach wenigen Sekunden Laufzeit. Der
-  geschriebene Eintrag trägt nur diese kurze Dauer (≈ 30s) — und wird von der 2-Minuten-Schwelle
-  in `DayDetailSheet` ausgefiltert. Der erwartete Eintrag mit voller Programmdauer taucht in der
-  Ansicht gar nicht auf.
-- **Fix wirksam:** Die Sitzung läuft trotz Hintergrund-Wechsel weiter bis zum natürlichen
-  Abschluss. Der geschriebene Eintrag trägt die volle Programmdauer (≈ 3:50) und ist in
-  `DayDetailSheet` sichtbar, weil er deutlich über der 2-Minuten-Schwelle liegt.
+| Befund | Beleg |
+|---|---|
+| Kein HealthKit-Eintrag entsteht | `healthdb_secure.sqlite`: 0 Workouts, 0 Objekte, 0 Samples — obwohl ein Durchgang den natürlichen Abschluss nachweislich erreichte (339 s Laufzeit) |
+| Kein Berechtigungsblatt erscheint | kein Treffer auf „Health Access"/„Erlauben"/„Allow" in beiden vollständigen Bedienhilfen-Mitschnitten |
+| Die Berechtigung ist nicht vorab setzbar | `xcrun simctl privacy` kennt `calendar, contacts, location, photos, media-library, microphone, motion, reminders, siri` — **kein `health`** |
 
-Damit misst ein einziger Testlauf die tatsächlich geschriebene Dauer auf HealthKit-Ebene — ein
-direkter Beweis, kein Bildschirm-Proxy, und unabhängig davon, wie `endSession()` intern
-strukturiert ist oder künftig umgebaut wird. Ein separater, nur auf dem sichtbaren Start-/
-Pause-Knopf basierender Test (wie in einer früheren Fassung dieser Spec) entfällt, weil er
-gegenüber dem bereits bestehenden Test 1 keinen zusätzlichen, unabhängigen Beleg liefert.
+Damit sind „Eintrag geschrieben, Kalender nicht aktualisiert" und „2-Minuten-Anzeigeschwelle
+filtert" als Ursachen ausgeschlossen: Die Kette reißt vor der Oberfläche. Der Test konnte in dieser
+Umgebung nie grün werden, kostete aber rund 17 Minuten je Suite-Durchlauf (drei Wiederholungen à
+5,5 Minuten) — auf einer Maschine, auf der lange Läufe regelmäßig wegen Speichermangels abgebrochen
+wurden.
 
-**Warnung für künftige Änderungen:** Die 2-Minuten-Schwelle in `DayDetailSheet.fetchSessions()`
-ist Teil des Messverfahrens dieses Tests. Wird sie künftig geändert oder entfernt (z. B. im Rahmen
-einer „Aufräum"-Änderung an `DayDetailSheet`), muss dieser Test erneut geprüft werden — er würde
-sonst stillschweigend seine Trennschärfe zwischen Bug- und Fix-Fall verlieren, ohne rot zu werden.
+**Ersatz:** `LeanHealthTimerTests/SessionDurationTests.swift` prüft die Zeitquelle direkt, ohne
+Systemberechtigung, in Sekunden statt Minuten:
 
-### Automated Tests — NEU (in Phase 4 zu schreiben)
+- Volle Dauer: 3 + 4 Minuten ergeben einen Zeitraum von 420 s.
+- Das Ende steht beim Start fest und verrutscht auch nach realer Laufzeit nicht — **das ist der
+  eigentliche Regressionsschutz für den Hintergrund-Fall:** Vergangene Zeit zählt voll, auch
+  während die App nicht sichtbar war. Eine spätere Umstellung auf einen mitlaufenden Countdown
+  würde diesen Test sofort kippen.
+- Gegenfall: Ein vorzeitiger Abbruch ergibt einen entsprechend kürzeren Zeitraum.
 
-- [ ] Test 3 (NEU): GIVEN das kürzeste verfügbare Workout-Programm „Tabata Classic" wurde gestartet
-      WHEN nach ca. 30 Sekunden Laufzeit ein Hintergrund/Vordergrund-Zyklus erfolgt (Home-Knopf,
-      App reaktivieren) AND die Sitzung danach ohne weiteren Eingriff bis zum natürlichen
-      Abschluss durchläuft (Checkmark „Fertig" erscheint) THEN zeigt der Erfolge-Tab für heute
-      genau einen neuen Workout-Eintrag, dessen Dauer mindestens 3:30 Min beträgt (nicht ≈ 30s) —
-      das beweist in einem Lauf sowohl AC-2 (kein vorzeitiger, durch den Hintergrund-Wechsel
-      ausgelöster Eintrag — ein solcher Eintrag hätte nur ≈ 30s und würde von der 2-Minuten-
-      Schwelle ausgefiltert, der erwartete lange Eintrag bliebe aus) als auch AC-4 (natürlicher
-      Abschluss schreibt die vollständige Dauer)
-      (`BackgroundMeditationUITests.test_backgroundDuringSession_thenNaturalCompletion_writesFullDurationEntry`,
-      neu).
-      **Hinweis:** Dieser Test lässt das Programm real bis zum Ende laufen; seine Laufzeit beträgt
-      rund 4-5 Minuten und ist damit der mit Abstand langsamste Test in dieser Datei. Das ist
-      bewusst in Kauf genommen — es ist der einzige Weg, sowohl das Ausbleiben eines vorzeitigen
-      Eintrags als auch die volle Dauer tatsächlich über HealthKit statt über einen
-      Bildschirm-Proxy nachzuweisen. Ein zweiter, separater Testlauf ohne Hintergrund-Wechsel
-      (nur zur AC-4-Absicherung) würde die Laufzeit-Kosten verdoppeln, ohne zusätzliche
-      Beweiskraft zu bringen, da ein Eintrag mit voller Dauer in diesem einen Lauf bereits beide
-      Kriterien gleichzeitig belegt.
+Alle drei grün. Kein HealthKit, kein Testdoppel, keine Produktivcode-Änderung.
+
+**⚠️ Einschränkung, die bestehen bleibt:** Dieser Unit-Test prüft `TwoPhaseTimerEngine` — die
+gemeinsame Zeitquelle. Er prüft **nicht** den Weg des *geführten* Workout-Programms. Dieses
+berechnet seine Eckpunkte inline in der Bildschirmansicht (`sessionStart` beim Start,
+`endDate = Date()` beim Ende) und schreibt von dort direkt in HealthKit. Es gibt dort weder einen
+herauslösbaren Typ noch eine einspeisbare Schreib-Schnittstelle. **AC-3 ist damit nur mittelbar
+belegt.** Ein direkter Nachweis bräuchte eine Produktivcode-Änderung — die Logik aus der Ansicht in
+einen eigenen Typ heben oder `HealthKitManager` eine einspeisbare Schreib-Schnittstelle geben. Das
+ist bewusst **nicht** Teil dieses Umfangs (siehe „Abgrenzung") und gehört in ein eigenes Ticket.
 
 **Nicht automatisiert prüfbar:** Dass die Live Activity beim Hintergrund-Wechsel tatsächlich
 *sichtbar* bestehen bleibt (Sperrbildschirm/Dynamic Island), lässt sich mit XCUITest nicht direkt
@@ -205,68 +257,81 @@ ansprechen kann.
 
 ## Acceptance Criteria
 
-- [ ] AC-1: Läuft ein geführtes Workout und der Nutzer drückt den Home-Knopf, läuft die Sitzung
-      nach dem Zurückkehren zur App weiter — kein Start-Knopf erscheint, die Sitzungs-Karte mit
-      Pause-Knopf bleibt sichtbar.
-- [ ] AC-2: Beim Hintergrund-Wechsel während eines geführten Workouts wird kein HealthKit-Eintrag
-      geschrieben — automatisiert bewiesen über Test 3 anhand der geschriebenen Dauer (kein
-      Kurz-Eintrag durch verfrühtes Ende, sondern ein Eintrag mit voller Programmdauer). Dass die
-      Live Activity dabei bestehen bleibt statt zu enden, ist nicht automatisiert nachprüfbar
-      (Live Activities liegen außerhalb der von XCUITest ansprechbaren Bedienelemente — siehe Test
-      Plan).
-- [ ] AC-3: Der Abbruch-Knopf (xmark) beendet eine laufende Sitzung weiterhin sofort und
-      zuverlässig (Regression zu Test 2).
-- [ ] AC-4: Der natürliche Abschluss eines geführten Workouts (Ablauf aller Sätze) schreibt
-      weiterhin den erwarteten HealthKit-Eintrag mit der vollständigen Dauer — automatisiert
-      bewiesen über Test 3, zusätzlich zur unveränderten Code-Grundlage in `onSessionEnd`.
-- [ ] AC-5: `test_backgroundForeground_sessionStillRunning` läuft grün (PASSED statt FAILED),
-      `test_explicitStop_endsSession` bleibt grün.
+- **AC-1:** Läuft ein geführtes Workout und der Nutzer drückt den Home-Knopf, ist die
+  Sitzungs-Karte mit Pause-Knopf nach der Rückkehr in die App weiterhin sichtbar — die Sitzung hat
+  den App-Wechsel überstanden.
+- **AC-2:** Der Abbruch-Knopf (xmark) beendet eine laufende Sitzung weiterhin zuverlässig — nach
+  dem Antippen ist die Sitzungs-Karte mit Pause-Knopf nicht mehr sichtbar.
+- **AC-3:** Die Dauer einer Sitzung wird aus festen Zeitpunkten berechnet, nicht aus
+  mitlaufender Bildschirmzeit — eine Sitzung, die von A bis B lief, ergibt die volle Dauer B − A,
+  auch wenn die App zwischendurch nicht sichtbar war; ein vorzeitiger Abbruch ergibt entsprechend
+  weniger. *Mittelbar belegt* über die gemeinsame Zeitquelle; der Weg des geführten
+  Workout-Programms ist ohne Produktivcode-Änderung nicht prüfbar (siehe Test Plan).
+- **AC-4:** `test_backgroundForeground_sessionStillRunning` und `test_explicitStop_endsSession`
+  prüfen künftig den tatsächlichen Zustand der Sitzungs-Karte statt des irreführenden
+  Start-Knopfs, und beide laufen grün.
 
 ## Definition of Done
 
-- [ ] `WorkoutProgramSessionCard` enthält keinen `@State isInBackground`, kein
-      `.onChange(of: scenePhase)` und keinen `.onDisappear`-Block mit `endSession` mehr.
-- [ ] Es wurde ausschließlich Code entfernt — kein neuer Code, kein Ersatz-Guard, kein Debounce.
-- [ ] `test_backgroundForeground_sessionStillRunning` läuft grün (war vorher deterministisch rot).
-- [ ] `test_explicitStop_endsSession` bleibt grün (keine Regression beim expliziten Abbruch).
-- [ ] `test_backgroundDuringSession_thenNaturalCompletion_writesFullDurationEntry` (neu) läuft grün
-      — der geschriebene HealthKit-Eintrag hat eine Dauer von mindestens 3:30 Min (Laufzeit des
-      Tests selbst ca. 4-5 Minuten — bewusst akzeptiert, siehe Test Plan).
+- [ ] `test_backgroundForeground_sessionStillRunning` prüft die Sitzungs-Karte (Pause-Knopf) statt
+      `app.buttons["Start"]` und läuft grün.
+- [ ] `test_explicitStop_endsSession` prüft, dass die Sitzungs-Karte (Pause-Knopf) nach dem
+      Abbruch verschwindet, statt nur den Start-Knopf zu prüfen, und läuft grün.
+- [ ] `test_backgroundDuringSession_thenNaturalCompletion_writesFullDurationEntry` ist entfernt,
+      samt der nur von ihm genutzten Hilfsmethoden.
+- [ ] `LeanHealthTimerTests/SessionDurationTests.swift` existiert und läuft grün; die vollständige
+      Unit-Suite bleibt fehlerfrei.
+- [ ] `WorkoutProgramSessionCard` enthält weiterhin keinen `@State isInBackground`, kein
+      `.onChange(of: scenePhase)` und keinen `.onDisappear`-Block mit `endSession`.
+- [ ] `openspec/specs/bug-7-background-meditation.md` bleibt mit dem Revisions-Abschnitt vom
+      2026-09-22 versehen (Guard als zurückgenommen vermerkt).
 - [ ] Alle Acceptance Criteria sind abgehakt.
-- [ ] `git diff --name-only` gegen den Ausgangsstand nennt ausschließlich die drei unter
-      „Affected Files" gelisteten Pfade — keinen weiteren.
-- [ ] `openspec/specs/bug-7-background-meditation.md` ist revidiert: Der Guard ist dort als
-      zurückgenommen vermerkt, mit Verweis auf diese Spec und auf Issue #13.
+- [ ] `git diff --name-only` gegen den Ausgangsstand nennt ausschließlich die unter „Affected
+      Files" gelisteten Pfade — keinen weiteren.
 - [ ] Die App übersetzt ohne Fehler (`xcodebuild` für Schema „Lean Health Timer").
 
 ## Abgrenzung — was dieser Fix NICHT behandelt
 
-- **#15 „Meditation stirbt im Hintergrund"** — betrifft eine andere Ansicht mit einem anderen
-  Mechanismus. Bleibt offen, wird durch diesen Fix weder gelöst noch berührt.
-- **#14 „Zombie-Sitzung bei Deep-Link während Hintergrund"** — bleibt offen, wird durch die
-  Entfernung des Guards weder gelöst noch verschärft.
-- **Freies Workout und Atemübung** — dort existiert der Fehler nicht, weil die fehlerhafte
-  automatische Beendigung dort bereits fehlt (Präzedenzfall für diesen Fix).
-- **Testschulden in `BackgroundMeditationUITests.swift`** — falsche Atem-Preset-Namen im Test
-  (`"4-7-8"`, `"Box"`, `"Wim Hof"` statt der sechs echten Namen), fehlendes Handling des
-  HealthKit-Systemdialogs (#24) in den übrigen Cluster-Tests. Eigenes Ticket.
+- **Testbarkeit des geführten Workout-Pfades** — dass dessen geschriebene Dauer direkt geprüft
+  werden kann, verlangt einen Umbau: Sitzungslogik aus der Bildschirmansicht herauslösen oder
+  `HealthKitManager` eine einspeisbare Schreib-Schnittstelle geben. Eigenes Ticket; hier bewusst
+  nicht angefasst, weil es den Umfang (4-5 Dateien / ±250 LoC) sprengt.
+- **Warum im Simulator kein HealthKit-Eintrag entsteht** — gemessen, aber nicht erklärt. Ob die
+  Schreibfreigabe fehlt, verweigert ist oder der Schreibpfad aus anderem Grund nicht greift, ist
+  offen. Eigenes Ticket.
+
+- **#15 „Meditation stirbt im Hintergrund"** — betrifft eine andere Ansicht (freie Meditation) mit
+  einem anderen Mechanismus. Bleibt offen, wird durch diesen Fix weder gelöst noch berührt.
+- **#14 „Zombie-Sitzung bei Deep-Link während Hintergrund"** — bleibt offen, wird durch diesen Fix
+  weder gelöst noch verschärft.
+- **Freies Workout und Atemübung** — dort existierte der ursprünglich vermutete Fehler ohnehin
+  nicht, weil die automatische Beendigung dort bereits fehlt (Präzedenzfall für die Aufräumarbeit).
+- **#32 (Atemübungs-Test, falsche Preset-Namen)** — eigenes Ticket, kein Bezug zum geführten
+  Workout.
+- **#33 (`Scripts/run-uitests.sh` meldet Grün bei null ausgeführten Tests)** — eigenes Ticket,
+  betrifft die Test-Infrastruktur, nicht das Produktverhalten dieses Fixes.
+- **#34 (Edit-Gate lehnt die Häkchen-Schreibweise bei Acceptance Criteria ab)** — eigenes Ticket;
+  diese Spec verwendet deshalb durchgehend das Format `- **AC-N:** …`.
+- **Bedienhilfen-Baum-Reparatur von `OverlayBackgroundEffect`** (Alternative C oben) — eigenes,
+  mögliches Aufräum-Ticket, nicht Teil dieses Fixes.
 - **Fehlende Hintergrund-Audio-Absicherung des geführten Workouts** (im Unterschied zur freien
-  Meditation, die `BackgroundAudioKeeper` nutzt). Eigenes Ticket.
-- **`Scripts/run-uitests.sh` meldet Grün bei null ausgeführten Tests** (Zeilen 120-126, greift bei
-  Klassennamen ohne `/`-Zeichen). Eigenes Ticket, betrifft die Test-Infrastruktur, nicht das
-  Produktverhalten dieses Fixes.
+  Meditation, die `BackgroundAudioKeeper` nutzt) — eigenes Ticket.
 
 ## Architektur-Entscheidung (ADR)
 
 - **ADR-Nr.:** keine
-- **Rationale:** Es wird ausschließlich Code entfernt, kein neuer Mechanismus eingeführt. Die
-  Entfernung folgt einem im Projekt bereits zweifach gelebten Muster (`WorkoutsView.swift`,
-  `AtemView.swift`) und kippt keine Architektur, sondern eine einzelne, lokal begrenzte
-  Fehlentscheidung aus Bug #7 (dort ebenfalls ohne eigene ADR getroffen). Der ergänzte Test ändert
-  kein Architektur-Verhalten, sondern schließt ausschließlich eine Prüf-Lücke auf HealthKit-Ebene.
-  Keine neue, projektweite Weichenstellung, daher keine ADR nötig.
+- **Rationale:** Es handelt sich um eine Testkorrektur (falsches Prüfkriterium) plus eine bereits
+  vollzogene, lokal begrenzte Aufräumarbeit an entferntem Code — kein neuer Mechanismus, keine
+  Architektur-Weichenstellung. Die Aufräumarbeit folgt einem im Projekt bereits zweifach gelebten
+  Muster (`WorkoutsView.swift`, `AtemView.swift`). Keine neue, projektweite Entscheidung, daher
+  keine ADR nötig.
 
 ## Changelog
+
+- **2026-09-23:** Langer UI-Test gelöscht (im Simulator nicht führbar: HealthKit-Speicher
+  bleibt leer, Berechtigung nicht setzbar). Ersatz: Unit-Test `SessionDurationTests`. AC-3 auf das
+  tatsächlich Belegbare zugeschnitten, Einschränkung ausgewiesen. Test 2 ebenfalls korrigiert —
+  seine Prüfung auf den Start-Knopf war aus demselben Grund wertlos wie die in Test 1.
 
 - 2026-09-22: Initial spec created
 - 2026-09-22: Testlücke zu AC-2/AC-4 nach PO-Rückmeldung geschlossen. Ein neuer, kombinierter Test
@@ -283,3 +348,14 @@ ansprechen kann.
   die geschriebene HealthKit-Dauer belegt (kein Bildschirm-Proxy mehr). Die 2-Minuten-Schwelle in
   `DayDetailSheet` als Teil des Messverfahrens dokumentiert, inkl. Warnung vor stillschweigendem
   Wirkungsverlust bei künftiger Änderung dieser Schwelle.
+- 2026-09-22: **Root Cause widerlegt durch Messung; Spec auf Testschuld umgestellt.** Eine gezielte
+  Protokollierung aller sitzungsbeendenden Aufrufe zeigt: `endSession` wird beim
+  Hintergrund-Wechsel nicht ausgelöst, die Sitzung läuft unverändert weiter. Die ursprüngliche
+  Ursachenannahme (scenePhase-Guard greift nicht) ist damit widerlegt und wird als Irrweg markiert,
+  nicht gelöscht. Tatsächliche Ursache des roten Tests: `OverlayBackgroundEffect` entfernt die
+  Programmliste nicht aus dem Bedienhilfen-Baum, wodurch `app.buttons["Start"]` während der
+  gesamten Sitzung existiert und als Prüfkriterium untauglich ist. Titel, Purpose, Root Cause,
+  Dependencies, Affected Files, Test Plan, Acceptance Criteria, Definition of Done und Abgrenzung
+  entsprechend umgestellt: von Produktfehler-Behebung auf Testschuld-Korrektur plus dokumentiertes
+  Aufräumen. Die bereits entfernten zwölf Zeilen in `WorkoutProgramSessionCard` bleiben entfernt
+  (PO-Entscheidung: „Tests korrigieren, Aufräumen behalten").
