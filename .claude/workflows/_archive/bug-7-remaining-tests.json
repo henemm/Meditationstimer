@@ -1,0 +1,39 @@
+{
+  "name": "bug-7-remaining-tests",
+  "current_phase": "phase7_done",
+  "created": "2026-04-22T21:11:29.521378",
+  "last_updated": "2026-04-22T21:48:04.750598",
+  "spec_file": "openspec/specs/bug-7-background-meditation.md",
+  "spec_approved": true,
+  "context_file": "docs/artifacts/bug-background-meditation/analysis.md",
+  "affected_files": [
+    "LeanHealthTimerUITests/BackgroundMeditationUITests.swift"
+  ],
+  "test_artifacts": [
+    {
+      "type": "test",
+      "path": "LeanHealthTimerUITests/BackgroundMeditationUITests.swift",
+      "description": "Background-Tests f\u00fcr alle 4 Views",
+      "phase": "phase4_tdd_red",
+      "created": "2026-04-22T21:41:25.910889"
+    }
+  ],
+  "red_test_done": false,
+  "ui_test_red_done": true,
+  "checkpoint1_approved": true,
+  "checkpoint2_approved": true,
+  "checkpoint3_approved": true,
+  "workflow_type": "bug",
+  "inspect_ui_done": true,
+  "localize_checked": false,
+  "no_user_strings": true,
+  "no_ui_change": true,
+  "adversary_verdict": "VERIFIED",
+  "adversary_run_count": 1,
+  "green_test_done": true,
+  "checkpoint1_notes": "Tests f\u00fcr 3 verbleibende Views nachholen",
+  "ui_test_red_result": "Tests geschrieben, alle 5 bestanden",
+  "green_test_result": "Alle 5 BackgroundMeditationUITests GR\u00dcN",
+  "checkpoint2_notes": "Alle 5 Background-Tests bestanden",
+  "checkpoint3_notes": "Alle 5 Tests gr\u00fcn, alle 4 Views getestet"
+}

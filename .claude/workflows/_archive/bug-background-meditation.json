@@ -1,0 +1,74 @@
+{
+  "name": "bug-background-meditation",
+  "current_phase": "phase7_done",
+  "created": "2026-04-22T10:35:51.453388",
+  "last_updated": "2026-04-22T16:15:08.341339",
+  "spec_file": "openspec/specs/bug-7-background-meditation.md",
+  "spec_approved": true,
+  "context_file": "docs/artifacts/bug-background-meditation/analysis.md",
+  "affected_files": [
+    "LeanHealthTimerUITests/BackgroundMeditationUITests.swift",
+    "Meditationstimer iOS/Tabs/WorkoutProgramsView.swift",
+    "Meditationstimer iOS/Tabs/OffenView.swift"
+  ],
+  "test_artifacts": [
+    {
+      "type": "ui-test",
+      "path": "LeanHealthTimerUITests/BackgroundMeditationUITests.swift",
+      "description": "Bug #7 TDD RED: Background-Session-Kill",
+      "phase": "phase4_tdd_red",
+      "created": "2026-04-22T14:38:58.194027"
+    },
+    {
+      "type": "test",
+      "path": "LeanHealthTimerUITests/BackgroundMeditationUITests.swift",
+      "description": "UI Test: Background/Foreground Session-Persistenz",
+      "phase": "phase4_tdd_red",
+      "created": "2026-04-22T14:39:26.468934"
+    }
+  ],
+  "red_test_done": false,
+  "ui_test_red_done": true,
+  "checkpoint1_approved": true,
+  "checkpoint2_approved": true,
+  "checkpoint3_approved": true,
+  "workflow_type": "bug",
+  "inspect_ui_done": true,
+  "localize_checked": false,
+  "no_user_strings": true,
+  "no_ui_change": true,
+  "adversary_verdict": "AMBIGUOUS",
+  "adversary_run_count": 1,
+  "green_test_done": true,
+  "checkpoint1_notes": "User approved at 2026-04-22T12:44:43.063345",
+  "ui_test_red_result": "3/3 runs FAILED - test_backgroundForeground_sessionStillRunning schl\u00e4gt konsistent fehl",
+  "checkpoint2_notes": "User approved at 2026-04-22T14:41:54.903781",
+  "green_test_result": "UI Tests GREEN nach Finding-1-Fix: beide BackgroundMeditationUITests bestanden",
+  "adversary_findings": [
+    {
+      "id": 1,
+      "title": "scenePhase-Guard ist timing-abh\u00e4ngig",
+      "impact": "Wenn SwiftUI onDisappear VOR dem scenePhase-Update feuert, greift der Guard nicht. UI Test beweist aber dass es in der Praxis funktioniert.",
+      "proof": "WorkoutProgramsView.swift:806-808 \u2014 Guard liest scenePhase aus @Environment; SwiftUI-Ordering ist undokumentiert",
+      "status": "fix",
+      "resolved_at": "2026-04-22T15:47:30.512190"
+    },
+    {
+      "id": 2,
+      "title": "Navigation im Hintergrund erzeugt Zombie-Session",
+      "impact": "Wenn die View im Hintergrund durch Deep-Link verschwindet, wird endSession nie aufgerufen. Live Activity und Idle-Timer bleiben aktiv.",
+      "proof": "WorkoutProgramsView.swift:806-811 \u2014 Guard unterdr\u00fcckt endSession permanent in diesem Szenario",
+      "status": "defer",
+      "resolved_at": "2026-04-22T15:47:31.657432"
+    },
+    {
+      "id": 3,
+      "title": "Fehlende Unit Tests laut Spec",
+      "impact": "Zwei Unit Tests aus der Spec fehlen: scenePhase-Guard und Abwesenheit von resetSession in OffenView.",
+      "proof": "openspec/specs/bug-7-background-meditation.md:47-48 fordert beide Tests",
+      "status": "accept",
+      "resolved_at": "2026-04-22T15:47:31.701318"
+    }
+  ],
+  "checkpoint3_notes": "User approved at 2026-04-22T16:13:38.223533"
+}

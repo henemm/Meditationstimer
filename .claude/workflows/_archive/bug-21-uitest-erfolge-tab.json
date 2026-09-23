@@ -1,0 +1,163 @@
+{
+  "name": "bug-21-uitest-erfolge-tab",
+  "workflow_type": "bug",
+  "current_phase": "phase8_complete",
+  "created": "2026-09-22T07:52:48.310341",
+  "last_updated": "2026-09-22T12:59:28.693318",
+  "spec_file": "openspec/specs/bug-21-uitest-erfolge-tab.md",
+  "spec_approved": true,
+  "context_file": "docs/artifacts/bug-21-uitest-erfolge-tab/analysis.md",
+  "affected_files": [
+    "LeanHealthTimerUITests/LeanHealthTimerUITests.swift",
+    "Scripts/run-uitests.sh"
+  ],
+  "test_artifacts": [
+    {
+      "type": "file",
+      "path": "LeanHealthTimerUITests/LeanHealthTimerUITests.swift",
+      "description": "RED: 3 neue Tab-Positions-Tests",
+      "phase": "phase5_tdd_red",
+      "created": "2026-09-22T10:01:00.012435"
+    }
+  ],
+  "is_new_ui": false,
+  "red_test_done": false,
+  "ui_test_red_done": true,
+  "green_approved": false,
+  "adversary_verdict": "VERIFIED",
+  "phase_transitions": [
+    {
+      "from": "phase1_context",
+      "to": "phase1_context",
+      "at": "2026-09-22T07:52:48.377536",
+      "trigger": "command"
+    },
+    {
+      "from": "phase1_context",
+      "to": "phase2_analyse",
+      "at": "2026-09-22T08:46:34.402600",
+      "trigger": "command"
+    },
+    {
+      "from": "phase2_analyse",
+      "to": "phase3_spec",
+      "at": "2026-09-22T09:41:46.495389",
+      "trigger": "command"
+    },
+    {
+      "from": "phase3_spec",
+      "to": "phase4_approved",
+      "at": "2026-09-22T09:47:13.306202",
+      "trigger": "approval"
+    },
+    {
+      "from": "phase4_approved",
+      "to": "phase4_tdd_red",
+      "at": "2026-09-22T09:47:20.822105",
+      "trigger": "command"
+    },
+    {
+      "from": "phase4_tdd_red",
+      "to": "phase5_tdd_red",
+      "at": "2026-09-22T09:47:30.512162",
+      "trigger": "command"
+    },
+    {
+      "from": "phase5_tdd_red",
+      "to": "phase6_implement",
+      "at": "2026-09-22T10:03:43.108805",
+      "trigger": "command"
+    },
+    {
+      "from": "phase6_implement",
+      "to": "phase6b_adversary",
+      "at": "2026-09-22T10:11:59.292088",
+      "trigger": "command"
+    },
+    {
+      "from": "phase6b_adversary",
+      "to": "phase7_validate",
+      "at": "2026-09-22T12:27:14.683742",
+      "trigger": "command"
+    },
+    {
+      "from": "phase7_validate",
+      "to": "phase8_complete",
+      "at": "2026-09-22T12:59:28.693297",
+      "trigger": "command"
+    }
+  ],
+  "fix_loop_iterations": 0,
+  "phase_log": [
+    {
+      "phase": "phase1_context",
+      "entered_at": "2026-09-22T07:52:48.310349",
+      "exited_at": "2026-09-22T07:52:48.377542",
+      "duration_min": 0.0
+    },
+    {
+      "phase": "phase1_context",
+      "entered_at": "2026-09-22T07:52:48.377542",
+      "exited_at": "2026-09-22T08:46:34.402605",
+      "duration_min": 53.8
+    },
+    {
+      "phase": "phase2_analyse",
+      "entered_at": "2026-09-22T08:46:34.402605",
+      "exited_at": "2026-09-22T09:41:46.495395",
+      "duration_min": 55.2
+    },
+    {
+      "phase": "phase3_spec",
+      "entered_at": "2026-09-22T09:41:46.495395",
+      "exited_at": "2026-09-22T09:47:13.306210",
+      "duration_min": 5.4
+    },
+    {
+      "phase": "phase4_approved",
+      "entered_at": "2026-09-22T09:47:13.306210",
+      "exited_at": "2026-09-22T09:47:20.822110",
+      "duration_min": 0.1
+    },
+    {
+      "phase": "phase4_tdd_red",
+      "entered_at": "2026-09-22T09:47:20.822110",
+      "exited_at": "2026-09-22T09:47:30.512172",
+      "duration_min": 0.2
+    },
+    {
+      "phase": "phase5_tdd_red",
+      "entered_at": "2026-09-22T09:47:30.512172",
+      "exited_at": "2026-09-22T10:03:43.108810",
+      "duration_min": 16.2
+    },
+    {
+      "phase": "phase6_implement",
+      "entered_at": "2026-09-22T10:03:43.108810",
+      "exited_at": "2026-09-22T10:11:59.292093",
+      "duration_min": 8.3
+    },
+    {
+      "phase": "phase6b_adversary",
+      "entered_at": "2026-09-22T10:11:59.292093",
+      "exited_at": "2026-09-22T12:27:14.683746",
+      "duration_min": 135.3
+    },
+    {
+      "phase": "phase7_validate",
+      "entered_at": "2026-09-22T12:27:14.683746",
+      "exited_at": "2026-09-22T12:59:28.693308",
+      "duration_min": 32.2
+    },
+    {
+      "phase": "phase8_complete",
+      "entered_at": "2026-09-22T12:59:28.693308",
+      "exited_at": null,
+      "duration_min": null
+    }
+  ],
+  "ui_test_red_result": "BUILD FAILED: cannot find 'tab' in scope (3 Tests)",
+  "green_test_result": "6/6 UI-Tests gr\u00fcn via run-uitests.sh (2 im Retry, Content-Timing)",
+  "findings": "F1 Guard soft-fail \u2192 GEFIXT (Adversary best\u00e4tigt); F2 AC4 nur Code-Review \u2192 AKZEPTABEL (Henning); F3 EN-Test Kaltstart/HealthKit-Dialog \u2192 GEFIXT: Inhalts-Pr\u00fcfung raus, Issue #24 (Henning), 3/3 Kaltstart-L\u00e4ufe Iteration 1 gr\u00fcn",
+  "e2e_scope": "docs-only"
+}

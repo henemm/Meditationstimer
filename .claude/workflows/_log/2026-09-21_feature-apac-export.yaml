@@ -1,0 +1,21 @@
+workflow_id: feature-apac-export
+project: Meditationstimer
+completed_at: 2026-09-21T16:00:10.193142
+phases_completed:
+  - phase1_context
+  - phase2_analyse
+  - phase3_spec
+  - phase4_approved
+  - phase5_tdd_red
+  - phase6_implement
+  - phase6b_adversary
+  - phase7_validate
+phases_skipped:
+override_used: False
+tdd_red_confirmed: True
+adversary_verdict: VERIFIED:xcodebuild
+adversary_findings_total: 0
+adversary_fix_loop_iterations: 0
+scope_files_changed: 5
+scope_loc_delta: +21
+outcome: success

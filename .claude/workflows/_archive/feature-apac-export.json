@@ -1,0 +1,185 @@
+{
+  "name": "feature-apac-export",
+  "workflow_type": "feature",
+  "current_phase": "phase8_complete",
+  "created": "2026-09-21T11:45:48.287426",
+  "last_updated": "2026-09-21T16:00:10.354842",
+  "spec_file": "docs/specs/features/FEAT-apac-export.md",
+  "spec_approved": true,
+  "context_file": "docs/context/feature-apac-export.md",
+  "affected_files": [
+    "Scripts/Fixtures/spatial-sample.qta",
+    "Scripts/apac-export.swift",
+    "Scripts/test-apac-export.sh",
+    "docs/context/feature-apac-export.md",
+    "openspec/changes/apac-export-cli/tasks.md"
+  ],
+  "test_artifacts": [
+    {
+      "type": "test_output",
+      "path": "docs/artifacts/feature-apac-export/test-red-output.txt",
+      "description": "RED belegt: Lauf A (Werkzeug fehlt) 0/4 bestanden, Exit 1. Lauf B gegen Attrappen ausserhalb des Repos belegt, dass die Pruefungen greifen: B2 meldet channels=2 bei rate=48000 und wird von Test 1 korrekt als FAIL erkannt; Test 4 erwartet 10682368 Byte, erhaelt 0.",
+      "phase": "phase5_tdd_red",
+      "created": "2026-09-21T14:18:27.573546"
+    },
+    {
+      "type": "test_output",
+      "path": "docs/artifacts/feature-apac-export/test-green-output.txt",
+      "description": "GREEN: 4/4 Pruefungen bestanden, Exit 0. AC-1 bis AC-6 belegt. Ausgabe 10.632.960 Byte = 13,845 s x 48000 x 16, 0 Byte Abweichung. Test 4 im Pruefskript spec-konform auf AVAsset-Praesentationsdauer (ffprobe) umgestellt statt afinfo-Mediendauer (elst schneidet 3088 Frames ab).",
+      "phase": "phase6_implement",
+      "created": "2026-09-21T15:11:34.892509"
+    },
+    {
+      "type": "adversary_dialog",
+      "path": "docs/artifacts/feature-apac-export/adversary-dialog.md",
+      "description": "Adversary Dialog Protokoll \u2014 VERIFIED, 3 LOW-Findings (DoD-Formulierung vs AC-6, 1-ULP-Nichtdeterminismus, Flag-Diagnose)",
+      "phase": "phase6b_adversary",
+      "created": "2026-09-21T15:32:52.281638"
+    }
+  ],
+  "is_new_ui": false,
+  "red_test_done": true,
+  "ui_test_red_done": false,
+  "green_approved": true,
+  "adversary_verdict": "VERIFIED:xcodebuild",
+  "phase_transitions": [
+    {
+      "from": "phase1_context",
+      "to": "phase1_context",
+      "at": "2026-09-21T11:45:48.358640",
+      "trigger": "command"
+    },
+    {
+      "from": "phase1_context",
+      "to": "phase2_analyse",
+      "at": "2026-09-21T11:51:05.917803",
+      "trigger": "command"
+    },
+    {
+      "from": "phase2_analyse",
+      "to": "phase3_spec",
+      "at": "2026-09-21T12:54:14.105929",
+      "trigger": "command"
+    },
+    {
+      "from": "phase3_spec",
+      "to": "phase3_spec",
+      "at": "2026-09-21T13:36:35.666838",
+      "trigger": "command"
+    },
+    {
+      "from": "phase3_spec",
+      "to": "phase4_approved",
+      "at": "2026-09-21T14:10:20.063803",
+      "trigger": "approval"
+    },
+    {
+      "from": "phase4_approved",
+      "to": "phase5_tdd_red",
+      "at": "2026-09-21T14:10:56.741574",
+      "trigger": "command"
+    },
+    {
+      "from": "phase5_tdd_red",
+      "to": "phase6_implement",
+      "at": "2026-09-21T14:20:47.878097",
+      "trigger": "command"
+    },
+    {
+      "from": "phase6_implement",
+      "to": "phase6b_adversary",
+      "at": "2026-09-21T15:26:13.215499",
+      "trigger": "command"
+    },
+    {
+      "from": "phase6b_adversary",
+      "to": "phase7_validate",
+      "at": "2026-09-21T15:43:28.575000",
+      "trigger": "command"
+    },
+    {
+      "from": "phase7_validate",
+      "to": "phase8_complete",
+      "at": "2026-09-21T16:00:10.354803",
+      "trigger": "command"
+    }
+  ],
+  "fix_loop_iterations": 0,
+  "phase_log": [
+    {
+      "phase": "phase1_context",
+      "entered_at": "2026-09-21T11:45:48.287435",
+      "exited_at": "2026-09-21T11:45:48.358646",
+      "duration_min": 0.0
+    },
+    {
+      "phase": "phase1_context",
+      "entered_at": "2026-09-21T11:45:48.358646",
+      "exited_at": "2026-09-21T11:51:05.917808",
+      "duration_min": 5.3
+    },
+    {
+      "phase": "phase2_analyse",
+      "entered_at": "2026-09-21T11:51:05.917808",
+      "exited_at": "2026-09-21T12:54:14.105936",
+      "duration_min": 63.1
+    },
+    {
+      "phase": "phase3_spec",
+      "entered_at": "2026-09-21T12:54:14.105936",
+      "exited_at": "2026-09-21T13:36:35.666843",
+      "duration_min": 42.4
+    },
+    {
+      "phase": "phase3_spec",
+      "entered_at": "2026-09-21T13:36:35.666843",
+      "exited_at": "2026-09-21T14:10:20.063811",
+      "duration_min": 33.7
+    },
+    {
+      "phase": "phase4_approved",
+      "entered_at": "2026-09-21T14:10:20.063811",
+      "exited_at": "2026-09-21T14:10:56.741580",
+      "duration_min": 0.6
+    },
+    {
+      "phase": "phase5_tdd_red",
+      "entered_at": "2026-09-21T14:10:56.741580",
+      "exited_at": "2026-09-21T14:20:47.878108",
+      "duration_min": 9.9
+    },
+    {
+      "phase": "phase6_implement",
+      "entered_at": "2026-09-21T14:20:47.878108",
+      "exited_at": "2026-09-21T15:26:13.215506",
+      "duration_min": 65.4
+    },
+    {
+      "phase": "phase6b_adversary",
+      "entered_at": "2026-09-21T15:26:13.215506",
+      "exited_at": "2026-09-21T15:43:28.575021",
+      "duration_min": 17.3
+    },
+    {
+      "phase": "phase7_validate",
+      "entered_at": "2026-09-21T15:43:28.575021",
+      "exited_at": "2026-09-21T16:00:10.354822",
+      "duration_min": 16.7
+    },
+    {
+      "phase": "phase8_complete",
+      "entered_at": "2026-09-21T16:00:10.354822",
+      "exited_at": null,
+      "duration_min": null
+    }
+  ],
+  "po_briefing": {
+    "file": "docs/briefings/feature-apac-export.md",
+    "spec_sha256": "dac238ffb8a17bea437e6cc43a334cd9b7bb7efd9488b242653367db18e92370",
+    "created": "2026-09-21T15:26:13"
+  },
+  "red_test_result": "0 von 4 Pruefungen bestanden, Exit-Code 1",
+  "e2e_scope": "docs-only",
+  "loc_delta_current": "+21",
+  "loc_delta_test_current": "+0"
+}

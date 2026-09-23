@@ -1,0 +1,70 @@
+{
+  "name": "chore-19-simulator-config",
+  "workflow_type": "bug",
+  "current_phase": "phase8_complete",
+  "created": "2026-09-21T21:19:56.145748",
+  "last_updated": "2026-09-22T06:22:30.791971",
+  "spec_file": null,
+  "spec_approved": true,
+  "context_file": null,
+  "affected_files": [
+    "CLAUDE.md",
+    "Scripts/run-uitests.sh"
+  ],
+  "test_artifacts": [
+    {
+      "type": "test_output",
+      "path": "docs/artifacts/chore-19-simulator-config/test-green-output.txt",
+      "description": "UI-Test + Unit-Tests PASSED mit Name+OS-Destination",
+      "phase": "phase6_implement",
+      "created": "2026-09-21T21:37:57.100676"
+    },
+    {
+      "type": "log",
+      "path": "docs/artifacts/chore-19-simulator-config/test-green-output.txt",
+      "description": "Unabh\u00e4ngige Pr\u00fcfung: 4/4 Anforderungen erf\u00fcllt, Scope ok, simctl-create-Hinweis mit Laufzeit erg\u00e4nzt und bewiesen",
+      "phase": "phase7_validate",
+      "created": "2026-09-22T06:22:30.750806"
+    }
+  ],
+  "is_new_ui": false,
+  "red_test_done": true,
+  "ui_test_red_done": false,
+  "green_approved": true,
+  "adversary_verdict": "VERIFIED:xcodebuild",
+  "phase_transitions": [
+    {
+      "from": "phase6_implement",
+      "to": "phase7_validate",
+      "at": "2026-09-22T06:19:42.501572",
+      "trigger": "command"
+    },
+    {
+      "from": "phase7_validate",
+      "to": "phase8_complete",
+      "at": "2026-09-22T06:22:30.791955",
+      "trigger": "command"
+    }
+  ],
+  "fix_loop_iterations": 0,
+  "phase_log": [
+    {
+      "phase": "phase6_implement",
+      "entered_at": "2026-09-21T21:19:56.145755",
+      "exited_at": "2026-09-22T06:19:42.501590",
+      "duration_min": 539.8
+    },
+    {
+      "phase": "phase7_validate",
+      "entered_at": "2026-09-22T06:19:42.501590",
+      "exited_at": "2026-09-22T06:22:30.791964",
+      "duration_min": 2.8
+    },
+    {
+      "phase": "phase8_complete",
+      "entered_at": "2026-09-22T06:22:30.791964",
+      "exited_at": null,
+      "duration_min": null
+    }
+  ]
+}
