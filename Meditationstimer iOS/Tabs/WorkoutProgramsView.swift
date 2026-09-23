@@ -819,7 +819,8 @@ public struct WorkoutProgramsView: View {
                 //   Deep-Link/Kurzbefehl und abgebrochener Startvorlauf. Ohne ihn bleiben
                 //   Leerlaufsperre aktiv und Live Activity offen, und es wird kein
                 //   HealthKit-Eintrag geschrieben (regressionspruefung-reiterwechsel.txt).
-                // Siehe DOCS/specs/bugfix/BUG-25d-hintergrund-workout.md und Issue #35.
+                // Siehe DOCS/specs/bugfix/BUG-25d-hintergrund-workout.md und Issue #36
+                // (Aufraeumpfad bei Reiterwechsel/abgebrochenem Startvorlauf).
                 guard !isInBackground else { return }
                 Task {
                     await endSession(manual: true)
