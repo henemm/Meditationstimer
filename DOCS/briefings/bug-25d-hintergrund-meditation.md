@@ -1,6 +1,6 @@
 ---
 spec_file: docs/specs/bugfix/BUG-25d-hintergrund-workout.md
-spec_sha256: 966b3fcf34e989861ce8f44c6db3d6386ec99c3071acea10de0193346e0e5cba
+spec_sha256: 232600bf929d38ecc562632cc41553a1ad83e4231b06a7be94814b3cf37212d0
 ---
 
 # PO-Briefing: bug-25d-hintergrund-meditation
@@ -11,22 +11,22 @@ spec_sha256: 966b3fcf34e989861ce8f44c6db3d6386ec99c3071acea10de0193346e0e5cba
 
 ## Was gebaut wird
 
-Zwei fehlerhafte Prüfungen bei Hintergrund-Wechseln im geführten Workout werden korrigiert — kein Produktfehler wird behoben, es gab keinen.
+Zwei fehlerhafte Testprüfungen werden korrigiert; am Verhalten der App selbst ändert sich nichts.
 
 ## Definition of Done
 
-Beide korrigierten Tests laufen grün, der nicht führbare lange Test ist entfernt, und Ersatz sowie Aufräumarbeit sind eindeutig als solche gekennzeichnet.
+Die drei betroffenen Tests laufen nachweislich grün, und am Produktverhalten der App ändert sich nichts messbar.
 
 ## Wie geprüft wird
 
-Zwei UI-Tests prüfen den tatsächlichen Sitzungszustand statt eines untauglichen Knopfs; ein Unit-Test belegt nur die Zeitrechnung, nicht den echten Workout-Pfad.
+Automatisierte Tests bestätigen Sitzungszustand und Abbruch-Verhalten; ob die vollständige Workout-Dauer korrekt gespeichert wird, bleibt unbewiesen.
 
 ## Kritische Anmerkungen
 
-- Der eigentliche Nachweis der geschriebenen Workout-Dauer fehlt weiterhin — nur die Zeitquelle ist getestet, nicht der reale Schreibweg.
-- Der zweite im Ticket genannte Test (Atemübung) wird hier nicht behoben, sondern in ein anderes Ticket verschoben.
-- Beide Punkte stehen in der Spec, sind aber nicht hervorgehoben — echte Lücken bleiben trotzdem bestehen.
+- Ein Test war monatelang falsch grün und prüfte nie den Abbruch-Knopf, sondern einen Zufallsknopf.
+- Der zweite im Ticket genannte Test (Atemübung) wird hier nicht behoben, sondern separat verschoben (#32).
+- Der Nachweis, dass eine vollständige Workout-Sitzung korrekt gespeichert wird, fehlt weiterhin (#35).
 
 ## Freigabe-Frage
 
-Reicht dir die teilweise Testabdeckung mit offen ausgewiesenen Lücken, oder soll nachgebessert werden?
+Genügt dir, dass am Produkt nichts geändert wird und nur die Tests korrigiert sind, oder soll die offene Dauer-Prüfung vorher geklärt werden?
