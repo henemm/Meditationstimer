@@ -9,6 +9,18 @@ workflow: bug-25d-hintergrund-meditation
 
 # BUG-25d: Rote Hintergrund-Tests beim geführten Workout waren Testschuld, kein Produktfehler
 
+> **⚠️ Stand 2026-09-23: Die Aufräumarbeit wurde zurückgenommen.**
+> Das Entfernen des `scenePhase`-Guards erzeugte eine in 4 von 4 Durchgängen gemessene Regression
+> (Beleg: `DOCS/artifacts/bug-25d-hintergrund-meditation/regressionspruefung-reiterwechsel.txt`).
+> Der `onDisappear`-Pfad wird beim Hintergrund-Wechsel zwar nie durchlaufen, ist im **Vordergrund**
+> aber die einzige Aufräumstelle — beim programmatischen Reiterwechsel per Kurzbefehl und beim
+> abgebrochenen Startvorlauf. Ohne ihn blieben Bildschirmsperre deaktiviert und Live Activity
+> offen, und es wurde kein Eintrag in die Gesundheits-App geschrieben. Der Product Owner hat die
+> Rücknahme entschieden. **Ergebnis dieses Vorhabens ist damit ausschließlich die Testkorrektur;
+> am Produktcode ändert sich nichts.** Die strukturelle Zerbrechlichkeit ist als Issue #36
+> ausgelagert.
+
+
 ## Approval
 
 - [ ] Approved
@@ -123,7 +135,7 @@ Messung (siehe oben) hat den Irrtum aufgedeckt.
 
 | Entity | Type | Purpose |
 |--------|------|---------|
-| `OverlayBackgroundEffect` (`WorkoutProgramsView.swift:596-605`) | Projekt-Baustein | Tatsächliche Ursache des roten Tests: `.blur` + `.allowsHitTesting(false)` entfernen die Liste nicht aus dem Bedienhilfen-Baum |
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | UNVERÄNDERT | Entfernung zurückgenommen (2026-09-23); nur der irreführende Kommentar über die Callback-Reihenfolge wurde durch den gemessenen Befund ersetzt |
 | SwiftUI `scenePhase` / `onDisappear` (`WorkoutProgramSessionCard`) | System-Lebenszyklus | Gegenstand der widerlegten Ursachenannahme; die zugehörige Absicherung ist bereits entfernt und bleibt es (Aufräumen) |
 | HealthKit | System-Framework | Ziel der Dauer-Prüfung in AC-3 (voller Eintrag bei regulärem Abschluss) |
 | `Meditationstimer iOS/Tabs/WorkoutTab.swift` (Zeile 38) | Projekt-Kontext | Tatsächlich genutzter Workout-Tab mit eigenem `runningSet`; erklärt, warum Liste und Überlagerungs-Zustand in `WorkoutProgramsView` selbst nie produktiv laufen |
@@ -199,7 +211,7 @@ Die verbleibende Arbeit betrifft ausschließlich die Testdatei:
 
 ### Warum `app.buttons["Start"]` als Kriterium untauglich ist
 
-`OverlayBackgroundEffect` (`WorkoutProgramsView.swift:596-605`) blendet die Programmliste hinter
+`OverlayBackgroundEffect` blendet die Programmliste hinter
 der Sitzungs-Karte nur per `.blur(radius: 6)` weich aus und sperrt sie über
 `.allowsHitTesting(false)` gegen Antippen. Beides entfernt den Start-Knopf **nicht** aus dem
 Bedienhilfen-Baum. `app.buttons["Start"].exists` ist deshalb während der gesamten Sitzung wahr —
@@ -241,14 +253,26 @@ Systemberechtigung, in Sekunden statt Minuten:
 
 Alle drei grün. Kein HealthKit, kein Testdoppel, keine Produktivcode-Änderung.
 
-**⚠️ Einschränkung, die bestehen bleibt:** Dieser Unit-Test prüft `TwoPhaseTimerEngine` — die
-gemeinsame Zeitquelle. Er prüft **nicht** den Weg des *geführten* Workout-Programms. Dieses
-berechnet seine Eckpunkte inline in der Bildschirmansicht (`sessionStart` beim Start,
-`endDate = Date()` beim Ende) und schreibt von dort direkt in HealthKit. Es gibt dort weder einen
-herauslösbaren Typ noch eine einspeisbare Schreib-Schnittstelle. **AC-3 ist damit nur mittelbar
-belegt.** Ein direkter Nachweis bräuchte eine Produktivcode-Änderung — die Logik aus der Ansicht in
-einen eigenen Typ heben oder `HealthKitManager` eine einspeisbare Schreib-Schnittstelle geben. Das
-ist bewusst **nicht** Teil dieses Umfangs (siehe „Abgrenzung") und gehört in ein eigenes Ticket.
+**⚠️ Der Ersatz belegt AC-3 NICHT — auch nicht mittelbar.** Die unabhängige Prüfung vom
+2026-09-23 hat das nachgewiesen, und die frühere Formulierung „mittelbar belegt" war falsch:
+
+`SessionDurationTests` prüft `TwoPhaseTimerEngine`. Dort steht der Endzeitpunkt **beim Start fest**.
+Das geführte Workout-Programm macht das Gegenteil: `WorkoutProgramsView.swift:958` setzt
+`let endDate = Date()` erst **beim Beenden**. Das sind zwei verschiedene Entwürfe, keine gemeinsame
+Zeitquelle — ein Test des einen sagt nichts über den anderen.
+
+Hinzu kommt: Der Gegenfall-Test („vorzeitiger Abbruch ergibt kürzere Dauer") ist gegenstandslos.
+Die geprüfte Dauer entsteht aus zwei `Date`-Werten, die der Test selbst erzeugt; entfernt man den
+Abbruch, bleibt er grün.
+
+**Was `SessionDurationTests` tatsächlich wert ist:** Er sichert für die *freien* Sitzungen
+(Meditation, freies Workout) ab, dass die Dauer aus festen Zeitpunkten stammt und vergangene Zeit
+voll zählt — eine spätere Umstellung auf einen mitlaufenden Countdown würde ihn kippen. Das ist
+echter Regressionsschutz, nur eben für einen anderen Pfad als den, um den es in AC-3 geht.
+
+**Der fehlende Nachweis ist als Issue #35 ausgelagert.** Er verlangt eine Produktivcode-Änderung:
+die Sitzungslogik aus der Bildschirmansicht herauslösen oder `HealthKitManager` eine einspeisbare
+Schreib-Schnittstelle geben. Beides sprengt den Umfang dieses Vorhabens.
 
 **Nicht automatisiert prüfbar:** Dass die Live Activity beim Hintergrund-Wechsel tatsächlich
 *sichtbar* bestehen bleibt (Sperrbildschirm/Dynamic Island), lässt sich mit XCUITest nicht direkt
@@ -262,11 +286,13 @@ ansprechen kann.
   den App-Wechsel überstanden.
 - **AC-2:** Der Abbruch-Knopf (xmark) beendet eine laufende Sitzung weiterhin zuverlässig — nach
   dem Antippen ist die Sitzungs-Karte mit Pause-Knopf nicht mehr sichtbar.
-- **AC-3:** Die Dauer einer Sitzung wird aus festen Zeitpunkten berechnet, nicht aus
-  mitlaufender Bildschirmzeit — eine Sitzung, die von A bis B lief, ergibt die volle Dauer B − A,
-  auch wenn die App zwischendurch nicht sichtbar war; ein vorzeitiger Abbruch ergibt entsprechend
-  weniger. *Mittelbar belegt* über die gemeinsame Zeitquelle; der Weg des geführten
-  Workout-Programms ist ohne Produktivcode-Änderung nicht prüfbar (siehe Test Plan).
+- **AC-3:** *(nicht belegt — als offener Punkt ausgewiesen, siehe unten)* Ein geführtes Workout,
+  das regulär bis zum Ende läuft, schreibt einen Eintrag mit der vollständigen Dauer. Für diese
+  Aussage existiert **kein** automatisierter Nachweis. Der ursprünglich dafür vorgesehene UI-Test
+  ist im Simulator nicht führbar, und der Unit-Test `SessionDurationTests` prüft einen **anderen**
+  Entwurf als den, der im geführten Workout läuft (Details im Test Plan). Der Nachweis ist als
+  **Issue #35** ausgelagert.
+
 - **AC-4:** `test_backgroundForeground_sessionStillRunning` und `test_explicitStop_endsSession`
   prüfen künftig den tatsächlichen Zustand der Sitzungs-Karte statt des irreführenden
   Start-Knopfs, und beide laufen grün.
@@ -327,6 +353,12 @@ ansprechen kann.
   keine ADR nötig.
 
 ## Changelog
+
+- **2026-09-23 (2):** Unabhängige Prüfung urteilte BROKEN. Vier Befunde behoben: Entfernung der
+  zwölf Zeilen **zurückgenommen** (gemessene Regression, #36); AC-3 als *nicht belegt* ausgewiesen
+  statt „mittelbar belegt"; Test 2 tippte den Abbruch-Knopf blind — jetzt gezielter Zugriff;
+  Prüfkriterium vom zustandsabhängigen Pause-Knopf auf Abbruch-Knopf und Fortschrittszähler
+  umgestellt, ergänzt um eine Lebendigkeitsprüfung. Falschaussage in der Spec zu #7 berichtigt.
 
 - **2026-09-23:** Langer UI-Test gelöscht (im Simulator nicht führbar: HealthKit-Speicher
   bleibt leer, Berechtigung nicht setzbar). Ersatz: Unit-Test `SessionDurationTests`. AC-3 auf das

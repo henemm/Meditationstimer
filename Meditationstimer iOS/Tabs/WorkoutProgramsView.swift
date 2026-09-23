@@ -678,6 +678,9 @@ public struct WorkoutProgramsView: View {
         let set: WorkoutSet
         var close: () -> Void
 
+        @Environment(\.scenePhase) private var scenePhase
+        @State private var isInBackground = false
+
         @EnvironmentObject private var liveActivity: LiveActivityController
         @EnvironmentObject private var streakManager: StreakManager
 
@@ -800,6 +803,27 @@ public struct WorkoutProgramsView: View {
                         close()
                     }
                 )
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                isInBackground = (newPhase == .background)
+            }
+            .onDisappear {
+                // Gemessener Stand unter iOS 26.5 (Belege in
+                // DOCS/artifacts/bug-25d-hintergrund-meditation/):
+                // - Beim reinen Hintergrund-Wechsel feuert onDisappear gar nicht
+                //   (diagnose-endSession-aufrufe.txt). Der Guard ist dort wirkungslos,
+                //   aber unschaedlich. Eine Reihenfolge onChange-vor-onDisappear sichert
+                //   Apple nirgends zu — darauf verlaesst sich dieser Code nicht.
+                // - Der Pfad ist trotzdem noetig: Er ist die einzige Aufraeumstelle fuer
+                //   zwei Vordergrund-Faelle — programmatischer Reiterwechsel per
+                //   Deep-Link/Kurzbefehl und abgebrochener Startvorlauf. Ohne ihn bleiben
+                //   Leerlaufsperre aktiv und Live Activity offen, und es wird kein
+                //   HealthKit-Eintrag geschrieben (regressionspruefung-reiterwechsel.txt).
+                // Siehe DOCS/specs/bugfix/BUG-25d-hintergrund-workout.md und Issue #35.
+                guard !isInBackground else { return }
+                Task {
+                    await endSession(manual: true)
+                }
             }
             .sheet(isPresented: $showEffortSheet) {
                 effortScoreSheet
