@@ -126,8 +126,8 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 ## XCUITest - NUR MIT SKRIPT!
 
 ```bash
-./Scripts/run-uitests.sh                    # Alle UI Tests
-./Scripts/run-uitests.sh testMethodName     # Einzelner Test
+./Scripts/run-uitests.sh                            # Alle UI Tests
+./Scripts/run-uitests.sh Klasse/testMethodName      # Einzelner Test — IMMER mit Klasse!
 ```
 
 ### Simulator
@@ -140,6 +140,18 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 
 Immer per **Name + OS** adressieren, nie per fester UDID — die ändert sich mit jedem
 Runtime-Update (#19). `run-uitests.sh` löst die UDID zur Laufzeit selbst auf.
+
+### ⛔ Einzeltest IMMER als `Klasse/Methode` aufrufen
+
+Ohne Schrägstrich baut das Skript den Filter `LeanHealthTimerUITests/LeanHealthTimerUITests/<methode>`
+— es unterstellt, die Testklasse heiße wie das Target. Trifft der Filter nichts, läuft **kein einziger
+Test**, `xcodebuild` meldet trotzdem `** TEST SUCCEEDED **`, und das Skript druckt „ALLE TESTS
+BESTANDEN" (#33, #29 — beide offen). Am 2026-09-23 hat das in der Abschlussvalidierung von #25d
+beinahe ein falsches Grün durchgewinkt.
+
+**Ein Testlauf gilt nur als bestanden, wenn im Protokoll `Executed N tests` mit N ≥ 1 steht.**
+`TEST SUCCEEDED` allein beweist nichts. Unter Xcode 27 lautet die Erfolgszeile der Unit-Suite
+`Test case 'Klasse.methode()' passed` (kleines „c"), bei UI-Tests `Test Case '-[Klasse methode]' passed`.
 
 ---
 
