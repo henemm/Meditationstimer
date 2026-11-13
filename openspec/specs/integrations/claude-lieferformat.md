@@ -140,6 +140,14 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
 - `path` ist ein JSON Pointer (RFC 6901) auf die Fehlerstelle, z. B. `/items/0/steps/1/workSeconds`; die Wurzel ist `""`.
   Fehlendes Feld: Pfad des fehlenden Felds (`/why`). Unbekanntes Feld: Pfad dieses Felds.
 - `message` nennt auf Deutsch, was falsch ist, `hint` den Ausweg (Konzept 4: „Ablehnungen nennen den Ausweg“). Beide nie leer.
+- Fehlerort: Jeder Fehler an einem Feld hat den Pfad dieses Felds (z. B. `FORMAT_UNKNOWN` an `/format`, `INVALID_ID` an
+  `/items/0/packageId`). Ausnahmen mit Pfad des Eintrags: `TOTAL_TOO_LONG`, `WITHDRAWAL_TARGET`. Je Feld höchstens ein Fehler.
+  Vorrang je Feld: Typ, dann Muster bzw. Textregeln (4), dann Bereich, dann Bezug/Dublette. `WITHDRAWAL_TARGET` hindert nicht
+  an der Prüfung der vorhandenen Felder `itemId`/`packageId`.
+- `kind` ist kein Text: `FIELD_TYPE` an `/items/N/kind`; Text, aber unbekannt: `KIND_UNKNOWN`. In beiden Fällen nur dieser eine Fehler für den Eintrag.
+- `package` ist kein Objekt: `FIELD_TYPE` an `/package`. Darin gelten `FIELD_MISSING` und `FIELD_UNKNOWN` wie überall.
+- Textlänge wird am unveränderten Text gezählt (ohne Trimmen). Die Liste verbotener Zeichen in 4 ist abschließend.
+- `NAME_TAKEN` gilt nur für Übungen; Programme und Atemübungen dürfen heißen wie eine Übung.
 - Der Prüfer meldet **alle** Fehler, aber keine Folgefehler:
   - Wurzel kein Objekt: nur `FIELD_TYPE` an `""`.
   - Feld mit falschem Typ: nur `FIELD_TYPE` an diesem Feld, sein Inhalt wird nicht weiter geprüft.
