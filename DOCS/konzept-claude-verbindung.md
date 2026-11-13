@@ -1,6 +1,6 @@
 # Konzept: Claude-Verbindung für Healthy Habits Haven
 
-**Stand:** 13.11.2026 · **Status:** Konzept, noch keine Umsetzung · **Grundlage:** vier Fragerunden mit dem PO, Auswertung von Healthy Habits, Loose Ends und Frieda reist, Recherche zum Stand der Technik
+**Stand:** 13.11.2026 · **Status:** Dienst-Seite umgesetzt (B0, B2a, B2b, B3a–B6a), App-Seite und Bereitstellung offen · **Grundlage:** vier Fragerunden mit dem PO, Auswertung von Healthy Habits, Loose Ends und Frieda reist, Recherche zum Stand der Technik
 
 ---
 
