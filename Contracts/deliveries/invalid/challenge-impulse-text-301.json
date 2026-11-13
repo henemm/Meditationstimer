@@ -1,0 +1,47 @@
+{
+  "description": "Impuls-Text 301 Zeichen.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "3c5e7a9b-2d4f-4b6a-8c1e-0f2a4b6c8d0e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Eine Woche bewusster essen, wie besprochen.",
+    "items": [
+      {
+        "kind": "challenge",
+        "itemId": "claude.bewusst-essen-w4k8s1",
+        "revision": 1,
+        "title": "Bewusst essen",
+        "symbol": "🍎",
+        "description": "Sieben Tage, ein Impuls am Abend.",
+        "startDate": "2026-11-14",
+        "stages": [
+          {
+            "days": 1,
+            "content": {
+              "type": "impulses",
+              "impulses": [
+                {
+                  "text": "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+                  "moment": "day"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "TEXT_TOO_LONG",
+        "path": "/items/0/stages/0/content/impulses/0/text"
+      }
+    ],
+    "reason": "Impuls zu lang.",
+    "remedy": "Höchstens 300 Zeichen.",
+    "schemaRejects": true
+  }
+}

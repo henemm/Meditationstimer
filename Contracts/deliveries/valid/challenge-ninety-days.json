@@ -1,0 +1,484 @@
+{
+  "description": "90 Tage, Start 30 Tage nach createdAt.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "3c5e7a9b-2d4f-4b6a-8c1e-0f2a4b6c8d0e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Eine Woche bewusster essen, wie besprochen.",
+    "items": [
+      {
+        "kind": "challenge",
+        "itemId": "claude.bewusst-essen-w4k8s1",
+        "revision": 1,
+        "title": "Bewusst essen",
+        "symbol": "🍎",
+        "description": "Sieben Tage, ein Impuls am Abend.",
+        "startDate": "2026-12-13",
+        "stages": [
+          {
+            "days": 90,
+            "content": {
+              "type": "impulses",
+              "impulses": [
+                {
+                  "text": "Tag 1: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 2: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 3: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 4: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 5: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 6: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 7: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 8: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 9: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 10: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 11: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 12: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 13: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 14: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 15: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 16: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 17: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 18: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 19: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 20: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 21: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 22: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 23: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 24: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 25: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 26: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 27: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 28: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 29: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 30: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 31: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 32: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 33: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 34: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 35: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 36: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 37: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 38: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 39: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 40: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 41: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 42: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 43: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 44: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 45: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 46: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 47: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 48: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 49: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 50: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 51: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 52: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 53: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 54: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 55: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 56: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 57: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 58: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 59: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 60: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 61: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 62: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 63: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 64: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 65: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 66: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 67: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 68: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 69: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 70: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 71: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 72: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 73: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 74: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 75: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 76: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 77: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 78: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 79: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 80: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 81: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 82: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 83: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 84: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 85: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 86: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 87: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 88: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 89: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "day",
+                  "question": "Was hast du bemerkt?"
+                },
+                {
+                  "text": "Tag 90: Achte heute beim Essen einmal bewusst auf den ersten Bissen.",
+                  "moment": "evening",
+                  "question": "Was hast du bemerkt?"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

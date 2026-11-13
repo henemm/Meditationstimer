@@ -136,6 +136,7 @@
             "program",
             "breath",
             "reminder",
+            "challenge",
             "withdrawal"
           ]
         }
@@ -187,6 +188,18 @@
           },
           "then": {
             "$ref": "#/$defs/reminder"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "challenge"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/challenge"
           }
         },
         {
@@ -619,6 +632,129 @@
           }
         }
       ]
+    },
+    "impulse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "moment"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "moment": {
+          "enum": [
+            "day",
+            "evening"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "days",
+        "content"
+      ],
+      "properties": {
+        "days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "impulses"
+          ],
+          "properties": {
+            "type": {
+              "const": "impulses"
+            },
+            "impulses": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 90,
+              "items": {
+                "$ref": "#/$defs/impulse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "challenge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "itemId",
+        "revision",
+        "title",
+        "symbol",
+        "startDate",
+        "stages"
+      ],
+      "properties": {
+        "kind": {
+          "const": "challenge"
+        },
+        "itemId": {
+          "$ref": "#/$defs/itemId"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "symbol": {
+          "$ref": "#/$defs/symbol"
+        },
+        "description": {
+          "$ref": "#/$defs/description"
+        },
+        "startDate": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/stage"
+          }
+        }
+      }
     }
   }
 }
