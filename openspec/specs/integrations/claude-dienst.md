@@ -100,7 +100,8 @@ Umsetzung (B2a-3):
 - `server/src/deliveries.ts`: `putDelivery(pool, account, doc)` (Zustand `waiting`, Ereignis), `claimDelivery(pool, account, device)`
   (älteste wartende oder seit über 10 min abgeholte, `FOR UPDATE SKIP LOCKED`; Ergebnis `{deliveryId, delivery}` oder `undefined`),
   `reportResult(pool, account, device, {deliveryId, outcome, errors?})` → `"ok"` oder `"conflict"`, `supersede(pool, account,
-  deliveryId)` → `true` nur aus `waiting`, `listDeliveries(pool, account, {deliveryId?, limit?})` → Zustand, Zeitpunkte, Fehler, Dokument.
+  deliveryId)` → `true` nur aus `waiting`, `listDeliveries(pool, account, {deliveryId?, limit?})` → Zustand, Zeitpunkte, Fehler, Dokument,
+  neueste zuerst. `reportResult` für eine unbekannte, fremde oder nicht abgeholte Lieferung: `"conflict"` (Route: 409).
   Jede Funktion arbeitet nur im eigenen Konto.
 - Ergebnis-Körper: `outcome` `accepted`/`rejected`; `errors` nur bei `rejected`, Liste mit 1–100 Einträgen `{code, path, message}`
   (Texte, `message` 1–300 Zeichen); sonst 400.
