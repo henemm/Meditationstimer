@@ -189,6 +189,20 @@ Umsetzung der Lieferwerkzeuge (B2a-5):
 - Prüfer-Gleichlauf: Für jede Datei in `Contracts/deliveries/` ergibt das Einreichen ihres Inhalts über das passende Werkzeug dieselbe
   Annahme bzw. Ablehnung wie der Prüfer, soweit sie über ein Werkzeug ausdrückbar ist (Umschlagfelder vergibt der Dienst).
 
+Nachträge nach der Adversary-Prüfung (B2a-6):
+- **Ein Schreiber je Konto:** Alle Lieferwerkzeuge laufen je Konto nacheinander: eine Transaktion mit `pg_advisory_xact_lock` auf das
+  Konto umschließt Lesen des Bestands, Prüfen und Ablegen bzw. Überholen. Zwei gleichzeitige `item_update` mit derselben
+  `basedOnRevision` ergeben genau eine Lieferung; der andere Aufruf wird mit „neu lesen“ abgelehnt.
+- **Doppelte Rücknahme:** Liegt für den Baustein bzw. das Paket schon eine Rücknahme-Lieferung in `waiting`, `claimed` oder `accepted`
+  (die Abschrift zeigt es noch nicht), wird eine weitere Rücknahme abgelehnt („Rücknahme liegt schon bereit“).
+- **Dienstfelder:** Enthalten die Eingaben eines Lieferwerkzeugs (bzw. `fields` bei `item_update`) `kind`, `itemId` oder `revision`,
+  wird abgelehnt („<Feld> vergibt der Dienst; bitte weglassen“), statt still zu überschreiben.
+- **Körper der App-Schnittstelle:** Ungültiges UTF-8 → 400. Enthält irgendein Text im JSON (Schlüssel oder Wert, auf jeder Ebene)
+  U+0000 oder ein einzelnes Ersatzzeichen (Surrogat ohne Paar) → 400. Ein Fehler der App-Schnittstelle führt nie zu 500.
+- **Türen im Betrieb:** `main()` hängt `/mcp` und die drei `/app/*`-Routen ein; ohne Anmeldung (bis B2b) antworten sie 401
+  (`/app/*`: nach 405; `/mcp`: jede Methode). Die Image-Prüfung in der CI ruft beide auf und erwartet 401; damit ist die Importkette
+  (Prüfer, Schema, Katalog) im Image belegt.
+
 **Server-Anweisung** (`instructions` des MCP-Servers): die elf Grundregeln aus Konzept Abschnitt 10, wörtlich, dazu: „Lieferungen
 erscheinen beim nächsten Öffnen von Healthy Habits“ und „Trainings sind Vorschläge von Claude und kein medizinischer Rat“.
 
