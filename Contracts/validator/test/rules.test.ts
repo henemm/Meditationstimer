@@ -871,3 +871,33 @@ test('Ziel-Stufe ohne goal: FIELD_MISSING', () => {
   const st = stage(7, { content: { type: 'goal' } });
   assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('FIELD_MISSING', GS));
 });
+
+// ---------- B6a-Nachtrag: keepStartDate ----------
+
+const keepCtx = (keepStartDate: string): Ctx => ({ keepStartDate }) as unknown as Ctx;
+
+/** Verhalten: Start 5 Tage vor createdAt ohne Kontext bleibt START_IN_PAST. */
+test('keepStartDate: ohne Kontext ist Start 5 Tage vor createdAt START_IN_PAST', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-08' })])), only('START_IN_PAST', `${CH}/startDate`));
+});
+
+/** Verhalten: Unverändertes Startdatum einer laufenden Challenge ist mit keepStartDate gültig. */
+test('keepStartDate gleich startDate: gültig', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-08' })]), keepCtx('2026-11-08')), []);
+});
+
+/** Verhalten: Anderes keepStartDate hebt die Prüfung nicht auf. */
+test('keepStartDate anderes Datum: weiter START_IN_PAST', () => {
+  assert.deepEqual(
+    run(delivery([challenge({ startDate: '2026-11-08' })]), keepCtx('2026-11-07')),
+    only('START_IN_PAST', `${CH}/startDate`),
+  );
+});
+
+/** Verhalten: keepStartDate hebt die Obergrenze +30 Tage nicht auf. */
+test('keepStartDate gleich startDate bei +31 Tagen: weiter OUT_OF_RANGE', () => {
+  assert.deepEqual(
+    run(delivery([challenge({ startDate: '2026-12-14' })]), keepCtx('2026-12-14')),
+    only('OUT_OF_RANGE', `${CH}/startDate`),
+  );
+});

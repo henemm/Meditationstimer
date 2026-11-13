@@ -324,3 +324,23 @@ test("item_withdraw einer Challenge aus der Abschrift: Rücknahme-Lieferung", as
   assert.equal(item.kind, "withdrawal");
   assert.equal(item.itemId, cid(1));
 });
+
+// B6a-Nachtrag: laufende Challenge mit unverändertem Startdatum ändern
+
+test("item_update einer laufenden Challenge (Start vor 5 Tagen) mit unverändertem startDate: Revision 2", async (t) => {
+  const { client } = await stored(t, [entry(1, -5, 7, ["done", "done", "open", "open", "open"])]);
+  const result = await call(client, "item_update", {
+    itemId: cid(1), basedOnRevision: 1, why: "Neuer Titel.", fields: fieldsOf(input({ title: "Atem-Woche 1 neu", startDate: day(-5) })),
+  });
+  assert.equal(result.isError, false, result.text);
+  assert.equal(JSON.parse(result.text).revision, 2);
+});
+
+test("item_update einer laufenden Challenge mit anderem vergangenen startDate: Fehler START_IN_PAST", async (t) => {
+  const { client } = await stored(t, [entry(1, -5, 7, ["done", "done", "open", "open", "open"])]);
+  const result = await call(client, "item_update", {
+    itemId: cid(1), basedOnRevision: 1, why: "Anderer Start.", fields: fieldsOf(input({ title: "Atem-Woche 1 neu", startDate: day(-4) })),
+  });
+  assert.equal(result.isError, true, result.text);
+  assert.ok(result.text.includes("/items/0/startDate") && result.text.includes("Vergangenheit"), result.text);
+});

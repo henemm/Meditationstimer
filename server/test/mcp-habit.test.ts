@@ -456,3 +456,17 @@ test("history.challenges: goals wie in der Abschrift (Ziel-Stufe, nur Summe)", a
   assert.equal(doc.challenges[0].id, cid(1));
   assert.equal(doc.challenges[0].totalDays, 30);
 });
+
+// B6a-Nachtrag: beobachtende Gewohnheiten (awareness) zählen nicht als Aufbau
+
+test("overview.building: aktiver Claude-Tracker mit mode awareness zählt nicht", async (t) => {
+  const { client } = await stored(t, [NOALC, claudeTracker(1, 3 * DAY, { type: "saboteur", mode: "awareness", dailyGoal: undefined })]);
+  assert.deepEqual(await buildingOf(client), { count: 0, limit: 2, items: [] });
+});
+
+test("overview.building: aktive Claude-Tracker mit avoidance bzw. counter zählen", async (t) => {
+  for (const over of [{ type: "saboteur", mode: "avoidance", dailyGoal: undefined }, { mode: "counter" }]) {
+    const { client } = await stored(t, [NOALC, claudeTracker(1, 3 * DAY, over)]);
+    assert.equal((await buildingOf(client)).count, 1, JSON.stringify(over));
+  }
+});
