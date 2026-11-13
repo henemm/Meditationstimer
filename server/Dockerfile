@@ -8,6 +8,7 @@ RUN npm ci --omit=dev
 COPY --chown=node:node server/src ./src
 COPY --chown=node:node server/migrations ./migrations
 COPY --chown=node:node Contracts/transcript/transcript-v1.schema.json /app/Contracts/transcript/transcript-v1.schema.json
+COPY --chown=node:node Contracts/transcript/transcript-v2.schema.json /app/Contracts/transcript/transcript-v2.schema.json
 COPY --chown=node:node Contracts/schema/delivery-v1.schema.json /app/Contracts/schema/delivery-v1.schema.json
 COPY --chown=node:node Contracts/catalog/builtin-exercises.json /app/Contracts/catalog/builtin-exercises.json
 COPY --chown=node:node Contracts/validator/src /app/Contracts/validator/src

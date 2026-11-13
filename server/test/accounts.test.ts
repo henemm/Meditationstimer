@@ -35,11 +35,11 @@ async function filled(pool: pg.Pool, sub: string, _n: number, appleToken: Buffer
 const counts = ownRows;
 const TABLES = [...OWN_TABLES];
 
-test("AC-1: the migrations apply 001 to 005 once, and the account tables exist", async (t) => {
+test("AC-1: the migrations apply 001 to 006 once, and the account tables exist", async (t) => {
   const pool = await freshPool(t);
 
   assert.deepEqual(await migrate(pool, migrations), [
-    "001_init.sql", "002_transcripts.sql", "003_deliveries.sql", "004_wishes.sql", "005_accounts.sql",
+    "001_init.sql", "002_transcripts.sql", "003_deliveries.sql", "004_wishes.sql", "005_accounts.sql", "006_transcript_v2.sql",
   ]);
   assert.deepEqual(await migrate(pool, migrations), []);
   for (const table of ["accounts", "sessions", "apple_tokens", "oauth_records"]) {

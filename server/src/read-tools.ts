@@ -46,6 +46,7 @@ export function overviewMessages(transcript: Transcript | undefined, open: OpenD
   else if (now.getTime() - new Date(transcript.generatedAt).getTime() > 7 * DAY) {
     messages.push({ kind: "transcript_old", text: "Die Abschrift der App ist älter als 7 Tage; der Bestand kann veraltet sein" });
   }
+  if (transcript?.version === 1) messages.push({ kind: "history_missing", text: "Die App schickt noch keinen Verlauf; bitte Healthy Habits aktualisieren und öffnen" });
   return messages;
 }
 
