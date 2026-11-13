@@ -1,0 +1,28 @@
+name: Contracts - Lieferformat & Prüfer
+
+# Prüft den gemeinsamen Vertrag für Lieferungen von Claude (Epic #44, B0 #46):
+# JSON Schema, Beispielsatz und Referenz-Prüfer in Contracts/validator.
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'Contracts/**', '.github/workflows/contracts.yml' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ 'Contracts/**', '.github/workflows/contracts.yml' ]
+
+jobs:
+  validator:
+    name: Prüfer-Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Contracts/validator
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Contracts/validator/package-lock.json
+      - run: npm ci
+      - run: npm test

@@ -1,0 +1,33 @@
+{
+  "description": "Neue Fassung einer bekannten Übung mit gleichem Namen ist keine Dublette.",
+  "context": {
+    "knownExercises": [
+      {
+        "id": "claude.vierfuessler-diagonal",
+        "name": "Vierfüßler diagonal"
+      }
+    ]
+  },
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Wirkung genauer beschrieben.",
+    "items": [
+      {
+        "kind": "exercise",
+        "itemId": "claude.vierfuessler-diagonal",
+        "revision": 2,
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "effect": "Stärkt Rücken und Rumpf.",
+        "instructions": "1) Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte\n2) Rechten Arm und linkes Bein strecken, kurz halten\n3) Zurück und Seite wechseln. Rücken bleibt gerade."
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

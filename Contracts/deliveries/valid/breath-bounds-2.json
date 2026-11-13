@@ -1,0 +1,41 @@
+{
+  "description": "Atem-Grenzen: Ein 1, Halten 60, Aus 60, Halten 0; zweite Atemübung mit 99 Runden (4-4-4-4).",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Grenzfall.",
+    "items": [
+      {
+        "kind": "breath",
+        "itemId": "claude.abendatem",
+        "revision": 1,
+        "name": "Abendatem",
+        "symbol": "🌙",
+        "description": "Langes Ausatmen zum Runterkommen.",
+        "inhaleSeconds": 1,
+        "holdInSeconds": 60,
+        "exhaleSeconds": 60,
+        "holdOutSeconds": 0,
+        "rounds": 1
+      },
+      {
+        "kind": "breath",
+        "itemId": "claude.box",
+        "revision": 1,
+        "name": "Box",
+        "symbol": "🌙",
+        "description": "Langes Ausatmen zum Runterkommen.",
+        "inhaleSeconds": 4,
+        "holdInSeconds": 4,
+        "exhaleSeconds": 4,
+        "holdOutSeconds": 4,
+        "rounds": 99
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

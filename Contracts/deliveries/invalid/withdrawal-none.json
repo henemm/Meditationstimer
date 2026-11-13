@@ -1,0 +1,27 @@
+{
+  "description": "Rücknahme ohne Ziel.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": [
+      {
+        "kind": "withdrawal"
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "WITHDRAWAL_TARGET",
+        "path": "/items/0"
+      }
+    ],
+    "reason": "Die Rücknahme nennt kein Ziel.",
+    "remedy": "Gib itemId oder packageId an.",
+    "schemaRejects": true
+  }
+}

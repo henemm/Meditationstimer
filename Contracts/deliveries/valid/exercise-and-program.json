@@ -1,0 +1,47 @@
+{
+  "description": "Neue Übung und ein Programm, das sie verwendet (Bezug innerhalb derselben Lieferung).",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": [
+      {
+        "kind": "exercise",
+        "itemId": "claude.vierfuessler-diagonal",
+        "revision": 1,
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "effect": "Stärkt die tiefe Rückenmuskulatur und den Rumpf, schult das Gleichgewicht.",
+        "instructions": "1) Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte\n2) Rechten Arm und linkes Bein strecken, kurz halten\n3) Zurück und Seite wechseln. Rücken bleibt gerade."
+      },
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 1,
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurze Einheit für den unteren Rücken.",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "claude.vierfuessler-diagonal",
+            "workSeconds": 40,
+            "restSeconds": 15,
+            "hint": "Je Seite 8 Mal"
+          },
+          {
+            "exerciseId": "builtin.glute-bridges",
+            "workSeconds": 40,
+            "restSeconds": 15
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

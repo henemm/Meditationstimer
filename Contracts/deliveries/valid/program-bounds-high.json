@@ -1,0 +1,31 @@
+{
+  "description": "Obere Grenzen: 600 s Arbeit, 600 s Pause, Revision 1000000.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Grenzfall.",
+    "items": [
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 1000000,
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurze Einheit für den unteren Rücken.",
+        "rounds": 1,
+        "steps": [
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 600,
+            "restSeconds": 600
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "description": "Die Lieferung ist eine Liste statt eines Objekts.",
+  "delivery": [
+    {
+      "kind": "program",
+      "itemId": "claude.ruecken-a",
+      "revision": 1,
+      "name": "Rücken A",
+      "symbol": "🧘",
+      "description": "Kurze Einheit für den unteren Rücken.",
+      "rounds": 2,
+      "steps": [
+        {
+          "exerciseId": "builtin.glute-bridges",
+          "workSeconds": 40,
+          "restSeconds": 20,
+          "hint": "12 Wiederholungen, langsam"
+        },
+        {
+          "exerciseId": "builtin.planke",
+          "workSeconds": 30,
+          "restSeconds": 15
+        },
+        {
+          "exerciseId": "builtin.kindspose",
+          "workSeconds": 45,
+          "restSeconds": 0,
+          "hint": "Ruhig ausatmen"
+        }
+      ]
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "FIELD_TYPE",
+        "path": ""
+      }
+    ],
+    "reason": "Die Lieferung ist kein Objekt.",
+    "remedy": "Liefere ein JSON-Objekt mit format, deliveryId, source, createdAt, why und items.",
+    "schemaRejects": true
+  }
+}

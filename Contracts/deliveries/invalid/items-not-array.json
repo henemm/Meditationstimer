@@ -1,0 +1,50 @@
+{
+  "description": "items ist ein Objekt statt einer Liste.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": {
+      "kind": "program",
+      "itemId": "claude.ruecken-a",
+      "revision": 1,
+      "name": "Rücken A",
+      "symbol": "🧘",
+      "description": "Kurze Einheit für den unteren Rücken.",
+      "rounds": 2,
+      "steps": [
+        {
+          "exerciseId": "builtin.glute-bridges",
+          "workSeconds": 40,
+          "restSeconds": 20,
+          "hint": "12 Wiederholungen, langsam"
+        },
+        {
+          "exerciseId": "builtin.planke",
+          "workSeconds": 30,
+          "restSeconds": 15
+        },
+        {
+          "exerciseId": "builtin.kindspose",
+          "workSeconds": 45,
+          "restSeconds": 0,
+          "hint": "Ruhig ausatmen"
+        }
+      ]
+    }
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "FIELD_TYPE",
+        "path": "/items"
+      }
+    ],
+    "reason": "items ist keine Liste.",
+    "remedy": "Gib items als Liste von Bausteinen an.",
+    "schemaRejects": true
+  }
+}

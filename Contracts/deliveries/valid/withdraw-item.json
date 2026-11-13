@@ -1,0 +1,19 @@
+{
+  "description": "Rücknahme eines einzelnen Bausteins.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Henning möchte Rücken A nicht mehr.",
+    "items": [
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.ruecken-a"
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

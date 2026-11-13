@@ -1,0 +1,26 @@
+{
+  "description": "Übung mit Anmerkung und mehrzeiligem Text.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Variante für später.",
+    "items": [
+      {
+        "kind": "exercise",
+        "itemId": "claude.vierfuessler-diagonal",
+        "revision": 1,
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "effect": "Stärkt die tiefe Rückenmuskulatur und den Rumpf, schult das Gleichgewicht.",
+        "instructions": "1) Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte\n2) Rechten Arm und linkes Bein strecken, kurz halten\n3) Zurück und Seite wechseln. Rücken bleibt gerade.",
+        "notes": "Leichter: nur Arm oder nur Bein strecken.\nSchwerer: drei Sekunden halten."
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}
