@@ -9,9 +9,10 @@ const SPEC_CODES = [
   'INVALID_DATE', 'VALUE_NOT_ALLOWED', 'KIND_UNKNOWN', 'CATEGORY_UNKNOWN', 'EXERCISE_UNKNOWN',
   'NAME_TAKEN', 'DUPLICATE_ID', 'WITHDRAWAL_TARGET',
   'INVALID_TIME', 'DUPLICATE_VALUE', 'TARGET_UNKNOWN', 'REMINDER_LIMIT',
+  'START_IN_PAST', 'IMPULSE_COUNT',
 ];
 
-/** Verhalten: ERROR_CODES enthält genau die 24 Codes aus der Spec. */
+/** Verhalten: ERROR_CODES enthält genau die 26 Codes aus der Spec. */
 test('ERROR_CODES == Spec-Liste', () => {
   assert.equal(SPEC_CODES.length, 24);
   assert.deepEqual([...ERROR_CODES].sort(), [...SPEC_CODES].sort());

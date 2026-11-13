@@ -96,6 +96,31 @@ export function reminder(over: Obj = {}): Obj {
   };
 }
 
+export function impulse(n: number, over: Obj = {}): Obj {
+  return { text: `Tag ${n}: Achte heute einmal bewusst auf deinen Atem.`, moment: 'day', question: 'Was ist dir aufgefallen?', ...over };
+}
+
+export function stage(days = 7, over: Obj = {}): Obj {
+  return {
+    days,
+    content: { type: 'impulses', impulses: Array.from({ length: days }, (_, i) => impulse(i + 1)) },
+    ...over,
+  };
+}
+
+export function challenge(over: Obj = {}): Obj {
+  return {
+    kind: 'challenge',
+    itemId: 'claude.test-challenge',
+    revision: 1,
+    title: 'Testchallenge',
+    symbol: '🧘',
+    startDate: '2026-11-14',
+    stages: [stage(7)],
+    ...over,
+  };
+}
+
 export function withdrawal(over: Obj = {}): Obj {
   return { kind: 'withdrawal', itemId: 'claude.test-uebung', ...over };
 }

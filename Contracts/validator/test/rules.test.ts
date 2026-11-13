@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateDelivery } from '../src/index.ts';
-import { breath, delivery, exercise, key, program, reminder, withdrawal } from './helpers.ts';
+import { breath, challenge, delivery, exercise, impulse, key, program, reminder, stage, withdrawal } from './helpers.ts';
 
 type Ctx = Parameters<typeof validateDelivery>[1];
 
@@ -692,4 +692,105 @@ test('Kontext nur mit knownExercises: Erinnerung und Übung prüfbar', () => {
   const ctx = { knownExercises: [{ id: 'own.x-uebung', name: 'Andere Übung' }] };
   assert.deepEqual(run(delivery([reminder()]), ctx), []);
   assert.deepEqual(run(delivery([exercise({ name: 'Andere Übung' })]), ctx), only('NAME_TAKEN', '/items/0/name'));
+});
+
+// ---------- B5a: Impuls-Challenge ----------
+
+const CH = '/items/0';
+const ST = `${CH}/stages/0`;
+const IMP = `${ST}/content/impulses`;
+const codesOf = (input: unknown): string[] => validateDelivery(input).errors.map((e) => e.code);
+
+/** Verhalten: Eine Standard-Challenge ist gültig (sonst sind die Fälle wertlos). */
+test('Basis-Challenge ist gültig', () => {
+  assert.deepEqual(run(delivery([challenge()])), []);
+});
+
+/** Verhalten: Ungültige Tageszahl erzeugt keinen Folgefehler IMPULSE_COUNT. */
+test('days 0 mit 7 Impulsen: nur OUT_OF_RANGE, kein IMPULSE_COUNT', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: 0 })] })])), only('OUT_OF_RANGE', `${ST}/days`));
+});
+
+/** Verhalten: days kein Zahlentyp erzeugt keinen Folgefehler. */
+test('days als Text: nur FIELD_TYPE, kein IMPULSE_COUNT', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: '7' })] })])), only('FIELD_TYPE', `${ST}/days`));
+});
+
+/** Verhalten: Ungültiges Startdatum erzeugt keinen Folgefehler START_IN_PAST. */
+test('startDate 31. November: nur INVALID_DATE', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-31' })])), only('INVALID_DATE', `${CH}/startDate`));
+});
+
+/** Verhalten: Ungültiges createdAt erzeugt keinen START_IN_PAST, auch bei altem Start. */
+test('createdAt ungültig: kein START_IN_PAST und kein OUT_OF_RANGE am Start', () => {
+  for (const startDate of ['2026-11-14', '2020-01-01', '2030-01-01']) {
+    const codes = codesOf(delivery([challenge({ startDate })], { createdAt: 'gestern' }));
+    assert.ok(!codes.includes('START_IN_PAST') && !codes.includes('KIND_UNKNOWN'), `${startDate}: ${codes}`);
+    const errs = validateDelivery(delivery([challenge({ startDate })], { createdAt: 'gestern' })).errors;
+    assert.ok(!errs.some((e) => e.path === `${CH}/startDate`), `${startDate}: Fehler am Start`);
+  }
+});
+
+/** Verhalten: Start genau am Vortag des UTC-Tags von createdAt ist gültig. */
+test('Start am Vortag von createdAt: gültig', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-12' })])), []);
+});
+
+/** Verhalten: Start zwei Tage vor createdAt ist ungültig. */
+test('Start zwei Tage vor createdAt: START_IN_PAST', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-11' })])), only('START_IN_PAST', `${CH}/startDate`));
+});
+
+/** Verhalten: Start am createdAt-Tag selbst und 30 Tage danach sind gültig, 31 Tage danach nicht. */
+test('Start heute gültig, +30 gültig, +31 OUT_OF_RANGE', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-13' })])), []);
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-12-13' })])), []);
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-12-14' })])), only('OUT_OF_RANGE', `${CH}/startDate`));
+});
+
+/** Verhalten: Ein Impuls ohne Nachfrage ist gültig. */
+test('Impuls ohne question ist gültig', () => {
+  const { question, ...bare } = impulse(1);
+  void question;
+  const st = stage(7);
+  (st.content as { impulses: unknown[] }).impulses[0] = bare;
+  assert.deepEqual(run(delivery([challenge({ stages: [st] })])), []);
+});
+
+/** Verhalten: content ohne Objekt ist ein Typfehler. */
+test('content als Text: FIELD_TYPE an content', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { content: 'impulses' })] })])), only('FIELD_TYPE', `${ST}/content`));
+});
+
+/** Verhalten: impulses ohne Liste ist ein Typfehler, ohne IMPULSE_COUNT. */
+test('impulses als Objekt: FIELD_TYPE an impulses', () => {
+  const st = stage(7, { content: { type: 'impulses', impulses: { text: 'x' } } });
+  assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('FIELD_TYPE', IMP));
+});
+
+/** Verhalten: Zu wenige und zu viele Impulse ergeben IMPULSE_COUNT an der Liste. */
+test('Impulse: sechs bei sieben Tagen und acht bei sieben Tagen -> IMPULSE_COUNT', () => {
+  for (const n of [6, 8]) {
+    const st = stage(7, { content: { type: 'impulses', impulses: Array.from({ length: n }, (_, i) => impulse(i + 1)) } });
+    assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('IMPULSE_COUNT', IMP), `n=${n}`);
+  }
+});
+
+/** Verhalten: Zwei Stufen -> LIST_SIZE, die Stufen werden trotzdem einzeln geprüft. */
+test('zwei Stufen: LIST_SIZE, Fehler in Stufe 1 trotzdem gemeldet', () => {
+  const bad = stage(7);
+  (bad.content as { impulses: Record<string, unknown>[] }).impulses[0] = impulse(1, { text: '' });
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7), bad] })])), [
+    ...only('LIST_SIZE', `${CH}/stages`),
+    ...only('TEXT_EMPTY', `${CH}/stages/1/content/impulses/0/text`),
+  ].sort());
+});
+
+/** Verhalten: Zwei Stufen -> auch ungültige days in beiden Stufen werden einzeln gemeldet. */
+test('zwei Stufen mit ungültigen days: LIST_SIZE und beide OUT_OF_RANGE', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: 0 }), stage(7, { days: 91 })] })])), [
+    ...only('LIST_SIZE', `${CH}/stages`),
+    ...only('OUT_OF_RANGE', `${CH}/stages/0/days`),
+    ...only('OUT_OF_RANGE', `${CH}/stages/1/days`),
+  ].sort());
 });

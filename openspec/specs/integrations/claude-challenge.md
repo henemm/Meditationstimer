@@ -77,6 +77,12 @@ Fassung 2 erhält das optionale Feld `challenges` (höchstens 20): Challenges vo
 - Server-Anweisung, Grundregel 10 wörtlich („Impulse laden ein und bewerten nicht. Kein Leistungsdruck, keine Schuld.“) und zusätzlich:
   „Ausgelassene Tage sind neutral; frag nach, statt zu bewerten.“
 
+Festlegungen: Letzter Tag = `startDate + Summe(days) + extendedBy − 1`. `challenge_ending` für Challenges mit `state: "active"`, deren
+letzter Tag heute, morgen oder übermorgen (UTC-Tage von `generatedAt`) ist; die Meldung trägt `itemId`. `counts.challenge = {builtin,
+own, claude}`. `catalog`-Zeile: `{id, name (= title), origin, startDate, totalDays}`. `notes` nach Datum aufsteigend. Ohne Challenges ist
+`history.challenges` eine leere Liste; abgelaufene Challenges erscheinen, wenn ihr Zeitraum den Abfragezeitraum berührt. `item_update`
+erwartet in `fields` alle Felder wie `challenge_create` ohne `why` und `package`.
+
 ## 5. Fertig, wenn
 
 Prüfer und Dienst beurteilen den erweiterten Beispielsatz gleich; Abschrift-Beispiele mit Challenges (gültig, ungültig: Notiz an
