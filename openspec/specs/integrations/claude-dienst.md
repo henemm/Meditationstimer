@@ -180,7 +180,12 @@ Umsetzung der Lieferwerkzeuge (B2a-5):
 - `item_withdraw`: Alle wartenden Lieferungen, die den Baustein bzw. das Paket enthalten, werden `superseded`. Eine Rücknahme-Lieferung
   entsteht nur, wenn etwas davon schon in der App ist (Abschrift, oder Lieferung `claimed`/`accepted`). Ein schon zurückgenommener
   Baustein (Abschrift `withdrawn`) wird abgelehnt.
-- `wish_report`: Tabelle `wishes(id uuid, account_id, created_at, text, context)`; Antwort `{wishId}`.
+- `wish_report`: Tabelle `wishes(id uuid, account_id, created_at, text, context)`; Antwort `{wishId}`. Text nur aus Leerraum gilt als leer.
+- Eingabeschemas der Werkzeuge beschreiben die Felder für Claude, lassen aber jeden JSON-Wert und weitere Felder durch (`passthrough`,
+  Werte `unknown`); falsche Typen und unbekannte Felder lehnt erst `validateDelivery` ab, mit Pfad und Ausweg wie in der App.
+- Rücknahme: Antwort ohne neue Lieferung `{state: "withdrawn", superseded: […]}`; mit Rücknahme-Lieferung `{deliveryId,
+  state: "waiting", superseded: […]}`. `why` steht im Umschlag. Unbekanntes Paket, oder Paket, dessen Teile alle schon zurückgenommen
+  sind: Ablehnung. Paketname im Umschlag: wie in diesem Aufruf angegeben, ohne Rand-Leerzeichen.
 - Prüfer-Gleichlauf: Für jede Datei in `Contracts/deliveries/` ergibt das Einreichen ihres Inhalts über das passende Werkzeug dieselbe
   Annahme bzw. Ablehnung wie der Prüfer, soweit sie über ein Werkzeug ausdrückbar ist (Umschlagfelder vergibt der Dienst).
 
