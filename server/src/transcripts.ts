@@ -48,6 +48,30 @@ function duplicateId(doc: Transcript): string | undefined {
 
 const DAY = 86_400_000;
 
+// Echtes Kalenderdatum? Der Tag wird über Date.UTC zurückgerechnet (30. Februar bleibt nicht 30. Februar).
+function realDate(text: unknown): boolean {
+  const m = typeof text === "string" ? /^(\d{4})-(\d{2})-(\d{2})/.exec(text) : null;
+  if (m === null) return false;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const back = new Date(Date.UTC(y, mo - 1, d));
+  back.setUTCFullYear(y);
+  return back.getUTCFullYear() === y && back.getUTCMonth() === mo - 1 && back.getUTCDate() === d;
+}
+
+// Erster Zeitstempel ohne echtes Kalenderdatum (Pfad, nie Inhalt) oder undefined.
+function calendarProblem(doc: Transcript): string | undefined {
+  if (!realDate(doc.generatedAt)) return "/generatedAt: kein echtes Kalenderdatum";
+  for (const name of lists) {
+    for (const [index, item] of (doc[name] as { deliveredAt?: unknown }[]).entries()) {
+      if (item.deliveredAt !== undefined && !realDate(item.deliveredAt)) return `/${name}/${index}/deliveredAt: kein echtes Kalenderdatum`;
+    }
+  }
+  for (const [index, s] of (doc.history?.sessions ?? []).entries()) {
+    if (!realDate(s.startedAt)) return `/history/sessions/${index}/startedAt: kein echtes Kalenderdatum`;
+  }
+  return undefined;
+}
+
 // Was das Schema nicht kann (Fassung 2): Zeitfenster, Kennungen der Bausteine, Serien. Nennt nur Pfade, nie Inhalte.
 function historyProblem(doc: Transcript): string | undefined {
   const history = doc.history!;
@@ -76,7 +100,7 @@ export function checkTranscript(doc: unknown): string | undefined {
     const path = validate.errors?.[0]?.instancePath || "Wurzel";
     return `${path}: entspricht nicht der Abschrift, Fassung ${version}`;
   }
-  return duplicateId(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) : undefined);
+  return duplicateId(doc as Transcript) ?? calendarProblem(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) : undefined);
 }
 
 // Erst Form, dann ein Statement: die erste Abschrift wird abgelegt, eine neuere ersetzt sie, eine ältere oder gleich alte nicht.

@@ -1,6 +1,6 @@
 // Rückblick (B3a, Issue #58): reine Funktion des Werkzeugs `history`; mcp.ts holt die Abschrift und reicht sie hierher.
 // Spec: openspec/specs/integrations/claude-rueckblick.md Abschnitt 3
-import type { HistorySession, Transcript } from "./transcripts.ts";
+import type { HistorySession, Streak, Transcript } from "./transcripts.ts";
 
 export type HistoryArgs = { from?: string; to?: string; kind?: string; programId?: string };
 type Doc = Record<string, any>;
@@ -44,12 +44,18 @@ function namesOf(transcript: Transcript): Names {
   return names;
 }
 
+function feedbackRow(f: NonNullable<HistorySession["feedback"]>): Doc {
+  return { rating: f.rating, ...(f.note === undefined ? {} : { note: f.note }) };
+}
+
+const streakRow = (s: Streak): Streak => ({ current: s.current, longest: s.longest });
+
 function sessionRow(s: HistorySession, names: Names): Doc {
   const name = s.programId === undefined ? undefined : names.get(s.programId);
   return {
     startedAt: s.startedAt, kind: s.kind,
     ...(s.programId === undefined ? {} : { programId: s.programId }), ...(name === undefined ? {} : { programName: name }),
-    durationSeconds: s.durationSeconds, completed: s.completed, ...(s.feedback === undefined ? {} : { feedback: s.feedback }),
+    durationSeconds: s.durationSeconds, completed: s.completed, ...(s.feedback === undefined ? {} : { feedback: feedbackRow(s.feedback) }),
   };
 }
 
@@ -94,6 +100,6 @@ export function historyDoc(transcript: Transcript | undefined, args: HistoryArgs
     generatedAt: transcript.generatedAt, range: { from: dayOf(range.from), to: dayOf(range.to) }, count: found.length,
     sessions: found.slice(0, MAX_SESSIONS).map((s) => sessionRow(s, names)),
     summary: { byKind: byKind(found), byProgram: byProgram(found, names) },
-    streaks: transcript.history.streaks,
+    streaks: { meditation: streakRow(transcript.history.streaks.meditation), workout: streakRow(transcript.history.streaks.workout) },
   };
 }
