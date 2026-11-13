@@ -1,0 +1,56 @@
+{
+  "description": "Stufen mit Joker und Tageswechsel, Grenzwerte.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "5e7a9c1b-3d5f-4a7b-9c2e-1f3a5b7c9d1e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Wasser trinken als neue Gewohnheit, mit Stufenplan.",
+    "items": [
+      {
+        "kind": "tracker",
+        "itemId": "claude.abend-y6z8a1",
+        "revision": 1,
+        "name": "Abend",
+        "symbol": "💧",
+        "type": "saboteur",
+        "mode": "levels",
+        "levels": [
+          {
+            "name": "Ruhig",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "Unruhig",
+            "icon": "⚠️",
+            "effect": "needsGrace"
+          },
+          {
+            "name": "SSSSSSSSSSSSSSSSSSSS",
+            "icon": "🔥",
+            "effect": "breaksStreak"
+          },
+          {
+            "name": "Vier",
+            "icon": "⭐",
+            "effect": "success"
+          },
+          {
+            "name": "Fünf",
+            "icon": "❌",
+            "effect": "breaksStreak"
+          }
+        ],
+        "joker": {
+          "earnEveryDays": 30,
+          "maxOnHand": 10
+        },
+        "dayStartHour": 23
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

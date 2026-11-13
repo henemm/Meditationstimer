@@ -22,7 +22,7 @@ Erweiterung von Fassung 1 wie in B4a begründet (noch keine App nimmt Fassung 1 
 | `symbol` | ja | Symbol wie bei Programmen |
 | `description` | nein | mehrzeilig 1–500 |
 | `startDate` | ja | Datum `JJJJ-MM-TT` (Kalendertag des Geräts), echtes Kalenderdatum, sonst `INVALID_DATE`. Frühestens der Tag vor dem UTC-Tag von `createdAt` (Zeitzonen-Spielraum), sonst `START_IN_PAST`; höchstens 30 Tage danach, sonst `OUT_OF_RANGE`. |
-| `stages` | ja | Liste mit genau **einer** Stufe (B5a; sonst `LIST_SIZE`) |
+| `stages` | ja | Liste mit genau **einer** Stufe (B5a; sonst `LIST_SIZE`). **Ab B6a 1–6 Stufen und Ziel-Stufen, siehe `claude-gewohnheit-stufenplan.md`.** |
 
 Stufe:
 

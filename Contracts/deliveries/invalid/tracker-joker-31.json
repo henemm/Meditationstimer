@@ -1,0 +1,49 @@
+{
+  "description": "Joker alle 31 Tage.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "5e7a9c1b-3d5f-4a7b-9c2e-1f3a5b7c9d1e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Wasser trinken als neue Gewohnheit, mit Stufenplan.",
+    "items": [
+      {
+        "kind": "tracker",
+        "itemId": "claude.wasser-n5r7t2",
+        "revision": 1,
+        "name": "Wasser",
+        "symbol": "💧",
+        "type": "good",
+        "mode": "levels",
+        "levels": [
+          {
+            "name": "Ruhig",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "Unruhig",
+            "icon": "⚠️",
+            "effect": "needsGrace"
+          }
+        ],
+        "joker": {
+          "earnEveryDays": 31,
+          "maxOnHand": 3
+        }
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "OUT_OF_RANGE",
+        "path": "/items/0/joker/earnEveryDays"
+      }
+    ],
+    "reason": "Mehr als 30 Tage.",
+    "remedy": "earnEveryDays 1–30.",
+    "schemaRejects": true
+  }
+}

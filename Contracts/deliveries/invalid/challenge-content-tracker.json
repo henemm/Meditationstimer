@@ -1,5 +1,5 @@
 {
-  "description": "Tracker-Ziel (erst mit B6a).",
+  "description": "Unbekannte Inhaltsart einer Stufe.",
   "delivery": {
     "format": "hhhaven.delivery/1",
     "deliveryId": "3c5e7a9b-2d4f-4b6a-8c1e-0f2a4b6c8d0e",
@@ -35,8 +35,8 @@
         "path": "/items/0/stages/0/content/type"
       }
     ],
-    "reason": "Tracker-Ziele sind noch nicht möglich.",
-    "remedy": "type impulses verwenden; sonst wish_report.",
+    "reason": "tracker_goal ist keine Inhaltsart.",
+    "remedy": "impulses oder goal verwenden.",
     "schemaRejects": true
   }
 }

@@ -1,0 +1,65 @@
+{
+  "description": "Sechs Stufen.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "5e7a9c1b-3d5f-4a7b-9c2e-1f3a5b7c9d1e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Wasser trinken als neue Gewohnheit, mit Stufenplan.",
+    "items": [
+      {
+        "kind": "tracker",
+        "itemId": "claude.wasser-n5r7t2",
+        "revision": 1,
+        "name": "Wasser",
+        "symbol": "💧",
+        "type": "good",
+        "mode": "levels",
+        "levels": [
+          {
+            "name": "L0",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "L1",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "L2",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "L3",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "L4",
+            "icon": "✅",
+            "effect": "success"
+          },
+          {
+            "name": "L5",
+            "icon": "✅",
+            "effect": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "LIST_SIZE",
+        "path": "/items/0/levels"
+      }
+    ],
+    "reason": "Mehr als fünf Stufen.",
+    "remedy": "Höchstens fünf Stufen.",
+    "schemaRejects": true
+  }
+}

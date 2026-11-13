@@ -43,7 +43,7 @@ siehe `claude-erinnerung.md`; später B5a/B6a). Danach ist Fassung 1 eingefroren
 
 | Feld | Regel |
 |---|---|
-| `kind` | `"exercise"`, `"program"`, `"breath"`, `"reminder"` (B4a, Regeln in `claude-erinnerung.md` Abschnitt 2) oder `"withdrawal"`. Sonst `KIND_UNKNOWN`; der Eintrag wird dann nicht weiter geprüft. |
+| `kind` | `"exercise"`, `"program"`, `"breath"`, `"reminder"` (B4a, `claude-erinnerung.md`), `"challenge"` (B5a/B6a, `claude-challenge.md`, `claude-gewohnheit-stufenplan.md`), `"tracker"` (B6a) oder `"withdrawal"`. Sonst `KIND_UNKNOWN`; der Eintrag wird dann nicht weiter geprüft. |
 | `itemId` | Kennung des Bausteins, von Claude bzw. vom Dienst vergeben: `^claude\.[a-z0-9][a-z0-9-]{1,62}$`. Bleibt über Änderungen gleich. Innerhalb einer Lieferung eindeutig (auch über Rücknahmen hinweg), sonst `DUPLICATE_ID` am zweiten Vorkommen. |
 | `revision` | Ganze Zahl 1–1 000 000. 1 = neu, höher = geänderte Fassung desselben Bausteins. (Nicht bei Rücknahmen.) |
 
@@ -168,8 +168,10 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
 - Codes (vollständige Liste): `FORMAT_UNKNOWN`, `FIELD_MISSING`, `FIELD_UNKNOWN`, `FIELD_TYPE`, `TEXT_EMPTY`, `TEXT_TOO_LONG`,
   `TEXT_FORBIDDEN_CHAR`, `INVALID_SYMBOL`, `OUT_OF_RANGE`, `LIST_SIZE`, `TOTAL_TOO_LONG`, `INVALID_ID`, `INVALID_DATE`,
   `VALUE_NOT_ALLOWED`, `KIND_UNKNOWN`, `CATEGORY_UNKNOWN`, `EXERCISE_UNKNOWN`, `NAME_TAKEN`, `DUPLICATE_ID`, `WITHDRAWAL_TARGET`,
-  ab B4a zusätzlich `INVALID_TIME`, `DUPLICATE_VALUE`, `TARGET_UNKNOWN`, `REMINDER_LIMIT`.
-- Prüfkontext ab B4a zusätzlich `knownPrograms?: string[]`, `knownBreaths?: string[]` (Kennungen für Erinnerungsziele).
+  ab B4a zusätzlich `INVALID_TIME`, `DUPLICATE_VALUE`, `TARGET_UNKNOWN`, `REMINDER_LIMIT`; ab B5a `START_IN_PAST`, `IMPULSE_COUNT`;
+  ab B6a `LEVELS_NO_SUCCESS`.
+- Prüfkontext ab B4a zusätzlich `knownPrograms?: string[]`, `knownBreaths?: string[]` (Kennungen für Erinnerungsziele), ab B6a
+  `knownTrackers?: string[]`.
 
 ## 6. Beispielsatz
 
