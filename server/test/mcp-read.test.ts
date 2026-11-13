@@ -22,6 +22,7 @@ const READ_TOOLS = ["catalog", "delivery_status", "forms", "overview", "show"];
 
 const read = async (...parts: string[]) => JSON.parse(await readFile(join(root, ...parts), "utf8"));
 const fullTranscript = async (): Promise<Doc> => (await read("Contracts", "transcript", "valid", "full.json")).transcript;
+const fullTranscriptV2 = async (): Promise<Doc> => (await read("Contracts", "transcript", "v2", "valid", "full.json")).transcript;
 const catalogFile = async (): Promise<Doc[]> => (await read("Contracts", "catalog", "builtin-exercises.json")).exercises;
 const delivery = async (file = "exercise-minimal.json", id: string = randomUUID()): Promise<Doc & { deliveryId: string }> =>
   ({ ...(await read("Contracts", "deliveries", "valid", file)).delivery, deliveryId: id });
@@ -98,7 +99,7 @@ test("overview ohne Abschrift: Meldung no_transcript, eingebaute Übungen aus de
   assert.equal(doc.generatedAt, undefined);
 });
 
-test("overview mit Abschrift: Zählung je Art und Herkunft wie in full.json, generatedAt, keine Meldung", async (t) => {
+test("overview mit Abschrift: Zählung je Art und Herkunft wie in full.json, generatedAt, bei Fassung 1 nur history_missing", async (t) => {
   const pool = await migrated(t);
   const stored = await transcript();
   await putTranscript(pool, HENNING, stored);
@@ -107,6 +108,16 @@ test("overview mit Abschrift: Zählung je Art und Herkunft wie in full.json, gen
   assert.deepEqual(doc.counts.program, { builtin: 1, own: 0, claude: 1 });
   assert.deepEqual(doc.counts.breath, { builtin: 0, own: 1, claude: 1 });
   assert.equal(new Date(doc.generatedAt).getTime(), new Date(stored.generatedAt).getTime());
+  assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["history_missing"]);
+});
+
+test("overview mit Abschrift Fassung 2: keine Meldung history_missing", async (t) => {
+  const pool = await migrated(t);
+  const v2 = await fullTranscriptV2();
+  v2.generatedAt = new Date().toISOString();
+  await putTranscript(pool, HENNING, v2);
+  const doc = await json(await connect(t, pool, HENNING), "overview");
+  assert.ok(!doc.messages.some((m: Doc) => m.kind === "history_missing"));
   assert.deepEqual(doc.messages, []);
 });
 
@@ -118,7 +129,7 @@ test("overview: eine abgelehnte Lieferung erscheint als Meldung rejected mit del
   assert.equal(await reportResult(pool, HENNING, DEVICE, { deliveryId: id, outcome: "rejected",
     errors: [{ code: "unknown_exercise", path: "items[0]", message: "Übung unbekannt" }] }), "ok");
   const doc = await json(await connect(t, pool, HENNING), "overview");
-  assert.equal(doc.messages.length, 1);
+  assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["rejected", "history_missing"]);
   assert.equal(doc.messages[0].kind, "rejected");
   assert.equal(doc.messages[0].deliveryId, id);
   assert.equal(typeof doc.messages[0].text, "string");
@@ -144,7 +155,7 @@ test("overview: eine über 24 h wartende Lieferung meldet waiting_long, eine fri
   await backdate(pool, old, "created_at", 25 * HOUR);
   const doc = await json(await connect(t, pool, HENNING), "overview");
   const kinds = doc.messages.map((m: Doc) => m.kind);
-  assert.deepEqual(kinds, ["waiting_long"]);
+  assert.deepEqual(kinds, ["waiting_long", "history_missing"]);
   assert.equal(doc.waiting, 2);
   assert.ok(![doc.messages[0].deliveryId].includes(fresh));
 });
@@ -153,12 +164,12 @@ test("overview: Abschrift älter als 7 Tage meldet transcript_old, jünger nicht
   const pool = await migrated(t);
   await putTranscript(pool, HENNING, await transcript(8 * DAY));
   const doc = await json(await connect(t, pool, HENNING), "overview");
-  assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["transcript_old"]);
+  assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["transcript_old", "history_missing"]);
   assert.ok(doc.transcriptAgeHours >= 8 * 24 - 1);
 
   const pool2 = await migrated(t);
   await putTranscript(pool2, HENNING, await transcript(6 * DAY));
-  assert.deepEqual((await json(await connect(t, pool2, HENNING), "overview")).messages, []);
+  assert.deepEqual((await json(await connect(t, pool2, HENNING), "overview")).messages.map((m: Doc) => m.kind), ["history_missing"]);
 });
 
 test("overview: Reihenfolge der Meldungen ist abgelehnt, lange wartend, Abschrift", async (t) => {
@@ -171,7 +182,7 @@ test("overview: Reihenfolge der Meldungen ist abgelehnt, lange wartend, Abschrif
   const waiting = await put(pool);
   await backdate(pool, waiting, "created_at", 30 * HOUR);
   const doc = await json(await connect(t, pool, HENNING), "overview");
-  assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["rejected", "waiting_long", "transcript_old"]);
+  assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["rejected", "waiting_long", "transcript_old", "history_missing"]);
 });
 
 // 4. catalog

@@ -1,0 +1,169 @@
+{
+  "description": "Rückmeldung an einer Atemübung.",
+  "transcript": {
+    "version": 2,
+    "generatedAt": "2026-11-13T10:00:00Z",
+    "exercises": [
+      {
+        "id": "builtin.planke",
+        "name": "Planke",
+        "category": "core",
+        "origin": "builtin"
+      },
+      {
+        "id": "own.7d3e9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+        "name": "Schulterkreisen",
+        "category": "warmup",
+        "origin": "own"
+      },
+      {
+        "id": "claude.vierfuessler-diagonal-x3f9k2",
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "origin": "claude",
+        "effect": "Stärkt Rücken und Rumpf.",
+        "instructions": "Arm und Bein diagonal strecken.",
+        "revision": 1,
+        "state": "active",
+        "packageId": "claude.ruecken-november",
+        "packageName": "Rücken November",
+        "why": "Fehlte für Rücken A.",
+        "deliveredAt": "2026-11-12T18:00:00Z"
+      }
+    ],
+    "programs": [
+      {
+        "id": "builtin.tabata",
+        "name": "Tabata",
+        "symbol": "🔥",
+        "rounds": 8,
+        "steps": [
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 20,
+            "restSeconds": 10
+          }
+        ],
+        "origin": "builtin"
+      },
+      {
+        "id": "claude.ruecken-a-7hq2mz",
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurz für den Rücken.",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "claude.vierfuessler-diagonal-x3f9k2",
+            "workSeconds": 40,
+            "restSeconds": 15,
+            "hint": "Je Seite 8 Mal"
+          },
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 30,
+            "restSeconds": 15
+          }
+        ],
+        "origin": "claude",
+        "revision": 2,
+        "state": "adapted",
+        "packageId": "claude.ruecken-november",
+        "why": "Zwei kurze Einheiten."
+      }
+    ],
+    "breaths": [
+      {
+        "id": "own.8e4f9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+        "name": "Box",
+        "symbol": "🌬️",
+        "inhaleSeconds": 4,
+        "holdInSeconds": 4,
+        "exhaleSeconds": 4,
+        "holdOutSeconds": 4,
+        "rounds": 10,
+        "origin": "own"
+      },
+      {
+        "id": "claude.abendatem-p0x8rt",
+        "name": "Abendatem",
+        "symbol": "🌙",
+        "inhaleSeconds": 4,
+        "holdInSeconds": 2,
+        "exhaleSeconds": 6,
+        "holdOutSeconds": 0,
+        "rounds": 10,
+        "origin": "claude",
+        "revision": 1,
+        "state": "withdrawn"
+      }
+    ],
+    "deliveries": [
+      {
+        "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+        "outcome": "accepted"
+      },
+      {
+        "deliveryId": "7a2d3b0f-4c8e-4d22-8b1f-6e3a9c5f8b21",
+        "outcome": "rejected"
+      }
+    ],
+    "history": {
+      "sessions": [
+        {
+          "startedAt": "2026-11-12T17:05:00Z",
+          "kind": "workout",
+          "programId": "claude.ruecken-a-7hq2mz",
+          "durationSeconds": 720,
+          "completed": false,
+          "feedback": {
+            "rating": "too_hard",
+            "note": "Nach der Planke war Schluss."
+          }
+        },
+        {
+          "startedAt": "2026-11-10T17:00:00Z",
+          "kind": "workout",
+          "programId": "builtin.tabata",
+          "durationSeconds": 240,
+          "completed": true,
+          "feedback": {
+            "rating": "right"
+          }
+        },
+        {
+          "startedAt": "2026-11-12T06:30:00Z",
+          "kind": "meditation",
+          "durationSeconds": 900,
+          "completed": true
+        },
+        {
+          "startedAt": "2026-11-11T21:00:00Z",
+          "kind": "breath",
+          "programId": "own.8e4f9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+          "durationSeconds": 160,
+          "completed": true,
+          "feedback": {
+            "rating": "right"
+          }
+        }
+      ],
+      "streaks": {
+        "meditation": {
+          "current": 4,
+          "longest": 21
+        },
+        "workout": {
+          "current": 0,
+          "longest": 9
+        }
+      }
+    }
+  },
+  "expected": {
+    "accepted": false,
+    "reason": "Rückmeldung nur nach dem Training",
+    "schemaRejects": true
+  }
+}

@@ -116,6 +116,13 @@ test("/app/transcript: ungueltige Form gibt 400, nichts gespeichert, Antwort ohn
   assert.equal(await getTranscript(pool, ACC), undefined);
 });
 
+test("/app/transcript: generatedAt am 30. Februar gibt 400 (nicht 500), nichts gespeichert", async (t) => {
+  const { pool, routes } = await setup(t);
+  const res = await routes["/app/transcript"](req("/app/transcript", { body: json(await transcript("2026-02-30T10:00:00Z")) }));
+  assert.equal(res.status, 400);
+  assert.equal(await getTranscript(pool, ACC), undefined);
+});
+
 test("/app/transcript: aeltere oder gleich alte gibt 204 ohne Wirkung", async (t) => {
   const { pool, routes } = await setup(t);
   const neu = await transcript("2026-11-13T12:00:00Z");

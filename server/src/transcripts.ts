@@ -6,18 +6,31 @@ import { Ajv2020 } from "ajv/dist/2020.js";
 import type pg from "pg";
 
 // Die Abschrift als Dokument; die Form sichert das Schema (Contracts/transcript/transcript-v1.schema.json).
+export type HistorySession = {
+  startedAt: string; kind: "meditation" | "workout" | "breath"; programId?: string; durationSeconds: number; completed: boolean;
+  feedback?: { rating: "too_easy" | "right" | "too_hard"; note?: string };
+};
+export type Streak = { current: number; longest: number };
+export type History = { sessions: HistorySession[]; streaks: { meditation: Streak; workout: Streak } };
+
+// Fassung 1 (ohne Verlauf) und Fassung 2 (mit history); Spec: openspec/specs/integrations/claude-rueckblick.md
 export type Transcript = {
-  version: 1;
+  version: 1 | 2;
   generatedAt: string;
   exercises: { id: string }[];
   programs: { id: string }[];
   breaths: { id: string }[];
   deliveries: { deliveryId: string; outcome: string }[];
+  history?: History;
 };
 
 // Einmal kompiliert; das Schema ist die einzige Quelle der Regeln. Im Image liegt es unter /app/Contracts, im Repo an derselben Stelle relativ zu server/.
-const schemaPath = join(import.meta.dirname, "..", "..", "Contracts", "transcript", "transcript-v1.schema.json");
-const validate = new Ajv2020({ allErrors: false, strict: true, strictRequired: false }).compile(JSON.parse(readFileSync(schemaPath, "utf8")));
+const schemaPath = (version: 1 | 2) => join(import.meta.dirname, "..", "..", "Contracts", "transcript", `transcript-v${version}.schema.json`);
+const ajv = new Ajv2020({ allErrors: false, strict: true, strictRequired: false });
+const validators = {
+  1: ajv.compile(JSON.parse(readFileSync(schemaPath(1), "utf8"))),
+  2: ajv.compile(JSON.parse(readFileSync(schemaPath(2), "utf8"))),
+};
 
 const lists = ["exercises", "programs", "breaths"] as const;
 
@@ -33,13 +46,61 @@ function duplicateId(doc: Transcript): string | undefined {
   return undefined;
 }
 
+const DAY = 86_400_000;
+
+// Echtes Kalenderdatum? Der Tag wird über Date.UTC zurückgerechnet (30. Februar bleibt nicht 30. Februar).
+function realDate(text: unknown): boolean {
+  const m = typeof text === "string" ? /^(\d{4})-(\d{2})-(\d{2})/.exec(text) : null;
+  if (m === null) return false;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const back = new Date(Date.UTC(y, mo - 1, d));
+  back.setUTCFullYear(y);
+  return back.getUTCFullYear() === y && back.getUTCMonth() === mo - 1 && back.getUTCDate() === d;
+}
+
+// Erster Zeitstempel ohne echtes Kalenderdatum (Pfad, nie Inhalt) oder undefined.
+function calendarProblem(doc: Transcript): string | undefined {
+  if (!realDate(doc.generatedAt)) return "/generatedAt: kein echtes Kalenderdatum";
+  for (const name of lists) {
+    for (const [index, item] of (doc[name] as { deliveredAt?: unknown }[]).entries()) {
+      if (item.deliveredAt !== undefined && !realDate(item.deliveredAt)) return `/${name}/${index}/deliveredAt: kein echtes Kalenderdatum`;
+    }
+  }
+  for (const [index, s] of (doc.history?.sessions ?? []).entries()) {
+    if (!realDate(s.startedAt)) return `/history/sessions/${index}/startedAt: kein echtes Kalenderdatum`;
+  }
+  return undefined;
+}
+
+// Was das Schema nicht kann (Fassung 2): Zeitfenster, Kennungen der Bausteine, Serien. Nennt nur Pfade, nie Inhalte.
+function historyProblem(doc: Transcript): string | undefined {
+  const history = doc.history!;
+  const generated = new Date(doc.generatedAt).getTime();
+  const programs = new Set(doc.programs.map((p) => p.id));
+  const breaths = new Set(doc.breaths.map((b) => b.id));
+  for (const [index, session] of history.sessions.entries()) {
+    const started = new Date(session.startedAt).getTime();
+    if (started > generated) return `/history/sessions/${index}/startedAt: liegt nach generatedAt`;
+    if (started < generated - 90 * DAY) return `/history/sessions/${index}/startedAt: liegt mehr als 90 Tage vor generatedAt`;
+    const known = session.kind === "workout" ? programs : session.kind === "breath" ? breaths : undefined;
+    if (known !== undefined && !known.has(session.programId!)) return `/history/sessions/${index}/programId: kein Baustein dieser Art in der Abschrift`;
+  }
+  for (const name of ["meditation", "workout"] as const) {
+    if (history.streaks[name].current > history.streaks[name].longest) return `/history/streaks/${name}: current ist größer als longest`;
+  }
+  return undefined;
+}
+
 // Grund (deutsch, mit Pfad, ohne Inhalte aus dem Dokument) oder undefined, wenn die Abschrift gültig ist.
 export function checkTranscript(doc: unknown): string | undefined {
+  const version = (doc as { version?: unknown } | null)?.version;
+  if (version !== 1 && version !== 2) return "/version: nur Fassung 1 und 2 der Abschrift werden angenommen";
+  const validate = validators[version];
   if (!validate(doc)) {
     const path = validate.errors?.[0]?.instancePath || "Wurzel";
-    return `${path}: entspricht nicht der Abschrift, Fassung 1`;
+    return `${path}: entspricht nicht der Abschrift, Fassung ${version}`;
   }
-  return duplicateId(doc as Transcript);
+  return duplicateId(doc as Transcript) ?? calendarProblem(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) : undefined);
 }
 
 // Erst Form, dann ein Statement: die erste Abschrift wird abgelegt, eine neuere ersetzt sie, eine ältere oder gleich alte nicht.

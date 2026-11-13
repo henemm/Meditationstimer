@@ -5,6 +5,7 @@ import { createMcpHandler, McpServer, type CallToolResult, type McpHttpHandler, 
 import { z } from "zod";
 import { listDeliveries, openDeliveries, recentRejections } from "./deliveries.ts";
 import { buildForms, FORM_KINDS } from "./forms.ts";
+import { historyDoc, type HistoryArgs } from "./history.ts";
 import { catalogDoc, deliveryStatusDoc, overviewDoc, showDoc, type Kind } from "./read-tools.ts";
 import { getTranscript } from "./transcripts.ts";
 import { createItem, reportWish, updateItem, withdrawItem, type Doc } from "./write-tools.ts";
@@ -24,7 +25,7 @@ export const INSTRUCTIONS = [
   "10. Impulse laden ein und bewerten nicht. Kein Leistungsdruck, keine Schuld.",
   "11. Trainings sind Vorschläge und kein medizinischer Rat. Halte dich an genannte Einschränkungen und frage im Zweifel nach.",
   "",
-  "Werkzeuge zum Lesen: `overview`, `catalog`, `show`, `forms` (der Bauplan) und `delivery_status`.",
+  "Werkzeuge zum Lesen: `overview`, `catalog`, `show`, `forms` (der Bauplan), `delivery_status` und `history` (Rückblick auf die Einheiten der letzten 90 Tage).",
   "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `item_update`, `item_withdraw` und `wish_report`.",
   "Lieferungen erscheinen beim nächsten Öffnen von Healthy Habits.",
   "Trainings sind Vorschläge von Claude und kein medizinischer Rat.",
@@ -111,6 +112,11 @@ export function mcpHandler(pool: pg.Pool): McpHttpHandler {
       const rows = await listDeliveries(pool, owner, { limit: 20, ...(deliveryId === undefined ? {} : { deliveryId }) });
       return rows.length === 0 && deliveryId !== undefined ? "Lieferung nicht gefunden" : deliveryStatusDoc(rows);
     }));
+    server.registerTool("history", {
+      description: "Rückblick: Einheiten (Meditation, Workout, Atemübung) mit Dauer, Abbruch und Rückmeldung nach dem Training, Zusammenfassung und Serien; Zeitraum from/to als JJJJ-MM-TT (UTC, höchstens 90 Tage, Vorgabe die letzten 30 Tage), Filter kind und programId",
+      inputSchema: z.object({ from: z.string().max(20).optional(), to: z.string().max(20).optional(), kind: z.string().max(20).optional(), programId: z.string().max(100).optional() }),
+      annotations: ReadOnly,
+    }, guarded<HistoryArgs>(async (owner, args) => historyDoc(await getTranscript(pool, owner), args)));
     registerWriteTools(server, pool);
     return server;
   });

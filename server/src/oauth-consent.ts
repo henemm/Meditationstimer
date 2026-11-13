@@ -51,7 +51,8 @@ function page(host: string, uid: string): string {
 <p>Wenn du zustimmst, kann ${who} in deinem Namen:</p>
 <ul><li>Bausteine lesen: Übungen, Programme, Atemübungen und den Stand der Lieferungen</li>
 <li>Übungen, Workout-Programme und Atemübungen liefern, eigene Lieferungen ändern und zurückziehen</li>
-<li>Bausteinwünsche melden</li></ul>
+<li>Bausteinwünsche melden</li>
+<li>deinen Verlauf der letzten 90 Tage lesen: Einheiten, Dauer, Rückmeldung nach dem Training und Serien</li></ul>
 <p class="no">Nicht möglich: etwas starten oder eintragen, deine eigenen Inhalte ändern oder löschen. Tracker-Einträge, Stimmung, Notizen
 und Daten aus Apple Health kann ${who} nicht lesen.</p>
 <p class="no">Du kannst den Zugriff jederzeit in ${who} beenden. „Verbindung trennen“ in der App löscht alles, was der Dienst von dir hat.</p>
