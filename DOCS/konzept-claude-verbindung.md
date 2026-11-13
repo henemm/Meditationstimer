@@ -319,6 +319,8 @@ Jede Stufe endet mit etwas Benutzbarem und läuft durch den normalen Ablauf mit 
 
 Die Reihenfolge von 2 bis 4 ist tauschbar. Stufe 4 braucht den Rückweg aus Stufe 2 für die Notizen.
 
+**Schnitt für die Umsetzung (13.11.2026):** Die Stufen sind in kleinere Scheiben in zwei Spuren zerlegt, damit regelmäßig etwas Spürbares ankommt: Spur A verbessert die App auch ohne Claude (Tagesansicht, Hinweis je Übung, Tagebuch mit Rückmeldung, Kalender), Spur B bringt Claude, zuerst über eine Brücke per Link oder Datei, dann über den Dienst. Jede Aufgabe trägt im Titel, ob sie in der Cloud, nur am Mac (Xcode) oder nur mit Serverzugang machbar ist. Reihenfolge und Aufgaben: Epic #44 mit den Unteraufgaben #46 bis #65.
+
 ## 14. Risiken
 
 | Risiko | Umgang |
