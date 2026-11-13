@@ -65,6 +65,12 @@ Fassung 2 erhält optional:
   „Stoße von dir aus höchstens zwei neue Gewohnheiten oder Stufenpläne gleichzeitig an (overview.building). Wünscht Henning ausdrücklich
   mehr, weise einmal darauf hin und folge dann seinem Wunsch. Beobachtende Gewohnheiten zählen nicht mit.“
 
+Festlegungen: `builtin.noalc` ist bekannt, wenn er in der Abschrift unter `trackers` steht (die App schickt ihn immer mit).
+`building.items[].kind` ist `tracker` oder `challenge`; `since` ist bei Trackern `deliveredAt` (noch nicht in der Abschrift: `createdAt`
+der Lieferung), bei Challenges `startDate`. Eine Challenge ist beendet, wenn ihr letzter Tag (`startDate + Summe(days) + extendedBy − 1`)
+vor dem UTC-Tag von `generatedAt` liegt. `progress.days` darf bei reinen Ziel-Challenges leer sein. `history.challenges[].goals` erscheint
+nur bei Challenges mit Ziel-Stufe. `forms` nennt alle Grenzen auch verschachtelter Felder (z. B. 300 für Impuls-Text).
+
 ## 5. Fertig, wenn
 
 Prüfer und Dienst beurteilen den erweiterten Beispielsatz gleich; Abschrift-Beispiele mit Trackern und Ziel-Stufen (gültig; ungültig:

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateDelivery } from '../src/index.ts';
-import { breath, challenge, delivery, exercise, impulse, key, program, reminder, stage, withdrawal } from './helpers.ts';
+import { breath, challenge, delivery, exercise, goalStage, impulse, key, program, reminder, stage, tracker, withdrawal } from './helpers.ts';
 
 type Ctx = Parameters<typeof validateDelivery>[1];
 
@@ -776,21 +776,98 @@ test('Impulse: sechs bei sieben Tagen und acht bei sieben Tagen -> IMPULSE_COUNT
   }
 });
 
-/** Verhalten: Zwei Stufen -> LIST_SIZE, die Stufen werden trotzdem einzeln geprüft. */
-test('zwei Stufen: LIST_SIZE, Fehler in Stufe 1 trotzdem gemeldet', () => {
-  const bad = stage(7);
-  (bad.content as { impulses: Record<string, unknown>[] }).impulses[0] = impulse(1, { text: '' });
-  assert.deepEqual(run(delivery([challenge({ stages: [stage(7), bad] })])), [
-    ...only('LIST_SIZE', `${CH}/stages`),
-    ...only('TEXT_EMPTY', `${CH}/stages/1/content/impulses/0/text`),
-  ].sort());
+/** Verhalten: Bis zu sechs Stufen sind gültig, sieben sind zu viele (LIST_SIZE). */
+test('Stufen: sechs gültig, sieben LIST_SIZE', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: Array.from({ length: 6 }, () => stage(3)) })])), []);
+  assert.deepEqual(run(delivery([challenge({ stages: Array.from({ length: 7 }, () => stage(3)) })])), only('LIST_SIZE', `${CH}/stages`));
 });
 
-/** Verhalten: Zwei Stufen -> auch ungültige days in beiden Stufen werden einzeln gemeldet. */
-test('zwei Stufen mit ungültigen days: LIST_SIZE und beide OUT_OF_RANGE', () => {
+/** Verhalten: Zwei Stufen sind gültig; Fehler in Stufe 2 werden einzeln gemeldet. */
+test('zwei Stufen: gültig, Fehler in Stufe 2 trotzdem gemeldet', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7), stage(7)] })])), []);
+  const bad = stage(7);
+  (bad.content as { impulses: Record<string, unknown>[] }).impulses[0] = impulse(1, { text: '' });
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7), bad] })])), only('TEXT_EMPTY', `${CH}/stages/1/content/impulses/0/text`));
+});
+
+/** Verhalten: Ungültige days in zwei Stufen werden beide einzeln gemeldet, ohne Folgefehler. */
+test('zwei Stufen mit ungültigen days: beide OUT_OF_RANGE', () => {
   assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: 0 }), stage(7, { days: 91 })] })])), [
-    ...only('LIST_SIZE', `${CH}/stages`),
     ...only('OUT_OF_RANGE', `${CH}/stages/0/days`),
     ...only('OUT_OF_RANGE', `${CH}/stages/1/days`),
   ].sort());
+});
+
+/** Verhalten: Summe der Tage über 90 -> TOTAL_TOO_LONG am Eintrag. */
+test('Stufen: Summe 91 -> TOTAL_TOO_LONG, Summe 90 gültig', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(45), stage(45)] })])), []);
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(45), stage(46)] })])), only('TOTAL_TOO_LONG', CH));
+});
+
+/** Verhalten: Ungültige days in einer Stufe -> kein Folgefehler TOTAL_TOO_LONG. */
+test('Summe mit ungültigem days in einer Stufe: kein TOTAL_TOO_LONG', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(90), stage(7, { days: 0 })] })])), only('OUT_OF_RANGE', `${CH}/stages/1/days`));
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(90), stage(7, { days: '7' })] })])), only('FIELD_TYPE', `${CH}/stages/1/days`));
+});
+
+// ---------- B6a: Tracker und Ziel-Stufen ----------
+
+const TR = '/items/0';
+const GS = `${CH}/stages/0/content/goal`;
+
+/** Verhalten: Der Basis-Tracker und eine Ziel-Stufe sind gültig. */
+test('Basis-Tracker und Ziel-Stufe sind gültig', () => {
+  assert.deepEqual(run(delivery([tracker()])), []);
+  assert.deepEqual(run(delivery([challenge({ stages: [goalStage()] })])), []);
+});
+
+/** Verhalten: Ungültiger mode erzeugt keine Folgefehler an dailyGoal oder levels. */
+test('mode ungültig: nur VALUE_NOT_ALLOWED am mode, keine Folgefehler', () => {
+  assert.deepEqual(run(delivery([tracker({ mode: 'bogus', dailyGoal: 0 })])), only('VALUE_NOT_ALLOWED', `${TR}/mode`));
+  assert.deepEqual(run(delivery([tracker({ mode: 'bogus', levels: [] })])), only('VALUE_NOT_ALLOWED', `${TR}/mode`));
+  assert.deepEqual(run(delivery([tracker({ mode: 'bogus', dailyGoal: undefined, joker: { earnEveryDays: 7, maxOnHand: 3 } })])), only('VALUE_NOT_ALLOWED', `${TR}/mode`));
+});
+
+/** Verhalten: Ungültiger type -> mode wird nicht gegen den Typ geprüft. */
+test('type ungültig: nur VALUE_NOT_ALLOWED am type, mode nicht gegen Typ geprüft', () => {
+  assert.deepEqual(run(delivery([tracker({ type: 'bogus', mode: 'counter' })])), only('VALUE_NOT_ALLOWED', `${TR}/type`));
+  assert.deepEqual(run(delivery([tracker({ type: 'bogus', mode: 'awareness', dailyGoal: undefined })])), only('VALUE_NOT_ALLOWED', `${TR}/type`));
+});
+
+/** Verhalten: Dublette der Stufennamen und fehlende Erfolgsstufe gleichzeitig -> beide Fehler. */
+test('levels: Dublette und keine Erfolgsstufe ergeben beide Fehler', () => {
+  const levels = [
+    { name: 'Gleich', icon: '⚠️', effect: 'needsGrace' },
+    { name: 'gleich', icon: '❌', effect: 'breaksStreak' },
+  ];
+  assert.deepEqual(run(delivery([tracker({ mode: 'levels', dailyGoal: undefined, levels })])), [
+    ...only('DUPLICATE_VALUE', `${TR}/levels/1/name`),
+    ...only('LEVELS_NO_SUCCESS', `${TR}/levels`),
+  ].sort());
+});
+
+/** Verhalten: Ziel-Tracker aus derselben Lieferung ist gültig. */
+test('Ziel-Tracker in derselben Lieferung: gültig', () => {
+  const items = [tracker(), challenge({ itemId: 'claude.test-plan', stages: [goalStage(7, { type: 'tracker', trackerId: 'claude.test-tracker' })] })];
+  assert.deepEqual(run(delivery(items)), []);
+});
+
+/** Verhalten: Eine Übung derselben Lieferung ist kein Tracker. */
+test('Ziel-Tracker zeigt auf Übung derselben Lieferung: TARGET_UNKNOWN', () => {
+  const items = [exercise(), challenge({ itemId: 'claude.test-plan', stages: [goalStage(7, { type: 'tracker', trackerId: 'claude.test-uebung' })] })];
+  assert.deepEqual(run(delivery(items)), only('TARGET_UNKNOWN', `/items/1/stages/0/content/goal/trackerId`));
+});
+
+/** Verhalten: Ohne knownTrackers ist builtin.noalc unbekannt, mit Kontext bekannt. */
+test('knownTrackers fehlt: builtin.noalc ist unbekannt', () => {
+  const ch = challenge({ stages: [goalStage(7, { type: 'tracker', trackerId: 'builtin.noalc' })] });
+  assert.deepEqual(run(delivery([ch])), only('TARGET_UNKNOWN', `${GS}/trackerId`));
+  assert.deepEqual(run(delivery([ch]), {}), only('TARGET_UNKNOWN', `${GS}/trackerId`));
+  assert.deepEqual(run(delivery([ch]), { knownTrackers: ['builtin.noalc'] } as unknown as Ctx), []);
+});
+
+/** Verhalten: Ziel-Stufe ohne goal -> FIELD_MISSING am goal. */
+test('Ziel-Stufe ohne goal: FIELD_MISSING', () => {
+  const st = stage(7, { content: { type: 'goal' } });
+  assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('FIELD_MISSING', GS));
 });

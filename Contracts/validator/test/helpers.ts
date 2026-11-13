@@ -9,7 +9,7 @@ export type Example = {
   file: string;
   dir: 'valid' | 'invalid';
   description: string;
-  context?: { knownExercises?: { id: string; name: string }[]; knownPrograms?: string[]; knownBreaths?: string[] };
+  context?: { knownExercises?: { id: string; name: string }[]; knownPrograms?: string[]; knownBreaths?: string[]; knownTrackers?: string[] };
   delivery: unknown;
   expected: {
     valid: boolean;
@@ -119,6 +119,27 @@ export function challenge(over: Obj = {}): Obj {
     stages: [stage(7)],
     ...over,
   };
+}
+
+export function tracker(over: Obj = {}): Obj {
+  const t: Obj = {
+    kind: 'tracker',
+    itemId: 'claude.test-tracker',
+    revision: 1,
+    name: 'Testtracker',
+    symbol: '💧',
+    type: 'good',
+    mode: 'counter',
+    dailyGoal: 6,
+    ...over,
+  };
+  // undefined in over entfernt das Feld
+  for (const k of Object.keys(t)) if (t[k] === undefined) delete t[k];
+  return t;
+}
+
+export function goalStage(days = 7, goal: Obj = { type: 'meditation', minutes: 10 }, over: Obj = {}): Obj {
+  return { days, content: { type: 'goal', goal }, ...over };
 }
 
 export function withdrawal(over: Obj = {}): Obj {

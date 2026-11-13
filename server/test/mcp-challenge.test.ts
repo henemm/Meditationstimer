@@ -103,7 +103,7 @@ test("challenge_create: Impuls ohne Nachfrage und Start heute sind gültig", asy
 });
 
 const REJECTIONS: Array<[string, Doc, string]> = [
-  ["zwei Stufen", { stages: [stage(3), stage(3)] }, "/items/0/stages"],
+  ["sieben Stufen", { stages: Array.from({ length: 7 }, () => stage(3)) }, "/items/0/stages"],
   ["Impulse zu wenig", { stages: [{ days: 7, content: { type: "impulses", impulses: impulses(6) } }] }, "/items/0/stages/0/content/impulses"],
   ["Start zwei Tage in der Vergangenheit", { startDate: day(-2) }, "/items/0/startDate"],
   ["Start 40 Tage in der Zukunft", { startDate: day(40) }, "/items/0/startDate"],
