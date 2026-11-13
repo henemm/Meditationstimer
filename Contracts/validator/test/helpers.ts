@@ -9,7 +9,7 @@ export type Example = {
   file: string;
   dir: 'valid' | 'invalid';
   description: string;
-  context?: { knownExercises?: { id: string; name: string }[] };
+  context?: { knownExercises?: { id: string; name: string }[]; knownPrograms?: string[]; knownBreaths?: string[] };
   delivery: unknown;
   expected: {
     valid: boolean;
@@ -77,6 +77,21 @@ export function breath(over: Obj = {}): Obj {
     exhaleSeconds: 4,
     holdOutSeconds: 4,
     rounds: 5,
+    ...over,
+  };
+}
+
+export function reminder(over: Obj = {}): Obj {
+  return {
+    kind: 'reminder',
+    itemId: 'claude.test-erinnerung',
+    revision: 1,
+    title: 'Testerinnerung',
+    message: 'Zeit für eine Pause.',
+    time: '18:00',
+    weekdays: ['monday', 'thursday'],
+    lookbackHours: 12,
+    target: { type: 'meditation' },
     ...over,
   };
 }

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateDelivery } from '../src/index.ts';
-import { breath, delivery, exercise, key, program, withdrawal } from './helpers.ts';
+import { breath, delivery, exercise, key, program, reminder, withdrawal } from './helpers.ts';
 
 type Ctx = Parameters<typeof validateDelivery>[1];
 
@@ -596,4 +596,100 @@ test('Text mit verbotenem Zeichen im Namen: message/hint enthalten es nicht', ()
 
 test('message/hint sind auch bei normalen Fehlern frei von verbotenen Zeichen', () => {
   for (const t of allText(delivery([exercise({ category: 'x' })]))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+// ---------- B4a: Erinnerungen ----------
+
+const rem = (n: number, over: Record<string, unknown> = {}) =>
+  Array.from({ length: n }, (_, i) => reminder({ itemId: `claude.erinnerung-${i}`, ...over }));
+
+/** Verhalten: Eine Standard-Erinnerung ist gültig (sonst sind die Fälle wertlos). */
+test('Basis-Erinnerung ist gültig', () => {
+  assert.deepEqual(run(delivery([reminder()])), []);
+});
+
+/** Verhalten: Das Limit zählt nur Erinnerungen, nicht andere Bausteine. */
+test('6 Erinnerungen plus 3 Programme sind gültig', () => {
+  const programs = [0, 1, 2].map((i) => program({ itemId: `claude.programm-${i}` }));
+  assert.deepEqual(run(delivery([...rem(6), ...programs])), []);
+});
+
+test('7 Erinnerungen: REMINDER_LIMIT an /items', () => {
+  assert.deepEqual(run(delivery(rem(7))), only('REMINDER_LIMIT', '/items'));
+});
+
+/** Verhalten: Rücknahmen zählen nicht zum Limit. */
+test('6 Erinnerungen plus Rücknahme zählen nicht als 7', () => {
+  assert.deepEqual(run(delivery([...rem(6), withdrawal({ itemId: 'claude.alte-erinnerung' })])), []);
+});
+
+test('time als Zahl: FIELD_TYPE', () => {
+  assert.deepEqual(run(delivery([reminder({ time: 1800 })])), only('FIELD_TYPE', '/items/0/time'));
+});
+
+test('weekdays kein Array: FIELD_TYPE', () => {
+  assert.deepEqual(run(delivery([reminder({ weekdays: 'monday' })])), only('FIELD_TYPE', '/items/0/weekdays'));
+});
+
+test('Wochentag als Zahl: FIELD_TYPE am Eintrag', () => {
+  assert.deepEqual(run(delivery([reminder({ weekdays: ['monday', 3] })])), only('FIELD_TYPE', '/items/0/weekdays/1'));
+});
+
+/** Verhalten: Jedes weitere Vorkommen eines Wochentags wird gemeldet, das erste nicht. */
+test('[mo,mo,mo]: DUPLICATE_VALUE an /1 und /2', () => {
+  assert.deepEqual(run(delivery([reminder({ weekdays: ['monday', 'monday', 'monday'] })])), [
+    'DUPLICATE_VALUE @ /items/0/weekdays/1',
+    'DUPLICATE_VALUE @ /items/0/weekdays/2',
+  ]);
+});
+
+test('Ziel noalc mit Zusatzfeld: FIELD_UNKNOWN', () => {
+  assert.deepEqual(
+    run(delivery([reminder({ target: { type: 'noalc', programId: 'builtin.tabata' } })])),
+    only('FIELD_UNKNOWN', '/items/0/target/programId'),
+  );
+});
+
+/** Verhalten: Ein Programm der Lieferung zählt als Ziel, auch wenn es selbst fehlerhaft ist. */
+test('Ziel-Programm der Lieferung mit eigenem Fehler: kein TARGET_UNKNOWN', () => {
+  const input = delivery([
+    program({ rounds: 0 }),
+    reminder({ target: { type: 'workout', programId: 'claude.test-programm' } }),
+  ]);
+  assert.deepEqual(run(input), only('OUT_OF_RANGE', '/items/0/rounds'));
+});
+
+test('Ziel-Programm in derselben Lieferung: gültig', () => {
+  const input = delivery([program(), reminder({ target: { type: 'workout', programId: 'claude.test-programm' } })]);
+  assert.deepEqual(run(input), []);
+});
+
+test('Ziel-Atemübung in derselben Lieferung: gültig', () => {
+  const input = delivery([breath(), reminder({ target: { type: 'breath', breathId: 'claude.test-atmung' } })]);
+  assert.deepEqual(run(input), []);
+});
+
+/** Verhalten: Eine Übung ist weder Programm noch Atemübung. */
+test('breathId zeigt auf Übung der Lieferung: TARGET_UNKNOWN', () => {
+  const input = delivery([exercise(), reminder({ target: { type: 'breath', breathId: 'claude.test-uebung' } })]);
+  assert.deepEqual(run(input), only('TARGET_UNKNOWN', '/items/1/target/breathId'));
+});
+
+/** Verhalten: Ohne knownPrograms gibt es keinen Programmkatalog, auch builtin.* ist unbekannt. */
+test('knownPrograms fehlt: builtin-Programm ist TARGET_UNKNOWN', () => {
+  const input = delivery([reminder({ target: { type: 'workout', programId: 'builtin.tabata' } })]);
+  assert.deepEqual(run(input), only('TARGET_UNKNOWN', '/items/0/target/programId'));
+  assert.deepEqual(run(input, { knownExercises: [] }), only('TARGET_UNKNOWN', '/items/0/target/programId'));
+});
+
+test('knownPrograms enthält builtin-Programm: gültig', () => {
+  const input = delivery([reminder({ target: { type: 'workout', programId: 'builtin.tabata' } })]);
+  assert.deepEqual(run(input, { knownPrograms: ['builtin.tabata'] }), []);
+});
+
+/** Verhalten: Ein Kontext nur mit knownExercises funktioniert weiter. */
+test('Kontext nur mit knownExercises: Erinnerung und Übung prüfbar', () => {
+  const ctx = { knownExercises: [{ id: 'own.x-uebung', name: 'Andere Übung' }] };
+  assert.deepEqual(run(delivery([reminder()]), ctx), []);
+  assert.deepEqual(run(delivery([exercise({ name: 'Andere Übung' })]), ctx), only('NAME_TAKEN', '/items/0/name'));
 });

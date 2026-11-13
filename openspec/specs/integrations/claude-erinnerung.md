@@ -44,6 +44,11 @@ Neue Fehlercodes: `INVALID_TIME`, `DUPLICATE_VALUE`, `TARGET_UNKNOWN`, `REMINDER
 `REMINDER_LIMIT`: mehr als sechs Erinnerungen in einer Lieferung, am Feld `items` (Pfad `/items`). Die Grenze über mehrere Lieferungen
 prüft der Dienst (Abschnitt 4), die App beim Anwenden (B4b).
 
+Festlegungen: `REMINDER_LIMIT` zählt alle Einträge mit `kind: "reminder"`, auch fehlerhafte. Bei `weekdays` gilt Vorrang Typ, dann
+erlaubter Wert, dann Dublette; ein unerlaubter Wert zählt nicht für Dubletten. Als Ziel aus derselben Lieferung zählen nur Programme bzw.
+Atemübungen mit musterkonformer Kennung (auch wenn sie sonst Fehler haben). Ein `knownPrograms`/`knownBreaths`, das keine Liste ist,
+wird wie fehlend behandelt.
+
 Beispielsatz: gültige und ungültige Erinnerungen unter `Contracts/deliveries/{valid,invalid}/reminder-*.json`, jeder neue Code und
 jede neue Grenze an beiden Rändern.
 
