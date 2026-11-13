@@ -43,7 +43,7 @@ export function checkTranscript(doc: unknown): string | undefined {
 }
 
 // Erst Form, dann ein Statement: die erste Abschrift wird abgelegt, eine neuere ersetzt sie, eine ältere oder gleich alte nicht.
-export async function putTranscript(pool: pg.Pool, account: string, doc: unknown): Promise<"stored" | "stale" | "invalid"> {
+export async function putTranscript(pool: pg.Pool | pg.PoolClient, account: string, doc: unknown): Promise<"stored" | "stale" | "invalid"> {
   if (checkTranscript(doc) !== undefined) return "invalid";
   const transcript = doc as Transcript;
   const result = await pool.query(
@@ -57,7 +57,7 @@ export async function putTranscript(pool: pg.Pool, account: string, doc: unknown
 }
 
 // Ein Statement: die abgelegte Abschrift des Kontos unverändert, oder undefined.
-export async function getTranscript(pool: pg.Pool, account: string): Promise<Transcript | undefined> {
+export async function getTranscript(pool: pg.Pool | pg.PoolClient, account: string): Promise<Transcript | undefined> {
   const result = await pool.query<{ doc: Transcript }>("SELECT doc FROM transcripts WHERE account_id = $1", [account]);
   return result.rows[0]?.doc;
 }

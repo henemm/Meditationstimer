@@ -3,10 +3,12 @@
 // Ein String als Ergebnis ist eine Ablehnung (nichts gespeichert), alles andere die JSON-Antwort.
 import { randomInt, randomUUID } from "node:crypto";
 import type pg from "pg";
+
 import { validateDelivery, type DeliveryError } from "../../Contracts/validator/src/index.ts";
 import { knownDeliveries, putDelivery, supersede, type KnownDelivery } from "./deliveries.ts";
 import { getTranscript } from "./transcripts.ts";
 
+type Db = pg.Pool | pg.PoolClient;
 export type Doc = Record<string, any>;
 export type Outcome = Doc | string;
 export type Kind = "exercise" | "program" | "breath";
@@ -37,7 +39,7 @@ export function packageOf(name: unknown): Doc | undefined {
 
 // Bestand aus Abschrift und Lieferungen (waiting, claimed, accepted) in einer Form.
 type Known = {
-  id: string; kind: Kind; revision: number; name: unknown; pkg?: Doc;
+  id: string; kind: Kind; revision: number; name: unknown; pkg?: Doc; at?: number;
   source: "transcript" | "waiting" | "claimed" | "accepted"; state?: string; origin?: string;
 };
 type Snapshot = { entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[] };
@@ -52,10 +54,10 @@ function fromTranscript(transcript: Doc | undefined): Known[] {
 }
 
 function fromDeliveries(rows: KnownDelivery[]): Known[] {
-  return rows.flatMap((row) => {
+  return rows.flatMap((row, at) => {
     const doc = row.delivery as Doc;
     return (doc.items as Doc[]).filter((i) => i.kind !== "withdrawal").map((i): Known => ({
-      id: i.itemId, kind: i.kind, revision: i.revision, name: i.name, source: row.state,
+      id: i.itemId, kind: i.kind, revision: i.revision, name: i.name, source: row.state, at,
       ...(isRecord(doc.package) ? { pkg: doc.package } : {}),
     }));
   });
@@ -74,7 +76,7 @@ function knownExercises(entries: Known[], transcriptIds: Set<string>): { id: str
   return [...out.values()].map((e) => ({ id: e.id, name: e.name as string }));
 }
 
-async function snapshot(pool: pg.Pool, owner: string): Promise<Snapshot> {
+async function snapshot(pool: Db, owner: string): Promise<Snapshot> {
   const transcript = await getTranscript(pool, owner);
   const own = fromTranscript(transcript);
   const rows = await knownDeliveries(pool, owner);
@@ -105,19 +107,45 @@ function check(doc: Doc, snap: Snapshot): string | undefined {
   return errors.length === 0 ? undefined : `Die Lieferung wurde abgelehnt, nichts wurde gespeichert:\n${errors.map(errorLine).join("\n")}`;
 }
 
-async function submit(pool: pg.Pool, owner: string, snap: Snapshot, doc: Doc, answer: Doc): Promise<Outcome> {
+async function submit(pool: Db, owner: string, snap: Snapshot, doc: Doc, answer: Doc): Promise<Outcome> {
   const problem = check(doc, snap);
   if (problem !== undefined) return problem;
   await putDelivery(pool, owner, doc as { deliveryId: string });
   return { deliveryId: doc.deliveryId, ...answer, state: "waiting" };
 }
 
+// Ein Schreiber je Konto: eine Transaktion mit Kontosperre umschließt Lesen des Bestands, Prüfen und Ablegen bzw. Überholen.
+async function locked(pool: pg.Pool, owner: string, run: (db: pg.PoolClient) => Promise<Outcome>): Promise<Outcome> {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    await client.query("SELECT pg_advisory_xact_lock(hashtextextended('hhhaven:' || $1::text, 0))", [owner]);
+    const out = await run(client);
+    await client.query("COMMIT");
+    return out;
+  } catch (error) {
+    await client.query("ROLLBACK").catch(() => {});
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// kind, itemId und revision vergibt der Dienst; sie in den Eingaben still zu überschreiben wäre irreführend.
+function serviceField(fields: unknown): string | undefined {
+  if (!isRecord(fields)) return undefined;
+  const name = ["kind", "itemId", "revision"].find((f) => Object.hasOwn(fields, f));
+  return name === undefined ? undefined : refuse(`${name} vergibt der Dienst; bitte weglassen.`, `Den Aufruf ohne ${name} wiederholen.`);
+}
+
 // exercise_define, program_create, breath_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
 export async function createItem(pool: pg.Pool, owner: string, kind: Kind, args: Doc): Promise<Outcome> {
   const { why, package: pkg, ...fields } = args;
+  const reserved = serviceField(fields);
+  if (reserved !== undefined) return reserved;
   const itemId = newItemId(fields.name);
   const doc = envelope(why, packageOf(pkg), [{ ...fields, kind, itemId, revision: 1 }]);
-  return submit(pool, owner, await snapshot(pool, owner), doc, { itemId, revision: 1 });
+  return locked(pool, owner, async (db) => submit(db, owner, await snapshot(db, owner), doc, { itemId, revision: 1 }));
 }
 
 const NOT_OWN = refuse("Nur eigene Lieferungen von Claude lassen sich ändern oder zurückziehen (eigene und mitgelieferte Inhalte von Henning nie).",
@@ -134,9 +162,13 @@ function ownEntries(snap: Snapshot, itemId: string): Known[] | string {
 }
 
 export async function updateItem(pool: pg.Pool, owner: string, args: Doc): Promise<Outcome> {
+  return locked(pool, owner, (db) => updateLocked(db, owner, args));
+}
+
+async function updateLocked(db: Db, owner: string, args: Doc): Promise<Outcome> {
   const { itemId, basedOnRevision, why, fields } = args;
   if (typeof itemId !== "string") return refuse("itemId fehlt oder ist kein Text.", "itemId aus catalog oder show angeben.");
-  const snap = await snapshot(pool, owner);
+  const snap = await snapshot(db, owner);
   const entries = ownEntries(snap, itemId);
   if (typeof entries === "string") return entries;
   const state = entries.find((e) => e.source === "transcript")?.state;
@@ -145,15 +177,28 @@ export async function updateItem(pool: pg.Pool, owner: string, args: Doc): Promi
   const latest = highest(entries);
   if (basedOnRevision !== latest.revision) return refuse("Stand hat sich geändert, bitte neu lesen.", "Mit show den aktuellen Stand holen und basedOnRevision anpassen.");
   if (!isRecord(fields)) return refuse("fields fehlt oder ist kein Objekt.", "fields = vollständige neue Fassung wie bei der Erstellung, ohne why und package.");
+  const reserved = serviceField(fields);
+  if (reserved !== undefined) return reserved;
   const revision = latest.revision + 1;
   const doc = envelope(why, latest.pkg, [{ ...fields, kind: latest.kind, itemId, revision }]);
-  return submit(pool, owner, snap, doc, { itemId, revision });
+  return submit(db, owner, snap, doc, { itemId, revision });
 }
 
 // Wartende Lieferungen (Kennungen), die einen der Bausteine enthalten.
 function waitingFor(ids: Set<string>, rows: KnownDelivery[]): string[] {
   return rows.filter((r) => r.state === "waiting" && ((r.delivery as Doc).items as Doc[]).some((i) => ids.has(i.itemId) && i.kind !== "withdrawal"))
     .map((r) => r.deliveryId);
+}
+
+const ALREADY = refuse("Rücknahme liegt schon bereit.", "Nichts weiter zu tun; den Stand zeigt delivery_status.");
+
+// Schon zurückgenommen oder zurückgezogen? Eine Rücknahme-Lieferung (waiting, claimed, accepted) für den Baustein oder sein Paket, die
+// nicht älter ist als der jüngste Eintrag aus einer Lieferung (die Abschrift zeigt sie vielleicht noch nicht).
+function withdrawing(snap: Snapshot, group: Known[]): boolean {
+  const pkgId = group.find((e) => e.pkg !== undefined)?.pkg?.packageId;
+  const newest = Math.max(-1, ...group.map((e) => e.at ?? -1));
+  return snap.rows.some((row, index) => index > newest && ((row.delivery as Doc).items as Doc[]).some((i) =>
+    i.kind === "withdrawal" && (i.itemId === group[0]!.id || (pkgId !== undefined && i.packageId === pkgId))));
 }
 
 type Target = { ids: Set<string>; live: Known[][]; item: Doc; pkg?: Doc };
@@ -166,6 +211,7 @@ function withdrawTarget(snap: Snapshot, itemId: unknown, pkgName: unknown): Targ
     const entries = ownEntries(snap, itemId);
     if (typeof entries === "string") return entries;
     if (!isLive(entries)) return refuse("Der Baustein ist schon zurückgenommen.", "Nichts weiter zu tun.");
+    if (withdrawing(snap, entries)) return ALREADY;
     return { ids: new Set([itemId]), live: [entries], item: { kind: "withdrawal", itemId } };
   }
   const pkg = packageOf(pkgName) as Doc;
@@ -173,12 +219,17 @@ function withdrawTarget(snap: Snapshot, itemId: unknown, pkgName: unknown): Targ
   if (members.length === 0) return refuse("Unbekanntes Paket.", "Paketnamen wie bei der Lieferung angeben; Kennungen liefert catalog.");
   const groups = [...new Set(members.map((e) => e.id))].map((id) => snap.entries.filter((e) => e.id === id)).filter(isLive);
   if (groups.length === 0) return refuse("Alle Teile des Pakets sind schon zurückgenommen.", "Nichts weiter zu tun.");
+  if (groups.every((g) => withdrawing(snap, g))) return ALREADY;
   return { ids: new Set(groups.map((g) => g[0]!.id)), live: groups, item: { kind: "withdrawal", packageId: pkg.packageId }, pkg };
 }
 
 // Wartende Lieferungen werden überholt; nur was schon in der App ist (oder zwischendurch abgeholt wurde), braucht eine Rücknahme-Lieferung.
 export async function withdrawItem(pool: pg.Pool, owner: string, args: Doc): Promise<Outcome> {
-  const snap = await snapshot(pool, owner);
+  return locked(pool, owner, (db) => withdrawLocked(db, owner, args));
+}
+
+async function withdrawLocked(db: Db, owner: string, args: Doc): Promise<Outcome> {
+  const snap = await snapshot(db, owner);
   const target = withdrawTarget(snap, args.itemId, args.package);
   if (typeof target === "string") return target;
   const doc = envelope(args.why, target.pkg, [target.item]);
@@ -187,11 +238,11 @@ export async function withdrawItem(pool: pg.Pool, owner: string, args: Doc): Pro
   let needed = target.live.some((group) => group.some(inApp));
   const superseded: string[] = [];
   for (const id of waitingFor(target.ids, snap.rows)) {
-    if (await supersede(pool, owner, id)) superseded.push(id);
+    if (await supersede(db, owner, id)) superseded.push(id);
     else needed = true;
   }
   if (!needed) return { state: "withdrawn", superseded };
-  await putDelivery(pool, owner, doc as { deliveryId: string });
+  await putDelivery(db, owner, doc as { deliveryId: string });
   return { deliveryId: doc.deliveryId, state: "waiting", superseded };
 }
 

@@ -7,13 +7,16 @@ import { pipeline } from "node:stream/promises";
 import { setTimeout as sleep } from "node:timers/promises";
 import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 import pg from "pg";
+import type { AuthInfo } from "@modelcontextprotocol/server";
+import { appRoutes } from "./app-routes.ts";
 import { ErrorWindow, healthHandler } from "./health.ts";
+import { mcpHandler } from "./mcp.ts";
 import { migrate } from "./migrate.ts";
 
 export type Route = (request: Request) => Promise<Response>;
 export type StartOptions = {
   databaseUrl: string; port: number; host?: string; migrationsDir: string; retryMs?: number; maxAttempts?: number;
-  now?: () => number; applicationName?: string; extraRoutes?: Record<string, Route>;
+  now?: () => number; applicationName?: string; extraRoutes?: Record<string, Route> | ((pool: pg.Pool) => Record<string, Route>);
 };
 export type Running = { url: string; ready: Promise<void>; close: () => Promise<void> };
 
@@ -109,7 +112,7 @@ export async function start(options: StartOptions): Promise<Running> {
   const isReady = () => migrated;
   // /health last: extraRoutes cannot replace it.
   const routes: Record<string, Route> = {
-    ...options.extraRoutes,
+    ...(typeof options.extraRoutes === "function" ? options.extraRoutes(pool) : options.extraRoutes),
     "/health": healthHandler({ pool, isMigrated: isReady, window }),
   };
   const server = http.createServer((req, res) => void bridge(req, res, (request) => dispatch(routes, window, request)));
@@ -138,6 +141,27 @@ async function shutdown(server: http.Server, pool: pg.Pool, stop: AbortControlle
   await pool.end().catch(() => logError("pool end failed"));
 }
 
+// Checks a request's token: a Response is a finished refusal, an AuthInfo (account in extra.account) lets the request through.
+export type Authenticate = (request: Request) => Promise<AuthInfo | Response>;
+
+// Until B2b brings a token verifier nothing is valid: every method answers 401. B2b only replaces this function.
+export const rejectAll: Authenticate = async () =>
+  new Response(null, { status: 401, headers: { "www-authenticate": "Bearer", "cache-control": "no-store" } });
+
+// /mcp behind the check; the handler gets the account only from the checked token.
+export function mcpRoute(pool: pg.Pool, authenticate: Authenticate): Route {
+  const handler = mcpHandler(pool);
+  return async (request) => {
+    const checked = await authenticate(request);
+    return checked instanceof Response ? checked : handler.fetch(request, { authInfo: checked });
+  };
+}
+
+// The doors of the running service: /mcp and the three /app/* routes, all 401 without a login (until B2b).
+export function doors(pool: pg.Pool, authenticate: Authenticate = rejectAll): Record<string, Route> {
+  return { "/mcp": mcpRoute(pool, authenticate), ...appRoutes({ pool, appAccount: async () => undefined }) };
+}
+
 // The process: settings from the environment, one shutdown on SIGTERM or SIGINT, exit 1 when migrate gives up.
 async function main(): Promise<void> {
   const databaseUrl = process.env.DATABASE_URL;
@@ -147,7 +171,7 @@ async function main(): Promise<void> {
   }
   const running = await start({
     databaseUrl, port: Number(process.env.PORT ?? 8080), host: process.env.HOST ?? "127.0.0.1",
-    migrationsDir: join(import.meta.dirname, "../migrations"),
+    migrationsDir: join(import.meta.dirname, "../migrations"), extraRoutes: (pool) => doors(pool),
   });
   let stopping = false;
   const stop = async (code: number) => {

@@ -19,9 +19,9 @@ function isJson(request: Request): boolean {
   return type.split(";")[0].trim().toLowerCase() === "application/json";
 }
 
-// Der Körper als Text, beim Lesen gezählt (Content-Length kann lügen); null, sobald er das Limit überschreitet.
-async function readLimited(request: Request): Promise<string | null> {
-  if (request.body === null) return "";
+// Der Körper als Bytes, beim Lesen gezählt (Content-Length kann lügen); null, sobald er das Limit überschreitet.
+async function readLimited(request: Request): Promise<Buffer | null> {
+  if (request.body === null) return Buffer.alloc(0);
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
   let size = 0;
@@ -35,7 +35,26 @@ async function readLimited(request: Request): Promise<string | null> {
     }
     chunks.push(value);
   }
-  return Buffer.concat(chunks).toString("utf8");
+  return Buffer.concat(chunks);
+}
+
+const strictUtf8 = new TextDecoder("utf-8", { fatal: true });
+
+// U+0000 und ein einzelnes Ersatzzeichen (Surrogat ohne Paar) in irgendeinem Schlüssel oder Text, auf jeder Ebene, lehnt der Dienst ab;
+// Postgres könnte sie nicht speichern.
+const badText = (text: string): boolean => text.includes("\u0000") || !text.isWellFormed();
+
+function checkTexts(value: unknown): void {
+  if (typeof value === "string") {
+    if (badText(value)) throw new Error("text");
+  } else if (Array.isArray(value)) {
+    value.forEach(checkTexts);
+  } else if (typeof value === "object" && value !== null) {
+    for (const [key, inner] of Object.entries(value)) {
+      if (badText(key)) throw new Error("text");
+      checkTexts(inner);
+    }
+  }
 }
 
 // Die Gerätekennung aus X-Device in Kleinbuchstaben, null wenn es keine UUID ist.
@@ -61,9 +80,11 @@ async function jsonBody(request: Request, check: (doc: unknown) => void, allowEm
   if (!isJson(request)) return status(415);
   const raw = await readLimited(request);
   if (raw === null) return status(413);
-  if (allowEmpty && raw.trim() === "") return { doc: undefined };
   try {
-    const doc: unknown = JSON.parse(raw);
+    const text = strictUtf8.decode(raw);
+    if (allowEmpty && text.trim() === "") return { doc: undefined };
+    const doc: unknown = JSON.parse(text);
+    checkTexts(doc);
     check(doc);
     return { doc };
   } catch {
