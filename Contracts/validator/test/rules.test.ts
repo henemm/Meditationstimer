@@ -445,3 +445,155 @@ test('Eingabe bleibt unverändert (gültige Lieferung) und Aufruf ist wiederholb
   assert.deepEqual(input, before);
   assert.deepEqual(first, second);
 });
+
+// ---------- (a) Normalisierung: Kleinschreibung je Code Point, ohne Kontext ----------
+
+/** Verhalten: Schluss-Sigma wirkt nicht; "ΑΣ" wird zu "ασ". */
+test('Name "ΑΣ" gegen Kontextname "ασ": NAME_TAKEN', () => {
+  const context = { knownExercises: [{ id: 'own.sigma', name: 'ασ' }] };
+  assert.deepEqual(run(delivery([exercise({ name: 'ΑΣ' })]), context), only('NAME_TAKEN', '/items/0/name'));
+});
+
+test('Name "ΑΣ" gegen Kontextname "ας" (Schluss-Sigma): keine Dublette', () => {
+  const context = { knownExercises: [{ id: 'own.sigma', name: 'ας' }] };
+  assert.deepEqual(run(delivery([exercise({ name: 'ΑΣ' })]), context), []);
+});
+
+test('Übungen "ΑΣ" und "ας" in einer Lieferung: keine Dublette', () => {
+  assert.deepEqual(run(delivery([exercise({ name: 'ΑΣ' }), exercise({ itemId: 'claude.zweite', name: 'ας' })])), []);
+});
+
+test('Übungen "Σ" und "σ" in einer Lieferung: NAME_TAKEN am zweiten', () => {
+  assert.deepEqual(run(delivery([exercise({ name: 'σ' }), exercise({ itemId: 'claude.zweite', name: 'Σ' })])), only('NAME_TAKEN', '/items/1/name'));
+});
+
+// ---------- (b) einzelne Surrogate ----------
+
+/** Verhalten: Einzelne Ersatzzeichen sind TEXT_FORBIDDEN_CHAR, gültige Paare bleiben erlaubt. */
+for (const [label, text] of [
+  ['hohes Surrogat allein', JSON.parse('"\\ud800"') as string],
+  ['tiefes Surrogat allein', JSON.parse('"\\udc00"') as string],
+  ['hohes Surrogat vor Text', JSON.parse('"\\ud83dx"') as string],
+  ['vertauschtes Paar', JSON.parse('"\\udcaa\\ud83d"') as string],
+  ['Surrogat am Ende', JSON.parse('"abc\\udfff"') as string],
+] as const) {
+  test(`${label} im einzeiligen Feld: TEXT_FORBIDDEN_CHAR`, () => {
+    assert.deepEqual(run(delivery([exercise({ name: text })])), only('TEXT_FORBIDDEN_CHAR', '/items/0/name'));
+  });
+  test(`${label} im mehrzeiligen Feld: TEXT_FORBIDDEN_CHAR`, () => {
+    assert.deepEqual(run(delivery([exercise({ effect: text })])), only('TEXT_FORBIDDEN_CHAR', '/items/0/effect'));
+  });
+}
+
+test('gültiges Surrogatpaar (Emoji) bleibt erlaubt', () => {
+  assert.deepEqual(run(delivery([exercise({ name: 'a💪b', effect: '💪\n💪' })])), []);
+});
+
+test('einzelnes Surrogat im Symbol: INVALID_SYMBOL', () => {
+  assert.deepEqual(run(delivery([program({ symbol: JSON.parse('"\\ud800"') })])), only('INVALID_SYMBOL', '/items/0/symbol'));
+});
+
+// ---------- (c) ganze Zahlen: Betrag > 10^9 oder unendlich ----------
+
+function withRounds(json: string): unknown {
+  return delivery([program({ rounds: JSON.parse(json) })]);
+}
+
+/** Verhalten: Riesige Zahlen sind OUT_OF_RANGE, noch vor der Ganzzahlprüfung. */
+for (const json of ['1e21', '1e400', '-1e400', '1000000001', '-1000000001', '1000000000.5', '100']) {
+  test(`rounds ${json}: OUT_OF_RANGE`, () => {
+    assert.deepEqual(run(withRounds(json)), only('OUT_OF_RANGE', '/items/0/rounds'));
+  });
+}
+
+test('rounds 5e-1: FIELD_TYPE (keine ganze Zahl)', () => {
+  assert.deepEqual(run(withRounds('5e-1')), only('FIELD_TYPE', '/items/0/rounds'));
+});
+
+test('rounds 12.5: FIELD_TYPE', () => {
+  assert.deepEqual(run(withRounds('12.5')), only('FIELD_TYPE', '/items/0/rounds'));
+});
+
+test('rounds 1.2e1 gilt als 12 und ist gültig', () => {
+  assert.deepEqual(run(withRounds('1.2e1')), []);
+});
+
+test('rounds -0 gilt als 0: OUT_OF_RANGE', () => {
+  assert.deepEqual(run(withRounds('-0')), only('OUT_OF_RANGE', '/items/0/rounds'));
+});
+
+test('restSeconds -0 gilt als 0: gültig', () => {
+  const steps = [{ exerciseId: 'builtin.burpees', workSeconds: 30, restSeconds: JSON.parse('-0') }];
+  assert.deepEqual(run(delivery([program({ steps })])), []);
+});
+
+test('Atemzeit 1e400: OUT_OF_RANGE', () => {
+  assert.deepEqual(run(delivery([breath({ holdInSeconds: JSON.parse('1e400') })])), only('OUT_OF_RANGE', '/items/0/holdInSeconds'));
+});
+
+test('revision 1e21: OUT_OF_RANGE', () => {
+  assert.deepEqual(run(delivery([exercise({ revision: JSON.parse('1e21') })])), only('OUT_OF_RANGE', '/items/0/revision'));
+});
+
+// ---------- (d) message/hint: fremde Inhalte gekürzt und bereinigt ----------
+
+const FORBIDDEN = new RegExp('[\\u0000-\\u001F\\u007F-\\u009F\\u2028\\u2029\\u202A-\\u202E\\u2066-\\u2069\\uD800-\\uDFFF]', 'u');
+
+function allText(input: unknown): string[] {
+  const r = validateDelivery(input);
+  assert.ok(r.errors.length > 0, 'Fehler erwartet');
+  return r.errors.flatMap((e) => [e.message, e.hint]);
+}
+
+/** Verhalten: Ein langer unbekannter Feldname steht nicht ungekürzt in message/hint. */
+test('1000 Zeichen langer unbekannter Feldname wird nicht vollständig zitiert', () => {
+  const name = 'f'.repeat(1000);
+  for (const t of allText(delivery([exercise()], { [name]: 1 }))) {
+    assert.ok(!t.includes(name), 'Feldname ungekürzt');
+    assert.ok(!t.includes('f'.repeat(41)), 'mehr als 40 Code Points des Feldnamens');
+  }
+});
+
+test('Feldname mit Zeilenumbruch und Steuerzeichen: keine verbotenen Zeichen in message/hint', () => {
+  const input = delivery([exercise()], { 'a\nb c\u0000d‮e': 1 });
+  for (const t of allText(input)) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+test('langer unbekannter Feldname im Eintrag und im Schritt: gekürzt', () => {
+  const name = 'g'.repeat(500);
+  const steps = [{ exerciseId: 'builtin.burpees', workSeconds: 30, restSeconds: 10, [name]: 1 }];
+  for (const t of allText(delivery([program({ steps, [name]: 1 })]))) assert.ok(!t.includes('g'.repeat(41)));
+});
+
+test('langer falscher Wert (source) wird gekürzt', () => {
+  const value = 'v'.repeat(1000);
+  for (const t of allText(delivery([exercise()], { source: value }))) assert.ok(!t.includes('v'.repeat(41)));
+});
+
+test('falscher format-Wert mit Zeilenumbruch: keine verbotenen Zeichen in message/hint', () => {
+  for (const t of allText(delivery([exercise()], { format: 'x\ny z' }))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+test('unbekanntes kind mit Steuerzeichen und Länge: gekürzt und bereinigt', () => {
+  const value = 'k\n'.repeat(500);
+  for (const t of allText(delivery([{ kind: value }]))) {
+    assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+    assert.ok(!t.includes('k'.repeat(41)));
+  }
+});
+
+test('ungültige Kennung mit Steuerzeichen: keine verbotenen Zeichen in message/hint', () => {
+  for (const t of allText(delivery([exercise({ itemId: 'claude.a\u0000\nb' })]))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+test('Kategorie mit einzelnem Surrogat: keine verbotenen Zeichen in message/hint', () => {
+  for (const t of allText(delivery([exercise({ category: JSON.parse('"\\ud800x"') })]))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+test('Text mit verbotenem Zeichen im Namen: message/hint enthalten es nicht', () => {
+  for (const t of allText(delivery([exercise({ name: 'a‮b' })]))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+test('message/hint sind auch bei normalen Fehlern frei von verbotenen Zeichen', () => {
+  for (const t of allText(delivery([exercise({ category: 'x' })]))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});

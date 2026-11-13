@@ -1,0 +1,35 @@
+{
+  "description": "Anmerkung mit 601 Zeichen.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": [
+      {
+        "kind": "exercise",
+        "itemId": "claude.vierfuessler-diagonal",
+        "revision": 1,
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "effect": "Stärkt die tiefe Rückenmuskulatur und den Rumpf, schult das Gleichgewicht.",
+        "instructions": "1) Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte\n2) Rechten Arm und linkes Bein strecken, kurz halten\n3) Zurück und Seite wechseln. Rücken bleibt gerade.",
+        "notes": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "TEXT_TOO_LONG",
+        "path": "/items/0/notes"
+      }
+    ],
+    "reason": "Die Anmerkung ist länger als 600 Zeichen.",
+    "remedy": "Kürze notes auf höchstens 600 Zeichen.",
+    "schemaRejects": true
+  }
+}

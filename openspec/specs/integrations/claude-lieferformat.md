@@ -64,7 +64,8 @@ Eine neue Übung ohne Wirkung oder Anleitung ist ungültig (`FIELD_MISSING` bzw.
 (nur das spätere Vorkommen wird gemeldet) oder einer bekannten Übung aus dem Prüfkontext (siehe 5) mit anderer Kennung, gilt `NAME_TAKEN`
 am Feld `name`. Geprüft wird nur, wenn der Name für sich gültig ist.
 Normalisieren: Leerzeichen (U+0020, U+00A0) am Rand entfernen, Folgen davon im Inneren zu einem U+0020 zusammenfassen, dann Kleinschreibung
-(Unicode-Standardabbildung, `toLowerCase()` bzw. `lowercased()`).
+**je Code Point einzeln, ohne Kontext** (TypeScript `String.fromCodePoint(cp).toLowerCase()`, Swift `String(scalar).lowercased()`),
+damit kontextabhängige Regeln wie das griechische Schluss-Sigma auf beiden Seiten gleich (nämlich gar nicht) wirken.
 
 ### 3.2 Workout-Programm (`kind: "program"`)
 
@@ -116,12 +117,15 @@ Genau eines der Felder `itemId` (ein Baustein) oder `packageId` (ein ganzes Pake
 
 - **Länge** = Anzahl Unicode-Skalarwerte (Code Points): TypeScript `[...s].length`, Swift `s.unicodeScalars.count`.
 - **Verbotene Zeichen** in allen Texten: U+0000–U+001F (außer U+000A in mehrzeiligen Feldern), U+007F–U+009F, U+2028, U+2029,
-  U+202A–U+202E, U+2066–U+2069. Sonst `TEXT_FORBIDDEN_CHAR`. Einzeilige Felder erlauben also keinen Zeilenumbruch.
+  U+202A–U+202E, U+2066–U+2069 sowie einzelne Ersatzzeichen (Surrogate U+D800–U+DFFF, die nicht Teil eines gültigen Paars sind).
+  Sonst `TEXT_FORBIDDEN_CHAR`. Einzeilige Felder erlauben also keinen Zeilenumbruch.
 - **Leer:** Besteht ein Text nur aus U+0020, U+00A0 und U+000A (oder ist er leer), gilt `TEXT_EMPTY`.
 - Reihenfolge je Textfeld: verbotene Zeichen, dann leer, dann zu lang (`TEXT_TOO_LONG`). Es wird nur der erste zutreffende Fehler gemeldet.
 - **Symbol:** 1–16 Code Points, keine verbotenen Zeichen, kein Leerzeichen (U+0020, U+00A0, U+000A), keine ASCII-Buchstaben oder -Ziffern.
   Sonst `INVALID_SYMBOL`.
-- **Ganze Zahlen:** JSON-Zahl mit ganzzahligem Wert (`12` und `12.0` gelten gleich). `12.5`, Text oder Wahrheitswert: `FIELD_TYPE`.
+- **Ganze Zahlen:** JSON-Zahl mit ganzzahligem Wert (`12`, `12.0` und `1.2e1` gelten gleich). Text oder Wahrheitswert: `FIELD_TYPE`.
+  Ist der Betrag größer als 10⁹ (oder nach dem Einlesen unendlich), gilt `OUT_OF_RANGE`, noch vor der Ganzzahlprüfung.
+  Sonst nicht ganzzahlig (`12.5`): `FIELD_TYPE`. `-0` gilt als 0.
   Hinweis für Swift: `JSONSerialization` liefert Wahrheitswerte als `NSNumber`; sie müssen als `FIELD_TYPE` erkannt werden.
 - **Bereich** verlassen: `OUT_OF_RANGE`. Listenlänge außerhalb der Grenzen: `LIST_SIZE` an der Liste.
 - **Kennungen und Lieferkennung** im falschen Muster: `INVALID_ID`. Zeitpunkt im falschen Muster oder kein echtes Datum: `INVALID_DATE`.
@@ -140,6 +144,7 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
 - `path` ist ein JSON Pointer (RFC 6901) auf die Fehlerstelle, z. B. `/items/0/steps/1/workSeconds`; die Wurzel ist `""`.
   Fehlendes Feld: Pfad des fehlenden Felds (`/why`). Unbekanntes Feld: Pfad dieses Felds.
 - `message` nennt auf Deutsch, was falsch ist, `hint` den Ausweg (Konzept 4: „Ablehnungen nennen den Ausweg“). Beide nie leer.
+  Fremde Inhalte (Werte und unbekannte Feldnamen) erscheinen darin höchstens 40 Code Points lang und ohne verbotene Zeichen (4).
 - Fehlerort: Jeder Fehler an einem Feld hat den Pfad dieses Felds (z. B. `FORMAT_UNKNOWN` an `/format`, `INVALID_ID` an
   `/items/0/packageId`). Ausnahmen mit Pfad des Eintrags: `TOTAL_TOO_LONG`, `WITHDRAWAL_TARGET`. Je Feld höchstens ein Fehler.
   Vorrang je Feld: Typ, dann Muster bzw. Textregeln (4), dann Bereich, dann Bezug/Dublette. `WITHDRAWAL_TARGET` hindert nicht

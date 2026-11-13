@@ -1,0 +1,47 @@
+{
+  "description": "Texte mit genau einem Zeichen: Warum, Name, Hinweis, Paketname, Wirkung, Anleitung.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "W",
+    "items": [
+      {
+        "kind": "exercise",
+        "itemId": "claude.vierfuessler-diagonal",
+        "revision": 1,
+        "name": "Q",
+        "nameEn": "Q",
+        "category": "core",
+        "effect": "E",
+        "instructions": "I",
+        "notes": "N"
+      },
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 1,
+        "name": "P",
+        "symbol": "🧘",
+        "description": "D",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 30,
+            "restSeconds": 10,
+            "hint": "h"
+          }
+        ]
+      }
+    ],
+    "package": {
+      "packageId": "claude.pk",
+      "name": "K"
+    }
+  },
+  "expected": {
+    "valid": true
+  }
+}
