@@ -112,7 +112,7 @@ jobs:
           -project Meditationstimer.xcodeproj \
           -scheme "Lean Health Timer" \
           -configuration Release \
-          -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+          -destination 'generic/platform=iOS Simulator' \
           CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO
 
     - name: Build Summary
