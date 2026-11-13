@@ -80,6 +80,10 @@ Antwort (JSON):
   fehlt eine Seite, gilt für sie die Vorgabe (`to` = Tag von `generatedAt`, `from` = `to − 29`). Ausweg bei ungültigem Datum nennt
   „JJJJ-MM-TT“. `history_missing` steht immer als letzte Meldung.
 - Die Antwort enthält nichts, was nicht in `history` und den Namen der Bausteine steht.
+- Härtung (Nachtrag Adversary): `history` kopiert je Einheit, Rückmeldung und Serie nur die in Abschnitt 2 genannten Felder, auch wenn
+  ein Dokument an der Prüfung vorbei in die Datenbank käme.
+- Kalenderdatum (Nachtrag Adversary, gilt für Fassung 1 und 2): `generatedAt`, `startedAt` und `deliveredAt` müssen echte Kalenderdaten
+  sein (kein 30. Februar); sonst lehnt `checkTranscript` ab, und `/app/transcript` antwortet 400, nie 500.
 
 `overview` meldet zusätzlich `history_missing`, wenn die Abschrift Fassung 1 ist (Meldung nach den bisherigen).
 Die Server-Anweisung nennt `history` bei den Lesewerkzeugen. Die Zustimmungsseite (B2b) nennt zusätzlich „deinen Verlauf der
