@@ -6,6 +6,7 @@ export const ERROR_CODES = [
   'TEXT_TOO_LONG', 'TEXT_FORBIDDEN_CHAR', 'INVALID_SYMBOL', 'OUT_OF_RANGE', 'LIST_SIZE',
   'TOTAL_TOO_LONG', 'INVALID_ID', 'INVALID_DATE', 'VALUE_NOT_ALLOWED', 'KIND_UNKNOWN',
   'CATEGORY_UNKNOWN', 'EXERCISE_UNKNOWN', 'NAME_TAKEN', 'DUPLICATE_ID', 'WITHDRAWAL_TARGET',
+  'INVALID_TIME', 'DUPLICATE_VALUE', 'TARGET_UNKNOWN', 'REMINDER_LIMIT',
 ] as const;
 
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -79,7 +80,7 @@ export const M = {
   notAllowed: (path: string, allowed: string) =>
     e('VALUE_NOT_ALLOWED', path, `${label(path)} hat einen nicht erlaubten Wert.`, `Erlaubt ist nur ${allowed}.`),
   kindUnknown: (path: string, kind: string) =>
-    e('KIND_UNKNOWN', path, `Die Art ${show(kind)} ist unbekannt.`, 'kind muss „exercise“, „program“, „breath“ oder „withdrawal“ sein.'),
+    e('KIND_UNKNOWN', path, `Die Art ${show(kind)} ist unbekannt.`, 'kind muss „exercise“, „program“, „breath“, „reminder“ oder „withdrawal“ sein.'),
   categoryUnknown: (path: string, value: string) =>
     e('CATEGORY_UNKNOWN', path, `Die Kategorie ${show(value)} ist unbekannt.`,
       'Erlaubt: strength, stretching, core, cardio, legs, upperBody, fullBody, warmup, cooldown.'),
@@ -95,4 +96,16 @@ export const M = {
   withdrawalTarget: (path: string) =>
     e('WITHDRAWAL_TARGET', path, 'Eine Rücknahme braucht genau eines von itemId und packageId; hier sind beide oder keines angegeben.',
       'Entweder itemId (ein Baustein) oder packageId (ein Paket) angeben, nicht beides.'),
+  invalidTime: (path: string) =>
+    e('INVALID_TIME', path, `${label(path)} ist keine gültige Uhrzeit.`,
+      `${label(path)} als hh:mm angeben, zweistellig, von 00:00 bis 23:59 (Ortszeit des Geräts), z. B. 18:00.`),
+  duplicateValue: (path: string, value: string) =>
+    e('DUPLICATE_VALUE', path, `Der Wert ${show(value)} kommt in dieser Liste schon vor.`,
+      'Jeden Wert höchstens einmal nennen; die doppelte Angabe entfernen.'),
+  targetUnknown: (path: string, id: string, what: string) =>
+    e('TARGET_UNKNOWN', path, `${label(path)} zeigt auf ${show(id)}, das ist ${what === 'Programm' ? 'kein bekanntes Programm' : 'keine bekannte Atemübung'} und nicht Teil dieser Lieferung.`,
+      `Die Kennung eines vorhandenen ${what}s verwenden oder das ${what} (kind „${what === 'Programm' ? 'program' : 'breath'}“) in derselben Lieferung mitliefern; Übungen, Programme und Atemübungen sind verschiedene Dinge.`),
+  reminderLimit: (path: string, count: number, max: number) =>
+    e('REMINDER_LIMIT', path, `Die Lieferung enthält ${count} Erinnerungen; erlaubt sind höchstens ${max}.`,
+      `Höchstens ${max} Erinnerungen von Claude gleichzeitig: weniger Erinnerungen liefern, ältere mit item_withdraw zurückziehen oder eine bestehende mit item_update ändern.`),
 };

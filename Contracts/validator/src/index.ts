@@ -3,16 +3,18 @@
 import { loadCatalog } from './catalog.ts';
 import type { DeliveryError, ValidationResult } from './messages.ts';
 import { M } from './messages.ts';
+import { checkReminder, collectTargetIds, REMINDER_MAX } from './reminder.ts';
+import type { TargetIds } from './reminder.ts';
 import {
-  checkDate, checkId, checkInt, checkSymbol, checkText, has, isDeliveryId, isObj, isScopedId, normalizeName, ptr,
+  checkDate, checkId, checkInt, checkSymbol, checkText, field, has, isDeliveryId, isObj, isScopedId, list, noUnknown, normalizeName, ptr,
 } from './rules.ts';
-import type { Obj } from './rules.ts';
+import type { Check, Obj } from './rules.ts';
 
 export { ERROR_CODES } from './messages.ts';
 export type { DeliveryError, ErrorCode, ValidationResult } from './messages.ts';
 
 export type KnownExercise = { id: string; name: string };
-export type ValidationContext = { knownExercises?: KnownExercise[] };
+export type ValidationContext = { knownExercises?: KnownExercise[]; knownPrograms?: string[]; knownBreaths?: string[] };
 
 const FORMAT = 'hhhaven.delivery/1';
 const CATEGORIES = ['strength', 'stretching', 'core', 'cardio', 'legs', 'upperBody', 'fullBody', 'warmup', 'cooldown'];
@@ -28,47 +30,14 @@ type State = {
   deliveryExerciseIds: Set<string>;
   seenItemIds: Set<string>;
   seenNames: Set<string>;
+  targets: TargetIds;
 };
-
-type Check = (v: unknown, path: string) => DeliveryError | null;
 
 const isItemId = (s: string): boolean => isScopedId(s, ['claude']);
 const itemIdCheck: Check = (v, p) => checkId(v, p, isItemId, ITEM_ID_FORM);
 const single = (max: number): Check => (v, p) => checkText(v, p, max, false);
 const multi = (max: number): Check => (v, p) => checkText(v, p, max, true);
 const int = (min: number, max: number): Check => (v, p) => checkInt(v, p, min, max);
-
-/** Prüft ein Feld des Objekts; gibt true zurück, wenn es vorhanden und fehlerfrei ist. */
-function field(st: State, o: Obj, key: string, base: string, required: boolean, check: Check): boolean {
-  const path = ptr(base, key);
-  if (!has(o, key)) {
-    if (required) st.errors.push(M.missing(path));
-    return false;
-  }
-  const err = check(o[key], path);
-  if (err !== null) st.errors.push(err);
-  return err === null;
-}
-
-function noUnknown(st: State, o: Obj, base: string, allowed: readonly string[]): void {
-  for (const key of Object.keys(o)) if (!allowed.includes(key)) st.errors.push(M.unknown(ptr(base, key)));
-}
-
-/** Liste prüfen: Typ, dann Größe. Gibt die Liste zurück (auch bei falscher Größe), sonst undefined. */
-function list(st: State, o: Obj, key: string, base: string, min: number, max: number): unknown[] | undefined {
-  const path = ptr(base, key);
-  if (!has(o, key)) {
-    st.errors.push(M.missing(path));
-    return undefined;
-  }
-  const v = o[key];
-  if (!Array.isArray(v)) {
-    st.errors.push(M.type(path, 'eine Liste'));
-    return undefined;
-  }
-  if (v.length < min || v.length > max) st.errors.push(M.listSize(path, v.length, min, max));
-  return v;
-}
 
 function checkPackage(st: State, pkg: unknown, path: string): void {
   if (!isObj(pkg)) {
@@ -207,13 +176,19 @@ function checkItem(st: State, item: unknown, base: string): void {
   if (!has(item, 'kind')) return void st.errors.push(M.missing(kindPath));
   const kind = item.kind;
   if (typeof kind !== 'string') return void st.errors.push(M.type(kindPath, 'ein Text'));
-  if (!['exercise', 'program', 'breath', 'withdrawal'].includes(kind)) return void st.errors.push(M.kindUnknown(kindPath, kind));
+  if (!['exercise', 'program', 'breath', 'reminder', 'withdrawal'].includes(kind)) return void st.errors.push(M.kindUnknown(kindPath, kind));
   checkIdentity(st, item, base, kind);
   if (kind !== 'withdrawal') field(st, item, 'revision', base, true, int(1, 1_000_000));
   if (kind === 'exercise') checkExercise(st, item, base);
   else if (kind === 'program') checkProgram(st, item, base);
   else if (kind === 'breath') checkBreath(st, item, base);
+  else if (kind === 'reminder') checkReminder(st, item, base);
   else checkWithdrawal(st, item, base);
+}
+
+/** Kennungsliste aus dem Prüfkontext; alles, was keine Liste von Texten ist, zählt als fehlend. */
+function idSet(v: unknown): Set<string> {
+  return new Set(Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []);
 }
 
 function newState(context: ValidationContext | undefined): State {
@@ -227,6 +202,7 @@ function newState(context: ValidationContext | undefined): State {
     deliveryExerciseIds: new Set(),
     seenItemIds: new Set(),
     seenNames: new Set(),
+    targets: { programs: idSet(context?.knownPrograms), breaths: idSet(context?.knownBreaths) },
   };
 }
 
@@ -240,6 +216,9 @@ export function validateDelivery(input: unknown, context?: ValidationContext): V
   const items = list(st, input, 'items', '', 1, 20);
   if (items !== undefined) {
     collectExerciseIds(st, items);
+    collectTargetIds(items, st.targets);
+    const reminders = items.filter((it) => isObj(it) && it.kind === 'reminder').length;
+    if (reminders > REMINDER_MAX) st.errors.push(M.reminderLimit('/items', reminders, REMINDER_MAX));
     items.forEach((item, i) => checkItem(st, item, ptr('/items', i)));
   }
   return { valid: st.errors.length === 0, errors: st.errors };

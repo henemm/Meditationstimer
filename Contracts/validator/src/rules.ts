@@ -3,6 +3,9 @@ import type { DeliveryError } from './messages.ts';
 import { isForbidden, M } from './messages.ts';
 
 export type Obj = Record<string, unknown>;
+export type Check = (v: unknown, path: string) => DeliveryError | null;
+/** Alles, was Prüffunktionen brauchen, um Fehler zu sammeln. */
+export type Sink = { errors: DeliveryError[] };
 
 export function isObj(v: unknown): v is Obj {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -102,4 +105,36 @@ export function normalizeName(s: string): string {
   }
   if (cur !== '') words.push(cur);
   return words.join(' ');
+}
+
+/** Prüft ein Feld des Objekts; gibt true zurück, wenn es vorhanden und fehlerfrei ist. */
+export function field(st: Sink, o: Obj, key: string, base: string, required: boolean, check: Check): boolean {
+  const path = ptr(base, key);
+  if (!has(o, key)) {
+    if (required) st.errors.push(M.missing(path));
+    return false;
+  }
+  const err = check(o[key], path);
+  if (err !== null) st.errors.push(err);
+  return err === null;
+}
+
+export function noUnknown(st: Sink, o: Obj, base: string, allowed: readonly string[]): void {
+  for (const key of Object.keys(o)) if (!allowed.includes(key)) st.errors.push(M.unknown(ptr(base, key)));
+}
+
+/** Liste prüfen: Typ, dann Größe. Gibt die Liste zurück (auch bei falscher Größe), sonst undefined. */
+export function list(st: Sink, o: Obj, key: string, base: string, min: number, max: number): unknown[] | undefined {
+  const path = ptr(base, key);
+  if (!has(o, key)) {
+    st.errors.push(M.missing(path));
+    return undefined;
+  }
+  const v = o[key];
+  if (!Array.isArray(v)) {
+    st.errors.push(M.type(path, 'eine Liste'));
+    return undefined;
+  }
+  if (v.length < min || v.length > max) st.errors.push(M.listSize(path, v.length, min, max));
+  return v;
 }
