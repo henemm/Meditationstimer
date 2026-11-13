@@ -135,7 +135,7 @@ function exerciseRef(st: State): Check {
 /** Prüft einen Schritt; gibt Arbeits- plus Pausenzeit zurück, wenn beide gültig sind, sonst undefined. */
 function checkStep(st: State, step: unknown, path: string): number | undefined {
   if (!isObj(step)) {
-    st.errors.push(M.type(path, 'ein Objekt'));
+    st.errors.push(M.type(path, 'ein Objekt', true));
     return undefined;
   }
   noUnknown(st, step, path, ['exerciseId', 'workSeconds', 'restSeconds', 'hint']);
@@ -200,7 +200,7 @@ function checkIdentity(st: State, item: Obj, base: string, kind: string): void {
 
 function checkItem(st: State, item: unknown, base: string): void {
   if (!isObj(item)) {
-    st.errors.push(M.type(base, 'ein Objekt'));
+    st.errors.push(M.type(base, 'ein Objekt', true));
     return;
   }
   const kindPath = ptr(base, 'kind');

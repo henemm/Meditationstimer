@@ -144,7 +144,8 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
 - `path` ist ein JSON Pointer (RFC 6901) auf die Fehlerstelle, z. B. `/items/0/steps/1/workSeconds`; die Wurzel ist `""`.
   Fehlendes Feld: Pfad des fehlenden Felds (`/why`). Unbekanntes Feld: Pfad dieses Felds.
 - `message` nennt auf Deutsch, was falsch ist, `hint` den Ausweg (Konzept 4: „Ablehnungen nennen den Ausweg“). Beide nie leer.
-  Fremde Inhalte (Werte und unbekannte Feldnamen) erscheinen darin höchstens 40 Code Points lang und ohne verbotene Zeichen (4).
+  Fremde Inhalte (Werte und unbekannte Feldnamen) erscheinen darin höchstens 40 Code Points lang (länger: 39 Code Points plus „…“),
+  verbotene Zeichen (4) als U+FFFD.
 - Fehlerort: Jeder Fehler an einem Feld hat den Pfad dieses Felds (z. B. `FORMAT_UNKNOWN` an `/format`, `INVALID_ID` an
   `/items/0/packageId`). Ausnahmen mit Pfad des Eintrags: `TOTAL_TOO_LONG`, `WITHDRAWAL_TARGET`. Je Feld höchstens ein Fehler.
   Vorrang je Feld: Typ, dann Muster bzw. Textregeln (4), dann Bereich, dann Bezug/Dublette. `WITHDRAWAL_TARGET` hindert nicht

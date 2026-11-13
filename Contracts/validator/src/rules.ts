@@ -1,6 +1,6 @@
 // Primitive Prüfregeln (Text, Zahl, Kennung, Symbol, Datum). Längen in Code Points.
 import type { DeliveryError } from './messages.ts';
-import { M } from './messages.ts';
+import { isForbidden, M } from './messages.ts';
 
 export type Obj = Record<string, unknown>;
 
@@ -14,12 +14,6 @@ export function has(o: Obj, key: string): boolean {
 
 export function ptr(base: string, key: string | number): string {
   return `${base}/${String(key).replaceAll('~', '~0').replaceAll('/', '~1')}`;
-}
-
-function isForbidden(cp: number, multiline: boolean): boolean {
-  if (cp === 0x0a) return !multiline;
-  return cp <= 0x1f || (cp >= 0x7f && cp <= 0x9f) || cp === 0x2028 || cp === 0x2029
-    || (cp >= 0x202a && cp <= 0x202e) || (cp >= 0x2066 && cp <= 0x2069);
 }
 
 const isBlankChar = (cp: number): boolean => cp === 0x20 || cp === 0xa0 || cp === 0x0a;
@@ -36,7 +30,9 @@ export function checkText(v: unknown, path: string, max: number, multiline: bool
 }
 
 export function checkInt(v: unknown, path: string, min: number, max: number): DeliveryError | null {
-  if (typeof v !== 'number' || !Number.isInteger(v)) return M.type(path, 'eine ganze Zahl');
+  if (typeof v !== 'number') return M.type(path, 'eine ganze Zahl');
+  if (!Number.isFinite(v) || Math.abs(v) > 1e9) return M.range(path, v, min, max);
+  if (!Number.isInteger(v)) return M.type(path, 'eine ganze Zahl');
   return v < min || v > max ? M.range(path, v, min, max) : null;
 }
 
@@ -102,8 +98,8 @@ export function normalizeName(s: string): string {
     if (c === ' ' || c === ' ') {
       if (cur !== '') words.push(cur);
       cur = '';
-    } else cur += c;
+    } else cur += c.toLowerCase();
   }
   if (cur !== '') words.push(cur);
-  return words.join(' ').toLowerCase();
+  return words.join(' ');
 }

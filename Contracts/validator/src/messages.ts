@@ -12,18 +12,31 @@ export type ErrorCode = (typeof ERROR_CODES)[number];
 export type DeliveryError = { code: ErrorCode; path: string; message: string; hint: string };
 export type ValidationResult = { valid: boolean; errors: DeliveryError[] };
 
-/** Letztes Pfadsegment (JSON Pointer entschlüsselt) als Feldname; Wurzel heißt „Lieferung“. */
-function label(path: string): string {
+/** Verbotene Zeichen (Spec Abschnitt 4), inklusive einzelner Surrogate; U+000A nur in mehrzeiligen Feldern erlaubt. */
+export function isForbidden(cp: number, multiline: boolean): boolean {
+  if (cp === 0x0a) return !multiline;
+  return cp <= 0x1f || (cp >= 0x7f && cp <= 0x9f) || cp === 0x2028 || cp === 0x2029
+    || (cp >= 0x202a && cp <= 0x202e) || (cp >= 0x2066 && cp <= 0x2069) || (cp >= 0xd800 && cp <= 0xdfff);
+}
+
+/** Fremdtext für Meldungen: verbotene Zeichen (auch Zeilenumbruch) werden zu U+FFFD, höchstens 40 Code Points. */
+function clean(value: string): string {
+  const cps = Array.from(value, (c) => c.codePointAt(0) as number);
+  const text = (list: number[]): string => list.map((cp) => String.fromCodePoint(isForbidden(cp, false) ? 0xfffd : cp)).join('');
+  return cps.length > 40 ? `${text(cps.slice(0, 39))}…` : text(cps);
+}
+
+/** Letztes Pfadsegment (JSON Pointer entschlüsselt) als Feldname; `index` = Segment ist ein Listenindex. */
+function label(path: string, index = false): string {
   if (path === '') return 'Die Lieferung';
   const parts = path.split('/');
   const last = (parts[parts.length - 1] ?? '').replaceAll('~1', '/').replaceAll('~0', '~');
-  return /^[0-9]+$/.test(last) ? `Eintrag ${last}` : `Feld „${last}“`;
+  return index ? `Eintrag ${clean(last)}` : `Feld „${clean(last)}“`;
 }
 
-/** Kürzt Fremdtext für die Anzeige in Meldungen. */
+/** Kürzt und bereinigt Fremdtext für die Anzeige in Meldungen. */
 function show(value: string): string {
-  const cps = [...value];
-  return `„${cps.length > 40 ? cps.slice(0, 40).join('') + '…' : value}“`;
+  return `„${clean(value)}“`;
 }
 
 function e(code: ErrorCode, path: string, message: string, hint: string): DeliveryError {
@@ -37,8 +50,8 @@ export const M = {
     e('FIELD_MISSING', path, `${label(path)} fehlt, ist aber Pflicht.`, `${label(path)} ergänzen.`),
   unknown: (path: string) =>
     e('FIELD_UNKNOWN', path, `${label(path)} ist im Format nicht vorgesehen.`, `${label(path)} entfernen; es sind nur die im Format beschriebenen Felder erlaubt.`),
-  type: (path: string, expected: string) =>
-    e('FIELD_TYPE', path, `${label(path)} hat den falschen Typ.`, `${label(path)} muss ${expected} sein.`),
+  type: (path: string, expected: string, index = false) =>
+    e('FIELD_TYPE', path, `${label(path, index)} hat den falschen Typ.`, `${label(path, index)} muss ${expected} sein.`),
   textEmpty: (path: string) =>
     e('TEXT_EMPTY', path, `${label(path)} ist leer oder besteht nur aus Leerzeichen.`, `${label(path)} mit echtem Text füllen (mindestens 1 sichtbares Zeichen).`),
   tooLong: (path: string, len: number, max: number) =>
@@ -50,7 +63,7 @@ export const M = {
     e('INVALID_SYMBOL', path, `${label(path)} ist kein gültiges Symbol: ${why}.`,
       'Ein bis 16 Zeichen, z. B. ein Emoji; keine Leerzeichen, keine Buchstaben A–Z oder Ziffern 0–9.'),
   range: (path: string, value: number, min: number, max: number) =>
-    e('OUT_OF_RANGE', path, `${label(path)} ist ${value} und liegt ${value < min ? 'unter' : 'über'} dem erlaubten Bereich ${min} bis ${max}.`,
+    e('OUT_OF_RANGE', path, `${label(path)} ist ${Number.isFinite(value) ? value : 'unendlich'} und liegt ${value < min ? 'unter' : 'über'} dem erlaubten Bereich ${min} bis ${max}.`,
       `${label(path)} muss zwischen ${min} und ${max} liegen.`),
   listSize: (path: string, len: number, min: number, max: number) =>
     e('LIST_SIZE', path, `${label(path)} hat ${len} Einträge; erlaubt sind ${min} bis ${max}.`,
