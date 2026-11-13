@@ -191,7 +191,7 @@ Umsetzung der Lieferwerkzeuge (B2a-5):
 
 Nachträge nach der Adversary-Prüfung (B2a-6):
 - **Ein Schreiber je Konto:** Alle Lieferwerkzeuge laufen je Konto nacheinander: eine Transaktion mit `pg_advisory_xact_lock` auf das
-  Konto umschließt Lesen des Bestands, Prüfen und Ablegen bzw. Überholen. Zwei gleichzeitige `item_update` mit derselben
+  Konto (Schlüssel `hashtextextended('hhhaven:' || account_id, 0)`) umschließt Lesen des Bestands, Prüfen und Ablegen bzw. Überholen. Zwei gleichzeitige `item_update` mit derselben
   `basedOnRevision` ergeben genau eine Lieferung; der andere Aufruf wird mit „neu lesen“ abgelehnt.
 - **Doppelte Rücknahme:** Liegt für den Baustein bzw. das Paket schon eine Rücknahme-Lieferung in `waiting`, `claimed` oder `accepted`
   (die Abschrift zeigt es noch nicht), wird eine weitere Rücknahme abgelehnt („Rücknahme liegt schon bereit“).
