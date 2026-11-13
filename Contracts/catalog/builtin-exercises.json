@@ -1,0 +1,221 @@
+{
+  "catalogVersion": 1,
+  "note": "Feste Kennungen der eingebauten Übungen (Quelle: Meditationstimer iOS/Services/ExerciseDatabase.swift, Stand 13.11.2026). Kennungen werden nie geändert oder neu vergeben; neue Einträge nur anhängen.",
+  "exercises": [
+    {
+      "id": "builtin.burpees",
+      "name": "Burpees",
+      "category": "fullBody"
+    },
+    {
+      "id": "builtin.mountain-climbers",
+      "name": "Mountain Climbers",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.high-knees",
+      "name": "High Knees",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.hampelmaenner",
+      "name": "Hampelmänner",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.butt-kicks",
+      "name": "Butt Kicks",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.marschieren-auf-der-stelle",
+      "name": "Marschieren auf der Stelle",
+      "category": "warmup"
+    },
+    {
+      "id": "builtin.jump-kniebeugen",
+      "name": "Jump-Kniebeugen",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.planke",
+      "name": "Planke",
+      "category": "core"
+    },
+    {
+      "id": "builtin.planke-knie",
+      "name": "Planke (Knie)",
+      "category": "core"
+    },
+    {
+      "id": "builtin.seitliche-planke-links",
+      "name": "Seitliche Planke links",
+      "category": "core"
+    },
+    {
+      "id": "builtin.seitliche-planke-rechts",
+      "name": "Seitliche Planke rechts",
+      "category": "core"
+    },
+    {
+      "id": "builtin.fahrrad-crunches",
+      "name": "Fahrrad-Crunches",
+      "category": "core"
+    },
+    {
+      "id": "builtin.beinheben",
+      "name": "Beinheben",
+      "category": "core"
+    },
+    {
+      "id": "builtin.russian-twists",
+      "name": "Russian Twists",
+      "category": "core"
+    },
+    {
+      "id": "builtin.kniebeugen",
+      "name": "Kniebeugen",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.ausfallschritte",
+      "name": "Ausfallschritte",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.reverse-ausfallschritte",
+      "name": "Reverse-Ausfallschritte",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.ausfallschritte-gehend",
+      "name": "Ausfallschritte gehend",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.glute-bridges",
+      "name": "Glute Bridges",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.einbeiniges-kreuzheben-links",
+      "name": "Einbeiniges Kreuzheben links",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.einbeiniges-kreuzheben-rechts",
+      "name": "Einbeiniges Kreuzheben rechts",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.bulgarische-split-kniebeugen-links",
+      "name": "Bulgarische Split-Kniebeugen links",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.bulgarische-split-kniebeugen-rechts",
+      "name": "Bulgarische Split-Kniebeugen rechts",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.wadenheben",
+      "name": "Wadenheben",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.knieheben-stehend",
+      "name": "Knieheben stehend",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.liegestuetze",
+      "name": "Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.wandliegestuetze",
+      "name": "Wandliegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.diamond-liegestuetze",
+      "name": "Diamond-Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.breite-liegestuetze",
+      "name": "Breite Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.pike-liegestuetze",
+      "name": "Pike-Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.planke-zu-herabschauender-hund",
+      "name": "Planke zu Herabschauender Hund",
+      "category": "fullBody"
+    },
+    {
+      "id": "builtin.quadrizeps-dehnung-links",
+      "name": "Quadrizeps-Dehnung links",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.quadrizeps-dehnung-rechts",
+      "name": "Quadrizeps-Dehnung rechts",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.hamstring-dehnung-links",
+      "name": "Hamstring-Dehnung links",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.hamstring-dehnung-rechts",
+      "name": "Hamstring-Dehnung rechts",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.hueftbeuger-dehnung-links",
+      "name": "Hüftbeuger-Dehnung links",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.hueftbeuger-dehnung-rechts",
+      "name": "Hüftbeuger-Dehnung rechts",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.waden-dehnung-links",
+      "name": "Waden-Dehnung links",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.waden-dehnung-rechts",
+      "name": "Waden-Dehnung rechts",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.schmetterlings-dehnung",
+      "name": "Schmetterlings-Dehnung",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.kindspose",
+      "name": "Kindspose",
+      "category": "cooldown"
+    },
+    {
+      "id": "builtin.beinpendel",
+      "name": "Beinpendel",
+      "category": "warmup"
+    },
+    {
+      "id": "builtin.hueftkreisen",
+      "name": "Hüftkreisen",
+      "category": "warmup"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "description": "Atem-Gesamtdauer genau 3600 s (60 Runden × 60 s).",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Grenzfall.",
+    "items": [
+      {
+        "kind": "breath",
+        "itemId": "claude.abendatem",
+        "revision": 1,
+        "name": "Abendatem",
+        "symbol": "🌙",
+        "description": "Langes Ausatmen zum Runterkommen.",
+        "inhaleSeconds": 20,
+        "holdInSeconds": 10,
+        "exhaleSeconds": 20,
+        "holdOutSeconds": 10,
+        "rounds": 60
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

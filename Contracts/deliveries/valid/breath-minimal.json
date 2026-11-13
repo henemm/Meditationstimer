@@ -1,0 +1,27 @@
+{
+  "description": "Atemübung ohne Beschreibung.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Kurze Atempause.",
+    "items": [
+      {
+        "kind": "breath",
+        "itemId": "claude.abendatem",
+        "revision": 1,
+        "name": "Abendatem",
+        "symbol": "🌙",
+        "inhaleSeconds": 4,
+        "holdInSeconds": 2,
+        "exhaleSeconds": 6,
+        "holdOutSeconds": 0,
+        "rounds": 10
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

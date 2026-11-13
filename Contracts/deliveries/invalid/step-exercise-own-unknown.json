@@ -1,0 +1,40 @@
+{
+  "description": "Eigene Übung, die nicht im Prüfkontext steht.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": [
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 1,
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurze Einheit für den unteren Rücken.",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "own.7d3e9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+            "workSeconds": 30,
+            "restSeconds": 10
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "EXERCISE_UNKNOWN",
+        "path": "/items/0/steps/0/exerciseId"
+      }
+    ],
+    "reason": "Diese eigene Übung ist nicht bekannt.",
+    "remedy": "Lies den Katalog neu und verwende eine vorhandene Kennung.",
+    "schemaRejects": false
+  }
+}

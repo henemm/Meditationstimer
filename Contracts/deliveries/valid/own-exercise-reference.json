@@ -1,0 +1,39 @@
+{
+  "description": "Programm, das eine eigene Übung von Henning aus dem Prüfkontext verwendet.",
+  "context": {
+    "knownExercises": [
+      {
+        "id": "own.7d3e9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+        "name": "Schulterkreisen"
+      }
+    ]
+  },
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Kopie mit deiner eigenen Übung.",
+    "items": [
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 1,
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurze Einheit für den unteren Rücken.",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "own.7d3e9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+            "workSeconds": 60,
+            "restSeconds": 30
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

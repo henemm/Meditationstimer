@@ -1,0 +1,25 @@
+{
+  "description": "Eintrag ist ein Text.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": [
+      "Rücken A"
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "FIELD_TYPE",
+        "path": "/items/0"
+      }
+    ],
+    "reason": "Der Eintrag ist kein Objekt.",
+    "remedy": "Liefere jeden Baustein als Objekt mit kind.",
+    "schemaRejects": true
+  }
+}

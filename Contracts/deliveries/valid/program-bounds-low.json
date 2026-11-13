@@ -1,0 +1,31 @@
+{
+  "description": "Untere Grenzen: 1 Runde, 1 Schritt, 1 s Arbeit, 0 s Pause, Revision 1, eine einzige Lieferung.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Grenzfall.",
+    "items": [
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 1,
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurze Einheit für den unteren Rücken.",
+        "rounds": 1,
+        "steps": [
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 1,
+            "restSeconds": 0
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

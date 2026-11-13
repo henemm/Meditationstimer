@@ -1,0 +1,95 @@
+{
+  "description": "20 Einträge, die größte erlaubte Zahl.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Aufräumen.",
+    "items": [
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-0"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-1"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-2"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-3"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-4"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-5"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-6"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-7"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-8"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-9"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-10"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-11"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-12"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-13"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-14"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-15"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-16"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-17"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-18"
+      },
+      {
+        "kind": "withdrawal",
+        "itemId": "claude.alt-19"
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

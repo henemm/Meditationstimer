@@ -1,0 +1,42 @@
+{
+  "description": "Neue Übung heißt wie eine schon bekannte mit anderer Kennung.",
+  "context": {
+    "knownExercises": [
+      {
+        "id": "claude.vierfuessler-diagonal",
+        "name": "Vierfüßler diagonal"
+      }
+    ]
+  },
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Zwei kurze Einheiten für den Rücken, ohne Sprünge, wie besprochen.",
+    "items": [
+      {
+        "kind": "exercise",
+        "itemId": "claude.vierfuessler-neu",
+        "revision": 1,
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "effect": "Stärkt die tiefe Rückenmuskulatur und den Rumpf, schult das Gleichgewicht.",
+        "instructions": "1) Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte\n2) Rechten Arm und linkes Bein strecken, kurz halten\n3) Zurück und Seite wechseln. Rücken bleibt gerade."
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "NAME_TAKEN",
+        "path": "/items/0/name"
+      }
+    ],
+    "reason": "Eine Übung mit diesem Namen gibt es schon.",
+    "remedy": "Verwende claude.vierfuessler-diagonal oder ändere jene mit item_update.",
+    "schemaRejects": false
+  }
+}

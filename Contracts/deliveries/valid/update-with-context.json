@@ -1,0 +1,44 @@
+{
+  "description": "Geänderte Fassung (revision 2), die eine früher gelieferte Übung aus dem Prüfkontext verwendet.",
+  "context": {
+    "knownExercises": [
+      {
+        "id": "claude.vierfuessler-diagonal",
+        "name": "Vierfüßler diagonal"
+      }
+    ]
+  },
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+    "source": "claude",
+    "createdAt": "2026-11-13T10:15:00Z",
+    "why": "Rücken A war zu lang, jetzt kürzer.",
+    "items": [
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-a",
+        "revision": 2,
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurze Einheit für den unteren Rücken.",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "claude.vierfuessler-diagonal",
+            "workSeconds": 30,
+            "restSeconds": 15
+          },
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 30,
+            "restSeconds": 15
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}
