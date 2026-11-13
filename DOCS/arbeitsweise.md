@@ -12,6 +12,12 @@ Quelle: Vorgaben des Product Owners Henning (Stand 2026-11-08).
 - Nachrichten an Henning: Ergebnis statt Denkweg, kein Git-Vokabular, keine Befehle zum Eintippen.
 - Äußert Henning eine Präferenz, wird sie in derselben Antwort dauerhaft im Repo festgehalten.
 
+## Einfachheit (PO-Vorgabe 13.11.2026)
+
+- Immer den einfachen Weg wählen; nichts komplizierter machen, als es ist. Bewährtes übernehmen statt neu erfinden (z. B. Loose Ends).
+- Beim Problem bleiben: erst klären, was erreicht werden soll, bevor Detailfragen gestellt werden. Rechte (was Claude darf) und
+  Ort der Wahrheit (wer führt) sind getrennte Fragen.
+
 ## Vorgehen bei Fehlern und Änderungen
 
 1. Zuerst im Internet recherchieren: wörtliche Fehlermeldung, Stand der Apple-Schnittstelle in der Zielversion, WWDC/Doku, Fallberichte.

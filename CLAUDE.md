@@ -14,6 +14,7 @@
 
 Weitere feste Projektregeln (Begründung und Anlässe: `DOCS/arbeitsweise.md`):
 
+- **Einfach statt kompliziert (PO 13.11.2026):** immer den einfachen Weg wählen, Bewährtes übernehmen (z. B. Loose Ends), nichts komplizierter machen als nötig; beim Problem bleiben, bevor Detailfragen kommen.
 - **Gründlichkeit vor Geschwindigkeit:** erst Fehlermeldung/Schnittstelle im Internet nachschlagen, Fehler reproduzieren, Root Cause belegen, dann fixen. Fertig heißt: Feature funktioniert beweisbar (alle Tests grün), nicht „Code geschrieben".
 - **Keine manuellen Tests für Henning.** Alles automatisiert (Unit- und UI-Tests, TDD). Nie „bitte auf dem Gerät prüfen". Bei UI-Fehlern im Screenshot gilt der Screenshot, nicht der Code.
 - **Hennings Geräte nur auf sein Wort:** nichts auf seinem iPhone/iPad/Watch/Mac, auch nichts Lesendes, bevor er wörtlich „jetzt ist ein Test möglich" schreibt. Simulator und eigene Rechner-Ressourcen sind frei.

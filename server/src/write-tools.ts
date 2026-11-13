@@ -210,7 +210,6 @@ async function updateLocked(db: Db, owner: string, args: Doc): Promise<Outcome> 
   const entries = ownEntries(snap, itemId);
   if (typeof entries === "string") return entries;
   const state = entries.find((e) => e.source === "transcript")?.state;
-  if (state === "adapted") return refuse("Henning hat ihn angepasst.", "Biete eine Kopie an (neuer Baustein).");
   if (state === "withdrawn") return refuse("Der Baustein ist zurückgenommen.", "Biete bei Bedarf eine Kopie als neuen Baustein an.");
   const latest = highest(entries);
   if (basedOnRevision !== latest.revision) return refuse("Stand hat sich geändert, bitte neu lesen.", "Mit show den aktuellen Stand holen und basedOnRevision anpassen.");

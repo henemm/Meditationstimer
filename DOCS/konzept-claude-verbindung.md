@@ -1,6 +1,6 @@
 # Konzept: Claude-Verbindung für Healthy Habits Haven
 
-**Stand:** 13.11.2026 · **Status:** Konzept, noch keine Umsetzung · **Grundlage:** vier Fragerunden mit dem PO, Auswertung von Healthy Habits, Loose Ends und Frieda reist, Recherche zum Stand der Technik
+**Stand:** 13.11.2026 · **Status:** Dienst-Seite umgesetzt (B0, B2a, B2b, B3a–B6a), App-Seite und Bereitstellung offen · **Grundlage:** vier Fragerunden mit dem PO, Auswertung von Healthy Habits, Loose Ends und Frieda reist, Recherche zum Stand der Technik
 
 ---
 
@@ -36,6 +36,7 @@ Das Denken bleibt bei Claude, die Regeln und das Abspielen bleiben in der App. D
 | Annahmen aus Abschnitt 16 | Alle fünf bestätigt. |
 | Challenges im Kalender | Zeitlich begrenzte Challenges stehen als Leiste über dem Kalender (Idee 3), nicht in den Tageskreisen. Weitere Kalender-Fragen siehe 9.1. |
 | Neue Gewohnheiten gleichzeitig (13.11.2026) | Claude stößt von sich aus höchstens **zwei** neue Gewohnheiten bzw. laufende Stufenpläne gleichzeitig an; die nächste erst, wenn eine davon sitzt oder endet. Wünscht Henning ausdrücklich mehr, weist Claude einmal auf die Grenze hin und folgt dann seinem Wunsch. Beobachtende Gewohnheiten zählen nicht mit. Gilt ab B6a (#64) als Grundregel in der Server-Anweisung. |
+| Ort der Wahrheit (13.11.2026, bestätigt) | Wie Loose Ends: Das iPhone ist die Wahrheit, der Server hält eine Kopie (Abschrift), Claude arbeitet über die Verbindung mit dieser Kopie. Ändern sich Daten auf beiden Seiten, gewinnt das iPhone. Claude darf auch Bausteine ändern oder zurückziehen, die Henning angepasst hat, solange es den aktuellen Stand kannte. Der einfache Weg hat Vorrang. |
 
 ## 3. Ausgangslage
 
@@ -201,8 +202,8 @@ Neu in der App: ein kleines Tagebuch der Einheiten, das festhält, welches Progr
 ## 9. In der App sichtbar
 
 - **Kennzeichnung:** Geliefertes trägt ein kleines Zeichen „von Claude". In der Detailansicht stehen Datum, Paket und Warum.
-- **Zurücknehmen:** Einzeln oder als Paket. Zurückgenommenes verschwindet aus den Listen, bleibt wiederherstellbar; Einträge und Verlauf bleiben erhalten.
-- **Selbst ändern:** Henning kann Geliefertes bearbeiten wie Eigenes. Es gilt dann als angepasst; Claude überschreibt es nicht blind.
+- **Zurücknehmen und Löschen (PO 13.11.2026):** Henning löscht Geliefertes wie jeden anderen Baustein (kein Papierkorb). Zieht Claude etwas zurück, verschwindet es ebenso aus der App, einzeln oder als Paket. Absolvierte Einheiten in Apple Health bleiben erhalten.
+- **Selbst ändern:** Henning kann Geliefertes bearbeiten wie Eigenes. Claude darf es danach weiter ändern oder zurückziehen; das iPhone lehnt nur ab, was Claude nicht kennen konnte (Änderung nach der letzten Abschrift).
 - **Einstellungen:** Abschnitt „Claude-Verbindung" mit Anmelden, Zeitpunkt des letzten Abgleichs, Liste der Lieferungen samt Stand, „Was Claude sieht" als Klartext und „Verbindung trennen" (löscht alles beim Dienst).
 - **Abgelehntes:** Was die App nicht annehmen konnte, steht mit Grund in der Liste und geht als Meldung an Claude zurück.
 
@@ -291,7 +292,7 @@ Grundregeln, die der Dienst Claude zu Beginn jedes Gesprächs mitgibt:
 | Tür | Liste zugelassener Apple-Konten, zunächst nur Henning. |
 | Was der Dienst speichert | Konto, die jeweils letzte Abschrift, die Lieferungen mit Verlauf, Bausteinwünsche. Sonst nichts. |
 | Betrieb | Wie Loose Ends: nächtliche Sicherung außer Haus, Gesundheitsprüfung, Alarm nur bei Ausfall, Drosselung je Bereich. |
-| Regeln an zwei Stellen | Dienst und App prüfen beide. Gegen Auseinanderlaufen dient ein gemeinsamer Satz Beispiel-Lieferungen, den beide Seiten in ihren automatischen Tests gleich beurteilen müssen. |
+| Regeln an einer Stelle (13.11.2026, Einfachheit) | Der Dienst prüft jede Lieferung mit dem Referenz-Prüfer; die App liest nur sauber ein und übernimmt (wie Loose Ends). Der gemeinsame Beispielsatz dient der App als Test, dass sie alle gültigen Lieferungen lesen kann. |
 | Schalter | Die Verbindung ist in der Store-Version ausgeschaltet und unsichtbar, wie bei Loose Ends. |
 
 **Neu in der App:** Netzwerkcode und Anmeldung (bisher keins von beiden), feste Kennungen für Übungen und Programme, Herkunftsangaben, Tagebuch der Einheiten, die Bausteine Impuls und Challenge, Hinweis je Übung, Erinnerung mit Ziel. Die Tracker-Datenbank bekommt dafür erstmals eine neue Fassung; die Umstellung bestehender Daten wird mit automatischen Tests abgesichert.
@@ -321,7 +322,7 @@ Jede Stufe endet mit etwas Benutzbarem und läuft durch den normalen Ablauf mit 
 
 Die Reihenfolge von 2 bis 4 ist tauschbar. Stufe 4 braucht den Rückweg aus Stufe 2 für die Notizen.
 
-**Schnitt für die Umsetzung (13.11.2026):** Die Stufen sind in kleinere Scheiben in zwei Spuren zerlegt, damit regelmäßig etwas Spürbares ankommt: Spur A verbessert die App auch ohne Claude (Tagesansicht, Hinweis je Übung, Tagebuch mit Rückmeldung, Kalender), Spur B bringt Claude, zuerst über eine Brücke per Link oder Datei, dann über den Dienst. Jede Aufgabe trägt im Titel, ob sie in der Cloud, nur am Mac (Xcode) oder nur mit Serverzugang machbar ist. Reihenfolge und Aufgaben: Epic #44 mit den Unteraufgaben #46 bis #65.
+**Schnitt für die Umsetzung (13.11.2026):** Die Stufen sind in kleinere Scheiben in zwei Spuren zerlegt, damit regelmäßig etwas Spürbares ankommt: Spur A verbessert die App auch ohne Claude (Tagesansicht, Hinweis je Übung, Tagebuch mit Rückmeldung, Kalender), Spur B bringt Claude über den Dienst (die zunächst geplante Brücke per Link oder Datei entfällt, PO-Entscheidung 13.11., Abschnitt 2). Jede Aufgabe trägt im Titel, ob sie in der Cloud, nur am Mac (Xcode) oder nur mit Serverzugang machbar ist. Reihenfolge und Aufgaben: Epic #44 mit den Unteraufgaben #46 bis #65.
 
 ## 14. Risiken
 
