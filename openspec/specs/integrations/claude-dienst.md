@@ -163,6 +163,27 @@ Regeln der Lieferwerkzeuge:
   Rücknahme verschickt.
 - `own.*` und `builtin.*` lassen sich weder ändern noch zurückziehen (Grundregel 7).
 
+Umsetzung der Lieferwerkzeuge (B2a-5):
+- Eingaben: `exercise_define {name, nameEn?, category, effect, instructions, notes?, why, package?}`, `program_create {name, symbol,
+  description?, rounds, steps: [{exerciseId, workSeconds, restSeconds, hint?}], why, package?}`, `breath_create {name, symbol,
+  description?, inhaleSeconds, holdInSeconds, exhaleSeconds, holdOutSeconds, rounds, why, package?}`, `item_update {itemId,
+  basedOnRevision, why, fields}` (`fields` = vollständige neue Fassung wie bei der jeweiligen Erstellung, ohne `why`/`package`; das Paket
+  bleibt), `item_withdraw {itemId? | package?, why}` (genau eins), `wish_report {text, context?}`. Die MCP-Eingabeschemas sind locker
+  (Typen), die eigentliche Prüfung macht `validateDelivery`, damit Claude dieselben Gründe und Auswege bekommt wie die App.
+- Jeder Aufruf erzeugt höchstens **eine** Lieferung mit genau einem Eintrag. Antwort: `{deliveryId, itemId, revision, state: "waiting"}`
+  bzw. bei Rücknahme `{deliveryId?, state, superseded: [deliveryId…]}`. Ablehnung (`isError`): je Fehler eine Zeile
+  „`path`: message Ausweg: hint“; nichts wird gespeichert.
+- `itemId` = `claude.` + Name (Kleinbuchstaben, ä→ae, ö→oe, ü→ue, ß→ss, sonst nicht a–z/0–9 → `-`, Folgen zusammengefasst, Rand-`-`
+  weg, höchstens 40 Zeichen) + `-` + 6 Zufallszeichen a–z0–9. `packageId` = `claude.` + Paketname nach derselben Regel ohne Zufall.
+- Bekannte Fassung eines Bausteins = höchste `revision` aus Abschrift und Lieferungen in `waiting`/`claimed`/`accepted`. Eigentum: der
+  Baustein steht mit `origin: "claude"` in der Abschrift oder in einer Lieferung dieses Kontos; sonst „Nur eigene Lieferungen“.
+- `item_withdraw`: Alle wartenden Lieferungen, die den Baustein bzw. das Paket enthalten, werden `superseded`. Eine Rücknahme-Lieferung
+  entsteht nur, wenn etwas davon schon in der App ist (Abschrift, oder Lieferung `claimed`/`accepted`). Ein schon zurückgenommener
+  Baustein (Abschrift `withdrawn`) wird abgelehnt.
+- `wish_report`: Tabelle `wishes(id uuid, account_id, created_at, text, context)`; Antwort `{wishId}`.
+- Prüfer-Gleichlauf: Für jede Datei in `Contracts/deliveries/` ergibt das Einreichen ihres Inhalts über das passende Werkzeug dieselbe
+  Annahme bzw. Ablehnung wie der Prüfer, soweit sie über ein Werkzeug ausdrückbar ist (Umschlagfelder vergibt der Dienst).
+
 **Server-Anweisung** (`instructions` des MCP-Servers): die elf Grundregeln aus Konzept Abschnitt 10, wörtlich, dazu: „Lieferungen
 erscheinen beim nächsten Öffnen von Healthy Habits“ und „Trainings sind Vorschläge von Claude und kein medizinischer Rat“.
 
