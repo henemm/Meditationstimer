@@ -43,7 +43,7 @@ export function packageOf(name: unknown): Doc | undefined {
 // Bestand aus Abschrift und Lieferungen (waiting, claimed, accepted) in einer Form.
 type Known = {
   id: string; kind: Kind; revision: number; name: unknown; pkg?: Doc; at?: number;
-  source: "transcript" | "waiting" | "claimed" | "accepted"; state?: string; origin?: string; enabled?: boolean;
+  source: "transcript" | "waiting" | "claimed" | "accepted"; state?: string; origin?: string; enabled?: boolean; startDate?: string;
 };
 type Snapshot = {
   entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[]; programs: string[]; breaths: string[]; trackers: string[];
@@ -55,6 +55,7 @@ function fromTranscript(transcript: Doc | undefined): Known[] {
   return LISTS.flatMap(([list, kind]) => ((transcript?.[list] ?? []) as Doc[]).map((e): Known => ({
     id: e.id, kind, revision: e.revision ?? 1, name: e.name ?? e.title, source: "transcript", state: e.state, origin: e.origin,
     ...(e.enabled === undefined ? {} : { enabled: e.enabled }),
+    ...(typeof e.startDate === "string" ? { startDate: e.startDate } : {}),
     ...(typeof e.packageId === "string" ? { pkg: { packageId: e.packageId, name: e.packageName ?? e.packageId.replace(/^claude\./, "") } } : {}),
   })));
 }
@@ -64,6 +65,7 @@ function fromDeliveries(rows: KnownDelivery[]): Known[] {
     const doc = row.delivery as Doc;
     return (doc.items as Doc[]).filter((i) => i.kind !== "withdrawal").map((i): Known => ({
       id: i.itemId, kind: i.kind, revision: i.revision, name: i.name ?? i.title, source: row.state, at,
+      ...(typeof i.startDate === "string" ? { startDate: i.startDate } : {}),
       ...(isRecord(doc.package) ? { pkg: doc.package } : {}),
     }));
   });
@@ -114,13 +116,16 @@ function envelope(why: unknown, pkg: Doc | undefined, items: Doc[]): Doc {
 const errorLine = (e: DeliveryError): string => `${e.path === "" ? "Lieferung" : e.path}: ${e.message} Ausweg: ${e.hint}`;
 
 // Der Prüfer aus B0 ist die einzige Instanz für die Form; ohne Fehler wird abgelegt, sonst nichts.
-function check(doc: Doc, snap: Snapshot): string | undefined {
-  const { errors } = validateDelivery(doc, { knownExercises: snap.exercises, knownPrograms: snap.programs, knownBreaths: snap.breaths, knownTrackers: snap.trackers });
+function check(doc: Doc, snap: Snapshot, keepStartDate?: string): string | undefined {
+  const { errors } = validateDelivery(doc, {
+    knownExercises: snap.exercises, knownPrograms: snap.programs, knownBreaths: snap.breaths, knownTrackers: snap.trackers,
+    ...(keepStartDate === undefined ? {} : { keepStartDate }),
+  });
   return errors.length === 0 ? undefined : `Die Lieferung wurde abgelehnt, nichts wurde gespeichert:\n${errors.map(errorLine).join("\n")}`;
 }
 
-async function submit(pool: Db, owner: string, snap: Snapshot, doc: Doc, answer: Doc): Promise<Outcome> {
-  const problem = check(doc, snap);
+async function submit(pool: Db, owner: string, snap: Snapshot, doc: Doc, answer: Doc, keepStartDate?: string): Promise<Outcome> {
+  const problem = check(doc, snap, keepStartDate);
   if (problem !== undefined) return problem;
   await putDelivery(pool, owner, doc as { deliveryId: string });
   return { deliveryId: doc.deliveryId, ...answer, state: "waiting" };
@@ -214,7 +219,9 @@ async function updateLocked(db: Db, owner: string, args: Doc): Promise<Outcome> 
   if (reserved !== undefined) return reserved;
   const revision = latest.revision + 1;
   const doc = envelope(why, latest.pkg, [{ ...fields, kind: latest.kind, itemId, revision }]);
-  return submit(db, owner, snap, doc, { itemId, revision });
+  // Laufende Challenge: unverändertes Startdatum der höchsten bekannten Fassung bleibt zulässig.
+  const keep = latest.kind === "challenge" ? latest.startDate : undefined;
+  return submit(db, owner, snap, doc, { itemId, revision }, keep);
 }
 
 // Wartende Lieferungen (Kennungen), die einen der Bausteine enthalten.

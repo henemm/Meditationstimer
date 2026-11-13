@@ -11,7 +11,7 @@ const GOAL_TYPES = ['meditation', 'workout', 'tracker'];
 const TRACKER_ID_FORM = 'Muster: „builtin.“, „own.“ oder „claude.“ gefolgt von 2–63 Zeichen aus a–z, 0–9 und „-“ (nicht am Anfang).';
 
 /** `createdDay`: UTC-Tag von createdAt als Tageszahl, nur wenn createdAt gültig ist; `trackers`: bekannte Tracker-Kennungen. */
-export type ChallengeState = Sink & { createdDay: number | undefined; trackers: Set<string> };
+export type ChallengeState = Sink & { createdDay: number | undefined; keepStartDate: string | undefined; trackers: Set<string> };
 
 /** Startdatum: echtes Datum, dann Zeitfenster relativ zum UTC-Tag von createdAt. */
 function checkStart(st: ChallengeState, item: Obj, base: string): void {
@@ -19,7 +19,7 @@ function checkStart(st: ChallengeState, item: Obj, base: string): void {
   if (!ok || st.createdDay === undefined) return;
   const start = parseDay(item.startDate) as number;
   const path = ptr(base, 'startDate');
-  if (start < st.createdDay - 1) st.errors.push(M.startInPast(path));
+  if (start < st.createdDay - 1 && item.startDate !== st.keepStartDate) st.errors.push(M.startInPast(path));
   else if (start > st.createdDay + START_LEAD) st.errors.push(M.startTooLate(path));
 }
 

@@ -83,7 +83,7 @@ function buildingFromOpen(open: OpenDelivery[], known: Set<string>, today: numbe
   const rows: Building[] = [];
   for (const x of items) {
     if (known.has(x.i.itemId) || withdrawn(x) || rows.some((r) => r.id === x.i.itemId)) continue;
-    if (x.i.kind === "tracker") rows.push({ id: x.i.itemId, name: x.i.name, kind: "tracker", since: x.at });
+    if (x.i.kind === "tracker" && x.i.mode !== "awareness") rows.push({ id: x.i.itemId, name: x.i.name, kind: "tracker", since: x.at });
     const entry = x.i.kind === "challenge" ? ({ startDate: x.i.startDate, stages: x.i.stages } as Entry) : undefined;
     if (entry !== undefined && hasGoal(entry) && lastDay(entry) >= today) rows.push({ id: x.i.itemId, name: x.i.title, kind: "challenge", since: x.i.startDate });
   }
@@ -98,7 +98,7 @@ export function buildingDoc(transcript: Transcript | undefined, open: OpenDelive
   const all = lists(transcript);
   const today = dayOf(transcript === undefined ? now.getTime() : Date.parse(transcript.generatedAt));
   const active = (e: Entry) => e.origin === "claude" && e.state === "active";
-  const trackers = all.tracker.filter(active)
+  const trackers = all.tracker.filter(active).filter((e) => e.mode !== "awareness")
     .filter((e) => e.deliveredAt === undefined || now.getTime() - Date.parse(e.deliveredAt) <= TRACKER_BUILDING_DAYS * DAY)
     .map((e): Building => ({ id: e.id, name: e.name, kind: "tracker", since: e.deliveredAt ?? transcript!.generatedAt }));
   const challenges = all.challenge.filter(active).filter((e) => hasGoal(e) && lastDay(e) >= today)

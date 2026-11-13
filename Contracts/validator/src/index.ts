@@ -16,7 +16,7 @@ export { ERROR_CODES } from './messages.ts';
 export type { DeliveryError, ErrorCode, ValidationResult } from './messages.ts';
 
 export type KnownExercise = { id: string; name: string };
-export type ValidationContext = { knownExercises?: KnownExercise[]; knownPrograms?: string[]; knownBreaths?: string[]; knownTrackers?: string[] };
+export type ValidationContext = { knownExercises?: KnownExercise[]; knownPrograms?: string[]; knownBreaths?: string[]; knownTrackers?: string[]; keepStartDate?: string };
 
 const FORMAT = 'hhhaven.delivery/1';
 const CATEGORIES = ['strength', 'stretching', 'core', 'cardio', 'legs', 'upperBody', 'fullBody', 'warmup', 'cooldown'];
@@ -35,6 +35,7 @@ type State = {
   targets: TargetIds;
   trackers: Set<string>;
   createdDay: number | undefined;
+  keepStartDate: string | undefined;
 };
 
 const isItemId = (s: string): boolean => isScopedId(s, ['claude']);
@@ -210,6 +211,7 @@ function newState(context: ValidationContext | undefined, createdAt: unknown): S
     seenNames: new Set(),
     targets: { programs: idSet(context?.knownPrograms), breaths: idSet(context?.knownBreaths) },
     trackers: idSet(context?.knownTrackers),
+    keepStartDate: typeof context?.keepStartDate === 'string' ? context.keepStartDate : undefined,
     createdDay: checkDate(createdAt, '') === null ? parseDay((createdAt as string).slice(0, 10)) : undefined,
   };
 }
