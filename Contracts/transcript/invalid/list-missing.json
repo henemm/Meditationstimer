@@ -1,0 +1,92 @@
+{
+  "description": "Liste breaths fehlt.",
+  "transcript": {
+    "version": 1,
+    "generatedAt": "2026-11-13T10:00:00Z",
+    "exercises": [
+      {
+        "id": "builtin.planke",
+        "name": "Planke",
+        "category": "core",
+        "origin": "builtin"
+      },
+      {
+        "id": "own.7d3e9c1a-52b4-4f08-8e6a-0c9b1d2e3f45",
+        "name": "Schulterkreisen",
+        "category": "warmup",
+        "origin": "own"
+      },
+      {
+        "id": "claude.vierfuessler-diagonal-x3f9k2",
+        "name": "Vierfüßler diagonal",
+        "nameEn": "Bird Dog",
+        "category": "core",
+        "origin": "claude",
+        "effect": "Stärkt Rücken und Rumpf.",
+        "instructions": "Arm und Bein diagonal strecken.",
+        "revision": 1,
+        "state": "active",
+        "packageId": "claude.ruecken-november",
+        "packageName": "Rücken November",
+        "why": "Fehlte für Rücken A.",
+        "deliveredAt": "2026-11-12T18:00:00Z"
+      }
+    ],
+    "programs": [
+      {
+        "id": "builtin.tabata",
+        "name": "Tabata",
+        "symbol": "🔥",
+        "rounds": 8,
+        "steps": [
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 20,
+            "restSeconds": 10
+          }
+        ],
+        "origin": "builtin"
+      },
+      {
+        "id": "claude.ruecken-a-7hq2mz",
+        "name": "Rücken A",
+        "symbol": "🧘",
+        "description": "Kurz für den Rücken.",
+        "rounds": 2,
+        "steps": [
+          {
+            "exerciseId": "claude.vierfuessler-diagonal-x3f9k2",
+            "workSeconds": 40,
+            "restSeconds": 15,
+            "hint": "Je Seite 8 Mal"
+          },
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 30,
+            "restSeconds": 15
+          }
+        ],
+        "origin": "claude",
+        "revision": 2,
+        "state": "adapted",
+        "packageId": "claude.ruecken-november",
+        "why": "Zwei kurze Einheiten."
+      }
+    ],
+    "deliveries": [
+      {
+        "deliveryId": "6f1c2a9e-3b7d-4c11-9a0e-5d2f8b4e7a10",
+        "outcome": "accepted"
+      },
+      {
+        "deliveryId": "7a2d3b0f-4c8e-4d22-8b1f-6e3a9c5f8b21",
+        "outcome": "rejected"
+      }
+    ]
+  },
+  "expected": {
+    "accepted": false,
+    "reason": "Pflichtfeld fehlt",
+    "schemaRejects": true
+  }
+}
