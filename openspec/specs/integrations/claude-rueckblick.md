@@ -75,6 +75,10 @@ Antwort (JSON):
 - Ohne Abschrift: Ablehnung „noch keine Abschrift“. Abschrift in Fassung 1: Ablehnung „Die App schickt noch keinen Verlauf; bitte
   Healthy Habits aktualisieren und öffnen“.
 - Ungültige Eingaben (Datum, `from` nach `to`, Zeitraum über 90 Tage, unbekannte `kind`): Ablehnung mit Ausweg.
+- Festlegungen: `summary` (byKind, byProgram) zählt **alle** Treffer, nicht nur die gelieferten 200. `byProgram` enthält nur Einheiten
+  mit `programId`; fehlt der Baustein in der Abschrift, ist `name` die Kennung. Zeitraum: Zahl der Tage `to − from + 1` höchstens 90;
+  fehlt eine Seite, gilt für sie die Vorgabe (`to` = Tag von `generatedAt`, `from` = `to − 29`). Ausweg bei ungültigem Datum nennt
+  „JJJJ-MM-TT“. `history_missing` steht immer als letzte Meldung.
 - Die Antwort enthält nichts, was nicht in `history` und den Namen der Bausteine steht.
 
 `overview` meldet zusätzlich `history_missing`, wenn die Abschrift Fassung 1 ist (Meldung nach den bisherigen).
