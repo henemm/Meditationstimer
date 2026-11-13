@@ -35,6 +35,7 @@ Das Denken bleibt bei Claude, die Regeln und das Abspielen bleiben in der App. D
 | Ausgelassene Challenge-Tage | Henning entscheidet je Tag: nachholen, Challenge um einen Tag verlängern oder so lassen. |
 | Annahmen aus Abschnitt 16 | Alle fünf bestätigt. |
 | Challenges im Kalender | Zeitlich begrenzte Challenges stehen als Leiste über dem Kalender (Idee 3), nicht in den Tageskreisen. Weitere Kalender-Fragen siehe 9.1. |
+| Neue Gewohnheiten gleichzeitig (13.11.2026) | Claude stößt von sich aus höchstens **zwei** neue Gewohnheiten bzw. laufende Stufenpläne gleichzeitig an; die nächste erst, wenn eine davon sitzt oder endet. Wünscht Henning ausdrücklich mehr, weist Claude einmal auf die Grenze hin und folgt dann seinem Wunsch. Beobachtende Gewohnheiten zählen nicht mit. Gilt ab B6a (#64) als Grundregel in der Server-Anweisung. |
 
 ## 3. Ausgangslage
 
@@ -231,7 +232,7 @@ Entwürfe: Artefakt „Challenges im Kalender“ (https://claude.ai/artifact/W4p
 
 - Aufbauen heißt, ein neues Verhalten zu wiederholen, bis es von selbst läuft: im Mittel etwa 66 Tage, 18 bis 254 je nach Person und Verhalten; ein einzelner ausgelassener Tag schadet kaum (Lally u. a. 2010). Mehrere Ziele gleichzeitig zu planen hilft weniger als eines (Dalton & Spiller 2012, ein gegen sechs Ziele).
 - Beobachten heißt, wahrzunehmen und festzuhalten. Schon das verbessert die Zielerreichung, besonders schriftlich (Harkin u. a. 2016, 138 Studien). Die Grenze ist eher der tägliche Aufwand fürs Eintragen als die Willenskraft.
-- Daraus folgt: viele dauerhafte Gewohnheiten parallel sind sinnvoll, solange nur wenige gleichzeitig neu aufgebaut werden. Ob Claude dafür eine Grundregel bekommt (etwa höchstens zwei bis drei gleichzeitig neu anstoßen), ist offen.
+- Daraus folgt: viele dauerhafte Gewohnheiten parallel sind sinnvoll, solange nur wenige gleichzeitig neu aufgebaut werden. Entschieden 13.11.2026: höchstens zwei gleichzeitig neu anstoßen (Abschnitt 2, Nachtrag).
 
 ## 10. Claudes Werkzeuge
 
