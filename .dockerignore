@@ -6,6 +6,8 @@
 !server/src
 !server/migrations
 !Contracts/transcript/transcript-v1.schema.json
+!Contracts/schema/delivery-v1.schema.json
+!Contracts/catalog/builtin-exercises.json
 **/*.log
 **/.env*
 **/node_modules

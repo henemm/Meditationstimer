@@ -146,7 +146,8 @@ Antworten der Lesewerkzeuge (B2a-4), jeweils JSON-Text:
 - Ohne Konto (`authInfo.extra.account` fehlt): jedes Werkzeug `isError` „kein Konto“. Schnittstelle: `mcpHandler(pool)` wie in Loose Ends.
 - Festlegungen: Dauer einer Atemübung `rounds × (Ein + Halten + Aus + Halten)`. Mit Abschrift stammen alle Übungen (auch eingebaute) aus
   der Abschrift. `count` = Zahl aller Treffer vor der Kürzung auf 100. Sortierung `Intl.Collator("de", {sensitivity: "base"})`.
-  `waiting` in `overview` = Lieferungen in `waiting` oder `claimed`. `waiting_long` und `rejected` tragen `deliveryId`.
+  `waiting` in `overview` = Lieferungen in `waiting` oder `claimed`. `waiting_long` (nur Zustand `waiting`, älter als 24 h) und
+  `rejected` tragen `deliveryId`. Suche faltet zusätzlich ß zu ss.
   `show.pending` listet Lieferungen in `waiting` oder `in_app`, die den Baustein enthalten oder zurücknehmen.
 
 Regeln der Lieferwerkzeuge:

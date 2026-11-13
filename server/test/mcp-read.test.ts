@@ -129,8 +129,8 @@ test("overview: eine vor über 14 Tagen abgelehnte Lieferung meldet sich nicht m
   await putTranscript(pool, HENNING, await transcript());
   const id = await put(pool);
   await claimDelivery(pool, HENNING, DEVICE);
-  await reportResult(pool, HENNING, DEVICE, { deliveryId: id, outcome: "rejected",
-    errors: [{ code: "x", path: "", message: "Fehler" }] });
+  assert.equal(await reportResult(pool, HENNING, DEVICE, { deliveryId: id, outcome: "rejected",
+    errors: [{ code: "x", path: "", message: "Fehler" }] }), "ok");
   await backdate(pool, id, "decided_at", 15 * DAY);
   const doc = await json(await connect(t, pool, HENNING), "overview");
   assert.ok(!doc.messages.some((m: Doc) => m.kind === "rejected"));
@@ -164,12 +164,12 @@ test("overview: Abschrift älter als 7 Tage meldet transcript_old, jünger nicht
 test("overview: Reihenfolge der Meldungen ist abgelehnt, lange wartend, Abschrift", async (t) => {
   const pool = await migrated(t);
   await putTranscript(pool, HENNING, await transcript(8 * DAY));
+  const rejected = await put(pool);
+  assert.equal((await claimDelivery(pool, HENNING, DEVICE))?.deliveryId, rejected);
+  assert.equal(await reportResult(pool, HENNING, DEVICE, { deliveryId: rejected, outcome: "rejected",
+    errors: [{ code: "x", path: "", message: "Fehler" }] }), "ok");
   const waiting = await put(pool);
   await backdate(pool, waiting, "created_at", 30 * HOUR);
-  const rejected = await put(pool);
-  await claimDelivery(pool, HENNING, DEVICE);
-  await reportResult(pool, HENNING, DEVICE, { deliveryId: rejected, outcome: "rejected",
-    errors: [{ code: "x", path: "", message: "Fehler" }] });
   const doc = await json(await connect(t, pool, HENNING), "overview");
   assert.deepEqual(doc.messages.map((m: Doc) => m.kind), ["rejected", "waiting_long", "transcript_old"]);
 });

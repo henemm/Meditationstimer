@@ -94,3 +94,28 @@ export async function listDeliveries(pool: pg.Pool, account: string, options: Li
     delivery: r.doc,
   }));
 }
+
+export type OpenDelivery = { deliveryId: string; state: "waiting" | "claimed"; createdAt: Date; delivery: unknown };
+
+// Lesefunktion (B2a-4): alle noch nicht entschiedenen Lieferungen des Kontos (waiting oder claimed), älteste zuerst.
+export async function openDeliveries(pool: pg.Pool, account: string): Promise<OpenDelivery[]> {
+  const result = await pool.query(
+    `SELECT id, state, created_at, doc FROM deliveries
+     WHERE account_id = $1 AND state IN ('waiting', 'claimed') ORDER BY created_at, seq`,
+    [account],
+  );
+  return result.rows.map((r) => ({ deliveryId: r.id, state: r.state, createdAt: r.created_at, delivery: r.doc }));
+}
+
+export type Rejection = { deliveryId: string; decidedAt: Date; errors?: DeliveryError[] };
+
+// Lesefunktion (B2a-4): die in den letzten `days` Tagen abgelehnten Lieferungen des Kontos, neueste zuerst.
+export async function recentRejections(pool: pg.Pool, account: string, days: number): Promise<Rejection[]> {
+  const result = await pool.query(
+    `SELECT id, decided_at, result->'errors' AS errors FROM deliveries
+     WHERE account_id = $1 AND state = 'rejected' AND decided_at > now() - make_interval(days => $2)
+     ORDER BY decided_at DESC, seq DESC`,
+    [account, days],
+  );
+  return result.rows.map((r) => ({ deliveryId: r.id, decidedAt: r.decided_at, ...(r.errors === null ? {} : { errors: r.errors }) }));
+}
