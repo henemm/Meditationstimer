@@ -9,6 +9,7 @@ on:
       - "Contracts/transcript/**"
       - "Contracts/schema/**"
       - "Contracts/catalog/**"
+      - "Contracts/validator/src/**"
       - ".dockerignore"
       - ".github/workflows/server.yml"
   push:
@@ -18,6 +19,7 @@ on:
       - "Contracts/transcript/**"
       - "Contracts/schema/**"
       - "Contracts/catalog/**"
+      - "Contracts/validator/src/**"
       - ".dockerignore"
       - ".github/workflows/server.yml"
 
@@ -78,7 +80,7 @@ jobs:
           uid=$(docker run --rm --entrypoint id hhhaven-server:ci -u)
           echo "uid=$uid"
           test "$uid" != "0"
-          docker run --rm --entrypoint sh hhhaven-server:ci -c 'test ! -e /app/server/test && test ! -e /app/server/scripts && test -f /app/server/src/transcripts.ts && test -f /app/server/migrations/002_transcripts.sql && test -f /app/Contracts/transcript/transcript-v1.schema.json && test -f /app/Contracts/schema/delivery-v1.schema.json && test -f /app/Contracts/catalog/builtin-exercises.json && test ! -e /app/Contracts/transcript/valid && ! ls -a /app /app/server | grep -q "^\.env"'
+          docker run --rm --entrypoint sh hhhaven-server:ci -c 'test ! -e /app/server/test && test ! -e /app/server/scripts && test -f /app/server/src/transcripts.ts && test -f /app/server/migrations/002_transcripts.sql && test -f /app/Contracts/transcript/transcript-v1.schema.json && test -f /app/Contracts/schema/delivery-v1.schema.json && test -f /app/Contracts/catalog/builtin-exercises.json && test -f /app/Contracts/validator/src/index.ts && test -f /app/server/migrations/004_wishes.sql && test ! -e /app/Contracts/validator/test && test ! -e /app/Contracts/transcript/valid && ! ls -a /app /app/server | grep -q "^\.env"'
       - name: Starten
         run: >-
           docker run -d --name hh-server --network host

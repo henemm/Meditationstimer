@@ -119,3 +119,15 @@ export async function recentRejections(pool: pg.Pool, account: string, days: num
   );
   return result.rows.map((r) => ({ deliveryId: r.id, decidedAt: r.decided_at, ...(r.errors === null ? {} : { errors: r.errors }) }));
 }
+
+export type KnownDelivery = { deliveryId: string; state: "waiting" | "claimed" | "accepted"; delivery: unknown };
+
+// Lesefunktion (B2a-5): alle Lieferungen des Kontos, die für den Bestand zählen (waiting, claimed, accepted), älteste zuerst.
+export async function knownDeliveries(pool: pg.Pool, account: string): Promise<KnownDelivery[]> {
+  const result = await pool.query(
+    `SELECT id, state, doc FROM deliveries
+     WHERE account_id = $1 AND state IN ('waiting', 'claimed', 'accepted') ORDER BY created_at, seq`,
+    [account],
+  );
+  return result.rows.map((r) => ({ deliveryId: r.id, state: r.state, delivery: r.doc }));
+}
