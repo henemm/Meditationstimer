@@ -1,0 +1,50 @@
+{
+  "description": "Wochentag doppelt.",
+  "context": {
+    "knownPrograms": [
+      "claude.ruecken-a-7hq2mz",
+      "builtin.tabata"
+    ],
+    "knownBreaths": [
+      "claude.abendatem-p0x8rt"
+    ]
+  },
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "9b2c4e6a-1d3f-4a5b-8c7d-0e1f2a3b4c5d",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Erinnerung an Rücken A am Montag und Donnerstag.",
+    "items": [
+      {
+        "kind": "reminder",
+        "itemId": "claude.ruecken-montag-k3x9p2",
+        "revision": 1,
+        "title": "Rücken A",
+        "message": "Zeit für Rücken A, falls heute noch kein Training war.",
+        "time": "18:00",
+        "weekdays": [
+          "monday",
+          "monday"
+        ],
+        "lookbackHours": 12,
+        "target": {
+          "type": "workout",
+          "programId": "claude.ruecken-a-7hq2mz"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "DUPLICATE_VALUE",
+        "path": "/items/0/weekdays/1"
+      }
+    ],
+    "reason": "monday steht zweimal da.",
+    "remedy": "Jeden Tag nur einmal nennen.",
+    "schemaRejects": true
+  }
+}

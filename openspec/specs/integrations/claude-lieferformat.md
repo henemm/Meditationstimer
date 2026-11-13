@@ -36,12 +36,14 @@ Maßgeblich ist der Prüfer; das Schema ist die lesbare Beschreibung und lehnt n
 | `items` | ja | Liste mit 1–20 Einträgen (Bausteine und Rücknahmen). |
 
 Weitere Felder sind nicht erlaubt (`FIELD_UNKNOWN`), auf jeder Ebene. Neue Felder kommen nur mit einer neuen Formatfassung.
+Ausnahme bis zum ersten App-Release, das Lieferungen annimmt (B1a): Fassung 1 wird um neue Arten erweitert (B4a `reminder`,
+siehe `claude-erinnerung.md`; später B5a/B6a). Danach ist Fassung 1 eingefroren.
 
 ## 2. Gemeinsame Felder eines Bausteins
 
 | Feld | Regel |
 |---|---|
-| `kind` | `"exercise"`, `"program"`, `"breath"` oder `"withdrawal"`. Sonst `KIND_UNKNOWN`; der Eintrag wird dann nicht weiter geprüft. |
+| `kind` | `"exercise"`, `"program"`, `"breath"`, `"reminder"` (B4a, Regeln in `claude-erinnerung.md` Abschnitt 2) oder `"withdrawal"`. Sonst `KIND_UNKNOWN`; der Eintrag wird dann nicht weiter geprüft. |
 | `itemId` | Kennung des Bausteins, von Claude bzw. vom Dienst vergeben: `^claude\.[a-z0-9][a-z0-9-]{1,62}$`. Bleibt über Änderungen gleich. Innerhalb einer Lieferung eindeutig (auch über Rücknahmen hinweg), sonst `DUPLICATE_ID` am zweiten Vorkommen. |
 | `revision` | Ganze Zahl 1–1 000 000. 1 = neu, höher = geänderte Fassung desselben Bausteins. (Nicht bei Rücknahmen.) |
 
@@ -165,7 +167,9 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
   - `TOTAL_TOO_LONG` wird nur geprüft, wenn `rounds` und alle Zeiten des Bausteins für sich gültig sind (bei Programmen auch die Schrittzahl).
 - Codes (vollständige Liste): `FORMAT_UNKNOWN`, `FIELD_MISSING`, `FIELD_UNKNOWN`, `FIELD_TYPE`, `TEXT_EMPTY`, `TEXT_TOO_LONG`,
   `TEXT_FORBIDDEN_CHAR`, `INVALID_SYMBOL`, `OUT_OF_RANGE`, `LIST_SIZE`, `TOTAL_TOO_LONG`, `INVALID_ID`, `INVALID_DATE`,
-  `VALUE_NOT_ALLOWED`, `KIND_UNKNOWN`, `CATEGORY_UNKNOWN`, `EXERCISE_UNKNOWN`, `NAME_TAKEN`, `DUPLICATE_ID`, `WITHDRAWAL_TARGET`.
+  `VALUE_NOT_ALLOWED`, `KIND_UNKNOWN`, `CATEGORY_UNKNOWN`, `EXERCISE_UNKNOWN`, `NAME_TAKEN`, `DUPLICATE_ID`, `WITHDRAWAL_TARGET`,
+  ab B4a zusätzlich `INVALID_TIME`, `DUPLICATE_VALUE`, `TARGET_UNKNOWN`, `REMINDER_LIMIT`.
+- Prüfkontext ab B4a zusätzlich `knownPrograms?: string[]`, `knownBreaths?: string[]` (Kennungen für Erinnerungsziele).
 
 ## 6. Beispielsatz
 

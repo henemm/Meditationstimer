@@ -135,6 +135,7 @@
             "exercise",
             "program",
             "breath",
+            "reminder",
             "withdrawal"
           ]
         }
@@ -174,6 +175,18 @@
           },
           "then": {
             "$ref": "#/$defs/breath"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "reminder"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/reminder"
           }
         },
         {
@@ -443,6 +456,166 @@
             "required": [
               "itemId"
             ]
+          }
+        }
+      ]
+    },
+    "reminder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "itemId",
+        "revision",
+        "title",
+        "message",
+        "time",
+        "weekdays",
+        "lookbackHours",
+        "target"
+      ],
+      "properties": {
+        "kind": {
+          "const": "reminder"
+        },
+        "itemId": {
+          "$ref": "#/$defs/itemId"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "weekdays": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday"
+            ]
+          }
+        },
+        "lookbackHours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "target": {
+          "$ref": "#/$defs/reminderTarget"
+        }
+      }
+    },
+    "reminderTarget": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "meditation",
+            "workout",
+            "breath",
+            "noalc"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "meditation"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties": {
+              "type": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "noalc"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties": {
+              "type": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "workout"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties": {
+              "type": {},
+              "programId": {
+                "type": "string",
+                "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "breath"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "required": [
+              "breathId"
+            ],
+            "properties": {
+              "type": {},
+              "breathId": {
+                "type": "string",
+                "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+              }
+            }
           }
         }
       ]

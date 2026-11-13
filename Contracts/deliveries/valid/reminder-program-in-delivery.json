@@ -1,0 +1,47 @@
+{
+  "description": "Ziel-Programm in derselben Lieferung.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "9b2c4e6a-1d3f-4a5b-8c7d-0e1f2a3b4c5d",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Erinnerung an Rücken A am Montag und Donnerstag.",
+    "items": [
+      {
+        "kind": "program",
+        "itemId": "claude.ruecken-c-q8w2er",
+        "revision": 1,
+        "name": "Rücken C",
+        "symbol": "🧘",
+        "rounds": 1,
+        "steps": [
+          {
+            "exerciseId": "builtin.planke",
+            "workSeconds": 30,
+            "restSeconds": 10
+          }
+        ]
+      },
+      {
+        "kind": "reminder",
+        "itemId": "claude.ruecken-montag-k3x9p2",
+        "revision": 1,
+        "title": "Rücken A",
+        "message": "Zeit für Rücken A, falls heute noch kein Training war.",
+        "time": "18:00",
+        "weekdays": [
+          "monday",
+          "thursday"
+        ],
+        "lookbackHours": 12,
+        "target": {
+          "type": "workout",
+          "programId": "claude.ruecken-c-q8w2er"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}
