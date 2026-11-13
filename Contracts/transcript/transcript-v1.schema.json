@@ -1,0 +1,864 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhhaven:transcript:1",
+  "title": "Healthy Habits Haven: Abschrift für Claude, Fassung 1",
+  "description": "Was die App dem Dienst schickt. Datenschutzgrenze: kein Feld außerhalb dieser Liste. Spec: openspec/specs/integrations/claude-dienst.md Abschnitt 4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "generatedAt",
+    "exercises",
+    "programs",
+    "breaths",
+    "deliveries"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,3})?Z$"
+    },
+    "exercises": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/exercise"
+      }
+    },
+    "programs": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "#/$defs/program"
+      }
+    },
+    "breaths": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "#/$defs/breath"
+      }
+    },
+    "deliveries": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "deliveryId",
+          "outcome"
+        ],
+        "properties": {
+          "deliveryId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{7,63}$"
+          },
+          "outcome": {
+            "enum": [
+              "accepted",
+              "rejected"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "anyId": {
+      "type": "string",
+      "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+    },
+    "claudeId": {
+      "type": "string",
+      "pattern": "^claude\\.[a-z0-9][a-z0-9-]{1,62}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "allOf": [
+        {
+          "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+        },
+        {
+          "pattern": "[^ \\u00A0\\n]"
+        }
+      ]
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exerciseId",
+        "workSeconds",
+        "restSeconds"
+      ],
+      "properties": {
+        "exerciseId": {
+          "type": "string",
+          "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+        },
+        "workSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 600
+        },
+        "restSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 600
+        },
+        "hint": {
+          "$ref": "#/$defs/hint"
+        }
+      }
+    },
+    "hint": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "allOf": [
+        {
+          "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+        },
+        {
+          "pattern": "[^ \\u00A0\\n]"
+        }
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "allOf": [
+        {
+          "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+        },
+        {
+          "pattern": "[^ \\u00A0\\n]"
+        }
+      ]
+    },
+    "exercise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "category",
+        "origin"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/anyId"
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "nameEn": {
+          "$ref": "#/$defs/name"
+        },
+        "category": {
+          "enum": [
+            "strength",
+            "stretching",
+            "core",
+            "cardio",
+            "legs",
+            "upperBody",
+            "fullBody",
+            "warmup",
+            "cooldown"
+          ]
+        },
+        "origin": {
+          "enum": [
+            "builtin",
+            "own",
+            "claude"
+          ]
+        },
+        "effect": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1500,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "adapted",
+            "withdrawn"
+          ]
+        },
+        "packageId": {
+          "$ref": "#/$defs/claudeId"
+        },
+        "packageName": {
+          "$ref": "#/$defs/name"
+        },
+        "why": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "deliveredAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,3})?Z$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "builtin"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^builtin\\.",
+                "type": "string"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "revision"
+                  ]
+                },
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageId"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageName"
+                  ]
+                },
+                {
+                  "required": [
+                    "why"
+                  ]
+                },
+                {
+                  "required": [
+                    "deliveredAt"
+                  ]
+                },
+                {
+                  "required": [
+                    "effect"
+                  ]
+                },
+                {
+                  "required": [
+                    "instructions"
+                  ]
+                },
+                {
+                  "required": [
+                    "notes"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "own"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^own\\.",
+                "type": "string"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "revision"
+                  ]
+                },
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageId"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageName"
+                  ]
+                },
+                {
+                  "required": [
+                    "why"
+                  ]
+                },
+                {
+                  "required": [
+                    "deliveredAt"
+                  ]
+                },
+                {
+                  "required": [
+                    "effect"
+                  ]
+                },
+                {
+                  "required": [
+                    "instructions"
+                  ]
+                },
+                {
+                  "required": [
+                    "notes"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "claude"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^claude\\.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "revision",
+              "state",
+              "effect",
+              "instructions"
+            ]
+          }
+        }
+      ]
+    },
+    "program": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "symbol",
+        "rounds",
+        "steps",
+        "origin"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/anyId"
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16,
+          "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩ \\u00A0A-Za-z0-9]+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "rounds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 40,
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        },
+        "origin": {
+          "enum": [
+            "builtin",
+            "own",
+            "claude"
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "adapted",
+            "withdrawn"
+          ]
+        },
+        "packageId": {
+          "$ref": "#/$defs/claudeId"
+        },
+        "packageName": {
+          "$ref": "#/$defs/name"
+        },
+        "why": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "deliveredAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,3})?Z$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "builtin"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^builtin\\.",
+                "type": "string"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "revision"
+                  ]
+                },
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageId"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageName"
+                  ]
+                },
+                {
+                  "required": [
+                    "why"
+                  ]
+                },
+                {
+                  "required": [
+                    "deliveredAt"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "own"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^own\\.",
+                "type": "string"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "revision"
+                  ]
+                },
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageId"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageName"
+                  ]
+                },
+                {
+                  "required": [
+                    "why"
+                  ]
+                },
+                {
+                  "required": [
+                    "deliveredAt"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "claude"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^claude\\.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "revision",
+              "state"
+            ]
+          }
+        }
+      ]
+    },
+    "breath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "symbol",
+        "inhaleSeconds",
+        "holdInSeconds",
+        "exhaleSeconds",
+        "holdOutSeconds",
+        "rounds",
+        "origin"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "symbol": {
+          "$ref": "#/$defs/symbol"
+        },
+        "description": {
+          "$ref": "#/$defs/description"
+        },
+        "inhaleSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "holdInSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60
+        },
+        "exhaleSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "holdOutSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60
+        },
+        "rounds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "id": {
+          "$ref": "#/$defs/anyId"
+        },
+        "origin": {
+          "enum": [
+            "builtin",
+            "own",
+            "claude"
+          ]
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "adapted",
+            "withdrawn"
+          ]
+        },
+        "packageId": {
+          "$ref": "#/$defs/claudeId"
+        },
+        "packageName": {
+          "$ref": "#/$defs/name"
+        },
+        "why": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "deliveredAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,3})?Z$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "builtin"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^builtin\\.",
+                "type": "string"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "revision"
+                  ]
+                },
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageId"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageName"
+                  ]
+                },
+                {
+                  "required": [
+                    "why"
+                  ]
+                },
+                {
+                  "required": [
+                    "deliveredAt"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "own"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^own\\.",
+                "type": "string"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "revision"
+                  ]
+                },
+                {
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageId"
+                  ]
+                },
+                {
+                  "required": [
+                    "packageName"
+                  ]
+                },
+                {
+                  "required": [
+                    "why"
+                  ]
+                },
+                {
+                  "required": [
+                    "deliveredAt"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "origin": {
+                "const": "claude"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "id": {
+                "pattern": "^claude\\.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "revision",
+              "state"
+            ]
+          }
+        }
+      ]
+    },
+    "symbol": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16,
+      "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩ \\u00A0A-Za-z0-9]+$"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# Build-Kontext des Dienst-Images ist die Repo-Wurzel (docker build -f server/Dockerfile .): nur zulassen, was das Image braucht.
+# Übernommen aus loose-ends server/.dockerignore @ 24a6da6 (Muster); angepasst: Positivliste statt Ausschlussliste, da der Kontext die ganze App enthält.
+*
+!server/package.json
+!server/package-lock.json
+!server/src
+!server/migrations
+!Contracts/transcript/transcript-v1.schema.json
+!Contracts/schema/delivery-v1.schema.json
+!Contracts/catalog/builtin-exercises.json
+!Contracts/validator/src
+**/*.log
+**/.env*
+**/node_modules

@@ -1,0 +1,133 @@
+# Übernommen aus loose-ends .github/workflows/server.yml @ 24a6da6; angepasst: Image- und Containername, ohne Abschrift-Vertrag im Pfadfilter
+name: Server
+
+# The service for the Claude connection (#54, B2a): typecheck and tests against a real Postgres 18 on Linux.
+on:
+  pull_request:
+    paths:
+      - "server/**"
+      - "Contracts/transcript/**"
+      - "Contracts/schema/**"
+      - "Contracts/catalog/**"
+      - "Contracts/validator/src/**"
+      - ".dockerignore"
+      - ".github/workflows/server.yml"
+  push:
+    branches: [main]
+    paths:
+      - "server/**"
+      - "Contracts/transcript/**"
+      - "Contracts/schema/**"
+      - "Contracts/catalog/**"
+      - "Contracts/validator/src/**"
+      - ".dockerignore"
+      - ".github/workflows/server.yml"
+
+jobs:
+  test:
+    name: Server (Node 26, Postgres 18)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+        env:
+          DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/postgres
+
+  # the image starts against Postgres 18, migrates, answers /health and ends cleanly on SIGTERM.
+  image:
+    name: Image (Docker, Postgres 18)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Bauen
+        run: docker build -f server/Dockerfile -t hhhaven-server:ci .
+      - name: Image prüfen
+        run: |
+          uid=$(docker run --rm --entrypoint id hhhaven-server:ci -u)
+          echo "uid=$uid"
+          test "$uid" != "0"
+          docker run --rm --entrypoint sh hhhaven-server:ci -c 'test ! -e /app/server/test && test ! -e /app/server/scripts && test -f /app/server/src/transcripts.ts && test -f /app/server/migrations/002_transcripts.sql && test -f /app/Contracts/transcript/transcript-v1.schema.json && test -f /app/Contracts/schema/delivery-v1.schema.json && test -f /app/Contracts/catalog/builtin-exercises.json && test -f /app/Contracts/validator/src/index.ts && test -f /app/server/migrations/004_wishes.sql && test ! -e /app/Contracts/validator/test && test ! -e /app/Contracts/transcript/valid && ! ls -a /app /app/server | grep -q "^\.env"'
+      - name: Starten
+        run: >-
+          docker run -d --name hh-server --network host
+          -e DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
+          -e PORT=18080 -e HOST=127.0.0.1 hhhaven-server:ci
+      - name: Health abfragen
+        run: |
+          for i in $(seq 1 60); do
+            code=$(curl --silent --output body.json --write-out '%{http_code}' http://127.0.0.1:18080/health || true)
+            if [ "$code" = "200" ]; then
+              echo "200 nach ${i} s"; cat body.json; echo
+              jq -e '.status == "ok" and .db == "up" and .migrated == true' body.json
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "kein 200 binnen 60 s (zuletzt $code)"
+          docker logs hh-server
+          exit 1
+      - name: Türen prüfen
+        run: |
+          code=$(curl --silent --output /dev/null --write-out '%{http_code}' -X POST -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' http://127.0.0.1:18080/mcp)
+          echo "POST /mcp -> $code"; test "$code" = "401"
+          code=$(curl --silent --output /dev/null --write-out '%{http_code}' -X POST -H 'Content-Type: application/json' -H "X-Device: $(cat /proc/sys/kernel/random/uuid)" -d '{}' http://127.0.0.1:18080/app/deliveries/claim)
+          echo "POST /app/deliveries/claim -> $code"; test "$code" = "401"
+      - name: Log prüfen
+        run: |
+          docker logs hh-server > server.log 2>&1
+          cat server.log
+          if grep -v '^$' server.log | grep -Ev '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?Z '; then
+            echo "Zeile ohne ISO-Zeitpunkt vorn"; exit 1
+          fi
+          if grep -q 'postgres' server.log; then echo "Verbindungsdaten oder Passwort im Log"; exit 1; fi
+          grep -q ' migrated$' server.log
+      - name: Beenden
+        run: |
+          docker stop --time 20 hh-server
+          code=$(docker inspect --format '{{.State.ExitCode}}' hh-server)
+          docker logs hh-server > server.log 2>&1
+          cat server.log
+          echo "exit=$code"
+          test "$code" = "0"
+          grep -q ' shutting down$' server.log
+          grep -q ' stopped$' server.log
+      - name: Log bei Fehlschlag
+        if: failure()
+        run: docker logs hh-server || true
+      - name: Aufräumen
+        if: always()
+        run: docker rm -f hh-server || true

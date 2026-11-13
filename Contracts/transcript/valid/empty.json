@@ -1,0 +1,14 @@
+{
+  "description": "Leere Listen (frische App ohne eigene Inhalte).",
+  "transcript": {
+    "version": 1,
+    "generatedAt": "2026-11-13T10:00:00Z",
+    "exercises": [],
+    "programs": [],
+    "breaths": [],
+    "deliveries": []
+  },
+  "expected": {
+    "accepted": true
+  }
+}
