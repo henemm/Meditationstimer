@@ -202,8 +202,8 @@ Neu in der App: ein kleines Tagebuch der Einheiten, das festhält, welches Progr
 ## 9. In der App sichtbar
 
 - **Kennzeichnung:** Geliefertes trägt ein kleines Zeichen „von Claude". In der Detailansicht stehen Datum, Paket und Warum.
-- **Zurücknehmen:** Einzeln oder als Paket. Zurückgenommenes verschwindet aus den Listen, bleibt wiederherstellbar; Einträge und Verlauf bleiben erhalten.
-- **Selbst ändern:** Henning kann Geliefertes bearbeiten wie Eigenes. Es gilt dann als angepasst; Claude überschreibt es nicht blind.
+- **Zurücknehmen und Löschen (PO 13.11.2026):** Henning löscht Geliefertes wie jeden anderen Baustein (kein Papierkorb). Zieht Claude etwas zurück, verschwindet es ebenso aus der App, einzeln oder als Paket. Absolvierte Einheiten in Apple Health bleiben erhalten.
+- **Selbst ändern:** Henning kann Geliefertes bearbeiten wie Eigenes. Claude darf es danach weiter ändern oder zurückziehen; das iPhone lehnt nur ab, was Claude nicht kennen konnte (Änderung nach der letzten Abschrift).
 - **Einstellungen:** Abschnitt „Claude-Verbindung" mit Anmelden, Zeitpunkt des letzten Abgleichs, Liste der Lieferungen samt Stand, „Was Claude sieht" als Klartext und „Verbindung trennen" (löscht alles beim Dienst).
 - **Abgelehntes:** Was die App nicht annehmen konnte, steht mit Grund in der Liste und geht als Meldung an Claude zurück.
 
@@ -292,7 +292,7 @@ Grundregeln, die der Dienst Claude zu Beginn jedes Gesprächs mitgibt:
 | Tür | Liste zugelassener Apple-Konten, zunächst nur Henning. |
 | Was der Dienst speichert | Konto, die jeweils letzte Abschrift, die Lieferungen mit Verlauf, Bausteinwünsche. Sonst nichts. |
 | Betrieb | Wie Loose Ends: nächtliche Sicherung außer Haus, Gesundheitsprüfung, Alarm nur bei Ausfall, Drosselung je Bereich. |
-| Regeln an zwei Stellen | Dienst und App prüfen beide. Gegen Auseinanderlaufen dient ein gemeinsamer Satz Beispiel-Lieferungen, den beide Seiten in ihren automatischen Tests gleich beurteilen müssen. |
+| Regeln an einer Stelle (13.11.2026, Einfachheit) | Der Dienst prüft jede Lieferung mit dem Referenz-Prüfer; die App liest nur sauber ein und übernimmt (wie Loose Ends). Der gemeinsame Beispielsatz dient der App als Test, dass sie alle gültigen Lieferungen lesen kann. |
 | Schalter | Die Verbindung ist in der Store-Version ausgeschaltet und unsichtbar, wie bei Loose Ends. |
 
 **Neu in der App:** Netzwerkcode und Anmeldung (bisher keins von beiden), feste Kennungen für Übungen und Programme, Herkunftsangaben, Tagebuch der Einheiten, die Bausteine Impuls und Challenge, Hinweis je Übung, Erinnerung mit Ziel. Die Tracker-Datenbank bekommt dafür erstmals eine neue Fassung; die Umstellung bestehender Daten wird mit automatischen Tests abgesichert.
