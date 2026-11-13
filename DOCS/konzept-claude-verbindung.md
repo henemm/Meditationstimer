@@ -36,6 +36,7 @@ Das Denken bleibt bei Claude, die Regeln und das Abspielen bleiben in der App. D
 | Annahmen aus Abschnitt 16 | Alle fünf bestätigt. |
 | Challenges im Kalender | Zeitlich begrenzte Challenges stehen als Leiste über dem Kalender (Idee 3), nicht in den Tageskreisen. Weitere Kalender-Fragen siehe 9.1. |
 | Neue Gewohnheiten gleichzeitig (13.11.2026) | Claude stößt von sich aus höchstens **zwei** neue Gewohnheiten bzw. laufende Stufenpläne gleichzeitig an; die nächste erst, wenn eine davon sitzt oder endet. Wünscht Henning ausdrücklich mehr, weist Claude einmal auf die Grenze hin und folgt dann seinem Wunsch. Beobachtende Gewohnheiten zählen nicht mit. Gilt ab B6a (#64) als Grundregel in der Server-Anweisung. |
+| Ort der Wahrheit (13.11.2026, bestätigt) | Wie Loose Ends: Das iPhone ist die Wahrheit, der Server hält eine Kopie (Abschrift), Claude arbeitet über die Verbindung mit dieser Kopie. Ändern sich Daten auf beiden Seiten, gewinnt das iPhone. Claude darf auch Bausteine ändern oder zurückziehen, die Henning angepasst hat, solange es den aktuellen Stand kannte. Der einfache Weg hat Vorrang. |
 
 ## 3. Ausgangslage
 

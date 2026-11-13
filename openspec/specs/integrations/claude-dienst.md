@@ -157,8 +157,9 @@ Regeln der Lieferwerkzeuge:
 - Jede Lieferung geht vor dem Speichern durch `validateDelivery` (B0). Prüfkontext `knownExercises`: Übungen der Abschrift
   (ohne `builtin`) und Übungen aus Lieferungen im Zustand `waiting`/`claimed`/`accepted`, die noch nicht in der Abschrift stehen.
 - `item_update`: nur `claude.*`-Bausteine, die Claude geliefert hat. Abgelehnt, wenn `basedOnRevision` nicht der höchsten bekannten
-  Fassung entspricht („Stand hat sich geändert, bitte neu lesen“), wenn der Baustein in der Abschrift `adapted` ist („Henning hat ihn
-  angepasst; biete eine Kopie an“) oder `withdrawn`. Neue `revision` = höchste bekannte + 1.
+  Fassung entspricht („Stand hat sich geändert, bitte neu lesen“) oder wenn der Baustein `withdrawn` ist. Ein von Henning angepasster
+  Baustein (`adapted`) darf geändert werden; ob die Änderung gilt, entscheidet das iPhone beim Anwenden (PO-Entscheidung 13.11.: das
+  iPhone ist die Wahrheit). Neue `revision` = höchste bekannte + 1.
 - `item_withdraw`: nur eigene Lieferungen. Wartet die Lieferung des Bausteins noch (`waiting`), wird sie `superseded` und keine
   Rücknahme verschickt.
 - `own.*` und `builtin.*` lassen sich weder ändern noch zurückziehen (Grundregel 7).

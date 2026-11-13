@@ -403,16 +403,16 @@ test("item_update: Paket einer wartenden Lieferung bleibt erhalten", async (t) =
   assert.equal(doc.package.packageId, "claude.ruecken-november");
 });
 
-test("item_update: Baustein in der Abschrift mit Zustand adapted -> isError mit „Kopie“", async (t) => {
+test("item_update: von Henning angepasster Baustein (adapted) darf geändert werden; das iPhone entscheidet beim Anwenden", async (t) => {
   const pool = await migrated(t);
   await withTranscript(pool);
-  const { text, isError } = await call(await connect(t, pool, HENNING), "item_update", {
-    itemId: ADAPTED_PROGRAM, basedOnRevision: 2, why: "x",
+  const answer = await json(await connect(t, pool, HENNING), "item_update", {
+    itemId: ADAPTED_PROGRAM, basedOnRevision: 2, why: "Kürzer, wie besprochen.",
     fields: { name: "Rücken A", symbol: "🧘", rounds: 2, steps: [step()] },
   });
-  assert.equal(isError, true);
-  assert.match(text, /Kopie/);
-  assert.deepEqual(await listDeliveries(pool, HENNING), []);
+  assert.equal(answer.revision, 3);
+  assert.equal(answer.state, "waiting");
+  assert.equal((await listDeliveries(pool, HENNING)).length, 1);
 });
 
 test("item_update: zurückgenommener Baustein (withdrawn) -> isError", async (t) => {

@@ -207,7 +207,9 @@ Bei ungültigen Beispielen:
 
 - Eine `deliveryId`, die schon verarbeitet wurde, wird nicht erneut angewendet; das Ergebnis der ersten Verarbeitung gilt.
 - Ein Baustein mit `revision` ≤ der gespeicherten Fassung ändert nichts.
-- Hat Henning einen gelieferten Baustein bearbeitet („angepasst“), wird eine höhere Fassung abgelehnt statt überschrieben.
+- Das iPhone ist die Wahrheit (PO-Entscheidung 13.11.): Wurde ein gelieferter Baustein auf dem iPhone geändert, **nachdem** die App
+  zuletzt ihre Abschrift geschickt hat (Claude kannte diese Änderung also nicht), wird eine höhere Fassung oder Rücknahme abgelehnt statt
+  überschrieben. Änderungen, die Claude in der Abschrift sehen konnte, darf Claude überschreiben oder zurücknehmen.
 - Eine Lieferung wird ganz oder gar nicht angewendet.
 
 ## 8. Akzeptanzkriterien (B0)
