@@ -286,3 +286,22 @@ test("overview: Fassung 1 meldet history_missing, Fassung 2 nicht", async (t) =>
   const fresh = await json(await connect(t, poolNew, HENNING), "overview");
   assert.ok(!fresh.messages.some((m: Doc) => m.kind === "history_missing"));
 });
+
+// 9. Härtung (Nachtrag Adversary): nur bekannte Felder, auch bei Abschrift an der Prüfung vorbei
+
+test("history: zusätzliche Felder in Einheit, Rückmeldung und Serie erscheinen nicht in der Antwort", async (t) => {
+  // ANNAHME: Direkt per INSERT abgelegt, wie beim fehlenden Baustein; ein CHECK in der Datenbank könnte das schon ablehnen.
+  const pool = await migrated(t);
+  const doc = await v2([
+    { ...workout(at(1), RUECKEN, 720, false, "too_hard"), heartRate: 151, feedback: { rating: "too_hard", note: "Hart.", effort: 9 } },
+  ], { meditation: { current: 4, longest: 21, extra: "x" }, workout: { current: 0, longest: 9 }, mood: "gut" });
+  await pool.query("INSERT INTO transcripts (account_id, doc, generated_at, received_at) VALUES ($1, $2::jsonb, $3, now())",
+    [HENNING, JSON.stringify(doc), doc.generatedAt]);
+  const { text, isError } = await call(await connect(t, pool, HENNING), "history");
+  assert.notEqual(isError, true, text);
+  for (const forbidden of ["heartRate", "effort", "mood", "extra"]) assert.ok(!text.includes(forbidden), `Antwort enthält ${forbidden}`);
+  const result = JSON.parse(text);
+  assert.deepEqual(result.sessions[0], { startedAt: at(1), kind: "workout", programId: RUECKEN, programName: "Rücken A", durationSeconds: 720,
+    completed: false, feedback: { rating: "too_hard", note: "Hart." } });
+  assert.deepEqual(result.streaks, STREAKS);
+});

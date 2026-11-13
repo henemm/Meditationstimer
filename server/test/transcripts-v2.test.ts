@@ -139,3 +139,44 @@ test("Datenschutz DB: oberstes Feld trackers scheitert in beiden Fassungen am CH
     );
   }
 });
+
+// 4. Kalenderdatum (Nachtrag Adversary): nur echte Kalenderdaten
+
+function rejected(reason: unknown, label: string) {
+  assert.equal(typeof reason, "string", `${label} muss abgelehnt werden`);
+  assert.ok((reason as string).length > 0, `${label}: Grund darf nicht leer sein`);
+}
+
+test("Kalenderdatum: generatedAt 30. Februar 2026 wird in Fassung 1 und 2 abgelehnt", () => {
+  for (const version of [1, 2] as const) rejected(checkTranscript(doc(version, "2026-02-30T10:00:00Z")), `Fassung ${version}`);
+});
+
+test("Kalenderdatum: generatedAt 29. Februar 2027 (kein Schaltjahr) wird in Fassung 1 und 2 abgelehnt", () => {
+  for (const version of [1, 2] as const) rejected(checkTranscript(doc(version, "2027-02-29T10:00:00Z")), `Fassung ${version}`);
+});
+
+test("Kalenderdatum: Gegenprobe, 29. Februar 2028 (Schaltjahr) bleibt als generatedAt gültig", () => {
+  assert.equal(checkTranscript(doc(1, "2028-02-29T10:00:00Z")), undefined);
+  assert.equal(checkTranscript(doc(2, "2028-02-29T10:00:00Z")), undefined);
+});
+
+test("Kalenderdatum: startedAt am 31. April wird in Fassung 2 abgelehnt", () => {
+  const bad = doc(2, "2026-05-01T10:00:00Z", {
+    history: { sessions: [{ startedAt: "2026-04-31T10:00:00Z", kind: "meditation", durationSeconds: 600, completed: true }], streaks: STREAKS },
+  });
+  rejected(checkTranscript(bad), "startedAt 31. April");
+  const good = doc(2, "2026-05-01T10:00:00Z", {
+    history: { sessions: [{ startedAt: "2026-04-30T10:00:00Z", kind: "meditation", durationSeconds: 600, completed: true }], streaks: STREAKS },
+  });
+  assert.equal(checkTranscript(good), undefined);
+});
+
+test("Kalenderdatum: deliveredAt am 30. Februar an einem Claude-Baustein wird in Fassung 1 abgelehnt", async () => {
+  const f = JSON.parse(await readFile(join(root, "Contracts", "transcript", "valid", "full.json"), "utf8")).transcript;
+  assert.equal(checkTranscript(f), undefined, "Ausgangsdokument muss gültig sein");
+  const bad = structuredClone(f);
+  const block = [...bad.exercises, ...bad.programs, ...bad.breaths].find((b: Record<string, unknown>) => b.origin === "claude" && b.deliveredAt);
+  assert.ok(block, "Claude-Baustein mit deliveredAt fehlt im Beispiel");
+  block.deliveredAt = "2026-02-30T18:00:00Z";
+  rejected(checkTranscript(bad), "deliveredAt 30. Februar");
+});
