@@ -144,6 +144,10 @@ Antworten der Lesewerkzeuge (B2a-4), jeweils JSON-Text:
   neueste zuerst, höchstens 20; `state` nach außen `waiting`, `in_app` (abgeholt), `accepted`, `rejected`, `withdrawn` (= superseded).
   Unbekannte `deliveryId`: Ablehnung.
 - Ohne Konto (`authInfo.extra.account` fehlt): jedes Werkzeug `isError` „kein Konto“. Schnittstelle: `mcpHandler(pool)` wie in Loose Ends.
+- Festlegungen: Dauer einer Atemübung `rounds × (Ein + Halten + Aus + Halten)`. Mit Abschrift stammen alle Übungen (auch eingebaute) aus
+  der Abschrift. `count` = Zahl aller Treffer vor der Kürzung auf 100. Sortierung `Intl.Collator("de", {sensitivity: "base"})`.
+  `waiting` in `overview` = Lieferungen in `waiting` oder `claimed`. `waiting_long` und `rejected` tragen `deliveryId`.
+  `show.pending` listet Lieferungen in `waiting` oder `in_app`, die den Baustein enthalten oder zurücknehmen.
 
 Regeln der Lieferwerkzeuge:
 - Der Dienst vergibt `deliveryId` (UUID), `itemId` (`claude.` + Name in Kleinbuchstaben a–z/0–9/-, Umlaute umschrieben, gekürzt,
