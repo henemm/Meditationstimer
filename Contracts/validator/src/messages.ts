@@ -6,7 +6,7 @@ export const ERROR_CODES = [
   'TEXT_TOO_LONG', 'TEXT_FORBIDDEN_CHAR', 'INVALID_SYMBOL', 'OUT_OF_RANGE', 'LIST_SIZE',
   'TOTAL_TOO_LONG', 'INVALID_ID', 'INVALID_DATE', 'VALUE_NOT_ALLOWED', 'KIND_UNKNOWN',
   'CATEGORY_UNKNOWN', 'EXERCISE_UNKNOWN', 'NAME_TAKEN', 'DUPLICATE_ID', 'WITHDRAWAL_TARGET',
-  'INVALID_TIME', 'DUPLICATE_VALUE', 'TARGET_UNKNOWN', 'REMINDER_LIMIT',
+  'INVALID_TIME', 'DUPLICATE_VALUE', 'TARGET_UNKNOWN', 'REMINDER_LIMIT', 'START_IN_PAST', 'IMPULSE_COUNT',
 ] as const;
 
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -80,7 +80,7 @@ export const M = {
   notAllowed: (path: string, allowed: string) =>
     e('VALUE_NOT_ALLOWED', path, `${label(path)} hat einen nicht erlaubten Wert.`, `Erlaubt ist nur ${allowed}.`),
   kindUnknown: (path: string, kind: string) =>
-    e('KIND_UNKNOWN', path, `Die Art ${show(kind)} ist unbekannt.`, 'kind muss „exercise“, „program“, „breath“, „reminder“ oder „withdrawal“ sein.'),
+    e('KIND_UNKNOWN', path, `Die Art ${show(kind)} ist unbekannt.`, 'kind muss „exercise“, „program“, „breath“, „reminder“, „challenge“ oder „withdrawal“ sein.'),
   categoryUnknown: (path: string, value: string) =>
     e('CATEGORY_UNKNOWN', path, `Die Kategorie ${show(value)} ist unbekannt.`,
       'Erlaubt: strength, stretching, core, cardio, legs, upperBody, fullBody, warmup, cooldown.'),
@@ -108,4 +108,22 @@ export const M = {
   reminderLimit: (path: string, count: number, max: number) =>
     e('REMINDER_LIMIT', path, `Die Lieferung enthält ${count} Erinnerungen; erlaubt sind höchstens ${max}.`,
       `Höchstens ${max} Erinnerungen von Claude gleichzeitig: weniger Erinnerungen liefern, ältere mit item_withdraw zurückziehen oder eine bestehende mit item_update ändern.`),
+  invalidDay: (path: string) =>
+    e('INVALID_DATE', path, `${label(path)} ist kein gültiges Datum.`,
+      `${label(path)} als JJJJ-MM-TT angeben, echtes Kalenderdatum (Kalendertag des Geräts), z. B. 2026-11-14.`),
+  startInPast: (path: string) =>
+    e('START_IN_PAST', path, `${label(path)} liegt in der Vergangenheit.`,
+      `${label(path)} auf heute oder einen späteren Tag setzen (frühestens der Tag vor dem Tag von createdAt, höchstens 30 Tage danach).`),
+  startTooLate: (path: string) =>
+    e('OUT_OF_RANGE', path, `${label(path)} liegt mehr als 30 Tage nach dem Tag von createdAt.`,
+      `${label(path)} auf höchstens 30 Tage nach dem Liefertag setzen.`),
+  impulseCount: (path: string, count: number, days: number) =>
+    e('IMPULSE_COUNT', path, `${label(path)} hat ${count} Impulse, die Stufe dauert aber ${days} Tage.`,
+      `Genau ${days} Impulse liefern, einen je Tag in Tagesreihenfolge, oder days auf ${count} ändern.`),
+  totalDays: (path: string, total: number, max: number) =>
+    e('TOTAL_TOO_LONG', path, `Die Gesamtdauer beträgt ${total} Tage und liegt über ${max} Tagen.`,
+      `Die Tage der Stufen verringern, bis die Gesamtdauer höchstens ${max} Tage beträgt.`),
+  contentType: (path: string) =>
+    e('VALUE_NOT_ALLOWED', path, `${label(path)} hat einen nicht erlaubten Wert.`,
+      'Erlaubt ist nur „impulses“; Ziele auf Trackern sind noch nicht möglich, den Wunsch mit wish_report festhalten.'),
 };

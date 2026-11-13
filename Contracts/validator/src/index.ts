@@ -3,10 +3,11 @@
 import { loadCatalog } from './catalog.ts';
 import type { DeliveryError, ValidationResult } from './messages.ts';
 import { M } from './messages.ts';
+import { checkChallenge } from './challenge.ts';
 import { checkReminder, collectTargetIds, REMINDER_MAX } from './reminder.ts';
 import type { TargetIds } from './reminder.ts';
 import {
-  checkDate, checkId, checkInt, checkSymbol, checkText, field, has, isDeliveryId, isObj, isScopedId, list, noUnknown, normalizeName, ptr,
+  checkDate, parseDay, checkId, checkInt, checkSymbol, checkText, field, has, isDeliveryId, isObj, isScopedId, list, noUnknown, normalizeName, ptr,
 } from './rules.ts';
 import type { Check, Obj } from './rules.ts';
 
@@ -31,6 +32,7 @@ type State = {
   seenItemIds: Set<string>;
   seenNames: Set<string>;
   targets: TargetIds;
+  createdDay: number | undefined;
 };
 
 const isItemId = (s: string): boolean => isScopedId(s, ['claude']);
@@ -176,13 +178,14 @@ function checkItem(st: State, item: unknown, base: string): void {
   if (!has(item, 'kind')) return void st.errors.push(M.missing(kindPath));
   const kind = item.kind;
   if (typeof kind !== 'string') return void st.errors.push(M.type(kindPath, 'ein Text'));
-  if (!['exercise', 'program', 'breath', 'reminder', 'withdrawal'].includes(kind)) return void st.errors.push(M.kindUnknown(kindPath, kind));
+  if (!['exercise', 'program', 'breath', 'reminder', 'challenge', 'withdrawal'].includes(kind)) return void st.errors.push(M.kindUnknown(kindPath, kind));
   checkIdentity(st, item, base, kind);
   if (kind !== 'withdrawal') field(st, item, 'revision', base, true, int(1, 1_000_000));
   if (kind === 'exercise') checkExercise(st, item, base);
   else if (kind === 'program') checkProgram(st, item, base);
   else if (kind === 'breath') checkBreath(st, item, base);
   else if (kind === 'reminder') checkReminder(st, item, base);
+  else if (kind === 'challenge') checkChallenge(st, item, base);
   else checkWithdrawal(st, item, base);
 }
 
@@ -191,7 +194,7 @@ function idSet(v: unknown): Set<string> {
   return new Set(Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []);
 }
 
-function newState(context: ValidationContext | undefined): State {
+function newState(context: ValidationContext | undefined, createdAt: unknown): State {
   const catalog = loadCatalog();
   const known = Array.isArray(context?.knownExercises) ? context.knownExercises : [];
   return {
@@ -203,11 +206,12 @@ function newState(context: ValidationContext | undefined): State {
     seenItemIds: new Set(),
     seenNames: new Set(),
     targets: { programs: idSet(context?.knownPrograms), breaths: idSet(context?.knownBreaths) },
+    createdDay: checkDate(createdAt, '') === null ? parseDay((createdAt as string).slice(0, 10)) : undefined,
   };
 }
 
 export function validateDelivery(input: unknown, context?: ValidationContext): ValidationResult {
-  const st = newState(context);
+  const st = newState(context, isObj(input) ? input.createdAt : undefined);
   if (!isObj(input)) {
     st.errors.push(M.type('', 'ein Objekt'));
     return { valid: false, errors: st.errors };

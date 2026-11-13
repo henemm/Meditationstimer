@@ -93,6 +93,27 @@ export function checkDate(v: unknown, path: string): DeliveryError | null {
   return ok ? null : M.invalidDate(path);
 }
 
+/** Tag JJJJ-MM-TT als Tageszahl seit 1970-01-01 (UTC), oder undefined, wenn Form oder Kalenderdatum nicht stimmen. */
+export function parseDay(v: unknown): number | undefined {
+  if (typeof v !== 'string' || v.length !== 10 || v[4] !== '-' || v[7] !== '-') return undefined;
+  const digits = [...v].filter((_, i) => i !== 4 && i !== 7);
+  if (!digits.every((c) => c >= '0' && c <= '9')) return undefined;
+  const [year, month, day] = [Number(v.slice(0, 4)), Number(v.slice(5, 7)), Number(v.slice(8, 10))] as [number, number, number];
+  if (month < 1 || month > 12 || day < 1 || day > daysInMonth(year, month)) return undefined;
+  const y = month <= 2 ? year - 1 : year;
+  const era = Math.floor(y / 400);
+  const yoe = y - era * 400;
+  const doy = Math.floor((153 * (month + (month > 2 ? -3 : 9)) + 2) / 5) + day - 1;
+  const doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
+  return era * 146097 + doe - 719468;
+}
+
+/** Kalendertag (JJJJ-MM-TT, echtes Datum). */
+export function checkDay(v: unknown, path: string): DeliveryError | null {
+  if (typeof v !== 'string') return M.type(path, 'ein Text');
+  return parseDay(v) === undefined ? M.invalidDay(path) : null;
+}
+
 /** Namen vergleichen: U+0020/U+00A0 am Rand weg, innen zu einem U+0020, dann Kleinschreibung. */
 export function normalizeName(s: string): string {
   const words: string[] = [];

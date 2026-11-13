@@ -14,7 +14,7 @@ const SPEC_CODES = [
 
 /** Verhalten: ERROR_CODES enthält genau die 26 Codes aus der Spec. */
 test('ERROR_CODES == Spec-Liste', () => {
-  assert.equal(SPEC_CODES.length, 24);
+  assert.equal(SPEC_CODES.length, 26);
   assert.deepEqual([...ERROR_CODES].sort(), [...SPEC_CODES].sort());
   assert.equal(new Set(ERROR_CODES).size, ERROR_CODES.length, 'keine Doppelten');
 });

@@ -26,12 +26,15 @@ function resolve(node: Node): Node {
 // Das Feld in knapper Form: Typ, Grenzen, erlaubte Werte, bei Listen die Felder der Einträge.
 function describe(name: string, node: Node, required: boolean): Node {
   const def = resolve(node);
-  const field: Node = { name, required, type: def.enum !== undefined ? "enum" : def.type };
+  const values: unknown[] | undefined = def.enum ?? (def.const === undefined ? undefined : [def.const]);
+  const field: Node = { name, required, type: values !== undefined ? "enum" : def.type };
   for (const key of ["minimum", "maximum", "minLength", "maxLength", "minItems", "maxItems"]) {
     if (def[key] !== undefined) field[key] = def[key];
   }
-  if (def.enum !== undefined) field.values = def.enum;
+  if (values !== undefined) field.values = values;
   if (def.type === "array") field.items = fieldsOf(resolve(def.items));
+  // Verschachtelte Objekte (Stufe, Inhalt, Impuls der Challenge) werden mit ihren Feldern gezeigt; Listen von Objekten ebenso.
+  if (def.type === "object" && def.properties !== undefined) field.fields = fieldsOf(def);
   return field;
 }
 
@@ -42,8 +45,8 @@ function fieldsOf(def: Node, skip: string[] = []): Node[] {
     .map(([name, node]) => describe(name, node, required.includes(name)));
 }
 
-export type FormKind = "exercise" | "program" | "breath" | "reminder" | "withdrawal";
-export const FORM_KINDS: [FormKind, ...FormKind[]] = ["exercise", "program", "breath", "reminder", "withdrawal"];
+export type FormKind = "exercise" | "program" | "breath" | "reminder" | "challenge" | "withdrawal";
+export const FORM_KINDS: [FormKind, ...FormKind[]] = ["exercise", "program", "breath", "reminder", "challenge", "withdrawal"];
 
 const ASSIGNED = ["kind", "itemId", "revision"];
 const NOTES: Record<FormKind, string> = {
@@ -53,6 +56,9 @@ const NOTES: Record<FormKind, string> = {
   reminder: "Kennung (itemId), Fassung (revision) und Zeitpunkt vergibt der Dienst. Uhrzeit hh:mm in Ortszeit des Geräts; weekdays aus monday bis sunday, ohne Doppelte; "
     + "lookbackHours 1 bis 24; target: {type: meditation | noalc}, {type: workout, programId?} oder {type: breath, breathId}, Ziele müssen es geben. "
     + "Höchstens sechs Erinnerungen von Claude gleichzeitig.",
+  challenge: "Kennung (itemId), Fassung (revision) und Zeitpunkt vergibt der Dienst. Genau eine Stufe: days 1 bis 90 und content {type: impulses, impulses}; "
+    + "genau so viele Impulse wie Tage, einer je Tag in Tagesreihenfolge (text, moment day oder evening, question optional). startDate JJJJ-MM-TT, frühestens der Tag vor dem Liefertag, "
+    + "höchstens 30 Tage danach. Ziele auf Trackern gehen noch nicht: wish_report. Ausgelassene Tage sind neutral.",
   withdrawal: "Genau eines von itemId oder packageId.",
 };
 

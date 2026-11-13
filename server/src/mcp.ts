@@ -26,8 +26,9 @@ export const INSTRUCTIONS = [
   "11. Trainings sind Vorschläge und kein medizinischer Rat. Halte dich an genannte Einschränkungen und frage im Zweifel nach.",
   "",
   "Werkzeuge zum Lesen: `overview`, `catalog`, `show`, `forms` (der Bauplan), `delivery_status` und `history` (Rückblick auf die Einheiten der letzten 90 Tage).",
-  "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `reminder_create`, `item_update`, `item_withdraw` und `wish_report`.",
+  "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `reminder_create`, `challenge_create`, `item_update`, `item_withdraw` und `wish_report`.",
   "Höchstens sechs Erinnerungen von Claude gleichzeitig; Erinnerungen laden ein und mahnen nicht.",
+  "Eine Challenge (`challenge_create`) hat eine Stufe mit einem Impuls je Tag; `history` zeigt Fortschritt und Notizen zu deinen Impulsen. Ausgelassene Tage sind neutral; frag nach, statt zu bewerten.",
   "Lieferungen erscheinen beim nächsten Öffnen von Healthy Habits.",
   "Trainings sind Vorschläge von Claude und kein medizinischer Rat.",
 ].join("\n");
@@ -80,13 +81,19 @@ const BREATH_FIELDS = {
   exhaleSeconds: field("Pflicht: Ausatmen in Sekunden, 1 bis 60"), holdOutSeconds: field("Pflicht: Halten nach dem Ausatmen, 0 bis 60"),
 };
 const loose = (shape: z.ZodRawShape) => z.looseObject({ ...shape, why: WHY, package: PACKAGE });
-const Kinds = z.enum(["exercise", "program", "breath", "reminder"]);
+const Kinds = z.enum(["exercise", "program", "breath", "reminder", "challenge"]);
 const REMINDER_FIELDS = {
   title: field("Pflicht: Titel, höchstens 40 Zeichen"), message: field("Pflicht: Text der Mitteilung, 1 bis 200 Zeichen"),
   time: field("Pflicht: Uhrzeit hh:mm (Ortszeit des Geräts)"),
   weekdays: field("Pflicht: 1 bis 7 verschiedene Wochentage aus monday, tuesday, wednesday, thursday, friday, saturday, sunday"),
   lookbackHours: field("Pflicht: nur erinnern, wenn in so vielen Stunden davor nichts passiert ist, ganze Zahl 1 bis 24"),
   target: field("Pflicht: Ziel {type: meditation | noalc | workout (programId?) | breath (breathId)}; programId bzw. breathId aus catalog oder einer eigenen Lieferung"),
+};
+
+const CHALLENGE_FIELDS = {
+  title: field("Pflicht: Titel, höchstens 40 Zeichen"), symbol: SYMBOL, description: DESCRIPTION,
+  startDate: field("Pflicht: Starttag JJJJ-MM-TT (Kalendertag des Geräts), frühestens gestern, höchstens 30 Tage voraus"),
+  stages: field("Pflicht: genau eine Stufe {days 1-90, content: {type: \"impulses\", impulses: [{text 1-300, moment day|evening, question? 1-120}]}}; genau so viele Impulse wie Tage"),
 };
 
 // Zustandslos: für jede Anfrage ein frischer Server mit den Lesewerkzeugen, nichts wird zwischengespeichert.
@@ -149,6 +156,10 @@ function registerWriteTools(server: McpServer, pool: pg.Pool): void {
     description: "Neue smarte Erinnerung liefern (Uhrzeit, Wochentage, Rückblick in Stunden, Ziel; höchstens sechs von Claude gleichzeitig); vorher forms lesen und Henning bestätigen lassen",
     inputSchema: loose(REMINDER_FIELDS), annotations: Writes,
   }, create("reminder"));
+  server.registerTool("challenge_create", {
+    description: "Neue Challenge auf Zeit liefern: eine Stufe mit einem Achtsamkeits-Impuls je Tag (Impulse laden ein und bewerten nicht); vorher forms lesen und Henning bestätigen lassen",
+    inputSchema: loose(CHALLENGE_FIELDS), annotations: Writes,
+  }, create("challenge"));
   server.registerTool("item_update", {
     description: "Einen eigenen Baustein von Claude ändern: neue vollständige Fassung in fields; basedOnRevision ist die Fassung, die du zuletzt mit show gelesen hast",
     inputSchema: z.looseObject({

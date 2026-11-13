@@ -10,6 +10,10 @@ export type HistorySession = {
   startedAt: string; kind: "meditation" | "workout" | "breath"; programId?: string; durationSeconds: number; completed: boolean;
   feedback?: { rating: "too_easy" | "right" | "too_hard"; note?: string };
 };
+export type ChallengeEntry = {
+  id: string; startDate: string; stages: { days: number }[]; deliveredAt?: string;
+  progress: { days: { date: string; status: string; note?: string }[]; extendedBy: number };
+};
 export type Streak = { current: number; longest: number };
 export type History = { sessions: HistorySession[]; streaks: { meditation: Streak; workout: Streak } };
 
@@ -23,6 +27,7 @@ export type Transcript = {
   deliveries: { deliveryId: string; outcome: string }[];
   history?: History;
   reminders?: { id: string; target: { type: string; programId?: string; breathId?: string } }[];
+  challenges?: ChallengeEntry[];
 };
 
 // Einmal kompiliert; das Schema ist die einzige Quelle der Regeln. Im Image liegt es unter /app/Contracts, im Repo an derselben Stelle relativ zu server/.
@@ -64,6 +69,7 @@ function reminderProblem(doc: Transcript): string | undefined {
 }
 
 const DAY = 86_400_000;
+const dayNumber = (text: string): number => Date.parse(`${text.slice(0, 10)}T00:00:00Z`) / DAY;
 
 // Echtes Kalenderdatum? Der Tag wird über Date.UTC zurückgerechnet (30. Februar bleibt nicht 30. Februar).
 function realDate(text: unknown): boolean {
@@ -78,13 +84,38 @@ function realDate(text: unknown): boolean {
 // Erster Zeitstempel ohne echtes Kalenderdatum (Pfad, nie Inhalt) oder undefined.
 function calendarProblem(doc: Transcript): string | undefined {
   if (!realDate(doc.generatedAt)) return "/generatedAt: kein echtes Kalenderdatum";
-  for (const name of [...lists, "reminders"] as const) {
+  for (const name of [...lists, "reminders", "challenges"] as const) {
     for (const [index, item] of ((doc[name] ?? []) as { deliveredAt?: unknown }[]).entries()) {
       if (item.deliveredAt !== undefined && !realDate(item.deliveredAt)) return `/${name}/${index}/deliveredAt: kein echtes Kalenderdatum`;
     }
   }
   for (const [index, s] of (doc.history?.sessions ?? []).entries()) {
     if (!realDate(s.startedAt)) return `/history/sessions/${index}/startedAt: kein echtes Kalenderdatum`;
+  }
+  for (const [index, c] of (doc.challenges ?? []).entries()) {
+    if (!realDate(c.startDate)) return `/challenges/${index}/startDate: kein echtes Kalenderdatum`;
+    for (const [at, d] of c.progress.days.entries()) {
+      if (!realDate(d.date)) return `/challenges/${index}/progress/days/${at}/date: kein echtes Kalenderdatum`;
+    }
+  }
+  return undefined;
+}
+
+// Challenges (Fassung 2, Spec claude-challenge.md Abschnitt 3): Kennungen eindeutig; Tage lückenlos ab startDate, keiner nach dem UTC-Tag von
+// generatedAt, höchstens Gesamtdauer + extendedBy. Nennt nur Pfade, nie Inhalte.
+function challengeProblem(doc: Transcript): string | undefined {
+  const today = dayNumber(doc.generatedAt);
+  const seen = new Set<string>();
+  for (const [index, c] of (doc.challenges ?? []).entries()) {
+    if (seen.has(c.id)) return `/challenges/${index}/id: Kennung kommt in der Liste mehrfach vor`;
+    seen.add(c.id);
+    const start = dayNumber(c.startDate);
+    const total = c.stages.reduce((sum, st) => sum + st.days, 0) + c.progress.extendedBy;
+    if (c.progress.days.length > total) return `/challenges/${index}/progress/days: mehr Tage als Dauer plus Verlängerung`;
+    for (const [at, d] of c.progress.days.entries()) {
+      if (dayNumber(d.date) !== start + at) return `/challenges/${index}/progress/days/${at}/date: Tage müssen lückenlos ab startDate aufsteigen`;
+      if (dayNumber(d.date) > today) return `/challenges/${index}/progress/days/${at}/date: liegt nach dem Tag von generatedAt`;
+    }
   }
   return undefined;
 }
@@ -117,7 +148,7 @@ export function checkTranscript(doc: unknown): string | undefined {
     const path = validate.errors?.[0]?.instancePath || "Wurzel";
     return `${path}: entspricht nicht der Abschrift, Fassung ${version}`;
   }
-  return duplicateId(doc as Transcript) ?? calendarProblem(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) ?? reminderProblem(doc as Transcript) : undefined);
+  return duplicateId(doc as Transcript) ?? calendarProblem(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) ?? reminderProblem(doc as Transcript) ?? challengeProblem(doc as Transcript) : undefined);
 }
 
 // Erst Form, dann ein Statement: die erste Abschrift wird abgelegt, eine neuere ersetzt sie, eine ältere oder gleich alte nicht.

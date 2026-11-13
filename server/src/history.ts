@@ -1,5 +1,6 @@
 // Rückblick (B3a, Issue #58): reine Funktion des Werkzeugs `history`; mcp.ts holt die Abschrift und reicht sie hierher.
 // Spec: openspec/specs/integrations/claude-rueckblick.md Abschnitt 3
+import { lastDay, type Entry } from "./read-tools.ts";
 import type { HistorySession, Streak, Transcript } from "./transcripts.ts";
 
 export type HistoryArgs = { from?: string; to?: string; kind?: string; programId?: string };
@@ -83,6 +84,33 @@ function byProgram(found: HistorySession[], names: Names): Doc[] {
   return rows.sort((a, b) => b.count - a.count || collator.compare(a.name, b.name));
 }
 
+const STATUSES = ["done", "made_up", "skipped", "open"] as const;
+type ProgressDay = { date: string; status: (typeof STATUSES)[number]; note?: string };
+type ChallengeDoc = Omit<Entry, "stages" | "progress" | "startDate"> & { title: string; startDate: string; stages: { days: number; content: { impulses: { text: string }[] } }[]; progress: { days: ProgressDay[]; extendedBy: number } };
+
+// Eine Challenge für Claude: Zähler, aktueller Tag (1-basiert, vor dem Start 0, höchstens Dauer + Verlängerung) und Notizen mit dem Text des Impulses ihres Tages.
+function challengeRow(c: ChallengeDoc, today: number): Doc {
+  const start = Date.parse(`${c.startDate}T00:00:00Z`) / DAY;
+  const total = c.stages.reduce((sum, st) => sum + st.days, 0);
+  const impulses = c.stages.flatMap((st) => st.content.impulses);
+  const counts = Object.fromEntries(STATUSES.map((status) => [status, c.progress.days.filter((d) => d.status === status).length]));
+  const notes = c.progress.days.filter((d) => d.note !== undefined)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((d) => ({ date: d.date, impulse: impulses[Date.parse(`${d.date}T00:00:00Z`) / DAY - start]?.text, note: d.note }));
+  return {
+    id: c.id, title: c.title, startDate: c.startDate, totalDays: total, extendedBy: c.progress.extendedBy,
+    day: Math.max(0, Math.min(today - start + 1, total + c.progress.extendedBy)), counts, notes,
+  };
+}
+
+// Challenges, deren Zeitraum (Start bis letzter Tag, UTC-Tage) den Abfragezeitraum berührt; ohne Challenges eine leere Liste.
+function challengeRows(transcript: Transcript, range: { from: number; to: number }): Doc[] {
+  const today = Math.floor(Date.parse(transcript.generatedAt) / DAY);
+  return ((transcript as unknown as { challenges?: ChallengeDoc[] }).challenges ?? [])
+    .filter((c) => Date.parse(`${c.startDate}T00:00:00Z`) <= range.to && lastDay(c) * DAY >= range.from)
+    .map((c) => challengeRow(c, today));
+}
+
 // Die Antwort des Werkzeugs oder ein String mit Grund und Ausweg (Ablehnung). Die Zusammenfassung zählt alle Treffer, die Liste höchstens 200.
 export function historyDoc(transcript: Transcript | undefined, args: HistoryArgs): Doc | string {
   if (transcript === undefined) return "noch keine Abschrift; bitte Healthy Habits öffnen, die App schickt sie dann";
@@ -101,5 +129,6 @@ export function historyDoc(transcript: Transcript | undefined, args: HistoryArgs
     sessions: found.slice(0, MAX_SESSIONS).map((s) => sessionRow(s, names)),
     summary: { byKind: byKind(found), byProgram: byProgram(found, names) },
     streaks: { meditation: streakRow(transcript.history.streaks.meditation), workout: streakRow(transcript.history.streaks.workout) },
+    challenges: challengeRows(transcript, range),
   };
 }

@@ -11,7 +11,7 @@ import { getTranscript } from "./transcripts.ts";
 type Db = pg.Pool | pg.PoolClient;
 export type Doc = Record<string, any>;
 export type Outcome = Doc | string;
-export type Kind = "exercise" | "program" | "breath" | "reminder";
+export type Kind = "exercise" | "program" | "breath" | "reminder" | "challenge";
 
 // Höchstens so viele Erinnerungen von Claude gleichzeitig (Spec claude-erinnerung.md Abschnitt 4).
 const REMINDER_CAP = 6;
@@ -49,7 +49,7 @@ type Snapshot = {
   entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[]; programs: string[]; breaths: string[];
 };
 
-const LISTS: [string, Kind][] = [["exercises", "exercise"], ["programs", "program"], ["breaths", "breath"], ["reminders", "reminder"]];
+const LISTS: [string, Kind][] = [["exercises", "exercise"], ["programs", "program"], ["breaths", "breath"], ["reminders", "reminder"], ["challenges", "challenge"]];
 
 function fromTranscript(transcript: Doc | undefined): Known[] {
   return LISTS.flatMap(([list, kind]) => ((transcript?.[list] ?? []) as Doc[]).map((e): Known => ({
@@ -167,12 +167,12 @@ function activeReminders(snap: Snapshot): number {
 const REMINDER_FULL = refuse(`Höchstens sechs Erinnerungen von Claude gleichzeitig.`,
   "Ziehe eine mit item_withdraw zurück oder ändere eine bestehende mit item_update.");
 
-// exercise_define, program_create, breath_create, reminder_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
+// exercise_define, program_create, breath_create, reminder_create, challenge_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
 export async function createItem(pool: pg.Pool, owner: string, kind: Kind, args: Doc): Promise<Outcome> {
   const { why, package: pkg, ...fields } = args;
   const reserved = serviceField(fields);
   if (reserved !== undefined) return reserved;
-  const itemId = newItemId(kind === "reminder" ? fields.title : fields.name);
+  const itemId = newItemId(kind === "reminder" || kind === "challenge" ? fields.title : fields.name);
   const doc = envelope(why, packageOf(pkg), [{ ...fields, kind, itemId, revision: 1 }]);
   return locked(pool, owner, async (db) => {
     const snap = await snapshot(db, owner);

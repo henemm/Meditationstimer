@@ -82,6 +82,7 @@ letzter Tag heute, morgen oder übermorgen (UTC-Tage von `generatedAt`) ist; die
 own, claude}`. `catalog`-Zeile: `{id, name (= title), origin, startDate, totalDays}`. `notes` nach Datum aufsteigend. Ohne Challenges ist
 `history.challenges` eine leere Liste; abgelaufene Challenges erscheinen, wenn ihr Zeitraum den Abfragezeitraum berührt. `item_update`
 erwartet in `fields` alle Felder wie `challenge_create` ohne `why` und `package`.
+`day` ist vor dem Start 0. Ein Tag mit Notiz ohne zugehörigen Impuls (Verlängerungstag) erscheint in `notes` ohne `impulse`.
 
 ## 5. Fertig, wenn
 
