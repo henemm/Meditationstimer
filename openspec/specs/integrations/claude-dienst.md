@@ -74,6 +74,10 @@ Die App schickt nach jedem Abgleich eine Abschrift. Der Dienst rechnet nichts na
 - **Vertrag:** `Contracts/transcript/transcript-v1.schema.json` (JSON Schema) mit Beispielen `Contracts/transcript/{valid,invalid}/*.json`
   (`expected.accepted`, bei ungültigen `schemaRejects`). Der Dienst prüft mit dem Schema (Ajv als Laufzeit-Abhängigkeit, eine einzige
   Quelle der Regeln) und zusätzlich: Kennungen je Liste eindeutig. Die App (B2d) erzeugt nur Abschriften, die diese Beispiele bestehen.
+- **Tabelle:** `transcripts(account_id text PRIMARY KEY, doc jsonb, generated_at timestamptz, received_at timestamptz DEFAULT now())`,
+  `generated_at` per CHECK an `doc->>'generatedAt'` gebunden; zweite Datenschutzwand: CHECK, dass `doc` auf oberster Ebene nur
+  `version`, `generatedAt`, `exercises`, `programs`, `breaths`, `deliveries` trägt. `getTranscript` gibt das Dokument unverändert zurück.
+  Reihenfolge in `putTranscript`: erst Form (`invalid`), dann Alter (`stale`), dann Ablage (`stored`).
 
 ## 5. Lieferungen und App-Schnittstelle
 
