@@ -6,11 +6,15 @@ on:
   pull_request:
     paths:
       - "server/**"
+      - "Contracts/transcript/**"
+      - ".dockerignore"
       - ".github/workflows/server.yml"
   push:
     branches: [main]
     paths:
       - "server/**"
+      - "Contracts/transcript/**"
+      - ".dockerignore"
       - ".github/workflows/server.yml"
 
 jobs:
@@ -64,13 +68,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Bauen
-        run: docker build -t hhhaven-server:ci server
+        run: docker build -f server/Dockerfile -t hhhaven-server:ci .
       - name: Image prüfen
         run: |
           uid=$(docker run --rm --entrypoint id hhhaven-server:ci -u)
           echo "uid=$uid"
           test "$uid" != "0"
-          docker run --rm --entrypoint sh hhhaven-server:ci -c 'test ! -e /app/test && test ! -e /app/scripts && ! ls -a /app | grep -q "^\.env"'
+          docker run --rm --entrypoint sh hhhaven-server:ci -c 'test ! -e /app/server/test && test ! -e /app/server/scripts && test -f /app/server/src/transcripts.ts && test -f /app/server/migrations/002_transcripts.sql && test -f /app/Contracts/transcript/transcript-v1.schema.json && test ! -e /app/Contracts/transcript/valid && ! ls -a /app /app/server | grep -q "^\.env"'
       - name: Starten
         run: >-
           docker run -d --name hh-server --network host
