@@ -129,6 +129,22 @@ Vor jeder Ablehnung wird nichts gespeichert.
 | `item_withdraw` | `itemId` oder `package`, `why` | `{deliveryId, state: "waiting"}` |
 | `wish_report` | `text` (1–1000), `context?` (1–300) | `{wishId}` |
 
+Antworten der Lesewerkzeuge (B2a-4), jeweils JSON-Text:
+- `overview`: `{ messages: [{kind, text, deliveryId?}], counts: {exercise|program|breath: {builtin, own, claude}}, waiting,
+  generatedAt?, transcriptAgeHours? }`. `kind` ist `rejected`, `waiting_long`, `transcript_old` oder `no_transcript`; Reihenfolge:
+  abgelehnte, lange wartende, Abschrift. Ohne Abschrift zählen eingebaute Übungen aus dem Katalog, alles andere 0.
+- `catalog`: `{ kind, count, items }`; Übung `{id, name, origin, category}`, Programm `{id, name, origin, steps, durationSeconds}`,
+  Atemübung `{id, name, origin, durationSeconds}`. Höchstens 100 Einträge, nach Name sortiert. Ohne Abschrift: eingebaute Übungen aus
+  dem Katalog, Programme und Atemübungen leer, dazu `note: "noch keine Abschrift"`.
+- `show`: `{ kind, item, pending: [{deliveryId, state}] }`; `item` vollständig wie in der Abschrift (eingebaute Übungen ohne Abschrift
+  aus dem Katalog). Unbekannt: Ablehnung „Nicht gefunden; Kennungen liefert catalog“.
+- `forms`: je Art die Felder mit Pflicht, Typ, Grenzen und erlaubten Werten, abgeleitet aus `Contracts/schema/delivery-v1.schema.json`;
+  Kategorien mit deutschem Namen (Kraft, Dehnung, Core, Cardio, Beine, Oberkörper, Ganzkörper, Aufwärmen, Cool-Down).
+- `delivery_status`: `{ deliveries: [{deliveryId, state, createdAt, decidedAt?, errors?, items: [{kind, name?, itemId?, packageId?}]}] }`,
+  neueste zuerst, höchstens 20; `state` nach außen `waiting`, `in_app` (abgeholt), `accepted`, `rejected`, `withdrawn` (= superseded).
+  Unbekannte `deliveryId`: Ablehnung.
+- Ohne Konto (`authInfo.extra.account` fehlt): jedes Werkzeug `isError` „kein Konto“. Schnittstelle: `mcpHandler(pool)` wie in Loose Ends.
+
 Regeln der Lieferwerkzeuge:
 - Der Dienst vergibt `deliveryId` (UUID), `itemId` (`claude.` + Name in Kleinbuchstaben a–z/0–9/-, Umlaute umschrieben, gekürzt,
   plus `-` und 6 Zeichen Zufall) und `createdAt`; `source` ist `claude`. Ein Paket wird über seinen Namen angegeben; gleicher Name
