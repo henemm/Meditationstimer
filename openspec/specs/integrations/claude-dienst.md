@@ -102,6 +102,8 @@ Umsetzung (B2a-3):
   `reportResult(pool, account, device, {deliveryId, outcome, errors?})` → `"ok"` oder `"conflict"`, `supersede(pool, account,
   deliveryId)` → `true` nur aus `waiting`, `listDeliveries(pool, account, {deliveryId?, limit?})` → Zustand, Zeitpunkte, Fehler, Dokument,
   neueste zuerst. `reportResult` für eine unbekannte, fremde oder nicht abgeholte Lieferung: `"conflict"` (Route: 409).
+  Ohne `limit` höchstens 50. Alle drei Endpunkte verlangen `Content-Type: application/json` (bei `claim` ist der Körper leer oder `{}`).
+  Ergebnis-Körper: nur `deliveryId` (UUID), `outcome`, `errors`; je Fehler `code` 1–100, `path` 0–300, `message` 1–300 Zeichen.
   Jede Funktion arbeitet nur im eigenen Konto.
 - Ergebnis-Körper: `outcome` `accepted`/`rejected`; `errors` nur bei `rejected`, Liste mit 1–100 Einträgen `{code, path, message}`
   (Texte, `message` 1–300 Zeichen); sonst 400.
