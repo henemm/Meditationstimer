@@ -171,7 +171,7 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
   ab B4a zusätzlich `INVALID_TIME`, `DUPLICATE_VALUE`, `TARGET_UNKNOWN`, `REMINDER_LIMIT`; ab B5a `START_IN_PAST`, `IMPULSE_COUNT`;
   ab B6a `LEVELS_NO_SUCCESS`.
 - Prüfkontext ab B4a zusätzlich `knownPrograms?: string[]`, `knownBreaths?: string[]` (Kennungen für Erinnerungsziele), ab B6a
-  `knownTrackers?: string[]`.
+  `knownTrackers?: string[]`, `keepStartDate?: string` (B6a: unverändertes Startdatum beim Ändern einer laufenden Challenge).
 
 ## 6. Beispielsatz
 

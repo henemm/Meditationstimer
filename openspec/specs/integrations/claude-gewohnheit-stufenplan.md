@@ -73,6 +73,13 @@ nur bei Challenges mit Ziel-Stufe. `forms` nennt alle Grenzen auch verschachtelt
 `building` zählt auch Claude-Tracker und Ziel-Challenges aus offenen Lieferungen (`waiting`/`claimed`), die noch nicht in der Abschrift
 stehen und nicht zurückgezogen sind. Die 66 Tage beim Tracker zählen ab Serverzeit; ein Claude-Tracker ohne `deliveredAt` gilt als im Aufbau.
 
+Nachträge nach der Adversary-Prüfung:
+- **Laufende Challenge ändern:** `item_update` einer Challenge, deren `startDate` unverändert bleibt, wird nicht wegen `START_IN_PAST`
+  abgelehnt. Umsetzung: Prüfkontext `keepStartDate?: string` — ist `startDate` gleich diesem Wert, entfällt die Prüfung „frühestens
+  Vortag“ (die Obergrenze +30 Tage bleibt). Der Dienst setzt `keepStartDate` bei `item_update` auf das `startDate` der höchsten bekannten Fassung.
+- **Beobachtende Gewohnheiten:** In `overview.building` zählen Claude-Tracker mit `mode: "awareness"` nicht mit (Wahrnehmen ist Beobachten,
+  nicht Aufbauen; Konzept 9.1). Alle anderen Modi zählen.
+
 ## 5. Fertig, wenn
 
 Prüfer und Dienst beurteilen den erweiterten Beispielsatz gleich; Abschrift-Beispiele mit Trackern und Ziel-Stufen (gültig; ungültig:
