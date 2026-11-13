@@ -93,6 +93,20 @@ nach außen als `withdrawn`). Jeder Zustandswechsel steht im Verlauf (`delivery_
 
 Prüfreihenfolge wie bei Loose Ends: 405 → 401 → 400 (Gerät) → 415 → 413 → 400 (Form).
 
+Umsetzung (B2a-3):
+- Tabellen: `deliveries(id text PRIMARY KEY = deliveryId, account_id text, doc jsonb, state text CHECK in (waiting, claimed, accepted,
+  rejected, superseded), created_at, claimed_by text, claimed_at, result jsonb, decided_at)` mit CHECK „claimed_by und claimed_at
+  beide oder keins“, `doc->>'deliveryId' = id`; `delivery_events(delivery_id → deliveries, at, state, device)`.
+- `server/src/deliveries.ts`: `putDelivery(pool, account, doc)` (Zustand `waiting`, Ereignis), `claimDelivery(pool, account, device)`
+  (älteste wartende oder seit über 10 min abgeholte, `FOR UPDATE SKIP LOCKED`; Ergebnis `{deliveryId, delivery}` oder `undefined`),
+  `reportResult(pool, account, device, {deliveryId, outcome, errors?})` → `"ok"` oder `"conflict"`, `supersede(pool, account,
+  deliveryId)` → `true` nur aus `waiting`, `listDeliveries(pool, account, {deliveryId?, limit?})` → Zustand, Zeitpunkte, Fehler, Dokument.
+  Jede Funktion arbeitet nur im eigenen Konto.
+- Ergebnis-Körper: `outcome` `accepted`/`rejected`; `errors` nur bei `rejected`, Liste mit 1–100 Einträgen `{code, path, message}`
+  (Texte, `message` 1–300 Zeichen); sonst 400.
+- `server/src/app-routes.ts`: `appRoutes({pool, appAccount})` → Routen für die drei Endpunkte; `X-Device` muss eine UUID sein.
+  Körpergrenze 256 KiB. Die Abschrift läuft über `putTranscript` (`invalid` → 400, `stale`/`stored` → 204).
+
 ## 6. Werkzeuge für Claude
 
 Englische Namen, deutsche Beschreibungen. Jede Antwort ist JSON-Text; Ablehnungen sind `isError` mit Grund und Ausweg.
