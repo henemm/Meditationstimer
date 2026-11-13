@@ -25,6 +25,7 @@ Das Denken bleibt bei Claude, die Regeln und das Abspielen bleiben in der App. D
 | Was Claude ändern darf | Nur eigene Lieferungen. Eigene und mitgelieferte Inhalte kann es lesen und als Kopie abwandeln. |
 | Atemübungen | Gleich mit dabei. |
 | Gesprochene Meditation | Zurückgestellt (siehe 6.8). |
+| Übergabeweg (13.11.2026) | Lieferungen kommen ausschließlich über die Claude-Verbindung (MCP-Konnektor, Stufe 1). Keine Zwischenlösung per Link, Datei oder Zwischenablage; die Brücke B1b/B1c entfällt. Grund der Rückfrage: Ein Link aus der Claude-App in die App war nicht belegbar, Kopieren und Einfügen wäre Handarbeit gewesen. |
 
 ## 3. Ausgangslage
 
