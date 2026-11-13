@@ -72,6 +72,9 @@ Die Datenbank-Wand erlaubt `reminders` als obersten Schlüssel nur in Fassung 2.
 - `item_update`/`item_withdraw` gelten auch für Erinnerungen; `catalog` kennt `kind: "reminder"` (Einträge `{id, name: title, origin,
   time, weekdays, target}`), `show` zeigt sie, `forms` enthält den Bauplan, `overview` zählt sie je Herkunft und nennt `activeClaudeReminders`.
 - Server-Anweisung: „Höchstens sechs Erinnerungen von Claude gleichzeitig; Erinnerungen laden ein und mahnen nicht.“
+- Festlegungen: `overview` liefert `counts.reminder = {builtin, own, claude}` und oben `activeClaudeReminders`. Für die Obergrenze zählt
+  jede Kennung höchstens einmal (eine wartende neue Fassung einer Erinnerung, die schon in der Abschrift steht, zählt nicht zusätzlich).
+  `package` landet wie bei allen Bausteinen im Umschlag.
 
 ## 5. Fertig, wenn
 

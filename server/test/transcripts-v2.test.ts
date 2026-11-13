@@ -140,6 +140,18 @@ test("Datenschutz DB: oberstes Feld trackers scheitert in beiden Fassungen am CH
   }
 });
 
+test("Datenschutz DB: reminders als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514)", async (t) => {
+  const pool = await migrated(t);
+  const insert = "INSERT INTO transcripts (account_id, doc, generated_at, received_at) VALUES ($1, $2::jsonb, $3, now())";
+  const at = "2026-11-13T10:00:00Z";
+  await pool.query(insert, ["konto-v2", JSON.stringify(doc(2, at, { reminders: [] })), at]);
+  assert.equal((await pool.query("SELECT 1 FROM transcripts WHERE account_id = 'konto-v2'")).rowCount, 1);
+  await assert.rejects(
+    pool.query(insert, ["konto-v1", JSON.stringify(doc(1, at, { reminders: [] })), at]),
+    (error: unknown) => (error as { code?: string }).code === "23514",
+  );
+});
+
 // 4. Kalenderdatum (Nachtrag Adversary): nur echte Kalenderdaten
 
 function rejected(reason: unknown, label: string) {
