@@ -155,6 +155,7 @@ validateDelivery(input: unknown, context?: { knownExercises?: { id: string; name
   - Eine Übung derselben Lieferung zählt für Bezüge auch dann, wenn sie selbst Fehler hat.
   - Fehlt `format` oder ist es unbekannt, werden die übrigen Felder trotzdem geprüft.
   - `DUPLICATE_ID` und Bezüge berücksichtigen nur Kennungen, die selbst dem Muster entsprechen.
+  - Bei falscher Listenlänge (`LIST_SIZE`) werden die vorhandenen Einträge trotzdem einzeln geprüft.
   - `TOTAL_TOO_LONG` wird nur geprüft, wenn `rounds` und alle Zeiten des Bausteins für sich gültig sind (bei Programmen auch die Schrittzahl).
 - Codes (vollständige Liste): `FORMAT_UNKNOWN`, `FIELD_MISSING`, `FIELD_UNKNOWN`, `FIELD_TYPE`, `TEXT_EMPTY`, `TEXT_TOO_LONG`,
   `TEXT_FORBIDDEN_CHAR`, `INVALID_SYMBOL`, `OUT_OF_RANGE`, `LIST_SIZE`, `TOTAL_TOO_LONG`, `INVALID_ID`, `INVALID_DATE`,
