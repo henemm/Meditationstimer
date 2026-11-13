@@ -11,7 +11,7 @@ import { getTranscript } from "./transcripts.ts";
 type Db = pg.Pool | pg.PoolClient;
 export type Doc = Record<string, any>;
 export type Outcome = Doc | string;
-export type Kind = "exercise" | "program" | "breath" | "reminder" | "challenge";
+export type Kind = "exercise" | "program" | "breath" | "reminder" | "challenge" | "tracker";
 
 // Höchstens so viele Erinnerungen von Claude gleichzeitig (Spec claude-erinnerung.md Abschnitt 4).
 const REMINDER_CAP = 6;
@@ -46,10 +46,10 @@ type Known = {
   source: "transcript" | "waiting" | "claimed" | "accepted"; state?: string; origin?: string; enabled?: boolean;
 };
 type Snapshot = {
-  entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[]; programs: string[]; breaths: string[];
+  entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[]; programs: string[]; breaths: string[]; trackers: string[];
 };
 
-const LISTS: [string, Kind][] = [["exercises", "exercise"], ["programs", "program"], ["breaths", "breath"], ["reminders", "reminder"], ["challenges", "challenge"]];
+const LISTS: [string, Kind][] = [["exercises", "exercise"], ["programs", "program"], ["breaths", "breath"], ["reminders", "reminder"], ["challenges", "challenge"], ["trackers", "tracker"]];
 
 function fromTranscript(transcript: Doc | undefined): Known[] {
   return LISTS.flatMap(([list, kind]) => ((transcript?.[list] ?? []) as Doc[]).map((e): Known => ({
@@ -92,7 +92,7 @@ async function snapshot(pool: Db, owner: string): Promise<Snapshot> {
   const entries = [...own, ...fromDeliveries(rows)];
   return {
     entries, rows, exercises: knownExercises(entries, new Set(own.map((e) => e.id))),
-    programs: idsOf(entries, "program"), breaths: idsOf(entries, "breath"),
+    programs: idsOf(entries, "program"), breaths: idsOf(entries, "breath"), trackers: idsOf(entries, "tracker"),
   };
 }
 
@@ -115,7 +115,7 @@ const errorLine = (e: DeliveryError): string => `${e.path === "" ? "Lieferung" :
 
 // Der Prüfer aus B0 ist die einzige Instanz für die Form; ohne Fehler wird abgelegt, sonst nichts.
 function check(doc: Doc, snap: Snapshot): string | undefined {
-  const { errors } = validateDelivery(doc, { knownExercises: snap.exercises, knownPrograms: snap.programs, knownBreaths: snap.breaths });
+  const { errors } = validateDelivery(doc, { knownExercises: snap.exercises, knownPrograms: snap.programs, knownBreaths: snap.breaths, knownTrackers: snap.trackers });
   return errors.length === 0 ? undefined : `Die Lieferung wurde abgelehnt, nichts wurde gespeichert:\n${errors.map(errorLine).join("\n")}`;
 }
 
@@ -167,7 +167,7 @@ function activeReminders(snap: Snapshot): number {
 const REMINDER_FULL = refuse(`Höchstens sechs Erinnerungen von Claude gleichzeitig.`,
   "Ziehe eine mit item_withdraw zurück oder ändere eine bestehende mit item_update.");
 
-// exercise_define, program_create, breath_create, reminder_create, challenge_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
+// exercise_define, program_create, breath_create, reminder_create, challenge_create, tracker_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
 export async function createItem(pool: pg.Pool, owner: string, kind: Kind, args: Doc): Promise<Outcome> {
   const { why, package: pkg, ...fields } = args;
   const reserved = serviceField(fields);

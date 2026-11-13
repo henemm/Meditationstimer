@@ -4,6 +4,7 @@ import { loadCatalog } from './catalog.ts';
 import type { DeliveryError, ValidationResult } from './messages.ts';
 import { M } from './messages.ts';
 import { checkChallenge } from './challenge.ts';
+import { checkTracker, collectTrackerIds } from './tracker.ts';
 import { checkReminder, collectTargetIds, REMINDER_MAX } from './reminder.ts';
 import type { TargetIds } from './reminder.ts';
 import {
@@ -15,7 +16,7 @@ export { ERROR_CODES } from './messages.ts';
 export type { DeliveryError, ErrorCode, ValidationResult } from './messages.ts';
 
 export type KnownExercise = { id: string; name: string };
-export type ValidationContext = { knownExercises?: KnownExercise[]; knownPrograms?: string[]; knownBreaths?: string[] };
+export type ValidationContext = { knownExercises?: KnownExercise[]; knownPrograms?: string[]; knownBreaths?: string[]; knownTrackers?: string[] };
 
 const FORMAT = 'hhhaven.delivery/1';
 const CATEGORIES = ['strength', 'stretching', 'core', 'cardio', 'legs', 'upperBody', 'fullBody', 'warmup', 'cooldown'];
@@ -32,6 +33,7 @@ type State = {
   seenItemIds: Set<string>;
   seenNames: Set<string>;
   targets: TargetIds;
+  trackers: Set<string>;
   createdDay: number | undefined;
 };
 
@@ -178,7 +180,7 @@ function checkItem(st: State, item: unknown, base: string): void {
   if (!has(item, 'kind')) return void st.errors.push(M.missing(kindPath));
   const kind = item.kind;
   if (typeof kind !== 'string') return void st.errors.push(M.type(kindPath, 'ein Text'));
-  if (!['exercise', 'program', 'breath', 'reminder', 'challenge', 'withdrawal'].includes(kind)) return void st.errors.push(M.kindUnknown(kindPath, kind));
+  if (!['exercise', 'program', 'breath', 'reminder', 'challenge', 'tracker', 'withdrawal'].includes(kind)) return void st.errors.push(M.kindUnknown(kindPath, kind));
   checkIdentity(st, item, base, kind);
   if (kind !== 'withdrawal') field(st, item, 'revision', base, true, int(1, 1_000_000));
   if (kind === 'exercise') checkExercise(st, item, base);
@@ -186,6 +188,7 @@ function checkItem(st: State, item: unknown, base: string): void {
   else if (kind === 'breath') checkBreath(st, item, base);
   else if (kind === 'reminder') checkReminder(st, item, base);
   else if (kind === 'challenge') checkChallenge(st, item, base);
+  else if (kind === 'tracker') checkTracker(st, item, base);
   else checkWithdrawal(st, item, base);
 }
 
@@ -206,6 +209,7 @@ function newState(context: ValidationContext | undefined, createdAt: unknown): S
     seenItemIds: new Set(),
     seenNames: new Set(),
     targets: { programs: idSet(context?.knownPrograms), breaths: idSet(context?.knownBreaths) },
+    trackers: idSet(context?.knownTrackers),
     createdDay: checkDate(createdAt, '') === null ? parseDay((createdAt as string).slice(0, 10)) : undefined,
   };
 }
@@ -221,6 +225,7 @@ export function validateDelivery(input: unknown, context?: ValidationContext): V
   if (items !== undefined) {
     collectExerciseIds(st, items);
     collectTargetIds(items, st.targets);
+    collectTrackerIds(items, st.trackers);
     const reminders = items.filter((it) => isObj(it) && it.kind === 'reminder').length;
     if (reminders > REMINDER_MAX) st.errors.push(M.reminderLimit('/items', reminders, REMINDER_MAX));
     items.forEach((item, i) => checkItem(st, item, ptr('/items', i)));

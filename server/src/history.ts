@@ -86,13 +86,14 @@ function byProgram(found: HistorySession[], names: Names): Doc[] {
 
 const STATUSES = ["done", "made_up", "skipped", "open"] as const;
 type ProgressDay = { date: string; status: (typeof STATUSES)[number]; note?: string };
-type ChallengeDoc = Omit<Entry, "stages" | "progress" | "startDate"> & { title: string; startDate: string; stages: { days: number; content: { impulses: { text: string }[] } }[]; progress: { days: ProgressDay[]; extendedBy: number } };
+type ChallengeDoc = Omit<Entry, "stages" | "progress" | "startDate"> & { title: string; startDate: string; stages: { days: number; content: { type: string; impulses?: { text: string }[] } }[]; progress: { days: ProgressDay[]; goals?: { stage: number; met: number; of: number }[]; extendedBy: number } };
 
-// Eine Challenge für Claude: Zähler, aktueller Tag (1-basiert, vor dem Start 0, höchstens Dauer + Verlängerung) und Notizen mit dem Text des Impulses ihres Tages.
+// Eine Challenge für Claude: Zähler, aktueller Tag (1-basiert, vor dem Start 0, höchstens Dauer + Verlängerung), Notizen mit dem Text des Impulses ihres Tages
+// und bei Ziel-Stufen die Summen (goals; Ziel-Stufen haben keine Impulse und keine Tageswerte).
 function challengeRow(c: ChallengeDoc, today: number): Doc {
   const start = Date.parse(`${c.startDate}T00:00:00Z`) / DAY;
   const total = c.stages.reduce((sum, st) => sum + st.days, 0);
-  const impulses = c.stages.flatMap((st) => st.content.impulses);
+  const impulses = c.stages.flatMap((st) => st.content.impulses ?? Array.from({ length: st.days }, () => undefined));
   const counts = Object.fromEntries(STATUSES.map((status) => [status, c.progress.days.filter((d) => d.status === status).length]));
   const notes = c.progress.days.filter((d) => d.note !== undefined)
     .sort((a, b) => a.date.localeCompare(b.date))
@@ -100,6 +101,7 @@ function challengeRow(c: ChallengeDoc, today: number): Doc {
   return {
     id: c.id, title: c.title, startDate: c.startDate, totalDays: total, extendedBy: c.progress.extendedBy,
     day: Math.max(0, Math.min(today - start + 1, total + c.progress.extendedBy)), counts, notes,
+    ...(c.stages.some((st) => st.content.type === "goal") ? { goals: c.progress.goals ?? [] } : {}),
   };
 }
 

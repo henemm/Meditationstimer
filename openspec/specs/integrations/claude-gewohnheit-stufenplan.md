@@ -70,6 +70,8 @@ Festlegungen: `builtin.noalc` ist bekannt, wenn er in der Abschrift unter `track
 der Lieferung), bei Challenges `startDate`. Eine Challenge ist beendet, wenn ihr letzter Tag (`startDate + Summe(days) + extendedBy − 1`)
 vor dem UTC-Tag von `generatedAt` liegt. `progress.days` darf bei reinen Ziel-Challenges leer sein. `history.challenges[].goals` erscheint
 nur bei Challenges mit Ziel-Stufe. `forms` nennt alle Grenzen auch verschachtelter Felder (z. B. 300 für Impuls-Text).
+`building` zählt auch Claude-Tracker und Ziel-Challenges aus offenen Lieferungen (`waiting`/`claimed`), die noch nicht in der Abschrift
+stehen und nicht zurückgezogen sind. Die 66 Tage beim Tracker zählen ab Serverzeit; ein Claude-Tracker ohne `deliveredAt` gilt als im Aufbau.
 
 ## 5. Fertig, wenn
 
