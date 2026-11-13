@@ -26,7 +26,8 @@ export const INSTRUCTIONS = [
   "11. Trainings sind Vorschläge und kein medizinischer Rat. Halte dich an genannte Einschränkungen und frage im Zweifel nach.",
   "",
   "Werkzeuge zum Lesen: `overview`, `catalog`, `show`, `forms` (der Bauplan), `delivery_status` und `history` (Rückblick auf die Einheiten der letzten 90 Tage).",
-  "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `item_update`, `item_withdraw` und `wish_report`.",
+  "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `reminder_create`, `item_update`, `item_withdraw` und `wish_report`.",
+  "Höchstens sechs Erinnerungen von Claude gleichzeitig; Erinnerungen laden ein und mahnen nicht.",
   "Lieferungen erscheinen beim nächsten Öffnen von Healthy Habits.",
   "Trainings sind Vorschläge von Claude und kein medizinischer Rat.",
 ].join("\n");
@@ -79,7 +80,14 @@ const BREATH_FIELDS = {
   exhaleSeconds: field("Pflicht: Ausatmen in Sekunden, 1 bis 60"), holdOutSeconds: field("Pflicht: Halten nach dem Ausatmen, 0 bis 60"),
 };
 const loose = (shape: z.ZodRawShape) => z.looseObject({ ...shape, why: WHY, package: PACKAGE });
-const Kinds = z.enum(["exercise", "program", "breath"]);
+const Kinds = z.enum(["exercise", "program", "breath", "reminder"]);
+const REMINDER_FIELDS = {
+  title: field("Pflicht: Titel, höchstens 40 Zeichen"), message: field("Pflicht: Text der Mitteilung, 1 bis 200 Zeichen"),
+  time: field("Pflicht: Uhrzeit hh:mm (Ortszeit des Geräts)"),
+  weekdays: field("Pflicht: 1 bis 7 verschiedene Wochentage aus monday, tuesday, wednesday, thursday, friday, saturday, sunday"),
+  lookbackHours: field("Pflicht: nur erinnern, wenn in so vielen Stunden davor nichts passiert ist, ganze Zahl 1 bis 24"),
+  target: field("Pflicht: Ziel {type: meditation | noalc | workout (programId?) | breath (breathId)}; programId bzw. breathId aus catalog oder einer eigenen Lieferung"),
+};
 
 // Zustandslos: für jede Anfrage ein frischer Server mit den Lesewerkzeugen, nichts wird zwischengespeichert.
 export function mcpHandler(pool: pg.Pool): McpHttpHandler {
@@ -102,7 +110,7 @@ export function mcpHandler(pool: pg.Pool): McpHttpHandler {
     }, guarded<{ id: string }>(async (owner, { id }) =>
       showDoc(await getTranscript(pool, owner), id, await openDeliveries(pool, owner)) ?? "Nicht gefunden; Kennungen liefert catalog"));
     server.registerTool("forms", {
-      description: "Bauplan: Felder, Grenzen und erlaubte Werte je Baustein (Übung, Programm, Atemübung, Rücknahme), dazu die Kategorien mit deutschem Namen",
+      description: "Bauplan: Felder, Grenzen und erlaubte Werte je Baustein (Übung, Programm, Atemübung, Erinnerung, Rücknahme), dazu die Kategorien mit deutschem Namen",
       inputSchema: z.object({ kind: z.enum(FORM_KINDS).optional() }), annotations: ReadOnly,
     }, guarded<{ kind?: (typeof FORM_KINDS)[number] }>(async (_owner, { kind }) => buildForms(kind)));
     server.registerTool("delivery_status", {
@@ -122,7 +130,7 @@ export function mcpHandler(pool: pg.Pool): McpHttpHandler {
   });
 }
 
-// Die sechs Lieferwerkzeuge; jede Antwort ist JSON, jede Ablehnung ein Text mit Grund und Ausweg (nichts ist dann gespeichert).
+// Die Lieferwerkzeuge; jede Antwort ist JSON, jede Ablehnung ein Text mit Grund und Ausweg (nichts ist dann gespeichert).
 function registerWriteTools(server: McpServer, pool: pg.Pool): void {
   const create = (kind: Kind) => guarded<Doc>((owner, args) => createItem(pool, owner, kind, args));
   server.registerTool("exercise_define", {
@@ -137,6 +145,10 @@ function registerWriteTools(server: McpServer, pool: pg.Pool): void {
     description: "Neue Atemübung liefern (Ein-, Halte- und Ausatemzeiten in Sekunden); vorher forms lesen und Henning bestätigen lassen",
     inputSchema: loose(BREATH_FIELDS), annotations: Writes,
   }, create("breath"));
+  server.registerTool("reminder_create", {
+    description: "Neue smarte Erinnerung liefern (Uhrzeit, Wochentage, Rückblick in Stunden, Ziel; höchstens sechs von Claude gleichzeitig); vorher forms lesen und Henning bestätigen lassen",
+    inputSchema: loose(REMINDER_FIELDS), annotations: Writes,
+  }, create("reminder"));
   server.registerTool("item_update", {
     description: "Einen eigenen Baustein von Claude ändern: neue vollständige Fassung in fields; basedOnRevision ist die Fassung, die du zuletzt mit show gelesen hast",
     inputSchema: z.looseObject({

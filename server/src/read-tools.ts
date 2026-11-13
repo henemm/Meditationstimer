@@ -3,10 +3,10 @@ import type { DeliveryRow, OpenDelivery, Rejection } from "./deliveries.ts";
 import { builtinExercises } from "./forms.ts";
 import type { Transcript } from "./transcripts.ts";
 
-export type Kind = "exercise" | "program" | "breath";
+export type Kind = "exercise" | "program" | "breath" | "reminder";
 type Origin = "builtin" | "own" | "claude";
-type Entry = { id: string; name: string; origin: Origin; category?: string; rounds?: number; steps?: { workSeconds: number; restSeconds: number }[] };
-type Lists = { exercise: Entry[]; program: Entry[]; breath: Entry[] };
+type Entry = { id: string; name: string; origin: Origin; category?: string; rounds?: number; state?: string; enabled?: boolean; time?: string; weekdays?: string[]; target?: unknown; steps?: { workSeconds: number; restSeconds: number }[] };
+type Lists = Record<Kind, Entry[]>;
 type Doc = Record<string, any>;
 
 const HOUR = 3_600_000;
@@ -19,10 +19,12 @@ const plain = (text: string): string => text.normalize("NFD").replace(/\p{M}/gu,
 function lists(transcript: Transcript | undefined): Lists {
   if (transcript === undefined) {
     const exercise = builtinExercises.map((e) => ({ ...e, origin: "builtin" as const }));
-    return { exercise, program: [], breath: [] };
+    return { exercise, program: [], breath: [], reminder: [] };
   }
-  const doc = transcript as unknown as { exercises: Entry[]; programs: Entry[]; breaths: Entry[] };
-  return { exercise: doc.exercises, program: doc.programs, breath: doc.breaths };
+  const doc = transcript as unknown as { exercises: Entry[]; programs: Entry[]; breaths: Entry[]; reminders?: (Entry & { title: string })[] };
+  // Erinnerungen tragen ihren Namen im Feld title (Fassung 2, optional).
+  const reminder = (doc.reminders ?? []).map((e) => ({ ...e, name: e.title }));
+  return { exercise: doc.exercises, program: doc.programs, breath: doc.breaths, reminder };
 }
 
 export function ageHours(transcript: Transcript, now: Date): number {
@@ -59,6 +61,7 @@ export function overviewDoc(transcript: Transcript | undefined, open: OpenDelive
   }
   return {
     messages: overviewMessages(transcript, open, rejected, now), counts, waiting: open.length,
+    activeClaudeReminders: all.reminder.filter((e) => e.origin === "claude" && e.state === "active" && e.enabled === true).length,
     ...(transcript === undefined ? {} : { generatedAt: transcript.generatedAt, transcriptAgeHours: ageHours(transcript, now) }),
   };
 }
@@ -69,6 +72,7 @@ const breathTotal = (e: Doc): number => e.rounds * (e.inhaleSeconds + e.holdInSe
 function row(kind: Kind, e: Entry): Doc {
   const { id, name, origin } = e;
   if (kind === "exercise") return { id, name, origin, category: e.category };
+  if (kind === "reminder") return { id, name, origin, time: e.time, weekdays: e.weekdays, target: e.target };
   if (kind === "program") return { id, name, origin, steps: e.steps?.length ?? 0, durationSeconds: roundsTotal(e) };
   return { id, name, origin, durationSeconds: breathTotal(e) };
 }
@@ -95,7 +99,7 @@ function pendingFor(item: Doc, open: OpenDelivery[]): Doc[] {
 
 export function showDoc(transcript: Transcript | undefined, id: string, open: OpenDelivery[]): Doc | undefined {
   const all = lists(transcript);
-  for (const kind of ["exercise", "program", "breath"] as Kind[]) {
+  for (const kind of ["exercise", "program", "breath", "reminder"] as Kind[]) {
     const item = all[kind].find((e) => e.id === id);
     if (item !== undefined) return { kind, item, pending: pendingFor(item, open) };
   }

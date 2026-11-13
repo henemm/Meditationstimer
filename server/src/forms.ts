@@ -42,14 +42,17 @@ function fieldsOf(def: Node, skip: string[] = []): Node[] {
     .map(([name, node]) => describe(name, node, required.includes(name)));
 }
 
-export type FormKind = "exercise" | "program" | "breath" | "withdrawal";
-export const FORM_KINDS: [FormKind, ...FormKind[]] = ["exercise", "program", "breath", "withdrawal"];
+export type FormKind = "exercise" | "program" | "breath" | "reminder" | "withdrawal";
+export const FORM_KINDS: [FormKind, ...FormKind[]] = ["exercise", "program", "breath", "reminder", "withdrawal"];
 
 const ASSIGNED = ["kind", "itemId", "revision"];
 const NOTES: Record<FormKind, string> = {
   exercise: "Kennung (itemId), Fassung (revision) und Zeitpunkt vergibt der Dienst.",
   program: "Kennung (itemId), Fassung (revision) und Zeitpunkt vergibt der Dienst. Schritte verweisen auf Übungen per Kennung (exerciseId).",
   breath: "Kennung (itemId), Fassung (revision) und Zeitpunkt vergibt der Dienst.",
+  reminder: "Kennung (itemId), Fassung (revision) und Zeitpunkt vergibt der Dienst. Uhrzeit hh:mm in Ortszeit des Geräts; weekdays aus monday bis sunday, ohne Doppelte; "
+    + "lookbackHours 1 bis 24; target: {type: meditation | noalc}, {type: workout, programId?} oder {type: breath, breathId}, Ziele müssen es geben. "
+    + "Höchstens sechs Erinnerungen von Claude gleichzeitig.",
   withdrawal: "Genau eines von itemId oder packageId.",
 };
 

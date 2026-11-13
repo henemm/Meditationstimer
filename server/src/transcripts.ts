@@ -22,6 +22,7 @@ export type Transcript = {
   breaths: { id: string }[];
   deliveries: { deliveryId: string; outcome: string }[];
   history?: History;
+  reminders?: { id: string; target: { type: string; programId?: string; breathId?: string } }[];
 };
 
 // Einmal kompiliert; das Schema ist die einzige Quelle der Regeln. Im Image liegt es unter /app/Contracts, im Repo an derselben Stelle relativ zu server/.
@@ -46,6 +47,22 @@ function duplicateId(doc: Transcript): string | undefined {
   return undefined;
 }
 
+// Erinnerungen (Fassung 2, Spec claude-erinnerung.md Abschnitt 3): Kennungen eindeutig, Ziel-Programm bzw. Ziel-Atemübung steht in der Abschrift
+// (ein Programm, das auf eine Atemübung zeigt, oder umgekehrt, fällt hier durch). Nennt nur Pfade, nie Inhalte.
+function reminderProblem(doc: Transcript): string | undefined {
+  const programs = new Set(doc.programs.map((p) => p.id));
+  const breaths = new Set(doc.breaths.map((b) => b.id));
+  const seen = new Set<string>();
+  for (const [index, reminder] of (doc.reminders ?? []).entries()) {
+    if (seen.has(reminder.id)) return `/reminders/${index}/id: Kennung kommt in der Liste mehrfach vor`;
+    seen.add(reminder.id);
+    const { type, programId, breathId } = reminder.target;
+    if (type === "workout" && programId !== undefined && !programs.has(programId)) return `/reminders/${index}/target/programId: kein Programm in der Abschrift`;
+    if (type === "breath" && !breaths.has(breathId!)) return `/reminders/${index}/target/breathId: keine Atemübung in der Abschrift`;
+  }
+  return undefined;
+}
+
 const DAY = 86_400_000;
 
 // Echtes Kalenderdatum? Der Tag wird über Date.UTC zurückgerechnet (30. Februar bleibt nicht 30. Februar).
@@ -61,8 +78,8 @@ function realDate(text: unknown): boolean {
 // Erster Zeitstempel ohne echtes Kalenderdatum (Pfad, nie Inhalt) oder undefined.
 function calendarProblem(doc: Transcript): string | undefined {
   if (!realDate(doc.generatedAt)) return "/generatedAt: kein echtes Kalenderdatum";
-  for (const name of lists) {
-    for (const [index, item] of (doc[name] as { deliveredAt?: unknown }[]).entries()) {
+  for (const name of [...lists, "reminders"] as const) {
+    for (const [index, item] of ((doc[name] ?? []) as { deliveredAt?: unknown }[]).entries()) {
       if (item.deliveredAt !== undefined && !realDate(item.deliveredAt)) return `/${name}/${index}/deliveredAt: kein echtes Kalenderdatum`;
     }
   }
@@ -100,7 +117,7 @@ export function checkTranscript(doc: unknown): string | undefined {
     const path = validate.errors?.[0]?.instancePath || "Wurzel";
     return `${path}: entspricht nicht der Abschrift, Fassung ${version}`;
   }
-  return duplicateId(doc as Transcript) ?? calendarProblem(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) : undefined);
+  return duplicateId(doc as Transcript) ?? calendarProblem(doc as Transcript) ?? (version === 2 ? historyProblem(doc as Transcript) ?? reminderProblem(doc as Transcript) : undefined);
 }
 
 // Erst Form, dann ein Statement: die erste Abschrift wird abgelegt, eine neuere ersetzt sie, eine ältere oder gleich alte nicht.
