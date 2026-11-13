@@ -1,0 +1,85 @@
+{
+  "description": "Sechs Stufen, zusammen 90 Tage, Workout-Minuten 1 und 180.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "5e7a9c1b-3d5f-4a7b-9c2e-1f3a5b7c9d1e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Wasser trinken als neue Gewohnheit, mit Stufenplan.",
+    "items": [
+      {
+        "kind": "challenge",
+        "itemId": "claude.wasser-plan-h3j5k7",
+        "revision": 1,
+        "title": "Mehr trinken",
+        "symbol": "💧",
+        "startDate": "2026-11-14",
+        "stages": [
+          {
+            "days": 15,
+            "content": {
+              "type": "goal",
+              "goal": {
+                "type": "workout",
+                "minutes": 1
+              }
+            }
+          },
+          {
+            "days": 15,
+            "content": {
+              "type": "goal",
+              "goal": {
+                "type": "workout",
+                "minutes": 1
+              }
+            }
+          },
+          {
+            "days": 15,
+            "content": {
+              "type": "goal",
+              "goal": {
+                "type": "workout",
+                "minutes": 1
+              }
+            }
+          },
+          {
+            "days": 15,
+            "content": {
+              "type": "goal",
+              "goal": {
+                "type": "workout",
+                "minutes": 1
+              }
+            }
+          },
+          {
+            "days": 15,
+            "content": {
+              "type": "goal",
+              "goal": {
+                "type": "workout",
+                "minutes": 1
+              }
+            }
+          },
+          {
+            "days": 15,
+            "content": {
+              "type": "goal",
+              "goal": {
+                "type": "workout",
+                "minutes": 180
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

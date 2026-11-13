@@ -11,7 +11,10 @@ import { getTranscript } from "./transcripts.ts";
 type Db = pg.Pool | pg.PoolClient;
 export type Doc = Record<string, any>;
 export type Outcome = Doc | string;
-export type Kind = "exercise" | "program" | "breath";
+export type Kind = "exercise" | "program" | "breath" | "reminder" | "challenge" | "tracker";
+
+// Höchstens so viele Erinnerungen von Claude gleichzeitig (Spec claude-erinnerung.md Abschnitt 4).
+const REMINDER_CAP = 6;
 
 const isRecord = (v: unknown): v is Doc => typeof v === "object" && v !== null && !Array.isArray(v);
 const refuse = (what: string, way: string): string => `${what} Ausweg: ${way}`;
@@ -40,15 +43,19 @@ export function packageOf(name: unknown): Doc | undefined {
 // Bestand aus Abschrift und Lieferungen (waiting, claimed, accepted) in einer Form.
 type Known = {
   id: string; kind: Kind; revision: number; name: unknown; pkg?: Doc; at?: number;
-  source: "transcript" | "waiting" | "claimed" | "accepted"; state?: string; origin?: string;
+  source: "transcript" | "waiting" | "claimed" | "accepted"; state?: string; origin?: string; enabled?: boolean; startDate?: string;
 };
-type Snapshot = { entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[] };
+type Snapshot = {
+  entries: Known[]; rows: KnownDelivery[]; exercises: { id: string; name: string }[]; programs: string[]; breaths: string[]; trackers: string[];
+};
 
-const LISTS: [string, Kind][] = [["exercises", "exercise"], ["programs", "program"], ["breaths", "breath"]];
+const LISTS: [string, Kind][] = [["exercises", "exercise"], ["programs", "program"], ["breaths", "breath"], ["reminders", "reminder"], ["challenges", "challenge"], ["trackers", "tracker"]];
 
 function fromTranscript(transcript: Doc | undefined): Known[] {
   return LISTS.flatMap(([list, kind]) => ((transcript?.[list] ?? []) as Doc[]).map((e): Known => ({
-    id: e.id, kind, revision: e.revision ?? 1, name: e.name, source: "transcript", state: e.state, origin: e.origin,
+    id: e.id, kind, revision: e.revision ?? 1, name: e.name ?? e.title, source: "transcript", state: e.state, origin: e.origin,
+    ...(e.enabled === undefined ? {} : { enabled: e.enabled }),
+    ...(typeof e.startDate === "string" ? { startDate: e.startDate } : {}),
     ...(typeof e.packageId === "string" ? { pkg: { packageId: e.packageId, name: e.packageName ?? e.packageId.replace(/^claude\./, "") } } : {}),
   })));
 }
@@ -57,7 +64,8 @@ function fromDeliveries(rows: KnownDelivery[]): Known[] {
   return rows.flatMap((row, at) => {
     const doc = row.delivery as Doc;
     return (doc.items as Doc[]).filter((i) => i.kind !== "withdrawal").map((i): Known => ({
-      id: i.itemId, kind: i.kind, revision: i.revision, name: i.name, source: row.state, at,
+      id: i.itemId, kind: i.kind, revision: i.revision, name: i.name ?? i.title, source: row.state, at,
+      ...(typeof i.startDate === "string" ? { startDate: i.startDate } : {}),
       ...(isRecord(doc.package) ? { pkg: doc.package } : {}),
     }));
   });
@@ -76,12 +84,18 @@ function knownExercises(entries: Known[], transcriptIds: Set<string>): { id: str
   return [...out.values()].map((e) => ({ id: e.id, name: e.name as string }));
 }
 
+// Prüfkontext knownPrograms/knownBreaths: Kennungen aus Abschrift und Lieferungen (auch zurückgenommene sind als Ziel nicht ausgeschlossen, der Prüfer prüft nur die Form).
+const idsOf = (entries: Known[], kind: Kind): string[] => [...new Set(entries.filter((e) => e.kind === kind).map((e) => e.id))];
+
 async function snapshot(pool: Db, owner: string): Promise<Snapshot> {
   const transcript = await getTranscript(pool, owner);
   const own = fromTranscript(transcript);
   const rows = await knownDeliveries(pool, owner);
   const entries = [...own, ...fromDeliveries(rows)];
-  return { entries, rows, exercises: knownExercises(entries, new Set(own.map((e) => e.id))) };
+  return {
+    entries, rows, exercises: knownExercises(entries, new Set(own.map((e) => e.id))),
+    programs: idsOf(entries, "program"), breaths: idsOf(entries, "breath"), trackers: idsOf(entries, "tracker"),
+  };
 }
 
 const highest = (entries: Known[]): Known => entries.reduce((a, b) => (b.revision > a.revision ? b : a));
@@ -102,13 +116,16 @@ function envelope(why: unknown, pkg: Doc | undefined, items: Doc[]): Doc {
 const errorLine = (e: DeliveryError): string => `${e.path === "" ? "Lieferung" : e.path}: ${e.message} Ausweg: ${e.hint}`;
 
 // Der Prüfer aus B0 ist die einzige Instanz für die Form; ohne Fehler wird abgelegt, sonst nichts.
-function check(doc: Doc, snap: Snapshot): string | undefined {
-  const { errors } = validateDelivery(doc, { knownExercises: snap.exercises });
+function check(doc: Doc, snap: Snapshot, keepStartDate?: string): string | undefined {
+  const { errors } = validateDelivery(doc, {
+    knownExercises: snap.exercises, knownPrograms: snap.programs, knownBreaths: snap.breaths, knownTrackers: snap.trackers,
+    ...(keepStartDate === undefined ? {} : { keepStartDate }),
+  });
   return errors.length === 0 ? undefined : `Die Lieferung wurde abgelehnt, nichts wurde gespeichert:\n${errors.map(errorLine).join("\n")}`;
 }
 
-async function submit(pool: Db, owner: string, snap: Snapshot, doc: Doc, answer: Doc): Promise<Outcome> {
-  const problem = check(doc, snap);
+async function submit(pool: Db, owner: string, snap: Snapshot, doc: Doc, answer: Doc, keepStartDate?: string): Promise<Outcome> {
+  const problem = check(doc, snap, keepStartDate);
   if (problem !== undefined) return problem;
   await putDelivery(pool, owner, doc as { deliveryId: string });
   return { deliveryId: doc.deliveryId, ...answer, state: "waiting" };
@@ -138,14 +155,35 @@ function serviceField(fields: unknown): string | undefined {
   return name === undefined ? undefined : refuse(`${name} vergibt der Dienst; bitte weglassen.`, `Den Aufruf ohne ${name} wiederholen.`);
 }
 
-// exercise_define, program_create, breath_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
+// Aktive Claude-Erinnerungen: jede Kennung einmal. Aus der Abschrift (state active, enabled), sonst aus Lieferungen, die dort noch nicht stehen;
+// beides nur ohne wartende Rücknahme.
+function activeReminders(snap: Snapshot): number {
+  const groups = new Map<string, Known[]>();
+  for (const e of snap.entries.filter((x) => x.kind === "reminder")) groups.set(e.id, [...(groups.get(e.id) ?? []), e]);
+  let active = 0;
+  for (const group of groups.values()) {
+    const own = group.find((e) => e.source === "transcript");
+    const counts = own === undefined ? true : own.origin === "claude" && own.state === "active" && own.enabled === true;
+    if (counts && !withdrawing(snap, group)) active += 1;
+  }
+  return active;
+}
+
+const REMINDER_FULL = refuse(`Höchstens sechs Erinnerungen von Claude gleichzeitig.`,
+  "Ziehe eine mit item_withdraw zurück oder ändere eine bestehende mit item_update.");
+
+// exercise_define, program_create, breath_create, reminder_create, challenge_create, tracker_create: why und package aus dem Aufruf, alles andere ist der Eintrag.
 export async function createItem(pool: pg.Pool, owner: string, kind: Kind, args: Doc): Promise<Outcome> {
   const { why, package: pkg, ...fields } = args;
   const reserved = serviceField(fields);
   if (reserved !== undefined) return reserved;
-  const itemId = newItemId(fields.name);
+  const itemId = newItemId(kind === "reminder" || kind === "challenge" ? fields.title : fields.name);
   const doc = envelope(why, packageOf(pkg), [{ ...fields, kind, itemId, revision: 1 }]);
-  return locked(pool, owner, async (db) => submit(db, owner, await snapshot(db, owner), doc, { itemId, revision: 1 }));
+  return locked(pool, owner, async (db) => {
+    const snap = await snapshot(db, owner);
+    if (kind === "reminder" && activeReminders(snap) >= REMINDER_CAP) return REMINDER_FULL;
+    return submit(db, owner, snap, doc, { itemId, revision: 1 });
+  });
 }
 
 const NOT_OWN = refuse("Nur eigene Lieferungen von Claude lassen sich ändern oder zurückziehen (eigene und mitgelieferte Inhalte von Henning nie).",
@@ -181,7 +219,9 @@ async function updateLocked(db: Db, owner: string, args: Doc): Promise<Outcome> 
   if (reserved !== undefined) return reserved;
   const revision = latest.revision + 1;
   const doc = envelope(why, latest.pkg, [{ ...fields, kind: latest.kind, itemId, revision }]);
-  return submit(db, owner, snap, doc, { itemId, revision });
+  // Laufende Challenge: unverändertes Startdatum der höchsten bekannten Fassung bleibt zulässig.
+  const keep = latest.kind === "challenge" ? latest.startDate : undefined;
+  return submit(db, owner, snap, doc, { itemId, revision }, keep);
 }
 
 // Wartende Lieferungen (Kennungen), die einen der Bausteine enthalten.

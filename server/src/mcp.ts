@@ -26,7 +26,11 @@ export const INSTRUCTIONS = [
   "11. Trainings sind Vorschläge und kein medizinischer Rat. Halte dich an genannte Einschränkungen und frage im Zweifel nach.",
   "",
   "Werkzeuge zum Lesen: `overview`, `catalog`, `show`, `forms` (der Bauplan), `delivery_status` und `history` (Rückblick auf die Einheiten der letzten 90 Tage).",
-  "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `item_update`, `item_withdraw` und `wish_report`.",
+  "Werkzeuge zum Liefern: `exercise_define`, `program_create`, `breath_create`, `reminder_create`, `challenge_create`, `tracker_create`, `item_update`, `item_withdraw` und `wish_report`.",
+  "Höchstens sechs Erinnerungen von Claude gleichzeitig; Erinnerungen laden ein und mahnen nicht.",
+  "Eine Challenge (`challenge_create`) hat 1 bis 6 Stufen: Impuls-Stufen mit einem Impuls je Tag oder Ziel-Stufen (Minuten Meditation oder Workout, oder ein Tracker); `history` zeigt Fortschritt, Notizen zu deinen Impulsen und bei Ziel-Stufen die Summe erreichter Tage. Ausgelassene Tage sind neutral; frag nach, statt zu bewerten.",
+  "Eine neue Gewohnheit legst du mit `tracker_create` an (Zähler, Ja/Nein, Stufen, Bewusstsein, Vermeiden; ohne Kopplung an Apple Health); vorhandene Tracker änderst du nie.",
+  "Stoße von dir aus höchstens zwei neue Gewohnheiten oder Stufenpläne gleichzeitig an (overview.building). Wünscht Henning ausdrücklich mehr, weise einmal darauf hin und folge dann seinem Wunsch. Beobachtende Gewohnheiten zählen nicht mit.",
   "Lieferungen erscheinen beim nächsten Öffnen von Healthy Habits.",
   "Trainings sind Vorschläge von Claude und kein medizinischer Rat.",
 ].join("\n");
@@ -79,7 +83,29 @@ const BREATH_FIELDS = {
   exhaleSeconds: field("Pflicht: Ausatmen in Sekunden, 1 bis 60"), holdOutSeconds: field("Pflicht: Halten nach dem Ausatmen, 0 bis 60"),
 };
 const loose = (shape: z.ZodRawShape) => z.looseObject({ ...shape, why: WHY, package: PACKAGE });
-const Kinds = z.enum(["exercise", "program", "breath"]);
+const Kinds = z.enum(["exercise", "program", "breath", "reminder", "challenge", "tracker"]);
+const REMINDER_FIELDS = {
+  title: field("Pflicht: Titel, höchstens 40 Zeichen"), message: field("Pflicht: Text der Mitteilung, 1 bis 200 Zeichen"),
+  time: field("Pflicht: Uhrzeit hh:mm (Ortszeit des Geräts)"),
+  weekdays: field("Pflicht: 1 bis 7 verschiedene Wochentage aus monday, tuesday, wednesday, thursday, friday, saturday, sunday"),
+  lookbackHours: field("Pflicht: nur erinnern, wenn in so vielen Stunden davor nichts passiert ist, ganze Zahl 1 bis 24"),
+  target: field("Pflicht: Ziel {type: meditation | noalc | workout (programId?) | breath (breathId)}; programId bzw. breathId aus catalog oder einer eigenen Lieferung"),
+};
+
+const CHALLENGE_FIELDS = {
+  title: field("Pflicht: Titel, höchstens 40 Zeichen"), symbol: SYMBOL, description: DESCRIPTION,
+  startDate: field("Pflicht: Starttag JJJJ-MM-TT (Kalendertag des Geräts), frühestens gestern, höchstens 30 Tage voraus"),
+  stages: field("Pflicht: 1 bis 6 Stufen, zusammen höchstens 90 Tage; Stufe {days 1-90, content}: content {type: \"impulses\", impulses: [{text 1-300, moment day|evening, question? 1-120}]} mit genau so vielen Impulsen wie Tage, oder {type: \"goal\", goal: {type: meditation|workout, minutes 1-180} oder {type: tracker, trackerId}} (trackerId aus catalog kind tracker, eigener Lieferung oder builtin.noalc)"),
+};
+const TRACKER_FIELDS = {
+  name: NAME, symbol: SYMBOL,
+  type: field("Pflicht: good oder saboteur"),
+  mode: field("Pflicht: bei good counter, yesNo oder levels; bei saboteur awareness, avoidance oder levels"),
+  dailyGoal: field("Optional, nur bei counter: Tagesziel, ganze Zahl 1 bis 100"),
+  levels: field("Pflicht bei levels, sonst verboten: 2 bis 5 Stufen {name 1-20, icon (Emoji), effect success|needsGrace|breaksStreak}, mindestens eine success"),
+  joker: field("Optional, nur bei levels: {earnEveryDays 1-30, maxOnHand 1-10}"),
+  dayStartHour: field("Optional, nur bei levels: Tageswechsel als Stunde 0 bis 23"),
+};
 
 // Zustandslos: für jede Anfrage ein frischer Server mit den Lesewerkzeugen, nichts wird zwischengespeichert.
 export function mcpHandler(pool: pg.Pool): McpHttpHandler {
@@ -102,7 +128,7 @@ export function mcpHandler(pool: pg.Pool): McpHttpHandler {
     }, guarded<{ id: string }>(async (owner, { id }) =>
       showDoc(await getTranscript(pool, owner), id, await openDeliveries(pool, owner)) ?? "Nicht gefunden; Kennungen liefert catalog"));
     server.registerTool("forms", {
-      description: "Bauplan: Felder, Grenzen und erlaubte Werte je Baustein (Übung, Programm, Atemübung, Rücknahme), dazu die Kategorien mit deutschem Namen",
+      description: "Bauplan: Felder, Grenzen und erlaubte Werte je Baustein (Übung, Programm, Atemübung, Erinnerung, Challenge, Tracker, Rücknahme), dazu die Kategorien mit deutschem Namen",
       inputSchema: z.object({ kind: z.enum(FORM_KINDS).optional() }), annotations: ReadOnly,
     }, guarded<{ kind?: (typeof FORM_KINDS)[number] }>(async (_owner, { kind }) => buildForms(kind)));
     server.registerTool("delivery_status", {
@@ -122,7 +148,7 @@ export function mcpHandler(pool: pg.Pool): McpHttpHandler {
   });
 }
 
-// Die sechs Lieferwerkzeuge; jede Antwort ist JSON, jede Ablehnung ein Text mit Grund und Ausweg (nichts ist dann gespeichert).
+// Die Lieferwerkzeuge; jede Antwort ist JSON, jede Ablehnung ein Text mit Grund und Ausweg (nichts ist dann gespeichert).
 function registerWriteTools(server: McpServer, pool: pg.Pool): void {
   const create = (kind: Kind) => guarded<Doc>((owner, args) => createItem(pool, owner, kind, args));
   server.registerTool("exercise_define", {
@@ -137,6 +163,18 @@ function registerWriteTools(server: McpServer, pool: pg.Pool): void {
     description: "Neue Atemübung liefern (Ein-, Halte- und Ausatemzeiten in Sekunden); vorher forms lesen und Henning bestätigen lassen",
     inputSchema: loose(BREATH_FIELDS), annotations: Writes,
   }, create("breath"));
+  server.registerTool("reminder_create", {
+    description: "Neue smarte Erinnerung liefern (Uhrzeit, Wochentage, Rückblick in Stunden, Ziel; höchstens sechs von Claude gleichzeitig); vorher forms lesen und Henning bestätigen lassen",
+    inputSchema: loose(REMINDER_FIELDS), annotations: Writes,
+  }, create("reminder"));
+  server.registerTool("challenge_create", {
+    description: "Neue Challenge auf Zeit liefern: 1 bis 6 Stufen, je Impuls-Stufe ein Achtsamkeits-Impuls je Tag (Impulse laden ein und bewerten nicht) oder Ziel-Stufe mit Tagesziel (Minuten Meditation/Workout oder ein Tracker); vorher forms lesen und Henning bestätigen lassen",
+    inputSchema: loose(CHALLENGE_FIELDS), annotations: Writes,
+  }, create("challenge"));
+  server.registerTool("tracker_create", {
+    description: "Neue Gewohnheit (Tracker) liefern: Zähler, Ja/Nein, Stufen, Bewusstsein oder Vermeiden, ohne Kopplung an Apple Health; höchstens zwei neue Gewohnheiten gleichzeitig anstoßen (overview.building); vorher forms lesen und Henning bestätigen lassen",
+    inputSchema: loose(TRACKER_FIELDS), annotations: Writes,
+  }, create("tracker"));
   server.registerTool("item_update", {
     description: "Einen eigenen Baustein von Claude ändern: neue vollständige Fassung in fields; basedOnRevision ist die Fassung, die du zuletzt mit show gelesen hast",
     inputSchema: z.looseObject({

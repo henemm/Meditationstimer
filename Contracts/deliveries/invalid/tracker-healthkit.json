@@ -1,0 +1,35 @@
+{
+  "description": "Kopplung an Apple Health.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "5e7a9c1b-3d5f-4a7b-9c2e-1f3a5b7c9d1e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Wasser trinken als neue Gewohnheit, mit Stufenplan.",
+    "items": [
+      {
+        "kind": "tracker",
+        "itemId": "claude.wasser-n5r7t2",
+        "revision": 1,
+        "name": "Wasser",
+        "symbol": "💧",
+        "type": "good",
+        "mode": "counter",
+        "dailyGoal": 6,
+        "healthKit": "dietaryWater"
+      }
+    ]
+  },
+  "expected": {
+    "valid": false,
+    "errors": [
+      {
+        "code": "FIELD_UNKNOWN",
+        "path": "/items/0/healthKit"
+      }
+    ],
+    "reason": "Claude koppelt nicht an Apple Health.",
+    "remedy": "healthKit weglassen; Henning kann es selbst einschalten.",
+    "schemaRejects": true
+  }
+}

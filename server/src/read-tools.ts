@@ -3,10 +3,10 @@ import type { DeliveryRow, OpenDelivery, Rejection } from "./deliveries.ts";
 import { builtinExercises } from "./forms.ts";
 import type { Transcript } from "./transcripts.ts";
 
-export type Kind = "exercise" | "program" | "breath";
+export type Kind = "exercise" | "program" | "breath" | "reminder" | "challenge" | "tracker";
 type Origin = "builtin" | "own" | "claude";
-type Entry = { id: string; name: string; origin: Origin; category?: string; rounds?: number; steps?: { workSeconds: number; restSeconds: number }[] };
-type Lists = { exercise: Entry[]; program: Entry[]; breath: Entry[] };
+export type Entry = { id: string; name: string; origin: Origin; category?: string; rounds?: number; state?: string; enabled?: boolean; time?: string; weekdays?: string[]; target?: unknown; type?: string; mode?: string; startDate?: string; stages?: { days: number; content?: { type: string } }[]; deliveredAt?: string; progress?: { extendedBy: number }; steps?: { workSeconds: number; restSeconds: number }[] };
+type Lists = Record<Kind, Entry[]>;
 type Doc = Record<string, any>;
 
 const HOUR = 3_600_000;
@@ -19,17 +19,37 @@ const plain = (text: string): string => text.normalize("NFD").replace(/\p{M}/gu,
 function lists(transcript: Transcript | undefined): Lists {
   if (transcript === undefined) {
     const exercise = builtinExercises.map((e) => ({ ...e, origin: "builtin" as const }));
-    return { exercise, program: [], breath: [] };
+    return { exercise, program: [], breath: [], reminder: [], challenge: [], tracker: [] };
   }
-  const doc = transcript as unknown as { exercises: Entry[]; programs: Entry[]; breaths: Entry[] };
-  return { exercise: doc.exercises, program: doc.programs, breath: doc.breaths };
+  const doc = transcript as unknown as { exercises: Entry[]; programs: Entry[]; breaths: Entry[]; reminders?: (Entry & { title: string })[]; challenges?: (Entry & { title: string })[]; trackers?: Entry[] };
+  // Erinnerungen und Challenges tragen ihren Namen im Feld title (Fassung 2, optional).
+  const reminder = (doc.reminders ?? []).map((e) => ({ ...e, name: e.title }));
+  const challenge = (doc.challenges ?? []).map((e) => ({ ...e, name: e.title }));
+  return { exercise: doc.exercises, program: doc.programs, breath: doc.breaths, reminder, challenge, tracker: doc.trackers ?? [] };
 }
 
 export function ageHours(transcript: Transcript, now: Date): number {
   return Math.floor((now.getTime() - new Date(transcript.generatedAt).getTime()) / HOUR);
 }
 
-type Message = { kind: string; text: string; deliveryId?: string };
+type Message = { kind: string; text: string; deliveryId?: string; itemId?: string };
+
+const dayOf = (ms: number): number => Math.floor(ms / DAY);
+const totalDays = (e: Entry): number => (e.stages ?? []).reduce((sum, st) => sum + st.days, 0);
+
+// Letzter Tag einer Challenge als UTC-Tageszahl: startDate + Summe(days) + extendedBy - 1 (Spec claude-challenge.md, Festlegungen).
+export function lastDay(e: Entry): number {
+  return dayOf(Date.parse(`${e.startDate}T00:00:00Z`)) + totalDays(e) + (e.progress?.extendedBy ?? 0) - 1;
+}
+
+// Aktive Challenges, deren letzter Tag heute, morgen oder übermorgen (UTC-Tage von generatedAt) ist.
+function endingMessages(transcript: Transcript | undefined): Message[] {
+  if (transcript === undefined) return [];
+  const today = dayOf(Date.parse(transcript.generatedAt));
+  return lists(transcript).challenge
+    .filter((e) => e.state === "active" && lastDay(e) >= today && lastDay(e) <= today + 2)
+    .map((e) => ({ kind: "challenge_ending", itemId: e.id, text: `Die Challenge „${e.name}“ endet ${["heute", "morgen", "übermorgen"][lastDay(e) - today]}` }));
+}
 
 // Meldungen zuerst: abgelehnte, lange wartende, Abschrift (fehlend oder zu alt).
 export function overviewMessages(transcript: Transcript | undefined, open: OpenDelivery[], rejected: Rejection[], now: Date): Message[] {
@@ -46,8 +66,46 @@ export function overviewMessages(transcript: Transcript | undefined, open: OpenD
   else if (now.getTime() - new Date(transcript.generatedAt).getTime() > 7 * DAY) {
     messages.push({ kind: "transcript_old", text: "Die Abschrift der App ist älter als 7 Tage; der Bestand kann veraltet sein" });
   }
+  messages.push(...endingMessages(transcript));
   if (transcript?.version === 1) messages.push({ kind: "history_missing", text: "Die App schickt noch keinen Verlauf; bitte Healthy Habits aktualisieren und öffnen" });
   return messages;
+}
+
+const BUILDING_LIMIT = 2;
+const TRACKER_BUILDING_DAYS = 66;
+type Building = { id: string; name: string; kind: "tracker" | "challenge"; since: string };
+
+// Aus Lieferungen, die die App noch nicht abgeholt oder bestätigt hat: Claude-Tracker und Challenges mit Ziel-Stufe, ohne Rücknahmen und ohne
+// Bausteine, die schon in der Abschrift stehen (dort zählt der Abschrift-Eintrag).
+function buildingFromOpen(open: OpenDelivery[], known: Set<string>, today: number): Building[] {
+  const items = open.flatMap((d) => ((d.delivery as Doc).items as Doc[]).map((i) => ({ i, at: d.createdAt.toISOString(), pkg: (d.delivery as Doc).package?.packageId })));
+  const withdrawn = (x: (typeof items)[number]) => items.some((w) => w.i.kind === "withdrawal" && (w.i.itemId === x.i.itemId || (x.pkg !== undefined && w.i.packageId === x.pkg)));
+  const rows: Building[] = [];
+  for (const x of items) {
+    if (known.has(x.i.itemId) || withdrawn(x) || rows.some((r) => r.id === x.i.itemId)) continue;
+    if (x.i.kind === "tracker" && x.i.mode !== "awareness") rows.push({ id: x.i.itemId, name: x.i.name, kind: "tracker", since: x.at });
+    const entry = x.i.kind === "challenge" ? ({ startDate: x.i.startDate, stages: x.i.stages } as Entry) : undefined;
+    if (entry !== undefined && hasGoal(entry) && lastDay(entry) >= today) rows.push({ id: x.i.itemId, name: x.i.title, kind: "challenge", since: x.i.startDate });
+  }
+  return rows;
+}
+
+const hasGoal = (e: Entry): boolean => (e.stages ?? []).some((st) => st.content?.type === "goal");
+
+// "Im Aufbau" (Spec claude-gewohnheit-stufenplan.md Abschnitt 4): aktive Claude-Tracker, höchstens 66 Tage nach der Auslieferung, und aktive
+// Claude-Challenges mit Ziel-Stufe, die noch nicht beendet sind; dazu das, was noch auf dem Weg in die App ist. Hinweis ab zwei, keine Sperre.
+export function buildingDoc(transcript: Transcript | undefined, open: OpenDelivery[], now: Date): Doc {
+  const all = lists(transcript);
+  const today = dayOf(transcript === undefined ? now.getTime() : Date.parse(transcript.generatedAt));
+  const active = (e: Entry) => e.origin === "claude" && e.state === "active";
+  const trackers = all.tracker.filter(active).filter((e) => e.mode !== "awareness")
+    .filter((e) => e.deliveredAt === undefined || now.getTime() - Date.parse(e.deliveredAt) <= TRACKER_BUILDING_DAYS * DAY)
+    .map((e): Building => ({ id: e.id, name: e.name, kind: "tracker", since: e.deliveredAt ?? transcript!.generatedAt }));
+  const challenges = all.challenge.filter(active).filter((e) => hasGoal(e) && lastDay(e) >= today)
+    .map((e): Building => ({ id: e.id, name: e.name, kind: "challenge", since: e.startDate! }));
+  const known = new Set([...all.tracker, ...all.challenge].map((e) => e.id));
+  const items = [...trackers, ...challenges, ...buildingFromOpen(open, known, today)];
+  return { count: items.length, limit: BUILDING_LIMIT, items };
 }
 
 export function overviewDoc(transcript: Transcript | undefined, open: OpenDelivery[], rejected: Rejection[], now: Date): Doc {
@@ -57,8 +115,14 @@ export function overviewDoc(transcript: Transcript | undefined, open: OpenDelive
     counts[kind] = { builtin: 0, own: 0, claude: 0 };
     for (const entry of all[kind]) counts[kind][entry.origin] += 1;
   }
+  const building = buildingDoc(transcript, open, now);
+  const messages = overviewMessages(transcript, open, rejected, now);
+  if (building.count >= BUILDING_LIMIT) {
+    messages.push({ kind: "building_limit", text: `Es laufen schon ${building.count} neue Gewohnheiten oder Stufenpläne; stoße von dir aus keine weitere an, außer Henning wünscht es ausdrücklich` });
+  }
   return {
-    messages: overviewMessages(transcript, open, rejected, now), counts, waiting: open.length,
+    messages, counts, waiting: open.length, building,
+    activeClaudeReminders: all.reminder.filter((e) => e.origin === "claude" && e.state === "active" && e.enabled === true).length,
     ...(transcript === undefined ? {} : { generatedAt: transcript.generatedAt, transcriptAgeHours: ageHours(transcript, now) }),
   };
 }
@@ -69,6 +133,9 @@ const breathTotal = (e: Doc): number => e.rounds * (e.inhaleSeconds + e.holdInSe
 function row(kind: Kind, e: Entry): Doc {
   const { id, name, origin } = e;
   if (kind === "exercise") return { id, name, origin, category: e.category };
+  if (kind === "tracker") return { id, name, origin, type: e.type, mode: e.mode };
+  if (kind === "challenge") return { id, name, origin, startDate: e.startDate, totalDays: totalDays(e) };
+  if (kind === "reminder") return { id, name, origin, time: e.time, weekdays: e.weekdays, target: e.target };
   if (kind === "program") return { id, name, origin, steps: e.steps?.length ?? 0, durationSeconds: roundsTotal(e) };
   return { id, name, origin, durationSeconds: breathTotal(e) };
 }
@@ -95,7 +162,7 @@ function pendingFor(item: Doc, open: OpenDelivery[]): Doc[] {
 
 export function showDoc(transcript: Transcript | undefined, id: string, open: OpenDelivery[]): Doc | undefined {
   const all = lists(transcript);
-  for (const kind of ["exercise", "program", "breath"] as Kind[]) {
+  for (const kind of ["exercise", "program", "breath", "reminder", "challenge", "tracker"] as Kind[]) {
     const item = all[kind].find((e) => e.id === id);
     if (item !== undefined) return { kind, item, pending: pendingFor(item, open) };
   }

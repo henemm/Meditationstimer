@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateDelivery } from '../src/index.ts';
-import { breath, delivery, exercise, key, program, withdrawal } from './helpers.ts';
+import { breath, challenge, delivery, exercise, goalStage, impulse, key, program, reminder, stage, tracker, withdrawal } from './helpers.ts';
 
 type Ctx = Parameters<typeof validateDelivery>[1];
 
@@ -596,4 +596,308 @@ test('Text mit verbotenem Zeichen im Namen: message/hint enthalten es nicht', ()
 
 test('message/hint sind auch bei normalen Fehlern frei von verbotenen Zeichen', () => {
   for (const t of allText(delivery([exercise({ category: 'x' })]))) assert.ok(!FORBIDDEN.test(t), JSON.stringify(t));
+});
+
+// ---------- B4a: Erinnerungen ----------
+
+const rem = (n: number, over: Record<string, unknown> = {}) =>
+  Array.from({ length: n }, (_, i) => reminder({ itemId: `claude.erinnerung-${i}`, ...over }));
+
+/** Verhalten: Eine Standard-Erinnerung ist gültig (sonst sind die Fälle wertlos). */
+test('Basis-Erinnerung ist gültig', () => {
+  assert.deepEqual(run(delivery([reminder()])), []);
+});
+
+/** Verhalten: Das Limit zählt nur Erinnerungen, nicht andere Bausteine. */
+test('6 Erinnerungen plus 3 Programme sind gültig', () => {
+  const programs = [0, 1, 2].map((i) => program({ itemId: `claude.programm-${i}` }));
+  assert.deepEqual(run(delivery([...rem(6), ...programs])), []);
+});
+
+test('7 Erinnerungen: REMINDER_LIMIT an /items', () => {
+  assert.deepEqual(run(delivery(rem(7))), only('REMINDER_LIMIT', '/items'));
+});
+
+/** Verhalten: Rücknahmen zählen nicht zum Limit. */
+test('6 Erinnerungen plus Rücknahme zählen nicht als 7', () => {
+  assert.deepEqual(run(delivery([...rem(6), withdrawal({ itemId: 'claude.alte-erinnerung' })])), []);
+});
+
+test('time als Zahl: FIELD_TYPE', () => {
+  assert.deepEqual(run(delivery([reminder({ time: 1800 })])), only('FIELD_TYPE', '/items/0/time'));
+});
+
+test('weekdays kein Array: FIELD_TYPE', () => {
+  assert.deepEqual(run(delivery([reminder({ weekdays: 'monday' })])), only('FIELD_TYPE', '/items/0/weekdays'));
+});
+
+test('Wochentag als Zahl: FIELD_TYPE am Eintrag', () => {
+  assert.deepEqual(run(delivery([reminder({ weekdays: ['monday', 3] })])), only('FIELD_TYPE', '/items/0/weekdays/1'));
+});
+
+/** Verhalten: Jedes weitere Vorkommen eines Wochentags wird gemeldet, das erste nicht. */
+test('[mo,mo,mo]: DUPLICATE_VALUE an /1 und /2', () => {
+  assert.deepEqual(run(delivery([reminder({ weekdays: ['monday', 'monday', 'monday'] })])), [
+    'DUPLICATE_VALUE @ /items/0/weekdays/1',
+    'DUPLICATE_VALUE @ /items/0/weekdays/2',
+  ]);
+});
+
+test('Ziel noalc mit Zusatzfeld: FIELD_UNKNOWN', () => {
+  assert.deepEqual(
+    run(delivery([reminder({ target: { type: 'noalc', programId: 'builtin.tabata' } })])),
+    only('FIELD_UNKNOWN', '/items/0/target/programId'),
+  );
+});
+
+/** Verhalten: Ein Programm der Lieferung zählt als Ziel, auch wenn es selbst fehlerhaft ist. */
+test('Ziel-Programm der Lieferung mit eigenem Fehler: kein TARGET_UNKNOWN', () => {
+  const input = delivery([
+    program({ rounds: 0 }),
+    reminder({ target: { type: 'workout', programId: 'claude.test-programm' } }),
+  ]);
+  assert.deepEqual(run(input), only('OUT_OF_RANGE', '/items/0/rounds'));
+});
+
+test('Ziel-Programm in derselben Lieferung: gültig', () => {
+  const input = delivery([program(), reminder({ target: { type: 'workout', programId: 'claude.test-programm' } })]);
+  assert.deepEqual(run(input), []);
+});
+
+test('Ziel-Atemübung in derselben Lieferung: gültig', () => {
+  const input = delivery([breath(), reminder({ target: { type: 'breath', breathId: 'claude.test-atmung' } })]);
+  assert.deepEqual(run(input), []);
+});
+
+/** Verhalten: Eine Übung ist weder Programm noch Atemübung. */
+test('breathId zeigt auf Übung der Lieferung: TARGET_UNKNOWN', () => {
+  const input = delivery([exercise(), reminder({ target: { type: 'breath', breathId: 'claude.test-uebung' } })]);
+  assert.deepEqual(run(input), only('TARGET_UNKNOWN', '/items/1/target/breathId'));
+});
+
+/** Verhalten: Ohne knownPrograms gibt es keinen Programmkatalog, auch builtin.* ist unbekannt. */
+test('knownPrograms fehlt: builtin-Programm ist TARGET_UNKNOWN', () => {
+  const input = delivery([reminder({ target: { type: 'workout', programId: 'builtin.tabata' } })]);
+  assert.deepEqual(run(input), only('TARGET_UNKNOWN', '/items/0/target/programId'));
+  assert.deepEqual(run(input, { knownExercises: [] }), only('TARGET_UNKNOWN', '/items/0/target/programId'));
+});
+
+test('knownPrograms enthält builtin-Programm: gültig', () => {
+  const input = delivery([reminder({ target: { type: 'workout', programId: 'builtin.tabata' } })]);
+  assert.deepEqual(run(input, { knownPrograms: ['builtin.tabata'] }), []);
+});
+
+/** Verhalten: Ein Kontext nur mit knownExercises funktioniert weiter. */
+test('Kontext nur mit knownExercises: Erinnerung und Übung prüfbar', () => {
+  const ctx = { knownExercises: [{ id: 'own.x-uebung', name: 'Andere Übung' }] };
+  assert.deepEqual(run(delivery([reminder()]), ctx), []);
+  assert.deepEqual(run(delivery([exercise({ name: 'Andere Übung' })]), ctx), only('NAME_TAKEN', '/items/0/name'));
+});
+
+// ---------- B5a: Impuls-Challenge ----------
+
+const CH = '/items/0';
+const ST = `${CH}/stages/0`;
+const IMP = `${ST}/content/impulses`;
+const codesOf = (input: unknown): string[] => validateDelivery(input).errors.map((e) => e.code);
+
+/** Verhalten: Eine Standard-Challenge ist gültig (sonst sind die Fälle wertlos). */
+test('Basis-Challenge ist gültig', () => {
+  assert.deepEqual(run(delivery([challenge()])), []);
+});
+
+/** Verhalten: Ungültige Tageszahl erzeugt keinen Folgefehler IMPULSE_COUNT. */
+test('days 0 mit 7 Impulsen: nur OUT_OF_RANGE, kein IMPULSE_COUNT', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: 0 })] })])), only('OUT_OF_RANGE', `${ST}/days`));
+});
+
+/** Verhalten: days kein Zahlentyp erzeugt keinen Folgefehler. */
+test('days als Text: nur FIELD_TYPE, kein IMPULSE_COUNT', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: '7' })] })])), only('FIELD_TYPE', `${ST}/days`));
+});
+
+/** Verhalten: Ungültiges Startdatum erzeugt keinen Folgefehler START_IN_PAST. */
+test('startDate 31. November: nur INVALID_DATE', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-31' })])), only('INVALID_DATE', `${CH}/startDate`));
+});
+
+/** Verhalten: Ungültiges createdAt erzeugt keinen START_IN_PAST, auch bei altem Start. */
+test('createdAt ungültig: kein START_IN_PAST und kein OUT_OF_RANGE am Start', () => {
+  for (const startDate of ['2026-11-14', '2020-01-01', '2030-01-01']) {
+    const codes = codesOf(delivery([challenge({ startDate })], { createdAt: 'gestern' }));
+    assert.ok(!codes.includes('START_IN_PAST') && !codes.includes('KIND_UNKNOWN'), `${startDate}: ${codes}`);
+    const errs = validateDelivery(delivery([challenge({ startDate })], { createdAt: 'gestern' })).errors;
+    assert.ok(!errs.some((e) => e.path === `${CH}/startDate`), `${startDate}: Fehler am Start`);
+  }
+});
+
+/** Verhalten: Start genau am Vortag des UTC-Tags von createdAt ist gültig. */
+test('Start am Vortag von createdAt: gültig', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-12' })])), []);
+});
+
+/** Verhalten: Start zwei Tage vor createdAt ist ungültig. */
+test('Start zwei Tage vor createdAt: START_IN_PAST', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-11' })])), only('START_IN_PAST', `${CH}/startDate`));
+});
+
+/** Verhalten: Start am createdAt-Tag selbst und 30 Tage danach sind gültig, 31 Tage danach nicht. */
+test('Start heute gültig, +30 gültig, +31 OUT_OF_RANGE', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-13' })])), []);
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-12-13' })])), []);
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-12-14' })])), only('OUT_OF_RANGE', `${CH}/startDate`));
+});
+
+/** Verhalten: Ein Impuls ohne Nachfrage ist gültig. */
+test('Impuls ohne question ist gültig', () => {
+  const { question, ...bare } = impulse(1);
+  void question;
+  const st = stage(7);
+  (st.content as { impulses: unknown[] }).impulses[0] = bare;
+  assert.deepEqual(run(delivery([challenge({ stages: [st] })])), []);
+});
+
+/** Verhalten: content ohne Objekt ist ein Typfehler. */
+test('content als Text: FIELD_TYPE an content', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { content: 'impulses' })] })])), only('FIELD_TYPE', `${ST}/content`));
+});
+
+/** Verhalten: impulses ohne Liste ist ein Typfehler, ohne IMPULSE_COUNT. */
+test('impulses als Objekt: FIELD_TYPE an impulses', () => {
+  const st = stage(7, { content: { type: 'impulses', impulses: { text: 'x' } } });
+  assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('FIELD_TYPE', IMP));
+});
+
+/** Verhalten: Zu wenige und zu viele Impulse ergeben IMPULSE_COUNT an der Liste. */
+test('Impulse: sechs bei sieben Tagen und acht bei sieben Tagen -> IMPULSE_COUNT', () => {
+  for (const n of [6, 8]) {
+    const st = stage(7, { content: { type: 'impulses', impulses: Array.from({ length: n }, (_, i) => impulse(i + 1)) } });
+    assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('IMPULSE_COUNT', IMP), `n=${n}`);
+  }
+});
+
+/** Verhalten: Bis zu sechs Stufen sind gültig, sieben sind zu viele (LIST_SIZE). */
+test('Stufen: sechs gültig, sieben LIST_SIZE', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: Array.from({ length: 6 }, () => stage(3)) })])), []);
+  assert.deepEqual(run(delivery([challenge({ stages: Array.from({ length: 7 }, () => stage(3)) })])), only('LIST_SIZE', `${CH}/stages`));
+});
+
+/** Verhalten: Zwei Stufen sind gültig; Fehler in Stufe 2 werden einzeln gemeldet. */
+test('zwei Stufen: gültig, Fehler in Stufe 2 trotzdem gemeldet', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7), stage(7)] })])), []);
+  const bad = stage(7);
+  (bad.content as { impulses: Record<string, unknown>[] }).impulses[0] = impulse(1, { text: '' });
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7), bad] })])), only('TEXT_EMPTY', `${CH}/stages/1/content/impulses/0/text`));
+});
+
+/** Verhalten: Ungültige days in zwei Stufen werden beide einzeln gemeldet, ohne Folgefehler. */
+test('zwei Stufen mit ungültigen days: beide OUT_OF_RANGE', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(7, { days: 0 }), stage(7, { days: 91 })] })])), [
+    ...only('OUT_OF_RANGE', `${CH}/stages/0/days`),
+    ...only('OUT_OF_RANGE', `${CH}/stages/1/days`),
+  ].sort());
+});
+
+/** Verhalten: Summe der Tage über 90 -> TOTAL_TOO_LONG am Eintrag. */
+test('Stufen: Summe 91 -> TOTAL_TOO_LONG, Summe 90 gültig', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(45), stage(45)] })])), []);
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(45), stage(46)] })])), only('TOTAL_TOO_LONG', CH));
+});
+
+/** Verhalten: Ungültige days in einer Stufe -> kein Folgefehler TOTAL_TOO_LONG. */
+test('Summe mit ungültigem days in einer Stufe: kein TOTAL_TOO_LONG', () => {
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(90), stage(7, { days: 0 })] })])), only('OUT_OF_RANGE', `${CH}/stages/1/days`));
+  assert.deepEqual(run(delivery([challenge({ stages: [stage(90), stage(7, { days: '7' })] })])), only('FIELD_TYPE', `${CH}/stages/1/days`));
+});
+
+// ---------- B6a: Tracker und Ziel-Stufen ----------
+
+const TR = '/items/0';
+const GS = `${CH}/stages/0/content/goal`;
+
+/** Verhalten: Der Basis-Tracker und eine Ziel-Stufe sind gültig. */
+test('Basis-Tracker und Ziel-Stufe sind gültig', () => {
+  assert.deepEqual(run(delivery([tracker()])), []);
+  assert.deepEqual(run(delivery([challenge({ stages: [goalStage()] })])), []);
+});
+
+/** Verhalten: Ungültiger mode erzeugt keine Folgefehler an dailyGoal oder levels. */
+test('mode ungültig: nur VALUE_NOT_ALLOWED am mode, keine Folgefehler', () => {
+  assert.deepEqual(run(delivery([tracker({ mode: 'bogus', dailyGoal: 0 })])), only('VALUE_NOT_ALLOWED', `${TR}/mode`));
+  assert.deepEqual(run(delivery([tracker({ mode: 'bogus', levels: [] })])), only('VALUE_NOT_ALLOWED', `${TR}/mode`));
+  assert.deepEqual(run(delivery([tracker({ mode: 'bogus', dailyGoal: undefined, joker: { earnEveryDays: 7, maxOnHand: 3 } })])), only('VALUE_NOT_ALLOWED', `${TR}/mode`));
+});
+
+/** Verhalten: Ungültiger type -> mode wird nicht gegen den Typ geprüft. */
+test('type ungültig: nur VALUE_NOT_ALLOWED am type, mode nicht gegen Typ geprüft', () => {
+  assert.deepEqual(run(delivery([tracker({ type: 'bogus', mode: 'counter' })])), only('VALUE_NOT_ALLOWED', `${TR}/type`));
+  assert.deepEqual(run(delivery([tracker({ type: 'bogus', mode: 'awareness', dailyGoal: undefined })])), only('VALUE_NOT_ALLOWED', `${TR}/type`));
+});
+
+/** Verhalten: Dublette der Stufennamen und fehlende Erfolgsstufe gleichzeitig -> beide Fehler. */
+test('levels: Dublette und keine Erfolgsstufe ergeben beide Fehler', () => {
+  const levels = [
+    { name: 'Gleich', icon: '⚠️', effect: 'needsGrace' },
+    { name: 'gleich', icon: '❌', effect: 'breaksStreak' },
+  ];
+  assert.deepEqual(run(delivery([tracker({ mode: 'levels', dailyGoal: undefined, levels })])), [
+    ...only('DUPLICATE_VALUE', `${TR}/levels/1/name`),
+    ...only('LEVELS_NO_SUCCESS', `${TR}/levels`),
+  ].sort());
+});
+
+/** Verhalten: Ziel-Tracker aus derselben Lieferung ist gültig. */
+test('Ziel-Tracker in derselben Lieferung: gültig', () => {
+  const items = [tracker(), challenge({ itemId: 'claude.test-plan', stages: [goalStage(7, { type: 'tracker', trackerId: 'claude.test-tracker' })] })];
+  assert.deepEqual(run(delivery(items)), []);
+});
+
+/** Verhalten: Eine Übung derselben Lieferung ist kein Tracker. */
+test('Ziel-Tracker zeigt auf Übung derselben Lieferung: TARGET_UNKNOWN', () => {
+  const items = [exercise(), challenge({ itemId: 'claude.test-plan', stages: [goalStage(7, { type: 'tracker', trackerId: 'claude.test-uebung' })] })];
+  assert.deepEqual(run(delivery(items)), only('TARGET_UNKNOWN', `/items/1/stages/0/content/goal/trackerId`));
+});
+
+/** Verhalten: Ohne knownTrackers ist builtin.noalc unbekannt, mit Kontext bekannt. */
+test('knownTrackers fehlt: builtin.noalc ist unbekannt', () => {
+  const ch = challenge({ stages: [goalStage(7, { type: 'tracker', trackerId: 'builtin.noalc' })] });
+  assert.deepEqual(run(delivery([ch])), only('TARGET_UNKNOWN', `${GS}/trackerId`));
+  assert.deepEqual(run(delivery([ch]), {}), only('TARGET_UNKNOWN', `${GS}/trackerId`));
+  assert.deepEqual(run(delivery([ch]), { knownTrackers: ['builtin.noalc'] } as unknown as Ctx), []);
+});
+
+/** Verhalten: Ziel-Stufe ohne goal -> FIELD_MISSING am goal. */
+test('Ziel-Stufe ohne goal: FIELD_MISSING', () => {
+  const st = stage(7, { content: { type: 'goal' } });
+  assert.deepEqual(run(delivery([challenge({ stages: [st] })])), only('FIELD_MISSING', GS));
+});
+
+// ---------- B6a-Nachtrag: keepStartDate ----------
+
+const keepCtx = (keepStartDate: string): Ctx => ({ keepStartDate }) as unknown as Ctx;
+
+/** Verhalten: Start 5 Tage vor createdAt ohne Kontext bleibt START_IN_PAST. */
+test('keepStartDate: ohne Kontext ist Start 5 Tage vor createdAt START_IN_PAST', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-08' })])), only('START_IN_PAST', `${CH}/startDate`));
+});
+
+/** Verhalten: Unverändertes Startdatum einer laufenden Challenge ist mit keepStartDate gültig. */
+test('keepStartDate gleich startDate: gültig', () => {
+  assert.deepEqual(run(delivery([challenge({ startDate: '2026-11-08' })]), keepCtx('2026-11-08')), []);
+});
+
+/** Verhalten: Anderes keepStartDate hebt die Prüfung nicht auf. */
+test('keepStartDate anderes Datum: weiter START_IN_PAST', () => {
+  assert.deepEqual(
+    run(delivery([challenge({ startDate: '2026-11-08' })]), keepCtx('2026-11-07')),
+    only('START_IN_PAST', `${CH}/startDate`),
+  );
+});
+
+/** Verhalten: keepStartDate hebt die Obergrenze +30 Tage nicht auf. */
+test('keepStartDate gleich startDate bei +31 Tagen: weiter OUT_OF_RANGE', () => {
+  assert.deepEqual(
+    run(delivery([challenge({ startDate: '2026-12-14' })]), keepCtx('2026-12-14')),
+    only('OUT_OF_RANGE', `${CH}/startDate`),
+  );
 });

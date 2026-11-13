@@ -126,18 +126,40 @@ test("Datenschutz DB: history ist in Fassung 2 erlaubt, in Fassung 1 nicht", asy
   await assert.rejects(pool.query(insert, ["konto-v1", JSON.stringify(v1WithHistory), at]), code);
 });
 
-test("Datenschutz DB: oberstes Feld trackers scheitert in beiden Fassungen am CHECK", async (t) => {
+test("Datenschutz DB: trackers als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514)", async (t) => {
   const pool = await migrated(t);
   const insert = "INSERT INTO transcripts (account_id, doc, generated_at, received_at) VALUES ($1, $2::jsonb, $3, now())";
   const at = "2026-11-13T10:00:00Z";
-  for (const version of [1, 2] as const) {
-    const bad = doc(version, at, { trackers: [{ name: "Wasser" }] });
-    await assert.rejects(
-      pool.query(insert, [`konto-${version}`, JSON.stringify(bad), at]),
-      (error: unknown) => (error as { code?: string }).code === "23514",
-      `Fassung ${version}`,
-    );
-  }
+  await pool.query(insert, ["konto-v2", JSON.stringify(doc(2, at, { trackers: [] })), at]);
+  assert.equal((await pool.query("SELECT 1 FROM transcripts WHERE account_id = 'konto-v2'")).rowCount, 1);
+  await assert.rejects(
+    pool.query(insert, ["konto-v1", JSON.stringify(doc(1, at, { trackers: [] })), at]),
+    (error: unknown) => (error as { code?: string }).code === "23514",
+  );
+});
+
+test("Datenschutz DB: reminders als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514)", async (t) => {
+  const pool = await migrated(t);
+  const insert = "INSERT INTO transcripts (account_id, doc, generated_at, received_at) VALUES ($1, $2::jsonb, $3, now())";
+  const at = "2026-11-13T10:00:00Z";
+  await pool.query(insert, ["konto-v2", JSON.stringify(doc(2, at, { reminders: [] })), at]);
+  assert.equal((await pool.query("SELECT 1 FROM transcripts WHERE account_id = 'konto-v2'")).rowCount, 1);
+  await assert.rejects(
+    pool.query(insert, ["konto-v1", JSON.stringify(doc(1, at, { reminders: [] })), at]),
+    (error: unknown) => (error as { code?: string }).code === "23514",
+  );
+});
+
+test("Datenschutz DB: challenges als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514)", async (t) => {
+  const pool = await migrated(t);
+  const insert = "INSERT INTO transcripts (account_id, doc, generated_at, received_at) VALUES ($1, $2::jsonb, $3, now())";
+  const at = "2026-11-13T10:00:00Z";
+  await pool.query(insert, ["konto-v2", JSON.stringify(doc(2, at, { challenges: [] })), at]);
+  assert.equal((await pool.query("SELECT 1 FROM transcripts WHERE account_id = 'konto-v2'")).rowCount, 1);
+  await assert.rejects(
+    pool.query(insert, ["konto-v1", JSON.stringify(doc(1, at, { challenges: [] })), at]),
+    (error: unknown) => (error as { code?: string }).code === "23514",
+  );
 });
 
 // 4. Kalenderdatum (Nachtrag Adversary): nur echte Kalenderdaten

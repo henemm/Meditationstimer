@@ -1,0 +1,24 @@
+{
+  "description": "Ja/Nein ohne Tagesziel.",
+  "delivery": {
+    "format": "hhhaven.delivery/1",
+    "deliveryId": "5e7a9c1b-3d5f-4a7b-9c2e-1f3a5b7c9d1e",
+    "source": "claude",
+    "createdAt": "2026-11-13T16:00:00Z",
+    "why": "Wasser trinken als neue Gewohnheit, mit Stufenplan.",
+    "items": [
+      {
+        "kind": "tracker",
+        "itemId": "claude.dehnen-b8c1d3",
+        "revision": 1,
+        "name": "Dehnen",
+        "symbol": "💧",
+        "type": "good",
+        "mode": "yesNo"
+      }
+    ]
+  },
+  "expected": {
+    "valid": true
+  }
+}

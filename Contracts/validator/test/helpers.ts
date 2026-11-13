@@ -9,7 +9,7 @@ export type Example = {
   file: string;
   dir: 'valid' | 'invalid';
   description: string;
-  context?: { knownExercises?: { id: string; name: string }[] };
+  context?: { knownExercises?: { id: string; name: string }[]; knownPrograms?: string[]; knownBreaths?: string[]; knownTrackers?: string[] };
   delivery: unknown;
   expected: {
     valid: boolean;
@@ -79,6 +79,67 @@ export function breath(over: Obj = {}): Obj {
     rounds: 5,
     ...over,
   };
+}
+
+export function reminder(over: Obj = {}): Obj {
+  return {
+    kind: 'reminder',
+    itemId: 'claude.test-erinnerung',
+    revision: 1,
+    title: 'Testerinnerung',
+    message: 'Zeit für eine Pause.',
+    time: '18:00',
+    weekdays: ['monday', 'thursday'],
+    lookbackHours: 12,
+    target: { type: 'meditation' },
+    ...over,
+  };
+}
+
+export function impulse(n: number, over: Obj = {}): Obj {
+  return { text: `Tag ${n}: Achte heute einmal bewusst auf deinen Atem.`, moment: 'day', question: 'Was ist dir aufgefallen?', ...over };
+}
+
+export function stage(days = 7, over: Obj = {}): Obj {
+  return {
+    days,
+    content: { type: 'impulses', impulses: Array.from({ length: days }, (_, i) => impulse(i + 1)) },
+    ...over,
+  };
+}
+
+export function challenge(over: Obj = {}): Obj {
+  return {
+    kind: 'challenge',
+    itemId: 'claude.test-challenge',
+    revision: 1,
+    title: 'Testchallenge',
+    symbol: '🧘',
+    startDate: '2026-11-14',
+    stages: [stage(7)],
+    ...over,
+  };
+}
+
+export function tracker(over: Obj = {}): Obj {
+  const t: Obj = {
+    kind: 'tracker',
+    itemId: 'claude.test-tracker',
+    revision: 1,
+    name: 'Testtracker',
+    symbol: '💧',
+    type: 'good',
+    mode: 'counter',
+    dailyGoal: 6,
+    ...over,
+  };
+  // undefined in over entfernt das Feld
+  for (const k of Object.keys(t)) if (t[k] === undefined) delete t[k];
+  return t;
+}
+
+export function goalStage(days = 7, goal: Obj = { type: 'meditation', minutes: 10 }, over: Obj = {}): Obj {
+  return { days, content: { type: 'goal', goal }, ...over };
 }
 
 export function withdrawal(over: Obj = {}): Obj {

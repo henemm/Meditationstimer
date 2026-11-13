@@ -135,6 +135,9 @@
             "exercise",
             "program",
             "breath",
+            "reminder",
+            "challenge",
+            "tracker",
             "withdrawal"
           ]
         }
@@ -174,6 +177,42 @@
           },
           "then": {
             "$ref": "#/$defs/breath"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "reminder"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/reminder"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "challenge"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/challenge"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "tracker"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/tracker"
           }
         },
         {
@@ -443,6 +482,613 @@
             "required": [
               "itemId"
             ]
+          }
+        }
+      ]
+    },
+    "reminder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "itemId",
+        "revision",
+        "title",
+        "message",
+        "time",
+        "weekdays",
+        "lookbackHours",
+        "target"
+      ],
+      "properties": {
+        "kind": {
+          "const": "reminder"
+        },
+        "itemId": {
+          "$ref": "#/$defs/itemId"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "weekdays": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday"
+            ]
+          }
+        },
+        "lookbackHours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "target": {
+          "$ref": "#/$defs/reminderTarget"
+        }
+      }
+    },
+    "reminderTarget": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "meditation",
+            "workout",
+            "breath",
+            "noalc"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "meditation"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties": {
+              "type": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "noalc"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties": {
+              "type": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "workout"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "properties": {
+              "type": {},
+              "programId": {
+                "type": "string",
+                "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "breath"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "required": [
+              "breathId"
+            ],
+            "properties": {
+              "type": {},
+              "breathId": {
+                "type": "string",
+                "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "impulse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "moment"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "moment": {
+          "enum": [
+            "day",
+            "evening"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "days",
+        "content"
+      ],
+      "properties": {
+        "days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90
+        },
+        "content": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "impulses",
+                "goal"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "impulses"
+                  }
+                }
+              },
+              "then": {
+                "additionalProperties": false,
+                "required": [
+                  "impulses"
+                ],
+                "properties": {
+                  "type": {},
+                  "impulses": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 90,
+                    "items": {
+                      "$ref": "#/$defs/impulse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "goal"
+                  }
+                }
+              },
+              "then": {
+                "additionalProperties": false,
+                "required": [
+                  "goal"
+                ],
+                "properties": {
+                  "type": {},
+                  "goal": {
+                    "$ref": "#/$defs/goal"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "challenge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "itemId",
+        "revision",
+        "title",
+        "symbol",
+        "startDate",
+        "stages"
+      ],
+      "properties": {
+        "kind": {
+          "const": "challenge"
+        },
+        "itemId": {
+          "$ref": "#/$defs/itemId"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "symbol": {
+          "$ref": "#/$defs/symbol"
+        },
+        "description": {
+          "$ref": "#/$defs/description"
+        },
+        "startDate": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/stage"
+          }
+        }
+      }
+    },
+    "trackerLevel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "icon",
+        "effect"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F  ‪-‮⁦-⁩]*$"
+            },
+            {
+              "pattern": "[^ \\u00A0\\n]"
+            }
+          ]
+        },
+        "icon": {
+          "$ref": "#/$defs/symbol"
+        },
+        "effect": {
+          "enum": [
+            "success",
+            "needsGrace",
+            "breaksStreak"
+          ]
+        }
+      }
+    },
+    "tracker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "itemId",
+        "revision",
+        "name",
+        "symbol",
+        "type",
+        "mode"
+      ],
+      "properties": {
+        "kind": {
+          "const": "tracker"
+        },
+        "itemId": {
+          "$ref": "#/$defs/itemId"
+        },
+        "revision": {
+          "$ref": "#/$defs/revision"
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "symbol": {
+          "$ref": "#/$defs/symbol"
+        },
+        "type": {
+          "enum": [
+            "good",
+            "saboteur"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "counter",
+            "yesNo",
+            "levels",
+            "awareness",
+            "avoidance"
+          ]
+        },
+        "dailyGoal": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "levels": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/trackerLevel"
+          }
+        },
+        "joker": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "earnEveryDays",
+            "maxOnHand"
+          ],
+          "properties": {
+            "earnEveryDays": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            },
+            "maxOnHand": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            }
+          }
+        },
+        "dayStartHour": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 23
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "good"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "counter",
+                  "yesNo",
+                  "levels"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "saboteur"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "awareness",
+                  "avoidance",
+                  "levels"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "levels"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "levels"
+            ],
+            "not": {
+              "required": [
+                "dailyGoal"
+              ]
+            }
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "levels"
+                  ]
+                },
+                {
+                  "required": [
+                    "joker"
+                  ]
+                },
+                {
+                  "required": [
+                    "dayStartHour"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "not": {
+                  "const": "counter"
+                }
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "dailyGoal"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "goal": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "meditation",
+            "workout",
+            "tracker"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "meditation",
+                  "workout"
+                ]
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "required": [
+              "minutes"
+            ],
+            "properties": {
+              "type": {},
+              "minutes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 180
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "tracker"
+              }
+            }
+          },
+          "then": {
+            "additionalProperties": false,
+            "required": [
+              "trackerId"
+            ],
+            "properties": {
+              "type": {},
+              "trackerId": {
+                "type": "string",
+                "pattern": "^(builtin|own|claude)\\.[a-z0-9][a-z0-9-]{1,62}$"
+              }
+            }
           }
         }
       ]

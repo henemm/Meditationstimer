@@ -8,11 +8,13 @@ const SPEC_CODES = [
   'TEXT_FORBIDDEN_CHAR', 'INVALID_SYMBOL', 'OUT_OF_RANGE', 'LIST_SIZE', 'TOTAL_TOO_LONG', 'INVALID_ID',
   'INVALID_DATE', 'VALUE_NOT_ALLOWED', 'KIND_UNKNOWN', 'CATEGORY_UNKNOWN', 'EXERCISE_UNKNOWN',
   'NAME_TAKEN', 'DUPLICATE_ID', 'WITHDRAWAL_TARGET',
+  'INVALID_TIME', 'DUPLICATE_VALUE', 'TARGET_UNKNOWN', 'REMINDER_LIMIT',
+  'START_IN_PAST', 'IMPULSE_COUNT', 'LEVELS_NO_SUCCESS',
 ];
 
-/** Verhalten: ERROR_CODES enthält genau die 20 Codes aus der Spec. */
+/** Verhalten: ERROR_CODES enthält genau die 27 Codes aus der Spec. */
 test('ERROR_CODES == Spec-Liste', () => {
-  assert.equal(SPEC_CODES.length, 20);
+  assert.equal(SPEC_CODES.length, 27);
   assert.deepEqual([...ERROR_CODES].sort(), [...SPEC_CODES].sort());
   assert.equal(new Set(ERROR_CODES).size, ERROR_CODES.length, 'keine Doppelten');
 });
