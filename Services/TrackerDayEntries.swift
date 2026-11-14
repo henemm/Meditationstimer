@@ -80,8 +80,10 @@ enum TrackerDayEntries {
 
     private static func entry(for tracker: Tracker, logs: [TrackerLog]) -> Entry? {
         guard let latest = logs.max(by: { $0.timestamp < $1.timestamp }) else { return nil }
-        let note = latest.note.flatMap { $0.isEmpty ? nil : $0 }
-        return Entry(value: displayValue(for: tracker, logs: logs, latest: latest), note: note, time: latest.timestamp)
+        let value = displayValue(for: tracker, logs: logs, latest: latest)
+        // Level-Logs speichern "Icon Label" selbst als Notiz: gleicht sie dem Anzeigewert, ist es keine Notiz
+        let note = latest.note.flatMap { $0.isEmpty || $0 == value ? nil : $0 }
+        return Entry(value: value, note: note, time: latest.timestamp)
     }
 
     private static func displayValue(for tracker: Tracker, logs: [TrackerLog], latest: TrackerLog) -> String {
