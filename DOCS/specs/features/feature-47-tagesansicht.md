@@ -103,6 +103,7 @@ Ohne Modell, nur Regeln: Tageszuordnung, Wertdarstellung und Filter sind determi
 - `hasActivity` zusätzlich wahr, wenn für `dayKey` Tracker-Einträge existieren.
 - `DayDetailSheet(date:mindfulnessMinutes:workoutMinutes:habitRows:)` erhält die Zeilen des Tages.
 - Kalenderfeld (Ringe, Füllung, Fettdruck-Logik außer `hasActivity`) bleibt unverändert.
+- Beim Erscheinen springt der Kalender sofort auf den aktuellen Monat (bisher erst nach dem Laden der HealthKit-Daten; bis dahin stand er beim ältesten Monat). Endzustand wie bisher, nur ohne Verzögerung; nötig, damit die Tageszelle von heute sofort existiert (PO-Freigabe 2026-11-14 ausstehend).
 
 ### `DayDetailSheet`
 
@@ -125,24 +126,24 @@ Beide mit `"extractionState": "manual"` und `"state": "translated"`, sonst Groß
 
 Ein Tracker „T" bezeichnet einen aktiven, nicht gelöschten Tracker ohne NoAlc-Kennzeichen.
 
-- **AC-1 Tageszuordnung Zeitstempel.** Given T mit `dayAssignmentRaw == nil` und ein Log am 13.11. um 17:00, When gruppiert wird, Then erscheint der Eintrag am 13.11. und an keinem anderen Tag.
-- **AC-2 Tageszuordnung cutoffHour 18.** Given T mit `dayAssignmentRaw == "cutoffHour:18"` und ein Log am 13.11. um 17:00, When gruppiert wird, Then gehört der Eintrag zum 12.11. (nicht zum 13.11.). Ein Log am 13.11. um 18:00 gehört zum 13.11.
-- **AC-3 Keine Doppelverschiebung.** Given T mit `cutoffHour:18` und ein Log am 13.11. um 00:30, When gruppiert wird, Then gehört er genau einmal verschoben zum 12.11. (nicht zum 11.11.).
-- **AC-4 Level-Tracker.** Given ein Level-Tracker und ein Log mit `value` = Id eines Levels, When das Fenster den Tag zeigt, Then steht in der Zeile `localizedLabel` dieses Levels.
-- **AC-5 Zähler.** Given ein Zähler-Tracker mit drei Logs am selben Tag (value 1, 2, 1), When das Fenster den Tag zeigt, Then zeigt die Zeile die Summe 4 (bei gesetztem Tagesziel 5 als „4 / 5").
-- **AC-6 Ja/Nein, Achtsamkeit, Vermeiden.** Given ein Tracker mit boolescher Wertart und mindestens einem Log am Tag, When das Fenster den Tag zeigt, Then zeigt die Zeile ein Häkchen.
-- **AC-7 Notiz und Uhrzeit.** Given ein Log mit nichtleerer `note`, When das Fenster den Tag zeigt, Then stehen Notiz und Uhrzeit des spätesten Logs dieses Tages in der Zeile; bei leerer oder fehlender Notiz erscheint keine Notizzeile.
-- **AC-8 Leere Zeile.** Given ein aktiver Tracker ohne Log an einem Tag, an dem ein anderer Tracker einen Eintrag hat, When das Fenster den Tag zeigt, Then gibt es für diesen Tracker eine graue Zeile mit dem Text „kein Eintrag" (EN „no entry"), ohne Rot und ohne Wertungssymbol.
-- **AC-9 Alle aktiven Tracker.** Given drei aktive Tracker, von denen einer einen Eintrag hat, When das Fenster den Tag zeigt, Then sind alle drei Zeilen sichtbar (eine mit Wert, zwei „kein Eintrag").
-- **AC-10 NoAlc ausgenommen.** Given ein NoAlc-Tracker (Name „NoAlc" oder HealthKit-Typ `numberOfAlcoholicBeverages`) mit Log am Tag, When gruppiert wird, Then fehlt er im Abschnitt „Gewohnheiten"; Zusammenfassung und „Einzelne Sessions" zeigen NoAlc unverändert aus HealthKit.
-- **AC-11 Inaktive und gelöschte Tracker.** Given ein Tracker mit `isActive == false` oder ein gelöschter Tracker (Logs verschwinden per Cascade), When das Fenster den Tag zeigt, Then erscheint er nicht, auch wenn er an dem Tag Logs hatte, und er öffnet das Fenster nicht.
-- **AC-12 Reihenfolge.** Given aktive Tracker mit `displayOrder` 2, 0, 1, When das Fenster den Tag zeigt, Then stehen die Zeilen in der Reihenfolge 0, 1, 2 (wie in der Tracker-Liste).
-- **AC-13 Öffnen nur mit Tracker-Eintrag.** Given ein Tag ohne Meditation (< 2 min), ohne Workout (< 2 min), ohne NoAlc, aber mit einem Tracker-Eintrag, When der Nutzer den Tag im Kalender antippt, Then öffnet sich das Tagesfenster mit dem Abschnitt „Gewohnheiten".
-- **AC-14 Kein Öffnen bei nur leeren Trackern.** Given ein Tag ohne jede Aktivität und ohne Tracker-Eintrag (nur leere aktive Tracker), When der Nutzer den Tag antippt, Then öffnet sich kein Fenster.
-- **AC-15 Kalenderfilter.** Given `calendarFilterEnabled` ist an, When der Nutzer einen Tag mit Tracker-Eintrag antippt, Then öffnet sich das Fenster trotzdem.
-- **AC-16 Bestehendes Verhalten.** Given ein Tag mit Meditation, Workout oder NoAlc, When der Nutzer ihn antippt, Then zeigt das Fenster Zusammenfassung und Einzelliste wie bisher, plus (falls aktive Tracker existieren) den Abschnitt „Gewohnheiten". Fettdruck und Ringe im Kalenderfeld bleiben außer durch AC-13 unverändert.
-- **AC-17 Gruppierung einmal je Laden.** Given ein Monat mit 31 Zellen, When der Kalender aufgebaut wird, Then wird `TrackerDayEntries.group` nicht je Zelle ausgeführt, sondern einmal je Laden bzw. Datenänderung (Review-Kriterium im Code, kein Laufzeittest).
-- **AC-18 Texte lokalisiert.** Given die App läuft auf Deutsch bzw. Englisch, When der Abschnitt erscheint, Then lauten Überschrift und Leertext „Gewohnheiten"/„kein Eintrag" bzw. „Habits"/„no entry"; im Debug-Build ohne Großschreibung.
+- **AC-1 Tageszuordnung Zeitstempel:** Given T mit `dayAssignmentRaw == nil` und ein Log am 13.11. um 17:00, When gruppiert wird, Then erscheint der Eintrag am 13.11. und an keinem anderen Tag.
+- **AC-2 Tageszuordnung cutoffHour 18:** Given T mit `dayAssignmentRaw == "cutoffHour:18"` und ein Log am 13.11. um 17:00, When gruppiert wird, Then gehört der Eintrag zum 12.11. (nicht zum 13.11.). Ein Log am 13.11. um 18:00 gehört zum 13.11.
+- **AC-3 Keine Doppelverschiebung:** Given T mit `cutoffHour:18` und ein Log am 13.11. um 00:30, When gruppiert wird, Then gehört er genau einmal verschoben zum 12.11. (nicht zum 11.11.).
+- **AC-4 Level-Tracker:** Given ein Level-Tracker und ein Log mit `value` = Id eines Levels, When das Fenster den Tag zeigt, Then steht in der Zeile `localizedLabel` dieses Levels.
+- **AC-5 Zähler:** Given ein Zähler-Tracker mit drei Logs am selben Tag (value 1, 2, 1), When das Fenster den Tag zeigt, Then zeigt die Zeile die Summe 4 (bei gesetztem Tagesziel 5 als „4 / 5").
+- **AC-6 Ja/Nein, Achtsamkeit, Vermeiden:** Given ein Tracker mit boolescher Wertart und mindestens einem Log am Tag, When das Fenster den Tag zeigt, Then zeigt die Zeile ein Häkchen.
+- **AC-7 Notiz und Uhrzeit:** Given ein Log mit nichtleerer `note`, When das Fenster den Tag zeigt, Then stehen Notiz und Uhrzeit des spätesten Logs dieses Tages in der Zeile; bei leerer oder fehlender Notiz erscheint keine Notizzeile. Gleicht die Notiz dem Anzeigewert (Level- und Stimmungs-Logs speichern „Icon Label“ als `note`), erscheint ebenfalls keine Notizzeile; eine echte Notiz bleibt sichtbar.
+- **AC-8 Leere Zeile:** Given ein aktiver Tracker ohne Log an einem Tag, an dem ein anderer Tracker einen Eintrag hat, When das Fenster den Tag zeigt, Then gibt es für diesen Tracker eine graue Zeile mit dem Text „kein Eintrag" (EN „no entry"), ohne Rot und ohne Wertungssymbol.
+- **AC-9 Alle aktiven Tracker:** Given drei aktive Tracker, von denen einer einen Eintrag hat, When das Fenster den Tag zeigt, Then sind alle drei Zeilen sichtbar (eine mit Wert, zwei „kein Eintrag").
+- **AC-10 NoAlc ausgenommen:** Given ein NoAlc-Tracker (Name „NoAlc" oder HealthKit-Typ `numberOfAlcoholicBeverages`) mit Log am Tag, When gruppiert wird, Then fehlt er im Abschnitt „Gewohnheiten"; Zusammenfassung und „Einzelne Sessions" zeigen NoAlc unverändert aus HealthKit.
+- **AC-11 Inaktive und gelöschte Tracker:** Given ein Tracker mit `isActive == false` oder ein gelöschter Tracker (Logs verschwinden per Cascade), When das Fenster den Tag zeigt, Then erscheint er nicht, auch wenn er an dem Tag Logs hatte, und er öffnet das Fenster nicht.
+- **AC-12 Reihenfolge:** Given aktive Tracker mit `displayOrder` 2, 0, 1, When das Fenster den Tag zeigt, Then stehen die Zeilen in der Reihenfolge 0, 1, 2 (wie in der Tracker-Liste).
+- **AC-13 Öffnen nur mit Tracker-Eintrag:** Given ein Tag ohne Meditation (< 2 min), ohne Workout (< 2 min), ohne NoAlc, aber mit einem Tracker-Eintrag, When der Nutzer den Tag im Kalender antippt, Then öffnet sich das Tagesfenster mit dem Abschnitt „Gewohnheiten".
+- **AC-14 Kein Öffnen bei nur leeren Trackern:** Given ein Tag ohne jede Aktivität und ohne Tracker-Eintrag (nur leere aktive Tracker), When der Nutzer den Tag antippt, Then öffnet sich kein Fenster.
+- **AC-15 Kalenderfilter:** Given `calendarFilterEnabled` ist an, When der Nutzer einen Tag mit Tracker-Eintrag antippt, Then öffnet sich das Fenster trotzdem.
+- **AC-16 Bestehendes Verhalten:** Given ein Tag mit Meditation, Workout oder NoAlc, When der Nutzer ihn antippt, Then zeigt das Fenster Zusammenfassung und Einzelliste wie bisher, plus (falls aktive Tracker existieren) den Abschnitt „Gewohnheiten". Fettdruck und Ringe im Kalenderfeld bleiben außer durch AC-13 unverändert.
+- **AC-17 Gruppierung einmal je Laden:** Given ein Monat mit 31 Zellen, When der Kalender aufgebaut wird, Then wird `TrackerDayEntries.group` nicht je Zelle ausgeführt, sondern einmal je Laden bzw. Datenänderung (Review-Kriterium im Code, kein Laufzeittest).
+- **AC-18 Texte lokalisiert:** Given die App läuft auf Deutsch bzw. Englisch, When der Abschnitt erscheint, Then lauten Überschrift und Leertext „Gewohnheiten"/„kein Eintrag" bzw. „Habits"/„no entry"; im Debug-Build ohne Großschreibung.
 
 ## Test Plan
 
@@ -154,7 +155,7 @@ Ein Tracker „T" bezeichnet einen aktiven, nicht gelöschten Tracker ohne NoAlc
 - [ ] AC-4: `test_levelTracker_showsLocalizedLevelLabel`
 - [ ] AC-5: `test_counter_sumsValuesOfDay`
 - [ ] AC-6: `test_boolean_showsCheckmark`
-- [ ] AC-7: `test_noteAndLatestTime_ofLatestLog`
+- [ ] AC-7: `test_noteAndLatestTime_ofLatestLog`, `test_levelTracker_noteEqualToLevelLabel_isNotShownAsNote`
 - [ ] AC-8, AC-9: `test_trackerWithoutLog_emptyRowWhenOtherTrackerHasEntry`
 - [ ] AC-10: `test_noAlcTracker_excluded` (nach Name und nach HealthKit-Typ)
 - [ ] AC-11: `test_inactiveTracker_notIncluded`
@@ -215,4 +216,5 @@ Zusätzlich vor Übergabe: App im Simulator starten und den Ablauf durchspielen 
 
 - 2026-11-13: Initial spec created (Entwurf B, PO-Entscheidungen 2026-11-13)
 - 2026-11-13: TDD RED: API aus den Tests festgelegt: `Row { trackerID: UUID, name: String, icon: String, entry: Entry? }`, `Entry { value: String, note: String?, time: Date }`; Häkchen = `"✓"`, Zähler `"4"` bzw. `"4 / 5"`, unbekannte Level-Id = Zahl als Text, leere Notiz = `nil`. Laufzeitumgebung: Simulator-Runtime iOS 26.5 ist nicht mehr installiert, Tests laufen auf „iPhone 17 Pro" mit iOS 27.2 (Skript-Anpassung als eigenes Issue).
+- 2026-11-13: GREEN-Befund: Level- und Stimmungs-Logs speichern das Level selbst als `note` („🙂 Good“, `TrackerRow`, `LevelSelectionView`, `MoodSelectionView`). Zu AC-7 präzisiert: Eine Notiz, die dem Anzeigewert gleicht, ist keine Notiz und wird als `nil` geliefert (sonst steht „Good“ doppelt). UI-Test schließt zusätzlich das zweite Health-Zugriffsblatt nach dem Wechsel in den Erfolge-Tab; Kalender springt beim Erscheinen auf den aktuellen Monat, damit die Tageszelle von heute existiert.
 - 2026-11-13: Nach Validierung ergänzt: Source, Dependencies, ADR, Estimated Changes, Definition of Done; `hasActivity` als reine Funktion; Tests für AC-15 bis AC-18

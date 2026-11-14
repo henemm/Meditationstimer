@@ -26,6 +26,10 @@ struct CalendarView: View {
     @Query(filter: #Predicate<Tracker> { $0.name == "NoAlc" })
     private var noAlcTrackers: [Tracker]
 
+    /// Aktive Tracker für die Tagesansicht (#47)
+    @Query(filter: #Predicate<Tracker> { $0.isActive }, sort: \Tracker.displayOrder)
+    private var activeTrackers: [Tracker]
+
     /// The NoAlc tracker from SwiftData
     private var noAlcTracker: Tracker? {
         noAlcTrackers.first
@@ -105,14 +109,16 @@ struct CalendarView: View {
 
     @ViewBuilder
     private var calendarContent: some View {
-        VStack {
+        // Einmal je Aufbau gruppieren, nicht je Tageszelle (#47)
+        let habitRows = TrackerDayEntries.group(trackers: activeTrackers, calendar: calendar)
+        return VStack {
             // Scrollbare Monatsliste
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 20) {
                         ForEach(-6...6, id: \.self) { monthOffset in
                             let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
-                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, alcoholDays: alcoholDays, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes)
+                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, alcoholDays: alcoholDays, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes, habitRows: habitRows)
                                 .id(monthOffset) // Für ScrollViewReader
                         }
                     }
@@ -120,6 +126,8 @@ struct CalendarView: View {
                 }
                 .onAppear {
                     scrollProxy = proxy
+                    // Aktuellen Monat sofort zeigen, auch wenn das Laden der Daten ausbleibt (#47)
+                    DispatchQueue.main.async { proxy.scrollTo(0, anchor: .center) }
                 }
             }
 
@@ -456,6 +464,7 @@ struct MonthView: View {
     let alcoholDays: [Date: TrackerLevel]
     let meditationGoalMinutes: Double
     let workoutGoalMinutes: Double
+    var habitRows: [Date: [TrackerDayEntries.Row]] = [:]
     private let calendar = Calendar.current
 
     @State private var selectedDate: Date? = nil
@@ -519,7 +528,13 @@ struct MonthView: View {
         let alcoholLevel = alcoholDays[dayKey]
 
         // Determine if day has any activity (for bold number)
-        let hasActivity = mins.mindfulnessMinutes >= 2.0 || mins.workoutMinutes >= 2.0 || alcoholLevel != nil
+        let dayHabitRows = habitRows[dayKey] ?? []
+        let hasActivity = TrackerDayEntries.hasActivity(
+            mindfulnessMinutes: mins.mindfulnessMinutes,
+            workoutMinutes: mins.workoutMinutes,
+            hasNoAlc: alcoholLevel != nil,
+            hasTrackerEntries: !dayHabitRows.isEmpty
+        )
 
         return ZStack {
             // NoAlc background fill
@@ -552,6 +567,9 @@ struct MonthView: View {
                 .foregroundColor(alcoholLevel != nil ? .alcoholText : .primary)
         }
         .frame(height: 40)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("calendar.day.\(dayIdentifier(for: date))")
         // Red tiny dot in the bottom-right to indicate TODAY
         .overlay(alignment: .bottomTrailing) {
             if isToday {
@@ -574,9 +592,20 @@ struct MonthView: View {
             DayDetailSheet(
                 date: dayKey,
                 mindfulnessMinutes: mins.mindfulnessMinutes,
-                workoutMinutes: mins.workoutMinutes
+                workoutMinutes: mins.workoutMinutes,
+                habitRows: dayHabitRows
             )
         }
+    }
+
+    /// yyyy-MM-dd (gregorianisch, POSIX) für die Tageszellen-Kennung
+    private func dayIdentifier(for date: Date) -> String {
+        let f = DateFormatter()
+        f.calendar = Calendar(identifier: .gregorian)
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.timeZone = calendar.timeZone
+        f.dateFormat = "yyyy-MM-dd"
+        return f.string(from: date)
     }
     
     private func generateDays(for month: Date) -> [Date?] {

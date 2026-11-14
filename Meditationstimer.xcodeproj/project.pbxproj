@@ -28,6 +28,7 @@
 		B7C556A52E73E5EC00EFC1F5 /* MeditationstimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B7C5568F2E73E5EA00EFC1F5 /* MeditationstimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B7E601132E6584F9008AE315 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E601122E6582C1008AE315 /* HealthKitManager.swift */; };
 		B7F123462EF60002000AAA02 /* TrackerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F123452EF60001000AAA01 /* TrackerModels.swift */; };
+		B7F123492EF60005000AAA05 /* TrackerDayEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F1234A2EF60006000AAA06 /* TrackerDayEntries.swift */; };
 		B7F123482EF60004000AAA04 /* TrackerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F123472EF60003000AAA03 /* TrackerManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -112,6 +113,7 @@
 		B7E601122E6582C1008AE315 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		B7EC6E192EC781CB00967561 /* Meditationstimer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Meditationstimer.xcodeproj; sourceTree = "<group>"; };
 		B7F123452EF60001000AAA01 /* TrackerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerModels.swift; sourceTree = "<group>"; };
+		B7F1234A2EF60006000AAA06 /* TrackerDayEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDayEntries.swift; sourceTree = "<group>"; };
 		B7F123472EF60003000AAA03 /* TrackerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerManager.swift; sourceTree = "<group>"; };
 		B7UITEST012ED1000000002 /* LeanHealthTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeanHealthTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -305,6 +307,7 @@
 				B78712B62EB00C06002DA82E /* AmbientSoundPlayer.swift */,
 				B7F123452EF60001000AAA01 /* TrackerModels.swift */,
 				B7F123472EF60003000AAA03 /* TrackerManager.swift */,
+				B7F1234A2EF60006000AAA06 /* TrackerDayEntries.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 			files = (
 				B7F123462EF60002000AAA02 /* TrackerModels.swift in Sources */,
 				B7F123482EF60004000AAA04 /* TrackerManager.swift in Sources */,
+				B7F123492EF60005000AAA05 /* TrackerDayEntries.swift in Sources */,
 				B7C556842E66C66C00EFC1F5 /* HeartRateStream.swift in Sources */,
 				B7C5567B2E660A9000EFC1F5 /* NotificationHelper.swift in Sources */,
 				B7C5567A2E660A8500EFC1F5 /* TwoPhaseTimerEngine.swift in Sources */,

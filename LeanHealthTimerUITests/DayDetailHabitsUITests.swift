@@ -49,17 +49,49 @@ final class DayDetailHabitsUITests: XCTestCase {
     /// liegen in SwiftData. Mehrfach pruefen, weil je HealthKit-Typ ein eigenes Blatt kommen kann.
     private func dismissPermissionAlertsIfAny() {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        for _ in 0..<3 {
-            let deny = app.buttons.matching(
-                NSPredicate(format: "label == 'Nicht erlauben' OR label == 'Don’t Allow' OR label == \"Don't Allow\"")
-            ).firstMatch
-            if deny.waitForExistence(timeout: 3) {
-                deny.tap()
-                continue
+        let denyPredicate = NSPredicate(
+            format: "identifier == 'UIA.Health.DoNotAllow.Button' OR label == 'Nicht erlauben' OR label == 'Don’t Allow' OR label == \"Don't Allow\""
+        )
+        // Das HealthKit-Blatt kann im App-Prozess oder in einem fremden Prozess (Remote-View) liegen.
+        let hosts: [XCUIApplication] = [
+            app!,
+            XCUIApplication(bundleIdentifier: "com.apple.HealthPrivacyService"),
+            XCUIApplication(bundleIdentifier: "com.apple.Health"),
+            springboard,
+        ]
+        // Ablauf je Blatt: "Nicht erlauben", danach Bestaetigungsdialog "OK". Beide liegen im
+        // Health-Dienst-Prozess, nicht im App-Prozess; dort erst "OK" (liegt oben), dann "Nicht erlauben".
+        // Normales tap() scheitert ("Element nicht mehr gueltig"), daher per Bildschirmkoordinate.
+        func tapByCoordinate(_ element: XCUIElement) {
+            let frame = element.frame
+            app.coordinate(withNormalizedOffset: .zero)
+                .withOffset(CGVector(dx: frame.midX, dy: frame.midY)).tap()
+        }
+        for _ in 0..<8 {
+            var handled = false
+            for host in hosts {
+                let ok = host.buttons["OK"]
+                if ok.waitForExistence(timeout: host === app ? 2 : 1) {
+                    tapByCoordinate(ok)
+                    handled = true
+                    break
+                }
             }
-            let ok = springboard.buttons["OK"]
-            if ok.waitForExistence(timeout: 1) {
-                ok.tap()
+            if handled { continue }
+            for host in hosts {
+                let deny = host.buttons.matching(denyPredicate).firstMatch
+                if deny.waitForExistence(timeout: host === app ? 3 : 1) {
+                    tapByCoordinate(deny)
+                    handled = true
+                    break
+                }
+            }
+            if handled { continue }
+            // Langes Blatt (10 Themen): "Nicht erlauben" liegt unterhalb des sichtbaren Bereichs und
+            // ist erst nach dem Scrollen als Knopf im Baum. Blatt erkennt man an der Titelleiste.
+            let sheetBar = app.navigationBars["Health-Zugriff"]
+            if sheetBar.exists, app.tables.firstMatch.exists {
+                app.tables.firstMatch.swipeUp()
                 continue
             }
             break
@@ -120,6 +152,7 @@ final class DayDetailHabitsUITests: XCTestCase {
 
         let moodLabel = try prepareTrackersAndLogMood()
         tab(3).tap()
+        dismissPermissionAlertsIfAny()
 
         let todayCellID = dayIdentifier(Date())
         let todayCell = app.descendants(matching: .any)[todayCellID]
@@ -172,6 +205,7 @@ final class DayDetailHabitsUITests: XCTestCase {
 
         _ = try prepareTrackersAndLogMood()
         tab(3).tap()
+        dismissPermissionAlertsIfAny()
 
         let cellID = dayIdentifier(pastDay)
         let cell = app.descendants(matching: .any)[cellID]

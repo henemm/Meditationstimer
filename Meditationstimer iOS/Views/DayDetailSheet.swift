@@ -13,6 +13,7 @@ struct DayDetailSheet: View {
     let date: Date
     let mindfulnessMinutes: Double
     let workoutMinutes: Double
+    var habitRows: [TrackerDayEntries.Row] = []
     @Environment(\.dismiss) private var dismiss
 
     @State private var sessions: [ActivitySession] = []
@@ -118,6 +119,10 @@ struct DayDetailSheet: View {
                             }
                         }
                     }
+
+                    if !habitRows.isEmpty {
+                        habitsSection
+                    }
                 }
                 .padding()
             }
@@ -134,6 +139,20 @@ struct DayDetailSheet: View {
         }
         .onAppear {
             loadSessions()
+        }
+    }
+
+    // Abschnitt Gewohnheiten (#47)
+    private var habitsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Gewohnheiten")
+                .font(.headline)
+                .foregroundColor(.workoutViolet)
+                .accessibilityIdentifier("dayDetail.habitsSection")
+
+            ForEach(habitRows) { row in
+                HabitRow(row: row)
+            }
         }
     }
 
@@ -417,6 +436,53 @@ struct SessionRow: View {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: date)
+    }
+}
+
+// MARK: - HabitRow
+struct HabitRow: View {
+    let row: TrackerDayEntries.Row
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(row.icon)
+                .font(.title3)
+                .frame(width: 32)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(row.name)
+                    .font(.body.weight(.medium))
+
+                if let entry = row.entry {
+                    Text(entry.value)
+                        .font(.caption)
+                        .accessibilityIdentifier("dayDetail.habitValue.\(row.trackerID.uuidString)")
+                    if let note = entry.note {
+                        Text(note)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                } else {
+                    Text("kein Eintrag")
+                        .font(.caption)
+                        .accessibilityIdentifier("dayDetail.habitValue.\(row.trackerID.uuidString)")
+                }
+            }
+
+            Spacer()
+
+            if let entry = row.entry {
+                Text(entry.time, style: .time)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .foregroundColor(row.entry == nil ? .secondary : .primary)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("dayDetail.habitRow.\(row.trackerID.uuidString)")
     }
 }
 

@@ -251,6 +251,30 @@ final class TrackerDayEntriesTests: XCTestCase {
         }
     }
 
+    /// Verhalten (AC-7): Speichert die App das Level selbst als Notiz ("🙂 Good"), ist das keine Notiz
+    /// und darf nicht zusaetzlich zum Wert erscheinen; eine echte Notiz bleibt erhalten.
+    func test_levelTracker_noteEqualToLevelLabel_isNotShownAsNote() throws {
+        let levels = TrackerLevel.moodLevels
+        let great = try XCTUnwrap(levels.first { $0.id == 5 })
+        let autoNote = "\(great.icon) \(great.localizedLabel)"
+
+        let auto = makeTracker(name: "Mood", icon: "🙂", mode: .levels, displayOrder: 0, levels: levels)
+        addLog(auto, at: date(13, 9, 0), value: great.id, note: autoNote)
+
+        let real = makeTracker(name: "Mood2", icon: "🙂", mode: .levels, displayOrder: 1, levels: levels)
+        addLog(real, at: date(13, 9, 0), value: great.id, note: "nach dem Spaziergang")
+
+        let result = TrackerDayEntries.group(trackers: [auto, real], calendar: calendar)
+
+        let dayRows = rows(result, day: 13)
+        let autoEntry = try XCTUnwrap(dayRows.first { $0.name == "Mood" }?.entry)
+        XCTAssertTrue(autoEntry.value.contains(great.localizedLabel))
+        XCTAssertNil(autoEntry.note, "Notiz '\(autoNote)' gleicht dem Anzeigewert und ist keine Notiz")
+
+        let realEntry = try XCTUnwrap(dayRows.first { $0.name == "Mood2" }?.entry)
+        XCTAssertEqual(realEntry.note, "nach dem Spaziergang")
+    }
+
     // MARK: - AC-8, AC-9: leere Zeilen
 
     /// Verhalten: aktive Tracker ohne Log erscheinen als leere Zeile (entry == nil), wenn ein anderer Tracker Eintrag hat
