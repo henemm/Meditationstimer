@@ -56,3 +56,74 @@ Konzept: `DOCS/konzept-claude-verbindung.md` §6.1 (Z. 89-101), §6.2 (Z. 103-11
   eigene Übungen? Vorgabelisten 4 vs. 10 vereinheitlichen? Hinweis-Länge (≤ 80 Zeichen laut Lieferformat).
 - **UI sichtbar** → Entwurf (Heute/Entwurf/Alternative) vor der Spec (globale Regel 2026-09-22).
 - Keine Accessibility-Identifier im Editor/Training → UI-Tests brauchen neue Kennungen.
+
+## Analysis
+
+### Type
+Feature (mit Bestandsfehler, im Simulator nachgestellt: Schritt „Planke" im Vorgabeprogramm „Core Circuit" öffnet als
+„Eigene Übung…", die Auswahl ist eine überwiegend englische Liste; Screenshots `docs/artifacts/feature-48-uebungskatalog/heute-*.jpg`).
+
+### Befunde der Analyse (2026-11-14)
+- DB 43 Namen ↔ `Contracts/catalog/builtin-exercises.json` 43 Kennungen: 1:1 deckungsgleich. JSON liegt in keinem App-Target.
+- Vorschlagsliste 69 Namen: 6 exakt in der DB, 2 über Endung links/rechts (Beinpendel), 37 englische Übersetzungen von DB-Namen,
+  **24 ohne DB-Eintrag** (Hollow Hold, Dead Bug, Flutter Kicks, V-Ups, Sit-ups, Crunches, Archer/Decline Push-ups, Dips, Pull-ups,
+  Chin-ups, Australian Pull-ups, Inverted Rows, Step-ups, Wall-Sit, Box Jumps, Skater Hops, Jump Rope, Downward Dog, Cobra Stretch,
+  Cat-Cow, Seated Forward Bend, Shoulder Stretch L/R).
+- `PhaseEditorView.init` (`WorkoutProgramsView.swift:1930`) prüft „eigen" gegen die Vorschlagsliste → alle deutschen Vorgabenamen gelten als eigen.
+- `WorkoutSet`/`WorkoutPhase` synthetisiertes Codable ohne Version; Felder id, name, workDuration, restDuration. Keine Unit-Tests auf diesen Typen.
+- Zwei Ansage-Wege: privater `SoundPlayer` (`WorkoutProgramsView.swift:56,128-142`) und `WorkoutSoundPlayer.swift:38,128-144`; Programme nutzen den privaten.
+  Toter Code: `getNextAnnouncementText` (1379) ohne Aufrufer.
+- Keine accessibilityIdentifier in Editor und Training.
+- Spec-Widersprüche (für /30 klären): `claudeId` (claude-annahme.md:18) vs `itemId` (Lieferformat/Schema); claude-annahme.md:37 nennt `own.*` nicht;
+  workouts.md TTS 158-172 ohne Hinweis; Herkunft-Enum nur in transcript-v2 (Lieferformat leitet Herkunft aus dem Präfix ab);
+  Hinweislänge: Schema zählt UTF-16, Spec Codepunkte (Lieferformat:120).
+
+### Affected Files (with changes)
+| File | Change Type | Description |
+|------|-------------|-------------|
+| `Meditationstimer iOS/Models/ExerciseInfo.swift` | MODIFY | `id` (`builtin.*`), `origin` (builtin/own/claude) |
+| `Meditationstimer iOS/Services/ExerciseDatabase.swift` | MODIFY | Kennung je Eintrag, `info(forId:)`, `id(forName:)` inkl. Endung und englischer Namen |
+| `Meditationstimer iOS/Views/ExerciseDetailSheet.swift` | MODIFY | Suche per Kennung |
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | MODIFY | `WorkoutPhase.exerciseId`/`hint` mit tolerantem `init(from:)`; Auswahl aus Katalog; Hinweisfeld; Anzeige; Ansage |
+| `Meditationstimer iOS/Tabs/WorkoutTab.swift` | MODIFY | Ladepfad absichern (Sicherung vor Rückfall auf Vorgaben), Vorgaben mit Kennung (A2c) |
+| `Meditationstimer iOS/Localizable.xcstrings` | MODIFY | Hinweis-Texte DE/EN |
+| `LeanHealthTimerTests/ExerciseCatalogTests.swift` | CREATE | Gleichlauf mit JSON, Namen→Kennung, Endungsregel, Slug-Regel `own.*` |
+| `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift` | CREATE | Altbestand-JSON → verlustfrei, Rundreise |
+| `LeanHealthTimerUITests/WorkoutHintUITests.swift` | CREATE | Hinweis eingeben → im Training sichtbar; Auswahl zeigt Katalognamen |
+
+### Scope Assessment
+- Files: 9 gesamt → Schnitt nötig (Scoping-Limit 4-5 Dateien/±250 Z.)
+- Estimated LoC: +600/-150 gesamt
+- Risk Level: MEDIUM (Datenverlust beim Laden eigener Programme ist der Hauptpunkt; Gegenmittel: nur optionale Felder, Sicherung des Rohbestands, Altbestandstests)
+
+### Technical Approach
+Variante (a): `WorkoutPhase` erhält `exerciseId: String?` und `hint: String?`, beide per `decodeIfPresent`; fehlt die Kennung,
+wird sie beim Laden aus dem Namen abgeleitet (DB-Name, englischer Name, Endung links/rechts → `builtin.*`; sonst `own.<slug>`
+nach Regex `^(builtin|own|claude)\.[a-z0-9][a-z0-9-]{1,62}$`). `name` bleibt Anzeigename für `own.*`; für `builtin.*` kommt der
+Name aus dem Katalog (lokalisiert über xcstrings). Swift-Katalog bleibt in `ExerciseDatabase`, ein Test prüft ihn gegen das JSON.
+Hinweis: 1-80 Codepunkte, eine Zeile, leer → nil; Anzeige unter dem Namen; Ansage „Name. Hinweis" nur bei eingeschalteter Ansage.
+Herkunft: aus dem Präfix der Kennung abgeleitet (kein gespeichertes Feld), passend zum Lieferformat.
+
+Alternative (b), verworfen: Kennung zur Laufzeit aus dem Namen berechnen, ohne Datenänderung — für `claude.*`/`own.*` aus #51/#53
+fehlt dann der Anker, jede Umbenennung bricht die Zuordnung.
+
+Schnitte: **A2a** Katalog + Kennung (3 Dateien, ≈150 Z.) → **A2b-0** Datenmodell + Migration + Sicherung (3 Dateien, ≈120 Z.)
+→ **A2b** Hinweis sichtbar und hörbar, Auswahl aus Katalog (4-5 Dateien, ≈200 Z., erste PO-sichtbare Stufe)
+→ **A2c** Vorgabeprogramme mit Kennung, tote 10er-Kopie entfernen (≈150 Z.).
+
+### Dependencies
+Nur iOS-App-Target. Watch/Widget/Intents/HealthKit nutzen die Typen nicht. #51 braucht A2a + A2b-0 (Kennung, Feld `hint`), #53 `own.*`.
+
+### Open Questions (PO)
+- [ ] Entwurf Training/Editor freigeben (Variante Hinweis im Ring vs. unter dem Ring)
+- [ ] 24 Zusatzübungen ohne Beschreibung: als Namensvorschläge (eigene Übung, Info-Knopf leer) oder in den Katalog mit Texten?
+
+### Entwurf (PO-Vorschau)
+https://claude.ai/artifact/XrPS81A34yJzGMDacNYQiU — Quelle `docs/artifacts/feature-48-uebungskatalog/entwurf.html`; Empfehlung: Hinweis im Ring statt „Übung“, 24 Zusatzübungen als „Weitere“ (eigene Übung).
+
+### PO-Entscheidungen (2026-11-14)
+- **Hinweis im Training: unter dem Ring** (eigene Zeile zwischen Ring und Zähler, Alternative der Vorschau). Im Ring bleibt „Übung“.
+- **Die 24 Zusatzübungen bekommen eine Beschreibung** und werden Teil des Katalogs: je Übung Wirkung + Anleitung (DE/EN),
+  Kategorie, neue `builtin.*`-Kennung, im JSON-Katalog **angehängt** (append-only, catalogVersion 2). Eigener Schnitt **A2d**
+  (ExerciseDatabase, xcstrings, builtin-exercises.json, Katalogtest; ≈250 Z., ggf. zwei Hälften à 12 Übungen).
+  Danach enthält die Auswahl nur Katalogübungen + „Eigene Übung…“, keine Rubrik „Weitere“.
