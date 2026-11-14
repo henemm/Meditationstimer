@@ -1,14 +1,14 @@
 ---
 spec_file: DOCS/specs/features/feature-47-tagesansicht.md
-spec_sha256: d4c9de49aedf6d5356d124db0699127bb3bbf13a13662b2c4b1d1c1c4f7d6eb7
-spec_frozen_sha256: dba6e68f5bcc86bf3919b3ce9858b5a5914feffad8109f010093fddae8840227
+spec_sha256: bf5387f0f88ee0f16ddeb51987a6931b6600df1035b0e343a23385e36efe6659
+spec_frozen_sha256: 79d014a0ea56bcc2a00133ee9bc6ac0cd93264277e0cb7efdf3e96d8fb950fd9
 ---
 
 # PO-Briefing: feature-47-tagesansicht
 
 - **Spec:** DOCS/specs/features/feature-47-tagesansicht.md
 - **Issue:** #47
-- **Erstellt:** 2026-11-13
+- **Erstellt:** 2026-11-14
 
 ## Was gebaut wird
 
@@ -24,13 +24,12 @@ Tests belegen Tageszuordnung, Anzeigewerte, Reihenfolge und Öffnen des Fensters
 
 ## Kritische Anmerkungen
 
-- Tage mit nur leeren Gewohnheiten öffnen kein Fenster; NoAlc fehlt im neuen Abschnitt. Beides ist von dir entschieden.
-- Einmalige Berechnung (AC-17) wird nur per Code-Durchsicht geprüft, kein Test; reine Umsetzungsfrage.
+- Kalender springt beim Erscheinen sofort auf den aktuellen Monat; im Ticket nicht verlangt, PO-Freigabe steht aus.
 
 ## Freigabe-Frage
 
-Keine – Ampel gruen.
+Darf der Kalender beim Öffnen sofort auf den aktuellen Monat springen, statt wie bisher erst nach dem Laden der Gesundheitsdaten?
 
 ## Ampel
 
-Ampel: gruen
+Ampel: rot
