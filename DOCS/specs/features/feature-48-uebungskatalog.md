@@ -13,7 +13,7 @@ epic: 44
 
 ## Approval
 
-- [ ] Approved for implementation
+- [ ] Approved
 
 ## Purpose
 
@@ -158,7 +158,7 @@ Die Ableitung „englischer Name → Kennung" (Entscheidung 4 Schritt 2) ist ein
 
 ## Affected Files und Schnitte
 
-Gesamt 12 Dateien (7 Produkt, 3 Test, 2 Doku), rund 900 Zeilen inklusive Tests und Texte; deshalb in Schnitte geteilt, jeder Schnitt mit höchstens 4-5 Dateien, ±250 Zeilen und jeweils eigenem lauffähigem Stand (Build, alle Tests grün). Zeilen sind Schätzungen; die reinen Textzeilen in `Localizable.xcstrings` und JSON zählen mechanisch mit.
+Gesamt 12 Dateien (7 Produkt, 3 Test, 2 Doku), rund 1.300 Zeilen hinzu inklusive Tests und Texte (Produkt +900, davon rund 400 Textzeilen, Tests +420; rund 200 Zeilen entfallen); deshalb in Schnitte geteilt, jeder Schnitt mit höchstens 4-5 Dateien, ±250 Zeilen und jeweils eigenem lauffähigem Stand (Build, alle Tests grün). Zeilen sind Schätzungen; die reinen Textzeilen in `Localizable.xcstrings` und JSON zählen mechanisch mit.
 
 | Schnitt | Inhalt | Dateien | Zeilen (ca.) | PO-sichtbar |
 |---------|--------|---------|--------------|-------------|
@@ -195,7 +195,7 @@ Reihenfolge: A2a → A2d-1 → A2d-2 → A2b-0 → A2b → A2c. A2d muss vor A2b
 
 ### Editor, Training, Ansage — A2b
 
-- `PhaseEditorView`: Übungsauswahl zeigt die 67 Katalogübungen (lokalisierte Namen, nach Kategorie wie bisher) plus „Eigene Übung…" mit Freitext. Die Prüfung „eigen oder nicht" richtet sich nach Katalog statt nach der Vorschlagsliste (`exerciseSuggestions`); A2b nimmt die Liste aus der Auswahl, aus dieser Prüfung und aus dem Standardnamen neuer Schritte (heute `exerciseSuggestions.first` = „Plank", Z. 1830; künftig Katalogübung `builtin.planke` mit lokalisiertem Namen „Planke"/„Plank", also gleiches Verhalten); die dann unbenutzte Liste selbst entfernt erst A2c. Wahl aus dem Katalog setzt `exerciseId` und deutschen Katalognamen in `name`; „Eigene Übung…" setzt `own.<slug>` aus dem eingegebenen Namen. Neues einzeiliges Feld „Hinweis (optional)", Eingabe auf 80 UTF-16-Einheiten begrenzt, Normalisierung nach Entscheidung 9.
+- `PhaseEditorView`: Übungsauswahl zeigt die 67 Katalogübungen (lokalisierte Namen, nach Kategorie wie bisher) plus „Eigene Übung…" mit Freitext. Die Prüfung „eigen oder nicht" richtet sich nach Katalog statt nach der Vorschlagsliste (`exerciseSuggestions`); A2b nimmt die Liste aus der Auswahl, aus dieser Prüfung und aus dem Standardnamen neuer Schritte (heute `exerciseSuggestions.first` der alphabetisch sortierten Liste, Z. 302/1830, also „Archer Push-ups"; künftig wie heute der alphabetisch erste Eintrag, nun der Katalogübungen nach lokalisiertem Namen, auf Deutsch „Archer-Liegestütze" `builtin.archer-liegestuetze`, mit gesetzter Kennung — gleiches Verhalten, geprüft in `test_selectingCatalogOrOwnExercise_setsExerciseId`); die dann unbenutzte Liste selbst entfernt erst A2c. Wahl aus dem Katalog setzt `exerciseId` und deutschen Katalognamen in `name`; „Eigene Übung…" setzt `own.<slug>` aus dem eingegebenen Namen. Neues einzeiliges Feld „Hinweis (optional)", Eingabe auf 80 UTF-16-Einheiten begrenzt, Normalisierung nach Entscheidung 9.
 - `ProgressRingsView`: unter dem Ring (zwischen Ring und Zähler) eine Zeile mit dem Hinweis, nur wenn vorhanden und nur in der Arbeitsphase. Der Name im Training und im Picker kommt lokalisiert aus dem Katalog (`builtin.*`) bzw. unverändert (`own.*`).
 - Ansage: Der gesprochene Text wird an der Stelle gebildet, an der heute der Name gesprochen wird (`getNextExerciseNameForTTS` und erste Übung); eine kleine reine Funktion liefert „Name" bzw. „Name. Hinweis" und ist unit-testbar.
 - `ExerciseDetailSheet`: Suche per Kennung statt per Name; die Detailansicht erhält die Kennung (Fallback: Ableitung aus dem Namen).
@@ -302,7 +302,7 @@ Schnitt-Zuordnung in Klammern. „Katalog" meint `ExerciseDatabase` in der App.
 - [ ] AC-16: `test_noBackup_whenKeyMissingOrValid`
 - [ ] AC-20: `test_spokenText_withAndWithoutHint` (reine Funktion für den Ansagetext, Deutsch und Englisch)
 - [ ] AC-21: `test_announcement_respectsSpeakSetting` — eine einzige Entscheidungsfunktion (Schritt + Wert von `speakExerciseNames` → zu sprechender Text oder `nil`) liefert bei ausgeschalteter Einstellung `nil` (weder Name noch Hinweis), bei eingeschalteter den Text nach AC-20. Beide Aufrufstellen (erste Übung und Wechsel Pause → Arbeit) rufen ausschließlich diese Funktion auf; das prüft der Adversary per Codesuche (keine zweite Stelle, die `speakExerciseNames` für Übungsansagen selbst auswertet).
-- [ ] AC-23 (Logik): `test_selectingCatalogOrOwnExercise_setsExerciseId` — die Übernahme einer Auswahl in den Schritt (Katalogeintrag „Planke" bzw. „Eigene Übung…" mit „Mein Lauf") setzt `builtin.planke` bzw. `own.mein-lauf` und den Namen; nach Kodieren und Dekodieren unverändert.
+- [ ] AC-23 (Logik): `test_selectingCatalogOrOwnExercise_setsExerciseId` — die Übernahme einer Auswahl in den Schritt (Katalogeintrag „Planke" bzw. „Eigene Übung…" mit „Mein Lauf") setzt `builtin.planke` mit dem deutschen Katalognamen „Planke" als `name` (Schreibregel Entscheidung 6) bzw. `own.mein-lauf` mit „Mein Lauf"; nach Kodieren und Dekodieren unverändert. Ein neuer Schritt ohne Auswahl trägt den alphabetisch ersten Katalogeintrag samt Kennung.
 
 ### UI-Tests (`LeanHealthTimerUITests/WorkoutHintUITests.swift`, Aufruf nur als `./Scripts/run-uitests.sh WorkoutHintUITests/<Methode>`)
 
@@ -318,7 +318,7 @@ Schnitt-Zuordnung in Klammern. „Katalog" meint `ExerciseDatabase` in der App.
 
 - [ ] AC-29, AC-31: komplette Unit-Suite grün; (am Ende von A2c) komplette UI-Suite: alle neuen Tests aus `WorkoutHintUITests` und alle vor #48 grünen Tests grün. Ausnahme ist ausschließlich ein Test, der nachweislich auch auf dem Stand vor #48 scheitert (Altlast #25); er wird mit Lauf auf dem Vorher-Stand im Validierungsbericht belegt, wie bei #47. Watch- und Widget-Scheme bauen.
 - [ ] AC-17, AC-26, AC-29, AC-31: Review-Punkte im Adversary-Schritt — Doku-Nachzug nachgewiesen (AC-17, AC-26); Codesuche in `WorkoutProgramsView.swift` findet weder `exerciseSuggestions` noch die 10er-Vorgabeliste (AC-29); Diff über alle Schnitte ändert keine `Info.plist`, keine Entitlements, keine Watch-/Widget-Dateien und keinen der Schlüssel `workoutProgramSets`/`speakExerciseNames` (AC-31).
-- [ ] AC-30: Unit-Test oder UI-Test mit vorbelegtem Bestand (Vorgaben plus eigenes Programm), Ergebnis unverändert.
+- [ ] AC-30: `test_existingUserStore_unchangedAfterPresetMigration` (Unit-Test in `WorkoutPhaseMigrationTests.swift`, A2c) mit vorbelegtem Bestand (Vorgaben plus eigenes Programm), Ergebnis unverändert.
 - [ ] Beleg „Fertig" für Issue #48: Screenshot des Trainings mit sichtbarem Hinweis unter dem Ring (aus dem UI-Test bzw. Simulator, Light und Dark).
 
 Zusätzlich vor jeder PO-sichtbaren Übergabe (A2b, A2c): App im Simulator starten und den Ablauf durchspielen (Programm bearbeiten, Hinweis eingeben, Training starten). Keine Tests auf Hennings Geräten.
