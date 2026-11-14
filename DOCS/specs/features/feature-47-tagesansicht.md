@@ -2,8 +2,8 @@
 entity_id: feature-47-tagesansicht
 type: feature
 created: 2026-11-13
-updated: 2026-11-13
-status: draft
+updated: 2026-11-14
+status: implemented
 workflow: feature-47-tagesansicht
 issue: 47
 epic: 44
@@ -13,7 +13,7 @@ epic: 44
 
 ## Approval
 
-- [ ] Approved for implementation
+- [x] Approved for implementation
 
 ## Purpose
 
@@ -218,3 +218,5 @@ Zusätzlich vor Übergabe: App im Simulator starten und den Ablauf durchspielen 
 - 2026-11-13: TDD RED: API aus den Tests festgelegt: `Row { trackerID: UUID, name: String, icon: String, entry: Entry? }`, `Entry { value: String, note: String?, time: Date }`; Häkchen = `"✓"`, Zähler `"4"` bzw. `"4 / 5"`, unbekannte Level-Id = Zahl als Text, leere Notiz = `nil`. Laufzeitumgebung: Simulator-Runtime iOS 26.5 ist nicht mehr installiert, Tests laufen auf „iPhone 17 Pro" mit iOS 27.2 (Skript-Anpassung als eigenes Issue).
 - 2026-11-13: GREEN-Befund: Level- und Stimmungs-Logs speichern das Level selbst als `note` („🙂 Good“, `TrackerRow`, `LevelSelectionView`, `MoodSelectionView`). Zu AC-7 präzisiert: Eine Notiz, die dem Anzeigewert gleicht, ist keine Notiz und wird als `nil` geliefert (sonst steht „Good“ doppelt). UI-Test schließt zusätzlich das zweite Health-Zugriffsblatt nach dem Wechsel in den Erfolge-Tab; Kalender springt beim Erscheinen auf den aktuellen Monat, damit die Tageszelle von heute existiert.
 - 2026-11-13: Nach Validierung ergänzt: Source, Dependencies, ADR, Estimated Changes, Definition of Done; `hasActivity` als reine Funktion; Tests für AC-15 bis AC-18
+- 2026-11-14: PO-Freigabe für den sofortigen Sprung zum aktuellen Monat (Technischer Ansatz, `CalendarView`) und für die AC-7-Präzisierung erteilt (Issue #47, Kommentar 2026-11-14); der Vermerk „ausstehend" dort ist damit überholt.
+- 2026-11-14: Validierung (Phase 7): Unit 239/0; UI-Suite 55 grün (inkl. der 3 neuen), 17 rot, 19 übersprungen. Alle 17 roten Tests scheitern auch auf dem Stand vor #47 (d6b8d58), also keine Regression (Altlast #25). AC-1 bis AC-18 im Code belegt. Beleg: `DOCS/artifacts/feature-47-tagesansicht/validation-report.md`
