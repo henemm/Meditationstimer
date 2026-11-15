@@ -1,0 +1,53 @@
+## test_catalog_has67EntriesAndVersion2() Failed
+    XCTAssertEqual failed: ("55") is not equal to ("67")
+    XCTAssertEqual failed: ("1") is not equal to ("2")
+## test_catalog_matchesBuiltinExercisesJson() Failed
+    XCTAssertEqual failed: ("55") is not equal to ("67") - Endstand: JSON hat 67 Einträge
+    XCTAssertEqual failed: ("55") is not equal to ("67") - Endstand: Katalog hat 67 Einträge
+## test_catalogIds_matchRegexAndAreUnique() Passed
+## test_defaultPrograms_referenceExistingCatalogIds() Failed
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Planke in Core Circuit ohne exerciseId
+    failed - Schritt Seitliche Planke links in Core Circuit ohne exerciseId
+    failed - Schritt Seitliche Planke rechts in Core Circuit ohne exerciseId
+    failed - Schritt Fahrrad-Crunches in Core Circuit ohne exerciseId
+    failed - Schritt Beinheben in Core Circuit ohne exerciseId
+    failed - Schritt Russian Twists in Core Circuit ohne exerciseId
+    failed - Schritt Burpees in Full Body Burn ohne exerciseId
+    failed - Schritt Kniebeugen in Full Body Burn ohne exerciseId
+    failed - Schritt Liegestütze in Full Body Burn ohne exerciseId
+    failed - Schritt Mountain Climbers in Full Body Burn ohne exerciseId
+    failed - Schritt Ausfallschritte in Full Body Burn ohne exerciseId
+    failed - Schritt Planke in Full Body Burn ohne exerciseId
+    failed - Schritt Burpees in Quick Burn ohne exerciseId
+    failed - Schritt Mountain Climbers in Quick Burn ohne exerciseId
+    failed - Schritt Hampelmänner in Quick Burn ohne exerciseId
+    failed - Schritt Planke in Quick Burn ohne exerciseId
+## test_first43Entries_unchanged() Passed
+## test_idForEnglishName_returnsBuiltinId() Failed
+    XCTAssertEqual failed: ("own.inverted-rows") is not equal to ("builtin.umgekehrtes-rudern") - Englischer Name Inverted Rows
+    XCTAssertEqual failed: ("own.step-ups") is not equal to ("builtin.step-ups") - Englischer Name Step-ups
+    XCTAssertEqual failed: ("own.wall-sit") is not equal to ("builtin.wandsitzen") - Englischer Name Wall-Sit
+    XCTAssertEqual failed: ("own.box-jumps") is not equal to ("builtin.box-jumps") - Englischer Name Box Jumps
+    XCTAssertEqual failed: ("own.skater-hops") is not equal to ("builtin.skater-hops") - Englischer Name Skater Hops
+    XCTAssertEqual failed: ("own.jump-rope") is not equal to ("builtin.seilspringen") - Englischer Name Jump Rope
+    XCTAssertEqual failed: ("own.downward-dog") is not equal to ("builtin.herabschauender-hund") - Englischer Name Downward Dog
+    XCTAssertEqual failed: ("own.cobra-stretch") is not equal to ("builtin.cobra-dehnung") - Englischer Name Cobra Stretch
+    XCTAssertEqual failed: ("own.cat-cow") is not equal to ("builtin.cat-cow") - Englischer Name Cat-Cow
+    XCTAssertEqual failed: ("own.seated-forward-bend") is not equal to ("builtin.sitzende-vorbeuge") - Englischer Name Seated Forward Bend
+    XCTAssertEqual failed: ("own.shoulder-stretch-left") is not equal to ("builtin.schulter-dehnung-links") - Englischer Name Shoulder Stretch Left
+    XCTAssertEqual failed: ("own.shoulder-stretch-right") is not equal to ("builtin.schulter-dehnung-rechts") - Englischer Name Shoulder Stretch Right
+## test_idForGermanName_returnsBuiltinId() Passed
+## test_idForNameWithLeftRightSuffix_resolvesBase() Passed
+## test_idForUnknownSuffixName_isOwn() Passed
+## test_infoForEnglishName_findsCatalogEntry() Passed
+## test_newExercises_haveTextsInDeAndEn_andCategory() Failed
+    XCTUnwrap failed: expected non-nil value of type "ExerciseInfo" - Kennung builtin.umgekehrtes-rudern fehlt
+## test_origin_derivedFromPrefix() Passed
