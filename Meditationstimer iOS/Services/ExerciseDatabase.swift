@@ -40,11 +40,13 @@ struct ExerciseDatabase {
         return dict
     }()
 
-    /// Complete list of all documented exercises
+    /// Complete list of all documented exercises, in the order of
+    /// Contracts/catalog/builtin-exercises.json (append-only)
     private static let allExercises: [ExerciseInfo] = [
         // MARK: - Cardio / Full Body
 
         ExerciseInfo(
+            id: "builtin.burpees",
             name: "Burpees",
             category: .fullBody,
             effect: NSLocalizedString("exercise.burpees.effect", value: "Ganzkörper-Übung, die nahezu alle Muskelgruppen aktiviert: Beine, Core, Brust, Schultern, Arme. Verbessert Ausdauer, Explosivkraft und kardiovaskuläre Fitness. Hohe Kalorienverbrennung durch kombinierte Kraft- und Cardio-Belastung.", comment: "Effect description for Burpees exercise"),
@@ -52,6 +54,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.mountain-climbers",
             name: "Mountain Climbers",
             category: .cardio,
             effect: NSLocalizedString("exercise.mountainClimbers.effect", value: "Trainiert Core-Stabilität, Schultern und Beinmuskulatur. Verbessert Koordination und kardiovaskuläre Ausdauer. Aktiviert schräge Bauchmuskulatur durch Rotationsbewegung.", comment: "Effect description for Mountain Climbers exercise"),
@@ -59,6 +62,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.high-knees",
             name: "High Knees",
             category: .cardio,
             effect: NSLocalizedString("exercise.highKnees.effect", value: "Stärkt Hüftbeuger, Quadrizeps und Waden. Verbessert Laufökonomie und Fußgelenk-Mobilität. Erhöht Herzfrequenz schnell für effektives Cardio-Training.", comment: "Effect description for High Knees exercise"),
@@ -66,6 +70,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.hampelmaenner",
             name: "Hampelmänner",
             category: .cardio,
             effect: NSLocalizedString("exercise.jumpingJacks.effect", value: "Klassische Cardio-Übung zur Aktivierung des gesamten Körpers. Verbessert Koordination, Ausdauer und dient als effektives Warm-up. Mobilisiert Schultern und Hüften.", comment: "Effect description for Jumping Jacks exercise"),
@@ -73,6 +78,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.butt-kicks",
             name: "Butt Kicks",
             category: .cardio,
             effect: NSLocalizedString("exercise.buttKicks.effect", value: "Aktiviert Hamstrings und Gesäßmuskulatur. Verbessert Beinrückseiten-Flexibilität und Lauftechnik. Ideal als dynamisches Warm-up vor dem Laufen.", comment: "Effect description for Butt Kicks exercise"),
@@ -80,6 +86,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.marschieren-auf-der-stelle",
             name: "Marschieren auf der Stelle",
             category: .warmup,
             effect: NSLocalizedString("exercise.marchingInPlace.effect", value: "Sanftes Aufwärmen, das Herzfrequenz erhöht und Beinmuskulatur aktiviert. Mobilisiert Hüftgelenke und bereitet den Körper auf intensivere Belastung vor.", comment: "Effect description for Marching in Place exercise"),
@@ -87,6 +94,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.jump-kniebeugen",
             name: "Jump-Kniebeugen",
             category: .legs,
             effect: NSLocalizedString("exercise.jumpSquats.effect", value: "Plyometrische Übung für explosive Beinkraft. Trainiert Quadrizeps, Gesäß und Waden intensiv. Verbessert Sprungkraft und Schnellkraft.", comment: "Effect description for Jump Squats exercise"),
@@ -96,6 +104,7 @@ struct ExerciseDatabase {
         // MARK: - Core
 
         ExerciseInfo(
+            id: "builtin.planke",
             name: "Planke",
             category: .core,
             effect: NSLocalizedString("exercise.plank.effect", value: "Die ultimative Core-Übung. Trainiert die gesamte Rumpfmuskulatur (gerade und schräge Bauchmuskeln, unterer Rücken), Schultern und Gesäß. Verbessert Körperspannung und Haltung.", comment: "Effect description for Plank exercise"),
@@ -103,6 +112,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.planke-knie",
             name: "Planke (Knie)",
             category: .core,
             effect: NSLocalizedString("exercise.plankKnees.effect", value: "Vereinfachte Planken-Variante für Anfänger. Trainiert Core-Stabilität mit reduzierter Belastung. Ideal zum Aufbau der Grundkraft.", comment: "Effect description for Knee Plank exercise"),
@@ -110,6 +120,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.seitliche-planke-links",
             name: "Seitliche Planke links",
             category: .core,
             effect: NSLocalizedString("exercise.sidePlankLeft.effect", value: "Fokussiert auf schräge Bauchmuskulatur und seitliche Core-Stabilität. Stärkt Schultern und verbessert Balance. Wichtig für Rotationskraft und Verletzungsprävention.", comment: "Effect description for Left Side Plank exercise"),
@@ -117,6 +128,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.seitliche-planke-rechts",
             name: "Seitliche Planke rechts",
             category: .core,
             effect: NSLocalizedString("exercise.sidePlankRight.effect", value: "Wie 'Seitliche Planke links', trainiert die rechte Körperseite. Wichtig für symmetrische Core-Entwicklung.", comment: "Effect description for Right Side Plank exercise"),
@@ -124,6 +136,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.fahrrad-crunches",
             name: "Fahrrad-Crunches",
             category: .core,
             effect: NSLocalizedString("exercise.bicycleCrunches.effect", value: "Dynamische Core-Übung, die gerade und schräge Bauchmuskeln gleichzeitig trainiert. Verbessert Rotationskraft und Koordination.", comment: "Effect description for Bicycle Crunches exercise"),
@@ -131,6 +144,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.beinheben",
             name: "Beinheben",
             category: .core,
             effect: NSLocalizedString("exercise.legRaises.effect", value: "Trainiert den unteren Bauch intensiv. Stärkt Hüftbeuger und verbessert Core-Stabilität. Wichtig für eine ausgewogene Rumpfmuskulatur.", comment: "Effect description for Leg Raises exercise"),
@@ -138,6 +152,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.russian-twists",
             name: "Russian Twists",
             category: .core,
             effect: NSLocalizedString("exercise.russianTwists.effect", value: "Trainiert schräge Bauchmuskeln und Rotationskraft. Verbessert Balance und Core-Stabilität. Relevant für Sportarten mit Drehbewegungen.", comment: "Effect description for Russian Twists exercise"),
@@ -147,6 +162,7 @@ struct ExerciseDatabase {
         // MARK: - Legs
 
         ExerciseInfo(
+            id: "builtin.kniebeugen",
             name: "Kniebeugen",
             category: .legs,
             effect: NSLocalizedString("exercise.squats.effect", value: "Die Königsübung für die Beine. Trainiert Quadrizeps, Gesäß, Hamstrings und Core. Verbessert funktionelle Kraft, Mobilität und Knochendichte.", comment: "Effect description for Squats exercise"),
@@ -154,6 +170,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.ausfallschritte",
             name: "Ausfallschritte",
             category: .legs,
             effect: NSLocalizedString("exercise.lunges.effect", value: "Unilaterale Beinübung, die Balance und Koordination verbessert. Trainiert Quadrizeps, Gesäß und Hamstrings. Korrigiert Muskel-Dysbalancen zwischen linkem und rechtem Bein.", comment: "Effect description for Lunges exercise"),
@@ -161,6 +178,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.reverse-ausfallschritte",
             name: "Reverse-Ausfallschritte",
             category: .legs,
             effect: NSLocalizedString("exercise.reverseLunges.effect", value: "Wie normale Ausfallschritte, aber mit Schritt nach hinten. Schonender für die Knie und bessere Balance. Fokussiert stärker auf Gesäßmuskulatur.", comment: "Effect description for Reverse Lunges exercise"),
@@ -168,6 +186,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.ausfallschritte-gehend",
             name: "Ausfallschritte gehend",
             category: .legs,
             effect: NSLocalizedString("exercise.walkingLunges.effect", value: "Dynamische Variante, die Koordination und Gleichgewicht zusätzlich herausfordert. Ideal als Warm-up für Läufer.", comment: "Effect description for Walking Lunges exercise"),
@@ -175,6 +194,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.glute-bridges",
             name: "Glute Bridges",
             category: .legs,
             effect: NSLocalizedString("exercise.gluteBridges.effect", value: "Isoliert Gesäßmuskulatur und Hamstrings. Aktiviert oft vernachlässigte Muskeln, die beim Sitzen schwach werden. Reduziert untere Rückenschmerzen.", comment: "Effect description for Glute Bridges exercise"),
@@ -182,6 +202,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.einbeiniges-kreuzheben-links",
             name: "Einbeiniges Kreuzheben links",
             category: .legs,
             effect: NSLocalizedString("exercise.singleLegDeadliftLeft.effect", value: "Trainiert Hamstrings, Gesäß und unteren Rücken unilateral. Verbessert Balance, Stabilität und Koordination. Korrigiert Asymmetrien.", comment: "Effect description for Left Single Leg Deadlift exercise"),
@@ -189,6 +210,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.einbeiniges-kreuzheben-rechts",
             name: "Einbeiniges Kreuzheben rechts",
             category: .legs,
             effect: NSLocalizedString("exercise.singleLegDeadliftRight.effect", value: "Wie 'Einbeiniges Kreuzheben links', trainiert die rechte Körperseite. Wichtig für symmetrische Beinentwicklung.", comment: "Effect description for Right Single Leg Deadlift exercise"),
@@ -196,6 +218,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.bulgarische-split-kniebeugen-links",
             name: "Bulgarische Split-Kniebeugen links",
             category: .legs,
             effect: NSLocalizedString("exercise.bulgarianSplitSquatLeft.effect", value: "Fortgeschrittene unilaterale Beinübung mit erhöhtem hinteren Fuß. Intensive Aktivierung von Quadrizeps und Gesäß. Verbessert Balance und Flexibilität.", comment: "Effect description for Left Bulgarian Split Squat exercise"),
@@ -203,6 +226,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.bulgarische-split-kniebeugen-rechts",
             name: "Bulgarische Split-Kniebeugen rechts",
             category: .legs,
             effect: NSLocalizedString("exercise.bulgarianSplitSquatRight.effect", value: "Wie 'Bulgarische Split-Kniebeugen links', trainiert das rechte Bein. Wichtig für symmetrische Kraftentwicklung.", comment: "Effect description for Right Bulgarian Split Squat exercise"),
@@ -210,6 +234,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.wadenheben",
             name: "Wadenheben",
             category: .legs,
             effect: NSLocalizedString("exercise.calfRaises.effect", value: "Isoliertes Training der Wadenmuskulatur (Gastrocnemius und Soleus). Wichtig für Sprungkraft, Laufökonomie und Knöchelstabilität.", comment: "Effect description for Calf Raises exercise"),
@@ -217,6 +242,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.knieheben-stehend",
             name: "Knieheben stehend",
             category: .legs,
             effect: NSLocalizedString("exercise.standingKneeRaises.effect", value: "Leichte Übung zur Aktivierung der Hüftbeuger und Quadrizeps. Verbessert Balance und Koordination. Ideal für Anfänger.", comment: "Effect description for Standing Knee Raises exercise"),
@@ -226,6 +252,7 @@ struct ExerciseDatabase {
         // MARK: - Upper Body
 
         ExerciseInfo(
+            id: "builtin.liegestuetze",
             name: "Liegestütze",
             category: .upperBody,
             effect: NSLocalizedString("exercise.pushups.effect", value: "Klassische Oberkörper-Übung. Trainiert Brust, Trizeps, vordere Schultern und Core. Verbessert Druckkraft und funktionelle Oberkörperstärke.", comment: "Effect description for Push-ups exercise"),
@@ -233,6 +260,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.wandliegestuetze",
             name: "Wandliegestütze",
             category: .upperBody,
             effect: NSLocalizedString("exercise.wallPushups.effect", value: "Anfänger-freundliche Liegestütz-Variante. Trainiert Brust, Trizeps und Schultern mit reduzierter Belastung. Ideal zum Technik-Lernen.", comment: "Effect description for Wall Push-ups exercise"),
@@ -240,6 +268,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.diamond-liegestuetze",
             name: "Diamond-Liegestütze",
             category: .upperBody,
             effect: NSLocalizedString("exercise.diamondPushups.effect", value: "Trizeps-fokussierte Liegestütz-Variante. Trainiert Trizeps intensiver als normale Liegestütze, plus Brust und Schultern.", comment: "Effect description for Diamond Push-ups exercise"),
@@ -247,6 +276,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.breite-liegestuetze",
             name: "Breite Liegestütze",
             category: .upperBody,
             effect: NSLocalizedString("exercise.widePushups.effect", value: "Brust-fokussierte Liegestütz-Variante. Trainiert die äußere Brustmuskulatur stärker als normale Liegestütze.", comment: "Effect description for Wide Push-ups exercise"),
@@ -254,6 +284,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.pike-liegestuetze",
             name: "Pike-Liegestütze",
             category: .upperBody,
             effect: NSLocalizedString("exercise.pikePushups.effect", value: "Schulter-fokussierte Liegestütz-Variante. Trainiert vordere und seitliche Schultern intensiv. Vorbereitung für Handstand-Liegestütze.", comment: "Effect description for Pike Push-ups exercise"),
@@ -261,6 +292,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.planke-zu-herabschauender-hund",
             name: "Planke zu Herabschauender Hund",
             category: .fullBody,
             effect: NSLocalizedString("exercise.plankToDownwardDog.effect", value: "Dynamische Übung, die Schultern, Core und Hamstring-Flexibilität kombiniert. Aus Yoga abgeleitet. Verbessert Mobilität und Kraft.", comment: "Effect description for Plank to Downward Dog exercise"),
@@ -270,6 +302,7 @@ struct ExerciseDatabase {
         // MARK: - Stretching
 
         ExerciseInfo(
+            id: "builtin.quadrizeps-dehnung-links",
             name: "Quadrizeps-Dehnung links",
             category: .stretching,
             effect: NSLocalizedString("exercise.quadStretchLeft.effect", value: "Dehnt den vorderen Oberschenkel (Quadrizeps). Reduziert Muskelspannung nach dem Laufen, verbessert Hüftstreckung. Wichtig für Läufer und Radfahrer.", comment: "Effect description for Left Quad Stretch exercise"),
@@ -277,6 +310,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.quadrizeps-dehnung-rechts",
             name: "Quadrizeps-Dehnung rechts",
             category: .stretching,
             effect: NSLocalizedString("exercise.quadStretchRight.effect", value: "Wie 'Quadrizeps-Dehnung links', dehnt den rechten Oberschenkel. Wichtig für symmetrische Flexibilität.", comment: "Effect description for Right Quad Stretch exercise"),
@@ -284,6 +318,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.hamstring-dehnung-links",
             name: "Hamstring-Dehnung links",
             category: .stretching,
             effect: NSLocalizedString("exercise.hamstringStretchLeft.effect", value: "Dehnt die hintere Oberschenkelmuskulatur (Hamstrings). Reduziert Verletzungsrisiko und verbessert Lauftechnik. Wichtig für gesunden unteren Rücken.", comment: "Effect description for Left Hamstring Stretch exercise"),
@@ -291,6 +326,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.hamstring-dehnung-rechts",
             name: "Hamstring-Dehnung rechts",
             category: .stretching,
             effect: NSLocalizedString("exercise.hamstringStretchRight.effect", value: "Wie 'Hamstring-Dehnung links', dehnt das rechte Bein. Wichtig für ausgeglichene Flexibilität.", comment: "Effect description for Right Hamstring Stretch exercise"),
@@ -298,6 +334,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.hueftbeuger-dehnung-links",
             name: "Hüftbeuger-Dehnung links",
             category: .stretching,
             effect: NSLocalizedString("exercise.hipFlexorStretchLeft.effect", value: "Dehnt den Hüftbeuger (Iliopsoas). Extrem wichtig für Menschen, die viel sitzen. Verbessert Hüftstreckung und reduziert untere Rückenschmerzen.", comment: "Effect description for Left Hip Flexor Stretch exercise"),
@@ -305,6 +342,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.hueftbeuger-dehnung-rechts",
             name: "Hüftbeuger-Dehnung rechts",
             category: .stretching,
             effect: NSLocalizedString("exercise.hipFlexorStretchRight.effect", value: "Wie 'Hüftbeuger-Dehnung links', dehnt die rechte Hüfte. Essentiell für Läufer und Büro-Arbeiter.", comment: "Effect description for Right Hip Flexor Stretch exercise"),
@@ -312,6 +350,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.waden-dehnung-links",
             name: "Waden-Dehnung links",
             category: .stretching,
             effect: NSLocalizedString("exercise.calfStretchLeft.effect", value: "Dehnt die Wadenmuskulatur (Gastrocnemius und Soleus). Reduziert Achillessehnen-Probleme und verbessert Knöchel-Mobilität. Wichtig für Läufer.", comment: "Effect description for Left Calf Stretch exercise"),
@@ -319,6 +358,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.waden-dehnung-rechts",
             name: "Waden-Dehnung rechts",
             category: .stretching,
             effect: NSLocalizedString("exercise.calfStretchRight.effect", value: "Wie 'Waden-Dehnung links', dehnt die rechte Wade. Beugt Achillessehnen-Verletzungen vor.", comment: "Effect description for Right Calf Stretch exercise"),
@@ -326,6 +366,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.schmetterlings-dehnung",
             name: "Schmetterlings-Dehnung",
             category: .stretching,
             effect: NSLocalizedString("exercise.butterflyStretch.effect", value: "Dehnt die Hüftadduktoren (Innenseiten der Oberschenkel) und öffnet die Hüften. Verbessert Hüftmobilität und reduziert Leisten-Verspannungen.", comment: "Effect description for Butterfly Stretch exercise"),
@@ -333,6 +374,7 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.kindspose",
             name: "Kindspose",
             category: .cooldown,
             effect: NSLocalizedString("exercise.childsPose.effect", value: "Entspannende Yoga-Position. Dehnt unteren Rücken, Hüften, Oberschenkel und Schultern. Fördert Entspannung und Regeneration. Perfekt zum Abschluss.", comment: "Effect description for Child's Pose exercise"),
@@ -342,6 +384,7 @@ struct ExerciseDatabase {
         // MARK: - Dynamic Warm-up / Mobility
 
         ExerciseInfo(
+            id: "builtin.beinpendel",
             name: "Beinpendel",
             category: .warmup,
             effect: NSLocalizedString("exercise.legSwings.effect", value: "Dynamische Mobilitätsübung für Hüftgelenke. Verbessert Bewegungsumfang und bereitet auf explosive Beinarbeit vor. Aktiviert Hüftbeuger und Abduktoren.", comment: "Effect description for Leg Swings exercise"),
@@ -349,10 +392,149 @@ struct ExerciseDatabase {
         ),
 
         ExerciseInfo(
+            id: "builtin.hueftkreisen",
             name: "Hüftkreisen",
             category: .warmup,
             effect: NSLocalizedString("exercise.hipCircles.effect", value: "Mobilisiert Hüftgelenke in alle Richtungen. Verbessert Beweglichkeit und bereitet auf Lauf- oder Sprung-Belastung vor.", comment: "Effect description for Hip Circles exercise"),
             instructions: NSLocalizedString("exercise.hipCircles.instructions", value: "1) Stehe mit hüftbreiten Füßen, Hände auf den Hüften 2) Kreise die Hüfte langsam in großen Kreisen 3) Wechsel die Richtung nach 10 Wiederholungen. Knie bleiben leicht gebeugt. Konzentriere dich auf die volle Bewegungsamplitude.", comment: "Instructions for Hip Circles exercise")
         ),
     ]
+}
+
+/// Localized name, effect and instructions of a catalog exercise
+struct ExerciseTexts: Equatable {
+    let name: String
+    let effect: String
+    let instructions: String
+}
+
+// MARK: - Catalog with fixed ids (#48)
+
+extension ExerciseDatabase {
+    /// All catalog exercises in the order of Contracts/catalog/builtin-exercises.json
+    static var catalog: [ExerciseInfo] { allExercises }
+
+    private static let infoById: [String: ExerciseInfo] =
+        Dictionary(allExercises.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+
+    /// Look up a catalog exercise by its fixed id
+    static func info(forId id: String) -> ExerciseInfo? {
+        infoById[id]
+    }
+
+    /// English names of the former suggestion list → catalog id (fixed table, no runtime translation)
+    private static let englishNameIds: [String: String] = [
+        "Plank": "builtin.planke",
+        "Side Plank Left": "builtin.seitliche-planke-links",
+        "Side Plank Right": "builtin.seitliche-planke-rechts",
+        "Bicycle Crunches": "builtin.fahrrad-crunches",
+        "Leg Raises": "builtin.beinheben",
+        "Plank to Downward Dog": "builtin.planke-zu-herabschauender-hund",
+        "Push-ups": "builtin.liegestuetze",
+        "Diamond Push-ups": "builtin.diamond-liegestuetze",
+        "Wide Push-ups": "builtin.breite-liegestuetze",
+        "Pike Push-ups": "builtin.pike-liegestuetze",
+        "Wall Push-ups": "builtin.wandliegestuetze",
+        "Squats": "builtin.kniebeugen",
+        "Jump Squats": "builtin.jump-kniebeugen",
+        "Lunges": "builtin.ausfallschritte",
+        "Reverse Lunges": "builtin.reverse-ausfallschritte",
+        "Walking Lunges": "builtin.ausfallschritte-gehend",
+        "Bulgarian Split Squats Left": "builtin.bulgarische-split-kniebeugen-links",
+        "Bulgarian Split Squats Right": "builtin.bulgarische-split-kniebeugen-rechts",
+        "Single-Leg Deadlift Left": "builtin.einbeiniges-kreuzheben-links",
+        "Single-Leg Deadlift Right": "builtin.einbeiniges-kreuzheben-rechts",
+        "Calf Raises": "builtin.wadenheben",
+        "Standing Knee Raises": "builtin.knieheben-stehend",
+        "Jumping Jacks": "builtin.hampelmaenner",
+        "Marching in Place": "builtin.marschieren-auf-der-stelle",
+        "Child's Pose": "builtin.kindspose",
+        "Butterfly Stretch": "builtin.schmetterlings-dehnung",
+        "Hip Flexor Stretch Left": "builtin.hueftbeuger-dehnung-links",
+        "Hip Flexor Stretch Right": "builtin.hueftbeuger-dehnung-rechts",
+        "Quadriceps Stretch Left": "builtin.quadrizeps-dehnung-links",
+        "Quadriceps Stretch Right": "builtin.quadrizeps-dehnung-rechts",
+        "Hamstring Stretch Left": "builtin.hamstring-dehnung-links",
+        "Hamstring Stretch Right": "builtin.hamstring-dehnung-rechts",
+        "Calf Stretch Left": "builtin.waden-dehnung-links",
+        "Calf Stretch Right": "builtin.waden-dehnung-rechts",
+        "Hip Circles": "builtin.hueftkreisen",
+        "Leg Swing Left": "builtin.beinpendel",
+        "Leg Swing Right": "builtin.beinpendel",
+    ]
+
+    /// Comparison key: without surrounding whitespace, case-insensitive
+    private static func lookupKey(_ name: String) -> String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+
+    private static let idByGermanName: [String: String] =
+        Dictionary(allExercises.map { (lookupKey($0.name), $0.id) }, uniquingKeysWith: { first, _ in first })
+
+    private static let idByEnglishName: [String: String] =
+        Dictionary(englishNameIds.map { (lookupKey($0.key), $0.value) }, uniquingKeysWith: { first, _ in first })
+
+    /// Id for a stored exercise name (Spec #48, Entscheidung 4): German catalog name, English name,
+    /// name with suffix "links"/"rechts" on a catalog exercise, otherwise own.<slug>. Never empty.
+    static func exerciseId(forName name: String) -> String {
+        let key = lookupKey(name)
+        if let id = idByGermanName[key] ?? idByEnglishName[key] {
+            return id
+        }
+        for suffix in [" links", " rechts"] where key.hasSuffix(suffix) {
+            if let id = idByGermanName[lookupKey(String(key.dropLast(suffix.count)))] {
+                return id
+            }
+        }
+        return ownExerciseId(forName: name)
+    }
+
+    /// "own.<slug>" for a user-defined exercise name (Spec #48, Entscheidung 5)
+    static func ownExerciseId(forName name: String) -> String {
+        "own." + slug(name)
+    }
+
+    /// Lowercase ASCII slug: umlauts transliterated, other accents removed, runs of other characters → "-",
+    /// at least 2 and at most 63 characters
+    private static func slug(_ name: String) -> String {
+        var text = name.precomposedStringWithCanonicalMapping.lowercased()
+        for (umlaut, replacement) in [("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")] {
+            text = text.replacingOccurrences(of: umlaut, with: replacement)
+        }
+        text = text.folding(options: .diacriticInsensitive, locale: nil)
+        var result = ""
+        var pendingDash = false
+        for scalar in text.unicodeScalars {
+            guard ("a"..."z").contains(scalar) || ("0"..."9").contains(scalar) else {
+                pendingDash = true
+                continue
+            }
+            if pendingDash && !result.isEmpty { result.append("-") }
+            result.unicodeScalars.append(scalar)
+            pendingDash = false
+        }
+        if result.isEmpty { return "uebung" }
+        if result.count < 2 { result = "uebung-" + result }
+        if result.count > 63 {
+            result = String(result.prefix(63))
+            while result.hasSuffix("-") { result.removeLast() }
+        }
+        return result
+    }
+
+    /// Display name: localized catalog name for builtin.*; stored name for own.*, claude.*, unknown or nil
+    static func displayName(exerciseId: String?, storedName: String, bundle: Bundle = .main) -> String {
+        guard let id = exerciseId, ExerciseOrigin(exerciseId: id) == .builtin, let info = info(forId: id) else {
+            return storedName
+        }
+        return bundle.localizedString(forKey: info.name, value: info.name, table: nil)
+    }
+
+    /// Name, effect and instructions of a catalog exercise in the language of `bundle`.
+    /// Stand A2a: only the name follows `bundle`; effect/instructions per bundle follow in A2d (AC-8).
+    static func localizedTexts(forId id: String, bundle: Bundle) -> ExerciseTexts? {
+        guard let info = info(forId: id) else { return nil }
+        let name = bundle.localizedString(forKey: info.name, value: info.name, table: nil)
+        return ExerciseTexts(name: name, effect: info.effect, instructions: info.instructions)
+    }
 }
