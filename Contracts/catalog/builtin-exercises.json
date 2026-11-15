@@ -216,6 +216,26 @@
       "id": "builtin.hueftkreisen",
       "name": "Hüftkreisen",
       "category": "warmup"
+    },
+    {
+      "id": "builtin.hollow-hold",
+      "name": "Hollow Hold",
+      "category": "core"
+    },
+    {
+      "id": "builtin.dead-bug",
+      "name": "Dead Bug",
+      "category": "core"
+    },
+    {
+      "id": "builtin.flutter-kicks",
+      "name": "Flutter Kicks",
+      "category": "core"
+    },
+    {
+      "id": "builtin.v-ups",
+      "name": "V-Ups",
+      "category": "core"
     }
   ]
 }

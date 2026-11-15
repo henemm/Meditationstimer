@@ -398,6 +398,40 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.hipCircles.effect", value: "Mobilisiert Hüftgelenke in alle Richtungen. Verbessert Beweglichkeit und bereitet auf Lauf- oder Sprung-Belastung vor.", comment: "Effect description for Hip Circles exercise"),
             instructions: NSLocalizedString("exercise.hipCircles.instructions", value: "1) Stehe mit hüftbreiten Füßen, Hände auf den Hüften 2) Kreise die Hüfte langsam in großen Kreisen 3) Wechsel die Richtung nach 10 Wiederholungen. Knie bleiben leicht gebeugt. Konzentriere dich auf die volle Bewegungsamplitude.", comment: "Instructions for Hip Circles exercise")
         ),
+
+        // MARK: - Core (A2d-1a)
+
+        ExerciseInfo(
+            id: "builtin.hollow-hold",
+            name: "Hollow Hold",
+            category: .core,
+            effect: NSLocalizedString("exercise.hollow-hold.effect", value: "Trainiert die gesamte vordere Rumpfmuskulatur, besonders den geraden Bauchmuskel, und die Hüftbeuger. Verbessert Körperspannung und Rumpfstabilität, die Basis für Turnen, Klimmzüge und Liegestütze.", comment: "Effect description for Hollow Hold exercise"),
+            instructions: NSLocalizedString("exercise.hollow-hold.instructions", value: "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf 2) Hebe Schultern, Arme und gestreckte Beine einige Zentimeter vom Boden 3) Presse den unteren Rücken fest in den Boden 4) Halte die Position und atme ruhig weiter. Wird der Rücken hohl, Beine höher halten oder Knie beugen.", comment: "Instructions for Hollow Hold exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.dead-bug",
+            name: "Dead Bug",
+            category: .core,
+            effect: NSLocalizedString("exercise.dead-bug.effect", value: "Trainiert tiefe Bauchmuskulatur und Rumpfstabilität bei gleichzeitiger Arm- und Beinbewegung. Schult Koordination und schützt den unteren Rücken, da dieser stabil am Boden bleibt.", comment: "Effect description for Dead Bug exercise"),
+            instructions: NSLocalizedString("exercise.dead-bug.instructions", value: "1) Lege dich auf den Rücken, Arme senkrecht nach oben, Knie im 90-Grad-Winkel über der Hüfte 2) Senke gegengleich einen Arm nach hinten und das gegenüberliegende Bein nach vorn, ohne den Boden zu berühren 3) Kehre kontrolliert zurück und wechsle die Seite. Der untere Rücken bleibt die ganze Zeit am Boden.", comment: "Instructions for Dead Bug exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.flutter-kicks",
+            name: "Flutter Kicks",
+            category: .core,
+            effect: NSLocalizedString("exercise.flutter-kicks.effect", value: "Kräftigt den unteren geraden Bauchmuskel und die Hüftbeuger. Verbessert Ausdauer der Rumpfmuskulatur und Kontrolle der Beine bei stabilem Rumpf.", comment: "Effect description for Flutter Kicks exercise"),
+            instructions: NSLocalizedString("exercise.flutter-kicks.instructions", value: "1) Lege dich auf den Rücken, Hände unter das Gesäß 2) Hebe beide gestreckten Beine leicht vom Boden 3) Bewege die Beine abwechselnd schnell und klein auf und ab 4) Halte den unteren Rücken am Boden und atme gleichmäßig. Je tiefer die Beine, desto schwerer die Übung.", comment: "Instructions for Flutter Kicks exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.v-ups",
+            name: "V-Ups",
+            category: .core,
+            effect: NSLocalizedString("exercise.v-ups.effect", value: "Trainiert den geraden Bauchmuskel und die Hüftbeuger gleichzeitig. Fördert Rumpfkraft, Koordination und Beweglichkeit der Hüfte und der Beinrückseite.", comment: "Effect description for V-Ups exercise"),
+            instructions: NSLocalizedString("exercise.v-ups.instructions", value: "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf, Beine gestreckt 2) Hebe Oberkörper und gestreckte Beine gleichzeitig an, bis dein Körper ein V bildet 3) Berühre mit den Händen die Füße oder Schienbeine 4) Senke dich kontrolliert ab, ohne Beine und Schultern abzulegen. Bei Schwierigkeiten Knie leicht beugen.", comment: "Instructions for V-Ups exercise")
+        ),
     ]
 }
 
@@ -461,6 +495,10 @@ extension ExerciseDatabase {
         "Hip Circles": "builtin.hueftkreisen",
         "Leg Swing Left": "builtin.beinpendel",
         "Leg Swing Right": "builtin.beinpendel",
+        "Hollow Hold": "builtin.hollow-hold",
+        "Dead Bug": "builtin.dead-bug",
+        "Flutter Kicks": "builtin.flutter-kicks",
+        "V-Ups": "builtin.v-ups",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive
@@ -531,10 +569,13 @@ extension ExerciseDatabase {
     }
 
     /// Name, effect and instructions of a catalog exercise in the language of `bundle`.
-    /// Stand A2a: only the name follows `bundle`; effect/instructions per bundle follow in A2d (AC-8).
+    /// Keys `exercise.<slug>.effect/.instructions` (slug = id without `builtin.`); fallback = stored German text.
     static func localizedTexts(forId id: String, bundle: Bundle) -> ExerciseTexts? {
         guard let info = info(forId: id) else { return nil }
         let name = bundle.localizedString(forKey: info.name, value: info.name, table: nil)
-        return ExerciseTexts(name: name, effect: info.effect, instructions: info.instructions)
+        let slug = id.hasPrefix("builtin.") ? String(id.dropFirst("builtin.".count)) : id
+        let effect = bundle.localizedString(forKey: "exercise.\(slug).effect", value: info.effect, table: nil)
+        let instructions = bundle.localizedString(forKey: "exercise.\(slug).instructions", value: info.instructions, table: nil)
+        return ExerciseTexts(name: name, effect: effect, instructions: instructions)
     }
 }

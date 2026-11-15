@@ -11968,6 +11968,167 @@
           }
         }
       }
+    },
+    "Beinpendel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beinpendel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leg Swing"
+          }
+        }
+      }
+    },
+    "exercise.hollow-hold.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Hollow Hold exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert die gesamte vordere Rumpfmuskulatur, besonders den geraden Bauchmuskel, und die Hüftbeuger. Verbessert Körperspannung und Rumpfstabilität, die Basis für Turnen, Klimmzüge und Liegestütze."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trains the entire front trunk musculature, especially the rectus abdominis, and the hip flexors. Improves body tension and core stability, the foundation for gymnastics, pull-ups and push-ups."
+          }
+        }
+      }
+    },
+    "exercise.hollow-hold.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Hollow Hold exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf 2) Hebe Schultern, Arme und gestreckte Beine einige Zentimeter vom Boden 3) Presse den unteren Rücken fest in den Boden 4) Halte die Position und atme ruhig weiter. Wird der Rücken hohl, Beine höher halten oder Knie beugen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with arms extended overhead 2) Lift shoulders, arms and straight legs a few centimeters off the floor 3) Press your lower back firmly into the floor 4) Hold the position and keep breathing calmly. If your back arches, raise your legs higher or bend your knees."
+          }
+        }
+      }
+    },
+    "exercise.dead-bug.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Dead Bug exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert tiefe Bauchmuskulatur und Rumpfstabilität bei gleichzeitiger Arm- und Beinbewegung. Schult Koordination und schützt den unteren Rücken, da dieser stabil am Boden bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trains deep abdominal muscles and core stability while arms and legs move. Improves coordination and protects the lower back, since it stays pressed to the floor."
+          }
+        }
+      }
+    },
+    "exercise.dead-bug.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Dead Bug exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Arme senkrecht nach oben, Knie im 90-Grad-Winkel über der Hüfte 2) Senke gegengleich einen Arm nach hinten und das gegenüberliegende Bein nach vorn, ohne den Boden zu berühren 3) Kehre kontrolliert zurück und wechsle die Seite. Der untere Rücken bleibt die ganze Zeit am Boden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with arms pointing straight up and knees bent at 90 degrees above your hips 2) Lower one arm backward and the opposite leg forward without touching the floor 3) Return with control and switch sides. Keep your lower back on the floor throughout."
+          }
+        }
+      }
+    },
+    "exercise.flutter-kicks.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Flutter Kicks exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den unteren geraden Bauchmuskel und die Hüftbeuger. Verbessert Ausdauer der Rumpfmuskulatur und Kontrolle der Beine bei stabilem Rumpf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the lower rectus abdominis and the hip flexors. Improves core endurance and leg control with a stable trunk."
+          }
+        }
+      }
+    },
+    "exercise.flutter-kicks.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Flutter Kicks exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Hände unter das Gesäß 2) Hebe beide gestreckten Beine leicht vom Boden 3) Bewege die Beine abwechselnd schnell und klein auf und ab 4) Halte den unteren Rücken am Boden und atme gleichmäßig. Je tiefer die Beine, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with your hands under your glutes 2) Lift both straight legs slightly off the floor 3) Alternate quick, small up-and-down kicks with your legs 4) Keep your lower back on the floor and breathe evenly. The lower the legs, the harder the exercise."
+          }
+        }
+      }
+    },
+    "exercise.v-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for V-Ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert den geraden Bauchmuskel und die Hüftbeuger gleichzeitig. Fördert Rumpfkraft, Koordination und Beweglichkeit der Hüfte und der Beinrückseite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trains the rectus abdominis and hip flexors at the same time. Builds core strength, coordination and flexibility of the hips and hamstrings."
+          }
+        }
+      }
+    },
+    "exercise.v-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for V-Ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf, Beine gestreckt 2) Hebe Oberkörper und gestreckte Beine gleichzeitig an, bis dein Körper ein V bildet 3) Berühre mit den Händen die Füße oder Schienbeine 4) Senke dich kontrolliert ab, ohne Beine und Schultern abzulegen. Bei Schwierigkeiten Knie leicht beugen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with arms extended overhead and legs straight 2) Raise your torso and straight legs at the same time until your body forms a V 3) Touch your feet or shins with your hands 4) Lower with control without resting legs and shoulders on the floor. If this is hard, bend your knees slightly."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
