@@ -1,7 +1,7 @@
 ---
 spec_file: docs/specs/features/feature-48-uebungskatalog.md
-spec_sha256: fce6dd71b0fedb033a3d0fc7caf33c350ee13aba583553dd4d33e08b5ac3614f
-spec_frozen_sha256: b0daf9e0550381eb6c6456843db251611a25c0f345218b404069793e4b4a9ec1
+spec_sha256: f212b39bdd9d7574aa97d909dd71d415784911ac6ba1d752b5760d3399d96a4f
+spec_frozen_sha256: 7b18ebd185ebcfae7b9d53828e02972716e6ad142f4018cf3854577dfb8b9b6e
 ---
 
 # PO-Briefing: feature-48-uebungskatalog
@@ -24,8 +24,8 @@ Automatische Tests belegen Umstellung alter Programme, Hinweisanzeige und Ansage
 
 ## Kritische Anmerkungen
 
-- Zusätzlich zum Ticket: veraltete Programmkopie wird entfernt und kaputte Programmdaten werden vor dem Überschreiben gesichert; beides unverlangt, aber schützend.
-- Herkunft (mitgeliefert/eigen/von Claude) wird abgeleitet, nicht als eigenes Feld gespeichert; für den PO ohne sichtbare Folge.
+- Zusätzlich zum Ticket: veraltete Programmkopie wird entfernt, kaputte Programmdaten werden vor dem Überschreiben gesichert.
+- Herkunft (mitgeliefert/eigen/von Claude) wird abgeleitet statt als eigenes Feld gespeichert; keine sichtbare Folge.
 
 ## Freigabe-Frage
 
