@@ -18,3 +18,10 @@ strict_code_gate:
     - "tools/"
     - "LeanHealthTimerUITests/"
     - "LeanHealthTimerTests/"
+
+# PO-Entscheidung 2026-11-15 (#80, Epic #48): Die Zeilengrenze (±250 je Runde) gilt nur für Programmcode.
+# Übersetzungstexte im String-Katalog zählen nicht mit: festes JSON-Format, rund 16 Zeilen je Text.
+# Die Texte werden trotzdem in jeder Runde vollständig geprüft (Tests, Adversary).
+scope_guard:
+  loc_exclude_patterns:
+    - '\.xcstrings$'
