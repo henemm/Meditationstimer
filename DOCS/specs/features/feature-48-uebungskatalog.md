@@ -285,13 +285,13 @@ Schnitt-Zuordnung in Klammern. „Katalog" meint `ExerciseDatabase` in der App.
 ### Unit-Tests (`LeanHealthTimerTests/`, Aufruf mit `-only-testing`, gültig nur mit `Executed N tests`, N ≥ 1)
 
 `ExerciseCatalogTests.swift` (angelegt in A2a, erweitert in A2d):
-- [ ] AC-1: `test_catalog_matchesBuiltinExercisesJson` (Kennung, Name, Kategorie, Reihenfolge, Anzahl; liest die JSON über `#filePath`, Mindestanzahl erzwungen)
-- [ ] AC-2: `test_catalogIds_matchRegexAndAreUnique`
-- [ ] AC-3: `test_idForGermanName_returnsBuiltinId`
-- [ ] AC-4: `test_idForEnglishName_returnsBuiltinId` (alle 37 früheren englischen Namen und, ab A2d, die 24 der Tabelle)
-- [ ] AC-5: `test_idForNameWithLeftRightSuffix_resolvesBase` und `test_idForUnknownSuffixName_isOwn`
-- [ ] AC-6: `test_origin_derivedFromPrefix`
-- [ ] AC-7: `test_infoForEnglishName_findsCatalogEntry`
+- [ ] AC-1: `test_catalog_matchesBuiltinExercisesJson` (Kennung, Name, Kategorie, Reihenfolge, Anzahl; liest die JSON über `#filePath`, Mindestanzahl erzwungen) — Stand A2a erfüllt (2026-11-15), rot nur an der Endanzahl 67 bis A2d
+- [x] AC-2: `test_catalogIds_matchRegexAndAreUnique`
+- [x] AC-3: `test_idForGermanName_returnsBuiltinId`
+- [ ] AC-4: `test_idForEnglishName_returnsBuiltinId` (alle 37 früheren englischen Namen und, ab A2d, die 24 der Tabelle) — die 37 erfüllt in A2a (2026-11-15), die 24 folgen in A2d
+- [x] AC-5: `test_idForNameWithLeftRightSuffix_resolvesBase` und `test_idForUnknownSuffixName_isOwn`
+- [x] AC-6: `test_origin_derivedFromPrefix`
+- [x] AC-7: `test_infoForEnglishName_findsCatalogEntry`
 - [ ] AC-8: `test_newExercises_haveTextsInDeAndEn_andCategory` (prüft je Schnitt die bis dahin angehängten Einträge) und `test_catalog_has67EntriesAndVersion2` (entsteht erst in A2d-2; A2d-1 prüft stattdessen 55 Einträge und Version 1 im Gleichlauftest AC-1)
 - [ ] AC-9: `test_first43Entries_unchanged`
 - [ ] AC-27: `test_defaultPrograms_referenceExistingCatalogIds` (A2c-1)
