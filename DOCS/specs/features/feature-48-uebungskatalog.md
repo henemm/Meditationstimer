@@ -32,7 +32,7 @@ Die 43 eingebauten Übungen und 24 bisher nur als Namensvorschlag vorhandene Üb
 | Abhängigkeit | Art | Zweck |
 |--------------|-----|-------|
 | `Contracts/catalog/builtin-exercises.json` | Upstream (Vertrag) | Quelle der festen Kennungen; wird um 24 Einträge angehängt (catalogVersion 2) |
-| `Contracts/schema/delivery-v1.schema.json` | Upstream (Vertrag) | Kennungs-Regex, Hinweis-Grenze |
+| `Contracts/schema/delivery-v1.schema.json` | Upstream (Vertrag) | Hinweis-Grenze und -Zeichen; Kennungsmuster dort für `exerciseId` (`builtin|own|claude`), die App übernimmt es |
 | `Localizable.xcstrings` | Upstream | Übungsnamen und -texte DE/EN; Schlüssel ist der deutsche Katalogname |
 | `@AppStorage("speakExerciseNames")` (`SettingsSheet.swift`) | Upstream, unverändert | schaltet Namens- und Hinweisansage |
 | UserDefaults `workoutProgramSets` | Upstream/Downstream | Speicher eigener Programme (JSON-Array), Schlüssel unverändert |
@@ -154,7 +154,7 @@ Die Ableitung „englischer Name → Kennung" (Entscheidung 4 Schritt 2) ist ein
 
 1. **`claudeId` (`claude-annahme.md`, Z. 18) gegen `itemId` (Lieferformat/Schema):** Das Lieferformat samt Schema ist der Vertrag und wird vom Referenz-Prüfer des Dienstes durchgesetzt, es führt. A2 betrifft nur die Übungskennung (`exerciseId` am Schritt, `id` im Katalog) und legt kein Feld `claudeId` an. Aufgelöst wird der Widerspruch in #51 (B1a), Schnitt 1: `claude-annahme.md` wird dort auf die Namen des Schemas umgestellt. A2 trägt nur den Vermerk in `claude-annahme.md` nach (Schnitt A2b-0), damit niemand `claudeId` in den A2-Typen sucht.
 2. **`claude-annahme.md`, Z. 37, nennt `own.*` nicht:** Der Abschnitt „Voraussetzung aus A2" wird um `own.<slug>` ergänzt (eigene Übungen, Regel in Entscheidung 5), ebenfalls in A2b-0 nachgezogen.
-3. **`workouts.md` Requirement „Audio Cues" / Szenario „Exercise Name TTS (Workout Programs)" ohne Hinweis:** Es wird ein Szenario „Exercise Hint TTS" ergänzt (Entscheidung 11), ferner im Requirement „Workout Programs" ein Szenario für die Hinweiszeile unter dem Ring (Entscheidung 1, 10) und im Requirement „Exercise Database" ein Szenario für Kennungen und Katalogumfang (67 Übungen). Nachzug im Schnitt A2b, die Szenarien zu Vorgaben (10+ Standardprogramme stimmt für die Live-Ansicht ohnehin nicht, dort sind es 4) in A2c-2.
+3. **`workouts.md` Requirement „Audio Cues" / Szenario „Exercise Name TTS (Workout Programs)" ohne Hinweis:** Es wird ein Szenario „Exercise Hint TTS" ergänzt (Entscheidung 11), ferner im Requirement „Workout Programs" ein Szenario für die Hinweiszeile unter dem Ring (Entscheidung 1, 10) und im Requirement „Exercise Database" ein Szenario für Kennungen und Katalogumfang (67 Übungen). Nachzug im Schnitt A2c-2 (gemeinsam mit den Szenarien zu den Vorgaben, siehe AC-26), damit A2b bei 5 Dateien bleibt.
 
 ## Affected Files und Schnitte
 
@@ -186,11 +186,11 @@ Reihenfolge: A2a → A2d-1 → A2d-2 → A2b-0 → A2b → A2c-1 → A2c-2. A2d 
 - `ExerciseInfo` erhält `id: String` (Kennung). Die Herkunft ist eine berechnete Eigenschaft (`origin`: `builtin`/`own`/`claude`) aus dem Präfix, kein gespeichertes Feld.
 - `ExerciseDatabase`: jeder Eintrag trägt seine Kennung (Reihenfolge wie `builtin-exercises.json`, neue Einträge angehängt). Neue Zugriffe: Suche per Kennung, Ableitung Kennung aus Name nach Entscheidung 4 (inklusive Tabelle englischer Namen) und die Slug-Funktion nach Entscheidung 5 (`own.*`).
 - Anzeigename lokalisiert über `String(localized:)` mit dem deutschen Katalognamen als Schlüssel. Die englischen Namen der früheren Vorschlagsliste sind bereits englische Übersetzungen dieser Schlüssel in `Localizable.xcstrings` (A2d ergänzt die 24 neuen).
-- `builtin-exercises.json` wird in A2d auf `catalogVersion` 2 gesetzt, die bestehenden 43 Einträge bleiben unverändert (Reihenfolge, Kennung, Name, Kategorie); die 24 neuen werden angehängt. Der Referenz-Prüfer des Dienstes liest dieselbe Datei.
+- `builtin-exercises.json` wird in A2d-2 (nicht schon A2d-1) auf `catalogVersion` 2 gesetzt; nach A2d-1 stehen 55 Einträge bei Version 1, die bestehenden 43 Einträge bleiben unverändert (Reihenfolge, Kennung, Name, Kategorie); die 24 neuen werden angehängt. Der Referenz-Prüfer des Dienstes liest dieselbe Datei.
 
 ### Datenmodell und Laden (`WorkoutPhase`, `WorkoutTab`) — A2b-0
 
-- `WorkoutPhase`: neue Felder `exerciseId: String?`, `hint: String?`; eigenes `init(from:)` mit `decodeIfPresent` für beide, übrige Felder (`id`, `name`, `workDuration`, `restDuration`) wie bisher; `encode` schreibt beide Felder nur, wenn gesetzt. Nach dem Dekodieren: fehlende Kennung ableiten (Entscheidung 4), Hinweis normalisieren (Entscheidung 9).
+- `WorkoutPhase`: neue Felder `exerciseId: String?`, `hint: String?`; eigenes `init(from:)` mit `decodeIfPresent` für beide, übrige Felder (`id`, `name`, `workDuration`, `restDuration`) wie bisher; `encode` schreibt beide Felder nur, wenn gesetzt. Der bestehende `init(id:name:workDuration:restDuration:)` (Z. 210) erhält die Parameter `exerciseId: String? = nil` und `hint: String? = nil` am Ende, sodass alle heutigen Aufrufe unverändert kompilieren. Nach dem Dekodieren: fehlende Kennung ableiten (Entscheidung 4), Hinweis normalisieren (Entscheidung 9).
 - Laden in `WorkoutTab` (Pfad `workoutProgramSets`, aktuell `try? JSONDecoder()`): bei vorhandenen Daten, die sich nicht dekodieren lassen, vor dem Rückfall auf Vorgaben die Rohdaten unter einem neuen Sicherungsschlüssel `workoutProgramSetsBackup.<Unix-Sekunden>` in UserDefaults ablegen. Die Dekodier- und Sicherungslogik steht als statische Funktion beim Typ (Name und Signatur werden in der RED-Phase durch die Tests festgelegt), damit sie ohne UI testbar ist. `migrateSets` (Vorgaben per Name ergänzen, Beschreibungen nachfüllen) bleibt unverändert.
 - Speichern bleibt ein JSON-Array unter `workoutProgramSets`.
 
@@ -199,7 +199,7 @@ Reihenfolge: A2a → A2d-1 → A2d-2 → A2b-0 → A2b → A2c-1 → A2c-2. A2d 
 - `PhaseEditorView`: Übungsauswahl zeigt die 67 Katalogübungen (lokalisierte Namen, nach Kategorie wie bisher) plus „Eigene Übung…" mit Freitext. Die Prüfung „eigen oder nicht" richtet sich nach Katalog statt nach der Vorschlagsliste (`exerciseSuggestions`); A2b nimmt die Liste aus der Auswahl, aus dieser Prüfung und aus dem Standardnamen neuer Schritte (heute `exerciseSuggestions.first` der alphabetisch sortierten Liste, Z. 302/1830, also „Archer Push-ups"; künftig wie heute der alphabetisch erste Eintrag, nun der Katalogübungen nach lokalisiertem Namen, auf Deutsch „Archer-Liegestütze" `builtin.archer-liegestuetze`, mit gesetzter Kennung — gleiches Verhalten, geprüft in `test_selectingCatalogOrOwnExercise_setsExerciseId`); die dann unbenutzte Liste selbst entfernt erst A2c-2. Wahl aus dem Katalog setzt `exerciseId` und deutschen Katalognamen in `name`; „Eigene Übung…" setzt `own.<slug>` aus dem eingegebenen Namen. Neues einzeiliges Feld „Hinweis (optional)", Eingabe auf 80 UTF-16-Einheiten begrenzt, Normalisierung nach Entscheidung 9.
 - `ProgressRingsView`: unter dem Ring (zwischen Ring und Zähler) eine Zeile mit dem Hinweis, nur wenn vorhanden und nur in der Arbeitsphase. Der Name im Training und im Picker kommt lokalisiert aus dem Katalog (`builtin.*`) bzw. unverändert (`own.*`).
 - Ansage: Der gesprochene Text wird an den zwei heutigen Sprechstellen gebildet (`beginSessionAfterCountdown` Z. 930-934 und `getNextExerciseNameForTTS` Z. 1399-1425, aufgerufen zu Beginn der Pause Z. 1441-1446); eine kleine reine Funktion bildet aus Satzform, lokalisiertem Namen und Hinweis den Satz nach Entscheidung 11 und ist unit-testbar.
-- `ExerciseDetailSheet`: Suche per Kennung statt per Name; die Detailansicht erhält die Kennung (Fallback: Ableitung aus dem Namen).
+- `ExerciseDetailSheet` (bereits in A2a, AC-7): Suche per Kennung statt per Name; die Detailansicht erhält die Kennung (Fallback: Ableitung aus dem Namen). A2b ändert daran nur den lokalisierten Titel.
 
 ### Vorgaben (A2c-1) und Aufräumen (A2c-2)
 
@@ -269,7 +269,7 @@ Schnitt-Zuordnung in Klammern. „Katalog" meint `ExerciseDatabase` in der App.
 
 ### A2c-1 und A2c-2
 
-- **AC-27 Vorgaben mit Kennung (A2c-1):** Given die 4 Vorgabeprogramme in `WorkoutTab.swift`, When sie gebaut werden, Then trägt jeder Schritt eine `exerciseId` mit `builtin.*`, die im Katalog existiert (Unit-Test über die Vorgabeliste).
+- **AC-27 Vorgaben mit Kennung (A2c-1; die bisher `private` Vorgabeliste in `WorkoutTab.swift` Z. 813 wird dafür `internal static`, damit der Test sie über `@testable import` erreicht):** Given die 4 Vorgabeprogramme in `WorkoutTab.swift`, When sie gebaut werden, Then trägt jeder Schritt eine `exerciseId` mit `builtin.*`, die im Katalog existiert (Unit-Test über die Vorgabeliste).
 - **AC-28 Info-Knopf bei Vorgabe (A2c-1):** Given das Vorgabeprogramm „Core Circuit" mit dem Schritt „Planke" wird im Training gestartet, When der Nutzer den Info-Knopf (`workout.training.infoButton`) antippt, Then zeigt das Blatt Wirkung und Anleitung der Planke, nun über die Kennung `builtin.planke` statt über den Namen (heute findet die Namenssuche „Planke" bereits; der Test sichert, dass der Wechsel auf die Kennung nichts verliert).
 - **AC-29 Tote Kopie entfernt (A2c-2):** Given `WorkoutProgramsView.swift`, When A2c-2 abgeschlossen ist, Then enthält die Datei weder die Vorgabeliste mit 10 Programmen noch `exerciseSuggestions`; Build und alle Tests sind grün (Review-Kriterium durch Suche im Code).
 - **AC-30 Vorhandene Programme der Nutzer bleiben (A2c-1):** Given ein bereits gespeicherter Bestand mit Vorgaben und eigenen Programmen, When die App startet, Then sind alle Programme unverändert vorhanden (`migrateSets` ergänzt weiterhin fehlende Vorgaben per Name).
@@ -290,7 +290,7 @@ Schnitt-Zuordnung in Klammern. „Katalog" meint `ExerciseDatabase` in der App.
 - [ ] AC-5: `test_idForNameWithLeftRightSuffix_resolvesBase` und `test_idForUnknownSuffixName_isOwn`
 - [ ] AC-6: `test_origin_derivedFromPrefix`
 - [ ] AC-7: `test_infoForEnglishName_findsCatalogEntry`
-- [ ] AC-8: `test_newExercises_haveTextsInDeAndEn_andCategory` und `test_catalog_has67EntriesAndVersion2`
+- [ ] AC-8: `test_newExercises_haveTextsInDeAndEn_andCategory` (prüft je Schnitt die bis dahin angehängten Einträge) und `test_catalog_has67EntriesAndVersion2` (entsteht erst in A2d-2; A2d-1 prüft stattdessen 55 Einträge und Version 1 im Gleichlauftest AC-1)
 - [ ] AC-9: `test_first43Entries_unchanged`
 - [ ] AC-27: `test_defaultPrograms_referenceExistingCatalogIds` (A2c-1)
 
@@ -376,6 +376,7 @@ Ausdrücklich nicht Teil von #48 (Bestandsfehler, die der Analyse bekannt sind):
 
 ## Changelog
 
+- 2026-11-15: Achte Spec-Prüfung: `workouts.md`-Nachzug einheitlich in A2c-2; catalogVersion 2 erst in A2d-2, Test je Teilschnitt; `WorkoutPhase`-Init mit Default-Parametern; Vorgabeliste für AC-27 `internal static`; Info-Blatt-Kennungssuche eindeutig in A2a; Schema-Verweis präzisiert.
 - 2026-11-15: Siebte Spec-Prüfung: A2c geteilt in A2c-1 (Vorgaben, 4 Dateien) und A2c-2 (Aufräumen, 2 Dateien); beim Umbau zu `enum` entfallen alle Instanz-Member, nicht nur `body`; U+2028/U+2029, Tab und U+00A0 namentlich in Entscheidung 9 und AC-14.
 - 2026-11-15: Sechste Spec-Prüfung: `WorkoutProgramsView` wird leeres `enum` als Namensraum (ohne `View`, sonst Build-Fehler ohne `body`); fehlender Textschlüssel „Beinpendel" (EN „Leg Swing") in A2d-1; Hinweis-Normalisierung deckt alle vom Schema verbotenen Zeichen ab; Wortlaut „letzte Übung" laut Textkatalog.
 - 2026-11-14: Fünfte Spec-Prüfung (Abgleich mit Code): Ansage an die vier bestehenden Satzformen angepasst, Sprechstellen korrekt benannt (erste Übung, Ankündigung zu Beginn der Pause); AC-28 Vorher-Aussage korrigiert (Namenssuche „Planke" funktioniert heute); A2a nimmt die zwei Aufrufe des Info-Blatts auf; Doku-Nachzug `workouts.md` nach A2c (A2b damit 5 Dateien); A2c entfernt den toten Bildschirmteil von `WorkoutProgramsView` (Typ bleibt als Namensraum).
