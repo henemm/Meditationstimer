@@ -378,6 +378,7 @@ Ausdrücklich nicht Teil von #48 (Bestandsfehler, die der Analyse bekannt sind):
 
 ## Changelog
 
+- 2026-11-15: RED-Phase: Namen und Signaturen der testbaren Funktionen sowie die zusätzlichen Bedienkennungen (Programmzeile, Editor-Knöpfe, Info-Blatt) festgelegt in `DOCS/context/feature-48-test-api-vertrag.md`; die Tests decken alle Schnitte ab, je Schnitt werden dessen Tests einzeln grün nachgewiesen.
 - 2026-11-15: Achte Spec-Prüfung: `workouts.md`-Nachzug einheitlich in A2c-2; catalogVersion 2 erst in A2d-2, Test je Teilschnitt; `WorkoutPhase`-Init mit Default-Parametern; Vorgabeliste für AC-27 `internal static`; Info-Blatt-Kennungssuche eindeutig in A2a; Schema-Verweis präzisiert.
 - 2026-11-15: Siebte Spec-Prüfung: A2c geteilt in A2c-1 (Vorgaben, 4 Dateien) und A2c-2 (Aufräumen, 2 Dateien); beim Umbau zu `enum` entfallen alle Instanz-Member, nicht nur `body`; U+2028/U+2029, Tab und U+00A0 namentlich in Entscheidung 9 und AC-14.
 - 2026-11-15: Sechste Spec-Prüfung: `WorkoutProgramsView` wird leeres `enum` als Namensraum (ohne `View`, sonst Build-Fehler ohne `body`); fehlender Textschlüssel „Beinpendel" (EN „Leg Swing") in A2d-1; Hinweis-Normalisierung deckt alle vom Schema verbotenen Zeichen ab; Wortlaut „letzte Übung" laut Textkatalog.
