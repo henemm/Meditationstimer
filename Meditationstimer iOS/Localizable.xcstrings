@@ -12307,6 +12307,184 @@
           }
         }
       }
+    },
+    "Klimmzüge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klimmzüge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pull-ups"
+          }
+        }
+      }
+    },
+    "Australische Klimmzüge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Australische Klimmzüge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Australian Pull-ups"
+          }
+        }
+      }
+    },
+    "exercise.dips.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Dips exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Trizeps, unteren Brustmuskel und vordere Schulter mit dem eigenen Körpergewicht. Fördert Druckkraft im Oberkörper und Stabilität im Schultergürtel."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the triceps, lower chest and front shoulders using your own body weight. Builds pressing strength in the upper body and stability in the shoulder girdle."
+          }
+        }
+      }
+    },
+    "exercise.dips.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Dips exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stütze dich auf Barren oder die Kante einer stabilen Bank, Arme gestreckt 2) Beuge die Ellbogen und senke den Körper kontrolliert ab, bis die Oberarme etwa waagerecht sind 3) Drücke dich wieder nach oben 4) Schultern bleiben tief, Ellbogen zeigen nach hinten. Bei Schulterproblemen weniger tief absenken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Support yourself on parallel bars or the edge of a sturdy bench, arms straight 2) Bend your elbows and lower your body with control until your upper arms are roughly parallel to the floor 3) Push back up 4) Keep your shoulders down and your elbows pointing back. With shoulder issues, lower less deeply."
+          }
+        }
+      }
+    },
+    "exercise.klimmzuege.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den breiten Rückenmuskel, den oberen Rücken und die Arme. Eine der besten Übungen für Zugkraft im Oberkörper."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the latissimus, upper back and arms. One of the best exercises for pulling strength in the upper body."
+          }
+        }
+      }
+    },
+    "exercise.klimmzuege.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Greife eine Stange im Obergriff (Handflächen zeigen weg), etwa schulterbreit, und hänge mit gestreckten Armen 2) Ziehe die Schulterblätter nach unten und den Körper nach oben, bis das Kinn über der Stange ist 3) Senke dich kontrolliert wieder ab 4) Kein Schwung aus den Beinen, Rumpf angespannt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Grip a bar with an overhand grip (palms facing away), about shoulder-width, and hang with straight arms 2) Pull your shoulder blades down and your body up until your chin is above the bar 3) Lower yourself with control 4) No swinging from the legs, keep your core tight."
+          }
+        }
+      }
+    },
+    "exercise.chin-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Chin-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den breiten Rückenmuskel und den oberen Rücken, beansprucht durch den Untergriff den Bizeps stärker als der Klimmzug im Obergriff."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the latissimus and upper back and, thanks to the underhand grip, works the biceps harder than the overhand pull-up."
+          }
+        }
+      }
+    },
+    "exercise.chin-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Chin-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Greife eine Stange im Untergriff (Handflächen zeigen zu dir), etwa schulterbreit, und hänge mit gestreckten Armen 2) Ziehe den Körper nach oben, bis das Kinn über der Stange ist 3) Senke dich kontrolliert wieder ab 4) Ellbogen nah am Körper, kein Schwung aus den Beinen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Grip a bar with an underhand grip (palms facing you), about shoulder-width, and hang with straight arms 2) Pull your body up until your chin is above the bar 3) Lower yourself with control 4) Keep your elbows close to your body, no swinging from the legs."
+          }
+        }
+      }
+    },
+    "exercise.australische-klimmzuege.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Australian Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt oberen Rücken, hintere Schulter und Arme im Zug mit geringerer Last als der Klimmzug. Ein guter Einstieg auf dem Weg zum ersten Klimmzug."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the upper back, rear shoulders and arms in a pulling motion with less load than the pull-up. A good stepping stone on the way to your first pull-up."
+          }
+        }
+      }
+    },
+    "exercise.australische-klimmzuege.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Australian Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich rücklings unter eine niedrige Stange und greife sie etwas weiter als schulterbreit, Arme gestreckt 2) Fersen bleiben am Boden, Körper ist von Kopf bis Fuß gestreckt 3) Ziehe die Brust zur Stange 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back under a low bar and grip it slightly wider than shoulder-width, arms straight 2) Keep your heels on the floor and your body straight from head to toe 3) Pull your chest to the bar 4) Lower yourself with control. The flatter your body, the harder the exercise."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

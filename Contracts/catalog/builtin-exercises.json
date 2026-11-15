@@ -256,6 +256,26 @@
       "id": "builtin.decline-liegestuetze",
       "name": "Decline-Liegestütze",
       "category": "upperBody"
+    },
+    {
+      "id": "builtin.dips",
+      "name": "Dips",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.klimmzuege",
+      "name": "Klimmzüge",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.chin-ups",
+      "name": "Chin-ups",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.australische-klimmzuege",
+      "name": "Australische Klimmzüge",
+      "category": "upperBody"
     }
   ]
 }

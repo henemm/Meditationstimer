@@ -466,6 +466,40 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.decline-liegestuetze.effect", value: "Erhöht durch die hochgelegten Füße die Last auf Oberkörper und Arme. Betont den oberen Brustmuskel und die vorderen Schultern stärker als der normale Liegestütz.", comment: "Effect description for Decline Push-ups exercise"),
             instructions: NSLocalizedString("exercise.decline-liegestuetze.instructions", value: "1) Lege die Füße auf eine Bank oder Stufe, Hände schulterbreit am Boden 2) Spanne Bauch und Gesäß an, Körper bildet eine gerade Linie 3) Senke die Brust kontrolliert Richtung Boden 4) Drücke dich wieder hoch. Je höher die Füße, desto schwerer die Übung.", comment: "Instructions for Decline Push-ups exercise")
         ),
+
+        // MARK: - Oberkörper (A2d-1c)
+
+        ExerciseInfo(
+            id: "builtin.dips",
+            name: "Dips",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.dips.effect", value: "Kräftigt Trizeps, unteren Brustmuskel und vordere Schulter mit dem eigenen Körpergewicht. Fördert Druckkraft im Oberkörper und Stabilität im Schultergürtel.", comment: "Effect description for Dips exercise"),
+            instructions: NSLocalizedString("exercise.dips.instructions", value: "1) Stütze dich auf Barren oder die Kante einer stabilen Bank, Arme gestreckt 2) Beuge die Ellbogen und senke den Körper kontrolliert ab, bis die Oberarme etwa waagerecht sind 3) Drücke dich wieder nach oben 4) Schultern bleiben tief, Ellbogen zeigen nach hinten. Bei Schulterproblemen weniger tief absenken.", comment: "Instructions for Dips exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.klimmzuege",
+            name: "Klimmzüge",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.klimmzuege.effect", value: "Kräftigt den breiten Rückenmuskel, den oberen Rücken und die Arme. Eine der besten Übungen für Zugkraft im Oberkörper.", comment: "Effect description for Pull-ups exercise"),
+            instructions: NSLocalizedString("exercise.klimmzuege.instructions", value: "1) Greife eine Stange im Obergriff (Handflächen zeigen weg), etwa schulterbreit, und hänge mit gestreckten Armen 2) Ziehe die Schulterblätter nach unten und den Körper nach oben, bis das Kinn über der Stange ist 3) Senke dich kontrolliert wieder ab 4) Kein Schwung aus den Beinen, Rumpf angespannt.", comment: "Instructions for Pull-ups exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.chin-ups",
+            name: "Chin-ups",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.chin-ups.effect", value: "Kräftigt den breiten Rückenmuskel und den oberen Rücken, beansprucht durch den Untergriff den Bizeps stärker als der Klimmzug im Obergriff.", comment: "Effect description for Chin-ups exercise"),
+            instructions: NSLocalizedString("exercise.chin-ups.instructions", value: "1) Greife eine Stange im Untergriff (Handflächen zeigen zu dir), etwa schulterbreit, und hänge mit gestreckten Armen 2) Ziehe den Körper nach oben, bis das Kinn über der Stange ist 3) Senke dich kontrolliert wieder ab 4) Ellbogen nah am Körper, kein Schwung aus den Beinen.", comment: "Instructions for Chin-ups exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.australische-klimmzuege",
+            name: "Australische Klimmzüge",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.australische-klimmzuege.effect", value: "Kräftigt oberen Rücken, hintere Schulter und Arme im Zug mit geringerer Last als der Klimmzug. Ein guter Einstieg auf dem Weg zum ersten Klimmzug.", comment: "Effect description for Australian Pull-ups exercise"),
+            instructions: NSLocalizedString("exercise.australische-klimmzuege.instructions", value: "1) Lege dich rücklings unter eine niedrige Stange und greife sie etwas weiter als schulterbreit, Arme gestreckt 2) Fersen bleiben am Boden, Körper ist von Kopf bis Fuß gestreckt 3) Ziehe die Brust zur Stange 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung.", comment: "Instructions for Australian Pull-ups exercise")
+        ),
     ]
 }
 
@@ -537,6 +571,10 @@ extension ExerciseDatabase {
         "Crunches": "builtin.crunches",
         "Archer Push-ups": "builtin.archer-liegestuetze",
         "Decline Push-ups": "builtin.decline-liegestuetze",
+        "Dips": "builtin.dips",
+        "Pull-ups": "builtin.klimmzuege",
+        "Chin-ups": "builtin.chin-ups",
+        "Australian Pull-ups": "builtin.australische-klimmzuege",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive
