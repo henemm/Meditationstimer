@@ -1,0 +1,63 @@
+# Runde A2d-1b (#87): ExerciseCatalogTests nach Umsetzung, Simulator iPhone 17 Pro iOS 27.2
+# Testfall-Ergebnisse (aus test-green-output.txt)
+Test case 'ExerciseCatalogTests.test_catalog_has67EntriesAndVersion2()' failed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.312 seconds)
+Test case 'ExerciseCatalogTests.test_catalog_matchesBuiltinExercisesJson()' failed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.011 seconds)
+Test case 'ExerciseCatalogTests.test_catalogIds_matchRegexAndAreUnique()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.003 seconds)
+Test case 'ExerciseCatalogTests.test_defaultPrograms_referenceExistingCatalogIds()' failed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.011 seconds)
+Test case 'ExerciseCatalogTests.test_first43Entries_unchanged()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.001 seconds)
+Test case 'ExerciseCatalogTests.test_idForEnglishName_returnsBuiltinId()' failed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.008 seconds)
+Test case 'ExerciseCatalogTests.test_idForGermanName_returnsBuiltinId()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.000 seconds)
+Test case 'ExerciseCatalogTests.test_idForNameWithLeftRightSuffix_resolvesBase()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.000 seconds)
+Test case 'ExerciseCatalogTests.test_idForUnknownSuffixName_isOwn()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.000 seconds)
+Test case 'ExerciseCatalogTests.test_infoForEnglishName_findsCatalogEntry()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.000 seconds)
+Test case 'ExerciseCatalogTests.test_newExercises_haveTextsInDeAndEn_andCategory()' failed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.019 seconds)
+Test case 'ExerciseCatalogTests.test_origin_derivedFromPrefix()' passed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer (16210)' (0.001 seconds)
+
+# Fehlermeldungen (aus xcresult, je Zeile: Test | Meldung)
+test_catalog_has67EntriesAndVersion2() | XCTAssertEqual failed: ("51") is not equal to ("67")
+test_catalog_has67EntriesAndVersion2() | XCTAssertEqual failed: ("1") is not equal to ("2")
+test_catalog_matchesBuiltinExercisesJson() | XCTAssertEqual failed: ("51") is not equal to ("67") - Endstand: JSON hat 67 Einträge
+test_catalog_matchesBuiltinExercisesJson() | XCTAssertEqual failed: ("51") is not equal to ("67") - Endstand: Katalog hat 67 Einträge
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Planke in Core Circuit ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Seitliche Planke links in Core Circuit ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Seitliche Planke rechts in Core Circuit ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Fahrrad-Crunches in Core Circuit ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Beinheben in Core Circuit ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Russian Twists in Core Circuit ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Full Body Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Kniebeugen in Full Body Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Liegestütze in Full Body Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Mountain Climbers in Full Body Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Ausfallschritte in Full Body Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Planke in Full Body Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Quick Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Mountain Climbers in Quick Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Hampelmänner in Quick Burn ohne exerciseId
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Planke in Quick Burn ohne exerciseId
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.dips") is not equal to ("builtin.dips") - Englischer Name Dips
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.pull-ups") is not equal to ("builtin.klimmzuege") - Englischer Name Pull-ups
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.chin-ups") is not equal to ("builtin.chin-ups") - Englischer Name Chin-ups
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.australian-pull-ups") is not equal to ("builtin.australische-klimmzuege") - Englischer Name Australian Pull-ups
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.inverted-rows") is not equal to ("builtin.umgekehrtes-rudern") - Englischer Name Inverted Rows
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.step-ups") is not equal to ("builtin.step-ups") - Englischer Name Step-ups
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.wall-sit") is not equal to ("builtin.wandsitzen") - Englischer Name Wall-Sit
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.box-jumps") is not equal to ("builtin.box-jumps") - Englischer Name Box Jumps
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.skater-hops") is not equal to ("builtin.skater-hops") - Englischer Name Skater Hops
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.jump-rope") is not equal to ("builtin.seilspringen") - Englischer Name Jump Rope
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.downward-dog") is not equal to ("builtin.herabschauender-hund") - Englischer Name Downward Dog
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.cobra-stretch") is not equal to ("builtin.cobra-dehnung") - Englischer Name Cobra Stretch
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.cat-cow") is not equal to ("builtin.cat-cow") - Englischer Name Cat-Cow
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.seated-forward-bend") is not equal to ("builtin.sitzende-vorbeuge") - Englischer Name Seated Forward Bend
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.shoulder-stretch-left") is not equal to ("builtin.schulter-dehnung-links") - Englischer Name Shoulder Stretch Left
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.shoulder-stretch-right") is not equal to ("builtin.schulter-dehnung-rechts") - Englischer Name Shoulder Stretch Right
+test_newExercises_haveTextsInDeAndEn_andCategory() | XCTUnwrap failed: expected non-nil value of type "ExerciseInfo" - Kennung builtin.dips fehlt
+
+# test_idForEnglishName_returnsBuiltinId: 16 Fehler

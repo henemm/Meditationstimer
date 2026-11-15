@@ -236,6 +236,26 @@
       "id": "builtin.v-ups",
       "name": "V-Ups",
       "category": "core"
+    },
+    {
+      "id": "builtin.sit-ups",
+      "name": "Sit-ups",
+      "category": "core"
+    },
+    {
+      "id": "builtin.crunches",
+      "name": "Crunches",
+      "category": "core"
+    },
+    {
+      "id": "builtin.archer-liegestuetze",
+      "name": "Archer-Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.decline-liegestuetze",
+      "name": "Decline-Liegestütze",
+      "category": "upperBody"
     }
   ]
 }

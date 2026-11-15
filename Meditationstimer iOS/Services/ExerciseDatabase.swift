@@ -432,6 +432,40 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.v-ups.effect", value: "Trainiert den geraden Bauchmuskel und die Hüftbeuger gleichzeitig. Fördert Rumpfkraft, Koordination und Beweglichkeit der Hüfte und der Beinrückseite.", comment: "Effect description for V-Ups exercise"),
             instructions: NSLocalizedString("exercise.v-ups.instructions", value: "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf, Beine gestreckt 2) Hebe Oberkörper und gestreckte Beine gleichzeitig an, bis dein Körper ein V bildet 3) Berühre mit den Händen die Füße oder Schienbeine 4) Senke dich kontrolliert ab, ohne Beine und Schultern abzulegen. Bei Schwierigkeiten Knie leicht beugen.", comment: "Instructions for V-Ups exercise")
         ),
+
+        // MARK: - Core / Oberkörper (A2d-1b)
+
+        ExerciseInfo(
+            id: "builtin.sit-ups",
+            name: "Sit-ups",
+            category: .core,
+            effect: NSLocalizedString("exercise.sit-ups.effect", value: "Kräftigt den geraden Bauchmuskel und die Hüftbeuger über die volle Bewegung vom Liegen zum Sitzen. Verbessert Rumpfkraft und Kraftausdauer für Alltag und Sport.", comment: "Effect description for Sit-ups exercise"),
+            instructions: NSLocalizedString("exercise.sit-ups.instructions", value: "1) Lege dich auf den Rücken, Knie gebeugt, Füße flach am Boden 2) Lege die Hände an die Schläfen oder verschränke die Arme vor der Brust 3) Rolle den Oberkörper Wirbel für Wirbel auf, bis du aufrecht sitzt 4) Senke dich kontrolliert wieder ab. Nicht am Kopf ziehen und ruhig weiteratmen.", comment: "Instructions for Sit-ups exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.crunches",
+            name: "Crunches",
+            category: .core,
+            effect: NSLocalizedString("exercise.crunches.effect", value: "Trainiert gezielt den oberen Teil des geraden Bauchmuskels mit kleiner Bewegung. Schont die Hüftbeuger und den unteren Rücken, da dieser am Boden bleibt.", comment: "Effect description for Crunches exercise"),
+            instructions: NSLocalizedString("exercise.crunches.instructions", value: "1) Lege dich auf den Rücken, Knie gebeugt, Füße flach am Boden 2) Lege die Hände an die Schläfen, Ellbogen zeigen nach außen 3) Hebe Kopf und Schulterblätter mit Kraft aus dem Bauch einige Zentimeter an 4) Senke dich langsam ab. Der untere Rücken bleibt am Boden, Blick schräg nach oben.", comment: "Instructions for Crunches exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.archer-liegestuetze",
+            name: "Archer-Liegestütze",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.archer-liegestuetze.effect", value: "Verlagert die Last bei jeder Wiederholung überwiegend auf einen Arm. Kräftigt Brust, Schultern und Trizeps einseitig und ist eine Vorstufe zum einarmigen Liegestütz.", comment: "Effect description for Archer Push-ups exercise"),
+            instructions: NSLocalizedString("exercise.archer-liegestuetze.instructions", value: "1) Gehe in die Liegestützposition, Hände deutlich weiter als schulterbreit 2) Senke dich zu einer Seite ab und beuge nur diesen Arm 3) Der andere Arm bleibt gestreckt und stützt nur leicht 4) Drücke dich zurück in die Mitte und wechsle die Seite. Körper bleibt in einer Linie, Hüfte nicht absenken.", comment: "Instructions for Archer Push-ups exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.decline-liegestuetze",
+            name: "Decline-Liegestütze",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.decline-liegestuetze.effect", value: "Erhöht durch die hochgelegten Füße die Last auf Oberkörper und Arme. Betont den oberen Brustmuskel und die vorderen Schultern stärker als der normale Liegestütz.", comment: "Effect description for Decline Push-ups exercise"),
+            instructions: NSLocalizedString("exercise.decline-liegestuetze.instructions", value: "1) Lege die Füße auf eine Bank oder Stufe, Hände schulterbreit am Boden 2) Spanne Bauch und Gesäß an, Körper bildet eine gerade Linie 3) Senke die Brust kontrolliert Richtung Boden 4) Drücke dich wieder hoch. Je höher die Füße, desto schwerer die Übung.", comment: "Instructions for Decline Push-ups exercise")
+        ),
     ]
 }
 
@@ -499,6 +533,10 @@ extension ExerciseDatabase {
         "Dead Bug": "builtin.dead-bug",
         "Flutter Kicks": "builtin.flutter-kicks",
         "V-Ups": "builtin.v-ups",
+        "Sit-ups": "builtin.sit-ups",
+        "Crunches": "builtin.crunches",
+        "Archer Push-ups": "builtin.archer-liegestuetze",
+        "Decline Push-ups": "builtin.decline-liegestuetze",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive

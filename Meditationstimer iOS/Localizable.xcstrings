@@ -12129,6 +12129,184 @@
           }
         }
       }
+    },
+    "Archer-Liegestütze" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archer-Liegestütze"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archer Push-ups"
+          }
+        }
+      }
+    },
+    "Decline-Liegestütze" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decline-Liegestütze"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decline Push-ups"
+          }
+        }
+      }
+    },
+    "exercise.sit-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Sit-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den geraden Bauchmuskel und die Hüftbeuger über die volle Bewegung vom Liegen zum Sitzen. Verbessert Rumpfkraft und Kraftausdauer für Alltag und Sport."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the rectus abdominis and hip flexors through the full range from lying to sitting. Improves core strength and muscular endurance for daily life and sport."
+          }
+        }
+      }
+    },
+    "exercise.sit-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Sit-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Knie gebeugt, Füße flach am Boden 2) Lege die Hände an die Schläfen oder verschränke die Arme vor der Brust 3) Rolle den Oberkörper Wirbel für Wirbel auf, bis du aufrecht sitzt 4) Senke dich kontrolliert wieder ab. Nicht am Kopf ziehen und ruhig weiteratmen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with knees bent and feet flat on the floor 2) Place your hands at your temples or cross your arms over your chest 3) Roll your torso up vertebra by vertebra until you sit upright 4) Lower back down with control. Do not pull on your head and keep breathing steadily."
+          }
+        }
+      }
+    },
+    "exercise.crunches.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Crunches exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert gezielt den oberen Teil des geraden Bauchmuskels mit kleiner Bewegung. Schont die Hüftbeuger und den unteren Rücken, da dieser am Boden bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specifically trains the upper part of the rectus abdominis with a small range of motion. Spares the hip flexors and the lower back, which stays on the floor."
+          }
+        }
+      }
+    },
+    "exercise.crunches.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Crunches exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Knie gebeugt, Füße flach am Boden 2) Lege die Hände an die Schläfen, Ellbogen zeigen nach außen 3) Hebe Kopf und Schulterblätter mit Kraft aus dem Bauch einige Zentimeter an 4) Senke dich langsam ab. Der untere Rücken bleibt am Boden, Blick schräg nach oben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with knees bent and feet flat on the floor 2) Place your hands at your temples, elbows pointing outward 3) Use your abs to lift head and shoulder blades a few centimeters 4) Lower slowly. Your lower back stays on the floor, gaze angled upward."
+          }
+        }
+      }
+    },
+    "exercise.archer-liegestuetze.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Archer Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlagert die Last bei jeder Wiederholung überwiegend auf einen Arm. Kräftigt Brust, Schultern und Trizeps einseitig und ist eine Vorstufe zum einarmigen Liegestütz."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shifts most of the load onto one arm with each repetition. Strengthens chest, shoulders and triceps one side at a time and is a progression toward the one-arm push-up."
+          }
+        }
+      }
+    },
+    "exercise.archer-liegestuetze.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Archer Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Gehe in die Liegestützposition, Hände deutlich weiter als schulterbreit 2) Senke dich zu einer Seite ab und beuge nur diesen Arm 3) Der andere Arm bleibt gestreckt und stützt nur leicht 4) Drücke dich zurück in die Mitte und wechsle die Seite. Körper bleibt in einer Linie, Hüfte nicht absenken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Get into push-up position with hands much wider than shoulder width 2) Lower toward one side, bending only that arm 3) The other arm stays straight and supports only lightly 4) Push back to the center and switch sides. Keep your body in one line and do not let your hips sag."
+          }
+        }
+      }
+    },
+    "exercise.decline-liegestuetze.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Decline Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erhöht durch die hochgelegten Füße die Last auf Oberkörper und Arme. Betont den oberen Brustmuskel und die vorderen Schultern stärker als der normale Liegestütz."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increases the load on the upper body and arms by elevating the feet. Emphasizes the upper chest and front shoulders more than the regular push-up."
+          }
+        }
+      }
+    },
+    "exercise.decline-liegestuetze.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Decline Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege die Füße auf eine Bank oder Stufe, Hände schulterbreit am Boden 2) Spanne Bauch und Gesäß an, Körper bildet eine gerade Linie 3) Senke die Brust kontrolliert Richtung Boden 4) Drücke dich wieder hoch. Je höher die Füße, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Place your feet on a bench or step, hands shoulder-width apart on the floor 2) Brace your abs and glutes so your body forms a straight line 3) Lower your chest toward the floor with control 4) Push back up. The higher your feet, the harder the exercise."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
