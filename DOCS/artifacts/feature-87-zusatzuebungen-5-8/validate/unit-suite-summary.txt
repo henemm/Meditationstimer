@@ -1,0 +1,37 @@
+	 Executed 10 tests, with 0 failures (0 unexpected) in 1.229 (1.255) seconds
+	 Executed 12 tests, with 45 failures (0 unexpected) in 0.373 (0.377) seconds
+	 Executed 12 tests, with 50 failures (0 unexpected) in 1.193 (1.238) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.012 (0.015) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.010 (0.015) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.059 (0.063) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.009 (0.014) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+	 Executed 20 tests, with 0 failures (0 unexpected) in 0.028 (0.032) seconds
+	 Executed 24 tests, with 0 failures (0 unexpected) in 0.010 (0.014) seconds
+	 Executed 25 tests, with 0 failures (0 unexpected) in 0.179 (0.188) seconds
+	 Executed 262 tests, with 95 failures (0 unexpected) in 8.352 (8.706) seconds
+	 Executed 262 tests, with 95 failures (0 unexpected) in 8.352 (8.707) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4.021 (4.022) seconds
+	 Executed 46 tests, with 0 failures (0 unexpected) in 0.275 (0.309) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.005 (0.106) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.011 (0.013) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.041 (0.043) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.217 (0.225) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.409 (0.410) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.002 (0.004) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.004 (0.008) seconds
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.264 (0.347) seconds
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalog_has67EntriesAndVersion2]' failed
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalog_matchesBuiltinExercisesJson]' failed
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_defaultPrograms_referenceExistingCatalogIds]' failed
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForEnglishName_returnsBuiltinId]' failed
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_newExercises_haveTextsInDeAndEn_andCategory]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_announcement_respectsSpeakSetting]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_corruptJson_isBackedUpBeforeFallback]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_existingUserStore_unchangedAfterPresetMigration]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_hint_normalization]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_missingExerciseId_derivedFromName]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_noBackup_whenKeyMissingOrValid]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_oldJson_loadsLossless]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_selectingCatalogOrOwnExercise_setsExerciseId]' failed
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_spokenText_withAndWithoutHint]' failed
