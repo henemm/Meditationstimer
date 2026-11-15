@@ -810,7 +810,7 @@ private struct OverlayBackgroundEffect: ViewModifier {
 }
 
 // MARK: - Default Workout Sets (same as WorkoutProgramsView)
-private let defaultWorkoutSets: [WorkoutSet] = [
+let defaultWorkoutSets: [WorkoutSet] = [
     WorkoutSet(
         name: "Tabata Classic",
         emoji: "🔥",

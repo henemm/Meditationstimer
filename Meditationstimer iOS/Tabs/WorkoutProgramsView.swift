@@ -206,12 +206,50 @@ struct WorkoutPhase: Identifiable, Hashable, Codable {
     var workDuration: Int       // Seconds of work (1-600)
     var restDuration: Int       // Seconds of rest (0-600)
                                 // NOTE: restDuration of last phase is used for pauses between rounds
+    var exerciseId: String?     // #48: catalog id (builtin.*, own.*, claude.*); optional in stored JSON
+    var hint: String?           // #48: optional one-line hint; optional in stored JSON
 
-    init(id: UUID = UUID(), name: String, workDuration: Int, restDuration: Int) {
+    init(id: UUID = UUID(), name: String, workDuration: Int, restDuration: Int,
+         exerciseId: String? = nil, hint: String? = nil) {
         self.id = id
         self.name = name
         self.workDuration = workDuration
         self.restDuration = restDuration
+        self.exerciseId = exerciseId
+        self.hint = hint
+    }
+}
+
+// MARK: - #48 API scaffold (bodies follow in A2b-0 / A2b, not used by the app yet)
+
+extension WorkoutPhase {
+    static func normalizedHint(_ raw: String?) -> String? { raw }  // A2b-0
+    mutating func apply(_ selection: ExerciseSelection) {}  // A2b
+    static func newDefault(bundle: Bundle = .main) -> WorkoutPhase {  // A2b
+        WorkoutPhase(name: "", workDuration: 30, restDuration: 15)
+    }
+}
+
+extension WorkoutSet {
+    static let backupKeyPrefix = "workoutProgramSetsBackup."
+    static func loadStored(from defaults: UserDefaults, key: String = "workoutProgramSets",
+                           now: Date = Date()) -> [WorkoutSet]? { nil }  // A2b-0
+    static func migratingPresets(_ stored: [WorkoutSet], presets: [WorkoutSet]) -> [WorkoutSet] { stored }  // A2b-0
+}
+
+enum ExerciseSelection { case catalog(id: String), own(name: String) }
+
+enum WorkoutAnnouncementForm: Equatable {
+    case exercise(number: Int, total: Int), lastExercise, round(number: Int, total: Int), lastRound
+}
+
+enum WorkoutAnnouncement {
+    static func spokenText(_ form: WorkoutAnnouncementForm, phase: WorkoutPhase, bundle: Bundle = .main) -> String {
+        ""  // A2b
+    }
+    static func textToSpeak(_ form: WorkoutAnnouncementForm, phase: WorkoutPhase, speakExerciseNames: Bool,
+                            bundle: Bundle = .main) -> String? {
+        speakExerciseNames ? spokenText(form, phase: phase, bundle: bundle) : nil
     }
 }
 
@@ -303,7 +341,7 @@ private let exerciseSuggestions: [String] = [
 
 // MARK: - Default Presets (10 scientifically-founded workout programs)
 
-private let defaultWorkoutSets: [WorkoutSet] = [
+private let legacyDefaultWorkoutSets: [WorkoutSet] = [
     // 1. Tabata Classic 🔥
     WorkoutSet(
         name: "Tabata Classic",
@@ -470,7 +508,7 @@ private let defaultWorkoutSets: [WorkoutSet] = [
 // MARK: - Main View (Placeholder for Phase 1)
 
 public struct WorkoutProgramsView: View {
-    @State private var sets: [WorkoutSet] = defaultWorkoutSets
+    @State private var sets: [WorkoutSet] = legacyDefaultWorkoutSets
     @State private var showingInfo: WorkoutSet? = nil
     @State private var showingEditor: WorkoutSet? = nil
     @State private var showSettings = false
@@ -613,7 +651,7 @@ public struct WorkoutProgramsView: View {
             sets = decoded
             migrateSets()
         } else {
-            sets = defaultWorkoutSets  // Initial load
+            sets = legacyDefaultWorkoutSets  // Initial load
         }
     }
 
@@ -622,7 +660,7 @@ public struct WorkoutProgramsView: View {
         var needsSave = false
 
         // Add missing default presets
-        for defaultSet in defaultWorkoutSets {
+        for defaultSet in legacyDefaultWorkoutSets {
             if !sets.contains(where: { $0.name == defaultSet.name }) {
                 sets.append(defaultSet)
                 needsSave = true
@@ -632,7 +670,7 @@ public struct WorkoutProgramsView: View {
 
         // Update descriptions for existing defaults
         for i in 0..<sets.count {
-            if let defaultSet = defaultWorkoutSets.first(where: { $0.name == sets[i].name }) {
+            if let defaultSet = legacyDefaultWorkoutSets.first(where: { $0.name == sets[i].name }) {
                 if sets[i].description == nil && defaultSet.description != nil {
                     sets[i].description = defaultSet.description
                     needsSave = true
@@ -1239,7 +1277,7 @@ public struct WorkoutProgramsView: View {
                 }
             }
             .sheet(isPresented: $showExerciseSheet) {
-                ExerciseDetailSheet(exerciseName: selectedExerciseName)
+                ExerciseDetailSheet(exerciseName: selectedExerciseName, exerciseId: ExerciseDatabase.exerciseId(forName: selectedExerciseName))
             }
         }
 
@@ -1691,7 +1729,7 @@ public struct WorkoutProgramsView: View {
                     }
                 }
                 .sheet(isPresented: $showExerciseSheet) {
-                    ExerciseDetailSheet(exerciseName: selectedExerciseName)
+                    ExerciseDetailSheet(exerciseName: selectedExerciseName, exerciseId: ExerciseDatabase.exerciseId(forName: selectedExerciseName))
                 }
             }
         }

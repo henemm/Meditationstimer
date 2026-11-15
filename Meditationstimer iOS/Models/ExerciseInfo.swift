@@ -9,6 +9,9 @@ import Foundation
 
 /// Information about a workout exercise including instructions and effects
 struct ExerciseInfo {
+    /// Fixed catalog identifier, e.g. "builtin.planke" (see Contracts/catalog/builtin-exercises.json)
+    let id: String
+
     /// Display name of the exercise (matches WorkoutPhase.name)
     let name: String
 
@@ -24,12 +27,29 @@ struct ExerciseInfo {
     /// Optional additional notes or variations
     let notes: String?
 
-    init(name: String, category: ExerciseCategory, effect: String, instructions: String, notes: String? = nil) {
+    /// Origin derived from the id prefix (builtin/own/claude); not stored
+    var origin: ExerciseOrigin {
+        ExerciseOrigin(exerciseId: id) ?? .own
+    }
+
+    init(id: String, name: String, category: ExerciseCategory, effect: String, instructions: String, notes: String? = nil) {
+        self.id = id
         self.name = name
         self.category = category
         self.effect = effect
         self.instructions = instructions
         self.notes = notes
+    }
+}
+
+/// Origin of an exercise, derived from the prefix of its id (`builtin.*`, `own.*`, `claude.*`)
+enum ExerciseOrigin: String {
+    case builtin, own, claude
+
+    /// Prefix before the first dot; nil if there is no dot or the prefix is unknown
+    init?(exerciseId: String) {
+        guard let dot = exerciseId.firstIndex(of: ".") else { return nil }
+        self.init(rawValue: String(exerciseId[..<dot]))
     }
 }
 
