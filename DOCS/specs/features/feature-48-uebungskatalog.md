@@ -2,7 +2,7 @@
 entity_id: feature-48-uebungskatalog
 type: feature
 created: 2026-11-14
-updated: 2026-11-14
+updated: 2026-11-15
 status: draft
 workflow: feature-48-uebungskatalog
 issue: 48
@@ -160,13 +160,13 @@ Die Ableitung „englischer Name → Kennung" (Entscheidung 4 Schritt 2) ist ein
 
 ### Affected Files und Schnitte
 
-Gesamt 12 Dateien (7 Produkt, 3 Test, 2 Doku), rund 1.300 Zeilen hinzu inklusive Tests und Texte (Produkt +900, davon rund 400 Textzeilen, Tests +420; rund 200 Zeilen entfallen); deshalb in Schnitte geteilt, jeder Schnitt mit höchstens 4-5 Dateien, ±250 Zeilen und jeweils eigenem lauffähigem Stand (Build, alle Tests grün). Zeilen sind Schätzungen; die reinen Textzeilen in `Localizable.xcstrings` und JSON zählen mechanisch mit.
+Gesamt 13 Dateien (7 Produkt, 4 Test einschließlich `server/test/mcp-read.test.ts` ab A2d-1, 2 Doku), rund 2.100 Zeilen hinzu inklusive Tests und Texte (Produkt +1.700, davon rund 900 Textzeilen in `Localizable.xcstrings`, Tests +430; rund 400 Zeilen entfallen in A2c-2; Stand nach der Zeilenkorrektur A2d vom 2026-11-15); deshalb in Schnitte geteilt, jeder Schnitt mit höchstens 4-5 Dateien, ±250 Zeilen und jeweils eigenem lauffähigem Stand (Build grün, alle Tests des eigenen und der früheren Schnitte grün; Tests späterer Schnitte aus dem gemeinsamen RED-Commit dürfen rot sein und werden im Prüfbericht einzeln ausgewiesen, PO-Entscheidung 2026-11-15). Zeilen sind Schätzungen. PO-Entscheidung 2026-11-15: Zeilen in `Localizable.xcstrings` zählen nicht zur Grenze von ±250 (Projektregel `scope_guard.loc_exclude_patterns: '\.xcstrings$'` in `.claude/openspec.yaml`); die Texte werden trotzdem voll geprüft (Adversary, fachliche Gegenlesung). JSON zählt weiter mit. Vorbedingung vor `/50-implement`: Die Regel muss im Haupt-Checkout wirksam sein, weil die Hooks die Konfiguration von dort lesen.
 
 | Schnitt | Inhalt | Dateien | Zeilen (ca.) | PO-sichtbar |
 |---------|--------|---------|--------------|-------------|
 | A2a | Katalog mit Kennung, Namensableitung, Info-Knopf per Kennung | `Meditationstimer iOS/Models/ExerciseInfo.swift`, `Meditationstimer iOS/Services/ExerciseDatabase.swift`, `Meditationstimer iOS/Views/ExerciseDetailSheet.swift`, `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` (nur die zwei Aufrufe `ExerciseDetailSheet(...)` Z. 1242 und 1694 übergeben die aus dem Namen abgeleitete Kennung nach Entscheidung 4; ab A2b-0 die gespeicherte `exerciseId`), `LeanHealthTimerTests/ExerciseCatalogTests.swift` | Produkt 140, Test 90 | Info-Knopf zeigt auch bei englisch gespeicherten Namen Inhalt |
-| A2d-1 | Zusatzübungen Nr. 1-12 | `Meditationstimer iOS/Services/ExerciseDatabase.swift`, `Meditationstimer iOS/Localizable.xcstrings`, `Contracts/catalog/builtin-exercises.json`, `LeanHealthTimerTests/ExerciseCatalogTests.swift` | 240 (davon rund 200 Text) | nein |
-| A2d-2 | Zusatzübungen Nr. 13-24, catalogVersion 2 | wie A2d-1 | 240 | nein |
+| A2d-1 | Zusatzübungen Nr. 1-12 | `Meditationstimer iOS/Services/ExerciseDatabase.swift`, `Meditationstimer iOS/Localizable.xcstrings`, `Contracts/catalog/builtin-exercises.json`, `server/test/mcp-read.test.ts` (beide festen 43 entfernt, sonst Server-CI rot: im Test „overview" entfällt `assert.equal(doc.counts.exercise.builtin, 43)` ersatzlos, weil die Zeile davor schon gegen die Katalogdatei prüft; im Test „catalog ohne Abschrift" wird `doc.items.length` gegen `(await catalogFile()).length` geprüft und die 43 aus dem Testtitel genommen); `LeanHealthTimerTests/ExerciseCatalogTests.swift` bleibt unverändert (Tests liegen schon aus dem gemeinsamen RED-Commit) | ca. 630 gesamt: `Localizable.xcstrings` ca. 450 (zählt nicht zur Grenze, siehe Absatz oben), Programmcode/JSON ca. 180 (Swift ca. 115, JSON ca. 60, Server-Test ca. 4) | kaum: das Info-Blatt der 12 Übungen, die schon heute in der Vorschlagsliste stehen (z. B. „Pull-ups"), zeigt nun Wirkung und Anleitung |
+| A2d-2 | Zusatzübungen Nr. 13-24, catalogVersion 2 | wie A2d-1 (`ExerciseCatalogTests.swift` ebenfalls unverändert; `server/test/mcp-read.test.ts` nur, soweit nach A2d-1 noch etwas anzupassen ist) | analog A2d-1: ca. 630 gesamt, davon `Localizable.xcstrings` ca. 450 und Programmcode/JSON ca. 180 | nein |
 | A2b-0 | Datenmodell, Migration, Sicherung | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `Meditationstimer iOS/Tabs/WorkoutTab.swift`, `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift`; Doku: `openspec/specs/features/claude-annahme.md` | Produkt 110, Test 110 | nein (Datenstand) |
 | A2b | Hinweis sichtbar und hörbar, Auswahl aus Katalog | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `Meditationstimer iOS/Views/ExerciseDetailSheet.swift`, `Meditationstimer iOS/Localizable.xcstrings`, `LeanHealthTimerUITests/WorkoutHintUITests.swift`, `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift` (Ansage- und Auswahltests) | Produkt 150, Test 130 | ja, erste sichtbare Stufe |
 | A2c-1 | Vorgaben mit Kennung | `Meditationstimer iOS/Tabs/WorkoutTab.swift`, `LeanHealthTimerTests/ExerciseCatalogTests.swift` (AC-27), `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift` (AC-30), `LeanHealthTimerUITests/WorkoutHintUITests.swift` (AC-28) | Produkt rund 40, Test rund 90 | nein (Vorgaben unverändert sichtbar) |
@@ -178,8 +178,8 @@ Reihenfolge: A2a → A2d-1 → A2d-2 → A2b-0 → A2b → A2c-1 → A2c-2. A2d 
 
 | Bereich | Dateien | LoC (ca.) |
 |---------|---------|-----------|
-| Produkt (alle Schnitte) | 7 verschiedene | +900 / -200 (davon rund 400 Zeilen reine Texte) |
-| Tests | 3 neue Dateien | +420 |
+| Produkt (alle Schnitte) | 7 verschiedene | +1.700 / -400 (davon rund 900 Zeilen reine Texte in `Localizable.xcstrings`, zählen nicht zur Grenze) |
+| Tests | 3 neue Dateien, 1 angepasste (`server/test/mcp-read.test.ts`) | +430 |
 
 ## Technischer Ansatz
 
@@ -187,7 +187,10 @@ Reihenfolge: A2a → A2d-1 → A2d-2 → A2b-0 → A2b → A2c-1 → A2c-2. A2d 
 
 - `ExerciseInfo` erhält `id: String` (Kennung). Die Herkunft ist eine berechnete Eigenschaft (`origin`: `builtin`/`own`/`claude`) aus dem Präfix, kein gespeichertes Feld.
 - `ExerciseDatabase`: jeder Eintrag trägt seine Kennung (Reihenfolge wie `builtin-exercises.json`, neue Einträge angehängt). Neue Zugriffe: Suche per Kennung, Ableitung Kennung aus Name nach Entscheidung 4 (inklusive Tabelle englischer Namen) und die Slug-Funktion nach Entscheidung 5 (`own.*`).
-- Anzeigename lokalisiert über `String(localized:)` mit dem deutschen Katalognamen als Schlüssel. Die englischen Namen der früheren Vorschlagsliste sind bereits englische Übersetzungen dieser Schlüssel in `Localizable.xcstrings` (A2d ergänzt die 24 neuen).
+- Anzeigename lokalisiert über `String(localized:)` mit dem deutschen Katalognamen als Schlüssel. Für die 43 bestehenden Übungen sind die englischen Namen der früheren Vorschlagsliste bereits englische Übersetzungen dieser deutschen Schlüssel in `Localizable.xcstrings`. Für die 24 neuen gibt es heute nur Einträge mit dem englischen Namen als Schlüssel (z. B. „Pull-ups", von der Vorschlagsliste); A2d legt die fehlenden deutschen Namensschlüssel neu an (Regel im übernächsten Punkt).
+- Schlüsselkonvention für die neuen Texte (A2d): `exercise.<slug>.effect` und `exercise.<slug>.instructions`, slug = Kennung ohne `builtin.`; die 43 alten Einträge behalten ihre bisherigen camelCase-Schlüssel.
+- `localizedTexts(forId:bundle:)` löst Wirkung und Anleitung künftig über das übergebene Bundle auf (`bundle.localizedString(forKey: "exercise.\(slug).effect", value: <bisheriger Text>, table: nil)`, ebenso `instructions`). Begründung: `ExerciseInfo` hält fertig aufgelöste Texte aus dem Hauptbundle, daher wechselte die Sprache bisher nicht; AC-8 fordert unterschiedliche Texte in DE und EN. Rückfall für die 43 alten Einträge ist der bisherige Text (unverändertes Verhalten). Verworfene Alternative: ein Schlüsselfeld in `ExerciseInfo` (weitere Datei, Änderung an allen 43 Einträgen, kein Mehrwert).
+- Namensschlüssel in `Localizable.xcstrings` nur für Namen mit DE ≠ EN; bei DE = EN liefert die Suche ohne Schlüssel den Namen unverändert. In A2d-1 sind das genau vier (Abgleich mit der Tabelle Nr. 1-12): Archer-Liegestütze (Archer Push-ups), Decline-Liegestütze (Decline Push-ups), Klimmzüge (Pull-ups), Australische Klimmzüge (Australian Pull-ups). Gleich lauten Hollow Hold, Dead Bug, Flutter Kicks, V-Ups, Sit-ups, Crunches, Dips und Chin-ups. Die 12 englischen Namen kommen zusätzlich in `englishNameIds`. Zusätzlich, unabhängig von Nr. 1-12: Der fehlende Namensschlüssel der bestehenden Übung „Beinpendel" (EN „Leg Swing", siehe Abschnitt Texte) wird ebenfalls in A2d-1 angelegt; in A2d-1 entstehen also fünf Namensschlüssel. Die heutigen Einträge mit englischem Schlüssel (z. B. „Pull-ups" → DE „Klimmzüge") bleiben unverändert, solange die Vorschlagsliste sie nutzt; sie werden mit der Liste in A2c-2 entfernt, falls dann nichts mehr auf sie verweist.
 - `builtin-exercises.json` wird in A2d-2 (nicht schon A2d-1) auf `catalogVersion` 2 gesetzt; nach A2d-1 stehen 55 Einträge bei Version 1, die bestehenden 43 Einträge bleiben unverändert (Reihenfolge, Kennung, Name, Kategorie); die 24 neuen werden angehängt. Der Referenz-Prüfer des Dienstes liest dieselbe Datei.
 
 ### Datenmodell und Laden (`WorkoutPhase`, `WorkoutTab`) — A2b-0
@@ -292,9 +295,17 @@ Schnitt-Zuordnung in Klammern. „Katalog" meint `ExerciseDatabase` in der App.
 - [x] AC-5: `test_idForNameWithLeftRightSuffix_resolvesBase` und `test_idForUnknownSuffixName_isOwn`
 - [x] AC-6: `test_origin_derivedFromPrefix`
 - [x] AC-7: `test_infoForEnglishName_findsCatalogEntry`
-- [ ] AC-8: `test_newExercises_haveTextsInDeAndEn_andCategory` (prüft je Schnitt die bis dahin angehängten Einträge) und `test_catalog_has67EntriesAndVersion2` (entsteht erst in A2d-2; A2d-1 prüft stattdessen 55 Einträge und Version 1 im Gleichlauftest AC-1)
+- [ ] AC-8: `test_newExercises_haveTextsInDeAndEn_andCategory` (läuft über alle 24 der Tabelle und bricht bei der ersten fehlenden Kennung ab; nach A2d-1 also erst bei Nr. 13, grün ab A2d-2) und `test_catalog_has67EntriesAndVersion2` (beide liegen schon aus dem gemeinsamen RED-Commit vor und prüfen den Endstand 67 / Version 2; sie bleiben bis A2d-2 rot. Nach A2d-1 stimmen JSON und Katalog in allen 55 Einträgen überein, AC-1 ist dann nur an der Endanzahl rot)
 - [ ] AC-9: `test_first43Entries_unchanged`
 - [ ] AC-27: `test_defaultPrograms_referenceExistingCatalogIds` (A2c-1)
+
+Erwartetes Testbild nach A2d-1 (Namen wie in `ExerciseCatalogTests.swift`):
+- `test_newExercises_haveTextsInDeAndEn_andCategory`: Nr. 1-12 fehlerfrei, Abbruch erst bei Nr. 13 („Kennung builtin.umgekehrtes-rudern fehlt"); grün nach A2d-2
+- `test_catalog_matchesBuiltinExercisesJson` und `test_catalog_has67EntriesAndVersion2`: rot nur an 67 Einträgen bzw. Version 2
+- `test_idForEnglishName_returnsBuiltinId`: rot nur für die 12 englischen Namen aus Nr. 13-24
+- `test_first43Entries_unchanged`, `test_catalogIds_matchRegexAndAreUnique`, `test_idForGermanName_returnsBuiltinId`: grün
+- Server: `npm test` grün (Anzahl aus der Katalogdatei gelesen)
+- App-Durchlauf im Simulator: im Schritt-Editor „Pull-ups" aus der heutigen Vorschlagsliste wählen (die Auswahl aus dem Katalog kommt erst mit A2b); das Info-Blatt zeigt Wirkung und Anleitung, einmal mit App-Sprache Deutsch (Start mit `-AppleLanguages (de)`) und einmal mit Englisch (`-AppleLanguages (en)`)
 
 `WorkoutPhaseMigrationTests.swift` (Muster `LeanHealthTimerTests/TrackerMigrationTests.swift`):
 - [ ] AC-10: `test_oldJson_loadsLossless`
@@ -329,7 +340,9 @@ Zusätzlich vor jeder PO-sichtbaren Übergabe (A2b, A2c-1, A2c-2): App im Simula
 
 ## Definition of Done
 
-- [ ] Build erfolgreich (`xcodebuild`, Scheme „Lean Health Timer", iPhone 17 Pro, iOS 26.5)
+Gilt für den Endstand nach A2c-2. Je Schnitt gilt die Schnitt-Regel aus „Affected Files und Schnitte" (Build grün, Tests des eigenen und der früheren Schnitte grün, Tests späterer Schnitte einzeln im Prüfbericht ausgewiesen) und für A2d-1 das „Erwartete Testbild nach A2d-1".
+
+- [ ] Build erfolgreich (`xcodebuild`, Scheme „Lean Health Timer", iPhone 17 Pro, iOS 27.2; 26.5 ist seit 2026-11-15 nicht mehr installiert)
 - [ ] Alle Unit-Tests grün, inkl. `ExerciseCatalogTests` und `WorkoutPhaseMigrationTests` (`Executed N tests`, N ≥ 1)
 - [ ] Alle UI-Tests grün, inkl. `WorkoutHintUITests` (`Executed N tests`, N ≥ 1); einzige Ausnahme: Tests, die nachweislich schon auf dem Stand vor #48 scheitern (Altlast #25), belegt im Validierungsbericht (siehe Test Plan, Regression)
 - [ ] AC-1 bis AC-31 erfüllt und im Test Plan abgehakt
@@ -378,6 +391,7 @@ Ausdrücklich nicht Teil von #48 (Bestandsfehler, die der Analyse bekannt sind):
 
 ## Changelog
 
+- 2026-11-15: Runde A2d-1 (#80, Workflow feature-80-zusatzuebungen-1-12): Dateiliste A2d-1/A2d-2 um `server/test/mcp-read.test.ts` ergänzt (feste Anzahl 43 durch Anzahl aus der Katalogdatei ersetzt), `ExerciseCatalogTests.swift` als unverändert gekennzeichnet, Zeilenschätzung auf ca. 630 (davon ca. 450 `Localizable.xcstrings`) korrigiert; PO-Entscheidung: `.xcstrings`-Zeilen zählen nicht zur Grenze von ±250 (`loc_exclude_patterns`), Vorbedingung: Regel im Haupt-Checkout wirksam; Technischer Ansatz um Schlüsselkonvention `exercise.<slug>.effect/.instructions`, Bundle-Auflösung in `localizedTexts(forId:bundle:)` und Namensschlüssel nur bei DE ≠ EN (A2d-1: Archer-Liegestütze, Decline-Liegestütze, Klimmzüge, Australische Klimmzüge; „Beinpendel" bleibt in A2d-1) ergänzt; Test Plan um das erwartete Testbild nach A2d-1 ergänzt.
 - 2026-11-15: PO-Entscheidung: jeder Schnitt läuft als eigene Workflow-Runde (Umsetzung, Adversary, Validierung, Sicherung). Runde 1 (Workflow `feature-48-uebungskatalog`) umfasst nur A2a samt kompilierendem Test-API-Gerüst; Adversary VERIFIED. Tests späterer Schnitte sind in dieser Runde erwartet rot (einzeln im Adversary-Protokoll). Folgeschnitte A2d-1 … A2c-2 als neue Workflows gegen diese Spec. Simulator jetzt iPhone 17 Pro, iOS 27.2 (26.5 nicht mehr installiert).
 - 2026-11-15: RED-Phase: Namen und Signaturen der testbaren Funktionen sowie die zusätzlichen Bedienkennungen (Programmzeile, Editor-Knöpfe, Info-Blatt) festgelegt in `DOCS/context/feature-48-test-api-vertrag.md`; die Tests decken alle Schnitte ab, je Schnitt werden dessen Tests einzeln grün nachgewiesen.
 - 2026-11-15: Achte Spec-Prüfung: `workouts.md`-Nachzug einheitlich in A2c-2; catalogVersion 2 erst in A2d-2, Test je Teilschnitt; `WorkoutPhase`-Init mit Default-Parametern; Vorgabeliste für AC-27 `internal static`; Info-Blatt-Kennungssuche eindeutig in A2a; Schema-Verweis präzisiert.
