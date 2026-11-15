@@ -156,7 +156,9 @@ Die Ableitung „englischer Name → Kennung" (Entscheidung 4 Schritt 2) ist ein
 2. **`claude-annahme.md`, Z. 37, nennt `own.*` nicht:** Der Abschnitt „Voraussetzung aus A2" wird um `own.<slug>` ergänzt (eigene Übungen, Regel in Entscheidung 5), ebenfalls in A2b-0 nachgezogen.
 3. **`workouts.md` Requirement „Audio Cues" / Szenario „Exercise Name TTS (Workout Programs)" ohne Hinweis:** Es wird ein Szenario „Exercise Hint TTS" ergänzt (Entscheidung 11), ferner im Requirement „Workout Programs" ein Szenario für die Hinweiszeile unter dem Ring (Entscheidung 1, 10) und im Requirement „Exercise Database" ein Szenario für Kennungen und Katalogumfang (67 Übungen). Nachzug im Schnitt A2c-2 (gemeinsam mit den Szenarien zu den Vorgaben, siehe AC-26), damit A2b bei 5 Dateien bleibt.
 
-## Affected Files und Schnitte
+## Scope
+
+### Affected Files und Schnitte
 
 Gesamt 12 Dateien (7 Produkt, 3 Test, 2 Doku), rund 1.300 Zeilen hinzu inklusive Tests und Texte (Produkt +900, davon rund 400 Textzeilen, Tests +420; rund 200 Zeilen entfallen); deshalb in Schnitte geteilt, jeder Schnitt mit höchstens 4-5 Dateien, ±250 Zeilen und jeweils eigenem lauffähigem Stand (Build, alle Tests grün). Zeilen sind Schätzungen; die reinen Textzeilen in `Localizable.xcstrings` und JSON zählen mechanisch mit.
 
@@ -172,7 +174,7 @@ Gesamt 12 Dateien (7 Produkt, 3 Test, 2 Doku), rund 1.300 Zeilen hinzu inklusive
 
 Reihenfolge: A2a → A2d-1 → A2d-2 → A2b-0 → A2b → A2c-1 → A2c-2. A2d muss vor A2b liegen, damit die Auswahl nur Katalogübungen zeigen kann, ohne dass vorhandene Namen verloren gehen.
 
-## Estimated Changes
+### Estimated Changes
 
 | Bereich | Dateien | LoC (ca.) |
 |---------|---------|-----------|
