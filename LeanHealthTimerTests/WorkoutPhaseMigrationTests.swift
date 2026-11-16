@@ -110,6 +110,13 @@ final class WorkoutPhaseMigrationTests: XCTestCase {
             XCTAssertEqual(phase.exerciseId, c.id, c.name)
             XCTAssertEqual(phase.name, c.name, "Name bleibt wörtlich")
         }
+        // Leere oder nur aus Leerraum bestehende Kennung gilt als fehlend
+        for stored in ["", "   "] {
+            let json = #"{"id":"11111111-1111-1111-1111-111111111111","name":"Planke","workDuration":30,"restDuration":10,"exerciseId":"\#(stored)"}"#
+            XCTAssertEqual(try decodePhase(json).exerciseId, "builtin.planke", "Kennung '\(stored)'")
+        }
+        let nullJson = #"{"id":"11111111-1111-1111-1111-111111111111","name":"Planke","workDuration":30,"restDuration":10,"exerciseId":null}"#
+        XCTAssertEqual(try decodePhase(nullJson).exerciseId, "builtin.planke")
     }
 
     // MARK: - AC-12
@@ -183,6 +190,17 @@ final class WorkoutPhaseMigrationTests: XCTestCase {
         XCTAssertNil(WorkoutPhase.normalizedHint("\u{00A0}"))
         XCTAssertNil(WorkoutPhase.normalizedHint(nil))
 
+        // Weitere verbotene Zeichen und Läufe von Leerraum
+        XCTAssertEqual(WorkoutPhase.normalizedHint("a\u{0007}b"), "a b")
+        XCTAssertEqual(WorkoutPhase.normalizedHint("a\u{0085}b"), "a b")
+        XCTAssertEqual(WorkoutPhase.normalizedHint("a\u{200E}b"), "a b")
+        XCTAssertEqual(WorkoutPhase.normalizedHint("a\n\nb"), "a b")
+        XCTAssertEqual(WorkoutPhase.normalizedHint("a   b"), "a b")
+        for raw in ["  a \n\t b  ", "a\u{00A0}\u{2029}b", String(repeating: "ab ", count: 40) + "💪"] {
+            let once = WorkoutPhase.normalizedHint(raw)
+            XCTAssertEqual(WorkoutPhase.normalizedHint(once), once, "Nicht idempotent für '\(raw)'")
+        }
+
         // 79 "a" + Emoji (2 UTF-16-Einheiten) = 81 -> darf das Emoji nicht zerreißen
         let emojiCase = String(repeating: "a", count: 79) + "💪"
         let cut = try XCTUnwrap(WorkoutPhase.normalizedHint(emojiCase))
@@ -231,7 +249,16 @@ final class WorkoutPhaseMigrationTests: XCTestCase {
             .filter { $0.hasPrefix(WorkoutSet.backupKeyPrefix) && $0 != existingKey }
         XCTAssertEqual(others.count, 1, "Neue Rohdaten müssen unter weiterem Schlüssel liegen")
         let otherKey = try XCTUnwrap(others.first)
+        XCTAssertEqual(otherKey, existingKey + "-2", "Ausweichen mit Suffix -2")
         XCTAssertEqual(defaults2.data(forKey: otherKey), raw2)
+        XCTAssertEqual(defaults2.data(forKey: storeKey), raw2, "Originalschlüssel bleibt mit Rohdaten stehen")
+
+        // Erneutes Laden derselben kaputten Daten, auch später: keine weitere Sicherung
+        let later = Date(timeIntervalSince1970: 1_800_000_100)
+        XCTAssertNil(WorkoutSet.loadStored(from: defaults2, key: storeKey, now: now))
+        XCTAssertNil(WorkoutSet.loadStored(from: defaults2, key: storeKey, now: later))
+        let afterReload = defaults2.dictionaryRepresentation().keys.filter { $0.hasPrefix(WorkoutSet.backupKeyPrefix) }
+        XCTAssertEqual(Set(afterReload), [existingKey, existingKey + "-2"], "Byte-gleiche Daten doppelt gesichert")
     }
 
     // MARK: - AC-16
