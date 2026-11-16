@@ -1,0 +1,33 @@
+Test case 'ExerciseCatalogTests.test_catalog_has67EntriesAndVersion2()' failed
+Test case 'ExerciseCatalogTests.test_catalog_matchesBuiltinExercisesJson()' failed
+Test case 'ExerciseCatalogTests.test_defaultPrograms_referenceExistingCatalogIds()' failed
+Test case 'ExerciseCatalogTests.test_idForEnglishName_returnsBuiltinId()' failed
+Test case 'ExerciseCatalogTests.test_newExercises_haveTextsInDeAndEn_andCategory()' failed
+Test case 'WorkoutPhaseMigrationTests.test_announcement_respectsSpeakSetting()' failed
+Test case 'WorkoutPhaseMigrationTests.test_corruptJson_isBackedUpBeforeFallback()' failed
+Test case 'WorkoutPhaseMigrationTests.test_existingUserStore_unchangedAfterPresetMigration()' failed
+Test case 'WorkoutPhaseMigrationTests.test_hint_normalization()' failed
+Test case 'WorkoutPhaseMigrationTests.test_missingExerciseId_derivedFromName()' failed
+Test case 'WorkoutPhaseMigrationTests.test_noBackup_whenKeyMissingOrValid()' failed
+Test case 'WorkoutPhaseMigrationTests.test_oldJson_loadsLossless()' failed
+Test case 'WorkoutPhaseMigrationTests.test_selectingCatalogOrOwnExercise_setsExerciseId()' failed
+Test case 'WorkoutPhaseMigrationTests.test_spokenText_withAndWithoutHint()' failed
+test_catalog_has67EntriesAndVersion2() 2
+    XCTAssertEqual failed: ("58") is not equal to ("67")
+    XCTAssertEqual failed: ("1") is not equal to ("2")
+test_catalog_matchesBuiltinExercisesJson() 2
+    XCTAssertEqual failed: ("58") is not equal to ("67") - Endstand: JSON hat 67 Einträge
+    XCTAssertEqual failed: ("58") is not equal to ("67") - Endstand: Katalog hat 67 Einträge
+test_defaultPrograms_referenceExistingCatalogIds() 24
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+    failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_idForEnglishName_returnsBuiltinId() 9
+    XCTAssertEqual failed: ("own.box-jumps") is not equal to ("builtin.box-jumps") - Englischer Name Box Jumps
+    XCTAssertEqual failed: ("own.skater-hops") is not equal to ("builtin.skater-hops") - Englischer Name Skater Hops
+    XCTAssertEqual failed: ("own.jump-rope") is not equal to ("builtin.seilspringen") - Englischer Name Jump Rope
+    XCTAssertEqual failed: ("own.downward-dog") is not equal to ("builtin.herabschauender-hund") - Englischer Name Downward Dog
+test_newExercises_haveTextsInDeAndEn_andCategory() 1
+    XCTUnwrap failed: expected non-nil value of type "ExerciseInfo" - Kennung builtin.box-jumps fehlt
+{'Passed': 249, 'Failed': 14}
