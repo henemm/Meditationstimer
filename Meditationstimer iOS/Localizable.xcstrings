@@ -306,6 +306,131 @@
         }
       }
     },
+    "Seilspringen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seilspringen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jump Rope"
+          }
+        }
+      }
+    },
+    "exercise.box-jumps.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Box Jumps exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Oberschenkel, Gesäß und Waden und trainiert Sprungkraft und Koordination. Anders als Jump-Kniebeugen springst du auf eine Erhöhung und landest oben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens thighs, glutes and calves and trains jumping power and coordination. Unlike jump squats, you jump onto a raised surface and land on top."
+          }
+        }
+      }
+    },
+    "exercise.box-jumps.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Box Jumps exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stelle dich vor eine stabile, rutschfeste Box oder Bank, Füße hüftbreit 2) Schwinge die Arme nach hinten, springe aus dem Stand auf die Erhöhung und lande weich in leichter Hocke 3) Richte dich oben ganz auf 4) Steige gehend (nicht springend) wieder ab, das schont die Achillessehne. Wähle die Höhe so, dass die Landung sicher gelingt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand in front of a sturdy, non-slip box or bench, feet hip-width apart 2) Swing your arms back, jump from standing onto the surface and land softly in a slight squat 3) Stand up fully on top 4) Step back down (do not jump), which protects the Achilles tendon. Choose a height you can land on safely."
+          }
+        }
+      }
+    },
+    "exercise.seilspringen.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Jump Rope exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbessert Ausdauer und Koordination und kräftigt die Waden. Braucht ein Springseil, anders als die übrigen Cardio-Übungen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Improves endurance and coordination and strengthens the calves. Needs a jump rope, unlike the other cardio exercises."
+          }
+        }
+      }
+    },
+    "exercise.seilspringen.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Jump Rope exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Nimm ein Springseil, Ellbogen nah am Körper 2) Drehe das Seil aus den Handgelenken, nicht aus den Schultern 3) Springe mit kleinen, flachen Sprüngen auf den Fußballen 4) Springe 30 bis 60 Sekunden und atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Take a jump rope, elbows close to your body 2) Turn the rope from your wrists, not your shoulders 3) Jump with small, low hops on the balls of your feet 4) Keep going for 30 to 60 seconds and keep breathing calmly."
+          }
+        }
+      }
+    },
+    "exercise.skater-hops.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Skater Hops exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Gesäß (außen), Oberschenkel und Hüfte und schult Gleichgewicht und seitliche Kniestabilität. Bringt zugleich den Puls nach oben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the outer glutes, thighs and hips and trains balance and lateral knee stability. Also raises your heart rate."
+          }
+        }
+      }
+    },
+    "exercise.skater-hops.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Skater Hops exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stehe auf einem Bein, leicht gebeugt 2) Springe seitlich auf das andere Bein und lande weich auf nur diesem Bein 3) Das hintere Bein kreuzt diagonal hinter dir, die Arme schwingen mit 4) Springe zurück zur anderen Seite. Lass das Knie nicht nach innen knicken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand on one leg with a slight bend 2) Hop sideways onto the other leg and land softly on that leg only 3) The trailing leg crosses diagonally behind you, arms swing along 4) Hop back to the other side. Do not let the knee collapse inward."
+          }
+        }
+      }
+    },
     "•" : {
       "comment" : "A separator between time and duration/calories.",
       "isCommentAutoGenerated" : true

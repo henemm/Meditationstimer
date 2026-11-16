@@ -526,6 +526,32 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.wandsitzen.effect", value: "Kräftigt Oberschenkel und Gesäß durch statisches Halten und stärkt die Kraftausdauer der Beine. Wirkt ohne Bewegung und schont die Gelenke.", comment: "Effect description for Wall-Sit exercise"),
             instructions: NSLocalizedString("exercise.wandsitzen.instructions", value: "1) Lehne den Rücken an eine Wand, Füße etwa schulterbreit und einen großen Schritt von der Wand entfernt 2) Rutsche nach unten, bis die Knie etwa 90° gebeugt sind und die Oberschenkel waagerecht sind 3) Halte die Position 30 bis 60 Sekunden, Rücken bleibt an der Wand 4) Knie bleiben über den Füßen. Atme ruhig weiter.", comment: "Instructions for Wall-Sit exercise")
         ),
+
+        // MARK: - A2d-2b (Beine, Cardio)
+
+        ExerciseInfo(
+            id: "builtin.box-jumps",
+            name: "Box Jumps",
+            category: .legs,
+            effect: NSLocalizedString("exercise.box-jumps.effect", value: "Kräftigt Oberschenkel, Gesäß und Waden und trainiert Sprungkraft und Koordination. Anders als Jump-Kniebeugen springst du auf eine Erhöhung und landest oben.", comment: "Effect description for Box Jumps exercise"),
+            instructions: NSLocalizedString("exercise.box-jumps.instructions", value: "1) Stelle dich vor eine stabile, rutschfeste Box oder Bank, Füße hüftbreit 2) Schwinge die Arme nach hinten, springe aus dem Stand auf die Erhöhung und lande weich in leichter Hocke 3) Richte dich oben ganz auf 4) Steige gehend (nicht springend) wieder ab, das schont die Achillessehne. Wähle die Höhe so, dass die Landung sicher gelingt.", comment: "Instructions for Box Jumps exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.skater-hops",
+            name: "Skater Hops",
+            category: .cardio,
+            effect: NSLocalizedString("exercise.skater-hops.effect", value: "Kräftigt Gesäß (außen), Oberschenkel und Hüfte und schult Gleichgewicht und seitliche Kniestabilität. Bringt zugleich den Puls nach oben.", comment: "Effect description for Skater Hops exercise"),
+            instructions: NSLocalizedString("exercise.skater-hops.instructions", value: "1) Stehe auf einem Bein, leicht gebeugt 2) Springe seitlich auf das andere Bein und lande weich auf nur diesem Bein 3) Das hintere Bein kreuzt diagonal hinter dir, die Arme schwingen mit 4) Springe zurück zur anderen Seite. Lass das Knie nicht nach innen knicken.", comment: "Instructions for Skater Hops exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.seilspringen",
+            name: "Seilspringen",
+            category: .cardio,
+            effect: NSLocalizedString("exercise.seilspringen.effect", value: "Verbessert Ausdauer und Koordination und kräftigt die Waden. Braucht ein Springseil, anders als die übrigen Cardio-Übungen.", comment: "Effect description for Jump Rope exercise"),
+            instructions: NSLocalizedString("exercise.seilspringen.instructions", value: "1) Nimm ein Springseil, Ellbogen nah am Körper 2) Drehe das Seil aus den Handgelenken, nicht aus den Schultern 3) Springe mit kleinen, flachen Sprüngen auf den Fußballen 4) Springe 30 bis 60 Sekunden und atme ruhig weiter.", comment: "Instructions for Jump Rope exercise")
+        ),
     ]
 }
 
@@ -604,6 +630,9 @@ extension ExerciseDatabase {
         "Inverted Rows": "builtin.umgekehrtes-rudern",
         "Step-ups": "builtin.step-ups",
         "Wall-Sit": "builtin.wandsitzen",
+        "Box Jumps": "builtin.box-jumps",
+        "Skater Hops": "builtin.skater-hops",
+        "Jump Rope": "builtin.seilspringen",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive

@@ -291,6 +291,21 @@
       "id": "builtin.wandsitzen",
       "name": "Wandsitzen",
       "category": "legs"
+    },
+    {
+      "id": "builtin.box-jumps",
+      "name": "Box Jumps",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.skater-hops",
+      "name": "Skater Hops",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.seilspringen",
+      "name": "Seilspringen",
+      "category": "cardio"
     }
   ]
 }
