@@ -12752,6 +12752,165 @@
           }
         }
       }
+    },
+    "Herabschauender Hund" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herabschauender Hund"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downward Dog"
+          }
+        }
+      }
+    },
+    "Kobra-Dehnung" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kobra-Dehnung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cobra Stretch"
+          }
+        }
+      }
+    },
+    "Katze-Kuh" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katze-Kuh"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cat-Cow"
+          }
+        }
+      }
+    },
+    "exercise.herabschauender-hund.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Downward Dog exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt Waden, Beinrückseite und Schultern als gehaltene Position. Gemeint ist die ruhige Dehnung, nicht die Bewegungsübung „Planke zu Herabschauender Hund“."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches calves, hamstrings and shoulders as a held position. This is the calm stretch, not the movement exercise “Plank to Downward Dog”."
+          }
+        }
+      }
+    },
+    "exercise.herabschauender-hund.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Downward Dog exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Beginne im Vierfüßlerstand, Hände schulterbreit, Knie unter der Hüfte 2) Schiebe die Hüfte nach oben und hinten, bis dein Körper ein umgekehrtes V bildet 3) Drücke die Fersen Richtung Boden, die Knie dürfen leicht gebeugt bleiben 4) Halte die Dehnung 20 bis 30 Sekunden, Kopf locker zwischen den Armen, und atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Start on all fours, hands shoulder-width apart, knees under your hips 2) Push your hips up and back until your body forms an upside-down V 3) Press your heels toward the floor, your knees may stay slightly bent 4) Hold the stretch for 20 to 30 seconds, head relaxed between your arms, and keep breathing calmly."
+          }
+        }
+      }
+    },
+    "exercise.cobra-dehnung.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Cobra Stretch exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt Bauch und Hüftbeuger und mobilisiert die Brustwirbelsäule. Ein sanfter Ausgleich zu viel Sitzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the abdomen and hip flexors and mobilizes the upper back. A gentle counterbalance to a lot of sitting."
+          }
+        }
+      }
+    },
+    "exercise.cobra-dehnung.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Cobra Stretch exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Bauch, Hände unter den Schultern, Ellbogen nah am Körper 2) Hebe den Oberkörper mit den Armen sanft an, die Hüfte bleibt am Boden 3) Schultern weg von den Ohren, Blick nach vorn 4) Halte 15 bis 30 Sekunden und atme ruhig weiter. Geh nur so weit, wie der untere Rücken schmerzfrei bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your stomach, hands under your shoulders, elbows close to your body 2) Gently lift your upper body with your arms, your hips stay on the floor 3) Shoulders away from your ears, gaze forward 4) Hold for 15 to 30 seconds and keep breathing calmly. Only go as far as your lower back stays pain-free."
+          }
+        }
+      }
+    },
+    "exercise.cat-cow.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Cat-Cow exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilisiert die ganze Wirbelsäule und lockert Rücken und Nacken. Eine fließende Bewegung im Atemrhythmus, keine Haltedehnung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilizes the whole spine and loosens the back and neck. A flowing movement in rhythm with your breath, not a held stretch."
+          }
+        }
+      }
+    },
+    "exercise.cat-cow.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Cat-Cow exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Gehe in den Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte 2) Beim Ausatmen den Rücken rund machen, Kinn Richtung Brust (Katze) 3) Beim Einatmen ins leichte Hohlkreuz gehen, Brust nach vorn, Blick leicht nach oben (Kuh) 4) Wechsle 8 bis 10 Mal langsam im Atemrhythmus."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Get on all fours, hands under your shoulders, knees under your hips 2) As you breathe out, round your back, chin toward your chest (cat) 3) As you breathe in, let your back sink into a slight arch, chest forward, gaze slightly up (cow) 4) Alternate slowly 8 to 10 times in rhythm with your breath."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

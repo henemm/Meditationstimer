@@ -552,6 +552,32 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.seilspringen.effect", value: "Verbessert Ausdauer und Koordination und kräftigt die Waden. Braucht ein Springseil, anders als die übrigen Cardio-Übungen.", comment: "Effect description for Jump Rope exercise"),
             instructions: NSLocalizedString("exercise.seilspringen.instructions", value: "1) Nimm ein Springseil, Ellbogen nah am Körper 2) Drehe das Seil aus den Handgelenken, nicht aus den Schultern 3) Springe mit kleinen, flachen Sprüngen auf den Fußballen 4) Springe 30 bis 60 Sekunden und atme ruhig weiter.", comment: "Instructions for Jump Rope exercise")
         ),
+
+        // MARK: - A2d-2c (Dehnung, Mobilisierung)
+
+        ExerciseInfo(
+            id: "builtin.herabschauender-hund",
+            name: "Herabschauender Hund",
+            category: .stretching,
+            effect: NSLocalizedString("exercise.herabschauender-hund.effect", value: "Dehnt Waden, Beinrückseite und Schultern als gehaltene Position. Gemeint ist die ruhige Dehnung, nicht die Bewegungsübung „Planke zu Herabschauender Hund“.", comment: "Effect description for Downward Dog exercise"),
+            instructions: NSLocalizedString("exercise.herabschauender-hund.instructions", value: "1) Beginne im Vierfüßlerstand, Hände schulterbreit, Knie unter der Hüfte 2) Schiebe die Hüfte nach oben und hinten, bis dein Körper ein umgekehrtes V bildet 3) Drücke die Fersen Richtung Boden, die Knie dürfen leicht gebeugt bleiben 4) Halte die Dehnung 20 bis 30 Sekunden, Kopf locker zwischen den Armen, und atme ruhig weiter.", comment: "Instructions for Downward Dog exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.cobra-dehnung",
+            name: "Kobra-Dehnung",
+            category: .stretching,
+            effect: NSLocalizedString("exercise.cobra-dehnung.effect", value: "Dehnt Bauch und Hüftbeuger und mobilisiert die Brustwirbelsäule. Ein sanfter Ausgleich zu viel Sitzen.", comment: "Effect description for Cobra Stretch exercise"),
+            instructions: NSLocalizedString("exercise.cobra-dehnung.instructions", value: "1) Lege dich auf den Bauch, Hände unter den Schultern, Ellbogen nah am Körper 2) Hebe den Oberkörper mit den Armen sanft an, die Hüfte bleibt am Boden 3) Schultern weg von den Ohren, Blick nach vorn 4) Halte 15 bis 30 Sekunden und atme ruhig weiter. Geh nur so weit, wie der untere Rücken schmerzfrei bleibt.", comment: "Instructions for Cobra Stretch exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.cat-cow",
+            name: "Katze-Kuh",
+            category: .warmup,
+            effect: NSLocalizedString("exercise.cat-cow.effect", value: "Mobilisiert die ganze Wirbelsäule und lockert Rücken und Nacken. Eine fließende Bewegung im Atemrhythmus, keine Haltedehnung.", comment: "Effect description for Cat-Cow exercise"),
+            instructions: NSLocalizedString("exercise.cat-cow.instructions", value: "1) Gehe in den Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte 2) Beim Ausatmen den Rücken rund machen, Kinn Richtung Brust (Katze) 3) Beim Einatmen ins leichte Hohlkreuz gehen, Brust nach vorn, Blick leicht nach oben (Kuh) 4) Wechsle 8 bis 10 Mal langsam im Atemrhythmus.", comment: "Instructions for Cat-Cow exercise")
+        ),
     ]
 }
 
@@ -633,6 +659,9 @@ extension ExerciseDatabase {
         "Box Jumps": "builtin.box-jumps",
         "Skater Hops": "builtin.skater-hops",
         "Jump Rope": "builtin.seilspringen",
+        "Downward Dog": "builtin.herabschauender-hund",
+        "Cobra Stretch": "builtin.cobra-dehnung",
+        "Cat-Cow": "builtin.cat-cow",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive

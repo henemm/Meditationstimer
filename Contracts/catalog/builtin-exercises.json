@@ -306,6 +306,21 @@
       "id": "builtin.seilspringen",
       "name": "Seilspringen",
       "category": "cardio"
+    },
+    {
+      "id": "builtin.herabschauender-hund",
+      "name": "Herabschauender Hund",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.cobra-dehnung",
+      "name": "Kobra-Dehnung",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.cat-cow",
+      "name": "Katze-Kuh",
+      "category": "warmup"
     }
   ]
 }
