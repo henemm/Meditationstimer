@@ -1,0 +1,2 @@
+WALK tries=1 menuExists=true optExists=true
+Test Case '-[LeanHealthTimerUITests.WalkJumpRopeUITests test_walk]' passed (249.640 seconds).
