@@ -12485,6 +12485,148 @@
           }
         }
       }
+    },
+    "Umgekehrtes Rudern" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umgekehrtes Rudern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverted Rows"
+          }
+        }
+      }
+    },
+    "Wandsitzen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wandsitzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wall-Sit"
+          }
+        }
+      }
+    },
+    "exercise.umgekehrtes-rudern.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Inverted Rows exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den mittleren Rücken, die hintere Schulter und den Bizeps. Trainiert das Zusammenziehen der Schulterblätter und wirkt Rundrücken und Bildschirmhaltung entgegen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the middle back, rear shoulders and biceps. Trains pulling the shoulder blades together and counteracts a rounded upper back and desk posture."
+          }
+        }
+      }
+    },
+    "exercise.umgekehrtes-rudern.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Inverted Rows exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich rücklings unter einen stabilen Tisch, greife die Kante oder nutze Ringe bzw. ein Band, Arme gestreckt 2) Körper bleibt von Kopf bis Fuß gerade, Fersen am Boden 3) Ziehe die Schulterblätter zusammen und die Brust zur Tischkante, Ellbogen nah am Körper 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back under a sturdy table and grip the edge, or use rings or a band, arms straight 2) Keep your body straight from head to toe, heels on the floor 3) Squeeze your shoulder blades together and pull your chest to the table edge, elbows close to your body 4) Lower yourself with control. The flatter your body, the harder the exercise."
+          }
+        }
+      }
+    },
+    "exercise.step-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Step-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Oberschenkel, Gesäß und Hüfte und verbessert Gleichgewicht und Stabilität auf einem Bein. Eine alltagsnahe Übung, die dem Treppensteigen entspricht."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the thighs, glutes and hips and improves balance and single-leg stability. An everyday movement that mirrors climbing stairs."
+          }
+        }
+      }
+    },
+    "exercise.step-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Step-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stelle dich vor eine stabile Stufe oder Bank 2) Setze einen Fuß ganz auf die Stufe 3) Drücke dich mit Kraft aus dem vorderen Bein nach oben, bis du aufrecht auf der Stufe stehst 4) Setze den Fuß kontrolliert wieder ab. Wechsle nach den Wiederholungen die Seite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand in front of a sturdy step or bench 2) Place one foot fully on the step 3) Drive up through the front leg until you stand upright on the step 4) Lower back down with control. Switch sides after your reps."
+          }
+        }
+      }
+    },
+    "exercise.wandsitzen.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Wall-Sit exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Oberschenkel und Gesäß durch statisches Halten und stärkt die Kraftausdauer der Beine. Wirkt ohne Bewegung und schont die Gelenke."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the thighs and glutes through a static hold and builds muscular endurance in the legs. Works without movement and is easy on the joints."
+          }
+        }
+      }
+    },
+    "exercise.wandsitzen.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Wall-Sit exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lehne den Rücken an eine Wand, Füße etwa schulterbreit und einen großen Schritt von der Wand entfernt 2) Rutsche nach unten, bis die Knie etwa 90° gebeugt sind und die Oberschenkel waagerecht sind 3) Halte die Position 30 bis 60 Sekunden, Rücken bleibt an der Wand 4) Knie bleiben über den Füßen. Atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lean your back against a wall, feet about shoulder-width apart and a big step away from the wall 2) Slide down until your knees are bent about 90° and your thighs are parallel to the floor 3) Hold the position for 30 to 60 seconds, keeping your back against the wall 4) Keep your knees above your feet. Keep breathing calmly."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

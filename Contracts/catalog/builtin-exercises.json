@@ -276,6 +276,21 @@
       "id": "builtin.australische-klimmzuege",
       "name": "Australische Klimmzüge",
       "category": "upperBody"
+    },
+    {
+      "id": "builtin.umgekehrtes-rudern",
+      "name": "Umgekehrtes Rudern",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.step-ups",
+      "name": "Step-ups",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.wandsitzen",
+      "name": "Wandsitzen",
+      "category": "legs"
     }
   ]
 }

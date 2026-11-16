@@ -500,6 +500,32 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.australische-klimmzuege.effect", value: "Kräftigt oberen Rücken, hintere Schulter und Arme im Zug mit geringerer Last als der Klimmzug. Ein guter Einstieg auf dem Weg zum ersten Klimmzug.", comment: "Effect description for Australian Pull-ups exercise"),
             instructions: NSLocalizedString("exercise.australische-klimmzuege.instructions", value: "1) Lege dich rücklings unter eine niedrige Stange und greife sie etwas weiter als schulterbreit, Arme gestreckt 2) Fersen bleiben am Boden, Körper ist von Kopf bis Fuß gestreckt 3) Ziehe die Brust zur Stange 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung.", comment: "Instructions for Australian Pull-ups exercise")
         ),
+
+        // MARK: - A2d-2a (Rücken, Beine)
+
+        ExerciseInfo(
+            id: "builtin.umgekehrtes-rudern",
+            name: "Umgekehrtes Rudern",
+            category: .upperBody,
+            effect: NSLocalizedString("exercise.umgekehrtes-rudern.effect", value: "Kräftigt den mittleren Rücken, die hintere Schulter und den Bizeps. Trainiert das Zusammenziehen der Schulterblätter und wirkt Rundrücken und Bildschirmhaltung entgegen.", comment: "Effect description for Inverted Rows exercise"),
+            instructions: NSLocalizedString("exercise.umgekehrtes-rudern.instructions", value: "1) Lege dich rücklings unter einen stabilen Tisch, greife die Kante oder nutze Ringe bzw. ein Band, Arme gestreckt 2) Körper bleibt von Kopf bis Fuß gerade, Fersen am Boden 3) Ziehe die Schulterblätter zusammen und die Brust zur Tischkante, Ellbogen nah am Körper 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung.", comment: "Instructions for Inverted Rows exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.step-ups",
+            name: "Step-ups",
+            category: .legs,
+            effect: NSLocalizedString("exercise.step-ups.effect", value: "Kräftigt Oberschenkel, Gesäß und Hüfte und verbessert Gleichgewicht und Stabilität auf einem Bein. Eine alltagsnahe Übung, die dem Treppensteigen entspricht.", comment: "Effect description for Step-ups exercise"),
+            instructions: NSLocalizedString("exercise.step-ups.instructions", value: "1) Stelle dich vor eine stabile Stufe oder Bank 2) Setze einen Fuß ganz auf die Stufe 3) Drücke dich mit Kraft aus dem vorderen Bein nach oben, bis du aufrecht auf der Stufe stehst 4) Setze den Fuß kontrolliert wieder ab. Wechsle nach den Wiederholungen die Seite.", comment: "Instructions for Step-ups exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.wandsitzen",
+            name: "Wandsitzen",
+            category: .legs,
+            effect: NSLocalizedString("exercise.wandsitzen.effect", value: "Kräftigt Oberschenkel und Gesäß durch statisches Halten und stärkt die Kraftausdauer der Beine. Wirkt ohne Bewegung und schont die Gelenke.", comment: "Effect description for Wall-Sit exercise"),
+            instructions: NSLocalizedString("exercise.wandsitzen.instructions", value: "1) Lehne den Rücken an eine Wand, Füße etwa schulterbreit und einen großen Schritt von der Wand entfernt 2) Rutsche nach unten, bis die Knie etwa 90° gebeugt sind und die Oberschenkel waagerecht sind 3) Halte die Position 30 bis 60 Sekunden, Rücken bleibt an der Wand 4) Knie bleiben über den Füßen. Atme ruhig weiter.", comment: "Instructions for Wall-Sit exercise")
+        ),
     ]
 }
 
@@ -575,6 +601,9 @@ extension ExerciseDatabase {
         "Pull-ups": "builtin.klimmzuege",
         "Chin-ups": "builtin.chin-ups",
         "Australian Pull-ups": "builtin.australische-klimmzuege",
+        "Inverted Rows": "builtin.umgekehrtes-rudern",
+        "Step-ups": "builtin.step-ups",
+        "Wall-Sit": "builtin.wandsitzen",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive
