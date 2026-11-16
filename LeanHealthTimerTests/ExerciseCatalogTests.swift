@@ -143,7 +143,7 @@ final class ExerciseCatalogTests: XCTestCase {
         ("builtin.herabschauender-hund", "Herabschauender Hund", "Downward Dog", "stretching"),
         ("builtin.cobra-dehnung", "Kobra-Dehnung", "Cobra Stretch", "stretching"),
         ("builtin.cat-cow", "Katze-Kuh", "Cat-Cow", "warmup"),
-        ("builtin.sitzende-vorbeuge", "Sitzende Vorbeuge", "Seated Forward Bend", "stretching"),
+        ("builtin.sitzende-vorbeuge", "Vorbeuge im Sitzen", "Seated Forward Bend", "stretching"),
         ("builtin.schulter-dehnung-links", "Schulter-Dehnung links", "Shoulder Stretch Left", "stretching"),
         ("builtin.schulter-dehnung-rechts", "Schulter-Dehnung rechts", "Shoulder Stretch Right", "stretching"),
     ]
