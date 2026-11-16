@@ -218,12 +218,66 @@ struct WorkoutPhase: Identifiable, Hashable, Codable {
         self.exerciseId = exerciseId
         self.hint = hint
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, workDuration, restDuration, exerciseId, hint
+    }
+
+    /// #48 A2b-0: missing/null/blank exerciseId is derived from the name; hint is normalized.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        name = try c.decode(String.self, forKey: .name)
+        workDuration = try c.decode(Int.self, forKey: .workDuration)
+        restDuration = try c.decode(Int.self, forKey: .restDuration)
+        let stored = try c.decodeIfPresent(String.self, forKey: .exerciseId)
+        if let stored, !stored.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            exerciseId = stored
+        } else {
+            exerciseId = ExerciseDatabase.exerciseId(forName: name)
+        }
+        hint = Self.normalizedHint(try c.decodeIfPresent(String.self, forKey: .hint))
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(id, forKey: .id)
+        try c.encode(name, forKey: .name)
+        try c.encode(workDuration, forKey: .workDuration)
+        try c.encode(restDuration, forKey: .restDuration)
+        try c.encodeIfPresent(exerciseId, forKey: .exerciseId)
+        try c.encodeIfPresent(hint, forKey: .hint)
+    }
 }
 
 // MARK: - #48 API scaffold (bodies follow in A2b-0 / A2b, not used by the app yet)
 
 extension WorkoutPhase {
-    static func normalizedHint(_ raw: String?) -> String? { raw }  // A2b-0
+    private static func isHintControl(_ v: Unicode.Scalar) -> Bool {
+        switch v.value {
+        case 0x00...0x1F, 0x7F...0x9F, 0xA0, 0x2028, 0x2029, 0x061C, 0x200E, 0x200F,
+             0x202A...0x202E, 0x2066...0x2069: return true
+        default: return false
+        }
+    }
+
+    /// One-line hint: control/format characters become spaces, runs collapse, trimmed, max 80 UTF-16 units.
+    static func normalizedHint(_ raw: String?) -> String? {
+        guard let raw else { return nil }
+        var text = ""
+        text.unicodeScalars.append(contentsOf: raw.unicodeScalars.map { isHintControl($0) ? " " : $0 })
+        let words = text.split(separator: " ", omittingEmptySubsequences: true)
+        let joined = words.joined(separator: " ")
+        var result = ""
+        var units = 0
+        for ch in joined {
+            units += ch.utf16.count
+            if units > 80 { break }
+            result.append(ch)
+        }
+        result = result.trimmingCharacters(in: .whitespaces)
+        return result.isEmpty ? nil : result
+    }
     mutating func apply(_ selection: ExerciseSelection) {}  // A2b
     static func newDefault(bundle: Bundle = .main) -> WorkoutPhase {  // A2b
         WorkoutPhase(name: "", workDuration: 30, restDuration: 15)
@@ -233,7 +287,24 @@ extension WorkoutPhase {
 extension WorkoutSet {
     static let backupKeyPrefix = "workoutProgramSetsBackup."
     static func loadStored(from defaults: UserDefaults, key: String = "workoutProgramSets",
-                           now: Date = Date()) -> [WorkoutSet]? { nil }  // A2b-0
+                           now: Date = Date()) -> [WorkoutSet]? {
+        guard let data = defaults.data(forKey: key) else { return nil }
+        if let decoded = try? JSONDecoder().decode([WorkoutSet].self, from: data) { return decoded }
+        backUpUnreadable(data, in: defaults, now: now)
+        return nil
+    }
+
+    /// Keeps unreadable raw data under a new backup key (never overwrites, no duplicate of identical bytes).
+    private static func backUpUnreadable(_ data: Data, in defaults: UserDefaults, now: Date) {
+        let keys = defaults.dictionaryRepresentation().keys
+        let existing = keys.filter { $0.hasPrefix(backupKeyPrefix) }
+        if existing.contains(where: { defaults.data(forKey: $0) == data }) { return }
+        let base = backupKeyPrefix + String(Int(now.timeIntervalSince1970))
+        var candidate = base
+        var n = 2
+        while keys.contains(candidate) { candidate = "\(base)-\(n)"; n += 1 }
+        defaults.set(data, forKey: candidate)
+    }
     static func migratingPresets(_ stored: [WorkoutSet], presets: [WorkoutSet]) -> [WorkoutSet] { stored }  // A2b-0
 }
 

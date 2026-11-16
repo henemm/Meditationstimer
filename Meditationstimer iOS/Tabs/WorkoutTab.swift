@@ -360,8 +360,7 @@ struct WorkoutTab: View {
     // MARK: - Persistence
 
     private func loadSets() {
-        if let data = UserDefaults.standard.data(forKey: setsKey),
-           let decoded = try? JSONDecoder().decode([WorkoutSet].self, from: data) {
+        if let decoded = WorkoutSet.loadStored(from: .standard, key: setsKey) {
             sets = decoded
             migrateSets()
         } else {
