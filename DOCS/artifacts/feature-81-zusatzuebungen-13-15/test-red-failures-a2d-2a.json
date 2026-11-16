@@ -1,0 +1,490 @@
+{
+  "devices" : [
+    {
+      "architecture" : "arm64",
+      "deviceId" : "9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B",
+      "deviceName" : "iPhone 17 Pro",
+      "modelName" : "iPhone 17 Pro",
+      "osBuildNumber" : "24B8117",
+      "osVersion" : "27.2",
+      "platform" : "iOS Simulator"
+    }
+  ],
+  "testNodes" : [
+    {
+      "children" : [
+        {
+          "children" : [
+            {
+              "children" : [
+                {
+                  "children" : [
+                    {
+                      "name" : "XCTAssertEqual failed: (\"55\") is not equal to (\"67\")",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 272
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"1\") is not equal to (\"2\")",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 273
+                      }
+                    }
+                  ],
+                  "duration" : "0,32s",
+                  "durationInSeconds" : 0.3156750202178955,
+                  "name" : "test_catalog_has67EntriesAndVersion2()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_catalog_has67EntriesAndVersion2()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_catalog_has67EntriesAndVersion2",
+                  "nodeType" : "Test Case",
+                  "result" : "Failed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "XCTAssertEqual failed: (\"55\") is not equal to (\"67\") - Endstand: JSON hat 67 Einträge",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 159
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"55\") is not equal to (\"67\") - Endstand: Katalog hat 67 Einträge",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 160
+                      }
+                    }
+                  ],
+                  "duration" : "0,0068s",
+                  "durationInSeconds" : 0.006757974624633789,
+                  "name" : "test_catalog_matchesBuiltinExercisesJson()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_catalog_matchesBuiltinExercisesJson()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_catalog_matchesBuiltinExercisesJson",
+                  "nodeType" : "Test Case",
+                  "result" : "Failed"
+                },
+                {
+                  "duration" : "0,0084s",
+                  "durationInSeconds" : 0.008381009101867676,
+                  "name" : "test_catalogIds_matchRegexAndAreUnique()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_catalogIds_matchRegexAndAreUnique()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_catalogIds_matchRegexAndAreUnique",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Tabata Classic ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Planke in Core Circuit ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Seitliche Planke links in Core Circuit ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Seitliche Planke rechts in Core Circuit ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Fahrrad-Crunches in Core Circuit ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Beinheben in Core Circuit ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Russian Twists in Core Circuit ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Full Body Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Kniebeugen in Full Body Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Liegestütze in Full Body Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Mountain Climbers in Full Body Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Ausfallschritte in Full Body Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Planke in Full Body Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Burpees in Quick Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Mountain Climbers in Quick Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Hampelmänner in Quick Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    },
+                    {
+                      "name" : "failed - Schritt Planke in Quick Burn ohne exerciseId",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 306
+                      }
+                    }
+                  ],
+                  "duration" : "0,01s",
+                  "durationInSeconds" : 0.01018989086151123,
+                  "name" : "test_defaultPrograms_referenceExistingCatalogIds()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_defaultPrograms_referenceExistingCatalogIds()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_defaultPrograms_referenceExistingCatalogIds",
+                  "nodeType" : "Test Case",
+                  "result" : "Failed"
+                },
+                {
+                  "duration" : "0,00076s",
+                  "durationInSeconds" : 0.0007649660110473633,
+                  "name" : "test_first43Entries_unchanged()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_first43Entries_unchanged()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_first43Entries_unchanged",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.inverted-rows\") is not equal to (\"builtin.umgekehrtes-rudern\") - Englischer Name Inverted Rows",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.step-ups\") is not equal to (\"builtin.step-ups\") - Englischer Name Step-ups",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.wall-sit\") is not equal to (\"builtin.wandsitzen\") - Englischer Name Wall-Sit",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.box-jumps\") is not equal to (\"builtin.box-jumps\") - Englischer Name Box Jumps",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.skater-hops\") is not equal to (\"builtin.skater-hops\") - Englischer Name Skater Hops",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.jump-rope\") is not equal to (\"builtin.seilspringen\") - Englischer Name Jump Rope",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.downward-dog\") is not equal to (\"builtin.herabschauender-hund\") - Englischer Name Downward Dog",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.cobra-stretch\") is not equal to (\"builtin.cobra-dehnung\") - Englischer Name Cobra Stretch",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.cat-cow\") is not equal to (\"builtin.cat-cow\") - Englischer Name Cat-Cow",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.seated-forward-bend\") is not equal to (\"builtin.sitzende-vorbeuge\") - Englischer Name Seated Forward Bend",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.shoulder-stretch-left\") is not equal to (\"builtin.schulter-dehnung-links\") - Englischer Name Shoulder Stretch Left",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    },
+                    {
+                      "name" : "XCTAssertEqual failed: (\"own.shoulder-stretch-right\") is not equal to (\"builtin.schulter-dehnung-rechts\") - Englischer Name Shoulder Stretch Right",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 203
+                      }
+                    }
+                  ],
+                  "duration" : "0,0085s",
+                  "durationInSeconds" : 0.008450031280517578,
+                  "name" : "test_idForEnglishName_returnsBuiltinId()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_idForEnglishName_returnsBuiltinId()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_idForEnglishName_returnsBuiltinId",
+                  "nodeType" : "Test Case",
+                  "result" : "Failed"
+                },
+                {
+                  "duration" : "0,00052s",
+                  "durationInSeconds" : 0.0005199909210205078,
+                  "name" : "test_idForGermanName_returnsBuiltinId()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_idForGermanName_returnsBuiltinId()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_idForGermanName_returnsBuiltinId",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0,00049s",
+                  "durationInSeconds" : 0.00048601627349853516,
+                  "name" : "test_idForNameWithLeftRightSuffix_resolvesBase()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_idForNameWithLeftRightSuffix_resolvesBase()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_idForNameWithLeftRightSuffix_resolvesBase",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0,00039s",
+                  "durationInSeconds" : 0.00039398670196533203,
+                  "name" : "test_idForUnknownSuffixName_isOwn()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_idForUnknownSuffixName_isOwn()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_idForUnknownSuffixName_isOwn",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0,00042s",
+                  "durationInSeconds" : 0.0004240274429321289,
+                  "name" : "test_infoForEnglishName_findsCatalogEntry()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_infoForEnglishName_findsCatalogEntry()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_infoForEnglishName_findsCatalogEntry",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "XCTUnwrap failed: expected non-nil value of type \"ExerciseInfo\" - Kennung builtin.umgekehrtes-rudern fehlt",
+                      "nodeType" : "Failure Message",
+                      "sourceLocation" : {
+                        "filePath" : "/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/glistening-jingling-rivest/LeanHealthTimerTests/ExerciseCatalogTests.swift",
+                        "lineNumber" : 255
+                      }
+                    }
+                  ],
+                  "duration" : "0,02s",
+                  "durationInSeconds" : 0.019951939582824707,
+                  "name" : "test_newExercises_haveTextsInDeAndEn_andCategory()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_newExercises_haveTextsInDeAndEn_andCategory()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_newExercises_haveTextsInDeAndEn_andCategory",
+                  "nodeType" : "Test Case",
+                  "result" : "Failed"
+                },
+                {
+                  "duration" : "0,00043s",
+                  "durationInSeconds" : 0.00043201446533203125,
+                  "name" : "test_origin_derivedFromPrefix()",
+                  "nodeIdentifier" : "ExerciseCatalogTests/test_origin_derivedFromPrefix()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests/test_origin_derivedFromPrefix",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "ExerciseCatalogTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests/ExerciseCatalogTests",
+              "nodeType" : "Test Suite",
+              "result" : "Failed"
+            }
+          ],
+          "name" : "LeanHealthTimerTests",
+          "nodeIdentifierURL" : "test://com.apple.xcode/Meditationstimer/LeanHealthTimerTests",
+          "nodeType" : "Unit test bundle",
+          "result" : "Failed"
+        }
+      ],
+      "name" : "Lean Health Timer",
+      "nodeType" : "Test Plan",
+      "result" : "Failed"
+    }
+  ],
+  "testPlanConfigurations" : [
+    {
+      "configurationId" : "1",
+      "configurationName" : "Test Scheme Action"
+    }
+  ]
+}
