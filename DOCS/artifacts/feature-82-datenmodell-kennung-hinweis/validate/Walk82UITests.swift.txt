@@ -1,0 +1,34 @@
+// Wegwerf-Durchlauf #82 (nur Scratchpad-Kopie, nie im Repo): App mit vorbereitetem Programmspeicher
+// starten, Workout-Tab öffnen, Bildschirmfotos ablegen. Der Name der Aufnahme kommt aus WALK82_TAG.
+import XCTest
+
+final class Walk82UITests: XCTestCase {
+    let shots = "/private/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-wobbly-beaming-nygaard/a1601522-32e1-4058-92d2-7b8989982487/scratchpad/shots"
+
+    func test_walk() throws {
+        let tag = (try? String(contentsOfFile: "\(shots)/tag.txt", encoding: .utf8))?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? "run"
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        let deny = app.buttons.matching(NSPredicate(format: "label == 'Nicht erlauben' OR label == 'Don’t Allow'")).firstMatch
+        if deny.waitForExistence(timeout: 8) { deny.tap(); sleep(2) }
+        for label in ["OK", "Nicht erlauben"] {
+            let b = app.buttons[label]
+            if b.waitForExistence(timeout: 2), b.isHittable { b.tap() }
+        }
+        sleep(2)
+        shot("\(tag)-workout-top")
+        // Zu den Programmen blättern
+        for i in 1...3 { app.swipeUp(); sleep(1); shot("\(tag)-workout-scroll\(i)") }
+        try? app.debugDescription.write(toFile: "\(shots)/\(tag)-tree.txt", atomically: true, encoding: .utf8)
+        app.terminate()
+    }
+
+    private func shot(_ name: String) {
+        let png = XCUIScreen.main.screenshot().pngRepresentation
+        try? png.write(to: URL(fileURLWithPath: "\(shots)/\(name).png"))
+    }
+}

@@ -330,13 +330,13 @@ Erwartetes Testbild nach A2d-1 (Namen wie in `ExerciseCatalogTests.swift`):
 - App-Durchlauf im Simulator (nach A2d-1c; in A2d-1a/b mit einer Übung der Runde, die in der Vorschlagsliste steht, z. B. „V-Ups" bzw. „Crunches"): im Schritt-Editor „Pull-ups" aus der heutigen Vorschlagsliste wählen (die Auswahl aus dem Katalog kommt erst mit A2b); das Info-Blatt zeigt Wirkung und Anleitung, einmal mit App-Sprache Deutsch (Start mit `-AppleLanguages (de)`) und einmal mit Englisch (`-AppleLanguages (en)`)
 
 `WorkoutPhaseMigrationTests.swift` (Muster `LeanHealthTimerTests/TrackerMigrationTests.swift`):
-- [ ] AC-10: `test_oldJson_loadsLossless`
-- [ ] AC-11: `test_missingExerciseId_derivedFromName` (zusätzlich in A2b-0: gespeicherte leere Kennung `""` wird wie fehlend abgeleitet)
-- [ ] AC-12: `test_ownSlug_rules`
-- [ ] AC-13: `test_roundTrip_keepsExerciseIdAndHint` und `test_storedExerciseId_notRecomputed`
-- [ ] AC-14: `test_hint_normalization` (prüft auch den Dekodierweg: JSON-Schritt mit Hinweis „a\nb" → `hint` „a b"; zusätzlich in A2b-0: je ein Beispiel für Steuerzeichen U+0007, U+0085 und Bidi U+200E; „a\n\nb" → „a b"; „a   b" → „a b"; zweimal normiert = einmal normiert)
-- [ ] AC-15: `test_corruptJson_isBackedUpBeforeFallback` (sucht den Schlüssel über das Präfix `workoutProgramSetsBackup.` und prüft Byte-Gleichheit; ein bereits vorhandener Sicherungsschlüssel derselben Sekunde wird nicht überschrieben; zusätzlich in A2b-0: hat die vorhandene Sicherung derselben Sekunde andere Bytes als die kaputten Daten, liegt die neue Sicherung genau unter `workoutProgramSetsBackup.<Sekunden>-2`; `workoutProgramSets` hält danach unverändert die Rohdaten; ein zweiter Ladevorgang mit denselben kaputten Daten, auch in einer späteren Sekunde, legt keinen weiteren Sicherungsschlüssel an)
-- [ ] AC-16: `test_noBackup_whenKeyMissingOrValid`
+- [x] AC-10: `test_oldJson_loadsLossless`
+- [x] AC-11: `test_missingExerciseId_derivedFromName` (zusätzlich in A2b-0: gespeicherte leere Kennung `""` wird wie fehlend abgeleitet)
+- [x] AC-12: `test_ownSlug_rules`
+- [x] AC-13: `test_roundTrip_keepsExerciseIdAndHint` und `test_storedExerciseId_notRecomputed`
+- [x] AC-14: `test_hint_normalization` (prüft auch den Dekodierweg: JSON-Schritt mit Hinweis „a\nb" → `hint` „a b"; zusätzlich in A2b-0: je ein Beispiel für Steuerzeichen U+0007, U+0085 und Bidi U+200E; „a\n\nb" → „a b"; „a   b" → „a b"; zweimal normiert = einmal normiert)
+- [x] AC-15: `test_corruptJson_isBackedUpBeforeFallback` (sucht den Schlüssel über das Präfix `workoutProgramSetsBackup.` und prüft Byte-Gleichheit; ein bereits vorhandener Sicherungsschlüssel derselben Sekunde wird nicht überschrieben; zusätzlich in A2b-0: hat die vorhandene Sicherung derselben Sekunde andere Bytes als die kaputten Daten, liegt die neue Sicherung genau unter `workoutProgramSetsBackup.<Sekunden>-2`; `workoutProgramSets` hält danach unverändert die Rohdaten; ein zweiter Ladevorgang mit denselben kaputten Daten, auch in einer späteren Sekunde, legt keinen weiteren Sicherungsschlüssel an)
+- [x] AC-16: `test_noBackup_whenKeyMissingOrValid`
 - [ ] AC-20: `test_spokenText_withAndWithoutHint` (reine Funktion für den Ansagetext: alle vier Satzformen mit und ohne Hinweis, Deutsch und Englisch)
 - [ ] AC-21: `test_announcement_respectsSpeakSetting` — eine einzige Entscheidungsfunktion (Schritt + Wert von `speakExerciseNames` → zu sprechender Text oder `nil`) liefert bei ausgeschalteter Einstellung `nil` (weder Name noch Hinweis), bei eingeschalteter den Text nach AC-20. Beide Aufrufstellen (erste Übung in `beginSessionAfterCountdown` und Ankündigung der nächsten Übung zu Beginn der Pause) rufen ausschließlich diese Funktion auf; das prüft der Adversary per Codesuche (keine zweite Stelle, die `speakExerciseNames` für Übungsansagen selbst auswertet).
 - [ ] AC-23 (Logik): `test_selectingCatalogOrOwnExercise_setsExerciseId` — die Übernahme einer Auswahl in den Schritt (Katalogeintrag „Planke" bzw. „Eigene Übung…" mit „Mein Lauf") setzt `builtin.planke` mit dem deutschen Katalognamen „Planke" als `name` (Schreibregel Entscheidung 6) bzw. `own.mein-lauf` mit „Mein Lauf"; nach Kodieren und Dekodieren unverändert. Ein neuer Schritt ohne Auswahl trägt den alphabetisch ersten Katalogeintrag samt Kennung.
@@ -414,6 +414,7 @@ Ausdrücklich nicht Teil von #48 (Bestandsfehler, die der Analyse bekannt sind):
 
 ## Changelog
 
+- 2026-11-16: Runde A2b-0 (#82) validiert: AC-10 bis AC-17 erfüllt, Tests AC-10 bis AC-16 grün; App-Durchlauf mit Altbestand (Kennungen abgeleitet, nichts verloren) und kaputten Daten (eine byte-gleiche Sicherung, auch beim zweiten Start keine weitere).
 - 2026-11-16: Runde A2b-0 (#82): Leerzeichen-Läufe zusammenfassen, Ausweichsuffix und keine Doppelsicherung byte-gleicher Daten, `loadSets` über `loadStored`; leere Kennung gilt als fehlend; Entscheidung 6 als Schreibregel ab A2b klargestellt (kein Widerspruch zu AC-11); Test-Plan AC-11/14/15 um die neuen Regeln ergänzt.
 - 2026-11-16: Runde A2d-2d (#94, Workflow `feature-94-zusatzuebungen-22-24`): PO-Entscheidung deutscher Name Nr. 22 „Vorbeuge im Sitzen“ wie die deutsche Übersetzung der heutigen Vorschlagsliste (Entscheidungen, PO 2026-11-16), Testdatei-Anpassung in der RED-Phase, App-Durchlauf A2d-2d
 - 2026-11-16: Runde A2d-2c (#93, Workflow `feature-93-zusatzuebungen-19-21`): PO-Entscheidung deutsche Namen Nr. 20/21 „Kobra-Dehnung“/„Katze-Kuh“ wie die deutsche Übersetzung der heutigen Vorschlagsliste (Entscheidungen, PO 2026-11-16), Testdatei-Anpassung in der RED-Phase, App-Durchlauf A2d-2c, Namensschlüssel A2d-2 neun statt acht, Rundenschätzung A2d-2c ca. 210, Summe A2d-2 ca. 780.
