@@ -1,5 +1,5 @@
 {
-  "catalogVersion": 1,
+  "catalogVersion": 2,
   "note": "Feste Kennungen der eingebauten Übungen (Quelle: Meditationstimer iOS/Services/ExerciseDatabase.swift, Stand 13.11.2026). Kennungen werden nie geändert oder neu vergeben; neue Einträge nur anhängen.",
   "exercises": [
     {
@@ -321,6 +321,21 @@
       "id": "builtin.cat-cow",
       "name": "Katze-Kuh",
       "category": "warmup"
+    },
+    {
+      "id": "builtin.sitzende-vorbeuge",
+      "name": "Vorbeuge im Sitzen",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.schulter-dehnung-links",
+      "name": "Schulter-Dehnung links",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.schulter-dehnung-rechts",
+      "name": "Schulter-Dehnung rechts",
+      "category": "stretching"
     }
   ]
 }

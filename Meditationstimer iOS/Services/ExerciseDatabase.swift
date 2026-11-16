@@ -578,6 +578,32 @@ struct ExerciseDatabase {
             effect: NSLocalizedString("exercise.cat-cow.effect", value: "Mobilisiert die ganze Wirbelsäule und lockert Rücken und Nacken. Eine fließende Bewegung im Atemrhythmus, keine Haltedehnung.", comment: "Effect description for Cat-Cow exercise"),
             instructions: NSLocalizedString("exercise.cat-cow.instructions", value: "1) Gehe in den Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte 2) Beim Ausatmen den Rücken rund machen, Kinn Richtung Brust (Katze) 3) Beim Einatmen ins leichte Hohlkreuz gehen, Brust nach vorn, Blick leicht nach oben (Kuh) 4) Wechsle 8 bis 10 Mal langsam im Atemrhythmus.", comment: "Instructions for Cat-Cow exercise")
         ),
+
+        // MARK: - A2d-2d (Dehnung)
+
+        ExerciseInfo(
+            id: "builtin.sitzende-vorbeuge",
+            name: "Vorbeuge im Sitzen",
+            category: .stretching,
+            effect: NSLocalizedString("exercise.sitzende-vorbeuge.effect", value: "Dehnt Beinrückseite und unteren Rücken im Sitzen. Anders als die Hamstring-Dehnung im Stehen sitzt du mit beiden Beinen gestreckt am Boden.", comment: "Effect description for Seated Forward Bend exercise"),
+            instructions: NSLocalizedString("exercise.sitzende-vorbeuge.instructions", value: "1) Setze dich aufrecht auf den Boden, beide Beine nach vorn gestreckt 2) Beuge dich aus der Hüfte mit langem Rücken nach vorn, nicht aus dem Rundrücken 3) Lege die Hände auf Schienbeine oder Füße, die Knie dürfen leicht gebeugt sein 4) Halte 20 bis 30 Sekunden und atme ruhig weiter.", comment: "Instructions for Seated Forward Bend exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.schulter-dehnung-links",
+            name: "Schulter-Dehnung links",
+            category: .stretching,
+            effect: NSLocalizedString("exercise.schulter-dehnung-links.effect", value: "Dehnt die hintere Schulter und den oberen Rücken der linken Seite. Ideal gegen verspannte Schultern nach langem Sitzen.", comment: "Effect description for Shoulder Stretch Left exercise"),
+            instructions: NSLocalizedString("exercise.schulter-dehnung-links.instructions", value: "1) Stehe oder sitze aufrecht und führe den linken Arm quer vor die Brust 2) Ziehe ihn mit der rechten Hand sanft am Oberarm näher heran 3) Halte die linke Schulter tief, weg vom Ohr 4) Halte 20 bis 30 Sekunden und atme ruhig weiter, dann wechsle zur rechten Seite.", comment: "Instructions for Shoulder Stretch Left exercise")
+        ),
+
+        ExerciseInfo(
+            id: "builtin.schulter-dehnung-rechts",
+            name: "Schulter-Dehnung rechts",
+            category: .stretching,
+            effect: NSLocalizedString("exercise.schulter-dehnung-rechts.effect", value: "Dehnt die hintere Schulter und den oberen Rücken der rechten Seite. Ideal gegen verspannte Schultern nach langem Sitzen.", comment: "Effect description for Shoulder Stretch Right exercise"),
+            instructions: NSLocalizedString("exercise.schulter-dehnung-rechts.instructions", value: "1) Stehe oder sitze aufrecht und führe den rechten Arm quer vor die Brust 2) Ziehe ihn mit der linken Hand sanft am Oberarm näher heran 3) Halte die rechte Schulter tief, weg vom Ohr 4) Halte 20 bis 30 Sekunden und atme ruhig weiter, dann wechsle zur linken Seite.", comment: "Instructions for Shoulder Stretch Right exercise")
+        ),
     ]
 }
 
@@ -662,6 +688,9 @@ extension ExerciseDatabase {
         "Downward Dog": "builtin.herabschauender-hund",
         "Cobra Stretch": "builtin.cobra-dehnung",
         "Cat-Cow": "builtin.cat-cow",
+        "Seated Forward Bend": "builtin.sitzende-vorbeuge",
+        "Shoulder Stretch Left": "builtin.schulter-dehnung-links",
+        "Shoulder Stretch Right": "builtin.schulter-dehnung-rechts",
     ]
 
     /// Comparison key: without surrounding whitespace, case-insensitive

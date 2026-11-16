@@ -12911,6 +12911,165 @@
           }
         }
       }
+    },
+    "Vorbeuge im Sitzen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorbeuge im Sitzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seated Forward Bend"
+          }
+        }
+      }
+    },
+    "Schulter-Dehnung links" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulter-Dehnung links"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shoulder Stretch Left"
+          }
+        }
+      }
+    },
+    "Schulter-Dehnung rechts" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulter-Dehnung rechts"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shoulder Stretch Right"
+          }
+        }
+      }
+    },
+    "exercise.sitzende-vorbeuge.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Seated Forward Bend exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt Beinrückseite und unteren Rücken im Sitzen. Anders als die Hamstring-Dehnung im Stehen sitzt du mit beiden Beinen gestreckt am Boden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the back of your legs and lower back while seated. Unlike the standing hamstring stretch, you sit on the floor with both legs extended."
+          }
+        }
+      }
+    },
+    "exercise.sitzende-vorbeuge.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Seated Forward Bend exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Setze dich aufrecht auf den Boden, beide Beine nach vorn gestreckt 2) Beuge dich aus der Hüfte mit langem Rücken nach vorn, nicht aus dem Rundrücken 3) Lege die Hände auf Schienbeine oder Füße, die Knie dürfen leicht gebeugt sein 4) Halte 20 bis 30 Sekunden und atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Sit up tall on the floor with both legs stretched out in front of you 2) Fold forward from your hips with a long back, not by rounding it 3) Rest your hands on your shins or feet, knees may stay slightly bent 4) Hold for 20 to 30 seconds and keep breathing calmly."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-links.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Shoulder Stretch Left exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt die hintere Schulter und den oberen Rücken der linken Seite. Ideal gegen verspannte Schultern nach langem Sitzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the back of the left shoulder and the upper back. Great for tense shoulders after long periods of sitting."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-links.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Shoulder Stretch Left exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stehe oder sitze aufrecht und führe den linken Arm quer vor die Brust 2) Ziehe ihn mit der rechten Hand sanft am Oberarm näher heran 3) Halte die linke Schulter tief, weg vom Ohr 4) Halte 20 bis 30 Sekunden und atme ruhig weiter, dann wechsle zur rechten Seite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand or sit tall and bring your left arm across your chest 2) Gently pull it closer with your right hand on the upper arm 3) Keep the left shoulder low, away from your ear 4) Hold for 20 to 30 seconds and keep breathing calmly, then switch to the right side."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-rechts.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Shoulder Stretch Right exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt die hintere Schulter und den oberen Rücken der rechten Seite. Ideal gegen verspannte Schultern nach langem Sitzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the back of the right shoulder and the upper back. Great for tense shoulders after long periods of sitting."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-rechts.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Shoulder Stretch Right exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stehe oder sitze aufrecht und führe den rechten Arm quer vor die Brust 2) Ziehe ihn mit der linken Hand sanft am Oberarm näher heran 3) Halte die rechte Schulter tief, weg vom Ohr 4) Halte 20 bis 30 Sekunden und atme ruhig weiter, dann wechsle zur linken Seite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand or sit tall and bring your right arm across your chest 2) Gently pull it closer with your left hand on the upper arm 3) Keep the right shoulder low, away from your ear 4) Hold for 20 to 30 seconds and keep breathing calmly, then switch to the left side."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
