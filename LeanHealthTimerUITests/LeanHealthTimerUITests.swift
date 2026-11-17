@@ -2761,8 +2761,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Find and tap the date picker button on Mood tracker
-        let datePickerButton = app.buttons["trackerDateButton"]
+        // Find and tap the date picker button on the first level-based tracker (Mood)
+        let datePickerButton = app.buttons["trackerDateButton"].firstMatch
         guard datePickerButton.waitForExistence(timeout: 5) else {
             XCTFail("BUG 2b: trackerDateButton not found on level-based tracker (Mood)")
             return
@@ -2811,8 +2811,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Find and tap the date picker button
-        let datePickerButton = app.buttons["trackerDateButton"]
+        // Find and tap the date picker button of the first level-based tracker (Mood)
+        let datePickerButton = app.buttons["trackerDateButton"].firstMatch
         guard datePickerButton.waitForExistence(timeout: 5) else {
             XCTFail("trackerDateButton not found")
             return
@@ -2986,9 +2986,9 @@ final class LeanHealthTimerUITests: XCTestCase {
         trackerTab.tap()
         sleep(3)
 
-        // Find the calendar button (trackerDateButton) to open LevelSelectionView with DatePicker
+        // Find the calendar button (trackerDateButton) of the first level-based tracker (Mood) to open LevelSelectionView with DatePicker
         // This button opens the sheet in "expanded" mode with date picker visible
-        let calendarButton = app.buttons["trackerDateButton"]
+        let calendarButton = app.buttons["trackerDateButton"].firstMatch
 
         if calendarButton.waitForExistence(timeout: 5) {
             // Tap to open LevelSelectionView with DatePicker
