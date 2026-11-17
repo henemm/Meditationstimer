@@ -48,6 +48,7 @@ struct ExerciseDetailSheet: View {
                                 .foregroundColor(.workoutViolet)
 
                             Text(info.effect)
+                                .accessibilityIdentifier("exerciseDetail.effect")
                                 .font(.body)
                                 .foregroundStyle(.primary)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -63,6 +64,7 @@ struct ExerciseDetailSheet: View {
                                 .foregroundColor(.workoutViolet)
 
                             Text(info.instructions)
+                                .accessibilityIdentifier("exerciseDetail.instructions")
                                 .font(.body)
                                 .foregroundStyle(.primary)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -111,7 +113,8 @@ struct ExerciseDetailSheet: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle(exerciseName)
+            .navigationTitle(ExerciseDatabase.displayName(exerciseId: exerciseId ?? ExerciseDatabase.exerciseId(forName: exerciseName),
+                                                          storedName: exerciseName))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

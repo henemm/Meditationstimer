@@ -150,9 +150,42 @@ final class WorkoutHintUITests: XCTestCase {
         let picker = element("workout.phaseEditor.exercisePicker")
         XCTAssertTrue(picker.waitForExistence(timeout: 10), "Uebungsauswahl fehlt im Schrittdialog")
         picker.tap()
-        let option = element(id)
-        XCTAssertTrue(option.waitForExistence(timeout: 10), "Option \(id) fehlt")
+        let option = revealOption(id)
+        XCTAssertTrue(option.exists && option.isHittable, "Option \(id) nicht erreichbar")
         option.tap()
+    }
+
+    /// Scrollt das offene Auswahlmenue um ein Stueck. `up == true` zeigt Eintraege weiter unten in der
+    /// Liste (Wischen nach oben), sonst weiter oben. Nach unten wird gezielt auf einem sichtbaren
+    /// Menueeintrag gezogen: ein Wischen ueber `app` bzw. am Rand des Menues schliesst es.
+    private func dragMenu(up: Bool) {
+        if up {
+            let win = app.windows.firstMatch
+            let from = win.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.6))
+            let to = win.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
+            from.press(forDuration: 0.05, thenDragTo: to)
+        } else {
+            let visible = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'workout.exercisePicker.option.'"))
+                .allElementsBoundByIndex.filter { $0.isHittable }
+            guard !visible.isEmpty else { return }
+            let from = visible[visible.count / 2].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            from.press(forDuration: 0.05, thenDragTo: from.withOffset(CGVector(dx: 0, dy: 150)))
+        }
+    }
+
+    /// Das Menue legt nur Eintraege rund um die Auswahl im Zugaenglichkeitsbaum an: erst nach unten in
+    /// der Liste, dann zurueck und weiter nach oben scrollen, bis die Option existiert und antippbar
+    /// ist (begrenzte Versuche).
+    private func revealOption(_ id: String) -> XCUIElement {
+        let option = element(id)
+        _ = option.waitForExistence(timeout: 5)
+        let plan: [Bool] = Array(repeating: true, count: 6) + Array(repeating: false, count: 24)
+            + Array(repeating: true, count: 24)
+        for up in plan {
+            if option.exists && option.isHittable { return option }
+            dragMenu(up: up)
+        }
+        return option
     }
 
     /// Angezeigte Auswahl der geschlossenen Uebungsauswahl (Wert, sonst letzter Teil der Beschriftung).
@@ -200,8 +233,19 @@ final class WorkoutHintUITests: XCTestCase {
             pause.tap()
             XCTAssertTrue(element("workout.training.hint").waitForExistence(timeout: 5),
                           "Hinweis muss beim Anhalten sichtbar bleiben")
-            let resume = app.buttons["Start"].exists ? app.buttons["Start"] : app.buttons["Fortsetzen"]
-            if resume.waitForExistence(timeout: 5) { resume.tap() }
+            // Programmzeilen haben ebenfalls "Start"-Knoepfe: diese ueber die Kennung ausschliessen.
+            let resumeQuery = app.buttons.matching(NSPredicate(
+                format: "(label == 'Weiter' OR label == 'Fortsetzen' OR label == 'Start' OR label == 'Resume' OR label == 'Continue') AND NOT identifier BEGINSWITH 'workout.programRow'"
+            ))
+            _ = resumeQuery.firstMatch.waitForExistence(timeout: 5)
+            let resume = resumeQuery.allElementsBoundByIndex.first { $0.isHittable } ?? resumeQuery.firstMatch
+            if resume.exists {
+                resume.tap()
+            } else {
+                let shown = app.buttons.allElementsBoundByIndex.filter { $0.isHittable }
+                    .map { "\($0.identifier)|\($0.label)" }.joined(separator: "; ")
+                XCTFail("Kein Fortsetzen-Knopf gefunden; antippbare Knoepfe: \(shown)")
+            }
         }
 
         // Pause nach dem ersten Schritt: Hinweis verschwindet (nie in der Vorschau "Als nächstes").
@@ -227,8 +271,8 @@ final class WorkoutHintUITests: XCTestCase {
         let picker = element("workout.phaseEditor.exercisePicker")
         XCTAssertTrue(picker.waitForExistence(timeout: 10), "Uebungsauswahl fehlt im Schrittdialog")
         picker.tap()
-        let option = element("workout.exercisePicker.option.builtin.liegestuetze")
-        XCTAssertTrue(option.waitForExistence(timeout: 10), "Option per Kennung nicht auffindbar")
+        let option = revealOption("workout.exercisePicker.option.builtin.liegestuetze")
+        XCTAssertTrue(option.exists, "Option per Kennung nicht auffindbar")
         XCTAssertTrue(option.isHittable, "Option per Kennung nicht antippbar")
         option.tap()
         XCTAssertFalse(element("workout.exercisePicker.option.builtin.liegestuetze").waitForExistence(timeout: 2),
@@ -300,6 +344,7 @@ final class WorkoutHintUITests: XCTestCase {
 
         clearAndType(hintField(), "")
         saveStepAndProgram()
+        openPresetEditor()
         openPhaseEditor(row: 0)
         let reopened = (hintField().value as? String) ?? ""
         XCTAssertTrue(reopened.isEmpty || reopened == hintField().placeholderValue,
@@ -325,13 +370,36 @@ final class WorkoutHintUITests: XCTestCase {
         picker.tap()
         XCTAssertTrue(element("workout.exercisePicker.option.builtin.planke").waitForExistence(timeout: 10),
                       "Katalogeintrag 'Planke' fehlt")
-        XCTAssertTrue(element("workout.exercisePicker.own").exists, "'Eigene Übung…' fehlt")
-        let options = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'workout.exercisePicker.option.'"))
-        XCTAssertEqual(options.count, 67, "Auswahl muss genau die 67 Katalogübungen zeigen")
-        XCTAssertFalse(app.staticTexts["Plank"].exists, "Englischer Vorschlagsname 'Plank' in der Auswahl")
-        XCTAssertFalse(app.staticTexts["Push-ups"].exists, "Englischer Vorschlagsname 'Push-ups' in der Auswahl")
-        XCTAssertFalse(app.buttons["Plank"].exists)
-        XCTAssertFalse(app.buttons["Push-ups"].exists)
+
+        // Das Menue legt nur einen Ausschnitt an: in beide Richtungen bis zu den Enden scrollen, sammeln.
+        var ids = Set<String>()
+        var sawOwn = false
+        var sawEnglish = false
+        var trace = ""
+        func collect() -> Int {
+            let before = ids.count + (sawOwn ? 1 : 0)
+            let opts = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'workout.exercisePicker.option.'"))
+            for b in opts.allElementsBoundByIndex { ids.insert(b.identifier) }
+            if app.buttons["workout.exercisePicker.own"].exists { sawOwn = true }
+            if app.staticTexts["Plank"].exists || app.buttons["Plank"].exists
+                || app.staticTexts["Push-ups"].exists || app.buttons["Push-ups"].exists { sawEnglish = true }
+            return ids.count + (sawOwn ? 1 : 0) - before
+        }
+        for direction in [true, false] {
+            var idle = 0
+            for step in 0..<60 {
+                let added = collect()
+                trace += "\(direction ? "u" : "d")\(step):+\(added)=\(ids.count) "
+                if added == 0 { idle += 1 } else { idle = 0 }
+                // Beim Rueckweg liegen die ersten Schritte noch im schon gesammelten Bereich.
+                if idle >= (direction ? 3 : 6) { break }
+                dragMenu(up: direction)
+            }
+        }
+        _ = collect()
+        XCTAssertTrue(sawOwn, "'Eigene Übung…' fehlt")
+        XCTAssertEqual(ids.count, 67, "Auswahl muss genau die 67 Katalogübungen zeigen (gefunden: \(ids.count)) \(trace)")
+        XCTAssertFalse(sawEnglish, "Englischer Vorschlagsname ('Plank'/'Push-ups') in der Auswahl")
     }
 
     /// Verhalten (AC-28): Given Vorgabe "Core Circuit" im Training, When der Info-Knopf getippt wird,

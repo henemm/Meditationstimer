@@ -2438,6 +2438,40 @@
         }
       }
     },
+    "Hinweis (optional)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinweis (optional)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hint (optional)"
+          }
+        }
+      }
+    },
+    "z. B. 12 Wiederholungen, langsam" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "z. B. 12 Wiederholungen, langsam"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. 12 reps, slow"
+          }
+        }
+      }
+    },
     "Custom Exercise..." : {
       "extractionState" : "manual",
       "localizations" : {

@@ -278,9 +278,39 @@ extension WorkoutPhase {
         result = result.trimmingCharacters(in: .whitespaces)
         return result.isEmpty ? nil : result
     }
-    mutating func apply(_ selection: ExerciseSelection) {}  // A2b
-    static func newDefault(bundle: Bundle = .main) -> WorkoutPhase {  // A2b
-        WorkoutPhase(name: "", workDuration: 30, restDuration: 15)
+
+    /// #48 A2b: catalog choice sets id + German catalog name; own exercise sets own.<slug> + name verbatim.
+    mutating func apply(_ selection: ExerciseSelection) {
+        switch selection {
+        case .catalog(let id):
+            exerciseId = id
+            name = ExerciseDatabase.info(forId: id)?.name ?? name
+        case .own(let ownName):
+            exerciseId = ExerciseDatabase.ownExerciseId(forName: ownName)
+            name = ownName
+        }
+    }
+
+    /// The 67 catalog exercises with localized names, alphabetical by localized name.
+    static func pickerCatalog(bundle: Bundle = .main) -> [(id: String, name: String)] {
+        ExerciseDatabase.catalog
+            .map { (id: $0.id, name: ExerciseDatabase.displayName(exerciseId: $0.id, storedName: $0.name, bundle: bundle)) }
+            .sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
+    }
+
+    /// New step: alphabetically first catalog exercise.
+    static func newDefault(bundle: Bundle = .main) -> WorkoutPhase {
+        var phase = WorkoutPhase(name: "", workDuration: 30, restDuration: 15)
+        if let first = pickerCatalog(bundle: bundle).first { phase.apply(.catalog(id: first.id)) }
+        return phase
+    }
+
+    /// Hint field input: normalized value to store plus the text to show (keeps one typed trailing space).
+    static func hintInput(_ raw: String) -> (hint: String?, shown: String) {
+        let hint = normalizedHint(raw)
+        guard let hint else { return (nil, "") }
+        let keepsSpace = raw.last?.isWhitespace == true && hint.utf16.count < 80
+        return (hint, keepsSpace ? hint + " " : hint)
     }
 }
 
@@ -316,7 +346,21 @@ enum WorkoutAnnouncementForm: Equatable {
 
 enum WorkoutAnnouncement {
     static func spokenText(_ form: WorkoutAnnouncementForm, phase: WorkoutPhase, bundle: Bundle = .main) -> String {
-        ""  // A2b
+        let name = ExerciseDatabase.displayName(exerciseId: phase.exerciseId, storedName: phase.name, bundle: bundle)
+        func text(_ key: String) -> String { bundle.localizedString(forKey: key, value: key, table: nil) }
+        let sentence: String
+        switch form {
+        case .exercise(let number, let total):
+            sentence = String(format: text("Exercise %d of %d: %@"), number, total, name)
+        case .lastExercise:
+            sentence = String(format: text("Last exercise: %@"), name)
+        case .round(let number, let total):
+            sentence = String(format: text("Round %d of %d: %@"), number, total, name)
+        case .lastRound:
+            sentence = String(format: text("Last round: %@"), name)
+        }
+        guard let hint = phase.hint else { return sentence }
+        return sentence + ". " + hint
     }
     static func textToSpeak(_ form: WorkoutAnnouncementForm, phase: WorkoutPhase, speakExerciseNames: Bool,
                             bundle: Bundle = .main) -> String? {
@@ -1036,9 +1080,8 @@ public struct WorkoutProgramsView: View {
         /// Starts the actual workout session (called after optional countdown)
         private func beginSessionAfterCountdown() {
             // 1. Announce first exercise (if TTS enabled)
-            if speakExerciseNames {
-                let totalExercises = set.phases.count
-                let text = String(format: NSLocalizedString("Exercise %d of %d: %@", comment: "TTS announcement for exercise number"), 1, totalExercises, set.phases[0].name)
+            if let text = WorkoutAnnouncement.textToSpeak(.exercise(number: 1, total: set.phases.count), phase: set.phases[0],
+                                                          speakExerciseNames: speakExerciseNames) {
                 sounds.speak(text)
             }
 
@@ -1208,6 +1251,7 @@ public struct WorkoutProgramsView: View {
         @State private var timer: Timer?
         @State private var countdownTriggered = false  // Track countdown sound per phase
         @State private var scheduled: [DispatchWorkItem] = []  // Cancellable scheduled sounds
+        @State private var selectedExerciseId: String? = nil  // Exercise id for sheet (nil: derived from name)
         @State private var showExerciseSheet = false  // For exercise detail sheet
         @State private var selectedExerciseName: String = ""  // Exercise name for sheet
 
@@ -1279,7 +1323,7 @@ public struct WorkoutProgramsView: View {
                             // During PAUSE
                             if currentPhase.isWork {
                                 // WORK phase paused: show current exercise
-                                exerciseNameWithInfoButton(phase.name)
+                                exerciseNameWithInfoButton(phase)
 
                                 Text(nextExerciseInfo)
                                     .font(.caption)
@@ -1302,7 +1346,7 @@ public struct WorkoutProgramsView: View {
                                     .font(.system(size: 48, weight: .regular))
                                     .foregroundStyle(Color.workoutViolet)
 
-                                exerciseNameWithInfoButton(phase.name)
+                                exerciseNameWithInfoButton(phase)
 
                                 Text("Exercise")
                                     .font(.caption)
@@ -1322,6 +1366,17 @@ public struct WorkoutProgramsView: View {
                 }
                 .frame(width: 320, height: 320)
                 .padding(.top, 6)
+
+                // #48: hint line under the ring, only in the work phase
+                if currentPhase.isWork, let hint = phase.hint {
+                    Text(hint)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .padding(.horizontal, 24)
+                        .accessibilityIdentifier("workout.training.hint")
+                }
 
                 // Exercise counter + Round counter
                 VStack(spacing: 2) {
@@ -1348,20 +1403,22 @@ public struct WorkoutProgramsView: View {
                 }
             }
             .sheet(isPresented: $showExerciseSheet) {
-                ExerciseDetailSheet(exerciseName: selectedExerciseName, exerciseId: ExerciseDatabase.exerciseId(forName: selectedExerciseName))
+                ExerciseDetailSheet(exerciseName: selectedExerciseName, exerciseId: selectedExerciseId)
             }
         }
 
         @ViewBuilder
-        private func exerciseNameWithInfoButton(_ name: String) -> some View {
+        private func exerciseNameWithInfoButton(_ phase: WorkoutPhase) -> some View {
+            let shownName = ExerciseDatabase.displayName(exerciseId: phase.exerciseId, storedName: phase.name)
             HStack(spacing: 6) {
-                Text(name)
+                Text(shownName)
                     .font(.headline)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
 
                 Button {
-                    selectedExerciseName = name
+                    selectedExerciseName = phase.name
+                    selectedExerciseId = phase.exerciseId
                     showExerciseSheet = true
                 } label: {
                     Image(systemName: "info.circle")
@@ -1369,6 +1426,7 @@ public struct WorkoutProgramsView: View {
                         .foregroundStyle(Color.workoutViolet)
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("workout.training.infoButton")
             }
         }
 
@@ -1395,6 +1453,7 @@ public struct WorkoutProgramsView: View {
 
                     Button {
                         selectedExerciseName = nextInfo.name
+                        selectedExerciseId = nil
                         showExerciseSheet = true
                     } label: {
                         Image(systemName: "info.circle")
@@ -1504,33 +1563,19 @@ public struct WorkoutProgramsView: View {
             }
         }
 
-        /// Returns TTS announcement for next exercise with number: "Up next exercise 2 of 5 Plank"
-        private func getNextExerciseNameForTTS(afterIndex index: Int) -> String {
+        /// Announcement form and phase of what comes next (nil if nothing follows).
+        private func nextAnnouncement(afterIndex index: Int) -> (form: WorkoutAnnouncementForm, phase: WorkoutPhase)? {
             let nextIndex = index + 1
             if nextIndex < set.phases.count {
-                // Next exercise in current round
-                let exerciseName = set.phases[nextIndex].name
-                let exerciseNum = nextIndex + 1
-                let totalExercises = set.phases.count
-
-                // Check if last exercise AND last round
-                if nextIndex == set.phases.count - 1 && currentRound == set.repetitions {
-                    return String(format: NSLocalizedString("Last exercise: %@", comment: "TTS for last exercise"), exerciseName)
-                } else {
-                    return String(format: NSLocalizedString("Exercise %d of %d: %@", comment: "TTS announcement for exercise number"), exerciseNum, totalExercises, exerciseName)
-                }
+                let isLast = nextIndex == set.phases.count - 1 && currentRound == set.repetitions
+                return (isLast ? .lastExercise : .exercise(number: nextIndex + 1, total: set.phases.count), set.phases[nextIndex])
             } else if currentRound < set.repetitions {
-                // Next round, first exercise
                 let nextRound = currentRound + 1
-                let firstExercise = set.phases[0].name
-                if nextRound == set.repetitions {
-                    return String(format: NSLocalizedString("Last round: %@", comment: "TTS for last round"), firstExercise)
-                } else {
-                    return String(format: NSLocalizedString("Round %d of %d: %@", comment: "TTS for round X of Y with exercise"), nextRound, set.repetitions, firstExercise)
-                }
-            } else {
-                return ""  // No next (shouldn't happen)
+                let form: WorkoutAnnouncementForm = nextRound == set.repetitions
+                    ? .lastRound : .round(number: nextRound, total: set.repetitions)
+                return (form, set.phases[0])
             }
+            return nil
         }
 
         private func advancePhase() {
@@ -1547,12 +1592,10 @@ public struct WorkoutProgramsView: View {
                     countdownTriggered = false  // Reset for next phase
 
                     // TTS ANNOUNCEMENT (if enabled) - speak ONLY exercise name
-                    if speakExerciseNames {
-                        let ttsText = getNextExerciseNameForTTS(afterIndex: index)
-                        if !ttsText.isEmpty {
-                            sounds.speak(ttsText)
-                            print("[WorkoutPrograms] TTS: \(ttsText)")
-                        }
+                    if let next = nextAnnouncement(afterIndex: index),
+                       let ttsText = WorkoutAnnouncement.textToSpeak(next.form, phase: next.phase, speakExerciseNames: speakExerciseNames) {
+                        sounds.speak(ttsText)
+                        print("[WorkoutPrograms] TTS: \(ttsText)")
                     }
 
                     // PRE-ROLL AUFTAKT SCHEDULING (exactly like Frei-Tab lines 564-566)
@@ -1630,6 +1673,7 @@ public struct WorkoutProgramsView: View {
                         .tint(.blue)
                         .clipShape(Circle())
                         .accessibilityLabel("Start")
+                        .accessibilityIdentifier("workout.programRow.\(set.name).start")
                     }
 
                     // Spacer to bias layout so bottom feels like lower third
@@ -1663,6 +1707,7 @@ public struct WorkoutProgramsView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Bearbeiten")
+                        .accessibilityIdentifier("workout.programRow.\(set.name).edit")
                     }
                 }
                 .frame(minHeight: 140)
@@ -1925,6 +1970,7 @@ public struct WorkoutProgramsView: View {
                                             .foregroundStyle(.tertiary)
                                     }
                                 }
+                                .accessibilityIdentifier("workout.setEditor.phaseRow.\(index)")
                             }
                             .onDelete { indexSet in
                                 draft.phases.remove(atOffsets: indexSet)
@@ -1935,12 +1981,7 @@ public struct WorkoutProgramsView: View {
                         }
                         Button {
                             // Create new phase with first exercise suggestion
-                            let newPhase = WorkoutPhase(
-                                name: exerciseSuggestions.first ?? NSLocalizedString("New Exercise", comment: "Default name for new exercise"),
-                                workDuration: 30,
-                                restDuration: 15
-                            )
-                            editingPhase = newPhase
+                            editingPhase = WorkoutPhase.newDefault()
                         } label: {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
@@ -1972,6 +2013,7 @@ public struct WorkoutProgramsView: View {
                         Button(NSLocalizedString("Save", comment: "Button")) {
                             onSave(draft); dismiss()
                         }
+                        .accessibilityIdentifier("workout.setEditor.save")
                         .disabled(draft.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || draft.phases.isEmpty)
                     }
                 }
@@ -2023,20 +2065,27 @@ public struct WorkoutProgramsView: View {
         @State private var draft: WorkoutPhase
         @State private var customExerciseName: String = ""
         @State private var useCustomExercise: Bool = false
+        @State private var hintText: String
+        private let catalogOptions = WorkoutPhase.pickerCatalog()
+        private static let ownTag = "own"
         let isNew: Bool
         let isLastPhase: Bool
         let onSave: (WorkoutPhase) -> Void
         let onDelete: (() -> Void)?
 
         init(phase: WorkoutPhase, isNew: Bool, isLastPhase: Bool, onSave: @escaping (WorkoutPhase) -> Void, onDelete: (() -> Void)? = nil) {
+            var phase = phase
+            let id = phase.exerciseId ?? ExerciseDatabase.exerciseId(forName: phase.name)
+            phase.exerciseId = id
             self._draft = State(initialValue: phase)
             self.isNew = isNew
             self.isLastPhase = isLastPhase
             self.onSave = onSave
             self.onDelete = onDelete
+            self._hintText = State(initialValue: phase.hint ?? "")
 
-            // Check if phase uses a custom exercise (not in suggestions)
-            let isCustom = !exerciseSuggestions.contains(phase.name)
+            // Custom exercise = not a catalog exercise (decided by id, not by name)
+            let isCustom = !(id.hasPrefix("builtin.") && ExerciseDatabase.info(forId: id) != nil)
             self._useCustomExercise = State(initialValue: isCustom)
             self._customExerciseName = State(initialValue: isCustom ? phase.name : "")
         }
@@ -2046,32 +2095,56 @@ public struct WorkoutProgramsView: View {
             return "\(total)s"
         }
 
+        /// Selection value: catalog id, or `ownTag` for a free-text exercise.
+        private var exercisePicker: some View {
+            Picker(NSLocalizedString("Name", comment: "Picker label"), selection: Binding(
+                get: { useCustomExercise ? Self.ownTag : (draft.exerciseId ?? "") },
+                set: { newValue in
+                    if newValue == Self.ownTag {
+                        useCustomExercise = true
+                    } else {
+                        useCustomExercise = false
+                        draft.apply(.catalog(id: newValue))
+                    }
+                }
+            )) {
+                ForEach(catalogOptions, id: \.id) { option in
+                    Text(option.name).tag(option.id)
+                        .accessibilityIdentifier("workout.exercisePicker.option.\(option.id)")
+                }
+                ForEach([Self.ownTag], id: \.self) { tag in
+                    Text(NSLocalizedString("Custom Exercise...", comment: "Picker option")).tag(tag)
+                        .accessibilityIdentifier("workout.exercisePicker.own")
+                }
+            }
+            .pickerStyle(.menu)
+            .accessibilityIdentifier("workout.phaseEditor.exercisePicker")
+        }
+
+        /// One line, max 80 UTF-16 units (Spec #48, Entscheidung 9): capped in the setter, re-applied async so the field follows
+        private var hintBinding: Binding<String> {
+            Binding(get: { hintText }, set: { raw in
+                let input = WorkoutPhase.hintInput(raw)
+                draft.hint = input.hint
+                hintText = raw
+                if input.shown != raw { DispatchQueue.main.async { hintText = input.shown } }
+            })
+        }
+
         var body: some View {
             NavigationView {
                 Form {
                     Section(NSLocalizedString("Exercise", comment: "Section header")) {
-                        Picker(NSLocalizedString("Name", comment: "Picker label"), selection: Binding(
-                            get: { useCustomExercise ? "Custom Exercise..." : draft.name },
-                            set: { newValue in
-                                if newValue == "Custom Exercise..." {
-                                    useCustomExercise = true
-                                } else {
-                                    useCustomExercise = false
-                                    draft.name = newValue
-                                }
-                            }
-                        )) {
-                            ForEach(exerciseSuggestions, id: \.self) { exercise in
-                                Text(exercise).tag(exercise)
-                            }
-                            Text(NSLocalizedString("Custom Exercise...", comment: "Picker option")).tag("Custom Exercise...")
-                        }
-                        .pickerStyle(.menu)
-
+                        exercisePicker
                         if useCustomExercise {
                             TextField(NSLocalizedString("Exercise Name", comment: "TextField placeholder"), text: $customExerciseName)
                                 .textInputAutocapitalization(.words)
+                                .accessibilityIdentifier("workout.phaseEditor.ownNameField")
                         }
+                        TextField(NSLocalizedString("Hinweis (optional)", comment: "Hint field label"), text: hintBinding,
+                                  prompt: Text(NSLocalizedString("z. B. 12 Wiederholungen, langsam", comment: "Hint field placeholder")))
+                            .accessibilityLabel(NSLocalizedString("Hinweis (optional)", comment: "Hint field label"))
+                            .accessibilityIdentifier("workout.phaseEditor.hintField")
                     }
                     Section(NSLocalizedString("Work", comment: "Section header")) {
                         HStack {
@@ -2113,14 +2186,14 @@ public struct WorkoutProgramsView: View {
                     ToolbarItem(placement: .cancellationAction) { Button(NSLocalizedString("Cancel", comment: "Button")) { dismiss() } }
                     ToolbarItem(placement: .confirmationAction) {
                         Button(NSLocalizedString("Save", comment: "Button")) {
-                            // Use custom exercise name if selected
                             if useCustomExercise {
-                                draft.name = customExerciseName
+                                draft.apply(.own(name: customExerciseName))
                             }
 
                             onSave(draft)
                             dismiss()
                         }
+                        .accessibilityIdentifier("workout.phaseEditor.save")
                         .disabled(
                             useCustomExercise
                                 ? customExerciseName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
