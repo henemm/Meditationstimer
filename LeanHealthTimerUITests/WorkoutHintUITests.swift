@@ -145,6 +145,37 @@ final class WorkoutHintUITests: XCTestCase {
         saveStepAndProgram()
     }
 
+    /// Oeffnet die Uebungsauswahl und tippt die Option mit der Kennung `id`.
+    private func pickExercise(_ id: String) {
+        let picker = element("workout.phaseEditor.exercisePicker")
+        XCTAssertTrue(picker.waitForExistence(timeout: 10), "Uebungsauswahl fehlt im Schrittdialog")
+        picker.tap()
+        let option = element(id)
+        XCTAssertTrue(option.waitForExistence(timeout: 10), "Option \(id) fehlt")
+        option.tap()
+    }
+
+    /// Angezeigte Auswahl der geschlossenen Uebungsauswahl (Wert, sonst letzter Teil der Beschriftung).
+    private func shownSelection() -> String {
+        let picker = element("workout.phaseEditor.exercisePicker")
+        XCTAssertTrue(picker.waitForExistence(timeout: 10), "Uebungsauswahl fehlt im Schrittdialog")
+        if let value = picker.value as? String, !value.isEmpty { return value }
+        return picker.label.components(separatedBy: ", ").last ?? picker.label
+    }
+
+    /// Stellt Schritt 2 und 3 von "Core Circuit" ueber die Auswahl wieder her (Ausgangslage).
+    private func restoreCoreCircuitSteps() {
+        app.terminate()
+        launch()
+        openPresetEditor()
+        openPhaseEditor(row: 1)
+        pickExercise("workout.exercisePicker.option.builtin.seitliche-planke-links")
+        element("workout.phaseEditor.save").tap()
+        openPhaseEditor(row: 2)
+        pickExercise("workout.exercisePicker.option.builtin.seitliche-planke-rechts")
+        saveStepAndProgram()
+    }
+
     // MARK: - Tests
 
     /// Verhalten (AC-18, AC-19): Given Hinweis "12 Wiederholungen, langsam" am ersten Schritt von
@@ -177,52 +208,78 @@ final class WorkoutHintUITests: XCTestCase {
         let gone = NSPredicate(format: "exists == false")
         let goneExp = XCTNSPredicateExpectation(predicate: gone, object: element("workout.training.hint"))
         XCTAssertEqual(XCTWaiter().wait(for: [goneExp], timeout: 180), .completed,
-                       "In der Pause darf keine Hinweiszeile stehen (auch zweiter Schritt ohne Hinweis)")
+                       "In der Pause darf keine Hinweiszeile stehen")
+
+        // AC-19: zweiter Schritt (ohne Hinweis) in der Arbeitsphase zeigt keine Zeile.
+        _ = waitForTrainingRing()
+        XCTAssertFalse(element("workout.training.hint").waitForExistence(timeout: 5),
+                       "Schritt ohne Hinweis darf keine Hinweiszeile zeigen")
     }
 
-    /// Verhalten (AC-23): Given "Planke" aus der Auswahl und eine eigene Uebung "Mein Lauf",
-    /// When gespeichert und die App neu gestartet wird, Then steht die Auswahl wieder auf
-    /// `builtin.planke` bzw. "Eigene Uebung..." mit "Mein Lauf".
-    func test_pickedExercise_persistsAfterRelaunch() throws {
-        launch()
-        openPresetEditor()
-        openPhaseEditor(row: 0)
-        element("workout.phaseEditor.exercisePicker").tap()
-        let planke = element("workout.exercisePicker.option.builtin.planke")
-        XCTAssertTrue(planke.waitForExistence(timeout: 10), "Katalogeintrag Planke fehlt")
-        planke.tap()
-        saveStepAndProgram()
-
-        app.terminate()
+    /// Erreichbarkeitsnachweis (Rueckfallregel Auswahl, erster RED-Test der Runde): Given der offene
+    /// Schrittdialog, When die Uebungsauswahl geoeffnet und eine Option per Kennung angetippt wird,
+    /// Then schliesst das Menue und die Auswahl zeigt die getippte Uebung. Scheitert das nach der
+    /// Umsetzung, gilt die Rueckfallregel (Stil `.navigationLink`, vorher Entwurf an den PO).
+    func test_exercisePickerOption_isTappableById() throws {
         launch()
         openPresetEditor()
         openPhaseEditor(row: 0)
         let picker = element("workout.phaseEditor.exercisePicker")
-        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        XCTAssertTrue(picker.waitForExistence(timeout: 10), "Uebungsauswahl fehlt im Schrittdialog")
         picker.tap()
-        let selected = element("workout.exercisePicker.option.builtin.planke")
-        XCTAssertTrue(selected.waitForExistence(timeout: 10))
-        XCTAssertTrue(selected.isSelected || (selected.value as? String) == "1" || selected.label.contains("Planke"),
-                      "Auswahl steht nach Neustart nicht auf Planke")
-        let own = element("workout.exercisePicker.own")
-        XCTAssertTrue(own.exists, "Eintrag 'Eigene Übung…' fehlt")
-        // Eigene Uebung "Mein Lauf" ueber das Namensfeld; bleibt Anzeigename.
-        own.tap()
+        let option = element("workout.exercisePicker.option.builtin.liegestuetze")
+        XCTAssertTrue(option.waitForExistence(timeout: 10), "Option per Kennung nicht auffindbar")
+        XCTAssertTrue(option.isHittable, "Option per Kennung nicht antippbar")
+        option.tap()
+        XCTAssertFalse(element("workout.exercisePicker.option.builtin.liegestuetze").waitForExistence(timeout: 2),
+                       "Menue schliesst nach dem Tippen nicht")
+        XCTAssertEqual(shownSelection(), "Liegestütze", "Auswahl uebernimmt die getippte Option nicht")
+        // Nichts speichern: der Neustart im naechsten Test verwirft den offenen Dialog.
+    }
+
+    /// Verhalten (AC-23, AC-19): Given am zweiten Schritt "Eigene Uebung…" mit "Mein Lauf" und am dritten
+    /// Schritt "Planke" aus der Auswahl (beide vorher anders benannt), When gespeichert und die App neu
+    /// gestartet wird, Then zeigt die Auswahl genau "Planke" bzw. "Eigene Uebung…" mit "Mein Lauf";
+    /// im Training zeigt der Info-Knopf fuer "Planke" Wirkung und Anleitung, und der Schritt ohne
+    /// Hinweis hat keine Hinweiszeile.
+    func test_pickedExercise_persistsAfterRelaunch() throws {
+        launch()
+        addTeardownBlock { [self] in restoreCoreCircuitSteps() }
+        openPresetEditor()
+        openPhaseEditor(row: 1)
+        pickExercise("workout.exercisePicker.own")
         let ownName = element("workout.phaseEditor.ownNameField")
         XCTAssertTrue(ownName.waitForExistence(timeout: 10), "Namensfeld fuer eigene Uebung fehlt")
         clearAndType(ownName, "Mein Lauf")
+        element("workout.phaseEditor.save").tap()
+        openPhaseEditor(row: 2)
+        pickExercise("workout.exercisePicker.option.builtin.planke")
         saveStepAndProgram()
+
         app.terminate()
         launch()
         openPresetEditor()
-        openPhaseEditor(row: 0)
+        openPhaseEditor(row: 2)
+        XCTAssertEqual(shownSelection(), "Planke", "Auswahl am dritten Schritt steht nach Neustart nicht auf Planke")
+        XCTAssertFalse(element("workout.phaseEditor.ownNameField").exists, "Katalogwahl darf kein Namensfeld zeigen")
+        element("workout.phaseEditor.save").tap()
+        openPhaseEditor(row: 1)
         let ownNameAgain = element("workout.phaseEditor.ownNameField")
         XCTAssertTrue(ownNameAgain.waitForExistence(timeout: 10), "Eigene Uebung nach Neustart nicht erhalten")
         XCTAssertEqual(ownNameAgain.value as? String, "Mein Lauf")
-        // Ausgangslage zurueck: wieder Planke.
-        element("workout.phaseEditor.exercisePicker").tap()
-        element("workout.exercisePicker.option.builtin.planke").tap()
-        saveStepAndProgram()
+        element("workout.phaseEditor.save").tap()
+        element("workout.setEditor.save").tap()
+
+        startPreset()
+        _ = waitForTrainingRing()
+        XCTAssertFalse(element("workout.training.hint").waitForExistence(timeout: 3),
+                       "Schritt ohne Hinweis darf keine Hinweiszeile zeigen")
+        let info = element("workout.training.infoButton")
+        XCTAssertTrue(info.waitForExistence(timeout: 20), "Info-Knopf fehlt im Training")
+        info.tap()
+        XCTAssertTrue(element("exerciseDetail.effect").waitForExistence(timeout: 10), "Wirkungstext fehlt")
+        XCTAssertTrue(element("exerciseDetail.instructions").waitForExistence(timeout: 10), "Anleitungstext fehlt")
+        XCTAssertFalse(element("exerciseDetail.effect").label.isEmpty, "Wirkung leer")
     }
 
     /// Verhalten (AC-24): Given das Hinweisfeld, When 90 Zeichen bzw. ein Zeilenumbruch eingegeben
@@ -269,6 +326,8 @@ final class WorkoutHintUITests: XCTestCase {
         XCTAssertTrue(element("workout.exercisePicker.option.builtin.planke").waitForExistence(timeout: 10),
                       "Katalogeintrag 'Planke' fehlt")
         XCTAssertTrue(element("workout.exercisePicker.own").exists, "'Eigene Übung…' fehlt")
+        let options = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'workout.exercisePicker.option.'"))
+        XCTAssertEqual(options.count, 67, "Auswahl muss genau die 67 Katalogübungen zeigen")
         XCTAssertFalse(app.staticTexts["Plank"].exists, "Englischer Vorschlagsname 'Plank' in der Auswahl")
         XCTAssertFalse(app.staticTexts["Push-ups"].exists, "Englischer Vorschlagsname 'Push-ups' in der Auswahl")
         XCTAssertFalse(app.buttons["Plank"].exists)

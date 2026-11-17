@@ -3,7 +3,7 @@
 //  LeanHealthTimerTests
 //
 //  TDD RED Phase #48: Schritt-Modell (exerciseId, hint), Laden/Sicherung, Ansagetext, Auswahl.
-//  Oberfläche laut docs/artifacts/feature-48-uebungskatalog/test-api-vertrag.md.
+//  Oberfläche laut DOCS/context/feature-48-test-api-vertrag.md.
 //
 
 import XCTest
@@ -354,6 +354,23 @@ final class WorkoutPhaseMigrationTests: XCTestCase {
         let fresh = WorkoutPhase.newDefault(bundle: try langBundle("de"))
         XCTAssertEqual(fresh.exerciseId, "builtin.archer-liegestuetze")
         XCTAssertEqual(fresh.name, "Archer-Liegestütze")
+    }
+
+    // MARK: - AC-22 (Anzahl)
+
+    /// AC-22: Given der Katalog als Quelle der Auswahl, When die deutschen Namen gebildet werden, Then 67 Einträge
+    /// mit 67 verschiedenen, nicht leeren Namen; der alphabetisch erste ist der Standardname neuer Schritte.
+    /// „Eigene Übung…" und die 67 Optionen in der Oberfläche prüft `test_exercisePicker_showsOnlyCatalogNames_german`.
+    func test_pickerCatalog_has67DistinctLocalizedNames() throws {
+        let de = try langBundle("de")
+        let catalog = ExerciseDatabase.catalog
+        XCTAssertEqual(catalog.count, 67, "Auswahl muss alle 67 Katalogübungen anbieten")
+        let names = catalog.map { ExerciseDatabase.displayName(exerciseId: $0.id, storedName: "", bundle: de) }
+        XCTAssertFalse(names.contains(""), "Katalogübung ohne deutschen Namen")
+        XCTAssertEqual(Set(names).count, 67, "Deutsche Namen in der Auswahl nicht eindeutig")
+        let first = names.sorted { $0.localizedCompare($1) == .orderedAscending }.first
+        XCTAssertEqual(WorkoutPhase.newDefault(bundle: de).name, first,
+                       "Standardname neuer Schritte muss der alphabetisch erste Auswahleintrag sein")
     }
 
     // MARK: - AC-30
