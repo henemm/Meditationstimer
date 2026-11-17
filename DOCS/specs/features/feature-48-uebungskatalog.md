@@ -2,7 +2,7 @@
 entity_id: feature-48-uebungskatalog
 type: feature
 created: 2026-11-14
-updated: 2026-11-16
+updated: 2026-11-17
 status: draft
 workflow: feature-48-uebungskatalog
 issue: 48
@@ -42,7 +42,7 @@ Die 43 eingebauten Übungen und 24 bisher nur als Namensvorschlag vorhandene Üb
 
 ## Design-Bezug
 
-Freigegeben ist die Alternative „Hinweis unter dem Ring" (PO-Entscheidung 2026-11-14): `DOCS/artifacts/feature-48-uebungskatalog/entwurf.html`, veröffentlicht unter https://claude.ai/artifact/XrPS81A34yJzGMDacNYQiU. Ist-Stand-Screenshots im selben Ordner (`heute-*.jpg`). Im Ring bleibt der Text „Übung"; der Hinweis steht in eigener Zeile zwischen Ring und Zähler.
+Freigegeben ist die Alternative „Hinweis unter dem Ring" (PO-Entscheidung 2026-11-14). Die Entwurfsdatei (`entwurf.html`) und die Ist-Stand-Screenshots wurden nie ins Repo eingecheckt; die veröffentlichte Fassung (Artefakt XrPS81A34yJzGMDacNYQiU) war am 2026-11-17 nicht mehr abrufbar. Maßgeblich ist die hier beschriebene Alternative samt AC-18 und AC-19: Im Ring bleibt der Text „Übung"; der Hinweis steht in eigener Zeile zwischen Ring und Zähler.
 
 ## Architektur-Entscheidung (ADR)
 
@@ -114,7 +114,7 @@ Hälften für die Umsetzung: A2d-1 = Nr. 1-12, A2d-2 = Nr. 13-24.
 
 ## Zuordnung der früheren Vorschlagsliste (69 Namen)
 
-Herleitung aus `exerciseSuggestions` (`WorkoutProgramsView.swift` Z. 221-302) gegen `builtin-exercises.json` und die englischen Übersetzungen in `Localizable.xcstrings` (Stand 2026-11-14): **6** Namen sind exakt Katalognamen (Russian Twists, Mountain Climbers, Glute Bridges, Burpees, High Knees, Butt Kicks), **2** greifen über die Endung links/rechts (Beinpendel links/rechts → `builtin.beinpendel`), **37** sind englische Namen bestehender Katalogübungen (Tabelle unten), **24** werden die neuen Katalogübungen (Tabelle oben, englischer Name = Spalte „Englischer Name"). Kein Name bleibt ohne Katalogentsprechung; ein künftig unbekannter Name wird nach Entscheidung 4 Schritt (4) zu `own.<slug>`.
+Herleitung aus `exerciseSuggestions` (`WorkoutProgramsView.swift` Z. 221-302, Stand 2026-11-14; heute Z. 330–411) gegen `builtin-exercises.json` und die englischen Übersetzungen in `Localizable.xcstrings` (Stand 2026-11-14): **6** Namen sind exakt Katalognamen (Russian Twists, Mountain Climbers, Glute Bridges, Burpees, High Knees, Butt Kicks), **2** greifen über die Endung links/rechts (Beinpendel links/rechts → `builtin.beinpendel`), **37** sind englische Namen bestehender Katalogübungen (Tabelle unten), **24** werden die neuen Katalogübungen (Tabelle oben, englischer Name = Spalte „Englischer Name"). Kein Name bleibt ohne Katalogentsprechung; ein künftig unbekannter Name wird nach Entscheidung 4 Schritt (4) zu `own.<slug>`.
 
 Die Ableitung „englischer Name → Kennung" (Entscheidung 4 Schritt 2) ist eine feste Tabelle in `ExerciseDatabase`, nicht eine Rückübersetzung zur Laufzeit; sie enthält die 37 Zeilen unten und ab A2d die 24 englischen Namen der neuen Übungen.
 
@@ -183,7 +183,7 @@ Gesamt 13 Dateien (7 Produkt, 4 Test einschließlich `server/test/mcp-read.test.
 | A2d-2c (#93) | Nr. 19-21 (Herabschauender Hund, Kobra-Dehnung, Katze-Kuh), Namensschlüssel Herabschauender Hund (Downward Dog), Kobra-Dehnung (Cobra Stretch), Katze-Kuh (Cat-Cow) | wie A2d-2a, dazu `LeanHealthTimerTests/ExerciseCatalogTests.swift` (nur die zwei deutschen Namen Z. 144-145, in der RED-Phase dieser Runde) | ca. 210 | kaum |
 | A2d-2d (#94) | Nr. 22-24 (Vorbeuge im Sitzen, Schulter-Dehnung links/rechts) und `catalogVersion` 2, Namensschlüssel für alle drei (Seated Forward Bend, Shoulder Stretch Left/Right) | wie A2d-2a, dazu `LeanHealthTimerTests/ExerciseCatalogTests.swift` (nur der deutsche Name Z. 146, in der RED-Phase dieser Runde) | ca. 210 | nein |
 | A2b-0 | Datenmodell, Migration, Sicherung | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `Meditationstimer iOS/Tabs/WorkoutTab.swift`, `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift`; Doku: `openspec/specs/features/claude-annahme.md` | Produkt 110, Test 110 | nein (Datenstand) |
-| A2b | Hinweis sichtbar und hörbar, Auswahl aus Katalog | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `Meditationstimer iOS/Views/ExerciseDetailSheet.swift`, `Meditationstimer iOS/Localizable.xcstrings`, `LeanHealthTimerUITests/WorkoutHintUITests.swift`, `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift` (Ansage- und Auswahltests) | Produkt 150, Test 130 | ja, erste sichtbare Stufe |
+| A2b | Hinweis sichtbar und hörbar, Auswahl aus Katalog | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `Meditationstimer iOS/Views/ExerciseDetailSheet.swift`, `Meditationstimer iOS/Localizable.xcstrings`, `LeanHealthTimerUITests/WorkoutHintUITests.swift`, `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift` (Ansage- und Auswahltests) | Stand Analyse 2026-11-17: Produkt ca. 170 (`WorkoutProgramsView.swift` ca. 165, `ExerciseDetailSheet.swift` ca. 6), Test ca. 35 (Tests liegen schon im RED-Commit, nur Nachbesserung), zusammen ca. 205 von 250; bei Überschreitung STOP, die Grenze wird nicht angehoben (Texte in `Localizable.xcstrings` zählen wegen #89 vorsichtshalber mit) | ja, erste sichtbare Stufe |
 | A2c-1 | Vorgaben mit Kennung | `Meditationstimer iOS/Tabs/WorkoutTab.swift`, `LeanHealthTimerTests/ExerciseCatalogTests.swift` (AC-27), `LeanHealthTimerTests/WorkoutPhaseMigrationTests.swift` (AC-30), `LeanHealthTimerUITests/WorkoutHintUITests.swift` (AC-28) | Produkt rund 40, Test rund 90 | nein (Vorgaben unverändert sichtbar) |
 | A2c-2 | Toten Bildschirmteil samt 10er-Kopie und Vorschlagsliste entfernen, Doku-Nachzug | `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift`, `openspec/specs/features/workouts.md` | rund 400 weg, Doku rund 40 | nein (Aufräumen) |
 
@@ -216,9 +216,11 @@ Reihenfolge: A2a → A2d-1 (a → b → c) → A2d-2 (a → b → c → d) → A
 
 ### Editor, Training, Ansage — A2b
 
-- `PhaseEditorView`: Übungsauswahl zeigt die 67 Katalogübungen (lokalisierte Namen, nach Kategorie wie bisher) plus „Eigene Übung…" mit Freitext. Die Prüfung „eigen oder nicht" richtet sich nach Katalog statt nach der Vorschlagsliste (`exerciseSuggestions`); A2b nimmt die Liste aus der Auswahl, aus dieser Prüfung und aus dem Standardnamen neuer Schritte (heute `exerciseSuggestions.first` der alphabetisch sortierten Liste, Z. 302/1830, also „Archer Push-ups"; künftig wie heute der alphabetisch erste Eintrag, nun der Katalogübungen nach lokalisiertem Namen, auf Deutsch „Archer-Liegestütze" `builtin.archer-liegestuetze`, mit gesetzter Kennung — gleiches Verhalten, geprüft in `test_selectingCatalogOrOwnExercise_setsExerciseId`); die dann unbenutzte Liste selbst entfernt erst A2c-2. Wahl aus dem Katalog setzt `exerciseId` und deutschen Katalognamen in `name`; „Eigene Übung…" setzt `own.<slug>` aus dem eingegebenen Namen. Neues einzeiliges Feld „Hinweis (optional)", Eingabe auf 80 UTF-16-Einheiten begrenzt, Normalisierung nach Entscheidung 9.
+- `PhaseEditorView`: Übungsauswahl als eigene Unteransicht (Funktionsgrenze 50 Zeilen). Sie zeigt die 67 Katalogübungen mit lokalisierten Namen, flach und alphabetisch nach lokalisiertem Namen (`localizedCompare`), danach „Eigene Übung…" mit Freitext. „Wie bisher" heißt: Picker-Stil `.menu` bleibt (Z. 2069), keine sichtbare Formänderung; die heutige Auswahl ist ebenfalls flach und alphabetisch ohne Kategorien (`exerciseSuggestions` endet in Z. 411 mit `.sorted()`, `ForEach` ohne Abschnitte in Z. 2064). Der frühere Wortlaut „nach Kategorie wie bisher" war falsch. Auswahlwert ist die Kennung (bzw. ein Marker für „eigene"), damit eigene Namen nicht mit Katalognamen kollidieren. `isCustom` (heute Z. 2039) richtet sich nach der Kennung statt nach `exerciseSuggestions`. Der Standardname neuer Schritte (heute `exerciseSuggestions.first`, Z. 1939, „Archer Push-ups") kommt künftig aus `WorkoutPhase.newDefault(bundle:)` (Z. 282): der alphabetisch erste lokalisierte Katalogname, auf Deutsch „Archer-Liegestütze" `builtin.archer-liegestuetze`, mit gesetzter Kennung (geprüft in `test_selectingCatalogOrOwnExercise_setsExerciseId`). `exerciseSuggestions` (Z. 330–411) bleibt als unbenutzte Liste bis A2c-2 stehen; `getNextAnnouncementText` wird nicht angefasst. Wahl aus dem Katalog setzt über `apply(_:)` (Z. 281) die `exerciseId` und den deutschen Katalognamen in `name`; „Eigene Übung…" setzt `own.<slug>` aus dem eingegebenen Namen und den Namen wörtlich.
+- Rückfallregel Auswahl: Kennungen an einzelnen Menüeinträgen findet XCUITest nicht verlässlich (Apple-Forum https://developer.apple.com/forums/thread/713900 und https://developer.apple.com/forums/thread/690882, Recherche 2026-11-17; kein bestätigter Fix für `.menu`). Der erste RED-Test weist deshalb nach, dass eine Menüoption per Kennung antippbar ist. Gelingt das nicht, Rückfall auf `.pickerStyle(.navigationLink)` (eigene Liste). Das ist eine sichtbare Änderung der Bedienung: dann STOP und Entwurf „Heute/Entwurf" an den PO vor der Umsetzung. Alternative (eigene Auswahlliste mit Button-Zeilen, ca. +30–40 Zeilen, Häkchen selbst gebaut) nur, wenn weder `.menu` noch `.navigationLink` die Kennungen tragen.
+- Hinweisfeld „Hinweis (optional)": einzeilig (`TextField` ohne vertikale Achse), Eingabe auf 80 UTF-16-Einheiten begrenzt. Die Normalisierung (`normalizedHint`, Entscheidung 9, AC-14, AC-24) läuft im Binding-Setter statt per `onChange`-Rückschreiben (keine Cursor-Sprünge oder Schleifen); leer ergibt `nil`.
 - `ProgressRingsView`: unter dem Ring (zwischen Ring und Zähler) eine Zeile mit dem Hinweis, nur wenn vorhanden und nur in der Arbeitsphase. Der Name im Training und im Picker kommt lokalisiert aus dem Katalog (`builtin.*`) bzw. unverändert (`own.*`).
-- Ansage: Der gesprochene Text wird an den zwei heutigen Sprechstellen gebildet (`beginSessionAfterCountdown` Z. 930-934 und `getNextExerciseNameForTTS` Z. 1399-1425, aufgerufen zu Beginn der Pause Z. 1441-1446); eine kleine reine Funktion bildet aus Satzform, lokalisiertem Namen und Hinweis den Satz nach Entscheidung 11 und ist unit-testbar.
+- Ansage: Der gesprochene Text wird nur durch die reinen Funktionen `WorkoutAnnouncement.spokenText` (Z. 318; Satzform, Name bei `builtin.*` lokalisiert über die Kennung, bei `own.*` `phase.name`, Hinweis wörtlich nach Entscheidung 11 angehängt) und `textToSpeak` (Z. 321; `speakExerciseNames` → Text oder `nil`) gebildet; sie sind die einzige Stelle der Ansage-Textbildung und unit-testbar. Beide Sprechstellen laufen ausschließlich darüber: die erste Übung nach dem Countdown in `beginSessionAfterCountdown` (Z. 1037–1043) und die Ankündigung der nächsten Übung zu Beginn der Pause über `getNextExerciseNameForTTS` (Z. 1508–1534, aufgerufen in Z. 1551). Es bleibt keine zweite Auswertung von `speakExerciseNames` für Übungsansagen (heute Z. 1039 und Z. 1550); der Adversary prüft das per Codesuche (AC-21).
 - `ExerciseDetailSheet` (bereits in A2a, AC-7): Suche per Kennung statt per Name; die Detailansicht erhält die Kennung (Fallback: Ableitung aus dem Namen). A2b ändert daran nur den lokalisierten Titel.
 
 ### Vorgaben (A2c-1) und Aufräumen (A2c-2)
@@ -227,12 +229,19 @@ Reihenfolge: A2a → A2d-1 (a → b → c) → A2d-2 (a → b → c → d) → A
 
 ### Neue accessibilityIdentifier (für die UI-Tests)
 
+Alle in `WorkoutProgramsView.swift` bzw. `ExerciseDetailSheet.swift` (14, Stand RED-Tests):
+
+- `workout.programRow.<Name>.edit` und `workout.programRow.<Name>.start` (Programmzeile: Bearbeiten, Start)
+- `workout.setEditor.save` (Speichern im Programmdialog)
+- `workout.setEditor.phaseRow.<n>` (Schrittzeile Nr. n im Programmdialog)
 - `workout.phaseEditor.exercisePicker` (Übungsauswahl im Schrittdialog)
-- `workout.exercisePicker.option.<exerciseId>` (Zeile je Katalogübung) und `workout.exercisePicker.own` („Eigene Übung…")
 - `workout.phaseEditor.hintField` (Hinweisfeld)
+- `workout.phaseEditor.ownNameField` (Namensfeld bei „Eigene Übung…")
+- `workout.phaseEditor.save` (Speichern im Schrittdialog)
+- `workout.exercisePicker.option.<exerciseId>` (Zeile je Katalogübung) und `workout.exercisePicker.own` („Eigene Übung…")
 - `workout.training.hint` (Hinweiszeile unter dem Ring)
 - `workout.training.infoButton` (Info-Knopf im Training)
-- Weitere nötige Kennungen für Programmzeilen und Schritt-Hinzufügen-Knopf werden in der RED-Phase benannt und hier im Changelog nachgetragen.
+- `exerciseDetail.effect` und `exerciseDetail.instructions` (Wirkung und Anleitung im Info-Blatt)
 
 ### Texte (`Localizable.xcstrings`)
 
@@ -241,6 +250,7 @@ Reihenfolge: A2a → A2d-1 (a → b → c) → A2d-2 (a → b → c → d) → A
 | Hinweis (optional) | Hint (optional) |
 | Beinpendel (fehlt heute als Schlüssel; nur „Beinpendel links/rechts" existieren; Eintrag in A2d-1, das ohnehin die Textdatei ändert) | Leg Swing |
 | z. B. 12 Wiederholungen, langsam | e.g. 12 reps, slow |
+| Custom Exercise... (Schlüssel vorhanden, DE „Eigene Übung...", heute benutzt in `WorkoutProgramsView.swift` Z. 2067) | Custom Exercise... (vorhanden, keine Änderung) |
 | 24 Übungsnamen, Wirkung und Anleitung laut Tabelle | Übersetzung je Eintrag |
 
 Alle neuen Einträge mit `"extractionState": "manual"` und `"state": "translated"`, sonst Großschreibung im Debug-Build (Memory Bug 38).
@@ -340,14 +350,16 @@ Erwartetes Testbild nach A2d-1 (Namen wie in `ExerciseCatalogTests.swift`):
 - [ ] AC-20: `test_spokenText_withAndWithoutHint` (reine Funktion für den Ansagetext: alle vier Satzformen mit und ohne Hinweis, Deutsch und Englisch)
 - [ ] AC-21: `test_announcement_respectsSpeakSetting` — eine einzige Entscheidungsfunktion (Schritt + Wert von `speakExerciseNames` → zu sprechender Text oder `nil`) liefert bei ausgeschalteter Einstellung `nil` (weder Name noch Hinweis), bei eingeschalteter den Text nach AC-20. Beide Aufrufstellen (erste Übung in `beginSessionAfterCountdown` und Ankündigung der nächsten Übung zu Beginn der Pause) rufen ausschließlich diese Funktion auf; das prüft der Adversary per Codesuche (keine zweite Stelle, die `speakExerciseNames` für Übungsansagen selbst auswertet).
 - [ ] AC-23 (Logik): `test_selectingCatalogOrOwnExercise_setsExerciseId` — die Übernahme einer Auswahl in den Schritt (Katalogeintrag „Planke" bzw. „Eigene Übung…" mit „Mein Lauf") setzt `builtin.planke` mit dem deutschen Katalognamen „Planke" als `name` (Schreibregel Entscheidung 6) bzw. `own.mein-lauf` mit „Mein Lauf"; nach Kodieren und Dekodieren unverändert. Ein neuer Schritt ohne Auswahl trägt den alphabetisch ersten Katalogeintrag samt Kennung.
+- [ ] AC-22 (Anzahl, Nachbesserung A2b): Unit-Prüfung in `WorkoutPhaseMigrationTests.swift` — der Katalog hat 67 Einträge, die Auswahloptionen sind 67 plus „Eigene Übung…". Dieselbe Nachbesserung korrigiert den toten Verweis in Z. 6 der Testdatei auf `DOCS/context/feature-48-test-api-vertrag.md`.
 
 ### UI-Tests (`LeanHealthTimerUITests/WorkoutHintUITests.swift`, Aufruf nur als `./Scripts/run-uitests.sh WorkoutHintUITests/<Methode>`)
 
+- [ ] Rückfallregel Auswahl (A2b, erster RED-Test der Runde): Erreichbarkeitsnachweis, die Menüoption `workout.exercisePicker.option.builtin.planke` ist per Kennung antippbar; scheitert er, gilt die Rückfallregel aus „Technischer Ansatz".
 - [ ] AC-18, AC-19: `test_hintEnteredInEditor_visibleUnderRingInTraining` (Schritt mit Hinweis anlegen, starten, `workout.training.hint` unter dem Ring prüfen; Training anhalten, Hinweis bleibt sichtbar (Entscheidung 10); weiterlaufen lassen, in der folgenden Pause existiert `workout.training.hint` nicht; zweiter Schritt ohne Hinweis zeigt keine Zeile)
-- [ ] AC-23 (Oberfläche): `test_pickedExercise_persistsAfterRelaunch` („Planke" aus der Auswahl wählen, zweiten Schritt als „Eigene Übung…" „Mein Lauf" anlegen, speichern, App neu starten, Schritte erneut öffnen: Auswahl steht auf `workout.exercisePicker.option.builtin.planke` bzw. „Eigene Übung…" mit „Mein Lauf"; im Training zeigt der Info-Knopf für „Planke" Wirkung und Anleitung)
-- [ ] AC-24: `test_hintField_limitsLengthAndLines` (90 Zeichen eingeben → Feldwert hat höchstens 80 Zeichen; Text mit Zeilenumbruch → Feldwert einzeilig; Feld leeren, speichern, erneut öffnen → Feld leer und im Training keine Hinweiszeile)
+- [ ] AC-23 (Oberfläche): `test_pickedExercise_persistsAfterRelaunch` („Planke" aus der Auswahl wählen, zweiten Schritt als „Eigene Übung…" „Mein Lauf" anlegen, speichern, App neu starten, Schritte erneut öffnen: Auswahl steht auf `workout.exercisePicker.option.builtin.planke` bzw. „Eigene Übung…" mit „Mein Lauf"; im Training zeigt der Info-Knopf für „Planke" Wirkung und Anleitung). Nachbesserung A2b: eindeutige Prüfung der Auswahl statt der bisherigen ODER-Bedingung (`isSelected || value=="1" || label.contains("Planke")`), „Eigene Übung…" am zweiten Schritt statt an Zeile 0, Info-Knopf-Prüfung nach dem Neustart, Aufräumen der Testdaten per `addTeardownBlock`. AC-19 ausdrücklich: Beim Schritt ohne Hinweis fehlt `workout.training.hint`.
+- [ ] AC-24: `test_hintField_limitsLengthAndLines` (90 Zeichen eingeben → Feldwert hat höchstens 80 UTF-16-Einheiten; Text mit Zeilenumbruch → Feldwert einzeilig; Feld leeren, speichern, erneut öffnen → Feld leer und im Training keine Hinweiszeile)
 - [ ] AC-22: `test_exercisePicker_showsOnlyCatalogNames_german` (Start mit `-AppleLanguages (de)`; `workout.exercisePicker.option.builtin.planke` existiert, kein Eintrag „Plank"/„Push-ups", `workout.exercisePicker.own` existiert)
-- [ ] AC-28: `test_infoButton_forPresetPlanke_showsContent` (A2c-1; Vorgabe „Core Circuit")
+- [ ] AC-28: `test_infoButton_forPresetPlanke_showsContent` (A2c-1; Vorgabe „Core Circuit"; bleibt in A2b bewusst rot und wird im Prüfbericht einzeln ausgewiesen)
 - [ ] AC-25: `test_hintField_localized_german` (Start mit `-AppleLanguages (de)`; `workout.phaseEditor.hintField` trägt „Hinweis (optional)" und Platzhalter „z. B. 12 Wiederholungen, langsam") und `test_hintField_localized_english` (Start mit `-AppleLanguages (en)`; „Hint (optional)" und „e.g. 12 reps, slow"); beide prüfen, dass der Text nicht in Großbuchstaben erscheint
 - Hinweis aus Memory: verdeckte Elemente bleiben im Zugänglichkeitsbaum; bei Sichtbarkeitsprüfungen zusätzlich `isHittable` bzw. Existenz im geöffneten Dialog prüfen. Tab-Knöpfe haben keine Kennung (positionsbasiert).
 
@@ -399,7 +411,7 @@ Ausdrücklich nicht Teil von #48 (Bestandsfehler, die der Analyse bekannt sind):
 
 - Unübersetzte Übungsnamen an Stellen, die A2 nicht berührt (außer Training, Picker und Ansagetext, die ohnehin umgebaut werden).
 - Keine Ansage der nächsten Übung bei Pause 0 s.
-- Unterschiedlicher Standardwert von `speakExerciseNames` im freien HIIT-Timer (true) gegenüber den Programmen (false).
+- Unterschiedlicher Standardwert von `speakExerciseNames` im freien HIIT-Timer (true, `WorkoutsView.swift:80`) gegenüber den Programmen (false, `WorkoutProgramsView.swift` Z. 796), eigenes Issue #95.
 - Doppelter Ansage-Weg: privater `SoundPlayer` in `WorkoutProgramsView.swift` gegenüber `WorkoutSoundPlayer.swift`.
 - Watch-App und Widget bleiben unberührt.
 - Annahme und Anwenden von Lieferungen (#51), Abschrift (#53), Herkunftsanzeige „von Claude" in der Liste (#51).
@@ -414,6 +426,7 @@ Ausdrücklich nicht Teil von #48 (Bestandsfehler, die der Analyse bekannt sind):
 
 ## Changelog
 
+- 2026-11-17: Runde A2b (#83, Workflow `feature-83-hinweis-katalogauswahl`) gegen diese Spec gestartet, Analyse eingearbeitet: Technischer Ansatz A2b präzisiert (reine Funktionen `apply`, `newDefault`, `spokenText`/`textToSpeak` als einzige Stelle der Ansage-Textbildung; Zeilenangaben auf den aktuellen Code korrigiert; Auswahl als Unteransicht mit Kennung als Auswahlwert, Picker-Stil `.menu`; Rückfallregel `.navigationLink` mit PO-Entwurf bei Scheitern, Belege Apple-Forum 713900 und 690882; Hinweisfeld mit Normalisierung im Binding-Setter). Widerspruch „nach Kategorie wie bisher" aufgelöst: die heutige Auswahl ist flach und alphabetisch, die neue flach alphabetisch nach lokalisiertem Namen. Kennungsliste auf alle 14 vervollständigt, Texte-Tabelle um den vorhandenen Schlüssel „Custom Exercise..." ergänzt, Schätzung A2b ca. 205 von 250, Testlücken-Nachbesserungen im Test Plan, Design-Bezug auf den tatsächlichen Stand korrigiert (Entwurf nie eingecheckt, veröffentlichte Fassung nicht mehr abrufbar), Nebenbefund #95 unter Out of Scope.
 - 2026-11-16: Runde A2b-0 (#82) validiert: AC-10 bis AC-17 erfüllt, Tests AC-10 bis AC-16 grün; App-Durchlauf mit Altbestand (Kennungen abgeleitet, nichts verloren) und kaputten Daten (eine byte-gleiche Sicherung, auch beim zweiten Start keine weitere).
 - 2026-11-16: Runde A2b-0 (#82): Leerzeichen-Läufe zusammenfassen, Ausweichsuffix und keine Doppelsicherung byte-gleicher Daten, `loadSets` über `loadStored`; leere Kennung gilt als fehlend; Entscheidung 6 als Schreibregel ab A2b klargestellt (kein Widerspruch zu AC-11); Test-Plan AC-11/14/15 um die neuen Regeln ergänzt.
 - 2026-11-16: Runde A2d-2d (#94, Workflow `feature-94-zusatzuebungen-22-24`): PO-Entscheidung deutscher Name Nr. 22 „Vorbeuge im Sitzen“ wie die deutsche Übersetzung der heutigen Vorschlagsliste (Entscheidungen, PO 2026-11-16), Testdatei-Anpassung in der RED-Phase, App-Durchlauf A2d-2d
