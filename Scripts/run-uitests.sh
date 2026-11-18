@@ -15,9 +15,10 @@
 
 # Simulator per Name + OS statt fester UDID — UDIDs ändern sich mit jedem
 # Runtime-Update (siehe #19). Die UDID wird zur Laufzeit aufgelöst, weil
-# simctl boot/bootstatus/erase eine UDID brauchen.
+# simctl boot/bootstatus/erase eine UDID brauchen. Laufzeit per Umgebungsvariable
+# überschreibbar, z. B. SIMULATOR_OS=27.0 ./Scripts/run-uitests.sh (#74).
 SIMULATOR_NAME="iPhone 17 Pro"
-SIMULATOR_OS="26.5"
+SIMULATOR_OS="${SIMULATOR_OS:-27.2}"
 SIMULATOR_ID=$(xcrun simctl list devices available "iOS $SIMULATOR_OS" \
     | grep "^    $SIMULATOR_NAME (" \
     | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' \
@@ -25,6 +26,7 @@ SIMULATOR_ID=$(xcrun simctl list devices available "iOS $SIMULATOR_OS" \
 if [ -z "$SIMULATOR_ID" ]; then
     echo "❌ Kein verfügbarer Simulator '$SIMULATOR_NAME' mit iOS $SIMULATOR_OS gefunden."
     echo "   Verfügbare Geräte: xcrun simctl list devices available"
+    echo "   Andere Laufzeit: SIMULATOR_OS=<Version> $0 ..."
     exit 1
 fi
 PROJECT="Meditationstimer.xcodeproj"
