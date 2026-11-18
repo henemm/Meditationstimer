@@ -308,8 +308,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Tap Add Tracker
-        let addButton = app.buttons["Add Tracker"]
+        // Tap Add Tracker (language-independent identifier; German label is "Tracker hinzufügen")
+        let addButton = app.buttons["addTrackerButton"]
         XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
         addButton.tap()
         sleep(1)
@@ -333,7 +333,10 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Bug: Trackers don't appear after creation - sheet closes but no tracker in list
     func testTrackerCreationFromPresetPersistsAfterRestart() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        // enable-testing alone keeps SwiftData in memory, which cannot survive a restart.
+        // uitest-disk-store uses a separate on-disk store; uitest-reset-store empties it on the first launch only.
+        let baseArguments = ["enable-testing", "uitest-disk-store", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = baseArguments + ["uitest-reset-store"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -350,7 +353,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         }
 
         // Open Add Tracker sheet
-        let addTrackerButton = app.buttons["Add Tracker"]
+        let addTrackerButton = app.buttons["addTrackerButton"]
         guard addTrackerButton.waitForExistence(timeout: 3) else {
             XCTFail("Add Tracker button should exist")
             return
@@ -384,6 +387,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         // CRITICAL TEST: Restart app and verify persistence
         app.terminate()
         sleep(1)
+        app.launchArguments = baseArguments
         app.launch()
 
         // Navigate back to Tracker tab
