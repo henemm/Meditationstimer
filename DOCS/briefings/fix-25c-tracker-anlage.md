@@ -1,7 +1,7 @@
 ---
 spec_file: DOCS/specs/bugfix/fix-25c-tracker-anlage.md
-spec_sha256: 99368afaf34661a9d220f456ad863475b59d27556b3b2b8880f8ed1e62862b54
-spec_frozen_sha256: 4cab9cdcdbda98ecc28675a90d7ec4621d4fc7e12e118e73e96ab39a202a0f2a
+spec_sha256: 61d62a3a52202f87e486162d2122151aea3af7220c0f8d1a0aee8ab3d1253f67
+spec_frozen_sha256: c24d7aeada97ffa449e7ff691b258f42d6b25e462f4c9f6b4e4ea66dd630b0b3
 ---
 
 # PO-Briefing: fix-25c-tracker-anlage
@@ -12,20 +12,20 @@ spec_frozen_sha256: 4cab9cdcdbda98ecc28675a90d7ec4621d4fc7e12e118e73e96ab39a202a
 
 ## Was gebaut wird
 
-Zwei rote Tracker-Tests werden grün, und die Tracker-Liste zeigt Vorlagennamen auf Deutsch („Dankbarkeit“, „Stimmung“).
+Zwei rote Tests zur Gewohnheits-Anlage werden grün, und die deutsche App zeigt Vorlagen-Namen wie „Dankbarkeit“ statt „Gratitude“.
 
 ## Definition of Done
 
-Beide Tests laufen einzeln grün, die Liste zeigt deutsche Vorlagennamen, die übrige Testsuite bekommt keine neue Rotmeldung, und der normale App-Start bleibt unverändert.
+Beide Tests laufen grün, die übrige Testsuite zeigt keine neue Rotmeldung, und die Tracker-Liste zeigt deutsche Vorlagen-Namen.
 
 ## Wie geprüft wird
 
-Automatische Oberflächentests prüfen Anlegen, Neustart und deutsche Namen; eine Gegenprobe ohne Speichern muss rot werden; der Release-Build wird nur per Build geprüft.
+Automatische Oberflächentests prüfen Anlegen, Neustart und deutsche Namen; der Schutz des Normalbetriebs wird nur per Release-Build-Prüfung belegt.
 
 ## Kritische Anmerkungen
 
-- Stimmungsstufen („Awful … Great“) und weitere Stellen bleiben englisch; ausgelagert in Issue #97, von dir entschieden.
-- Dass der normale Start unverändert bleibt, belegt kein eigener Test, nur Build und Diff-Prüfung.
+- Zusatz zum Ticket: Namensanzeige wird in der App geändert; du hast das am 18.11. entschieden, Stimmungsstufen folgen in #97.
+- Release-Unverändertheit hat keinen eigenen automatischen Test, nur Build-Prüfung auf Warnungen.
 
 ## Freigabe-Frage
 

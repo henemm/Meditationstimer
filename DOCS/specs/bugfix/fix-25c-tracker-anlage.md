@@ -121,32 +121,32 @@ ersten Start könnte ein Rest aus früheren Läufen den Test falsch grün machen
 
 ## Acceptance Criteria
 
-1. `testPresetTapCreatesVisibleTracker` läuft einzeln als `Klasse/Methode` grün und prüft weiterhin die
-   Sichtbarkeit des Trackers nach dem Anlegen.
-2. `testTrackerCreationFromPresetPersistsAfterRestart` läuft einzeln als `Klasse/Methode` grün und prüft die
-   echte Kette Vorlage → Speichern → Neustart. Nachweis: Würde `modelContext.save()` in
-   `AddTrackerSheet.swift:107–111` fehlen, wäre der Test rot (Gegenprobe durch temporäres Entfernen, danach
-   zurückgenommen).
-3. Normalstart und Release-Build sind unverändert: Die neuen Argumente stehen ausschließlich unter `#if DEBUG`;
-   ein Release-Build erzeugt keine neue Warnung; ohne die Argumente wird kein `uitest.store` angelegt und der
-   `default.store` nicht angefasst.
-4. Ein Testlauf zählt nur als bestanden, wenn das Protokoll `Executed N tests` mit N ≥ 1 zeigt; Einzeltests
-   werden immer als `Klasse/Methode` aufgerufen (kein Nulllauf, siehe #33).
-5. Gesamtlauf der UI-Suite zeigt keine neue Rotmeldung gegenüber dem Stand vorher (erwartet rot bleiben nur
-   bekannte Fälle aus #25 außerhalb von Cluster C).
-6. `git diff` gegen `main` zeigt nur die drei Affected Files (plus Spec/Doku dieses Workflows).
-7. In der deutschen App zeigt die Tracker-Liste „Dankbarkeit“ statt „Gratitude“ und „Stimmung“ statt „Mood“; ein
-   eigener Tracker mit frei gewähltem Namen erscheint unverändert.
-   - Test: `testPresetTapCreatesVisibleTracker` (deutsch) prüft „Dankbarkeit“ nach dem Anlegen.
+- **AC-1:** Given die App läuft deutsch / When `testPresetTapCreatesVisibleTracker` einzeln als `Klasse/Methode`
+  läuft / Then ist er grün und prüft weiterhin die Sichtbarkeit des Trackers nach dem Anlegen.
+- **AC-2:** Given eine leere Testdatei / When `testTrackerCreationFromPresetPersistsAfterRestart` einzeln als
+  `Klasse/Methode` läuft / Then ist er grün und prüft die echte Kette Vorlage → Speichern → Neustart. Nachweis:
+  Würde `modelContext.save()` in `AddTrackerSheet.swift:107–111` fehlen, wäre der Test rot (Gegenprobe durch
+  temporäres Entfernen, danach zurückgenommen).
+- **AC-3:** Given ein Normalstart oder Release-Build / When die App ohne die neuen Argumente startet / Then ist
+  alles unverändert: Die neuen Argumente stehen ausschließlich unter `#if DEBUG`; ein Release-Build erzeugt keine
+  neue Warnung; es wird kein `uitest.store` angelegt und der `default.store` nicht angefasst.
+- **AC-4:** Given ein Testlauf / When er ausgewertet wird / Then zählt er nur als bestanden, wenn das Protokoll
+  `Executed N tests` mit N ≥ 1 zeigt; Einzeltests werden immer als `Klasse/Methode` aufgerufen (kein Nulllauf,
+  siehe #33).
+- **AC-5:** Given der Stand vor der Änderung / When die UI-Suite komplett läuft / Then zeigt sie keine neue
+  Rotmeldung (erwartet rot bleiben nur bekannte Fälle aus #25 außerhalb von Cluster C).
+- **AC-6:** Given die fertige Änderung / When `git diff` gegen `main` geprüft wird / Then zeigt er nur die drei
+  Affected Files (plus Spec/Doku dieses Workflows).
+- **AC-7:** Given die App läuft deutsch / When die Tracker-Liste erscheint / Then zeigt sie „Dankbarkeit“ statt
+  „Gratitude“ und „Stimmung“ statt „Mood“; ein eigener Tracker mit frei gewähltem Namen erscheint unverändert.
+  - Test: `testPresetTapCreatesVisibleTracker` (deutsch) prüft „Dankbarkeit“ nach dem Anlegen.
    - Test: neuer UI-Test `testTrackerListShowsGermanPresetNames` (deutsch, `enable-testing`): „Stimmung“ sichtbar,
      „Mood“ nicht vorhanden; danach Vorlage „Doomscrolling“ anlegen (Name ohne Eintrag im String-Katalog, steht
      stellvertretend für einen eigenen Namen) → erscheint unverändert als „Doomscrolling“.
 
 ## Test Plan
 
-Hinweis: Simulator iOS 26.5 ist nicht installiert, `Scripts/run-uitests.sh` hat 26.5 fest verdrahtet (#74/#77).
-Läufe erfolgen auf iPhone 17 Pro / iOS 27.2 mit einer Skriptkopie im Scratchpad (`SIMULATOR_OS="27.2"`); das
-Repo-Skript bleibt unverändert.
+Hinweis: Läufe erfolgen über `Scripts/run-uitests.sh` auf iPhone 17 Pro / iOS 27.2 (seit #74 Standard des Skripts).
 
 - [ ] RED: Beide Tests vor der Änderung einzeln als `Klasse/Methode` ausführen, C1 rot an `:313`, C2 rot an `:396`
       (am 2026-11-18 belegt, Wiederholung im Workflow).
@@ -169,7 +169,7 @@ Repo-Skript bleibt unverändert.
 - App-Start ist kritischer Pfad: Änderung strikt unter `#if DEBUG`, Normalstart unverändert.
 - Dateizustand zwischen Läufen: durch `uitest-reset-store` beim ersten Start abgefangen.
 - Eigene Datei `uitest.store`, getrennt vom normalen Speicher; keine Berührung von Nutzerdaten im Simulator.
-- Umfang: 2 Dateien, ca. +35/−8 LoC, Risiko niedrig (alles Neue unter `#if DEBUG`).
+- Umfang: 3 Dateien, ca. +37/−10 LoC, Risiko niedrig (alles Neue unter `#if DEBUG`).
 
 ## Scope
 
@@ -186,7 +186,7 @@ Repo-Skript bleibt unverändert.
 | `Services/TrackerModels.swift:893` | Upstream | Seed legt nur bei leerem Speicher NoAlc/Mood an; macht den Reset beim ersten Start nötig |
 | `Meditationstimer iOS/Tracker/AddTrackerSheet.swift:107-111` | Upstream | `createFromPreset` → `save()` → `dismiss()`; die zu beweisende Kette, unverändert |
 | `Meditationstimer iOS/Tabs/TrackerTab.swift:157` | Upstream | Kennung `addTrackerButton`, unverändert |
-| #74/#77 | Umfeld | iOS 26.5 nicht installiert; eigenes Ticket, nicht Teil dieser Runde |
+| #74 | Umfeld | Testskript läuft seit 2026-11-18 standardmäßig auf iOS 27.2 (erledigt vor dieser Runde) |
 
 Kein Widget-, Watch- oder App-Group-Zugriff auf den Speicher.
 
@@ -212,3 +212,5 @@ Keine neue ADR nötig: DEBUG-Testschalter nach dem bestehenden Muster `enable-te
 - 2026-11-18: Initial spec created
 - 2026-11-18: Befund TDD RED (C1 zeigt „Gratitude“); PO-Entscheidung: Anzeigename in der Liste in dieser Runde
   korrigieren, Rest in #97
+- 2026-11-18: Acceptance Criteria ins Format `AC-N: Given / When / Then` gebracht (Pflicht des Edit-Hooks),
+  Inhalt unverändert
