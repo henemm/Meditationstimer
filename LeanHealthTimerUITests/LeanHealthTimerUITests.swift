@@ -400,6 +400,47 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(persistedTracker.waitForExistence(timeout: 5), "Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()")
     }
 
+    /// Test that the German tracker list shows translated preset names (Mood -> Stimmung)
+    /// while names without a catalog entry (Doomscrolling, stands in for custom names) stay unchanged
+    func testTrackerListShowsGermanPresetNames() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Default seed creates the Mood tracker; German list must show "Stimmung", never "Mood"
+        XCTAssertTrue(app.staticTexts["Stimmung"].waitForExistence(timeout: 5), "Mood tracker should be shown as 'Stimmung' in German")
+        XCTAssertFalse(app.staticTexts["Mood"].exists, "English name 'Mood' must not appear in the German tracker list")
+
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        let addButton = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
+        addButton.tap()
+        sleep(1)
+
+        let preset = app.staticTexts["Doomscrolling"]
+        XCTAssertTrue(preset.waitForExistence(timeout: 3), "Doomscrolling preset should exist")
+        preset.tap()
+        sleep(2)
+
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 3), "Should be back on Tracker tab")
+        if scrollView.exists {
+            scrollView.swipeDown()
+            sleep(1)
+        }
+        // Name without catalog entry must appear unchanged
+        XCTAssertTrue(app.staticTexts["Doomscrolling"].waitForExistence(timeout: 5), "Doomscrolling tracker should appear unchanged after creation")
+    }
+
     // MARK: - Phase 2.5: Custom Tracker Tests
     // Note: Custom Tracker sheet tests are tested indirectly via:
     // - testCounterTrackerShowsCorrectCountFormat (creates Water tracker)
