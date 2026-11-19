@@ -376,7 +376,8 @@ final class WorkoutPhaseMigrationTests: XCTestCase {
     // MARK: - AC-30
 
     /// AC-30: Given ein Bestand mit allen Vorgaben (Zeit verändert) plus eigenem Programm, When die Vorgaben-Migration
-    /// läuft, Then bleibt der Bestand unverändert; fehlt eine Vorgabe, wird sie angehängt.
+    /// läuft, Then bleibt der Bestand unverändert; fehlt eine Vorgabe, wird sie angehängt; hat eine Vorgabe keine
+    /// Beschreibung (c), wird sie nachgefüllt, ihre (veränderten) Schritte bleiben.
     func test_existingUserStore_unchangedAfterPresetMigration() throws {
         XCTAssertFalse(defaultWorkoutSets.isEmpty)
         var stored = defaultWorkoutSets
@@ -394,5 +395,20 @@ final class WorkoutPhaseMigrationTests: XCTestCase {
         XCTAssertEqual(migrated2.count, withoutOne.count + 1)
         XCTAssertEqual(Array(migrated2.prefix(withoutOne.count)), withoutOne)
         XCTAssertEqual(migrated2.last?.name, missing.name)
+
+        // Fall (c): Vorgabe ohne Beschreibung mit veränderten Schritten
+        let presetDescription = try XCTUnwrap(defaultWorkoutSets[0].description,
+                                              "Vorgabe 0 braucht eine Beschreibung für diesen Fall")
+        XCTAssertFalse(presetDescription.isEmpty)
+        var noDescription = stored
+        noDescription[0].description = nil
+        noDescription[0].phases[0].workDuration += 3
+        let changedPhases = noDescription[0].phases
+        let migrated3 = WorkoutSet.migratingPresets(noDescription, presets: defaultWorkoutSets)
+        XCTAssertEqual(migrated3.count, noDescription.count, "Anzahl der Programme geändert")
+        XCTAssertEqual(migrated3.map(\.name), noDescription.map(\.name), "Reihenfolge der Programme geändert")
+        XCTAssertEqual(migrated3[0].description, presetDescription, "Beschreibung nicht aus der Vorgabe nachgefüllt")
+        XCTAssertEqual(migrated3[0].phases, changedPhases, "Schritte der Vorgabe verändert")
+        XCTAssertEqual(migrated3.last, custom, "Eigenes Programm verändert")
     }
 }

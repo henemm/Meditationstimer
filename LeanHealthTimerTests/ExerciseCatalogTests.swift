@@ -307,6 +307,8 @@ final class ExerciseCatalogTests: XCTestCase {
                 }
                 XCTAssertTrue(id.hasPrefix("builtin."), "\(id) ohne Präfix builtin.")
                 XCTAssertNotNil(ExerciseDatabase.info(forId: id), "\(id) nicht im Katalog")
+                XCTAssertEqual(id, ExerciseDatabase.exerciseId(forName: phase.name),
+                               "Kennung \(id) passt nicht zum Namen \(phase.name) in \(set.name)")
             }
         }
     }
