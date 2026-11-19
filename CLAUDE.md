@@ -138,6 +138,12 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 ./Scripts/run-uitests.sh Klasse/testMethodName      # Einzelner Test — IMMER mit Klasse!
 ```
 
+### Startargumente für UI-Tests
+
+- `enable-testing`: SwiftData nur im Arbeitsspeicher (Standard aller UI-Tests).
+- `uitest-disk-store` (nur DEBUG): eigene Datei `Application Support/uitest.store`, übersteht einen Neustart.
+- `uitest-reset-store` (nur DEBUG, mit `uitest-disk-store`): löscht `uitest.store` samt `-wal`/`-shm` vor dem Öffnen.
+
 ### Simulator
 
 | Variable | Wert |
