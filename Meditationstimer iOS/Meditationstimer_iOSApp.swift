@@ -30,23 +30,42 @@ struct Meditationstimer_iOSApp: App {
     static var sharedModelContainer: ModelContainer!
 
     init() {
-        // Detect UI test mode - use in-memory storage to avoid disk conflicts
-        var inMemory = false
-        #if DEBUG
-        if CommandLine.arguments.contains("enable-testing") {
-            inMemory = true
-        }
-        #endif
+        modelContainer = Self.makeModelContainer()
+        Self.sharedModelContainer = modelContainer
+    }
 
+    /// Builds the SwiftData container. DEBUG-only UI-test switches:
+    /// `uitest-disk-store` (separate on-disk store, wins over in-memory of `enable-testing`),
+    /// `uitest-reset-store` (deletes that store's files before opening).
+    private static func makeModelContainer() -> ModelContainer {
+        let schema = Schema([Tracker.self, TrackerLog.self])
+        #if DEBUG
+        let args = CommandLine.arguments
+        if args.contains("uitest-disk-store") {
+            do {
+                let dir = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask,
+                                                      appropriateFor: nil, create: true)
+                let storeURL = dir.appendingPathComponent("uitest.store")
+                if args.contains("uitest-reset-store") {
+                    for suffix in ["", "-wal", "-shm"] {
+                        try? FileManager.default.removeItem(at: URL(fileURLWithPath: storeURL.path + suffix))
+                    }
+                }
+                return try ModelContainer(for: schema, configurations: [ModelConfiguration(url: storeURL)])
+            } catch {
+                fatalError("Failed to create UI-test disk ModelContainer: \(error)")
+            }
+        }
+        let inMemory = args.contains("enable-testing")
+        #else
+        let inMemory = false
+        #endif
         do {
-            let schema = Schema([Tracker.self, TrackerLog.self])
             let config = ModelConfiguration(isStoredInMemoryOnly: inMemory)
-            modelContainer = try ModelContainer(for: schema, configurations: [config])
+            return try ModelContainer(for: schema, configurations: [config])
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
         }
-
-        Self.sharedModelContainer = modelContainer
     }
 
     var body: some Scene {

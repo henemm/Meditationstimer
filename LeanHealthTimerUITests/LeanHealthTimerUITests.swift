@@ -308,8 +308,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Tap Add Tracker
-        let addButton = app.buttons["Add Tracker"]
+        // Tap Add Tracker (language-independent identifier; German label is "Tracker hinzufügen")
+        let addButton = app.buttons["addTrackerButton"]
         XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
         addButton.tap()
         sleep(1)
@@ -333,7 +333,10 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Bug: Trackers don't appear after creation - sheet closes but no tracker in list
     func testTrackerCreationFromPresetPersistsAfterRestart() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        // enable-testing alone keeps SwiftData in memory, which cannot survive a restart.
+        // uitest-disk-store uses a separate on-disk store; uitest-reset-store empties it on the first launch only.
+        let baseArguments = ["enable-testing", "uitest-disk-store", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = baseArguments + ["uitest-reset-store"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -350,7 +353,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         }
 
         // Open Add Tracker sheet
-        let addTrackerButton = app.buttons["Add Tracker"]
+        let addTrackerButton = app.buttons["addTrackerButton"]
         guard addTrackerButton.waitForExistence(timeout: 3) else {
             XCTFail("Add Tracker button should exist")
             return
@@ -384,6 +387,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         // CRITICAL TEST: Restart app and verify persistence
         app.terminate()
         sleep(1)
+        app.launchArguments = baseArguments
         app.launch()
 
         // Navigate back to Tracker tab
@@ -394,6 +398,47 @@ final class LeanHealthTimerUITests: XCTestCase {
         // Verify Doomscrolling tracker still exists after restart
         let persistedTracker = app.staticTexts["Doomscrolling"]
         XCTAssertTrue(persistedTracker.waitForExistence(timeout: 5), "Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()")
+    }
+
+    /// Test that the German tracker list shows translated preset names (Mood -> Stimmung)
+    /// while names without a catalog entry (Doomscrolling, stands in for custom names) stay unchanged
+    func testTrackerListShowsGermanPresetNames() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Default seed creates the Mood tracker; German list must show "Stimmung", never "Mood"
+        XCTAssertTrue(app.staticTexts["Stimmung"].waitForExistence(timeout: 5), "Mood tracker should be shown as 'Stimmung' in German")
+        XCTAssertFalse(app.staticTexts["Mood"].exists, "English name 'Mood' must not appear in the German tracker list")
+
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        let addButton = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
+        addButton.tap()
+        sleep(1)
+
+        let preset = app.staticTexts["Doomscrolling"]
+        XCTAssertTrue(preset.waitForExistence(timeout: 3), "Doomscrolling preset should exist")
+        preset.tap()
+        sleep(2)
+
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 3), "Should be back on Tracker tab")
+        if scrollView.exists {
+            scrollView.swipeDown()
+            sleep(1)
+        }
+        // Name without catalog entry must appear unchanged
+        XCTAssertTrue(app.staticTexts["Doomscrolling"].waitForExistence(timeout: 5), "Doomscrolling tracker should appear unchanged after creation")
     }
 
     // MARK: - Phase 2.5: Custom Tracker Tests
@@ -1782,12 +1827,12 @@ final class LeanHealthTimerUITests: XCTestCase {
 
     // MARK: - NoAlc Card UI Tests (TDD RED - noalc-card-ui-fix)
 
-    /// TDD RED: Test that NoAlc buttons show EMOJIS (💧, ✨, 💥) instead of text labels
-    /// This test will FAIL because current implementation shows "Steady", "Easy", "Wild" text
-    func testNoAlcButtonsShowEmojis() throws {
+    /// NoAlc-Stufen-Knoepfe (💧, ✨, 💥) existieren in der Tracker-Liste, gefunden ueber ihre Kennung.
+    func testNoAlcLevelButtonsHaveIdentifiers() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
+        app.dismissHealthSheetIfAny()
 
         // Navigate to Tracker tab
         let trackerTab = app.tabBars.buttons["Tracker"]
@@ -1795,20 +1840,15 @@ final class LeanHealthTimerUITests: XCTestCase {
         trackerTab.tap()
         sleep(2)
 
-        // NoAlc card should show EMOJI buttons, not text buttons
-        // EXPECTED: Buttons with "💧", "✨", "💥" as labels
-        // CURRENT: Buttons with "Steady", "Easy", "Wild" as labels
+        // Stufen-Knoepfe tragen die Kennung generic_<icon> (TrackerRow.levelButtonLarge); das Label ist
+        // der Stufenname, nicht das Emoji.
+        let steadyButton = app.buttons["generic_💧"].firstMatch
+        let easyButton = app.buttons["generic_✨"].firstMatch
+        let wildButton = app.buttons["generic_💥"].firstMatch
 
-        let steadyEmojiButton = app.buttons["💧"]
-        let easyEmojiButton = app.buttons["✨"]
-        let wildEmojiButton = app.buttons["💥"]
-
-        XCTAssertTrue(steadyEmojiButton.waitForExistence(timeout: 3),
-            "NoAlc Steady button should show 💧 emoji instead of text")
-        XCTAssertTrue(easyEmojiButton.exists,
-            "NoAlc Easy button should show ✨ emoji instead of text")
-        XCTAssertTrue(wildEmojiButton.exists,
-            "NoAlc Wild button should show 💥 emoji instead of text")
+        XCTAssertTrue(steadyButton.waitForExistence(timeout: 5), "NoAlc Steady button generic_💧 must exist")
+        XCTAssertTrue(easyButton.exists, "NoAlc Easy button generic_✨ must exist")
+        XCTAssertTrue(wildButton.exists, "NoAlc Wild button generic_💥 must exist")
     }
 
     /// TDD RED: Test that NoAlc button shows visual feedback (checkmark) after tap
@@ -1881,157 +1921,6 @@ final class LeanHealthTimerUITests: XCTestCase {
 
         XCTAssertTrue(rewardsFound,
             "NoAlc card should show rewards/joker icons in header (noAlcRewards identifier)")
-    }
-
-    // MARK: - CRITICAL: NoAlc Info Button Tests (FEAT-37 Bug Prevention)
-
-    /// CRITICAL TEST: Verify (i) button opens NoAlcLogSheet (NOT TrackerHistorySheet)
-    /// This test catches regression where info button was incorrectly changed to show history
-    ///
-    /// REQUIREMENTS:
-    /// - (i) button MUST open a sheet with LOG functionality (not read-only history)
-    /// - Sheet MUST have "Advanced" button to expand for date picking
-    /// - Sheet MUST have 3 consumption level buttons (Steady, Easy, Wild)
-    func testNoAlcInfoButtonOpensLogSheetWithAdvancedOption() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-
-        // Navigate to Tracker tab
-        let trackerTab = app.tabBars.buttons["Tracker"]
-        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
-        trackerTab.tap()
-        sleep(2)
-
-        // Verify NoAlc card exists
-        let noAlcCard = app.staticTexts["NoAlc"]
-        XCTAssertTrue(noAlcCard.waitForExistence(timeout: 5), "NoAlc card should exist on Tracker tab")
-
-        // Find and tap the (i) info button in NoAlc card
-        let infoButton = app.buttons["info.circle"]
-        XCTAssertTrue(infoButton.waitForExistence(timeout: 3), "(i) info button should exist in NoAlc card")
-        infoButton.tap()
-        sleep(1)
-
-        // CRITICAL CHECK 1: Sheet MUST show "Advanced" button (NoAlcLogSheet has this)
-        // TrackerHistorySheet does NOT have this button - it's read-only
-        let advancedButton = app.buttons["Advanced"]
-        let advancedExists = advancedButton.waitForExistence(timeout: 3)
-
-        // CRITICAL CHECK 2: Sheet MUST have consumption level buttons
-        // These are the log buttons that actually record data
-        let steadyButton = app.buttons["💧"]
-        let easyButton = app.buttons["✨"]
-        let wildButton = app.buttons["💥"]
-
-        let hasLogButtons = steadyButton.exists || easyButton.exists || wildButton.exists
-
-        // Debug output for failure analysis
-        if !advancedExists {
-            print("DEBUG: 'Advanced' button NOT found - sheet might be TrackerHistorySheet (wrong!)")
-            print("DEBUG: Available buttons:")
-            for button in app.buttons.allElementsBoundByIndex.prefix(15) {
-                print("  - '\(button.label)' / '\(button.identifier)'")
-            }
-        }
-
-        XCTAssertTrue(advancedExists,
-            "CRITICAL: (i) button MUST open NoAlcLogSheet with 'Advanced' button. " +
-            "If this fails, the info button incorrectly shows TrackerHistorySheet (read-only) instead of the log sheet.")
-
-        XCTAssertTrue(hasLogButtons,
-            "CRITICAL: NoAlcLogSheet MUST have log buttons (💧, ✨, 💥) for recording consumption. " +
-            "If this fails, the wrong sheet is being shown.")
-    }
-
-    /// CRITICAL TEST: Verify Advanced mode has DatePicker for logging past dates
-    /// The 18:00 cutoff rule requires ability to log for previous days
-    func testNoAlcAdvancedModeHasDatePicker() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-
-        // Navigate to Tracker tab
-        let trackerTab = app.tabBars.buttons["Tracker"]
-        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
-        trackerTab.tap()
-        sleep(2)
-
-        // Tap (i) info button
-        let infoButton = app.buttons["info.circle"]
-        guard infoButton.waitForExistence(timeout: 3) else {
-            XCTFail("Info button not found in NoAlc card")
-            return
-        }
-        infoButton.tap()
-        sleep(1)
-
-        // Tap "Advanced" to expand the sheet
-        let advancedButton = app.buttons["Advanced"]
-        guard advancedButton.waitForExistence(timeout: 3) else {
-            XCTFail("CRITICAL: 'Advanced' button not found - wrong sheet is being shown!")
-            return
-        }
-        advancedButton.tap()
-        sleep(1)
-
-        // CRITICAL: DatePicker MUST exist in expanded mode
-        // This allows users to log for dates other than today (important for 18:00 cutoff)
-        let datePicker = app.datePickers.firstMatch
-        let hasDatePicker = datePicker.waitForExistence(timeout: 3)
-
-        // Also check for "Choose Date" text which appears in expanded mode
-        let chooseDateText = app.staticTexts["Choose Date"]
-
-        XCTAssertTrue(hasDatePicker || chooseDateText.exists,
-            "CRITICAL: Advanced mode MUST have DatePicker to allow logging for past dates. " +
-            "This is essential for the 18:00 cutoff rule.")
-
-        // Verify log buttons still exist in expanded mode
-        let steadyButton = app.buttons["💧"]
-        let easyButton = app.buttons["✨"]
-        let wildButton = app.buttons["💥"]
-        let hasLogButtons = steadyButton.exists || easyButton.exists || wildButton.exists
-
-        XCTAssertTrue(hasLogButtons,
-            "Log buttons (💧, ✨, 💥) MUST still be present in Advanced/expanded mode")
-    }
-
-    /// Test that NoAlcLogSheet shows correct title based on 18:00 cutoff rule
-    /// Before 18:00: "Yesterday Evening" | After 18:00: "Today"
-    func testNoAlcLogSheetShowsCorrectTitle() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-
-        // Navigate to Tracker tab
-        let trackerTab = app.tabBars.buttons["Tracker"]
-        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
-        trackerTab.tap()
-        sleep(2)
-
-        // Tap (i) info button
-        let infoButton = app.buttons["info.circle"]
-        guard infoButton.waitForExistence(timeout: 3) else {
-            XCTFail("Info button not found")
-            return
-        }
-        infoButton.tap()
-        sleep(1)
-
-        // Sheet should show either "Yesterday Evening" or "Today" based on current time
-        // This proves it's the correct NoAlcLogSheet (TrackerHistorySheet shows "History")
-        let yesterdayText = app.staticTexts["Yesterday Evening"]
-        let todayText = app.staticTexts["Today"]
-        let historyText = app.staticTexts["History"]
-
-        let hasCorrectTitle = yesterdayText.exists || todayText.exists
-        let hasWrongTitle = historyText.exists
-
-        XCTAssertTrue(hasCorrectTitle,
-            "NoAlcLogSheet should show 'Yesterday Evening' or 'Today' title based on 18:00 cutoff")
-        XCTAssertFalse(hasWrongTitle,
-            "CRITICAL: 'History' title means wrong sheet (TrackerHistorySheet) is shown!")
     }
 
     // MARK: - NoAlc Preset Tests
@@ -2298,6 +2187,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
+        app.dismissHealthSheetIfAny()
 
         // Navigate to Tracker tab
         let trackerTab = app.tabBars.buttons["Tracker"]
@@ -2355,55 +2245,19 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // First check: at least one 💧 button exists (same as testNoAlcButtonsShowEmojis)
-        let waterButton = app.buttons["💧"]
+        // Stufen-Knoepfe tragen die Kennung generic_<icon> (Label = Stufenname, nicht das Emoji).
+        let waterButton = app.buttons["generic_💧"].firstMatch
         XCTAssertTrue(waterButton.waitForExistence(timeout: 5),
-            "FEAT-38: At least one 💧 button must exist")
+            "FEAT-38: At least one generic_💧 button must exist")
 
-        // Second check: there should be multiple 💧 buttons after creating second NoAlc
-        // Using allElementsBoundByAccessibilityElement to count
-        let allButtons = app.buttons.allElementsBoundByIndex
-        var waterButtonCount = 0
-        for i in 0..<min(allButtons.count, 50) {
-            let button = allButtons[i]
-            if button.identifier == "💧" || button.label == "💧" {
-                waterButtonCount += 1
-            }
-        }
+        // Nach dem zweiten NoAlc-Tracker: mehrere generic_💧-Knoepfe (je Zeile einer)
+        let waterButtonCount = app.buttons.matching(identifier: "generic_💧").count
 
         XCTAssertGreaterThanOrEqual(waterButtonCount, 2,
             "FEAT-38: After creating second NoAlc, should have 2+ 💧 buttons. Found: \(waterButtonCount)")
     }
 
     // MARK: - FEAT-39: Generic Tracker Completion Tests
-
-    /// FEAT-39 A1: Test that NoAlc card shows streak and joker info in header
-    /// The NoAlc card should display:
-    /// - 🔥 with streak count (e.g., "🔥 5")
-    /// - 🃏 with available jokers (e.g., "🃏 2/3")
-    func testNoAlcCardShowsStreakAndJokerInfo() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-
-        // Navigate to Tracker tab
-        let trackerTab = app.tabBars.buttons["Tracker"]
-        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5), "Tracker tab should exist")
-        trackerTab.tap()
-        sleep(1)
-
-        // Look for streak indicator (🔥) in the NoAlc card area
-        // The streak display should have accessibility identifier "noAlcStreak"
-        let streakIndicator = app.staticTexts["noAlcStreak"]
-        XCTAssertTrue(streakIndicator.waitForExistence(timeout: 3),
-            "FEAT-39 A1: NoAlc card must show streak indicator (🔥)")
-
-        // Look for joker indicator (🃏) in the NoAlc card area
-        // The joker display should have accessibility identifier "noAlcJokers"
-        let jokerIndicator = app.staticTexts["noAlcJokers"]
-        XCTAssertTrue(jokerIndicator.waitForExistence(timeout: 3),
-            "FEAT-39 A1: NoAlc card must show joker indicator (🃏)")
-    }
 
     /// FEAT-39 A2: Test that level-based trackers (not just NoAlc) show streak info
     /// Any tracker with .levels mode and rewardConfig should show streak/joker info
@@ -2441,51 +2295,46 @@ final class LeanHealthTimerUITests: XCTestCase {
         }
     }
 
-    // MARK: - FEAT-39 C1: NoAlc History Button Tests
+    // MARK: - FEAT-39 C1: Verlauf aus dem Bearbeiten-Dialog
 
-    /// FEAT-39 C1: Test that NoAlc card shows history button
-    /// The history button should open TrackerHistorySheet to view past logs
-    func testNoAlcCardShowsHistoryButton() throws {
-        let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
-
-        // Navigate to Tracker tab
-        let trackerTab = app.tabBars.buttons["Tracker"]
-        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
-        trackerTab.tap()
-        sleep(1)
-
-        // Find history button in NoAlc card (clock icon)
-        let historyButton = app.buttons["noAlcHistoryButton"]
-        XCTAssertTrue(historyButton.waitForExistence(timeout: 3),
-            "FEAT-39 C1: NoAlc card should have history button")
-    }
-
-    /// FEAT-39 C1: Test that history button opens TrackerHistorySheet
+    /// FEAT-39 C1 (umgezogen, 25e): Die eigene NoAlc-Karte samt Verlaufsknopf gibt es seit c3e4e9d nicht mehr.
+    /// Der Verlauf ist ueber Bearbeiten-Dialog -> "View History" erreichbar. Geprueft wird, dass das
+    /// Verlauf-Blatt wirklich oeffnet (Titel "History"), nicht nur dass der Link existiert.
     func testNoAlcHistoryButtonOpensHistorySheet() throws {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
+        app.dismissHealthSheetIfAny()
 
-        // Navigate to Tracker tab
-        let trackerTab = app.tabBars.buttons["Tracker"]
-        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
-        trackerTab.tap()
+        // Tabs haben keine Kennung: positionsbasiert (0 Meditation, 1 Workout, 2 Tracker, 3 Erfolge)
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 10), "Tab bar must exist")
+        app.tabBars.buttons.element(boundBy: 2).tap()
         sleep(1)
 
-        // Tap history button
-        let historyButton = app.buttons["noAlcHistoryButton"]
-        XCTAssertTrue(historyButton.waitForExistence(timeout: 3))
-        historyButton.tap()
-        sleep(1)
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
 
-        // Verify history sheet opens (should show "History" title or log entries)
+        let editButton = app.buttons.matching(identifier: "trackerEditButton").firstMatch
+        XCTAssertTrue(editButton.waitForExistence(timeout: 5), "A tracker edit button must exist")
+        editButton.tap()
+        sleep(2)
+
+        // Der Verlauf-Link liegt am Ende des Editors
+        let historyLink = app.descendants(matching: .any).matching(identifier: "trackerHistoryLink").firstMatch
+        let editorScroll = app.scrollViews.firstMatch
+        for _ in 0..<4 where !historyLink.exists {
+            editorScroll.swipeUp()
+            sleep(1)
+        }
+        XCTAssertTrue(historyLink.waitForExistence(timeout: 3), "Editor must offer the history link")
+        historyLink.tap()
+
         let historyTitle = app.navigationBars.staticTexts["History"]
-        let historyExists = historyTitle.waitForExistence(timeout: 3)
-
-        XCTAssertTrue(historyExists,
-            "FEAT-39 C1: Tapping history button should open TrackerHistorySheet")
+        XCTAssertTrue(historyTitle.waitForExistence(timeout: 5),
+            "FEAT-39 C1: Tapping the history link should open TrackerHistorySheet (title 'History')")
     }
 
     // MARK: - FEAT-39 C2: Editor History Link Tests
@@ -2761,8 +2610,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Find and tap the date picker button on Mood tracker
-        let datePickerButton = app.buttons["trackerDateButton"]
+        // Find and tap the date picker button on the first level-based tracker (Mood)
+        let datePickerButton = app.buttons["trackerDateButton"].firstMatch
         guard datePickerButton.waitForExistence(timeout: 5) else {
             XCTFail("BUG 2b: trackerDateButton not found on level-based tracker (Mood)")
             return
@@ -2811,8 +2660,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Find and tap the date picker button
-        let datePickerButton = app.buttons["trackerDateButton"]
+        // Find and tap the date picker button of the first level-based tracker (Mood)
+        let datePickerButton = app.buttons["trackerDateButton"].firstMatch
         guard datePickerButton.waitForExistence(timeout: 5) else {
             XCTFail("trackerDateButton not found")
             return
@@ -2860,6 +2709,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
+        app.dismissHealthSheetIfAny()
 
         // Navigate to Tracker tab
         let trackerTab = app.tabBars.buttons["Tracker"]
@@ -2887,14 +2737,37 @@ final class LeanHealthTimerUITests: XCTestCase {
         XCTAssertTrue(dateButton.waitForExistence(timeout: 5),
             "BUG 2a: Level-based tracker (Mood) should use levelBasedLayout with trackerDateButton")
 
-        // Verify Mood tracker level buttons exist (😢 😕 😐 🙂 😊 for Mood's 5 levels)
-        // At least one mood level button should be visible
-        let sadButton = app.buttons["😢"]
-        let happyButton = app.buttons["😊"]
+        // Level-Knoepfe tragen die Kennung generic_<icon> (TrackerRow.levelButtonLarge), das Label ist
+        // der Stufenname; Mood hat 5 Stufen (😢 😕 😐 🙂 😊).
+        let sadButton = app.buttons["generic_😢"]
+        let happyButton = app.buttons["generic_😊"]
 
-        // Either sad or happy mood button should exist (proves level buttons are visible)
-        XCTAssertTrue(sadButton.exists || happyButton.exists,
+        // Beide Rand-Stufen müssen sichtbar sein (Mood: 😢 … 😊)
+        XCTAssertTrue(sadButton.waitForExistence(timeout: 5) && happyButton.waitForExistence(timeout: 5),
             "BUG 2a: Mood tracker should show level buttons (😢 😕 😐 🙂 😊)")
+
+        // Nächstgelegener Datumsknopf oberhalb von 😢 (es gibt zwei Stufen-Tracker: Mood, NoAlc)
+        let sadFrame = sadButton.frame
+        let happyFrame = happyButton.frame
+        let allDateFrames = app.buttons.matching(identifier: "trackerDateButton").allElementsBoundByIndex
+            .map { $0.frame }
+        guard let headerFrame = allDateFrames.filter({ $0.maxY <= sadFrame.minY })
+            .max(by: { $0.maxY < $1.maxY }) else {
+            XCTFail("BUG 2a: Kein trackerDateButton oberhalb der Stufen-Knöpfe gefunden")
+            return
+        }
+
+        // Kein Datumsknopf darf vertikal in der Stufen-Zeile liegen
+        XCTAssertTrue(allDateFrames.allSatisfy { !($0.minY < sadFrame.maxY && $0.maxY > sadFrame.minY) },
+            "BUG 2a: Stufen dürfen nicht in der Zeile des Datumsknopfs liegen")
+
+        // Stufen liegen in eigener Zeile unter der Kopfzeile, nebeneinander auf gleicher Höhe
+        XCTAssertGreaterThanOrEqual(sadFrame.minY, headerFrame.maxY,
+            "BUG 2a: 😢 muss unterhalb der Kopfzeile (Datumsknopf) liegen")
+        XCTAssertGreaterThanOrEqual(happyFrame.minY, headerFrame.maxY,
+            "BUG 2a: 😊 muss unterhalb der Kopfzeile (Datumsknopf) liegen")
+        XCTAssertLessThan(abs(sadFrame.midY - happyFrame.midY), 5,
+            "BUG 2a: 😢 und 😊 müssen in derselben Zeile liegen")
     }
 
     // MARK: - Drag & Drop Sorting (FEAT-tracker-drag-drop)
@@ -2986,9 +2859,9 @@ final class LeanHealthTimerUITests: XCTestCase {
         trackerTab.tap()
         sleep(3)
 
-        // Find the calendar button (trackerDateButton) to open LevelSelectionView with DatePicker
+        // Find the calendar button (trackerDateButton) of the first level-based tracker (Mood) to open LevelSelectionView with DatePicker
         // This button opens the sheet in "expanded" mode with date picker visible
-        let calendarButton = app.buttons["trackerDateButton"]
+        let calendarButton = app.buttons["trackerDateButton"].firstMatch
 
         if calendarButton.waitForExistence(timeout: 5) {
             // Tap to open LevelSelectionView with DatePicker
@@ -3037,6 +2910,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
         app.launch()
+        app.dismissHealthSheetIfAny()
 
         // Handle HealthKit permission dialogs
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

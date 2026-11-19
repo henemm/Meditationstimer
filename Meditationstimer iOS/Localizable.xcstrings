@@ -598,23 +598,6 @@
     "🔥" : {
 
     },
-    "🔴 Wild: Intensive consumption – be especially mindful" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🔴 Wild: Intensiver Konsum – sei besonders achtsam"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🔴 Wild: Intensive consumption – be especially mindful"
-          }
-        }
-      }
-    },
     "🧊" : {
 
     },
@@ -626,40 +609,6 @@
     },
     "🪷" : {
 
-    },
-    "🟡 Easy: Increased consumption – watch your balance" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟡 Easy: Erhöhter Konsum – achte auf deine Balance"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟡 Easy: Increased consumption – watch your balance"
-          }
-        }
-      }
-    },
-    "🟢 Steady: No or moderate consumption – you're on a good path" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟢 Steady: Kein oder moderater Konsum – du bist auf einem guten Weg"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟢 Steady: No or moderate consumption – you're on a good path"
-          }
-        }
-      }
     },
     "0" : {
       "comment" : "A label displaying \"0\" when there are no rewards.",
@@ -734,23 +683,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A an example control that runs a timer."
-          }
-        }
-      }
-    },
-    "A session is already running. Should it be stopped and the new one started?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eine Sitzung läuft bereits. Soll diese beendet und die neue gestartet werden?"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A session is already running. Should it be stopped and the new one started?"
           }
         }
       }
@@ -1595,23 +1527,6 @@
         }
       }
     },
-    "Breathe is only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Atem ist nur auf iOS verfügbar."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breathe is only available on iOS."
-          }
-        }
-      }
-    },
     "Breathe Preset" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2140,23 +2055,6 @@
         }
       }
     },
-    "Compact 6-minute workout for maximum efficiency. Combines cardio and core for quick calorie burn. Perfect for time-constrained days or as a finisher after strength training." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kompaktes 6-Minuten-Workout für maximale Effizienz. Kombiniert Cardio und Core für schnelle Kalorienverbrennung. Perfekt für zeitknappe Tage oder als Finisher nach Krafttraining."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Compact 6-minute workout for maximum efficiency. Combines cardio and core for quick calorie burn. Perfect for time-constrained days or as a finisher after strength training."
-          }
-        }
-      }
-    },
     "Complementary to sedentary activities or after running. Corrects muscular imbalances." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2257,23 +2155,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue with closing phase."
-          }
-        }
-      }
-    },
-    "Could not save to Health" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konnte nicht in Health sichern"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not save to Health"
           }
         }
       }
@@ -2737,23 +2618,6 @@
         }
       }
     },
-    "Daily logging helps recognize patterns" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tägliches Logging hilft, Muster zu erkennen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daily logging helps recognize patterns"
-          }
-        }
-      }
-    },
     "Date" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3170,23 +3034,6 @@
         }
       }
     },
-    "Dynamic warm-up for runners. Activates hip muscles, increases range of motion, and prepares the body for running load. Reduces injury risk by up to 35%." : {
-      "comment" : "Jogging Warm-up workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dynamisches Aufwärmen für Läufer. Aktiviert die Hüftmuskulatur, erhöht die Beweglichkeit und bereitet den Körper auf die Laufbelastung vor. Reduziert das Verletzungsrisiko um bis zu 35%."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dynamic warm-up for runners. Activates hip muscles, increases range of motion, and prepares the body for running load. Reduces injury risk by up to 35%."
-          }
-        }
-      }
-    },
     "E-Piano" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3505,23 +3352,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "End"
-          }
-        }
-      }
-    },
-    "End Session" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung beenden"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "End Session"
           }
         }
       }
@@ -5188,23 +5018,6 @@
         }
       }
     },
-    "Explosive plyometric exercises to increase power and anaerobic capacity. Optimal for fat burning and cardiovascular fitness. EPOC effect (afterburn) lasts up to 24 hours." : {
-      "comment" : "Power Intervals workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Explosive plyometrische Übungen zur Steigerung von Schnellkraft und anaerober Kapazität. Optimal für Fettverbrennung und Herz-Kreislauf-Fitness. EPOC-Effekt (Nachbrenneffekt) hält bis zu 24 Stunden an."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Explosive plyometric exercises to increase power and anaerobic capacity. Optimal for fat burning and cardiovascular fitness. EPOC effect (afterburn) lasts up to 24 hours."
-          }
-        }
-      }
-    },
     "Fahrrad-Crunches" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -5348,23 +5161,6 @@
         }
       }
     },
-    "Focused training of push muscles (chest, triceps, shoulders). Progression through push-up variations with different focus points. Complements pull training for balanced upper body development." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fokussiertes Training der Druckmuskulatur (Brust, Trizeps, Schultern). Progression durch Push-up-Varianten mit unterschiedlichen Schwerpunkten. Ergänzt Pull-Training für ausgewogene Oberkörperentwicklung."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focused training of push muscles (chest, triceps, shoulders). Progression through push-up variations with different focus points. Complements pull training for balanced upper body development."
-          }
-        }
-      }
-    },
     "Focuses on core stability and rotational strength." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5378,23 +5174,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Focuses on core stability and rotational strength."
-          }
-        }
-      }
-    },
-    "Focuses on core stability and rotational strength. Combines isometric (planks) and dynamic exercises for comprehensive core strengthening. Improves posture and reduces back pain." : {
-      "comment" : "Core Circuit workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fokus auf Rumpfstabilität und Rotationskraft. Kombiniert isometrische (Planks) und dynamische Übungen für umfassende Kräftigung der Körpermitte. Verbessert die Haltung und reduziert Rückenschmerzen."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focuses on core stability and rotational strength. Combines isometric (planks) and dynamic exercises for comprehensive core strengthening. Improves posture and reduces back pain."
           }
         }
       }
@@ -5503,23 +5282,6 @@
         }
       }
     },
-    "Full-body HIIT focused on functional movement patterns. Combines strength, cardio, and core stability. Maximum calorie burn through engagement of large muscle groups." : {
-      "comment" : "Full Body Burn workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ganzkörper-HIIT mit Fokus auf funktionelle Bewegungsmuster. Kombiniert Kraft, Ausdauer und Rumpfstabilität. Maximale Kalorienverbrennung durch Einsatz großer Muskelgruppen."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full-body HIIT focused on functional movement patterns. Combines strength, cardio, and core stability. Maximum calorie burn through engagement of large muscle groups."
-          }
-        }
-      }
-    },
     "Für diese Übung sind noch keine Details hinterlegt." : {
       "comment" : "A message displayed when an exercise's details are not yet available in the database.",
       "extractionState" : "manual",
@@ -5552,23 +5314,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "General"
-          }
-        }
-      }
-    },
-    "Gentle introduction to HIIT training. Joint-friendly variations with longer rest periods (1:1 ratio). Ideal for building basic fitness and technique. Progressive by adding rounds or reducing rest." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sanfter Einstieg ins HIIT-Training. Gelenkschonende Varianten mit längeren Pausen (1:1 Ratio). Ideal zum Aufbau von Grundfitness und Technik. Progressiv steigerbar durch mehr Runden oder kürzere Pausen."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gentle introduction to HIIT training. Joint-friendly variations with longer rest periods (1:1 ratio). Ideal for building basic fitness and technique. Progressive by adding rounds or reducing rest."
           }
         }
       }
@@ -6196,23 +5941,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "How it works:"
-          }
-        }
-      }
-    },
-    "How was it?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wie war es?"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How was it?"
           }
         }
       }
@@ -6846,23 +6574,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading Data..."
-          }
-        }
-      }
-    },
-    "Log Drinks" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Getränke protokollieren"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log Drinks"
           }
         }
       }
@@ -8004,23 +7715,6 @@
         }
       }
     },
-    "NoAlc Diary" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc-Tagebuch"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc Diary"
-          }
-        }
-      }
-    },
     "NoAlc Streak" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8051,23 +7745,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NoAlc Streak Info"
-          }
-        }
-      }
-    },
-    "NoAlc tracker not found" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc Tracker nicht gefunden"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc tracker not found"
           }
         }
       }
@@ -8341,23 +8018,6 @@
         }
       }
     },
-    "Open is only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offen ist nur auf iOS verfügbar."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open is only available on iOS."
-          }
-        }
-      }
-    },
     "Open Meditation" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8440,23 +8100,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest."
-          }
-        }
-      }
-    },
-    "Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest. Proven to increase VO2max by up to 14% in 6 weeks. Requires 170% VO2max intensity." : {
-      "comment" : "Tabata workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Original Tabata-Protokoll (Izumi Tabata, 1996): 8 Runden mit 20s maximaler Intensität / 10s Pause. Nachweislich bis zu 14% VO2max-Steigerung in 6 Wochen. Erfordert 170% VO2max-Intensität."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest. Proven to increase VO2max by up to 14% in 6 weeks. Requires 170% VO2max intensity."
           }
         }
       }
@@ -9518,23 +9161,6 @@
         }
       }
     },
-    "Session Already Running" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung läuft bereits"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Session Already Running"
-          }
-        }
-      }
-    },
     "Session completed" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9941,23 +9567,6 @@
         }
       }
     },
-    "Smart Reminders remind you automatically" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminders erinnern dich automatisch"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminders remind you automatically"
-          }
-        }
-      }
-    },
     "Smart Reminders require all of the following permissions:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10297,23 +9906,6 @@
         }
       }
     },
-    "Static stretching for recovery after running. Focus on hip and leg muscles. Reduces muscle soreness (DOMS), improves flexibility, and promotes circulation. Hold each stretch for at least 30 seconds." : {
-      "comment" : "Post-Run Stretching workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Statisches Dehnen zur Regeneration nach dem Laufen. Fokus auf Hüft- und Beinmuskulatur. Reduziert Muskelkater (DOMS), verbessert die Flexibilität und fördert die Durchblutung. Jede Dehnung mindestens 30 Sekunden halten."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Static stretching for recovery after running. Focus on hip and leg muscles. Reduces muscle soreness (DOMS), improves flexibility, and promotes circulation. Hold each stretch for at least 30 seconds."
-          }
-        }
-      }
-    },
     "Steady" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10327,40 +9919,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Steady"
-          }
-        }
-      }
-    },
-    "Stop & Start" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beenden & Starten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop & Start"
-          }
-        }
-      }
-    },
-    "Stop & Start Timer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timer beenden und starten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop & Start Timer"
           }
         }
       }
@@ -10541,23 +10099,6 @@
         }
       }
     },
-    "Targeted training of the posterior chain (glutes, hamstrings, lower back, calves). Essential for running economy, sprint speed, and injury prevention. Corrects imbalances from sitting." : {
-      "comment" : "Hintere Kette workout description",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gezieltes Training der hinteren Muskelkette (Gesäß, hintere Oberschenkel, unterer Rücken, Waden). Essenziell für Laufökonomie, Sprintgeschwindigkeit und Verletzungsprävention. Korrigiert Dysbalancen durch Sitzen."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Targeted training of the posterior chain (glutes, hamstrings, lower back, calves). Essential for running economy, sprint speed, and injury prevention. Corrects imbalances from sitting."
-          }
-        }
-      }
-    },
     "Test Gong" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10623,23 +10164,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
-          }
-        }
-      }
-    },
-    "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das NoAlc-Tagebuch hilft dir, deinen Alkoholkonsum zu tracken und einen bewussten Umgang damit zu entwickeln. Das System nutzt drei Kategorien zur Selbstreflexion."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection."
           }
         }
       }
@@ -11865,23 +11389,6 @@
         }
       }
     },
-    "Workout programs are only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workout-Programme sind nur auf iOS verfügbar."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workout programs are only available on iOS."
-          }
-        }
-      }
-    },
     "Workout Set" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -11965,23 +11472,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Workouts"
-          }
-        }
-      }
-    },
-    "Workouts are only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts sind nur auf iOS verfügbar."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts are only available on iOS."
           }
         }
       }
@@ -12070,23 +11560,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Workouts: Streak %lld Day"
-          }
-        }
-      }
-    },
-    "Yesterday Evening" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gestern Abend"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yesterday Evening"
           }
         }
       }

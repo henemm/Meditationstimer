@@ -30,7 +30,7 @@ grep -ri "countdown" --include="*.swift" -l
 | Settings | SettingsSheet.swift | ✓ Labels, Descriptions |
 | View/UI | CountdownOverlayView.swift | ✓ Status-Texte, Buttons |
 | Model | Timer.swift | Evtl. State-Namen |
-| Tab-Integration | OffenView.swift | Evtl. Hinweise |
+| Tab-Integration | MeditationTab.swift | Evtl. Hinweise |
 
 ### 1. Scope definieren
 - Was soll lokalisiert werden? (UI-Texte, Übungsnamen, Beschreibungen)

@@ -1,0 +1,22 @@
+Validierungslauf #25e (AC-10/AC-11) — 2026-11-19, Stand 22a2942
+Simulator iPhone 17 Pro / iOS 27.2 (9892DDA6…), vorher simctl shutdown all + simctl erase (Health-Abfrage unbeantwortet)
+xcodebuild test -parallel-testing-enabled NO, ohne -retry-tests-on-failure und ohne -test-iterations
+Filter: 5 Cluster-A-Tests + 3 Ersatztests (je Klasse/Methode) + DayDetailHabitsUITests
+Rohlog: Sitzungs-Scratchpad validate.log (nicht versioniert)
+
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_calendarFilterEnabled_dayWithTrackerEntry_opensSheet]' passed (173.961 seconds).
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_dayWithOnlyEmptyTrackers_doesNotOpenSheet]' passed (93.254 seconds).
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_dayWithOnlyTrackerEntry_opensSheet_showsFilledAndEmptyRow]' passed (78.851 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 346.066 (346.356) seconds
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testDatePickerButtonOpensLevelSelectionViewWithDatePicker]' passed (22.555 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsHistoryLink]' passed (24.535 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGenericNoAlcTrackerAllLevelsDisplayInErfolge]' passed (92.161 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsInlineButtons]' passed (48.772 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsLargeIconsInSeparateRow]' passed (32.721 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsStreakInfo]' passed (12.459 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcHistoryButtonOpensHistorySheet]' passed (45.508 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcLevelButtonsHaveIdentifiers]' passed (28.625 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 307.336 (307.345) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 653.402 (653.761) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 653.402 (653.898) seconds
+** TEST SUCCEEDED **
