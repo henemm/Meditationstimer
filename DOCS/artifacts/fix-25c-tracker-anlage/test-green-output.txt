@@ -1,0 +1,8 @@
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' passed (27.986 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' passed (35.331 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' passed (34.773 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerListShowsGermanPresetNames]' passed (25.538 seconds).
+** TEST SUCCEEDED **
