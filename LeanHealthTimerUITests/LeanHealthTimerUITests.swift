@@ -308,8 +308,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             sleep(1)
         }
 
-        // Tap Add Tracker
-        let addButton = app.buttons["Add Tracker"]
+        // Tap Add Tracker (language-independent identifier; German label is "Tracker hinzufügen")
+        let addButton = app.buttons["addTrackerButton"]
         XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
         addButton.tap()
         sleep(1)
@@ -333,7 +333,10 @@ final class LeanHealthTimerUITests: XCTestCase {
     /// Bug: Trackers don't appear after creation - sheet closes but no tracker in list
     func testTrackerCreationFromPresetPersistsAfterRestart() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        // enable-testing alone keeps SwiftData in memory, which cannot survive a restart.
+        // uitest-disk-store uses a separate on-disk store; uitest-reset-store empties it on the first launch only.
+        let baseArguments = ["enable-testing", "uitest-disk-store", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments = baseArguments + ["uitest-reset-store"]
         app.launch()
 
         // Navigate to Tracker tab
@@ -350,7 +353,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         }
 
         // Open Add Tracker sheet
-        let addTrackerButton = app.buttons["Add Tracker"]
+        let addTrackerButton = app.buttons["addTrackerButton"]
         guard addTrackerButton.waitForExistence(timeout: 3) else {
             XCTFail("Add Tracker button should exist")
             return
@@ -384,6 +387,7 @@ final class LeanHealthTimerUITests: XCTestCase {
         // CRITICAL TEST: Restart app and verify persistence
         app.terminate()
         sleep(1)
+        app.launchArguments = baseArguments
         app.launch()
 
         // Navigate back to Tracker tab
@@ -394,6 +398,47 @@ final class LeanHealthTimerUITests: XCTestCase {
         // Verify Doomscrolling tracker still exists after restart
         let persistedTracker = app.staticTexts["Doomscrolling"]
         XCTAssertTrue(persistedTracker.waitForExistence(timeout: 5), "Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()")
+    }
+
+    /// Test that the German tracker list shows translated preset names (Mood -> Stimmung)
+    /// while names without a catalog entry (Doomscrolling, stands in for custom names) stay unchanged
+    func testTrackerListShowsGermanPresetNames() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+
+        let trackerTab = app.tabBars.buttons["Tracker"]
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 5))
+        trackerTab.tap()
+        sleep(1)
+
+        // Default seed creates the Mood tracker; German list must show "Stimmung", never "Mood"
+        XCTAssertTrue(app.staticTexts["Stimmung"].waitForExistence(timeout: 5), "Mood tracker should be shown as 'Stimmung' in German")
+        XCTAssertFalse(app.staticTexts["Mood"].exists, "English name 'Mood' must not appear in the German tracker list")
+
+        let scrollView = app.scrollViews.firstMatch
+        if scrollView.exists {
+            scrollView.swipeUp()
+            sleep(1)
+        }
+
+        let addButton = app.buttons["addTrackerButton"]
+        XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add Tracker button should exist")
+        addButton.tap()
+        sleep(1)
+
+        let preset = app.staticTexts["Doomscrolling"]
+        XCTAssertTrue(preset.waitForExistence(timeout: 3), "Doomscrolling preset should exist")
+        preset.tap()
+        sleep(2)
+
+        XCTAssertTrue(trackerTab.waitForExistence(timeout: 3), "Should be back on Tracker tab")
+        if scrollView.exists {
+            scrollView.swipeDown()
+            sleep(1)
+        }
+        // Name without catalog entry must appear unchanged
+        XCTAssertTrue(app.staticTexts["Doomscrolling"].waitForExistence(timeout: 5), "Doomscrolling tracker should appear unchanged after creation")
     }
 
     // MARK: - Phase 2.5: Custom Tracker Tests

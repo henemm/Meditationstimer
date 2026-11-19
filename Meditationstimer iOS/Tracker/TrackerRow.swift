@@ -85,7 +85,7 @@ struct TrackerRow: View {
             HStack {
                 Text(tracker.icon)
                     .font(.system(size: 28))
-                Text(tracker.name)
+                Text(String(localized: String.LocalizationValue(tracker.name)))
                     .font(.headline)
                 streakBadge
 
@@ -166,7 +166,7 @@ struct TrackerRow: View {
             // Name + Today's status + Streak
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 8) {
-                    Text(tracker.name)
+                    Text(String(localized: String.LocalizationValue(tracker.name)))
                         .font(.headline)
                     streakBadge
                 }

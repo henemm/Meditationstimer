@@ -1,0 +1,76 @@
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: LeanHealthTimerUITests/testPresetTapCreatesVisibleTracker
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-18 18:03:25 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-18 18:03:26 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-18 18:03:26 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-18 18:03:26 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-18 18:03:27 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-18 18:03:28 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:05.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' started (Iteration 1 of 3).
+2026-11-18 19:04:08.040 xcodebuild[12335:18161350] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:328: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker] : XCTAssertTrue failed - 🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' failed (29.415 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' started (Iteration 2 of 3).
+2026-11-18 19:04:37.920 xcodebuild[12335:18161350] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:328: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker] : XCTAssertTrue failed - 🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' failed (25.096 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' started (Iteration 3 of 3).
+2026-11-18 19:05:03.022 xcodebuild[12335:18161350] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:328: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker] : XCTAssertTrue failed - 🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' failed (24.761 seconds).
+Test Suite 'LeanHealthTimerUITests' failed at 2026-11-18 19:05:26.673.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-18 19:05:26.675.
+Test Suite 'Selected tests' failed at 2026-11-18 19:05:26.676.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-18 19:04:08.040 xcodebuild[12335:18161350] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:328: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker] : XCTAssertTrue failed - 🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' failed (29.415 seconds).
+2026-11-18 19:04:37.920 xcodebuild[12335:18161350] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:328: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker] : XCTAssertTrue failed - 🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' failed (25.096 seconds).
+2026-11-18 19:05:03.022 xcodebuild[12335:18161350] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:328: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker] : XCTAssertTrue failed - 🔴 BUG: Dankbarkeit tracker should appear after creation but it doesn't!
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' failed (24.761 seconds).
+Test Suite 'LeanHealthTimerUITests' failed at 2026-11-18 19:05:26.673.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-18 19:05:26.675.
+Test Suite 'Selected tests' failed at 2026-11-18 19:05:26.676.
+

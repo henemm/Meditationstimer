@@ -1,0 +1,82 @@
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: LeanHealthTimerUITests/testTrackerCreationFromPresetPersistsAfterRestart
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-18 18:06:38 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-18 18:06:40 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-18 18:06:40 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-18 18:06:40 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-18 18:06:41 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-18 18:06:42 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:05.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' started (Iteration 1 of 3).
+2026-11-18 19:07:27.815 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-18 19:08:00.160 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:400: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart] : XCTAssertTrue failed - Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' failed (51.695 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' started (Iteration 2 of 3).
+2026-11-18 19:08:19.009 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-18 19:08:41.290 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:400: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart] : XCTAssertTrue failed - Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' failed (37.295 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' started (Iteration 3 of 3).
+2026-11-18 19:08:56.270 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-18 19:09:18.544 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:400: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart] : XCTAssertTrue failed - Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' failed (39.668 seconds).
+Test Suite 'LeanHealthTimerUITests' failed at 2026-11-18 19:09:34.860.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-18 19:09:34.865.
+Test Suite 'Selected tests' failed at 2026-11-18 19:09:34.865.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-18 19:07:27.815 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-18 19:08:00.160 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:400: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart] : XCTAssertTrue failed - Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' failed (51.695 seconds).
+2026-11-18 19:08:19.009 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-18 19:08:41.290 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:400: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart] : XCTAssertTrue failed - Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' failed (37.295 seconds).
+2026-11-18 19:08:56.270 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-18 19:09:18.544 xcodebuild[20280:18195194] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/fuzzy-hopping-tiger/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:400: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart] : XCTAssertTrue failed - Doomscrolling tracker should persist after app restart - CRITICAL: modelContext.save() before dismiss()
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' failed (39.668 seconds).
+Test Suite 'LeanHealthTimerUITests' failed at 2026-11-18 19:09:34.860.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-18 19:09:34.865.
+Test Suite 'Selected tests' failed at 2026-11-18 19:09:34.865.
+

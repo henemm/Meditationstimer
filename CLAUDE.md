@@ -138,13 +138,19 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 ./Scripts/run-uitests.sh Klasse/testMethodName      # Einzelner Test — IMMER mit Klasse!
 ```
 
+### Startargumente für UI-Tests
+
+- `enable-testing`: SwiftData nur im Arbeitsspeicher (Standard aller UI-Tests).
+- `uitest-disk-store` (nur DEBUG): eigene Datei `Application Support/uitest.store`, übersteht einen Neustart.
+- `uitest-reset-store` (nur DEBUG, mit `uitest-disk-store`): löscht `uitest.store` samt `-wal`/`-shm` vor dem Öffnen.
+
 ### Simulator
 
 | Variable | Wert |
 |----------|------|
 | Name | iPhone 17 Pro |
-| iOS Version | 26.5 |
-| Destination | `platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5` |
+| iOS Version | 27.2 |
+| Destination | `platform=iOS Simulator,name=iPhone 17 Pro,OS=27.2` |
 
 Immer per **Name + OS** adressieren, nie per fester UDID — die ändert sich mit jedem
 Runtime-Update (#19). `run-uitests.sh` löst die UDID zur Laufzeit selbst auf.
@@ -195,12 +201,12 @@ iOS / watchOS / Widget Apps (UI)
 # Build
 xcodebuild -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" -configuration Debug \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' build
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=27.2' build
 
 # Unit Tests
 xcodebuild test -project Meditationstimer.xcodeproj \
   -scheme "Lean Health Timer" \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=27.2' \
   -only-testing:LeanHealthTimerTests
 ```
 
