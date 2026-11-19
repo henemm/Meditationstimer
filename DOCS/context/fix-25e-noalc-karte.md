@@ -155,3 +155,28 @@ Suche per `label CONTAINS`. Navigationstitel „Log Drinks" (`:131`) im erweiter
 - Nebenfund außerhalb Cluster A: `testMeditationTabToolbarHasOnlySettings` (`:1404-1429`) erwartet keinen
   Tropfen-/Kalender-Knopf, `OffenView.swift:400-401` zeigt beide. Im Abschluss-Regressionslauf prüfen; ist er rot,
   eigenes Teil-Ticket unter #25.
+
+## Stand Umsetzung (2026-11-19, nach Spec-Nachtrag)
+
+Uncommittet im Worktree (Commit erst nach Adversary-Verdict möglich):
+- `HealthSheetHelper.swift` neu, `DayDetailHabitsUITests.swift` nutzt ihn.
+- `LeanHealthTimerUITests.swift`: Tests 1 (umbenannt `testNoAlcLevelButtonsHaveIdentifiers`), 5, 8, 9, 10 grün
+  (Simulator ohne Reset, direktes `xcodebuild`), Tests 3, 6, 7 gestrichen.
+- Offen: Tests 2 und 4 samt privatem Helfer `launchAndOpenNoAlcLogSheet()` streichen (AC-2/AC-3 Nachtrag);
+  Ersatztests AC-8 laufen lassen; Beweislauf AC-10 nach `simctl erase`; `test-green-output.txt` schreiben.
+- Hinweis: `Scripts/run-uitests.sh` hängt `-retry-tests-on-failure -test-iterations 3` an und filtert die
+  `Executed`-Zeile aus der Ausgabe. Für Abschluss- und Beweislauf direktes `xcodebuild test` mit mehreren
+  `-only-testing:LeanHealthTimerUITests/<Klasse>/<Methode>`-Filtern, ohne Wiederholung (wie im RED-Beleg).
+
+## Stand Adversary (2026-11-19, 14:45)
+
+- GREEN-Beweislauf nach `simctl erase` (nur iPhone 17 Pro, Nachbarsimulator läuft): 11/11 passed, 0 failed,
+  `DOCS/artifacts/fix-25e-noalc-karte/test-green-output.txt`, als Artefakt registriert; PO-Freigabe `go` erteilt.
+- Adversary Runde 1: AMBIGUOUS, Protokoll `DOCS/artifacts/fix-25e-noalc-karte/adversary-dialog.md`.
+  B1 (MEDIUM): AC-5-Test prüft Position nicht, AC-5 sagt „über", App legt Stufen UNTER die Kopfzeile → Spec-Changelog
+  ergänzt, Test bekommt Frame-Prüfung (Developer, Phase zurück auf phase6_implement). B2–B4 LOW, akzeptiert.
+- AC-3: Teil-Ticket #99 (toter NoAlcLogSheet-Code) angelegt.
+- AC-13: Gesamtlauf UI-Suite läuft (direktes xcodebuild, `-retry-tests-on-failure -test-iterations 3
+  -parallel-testing-enabled NO`, wie Baseline 25b), Log im Sitzungs-Scratchpad `regression.log`.
+  Baseline: `DOCS/artifacts/fix-25b-eindeutige-abfragen/regression-output.txt` (14 rot, davon 2 Cluster C seit 25c grün).
+- Offen danach: AC-5-Test einzeln laufen lassen, Adversary Runde 2 (B1 schließen + AC-13 bewerten), Verdict, Commit.

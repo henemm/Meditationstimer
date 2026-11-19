@@ -226,3 +226,11 @@ Keine neue ADR nötig: reine Testreparatur nach dem Muster aus 25b/25c.
   („Advanced" = Datum + drei Stufen) ist vollständig über `trackerDateButton` erreichbar, kein Nutzerverlust.
   Tests 2 und 4 werden deshalb gestrichen statt umgezogen; AC-2/AC-3 angepasst. Der Nebenfund
   `testMeditationTabToolbarHasOnlySettings` entspricht damit der App.
+- 2026-11-19 (Adversary B1): AC-5 nannte die Stufen-Zeile „über" der Datumszeile. `TrackerRow.levelBasedLayout`
+  ordnet Kopfzeile (Name, `trackerDateButton`, Bearbeiten) als Row 1 und die Stufen-Knöpfe als Row 2 darunter an
+  (`TrackerRow.swift:103-121`). Kern von AC-5 ist „eigene Zeile", die Richtung „über" ist ein Schreibfehler der Spec;
+  der AC-Wortlaut bleibt wegen Spec-Freeze stehen, maßgeblich ist das Layout der App (Stufen-Zeile unter der Kopfzeile).
+  Der Test prüft die Position künftig per Frame (Oberkante `generic_😢` und `generic_😊` ≥ Unterkante des nächstgelegenen
+  `trackerDateButton` darüber) statt nur Existenz mit `||`.
+- 2026-11-19 (Adversary B2): Läufe mit parallelen Simulator-Klonen drucken unter Xcode 27 kein `Executed N tests`;
+  dort gilt als Nachweis: je Filter eine Zeile `Test case '…' passed`, keine `failed`-Zeile, Anzahl = Anzahl Filter.
