@@ -475,7 +475,6 @@ public struct WorkoutProgramsView: View {
     @State private var showingEditor: WorkoutSet? = nil
     @State private var showSettings = false
     @State private var showingCalendar = false
-    @State private var showingNoAlcLog = false
     @State private var runningSet: WorkoutSet? = nil
 
     @EnvironmentObject private var streakManager: StreakManager
@@ -524,7 +523,6 @@ public struct WorkoutProgramsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button { showingNoAlcLog = true } label: { Image(systemName: "drop.fill") }
                     Button { showingCalendar = true } label: { Image(systemName: "calendar") }
                     Button { showSettings = true } label: { Image(systemName: "gearshape") }
                 }
@@ -535,9 +533,6 @@ public struct WorkoutProgramsView: View {
             .fullScreenCover(isPresented: $showingCalendar) {
                 CalendarView()
                     .environmentObject(streakManager)
-            }
-            .sheet(isPresented: $showingNoAlcLog) {
-                NoAlcLogSheet()
             }
             .sheet(item: $showingInfo) { set in
                 PresetInfoSheet(set: set)

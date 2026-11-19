@@ -195,7 +195,6 @@ public struct AtemView: View {
 
     @State private var showSettings = false
     @State private var showingCalendar = false
-    @State private var showingNoAlcLog = false
     @State private var showingEditor: Preset? = nil
     @State private var showingInfo: Preset? = nil
     @State private var runningPreset: Preset? = nil
@@ -288,8 +287,6 @@ public struct AtemView: View {
                 .toolbar {
                     if runningPreset == nil {
                         ToolbarItemGroup(placement: .topBarTrailing) {
-                            Button { showingNoAlcLog = true } label: { Image(systemName: "drop.fill") }
-
                             Button { showingCalendar = true } label: { Image(systemName: "calendar") }
 
                             Button { showSettings = true } label: { Image(systemName: "gearshape") }
@@ -302,9 +299,6 @@ public struct AtemView: View {
                 .fullScreenCover(isPresented: $showingCalendar) {
                     CalendarView()
                         .environmentObject(streakManager)
-                }
-                .sheet(isPresented: $showingNoAlcLog) {
-                    NoAlcLogSheet()
                 }
                 .sheet(item: $showingEditor) { preset in
                     EditorView(
