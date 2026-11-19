@@ -473,23 +473,6 @@
     "🔥" : {
 
     },
-    "🔴 Wild: Intensive consumption – be especially mindful" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🔴 Wild: Intensiver Konsum – sei besonders achtsam"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🔴 Wild: Intensive consumption – be especially mindful"
-          }
-        }
-      }
-    },
     "🧊" : {
 
     },
@@ -501,40 +484,6 @@
     },
     "🪷" : {
 
-    },
-    "🟡 Easy: Increased consumption – watch your balance" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟡 Easy: Erhöhter Konsum – achte auf deine Balance"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟡 Easy: Increased consumption – watch your balance"
-          }
-        }
-      }
-    },
-    "🟢 Steady: No or moderate consumption – you're on a good path" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟢 Steady: Kein oder moderater Konsum – du bist auf einem guten Weg"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "🟢 Steady: No or moderate consumption – you're on a good path"
-          }
-        }
-      }
     },
     "0" : {
       "comment" : "A label displaying \"0\" when there are no rewards.",
@@ -609,23 +558,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A an example control that runs a timer."
-          }
-        }
-      }
-    },
-    "A session is already running. Should it be stopped and the new one started?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eine Sitzung läuft bereits. Soll diese beendet und die neue gestartet werden?"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A session is already running. Should it be stopped and the new one started?"
           }
         }
       }
@@ -2136,23 +2068,6 @@
         }
       }
     },
-    "Could not save to Health" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konnte nicht in Health sichern"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not save to Health"
-          }
-        }
-      }
-    },
     "Count how many times per day (e.g., glasses of water)." : {
       "comment" : "Counter mode explanation",
       "extractionState" : "manual",
@@ -2574,23 +2489,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daily in the morning or midday for HRV optimization. Regular practice improves stress resilience long-term."
-          }
-        }
-      }
-    },
-    "Daily logging helps recognize patterns" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tägliches Logging hilft, Muster zu erkennen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daily logging helps recognize patterns"
           }
         }
       }
@@ -3346,23 +3244,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "End"
-          }
-        }
-      }
-    },
-    "End Session" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung beenden"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "End Session"
           }
         }
       }
@@ -6041,23 +5922,6 @@
         }
       }
     },
-    "How was it?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wie war es?"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How was it?"
-          }
-        }
-      }
-    },
     "Hüftbeuger-Dehnung links" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -6687,23 +6551,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Loading Data..."
-          }
-        }
-      }
-    },
-    "Log Drinks" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Getränke protokollieren"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log Drinks"
           }
         }
       }
@@ -7845,23 +7692,6 @@
         }
       }
     },
-    "NoAlc Diary" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc-Tagebuch"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc Diary"
-          }
-        }
-      }
-    },
     "NoAlc Streak" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7892,23 +7722,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NoAlc Streak Info"
-          }
-        }
-      }
-    },
-    "NoAlc tracker not found" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc Tracker nicht gefunden"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NoAlc tracker not found"
           }
         }
       }
@@ -8178,23 +7991,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open"
-          }
-        }
-      }
-    },
-    "Open is only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offen ist nur auf iOS verfügbar."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open is only available on iOS."
           }
         }
       }
@@ -9359,23 +9155,6 @@
         }
       }
     },
-    "Session Already Running" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sitzung läuft bereits"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Session Already Running"
-          }
-        }
-      }
-    },
     "Session completed" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9782,23 +9561,6 @@
         }
       }
     },
-    "Smart Reminders remind you automatically" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminders erinnern dich automatisch"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Reminders remind you automatically"
-          }
-        }
-      }
-    },
     "Smart Reminders require all of the following permissions:" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10172,40 +9934,6 @@
         }
       }
     },
-    "Stop & Start" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beenden & Starten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop & Start"
-          }
-        }
-      }
-    },
-    "Stop & Start Timer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timer beenden und starten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop & Start Timer"
-          }
-        }
-      }
-    },
     "Stop Background Sound" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10464,23 +10192,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The free workout offers you a flexible HIIT timer with individually adjustable work and rest phases. You determine the intensity and the number of repetitions."
-          }
-        }
-      }
-    },
-    "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das NoAlc-Tagebuch hilft dir, deinen Alkoholkonsum zu tracken und einen bewussten Umgang damit zu entwickeln. Das System nutzt drei Kategorien zur Selbstreflexion."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The NoAlc Diary helps you track your alcohol consumption and develop a mindful approach to it. The system uses three categories for self-reflection."
           }
         }
       }
@@ -11810,23 +11521,6 @@
         }
       }
     },
-    "Workouts are only available on iOS." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts sind nur auf iOS verfügbar."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workouts are only available on iOS."
-          }
-        }
-      }
-    },
     "Workouts: %d/%d Min" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -11911,23 +11605,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Workouts: Streak %lld Day"
-          }
-        }
-      }
-    },
-    "Yesterday Evening" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gestern Abend"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yesterday Evening"
           }
         }
       }
