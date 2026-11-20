@@ -1,7 +1,8 @@
 # Spec: App nimmt Lieferungen von Claude an (B1a, #51)
 
 **Epic:** #44 · **Analyse:** `DOCS/context/analyse-51-57-claude-app.md` · **Format:** `openspec/specs/integrations/claude-lieferformat.md`
-**Stand:** 13.11.2026 · **Umsetzung:** am Mac (Swift), hier nur Spezifikation
+**Stand:** 20.11.2026 · **Umsetzung:** am Mac (Swift), hier nur Spezifikation
+**Runden-Spec Schnitt 1:** `docs/specs/features/feature-51-lieferung-annehmen.md`
 
 ## Leitlinie (PO 13.11.2026)
 
@@ -15,7 +16,7 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
    dekodieren lässt oder eine Art hat, die die App noch nicht kann (`reminder`, `challenge`, `tracker` bis B4b–B6b), wird **ganz**
    abgelehnt: Ergebnis `rejected` mit Code `APP_CANNOT_READ` bzw. `KIND_NOT_SUPPORTED` und einem kurzen deutschen Grund.
 2. **Übernehmen in die bestehenden Listen:** Programme in die Workout-Liste, Atemübungen in die Atem-Liste, Übungen in den Übungskatalog.
-   Geliefertes trägt zusätzliche, optionale Felder: `claudeId` (`claude.*`), `revision`, `why`, `packageId`, `packageName`,
+   Geliefertes trägt zusätzliche, optionale Felder: `itemId` (`claude.*`, Schema-Name), `revision`, `why`, `packageId`, `packageName`,
    `deliveredAt`, `modifiedAt` (letzte Änderung durch Henning). Alte gespeicherte Daten lesen sich unverändert (alle Felder optional).
 3. **Ganz oder gar nicht, nur einmal:** Eine Lieferung wird vollständig angewendet oder gar nicht. Die App merkt sich die
    `deliveryId`s der letzten 50 Lieferungen mit Ergebnis; dieselbe Lieferung ein zweites Mal ändert nichts und liefert das gemerkte Ergebnis.
@@ -34,7 +35,7 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
 
 ## Voraussetzung aus A2 (#48), nur das Nötigste
 
-- Übungen haben eine Kennung: `builtin.*` aus `Contracts/catalog/builtin-exercises.json` (Name ↔ Kennung), gelieferte `claude.*`, eigene `own.<slug>`. `claudeId` wird in #51 auf die Schema-Namen umgestellt.
+- Übungen haben eine Kennung: `builtin.*` aus `Contracts/catalog/builtin-exercises.json` (Name ↔ Kennung), gelieferte `claude.*`, eigene `own.<slug>`. Das Feld heißt in der Lieferung `itemId` (Schema); der frühere Arbeitsname `claudeId` entfällt.
 - Programmschritte können eine Übung per Kennung auflösen und tragen ein optionales `hint`. Anzeige und Ansage des Hinweises sind A2.
 
 ## Tests (am Mac, zuerst rot)
@@ -49,6 +50,10 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
 
 ## Schnitte (je ≤ 4–5 Dateien, ~250 Zeilen)
 
-1. Modell-Felder (optional) + Einlesen mit `Codable` + Gleichlauf-Test über die gültigen Beispiele.
-2. Anwenden (ganz oder gar nicht, Gedächtnis der `deliveryId`s, Fassungen, „iPhone gewinnt“, Rücknahme) mit Unit-Tests.
-3. Kennzeichen und Info-Ansicht, DE/EN-Texte, UI-Test.
+1. **Lese-Modell und Gleichlauf-Test** (Spec: `docs/specs/features/feature-51-lieferung-annehmen.md`): reines Foundation-Modell
+   `Meditationstimer iOS/Models/ClaudeDelivery.swift` mit Einstieg `read(Data)` (Fehler `APP_CANNOT_READ` / `KIND_NOT_SUPPORTED`) und
+   Gleichlauf-Test über die gültigen Beispiele. Die optionalen Modell-Felder an `WorkoutSet`, `WorkoutPhase`, `AtemView.Preset`
+   und `ExerciseInfo` kommen **erst in Schnitt 2**, weil ihre Form vom Speicherort abhängt. Für Henning noch unsichtbar.
+2. Anwenden (Modell-Felder an den App-Typen, ganz oder gar nicht, Gedächtnis der `deliveryId`s, Fassungen, „iPhone gewinnt“,
+   Rücknahme) mit Unit-Tests. Offen für diese Runde: Speicherort, Sicherung von `atemPresets`, Zeitpunkt der letzten Abschrift.
+3. Kennzeichen und Info-Ansicht, DE/EN-Texte, UI-Test (vorher Entwurf zum Ansehen).
