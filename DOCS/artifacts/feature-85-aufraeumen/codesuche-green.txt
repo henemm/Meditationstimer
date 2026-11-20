@@ -1,0 +1,19 @@
+# RED-Beleg A2c-2 (#85) — 2026-11-20T07:58:54Z — Commit fade62a
+# Test Plan A2c-2: keine neuen Tests (reine Löschung + Doku); RED = Codesuche
+
+## Prüfung 1: exerciseSuggestions in allen Swift-Dateien (Soll nach A2c-2: 0)
+TREFFER exerciseSuggestions: 0 -> ok (Soll 0)
+
+## Prüfung 2: legacyDefault (Soll 0, schon durch #101 erfüllt)
+TREFFER legacyDefault: 0 -> ok (Soll 0)
+
+## Prüfung 3: MARK 'Main View (Placeholder for Phase 1)' -> 'Namespace'
+385:// MARK: - Namespace
+TREFFER Placeholder-MARK: 0 -> ok (Soll 0)
+
+## Prüfung 4: workouts.md-Szenarien (AC-26, Doku-Stand der Spec-Phase)
+Exercise Hint Line: 1
+Exercise Hint TTS: 1
+Exercise Catalog Identifiers: 1
+
+ERGEBNIS: RED — exerciseSuggestions 0 Treffer, Placeholder-MARK 0 Treffer

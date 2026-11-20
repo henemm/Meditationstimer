@@ -10,11 +10,13 @@ import SwiftUI
 /// Sheet displaying detailed exercise information including instructions and effects
 struct ExerciseDetailSheet: View {
     let exerciseName: String
+    var exerciseId: String? = nil  // nil → derived from the name (Spec #48, Entscheidung 4)
     @Environment(\.dismiss) private var dismiss
 
     private var exerciseInfo: ExerciseInfo? {
-        print("[ExerciseDetailSheet] Looking up: '\(exerciseName)' (length: \(exerciseName.count))")
-        let result = ExerciseDatabase.info(for: exerciseName)
+        let id = exerciseId ?? ExerciseDatabase.exerciseId(forName: exerciseName)
+        print("[ExerciseDetailSheet] Looking up: '\(exerciseName)' as \(id)")
+        let result = ExerciseDatabase.info(forId: id)
         print("[ExerciseDetailSheet] Found: \(result != nil)")
         return result
     }
@@ -46,6 +48,7 @@ struct ExerciseDetailSheet: View {
                                 .foregroundColor(.workoutViolet)
 
                             Text(info.effect)
+                                .accessibilityIdentifier("exerciseDetail.effect")
                                 .font(.body)
                                 .foregroundStyle(.primary)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -61,6 +64,7 @@ struct ExerciseDetailSheet: View {
                                 .foregroundColor(.workoutViolet)
 
                             Text(info.instructions)
+                                .accessibilityIdentifier("exerciseDetail.instructions")
                                 .font(.body)
                                 .foregroundStyle(.primary)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -109,7 +113,8 @@ struct ExerciseDetailSheet: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle(exerciseName)
+            .navigationTitle(ExerciseDatabase.displayName(exerciseId: exerciseId ?? ExerciseDatabase.exerciseId(forName: exerciseName),
+                                                          storedName: exerciseName))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

@@ -1,0 +1,1192 @@
+
+> test:local
+> ./scripts/test-local.sh
+
+Postgres on 127.0.0.1:63013, data in /var/folders/dk/p4qd3_xx6ls6_xybmqzfgs1h0000gn/T/tmp.rBs4Qf0c7D
+
+> typecheck
+> tsc --noEmit
+
+
+> test
+> node --test 'test/*.test.ts'
+
+✔ AC-1: all migrations apply once, and the account tables exist (238.034167ms)
+✔ AC-2: findOrCreate gives one account per apple_sub, also when called at the same time (99.083ms)
+✔ AC-3: createSession hands out 43-character tokens and stores only their SHA-256 (166.898292ms)
+✔ AC-4/AC-5: resolveSession finds a valid session, refreshes it, and ends only the one session (199.860833ms)
+✔ AC-6: createSession for an unknown account is refused by the foreign key (140.455667ms)
+✔ AC-7/AC-8/AC-10: deleteAccount removes every row of the account and leaves the other one untouched (157.084708ms)
+✔ deleteAccount: zwei token-zeilen kommen als sortierte liste, konto ganz weg (180.272542ms)
+✔ deleteAccount: ohne token-zeile und unbekanntes konto (182.38525ms)
+✔ delete: rundweg mit client_id (126.362333ms)
+✔ accounts: delete nimmt oauth zeilen mit (152.5965ms)
+✔ AC-12: the account functions write nothing to the console, and an error names neither token nor apple_sub (129.672542ms)
+✔ tuer: erstes konto schliesst die tuer, vorhandenes bleibt nutzbar (174.14025ms)
+✔ tuer: gleichzeitige erstanmeldungen ergeben genau ein konto (241.500666ms)
+✔ tuer: liste entscheidet, auch ueber vorhandene konten (114.179208ms)
+✔ tuer: allowedSubsFromEnv liest streng und nennt nie den wert (0.48025ms)
+✔ sitzungsablauf: innerhalb der frist gilt (126.114625ms)
+✔ sitzungsablauf: abgelaufen ist null (117.9765ms)
+✔ sitzungsablauf: grenze genau 90 tage (254.749541ms)
+✔ sitzungsablauf: benutzung verlaengert (140.384125ms)
+✔ sitzungsablauf: abgelaufene wird nicht belebt (160.425ms)
+✔ sitzungsablauf: je sitzung (141.77875ms)
+✔ sitzungsablauf: logout und delete mit abgelaufener sitzung (125.274208ms)
+2026-11-15T14:46:16.331Z listening
+2026-11-15T14:46:16.461Z migrated
+✔ kreuz: gueltige app-sitzung an /mcp -> 401 mit www-authenticate (286.957666ms)
+2026-11-15T14:46:16.605Z listening
+2026-11-15T14:46:16.803Z migrated
+✔ kreuz: claude-access- und refresh-token an den app-tueren -> 401 (269.794541ms)
+2026-11-15T14:46:16.875Z listening
+2026-11-15T14:46:16.998Z migrated
+✔ kreuz: claude-token von A sieht und aendert nur A, app-sitzung von A holt nichts von B (239.713792ms)
+2026-11-15T14:46:16.315Z listening
+2026-11-15T14:46:16.405Z migrated
+✔ mcp revisionen: initialize wird in allen drei Revisionen beantwortet (146.702333ms)
+2026-11-15T14:46:16.447Z listening
+2026-11-15T14:46:16.596Z migrated
+✔ claude code: loopback-ruecksprung mit port wird abgelehnt, ohne weiterleitung (165.698959ms)
+2026-11-15T14:46:16.612Z listening
+2026-11-15T14:46:16.821Z migrated
+✔ proxy: x-forwarded-proto bestimmt das secure-cookie, der aussteller bleibt der konfigurierte origin (221.82075ms)
+2026-11-15T14:46:16.834Z listening
+2026-11-15T14:46:16.948Z migrated
+✔ es256: der aussteller kennt nur ES256 und claudes dokument ohne angabe wird angenommen (125.8685ms)
+2026-11-15T14:46:16.363Z listening
+2026-11-15T14:46:16.513Z migrated
+2026-11-15T14:46:16.520Z account refused
+✔ tuer app: fremdes konto wird abgewiesen, nichts gespeichert (187.835667ms)
+2026-11-15T14:46:16.541Z listening
+2026-11-15T14:46:16.734Z migrated
+2026-11-15T14:46:16.746Z account refused
+✔ tuer web: fremdes konto wird abgewiesen, nichts gespeichert (234.935334ms)
+2026-11-15T14:46:16.776Z listening
+2026-11-15T14:46:16.912Z migrated
+2026-11-15T14:46:16.918Z account refused
+2026-11-15T14:46:16.925Z account refused
+✔ tuer ohne liste: erstes konto, danach nur noch dieses, ueber beide wege (177.437375ms)
+2026-11-15T14:46:16.954Z listening
+2026-11-15T14:46:17.090Z migrated
+✔ ende zu ende: dasselbe konto ueber app und web, claude liefert, app holt ab (262.784459ms)
+2026-11-15T14:46:17.217Z listening
+2026-11-15T14:46:17.372Z migrated
+✔ verbindung trennen: alles des kontos weg, 401 fuer sitzung und claude-token, anderes konto unberuehrt (254.244542ms)
+✔ /app/transcript: ungültiges UTF-8 (0xFF) -> 400, nie 500, nichts gespeichert (120.913375ms)
+✔ /app/transcript: \u0000 in einem Wert -> 400, nie 500, nichts gespeichert (129.720959ms)
+✔ /app/transcript: \u0000 in einem Schlüssel -> 400, nie 500, nichts gespeichert (74.106792ms)
+✔ /app/transcript: einzelnes Surrogat \ud800 tief verschachtelt in einem Wert -> 400, nie 500, nichts gespeichert (149.158666ms)
+✔ /app/transcript: einzelnes Surrogat \ud800 in einem Schlüssel -> 400, nie 500, nichts gespeichert (125.717833ms)
+✔ /app/deliveries/result: ungültiges UTF-8 (0xFF) -> 400, nie 500, Lieferung bleibt claimed (230.70225ms)
+✔ /app/deliveries/result: \u0000 in einem Wert -> 400, nie 500, Lieferung bleibt claimed (122.100833ms)
+✔ /app/deliveries/result: \u0000 in einem Schlüssel -> 400, nie 500, Lieferung bleibt claimed (158.257791ms)
+✔ /app/deliveries/result: einzelnes Surrogat \ud800 tief verschachtelt in einem Wert -> 400, nie 500, Lieferung bleibt claimed (146.549459ms)
+✔ /app/deliveries/result: einzelnes Surrogat \ud800 in einem Schlüssel -> 400, nie 500, Lieferung bleibt claimed (174.660959ms)
+✔ /app/deliveries/claim: Körper mit \u0000 oder ungültigem UTF-8 -> 400, nie 500 (121.277875ms)
+✔ Routen: die drei Schluessel sind da (53.06375ms)
+✔ /app/transcript: GET gibt 405 (131.374542ms)
+✔ /app/transcript: ohne Konto 401, vor Geraetepruefung (106.008791ms)
+✔ /app/transcript: 405 kommt vor 401 (78.406041ms)
+✔ /app/deliveries/claim: GET gibt 405 (169.824875ms)
+✔ /app/deliveries/claim: ohne Konto 401, vor Geraetepruefung (186.517042ms)
+✔ /app/deliveries/claim: 405 kommt vor 401 (160.007417ms)
+✔ /app/deliveries/result: GET gibt 405 (136.559583ms)
+✔ /app/deliveries/result: ohne Konto 401, vor Geraetepruefung (164.739042ms)
+✔ /app/deliveries/result: 405 kommt vor 401 (168.180917ms)
+✔ /app/deliveries/claim: fehlender X-Device 400 (152.371916ms)
+✔ /app/deliveries/claim: X-Device keine UUID 400 (153.322833ms)
+✔ /app/deliveries/claim: 400 (Geraet) kommt vor 415 (131.569792ms)
+✔ /app/deliveries/result: fehlender X-Device 400 (182.894209ms)
+✔ /app/deliveries/result: X-Device keine UUID 400 (129.896917ms)
+✔ /app/deliveries/result: 400 (Geraet) kommt vor 415 (116.36375ms)
+✔ /app/transcript: kein application/json gibt 415, vor 413 (125.838542ms)
+✔ /app/transcript: Koerper ueber 256 KiB gibt 413, vor 400 (Form) (127.201916ms)
+✔ /app/transcript: kein JSON gibt 400 ohne Inhalt aus dem Koerper (116.604875ms)
+✔ /app/deliveries/claim: kein application/json gibt 415, vor 413 (252.116917ms)
+✔ /app/deliveries/claim: Koerper ueber 256 KiB gibt 413, vor 400 (Form) (141.700667ms)
+✔ /app/deliveries/claim: kein JSON gibt 400 ohne Inhalt aus dem Koerper (162.528917ms)
+✔ /app/deliveries/result: kein application/json gibt 415, vor 413 (138.331084ms)
+✔ /app/deliveries/result: Koerper ueber 256 KiB gibt 413, vor 400 (Form) (127.417416ms)
+✔ /app/deliveries/result: kein JSON gibt 400 ohne Inhalt aus dem Koerper (147.173792ms)
+✔ /app/transcript: gueltig gibt 204 und wird gespeichert (240.128541ms)
+✔ /app/transcript: ungueltige Form gibt 400, nichts gespeichert, Antwort ohne Inhalte (130.378416ms)
+✔ /app/transcript: generatedAt am 30. Februar gibt 400 (nicht 500), nichts gespeichert (121.320791ms)
+✔ /app/transcript: aeltere oder gleich alte gibt 204 ohne Wirkung (121.364791ms)
+✔ /app/transcript: Konto kommt aus appAccount (132.093583ms)
+✔ /app/deliveries/claim: 204 wenn nichts wartet (123.577791ms)
+✔ /app/deliveries/claim: 200 mit deliveryId und delivery, aelteste zuerst (147.158125ms)
+✔ /app/deliveries/claim: fremdes Konto sieht nichts (241.820542ms)
+✔ /app/deliveries/result: accepted gibt 204 und Zustand accepted (134.760666ms)
+✔ /app/deliveries/result: rejected mit errors gibt 204 und speichert sie (122.125166ms)
+✔ /app/deliveries/result: fremdes Geraet gibt 409 (121.279667ms)
+✔ /app/deliveries/result: zweites Ergebnis gibt 409 (127.43975ms)
+✔ /app/deliveries/result: fremdes Konto gibt 409 (118.380083ms)
+✔ /app/deliveries/result: errors an accepted gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (121.286209ms)
+✔ /app/deliveries/result: rejected ohne errors gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (239.202417ms)
+✔ /app/deliveries/result: rejected mit leerer errors-Liste gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (105.047459ms)
+✔ /app/deliveries/result: 101 Fehler gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (121.043334ms)
+✔ /app/deliveries/result: message ueber 300 Zeichen gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (106.475458ms)
+✔ /app/deliveries/result: leere message gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (114.71075ms)
+✔ /app/deliveries/result: fehlendes code gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (127.56725ms)
+✔ /app/deliveries/result: unbekannter outcome gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (113.939292ms)
+✔ /app/deliveries/result: fehlender outcome gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (244.5395ms)
+✔ /app/deliveries/result: fehlende deliveryId gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (389.498208ms)
+✔ /app/deliveries/result: Koerper kein Objekt gibt 400, Lieferung bleibt claimed, ohne Inhalte in der Antwort (396.279917ms)
+✔ /app/deliveries/result: genau 100 Fehler und message mit 300 Zeichen sind erlaubt (74.332083ms)
+✔ Parallele Abholung ueber die Route: jede Lieferung hoechstens einmal (63.321792ms)
+✔ secret: kopf, nutzlast, signatur (2.459833ms)
+✔ secret: je aufruf neu, manipulation fällt auf (0.320458ms)
+✔ fehlbedienung: wirft ohne netz (0.404792ms)
+✔ redeem: anfrage (14.164959ms)
+✔ redeem: erfolg (3.28075ms)
+✔ redeem: apple-fehler und status (Fallliste) (5.645667ms)
+✔ redeem: malformed 200 (Fallliste) (22.030666ms)
+✔ redeem: id_token geprüft (Fallliste) (19.034ms)
+✔ redeem: unavailable und zeitlimit (Fallliste) (6.20425ms)
+✔ revoke: anfrage (0.612917ms)
+✔ revoke: erfolg (0.278042ms)
+✔ revoke: apple-fehler und status (Fallliste) (2.577042ms)
+✔ revoke: unavailable und zeitlimit (Fallliste) (1.568333ms)
+✔ revoke fehlbedienung: wirft ohne netz (0.493542ms)
+✔ reason: feste menge, keine geheimnisse (4.9375ms)
+✔ silence (28.235417ms)
+✔ revoke: silence (2.822458ms)
+✔ redeem: app-formular bytegleich ohne redirect_uri (1.350708ms)
+✔ redeem: redirect_uri nur mit option, leer wirft (3.450625ms)
+✔ redeem: id_token aud gleich web-id (2.343ms)
+✔ client: web-id zugelassen, fremde id wirft (0.380542ms)
+✔ authorizeUrl: parameter vollständig, ohne scope (0.3175ms)
+✔ authorizeUrl: nonce passt zu verifyIdentityToken (0.741916ms)
+✔ authorizeUrl: wirft ohne web-id und bei leeren feldern (0.062792ms)
+✔ appleReturnUrl: origin plus fester pfad (0.068875ms)
+✔ silence: web-bausteine (0.601333ms)
+✔ cache: laden und wiederverwenden (28.828875ms)
+✔ kid: unbekannt lädt einmal nach (0.642459ms)
+✔ sperre: 59 s und 60 s (0.816958ms)
+✔ parallel: ein Abruf (0.888417ms)
+✔ fehlschlag: ohne Cache (1.2985ms)
+✔ fehlschlag: alter Cache bleibt (1.492417ms)
+✔ sperre: auch nach Fehlschlag (0.214041ms)
+✔ ttl: nach einer Stunde neuer Stand (0.109125ms)
+✔ ttl: abgelaufen und Abruf misslingt (0.116792ms)
+✔ rotation: entfernter kid (0.586459ms)
+✔ einträge: ungültige übersprungen (0.39775ms)
+✔ fetch: url und signal (0.230958ms)
+✔ zusammenspiel: verifyIdentityToken (5.922584ms)
+✔ silence und feste Werte (2.054083ms)
+✔ roundtrip: blobform (1.689583ms)
+✔ attack: manipuliert, falsch, zu kurz (0.731083ms)
+✔ attack: kein Buffer (0.136083ms)
+✔ decrypt: schlüssellänge (0.12425ms)
+✔ decrypt: 29 Byte (0.155083ms)
+✔ encrypt: wirft bei Fehleingabe (0.647042ms)
+✔ encrypt: iv je blob verschieden (15.117583ms)
+✔ encrypt: kein klartext im blob (0.17625ms)
+✔ store: überschreibt (91.112584ms)
+✔ store: gleiches paar ersetzt blob und created_at (49.677ms)
+✔ store: anderer client steht daneben und beruehrt die erste zeile nicht (88.922875ms)
+✔ vault fehlbedienung: client_id (156.742666ms)
+✔ store: unbekanntes konto (70.64925ms)
+✔ store: rundweg ueber deleteAccount mit zwei clients (118.359166ms)
+✔ store: blob gehört zum konto (135.437333ms)
+✔ silence (201.172917ms)
+✔ config: gültige Umgebung (1.089417ms)
+✔ config: fehlend und ungültig (1.266708ms)
+✔ verify: aud im erfolg (2.145584ms)
+✔ verify: gültiges Token (8.554084ms)
+✔ attack: malformed (4.988542ms)
+✔ attack: alg none (1.405167ms)
+✔ attack: HS256 mit öffentlichem Schlüssel (2.774583ms)
+✔ attack: ES256 (0.343458ms)
+✔ attack: kid und Schlüsselsuche (2.996ms)
+✔ attack: JWK mit fremdem alg oder kty (0.866334ms)
+✔ attack: Signatur (1.94225ms)
+✔ attack: iss (1.550916ms)
+✔ attack: aud (6.992333ms)
+✔ attack: abgelaufen (8.601041ms)
+✔ attack: iat (4.570541ms)
+✔ attack: nonce (5.25425ms)
+✔ reasons: feste Liste (0.174959ms)
+✔ verify: fehlerformen (0.057208ms)
+✔ silence (2.503333ms)
+✔ config: web-id leer (0.242375ms)
+✔ config: web-id gültig und nicht in clientIds (0.08425ms)
+✔ config: web-id gleich app-id oder mit komma wirft (0.256667ms)
+✔ verify: web-token ohne audiences abgelehnt (0.432084ms)
+✔ verify: web-token mit audiences angenommen (0.41025ms)
+✔ verify: app-token mit web-audiences abgelehnt, Standard unverändert (1.586ms)
+✔ auth: web-token am app-weg abgelehnt (1.398375ms)
+✔ auth: rundweg anmelden (224.599083ms)
+✔ auth: zweite anmeldung ersetzt schluessel nur je client (142.725375ms)
+✔ auth: fremde sub wird abgewiesen, kein konto, keine sitzung, kein token (135.847584ms)
+✔ auth: eingabe abgelehnt, nichts angefasst (171.07925ms)
+✔ auth: identity-token abgelehnt (183.685667ms)
+✔ auth: einloesen scheitert, nichts abgelegt (124.243ms)
+✔ auth: sub weicht ab (143.674333ms)
+✔ auth: createSession zuletzt (227.888375ms)
+✔ auth: ohne apple-konfiguration (119.598ms)
+✔ auth: abmelden (113.286875ms)
+✔ auth: bearerToken (0.240416ms)
+✔ auth: stille und einheitliche ablehnung (122.1255ms)
+✔ auth: rundweg loeschen (122.58675ms)
+✔ auth: loeschen widerruft einmal (126.4335ms)
+✔ auth: loeschen beruehrt kein anderes konto (145.294875ms)
+✔ auth: loeschen abgelehnt, nichts angefasst (248.89925ms)
+✔ auth: loeschen rennen (150.317375ms)
+✔ auth: zwei loeschungen gleichzeitig (154.684333ms)
+✔ auth: loeschen widerruft app und web token je mit eigener client_id (136.7985ms)
+✔ auth: ein widerruf scheitert, der andere laeuft, 204 und genau ein failed (123.03125ms)
+✔ auth: web token ohne webClientId wird uebersprungen ohne netz (142.107209ms)
+✔ auth: zwei loeschungen gleichzeitig mit zwei tokens, widerrufe nur einmal (225.468041ms)
+✔ auth: widerruf scheitert, konto weg (5154.003833ms)
+✔ auth: widerruf entfaellt je zeile, keine zeile genau ein skipped (125.355875ms)
+✔ auth: log ohne geheimnisse (155.17975ms)
+✔ auth: stille und einheitliche ablehnung loeschen (112.345875ms)
+2026-11-15T14:46:25.504Z listening
+2026-11-15T14:46:25.578Z migrated
+✔ auth: loeschen datenbankfehler (181.177083ms)
+✔ Abholen: aelteste zuerst, in Reihenfolge des Eingangs, dann leer (203.078083ms)
+✔ Abholen: ohne Lieferungen undefined (156.692667ms)
+✔ Abholen: dieselbe Lieferung nie an zwei Geraete (123.603459ms)
+✔ Rueckholung: nach mehr als 10 min ohne Ergebnis wieder abholbar, davor nicht (165.681083ms)
+✔ Rueckholung: das neue Geraet haelt die Lieferung, das alte bekommt conflict (174.826541ms)
+✔ Parallel: 5 Geraete, 3 Lieferungen, jede hoechstens einmal (164.430833ms)
+✔ Ergebnis: accepted vom haltenden Geraet, Zustand accepted, zweites Ergebnis conflict (143.081666ms)
+✔ Ergebnis: rejected speichert die Fehler (97.44675ms)
+✔ Ergebnis: fremdes Geraet bekommt conflict, Zustand bleibt claimed (207.40275ms)
+✔ Ergebnis: nicht abgeholte oder unbekannte Lieferung gibt conflict (127.212834ms)
+✔ Verlauf: delivery_events enthaelt waiting, claimed, accepted mit Geraet beim Abholen (122.515834ms)
+✔ Ueberholen: aus waiting true, Zustand superseded, nie abholbar (124.705875ms)
+✔ Ueberholen: aus claimed, accepted, rejected und bei unbekannter Kennung false (121.876375ms)
+✔ Ueberholen: zweites Mal false (121.584ms)
+✔ Liste: Zustand, Zeitpunkte, Dokument; Filter und Limit (248.884542ms)
+✔ Konten getrennt: fremde Lieferung nicht abholbar, meldbar, sichtbar oder ueberholbar (146.600792ms)
+✔ Konten getrennt: Rueckholung gilt nicht fuer fremdes Konto (158.698833ms)
+✔ Türen im Betrieb: Prozess nach Migration -> /mcp (POST, GET) und /app/deliveries/claim ohne Anmeldung 401, GET /app/transcript 405 (658.835542ms)
+2026-11-15T14:46:17.390Z listening
+2026-11-15T14:46:17.516Z migrated
+✔ AC-1 (S1): after ready, /health answers 200 with exactly five keys (154.231708ms)
+2026-11-15T14:46:17.533Z listening
+2026-11-15T14:46:17.537Z migrate failed, retrying (1/20)
+2026-11-15T14:46:17.590Z migrate failed, retrying (2/20)
+2026-11-15T14:46:17.643Z migrate failed, retrying (3/20)
+2026-11-15T14:46:17.695Z migrate failed, retrying (4/20)
+2026-11-15T14:46:17.748Z migrate failed, retrying (5/20)
+2026-11-15T14:46:17.801Z migrate failed, retrying (6/20)
+2026-11-15T14:46:17.854Z migrate failed, retrying (7/20)
+2026-11-15T14:46:17.906Z migrate failed, retrying (8/20)
+2026-11-15T14:46:17.958Z migrate failed, retrying (9/20)
+2026-11-15T14:46:18.009Z migrate failed, retrying (10/20)
+2026-11-15T14:46:18.061Z migrate failed, retrying (11/20)
+2026-11-15T14:46:18.113Z migrate failed, retrying (12/20)
+2026-11-15T14:46:18.164Z migrate failed, retrying (13/20)
+2026-11-15T14:46:18.216Z migrate failed, retrying (14/20)
+2026-11-15T14:46:18.267Z migrate failed, retrying (15/20)
+2026-11-15T14:46:18.319Z migrate failed, retrying (16/20)
+2026-11-15T14:46:18.371Z migrate failed, retrying (17/20)
+2026-11-15T14:46:18.423Z migrate failed, retrying (18/20)
+2026-11-15T14:46:18.474Z migrate failed, retrying (19/20)
+✔ AC-2 (S1): without a database /health and a gated route answer 503, ready is refused, close does not throw (993.6085ms)
+2026-11-15T14:46:18.528Z listening
+2026-11-15T14:46:18.647Z migrated
+✔ AC-3 (B2a-1): a gated route answers 200 after ready (125.9345ms)
+2026-11-15T14:46:18.655Z listening
+2026-11-15T14:46:18.897Z migrated
+✔ AC-4 (S1): an unknown path answers 404 and counts in the next /health (252.379375ms)
+2026-11-15T14:46:18.907Z listening
+2026-11-15T14:46:19.055Z migrated
+✔ AC-5 (S1): terminated pool connections leave the process alive and /health recovers within 5 s, without error text (161.752ms)
+2026-11-15T14:46:19.069Z listening
+2026-11-15T14:46:19.204Z migrated
+✔ AC-6 (S1): close ends server and pool, a second close does not throw, keep-alive does not hold it (149.207375ms)
+✔ AC-7 (S1): ErrorWindow trips only above half of at least 20 answers and forgets after five minutes (0.303333ms)
+2026-11-15T14:46:19.219Z listening
+2026-11-15T14:46:19.346Z migrated
+✔ AC-8 (S1): /health turns 503 on a high error rate and recovers when the window passes (142.740458ms)
+✔ AC-9 (S1): a database that never answers gives 503 with db down within a second, no exception (50.944375ms)
+✔ AC-10 (S1): no error text, URL or connection data in any answer or log line; every log line starts ISO (357.649625ms)
+✔ process: starts, migrates, answers /health and ends cleanly on SIGTERM with ISO log lines (525.988333ms)
+✔ process: without DATABASE_URL it exits 1 and names only the variable (315.781666ms)
+2026-11-15T14:46:20.612Z listening
+2026-11-15T14:46:20.847Z migrated
+✔ einhaengen: body ueber 1 mib 413 (248.140917ms)
+2026-11-15T14:46:20.860Z listening
+2026-11-15T14:46:20.975Z migrated
+✔ einhaengen: luegende content-length (128.303667ms)
+2026-11-15T14:46:20.988Z listening
+2026-11-15T14:46:21.096Z migrated
+✔ einhaengen: 413 kippt health nicht (146.397958ms)
+2026-11-15T14:46:21.135Z listening
+2026-11-15T14:46:21.242Z migrated
+✔ einhaengen: /health is not replaceable by extraRoutes (115.1505ms)
+2026-11-15T14:46:21.250Z listening
+2026-11-15T14:46:21.362Z migrated
+✔ einhaengen: the log never throws (498.39275ms)
+✔ Werkzeugliste: challenge_create ist da und nicht schreibgeschützt (168.937125ms)
+✔ challenge_create ohne Konto: „kein Konto“ (122.073ms)
+✔ challenge_create: gültige Eingabe -> Antwort und gespeicherte Lieferung besteht den Prüfer (196.079375ms)
+✔ challenge_create: Impuls ohne Nachfrage und Start heute sind gültig (125.232833ms)
+✔ challenge_create: sieben Stufen -> isError mit Pfad /items/0/stages, nichts gespeichert (118.085834ms)
+✔ challenge_create: Impulse zu wenig -> isError mit Pfad /items/0/stages/0/content/impulses, nichts gespeichert (125.116209ms)
+✔ challenge_create: Start zwei Tage in der Vergangenheit -> isError mit Pfad /items/0/startDate, nichts gespeichert (122.999208ms)
+✔ challenge_create: Start 40 Tage in der Zukunft -> isError mit Pfad /items/0/startDate, nichts gespeichert (120.493167ms)
+✔ challenge_create: 31. November -> isError mit Pfad /items/0/startDate, nichts gespeichert (248.097542ms)
+✔ challenge_create: Stufe 91 Tage -> isError mit Pfad /items/0/stages/0/days, nichts gespeichert (146.369375ms)
+✔ challenge_create: Titel leer -> isError mit Pfad /items/0/title, nichts gespeichert (161.629542ms)
+✔ challenge_create: moment unbekannt -> isError mit Pfad /items/0/stages/0/content/impulses/0/moment, nichts gespeichert (136.79625ms)
+✔ challenge_create mit Dienstfeld kind -> isError „weglassen“, nichts gespeichert (128.052417ms)
+✔ challenge_create mit Dienstfeld itemId -> isError „weglassen“, nichts gespeichert (125.278375ms)
+✔ challenge_create mit Dienstfeld revision -> isError „weglassen“, nichts gespeichert (125.012917ms)
+✔ catalog kind challenge: Challenge mit id, name und origin (228.86675ms)
+✔ show: zeigt eine Challenge (141.019541ms)
+✔ forms: Art challenge mit Grenzen 90 (Tage), 300 (Impuls), 120 (Nachfrage) (123.158875ms)
+✔ Server-Anweisung: Grundregel 10 wörtlich und Ausgelassene Tage sind neutral (131.40675ms)
+✔ overview: counts.challenge zählt Challenges je Herkunft (120.271291ms)
+✔ overview: aktive Challenge, die in 2 Tagen endet, meldet challenge_ending mit Kennung (146.078667ms)
+✔ overview: endet am letzten Tag heute oder morgen -> challenge_ending (232.659042ms)
+✔ overview: endet erst in 3 Tagen -> keine Meldung challenge_ending (149.068541ms)
+✔ overview: Verlängerung (extendedBy) verschiebt das Ende, dann keine Meldung (126.573917ms)
+✔ overview: zurückgezogene Challenge, die bald endet, meldet nichts (108.554625ms)
+✔ history.challenges: Felder, Zählung, aktueller Tag und Notizen mit Impuls-Text (132.509458ms)
+✔ history.challenges: ohne Notizen ist notes leer, und es erscheinen keine fremden Felder (116.895041ms)
+✔ history.challenges: Notiz steht nur, wenn sie in progress steht (Nachfrage-Text des Impulses ist keine Notiz) (123.7885ms)
+✔ history.challenges: day ist höchstens totalDays + extendedBy (235.90125ms)
+✔ history.challenges: nur Challenges, deren Zeitraum den Abfragezeitraum berührt (Grenzen einschließlich) (114.355833ms)
+✔ history.challenges: ohne Challenges in der Abschrift eine leere Liste (113.253833ms)
+✔ item_update einer wartenden Challenge: neue Fassung Revision 2 als gültige Lieferung (115.344042ms)
+✔ item_update einer Challenge aus der Abschrift: Revision 2 (111.621542ms)
+✔ item_withdraw einer Challenge aus der Abschrift: Rücknahme-Lieferung (128.090375ms)
+✔ item_update einer laufenden Challenge (Start vor 5 Tagen) mit unverändertem startDate: Revision 2 (113.520166ms)
+✔ item_update einer laufenden Challenge mit anderem vergangenen startDate: Fehler START_IN_PAST (237.345458ms)
+✔ Werkzeugliste: tracker_create ist da und nicht schreibgeschützt (213.473208ms)
+✔ tracker_create ohne Konto: „kein Konto“ (117.361042ms)
+✔ tracker_create: Zähler mit Tagesziel -> Antwort und gespeicherte Lieferung besteht den Prüfer (121.586166ms)
+✔ tracker_create: Zähler ohne Tagesziel -> Antwort und gespeicherte Lieferung besteht den Prüfer (117.333833ms)
+✔ tracker_create: Ja/Nein -> Antwort und gespeicherte Lieferung besteht den Prüfer (126.309542ms)
+✔ tracker_create: Saboteur Bewusstsein -> Antwort und gespeicherte Lieferung besteht den Prüfer (115.901458ms)
+✔ tracker_create: Saboteur Vermeiden -> Antwort und gespeicherte Lieferung besteht den Prüfer (255.29475ms)
+✔ tracker_create: Stufen mit Joker und Tagesbeginn -> Antwort und gespeicherte Lieferung besteht den Prüfer (141.174459ms)
+✔ tracker_create: Stufen ohne Joker -> Antwort und gespeicherte Lieferung besteht den Prüfer (166.055542ms)
+✔ tracker_create: Name leer -> isError mit Pfad /items/0/name, nichts gespeichert (137.390666ms)
+✔ tracker_create: Name 41 Zeichen -> isError mit Pfad /items/0/name, nichts gespeichert (122.485834ms)
+✔ tracker_create: type unbekannt -> isError mit Pfad /items/0/type, nichts gespeichert (136.203125ms)
+✔ tracker_create: mode passt nicht zum Typ -> isError mit Pfad /items/0/mode, nichts gespeichert (231.905708ms)
+✔ tracker_create: dailyGoal 0 -> isError mit Pfad /items/0/dailyGoal, nichts gespeichert (141.691667ms)
+✔ tracker_create: dailyGoal 101 -> isError mit Pfad /items/0/dailyGoal, nichts gespeichert (145.312958ms)
+✔ tracker_create: dailyGoal bei yesNo -> isError mit Pfad /items/0/dailyGoal, nichts gespeichert (97.4115ms)
+✔ tracker_create: levels fehlen bei mode levels -> isError mit Pfad /items/0/levels, nichts gespeichert (124.95025ms)
+✔ tracker_create: levels ohne Erfolgsstufe -> isError mit Pfad /items/0/levels, nichts gespeichert (136.405625ms)
+✔ tracker_create: nur eine Stufe -> isError mit Pfad /items/0/levels, nichts gespeichert (133.281084ms)
+✔ tracker_create: sechs Stufen -> isError mit Pfad /items/0/levels, nichts gespeichert (246.646542ms)
+✔ tracker_create: Stufenname doppelt -> isError mit Pfad /items/0/levels/1/name, nichts gespeichert (130.371292ms)
+✔ tracker_create: joker ohne levels -> isError mit Pfad /items/0/joker, nichts gespeichert (121.243917ms)
+✔ tracker_create: joker earnEveryDays 31 -> isError mit Pfad /items/0/joker/earnEveryDays, nichts gespeichert (128.995708ms)
+✔ tracker_create: joker maxOnHand 11 -> isError mit Pfad /items/0/joker/maxOnHand, nichts gespeichert (121.834208ms)
+✔ tracker_create: dayStartHour 24 -> isError mit Pfad /items/0/dayStartHour, nichts gespeichert (116.549542ms)
+✔ tracker_create: dayStartHour ohne levels -> isError mit Pfad /items/0/dayStartHour, nichts gespeichert (123.276917ms)
+✔ tracker_create mit Dienstfeld kind -> isError „weglassen“, nichts gespeichert (235.702333ms)
+✔ tracker_create mit Dienstfeld itemId -> isError „weglassen“, nichts gespeichert (106.205625ms)
+✔ tracker_create mit Dienstfeld revision -> isError „weglassen“, nichts gespeichert (121.857292ms)
+✔ tracker_create mit Feld healthKit (keine Kopplung an Apple Health) -> isError, nichts gespeichert (107.235208ms)
+✔ item_update: Claude-Tracker aus der Abschrift -> Revision 2 als gültige Lieferung (124.111958ms)
+✔ item_update: wartende tracker_create-Lieferung -> Revision 2 als gültige Lieferung (119.954667ms)
+✔ item_update: eigener und eingebauter Tracker -> isError „Nur eigene“, nichts gespeichert (115.137167ms)
+✔ challenge_create: mehrere Stufen mit Impuls- und Ziel-Stufen -> gültige Lieferung (250.503583ms)
+✔ challenge_create: sechs Stufen gültig, sieben abgelehnt mit Pfad /items/0/stages (382.135917ms)
+✔ challenge_create: Ziel-Stufe auf Tracker aus der Abschrift (Claude, eigen, builtin.noalc) (657.197083ms)
+✔ challenge_create: Ziel-Stufe auf Tracker einer wartenden tracker_create-Lieferung (369.516208ms)
+✔ challenge_create: Ziel-Stufe auf unbekannten Tracker -> isError mit Pfad, nichts gespeichert (114.349458ms)
+✔ challenge_create: Summe der Tage 91 -> isError mit Pfad /items/0, nichts gespeichert (104.103875ms)
+✔ challenge_create: Ziel mit 181 Minuten -> isError mit Pfad /items/0/stages/0/content/goal/minutes, nichts gespeichert (52.0325ms)
+✔ challenge_create: Ziel mit 0 Minuten -> isError mit Pfad /items/0/stages/0/content/goal/minutes, nichts gespeichert (79.024334ms)
+✔ challenge_create: Ziel-Art unbekannt -> isError mit Pfad /items/0/stages/0/content/goal/type, nichts gespeichert (83.834166ms)
+✔ challenge_create: Ziel-Stufe mit Impulsliste -> isError mit Pfad /items/0/stages/0/content/impulses, nichts gespeichert (84.924958ms)
+✔ challenge_create: Ziel-Stufe ohne goal -> isError mit Pfad /items/0/stages/0/content/goal, nichts gespeichert (68.189708ms)
+✔ catalog kind tracker: Zeilen {id, name, origin, type, mode} (104.045125ms)
+✔ show: zeigt einen Tracker mit Stufen bzw. Tagesziel (98.521334ms)
+✔ forms: Art tracker mit Grenzen und Werten, Art challenge mit Ziel-Arten (94.912292ms)
+✔ overview: counts.tracker zählt Tracker je Herkunft (91.461833ms)
+✔ overview.building: ohne Gewohnheiten count 0, limit 2, keine Meldung (97.977084ms)
+✔ overview.building: Claude-Tracker mit deliveredAt vor höchstens 66 Tagen zählt, mit Eintrag {id, name, kind, since} (113.545708ms)
+✔ overview.building: Tracker mit deliveredAt vor 67 Tagen zählt nicht (104.803375ms)
+✔ overview.building: zurückgenommener Claude-Tracker zählt nicht (108.578417ms)
+✔ overview.building: eigene und eingebaute Tracker zählen nicht (78.921292ms)
+✔ overview.building: aktive Claude-Challenge mit Ziel-Stufe, nicht beendet, zählt (kind challenge) (66.934083ms)
+✔ overview.building: beendete Challenge mit Ziel-Stufe zählt nicht (75.298125ms)
+✔ overview.building: Challenge nur mit Impuls-Stufen zählt nicht (94.908375ms)
+✔ overview.building: zurückgezogene Challenge mit Ziel-Stufe zählt nicht (88.389083ms)
+✔ overview.building: Tracker und Challenge zählen zusammen (71.182958ms)
+✔ overview: building_limit erst ab zwei, bei einer Gewohnheit keine Meldung (150.605625ms)
+✔ overview: bei drei Gewohnheiten weiterhin eine Meldung building_limit, count 3 (42.987ms)
+✔ Keine Sperre: bei zwei laufenden Gewohnheiten werden tracker_create und challenge_create trotzdem angenommen (51.791917ms)
+✔ Server-Anweisung: Grundregel zu höchstens zwei neuen Gewohnheiten und tracker_create (48.615625ms)
+✔ history.challenges: goals wie in der Abschrift (Ziel-Stufe, nur Summe) (59.601958ms)
+✔ overview.building: aktiver Claude-Tracker mit mode awareness zählt nicht (58.781167ms)
+✔ overview.building: aktive Claude-Tracker mit avoidance bzw. counter zählen (120.003375ms)
+✔ history: Werkzeug ist da und schreibgeschützt markiert (177.051042ms)
+✔ Server-Anweisung nennt history (111.188291ms)
+✔ history ohne Konto: „kein Konto“ (127.484416ms)
+✔ history ohne Abschrift: Ablehnung „noch keine Abschrift“ (113.399458ms)
+✔ history bei Abschrift Fassung 1: Ablehnung mit Hinweis zu aktualisieren (129.707542ms)
+✔ history: Vorgabe sind die letzten 30 Tage bis generatedAt (144.494ms)
+✔ history: from und to gelten einschließlich (UTC-Tage) (245.7275ms)
+✔ history: ältere Einheiten bis 90 Tage sind mit explizitem from erreichbar (152.2705ms)
+✔ history: Filter kind und programId (161.62175ms)
+✔ history: neueste zuerst, unabhängig von der Reihenfolge in der Abschrift (129.531792ms)
+✔ history: höchstens 200 Einheiten, count nennt alle 250 Treffer (103.863125ms)
+✔ history: Einheit trägt programName aus der Abschrift, Rückmeldung und Dauer (127.299417ms)
+✔ history: fehlt der Baustein in der Abschrift, steht die Einheit ohne programName da (227.226459ms)
+✔ history: summary.byKind zählt Einheiten, beendete und Minuten (eine Nachkommastelle) (142.026209ms)
+✔ history: summary.byProgram nach count absteigend, dann Name, mit Durchschnitt und Rückmeldungen (141.186375ms)
+✔ history: streaks stehen wie in der Abschrift in der Antwort (131.380791ms)
+✔ history: ungültige Eingaben werden mit Ausweg abgelehnt (116.750666ms)
+✔ history: Konten sind getrennt (151.392625ms)
+✔ overview: Fassung 1 meldet history_missing, Fassung 2 nicht (385.057167ms)
+✔ history: zusätzliche Felder in Einheit, Rückmeldung und Serie erscheinen nicht in der Antwort (119.204667ms)
+✔ Werkzeugliste: die fünf Lesewerkzeuge sind da und schreibgeschützt markiert (152.7375ms)
+✔ Server-Anweisung: alle elf Grundregeln und die zwei Zusätze stehen drin (101.328ms)
+✔ Ohne Konto: jedes der fünf Werkzeuge lehnt mit „kein Konto“ ab (125.234458ms)
+✔ overview ohne Abschrift: Meldung no_transcript, eingebaute Übungen aus dem Katalog, sonst 0 (114.260417ms)
+✔ overview mit Abschrift: Zählung je Art und Herkunft wie in full.json, generatedAt, bei Fassung 1 nur history_missing (131.266459ms)
+✔ overview mit Abschrift Fassung 2: keine Meldung history_missing (113.812042ms)
+✔ overview: eine abgelehnte Lieferung erscheint als Meldung rejected mit deliveryId (254.254083ms)
+✔ overview: eine vor über 14 Tagen abgelehnte Lieferung meldet sich nicht mehr (149.387416ms)
+✔ overview: eine über 24 h wartende Lieferung meldet waiting_long, eine frische nicht (155.787458ms)
+✔ overview: Abschrift älter als 7 Tage meldet transcript_old, jünger nicht (266.415792ms)
+✔ overview: Reihenfolge der Meldungen ist abgelehnt, lange wartend, Abschrift (134.580333ms)
+✔ catalog ohne Abschrift: eingebaute Übungen mit Kategorie und Hinweis, Programme leer (231.098667ms)
+✔ catalog mit Abschrift: Filter origin trennt eigene und Claude-Übungen (141.929083ms)
+✔ catalog: Suche ignoriert Groß-/Kleinschreibung und Akzente, alle Wörter müssen vorkommen (142.6395ms)
+✔ catalog: Programme mit Schrittzahl und Dauer = Runden × Σ(Arbeit + Pause) (126.711125ms)
+✔ catalog: Atemübungen mit Herkunft und Dauer (112.651458ms)
+✔ catalog: nach Name sortiert und auf höchstens 100 Einträge begrenzt (275.253625ms)
+✔ show: Programm aus der Abschrift vollständig, mit Stand und Herkunft (263.592333ms)
+✔ show: eingebaute Übung ohne Abschrift kommt aus dem Katalog (123.508916ms)
+✔ show: pending nennt wartende Lieferungen zu diesem Baustein, aber keine fremden oder erledigten (128.508167ms)
+✔ show: unbekannte Kennung wird abgelehnt und verweist auf catalog (127.942208ms)
+✔ forms: alle vier Arten mit Grenzen aus dem Lieferformat (117.797625ms)
+✔ forms: die neun Kategorien mit deutschem Namen (121.4455ms)
+✔ forms: mit kind nur die gewünschte Art (98.280583ms)
+✔ delivery_status: Zustände nach außen, mit Fehlern und Inhalt kurz (238.572125ms)
+✔ delivery_status: neueste zuerst, höchstens 20 (119.28425ms)
+✔ delivery_status: einzelne Lieferung per deliveryId, unbekannte wird abgelehnt (107.370333ms)
+✔ delivery_status: ein fremdes Konto sieht nichts, auch nicht per deliveryId (110.779667ms)
+✔ Werkzeugliste: reminder_create ist da und nicht schreibgeschützt (152.675167ms)
+✔ reminder_create ohne Konto: „kein Konto“ (248.686708ms)
+✔ reminder_create: gültige Eingabe -> Antwort und gespeicherte Lieferung besteht den Prüfer (134.799208ms)
+✔ reminder_create mit Dienstfeld kind -> isError „weglassen“, nichts gespeichert (114.942167ms)
+✔ reminder_create mit Dienstfeld itemId -> isError „weglassen“, nichts gespeichert (122.520041ms)
+✔ reminder_create mit Dienstfeld revision -> isError „weglassen“, nichts gespeichert (132.925208ms)
+✔ Bezug: eingebautes und Claude-Programm aus der Abschrift sind gültig (130.753166ms)
+✔ Bezug: Programm aus wartender Lieferung (program_create) ist gültig (138.064166ms)
+✔ Bezug: unbekanntes Programm -> isError mit Pfad /items/0/target/programId (239.774917ms)
+✔ Bezug: Atemübung aus Abschrift und aus wartender Lieferung gültig, unbekannte abgelehnt mit Pfad …/breathId (142.461834ms)
+✔ Grenze: bei 5 aktiven in der Abschrift ist die 6. erlaubt, die 7. abgelehnt (Text mit „sechs“ und item_withdraw), nichts gespeichert (120.865333ms)
+✔ Grenze: wartende Lieferungen zählen mit (ohne Abschrift: 6 gehen, die 7. nicht) (122.798ms)
+✔ Grenze: abgeschaltete und zurückgezogene Erinnerungen in der Abschrift zählen nicht (124.229833ms)
+✔ Grenze: eine Erinnerung mit wartender Rücknahme zählt nicht (119.263584ms)
+✔ Grenze: item_update einer bestehenden Erinnerung bei voller Grenze ist erlaubt (117.865375ms)
+✔ Grenze: eigene Erinnerungen zählen nicht (242.112875ms)
+✔ Grenze: Konten sind getrennt (107.929583ms)
+✔ catalog kind reminder: eigene und Claude-Erinnerungen mit id, name, origin, time, weekdays, target (116.932ms)
+✔ show: zeigt eine Erinnerung (107.589375ms)
+✔ forms: Art reminder mit lookbackHours 1–24 und den Wochentagen (112.600209ms)
+✔ overview: Erinnerungen je Herkunft und activeClaudeReminders (128.957042ms)
+✔ Server-Anweisung: höchstens sechs Erinnerungen, laden ein und mahnen nicht (111.104916ms)
+✔ item_update einer wartenden Erinnerung: neue Fassung Revision 2 als gültige Lieferung (245.246959ms)
+✔ item_withdraw einer Erinnerung aus der Abschrift: Rücknahme-Lieferung (392.935125ms)
+✔ Ein Schreiber: 6 gleichzeitige item_update mit gleicher basedOnRevision -> genau 1 Erfolg, 5 mal „neu lesen“, eine Lieferung Revision + 1 (254.398417ms)
+✔ Ein Schreiber: 6 gleichzeitige item_withdraw auf einen aktiven Abschrift-Baustein -> genau eine Rücknahme-Lieferung (147.198917ms)
+✔ Ein Schreiber: gleichzeitige Aufrufe zweier Konten blockieren sich nicht, beide gelingen (116.640291ms)
+✔ Doppelte Rücknahme: zweimal nacheinander auf aktiven Abschrift-Baustein -> zweite „schon bereit“, nur eine Lieferung (124.985333ms)
+✔ Doppelte Rücknahme: erste Rücknahme claimed, Abschrift zeigt noch active -> zweite „schon bereit“ (146.881709ms)
+✔ Doppelte Rücknahme: erste Rücknahme accepted, Abschrift zeigt noch active -> zweite „schon bereit“ (124.382583ms)
+✔ Doppelte Rücknahme (Paket): zweimal nacheinander -> zweite „schon bereit“, nur eine Rücknahme (266.787875ms)
+✔ Doppelte Rücknahme (Paket): erste Rücknahme claimed, Abschrift zeigt noch active -> zweite „schon bereit“ (126.4575ms)
+✔ Doppelte Rücknahme (Paket): erste Rücknahme accepted, Abschrift zeigt noch active -> zweite „schon bereit“ (123.896792ms)
+✔ Dienstfeld: exercise_define mit kind in der Eingabe -> isError „kind … weglassen“, nichts gespeichert (102.955375ms)
+✔ Dienstfeld: exercise_define mit itemId in der Eingabe -> isError „itemId … weglassen“, nichts gespeichert (123.027709ms)
+✔ Dienstfeld: exercise_define mit revision in der Eingabe -> isError „revision … weglassen“, nichts gespeichert (116.9005ms)
+✔ Dienstfeld: program_create mit kind in der Eingabe -> isError „kind … weglassen“, nichts gespeichert (124.417625ms)
+✔ Dienstfeld: program_create mit itemId in der Eingabe -> isError „itemId … weglassen“, nichts gespeichert (233.450042ms)
+✔ Dienstfeld: program_create mit revision in der Eingabe -> isError „revision … weglassen“, nichts gespeichert (113.614458ms)
+✔ Dienstfeld: breath_create mit kind in der Eingabe -> isError „kind … weglassen“, nichts gespeichert (116.255167ms)
+✔ Dienstfeld: breath_create mit itemId in der Eingabe -> isError „itemId … weglassen“, nichts gespeichert (110.055792ms)
+✔ Dienstfeld: breath_create mit revision in der Eingabe -> isError „revision … weglassen“, nichts gespeichert (126.166791ms)
+✔ Dienstfeld: item_update mit kind in fields -> isError „kind … weglassen“, nichts Neues gespeichert (121.462041ms)
+✔ Dienstfeld: item_update mit itemId in fields -> isError „itemId … weglassen“, nichts Neues gespeichert (111.283709ms)
+✔ Dienstfeld: item_update mit revision in fields -> isError „revision … weglassen“, nichts Neues gespeichert (542.716042ms)
+✔ Kontosperre: item_update wartet auf die Sperre des eigenen Kontos, nach COMMIT gelingt der Aufruf (716.678042ms)
+✔ Kontosperre: exercise_define wartet auf die Sperre des eigenen Kontos, nach COMMIT gelingt der Aufruf (372.284375ms)
+✔ Kontosperre: Sperre eines anderen Kontos blockiert nicht (86.391417ms)
+✔ Werkzeugliste: sechs Lieferwerkzeuge sind da und nicht schreibgeschützt markiert, die Lesewerkzeuge bleiben (162.549292ms)
+✔ Ohne Konto: alle sechs Lieferwerkzeuge lehnen mit „kein Konto“ ab und speichern nichts (220.998541ms)
+✔ exercise_define: Antwort mit deliveryId, itemId, Revision 1, waiting; gespeichert als gültiges Lieferformat (120.366125ms)
+✔ program_create: gespeichert als gültiges Lieferformat mit den eingereichten Feldern (112.380542ms)
+✔ breath_create: gespeichert als gültiges Lieferformat mit den eingereichten Feldern (110.502667ms)
+✔ Slug: „Rücken Übung ß“ wird zu claude.ruecken-uebung-ss-xxxxxx (114.195167ms)
+✔ Slug: Sonderzeichen und Leerraum werden zu einem einzelnen Bindestrich, Rand-Bindestriche entfallen (115.328542ms)
+✔ Slug: höchstens 40 Zeichen (40 × „ü“ ergibt 20 × „ue“) (112.31375ms)
+✔ Zwei Aufrufe mit demselben Namen (Programm) ergeben verschiedene itemIds und deliveryIds (117.721708ms)
+✔ Paket: Name wird zum Umschlag-Paket {packageId, name} (534.632334ms)
+✔ Paket: gleicher Name in anderer Schreibweise ergibt dieselbe packageId (714.568583ms)
+✔ Ablehnung: workSeconds 601 -> isError mit Pfad /items/0/steps/0/workSeconds und Ausweg, nichts gespeichert (362.696166ms)
+✔ Ablehnung: unbekannte Kategorie -> isError mit Pfad /items/0/category und Ausweg, nichts gespeichert (100.178375ms)
+✔ Ablehnung: Übung ohne Wirkung -> isError mit Pfad /items/0/effect und Ausweg, nichts gespeichert (92.807416ms)
+✔ Ablehnung: unbekannte builtin-Übung im Schritt -> isError mit Pfad /items/0/steps/0/exerciseId und Ausweg, nichts gespeichert (54.969042ms)
+✔ Ablehnung: Name wie eingebaute Übung -> isError mit Pfad /items/0/name und Ausweg, nichts gespeichert (72.999833ms)
+✔ Ablehnung: Atemübung mit 0 Sekunden Einatmen -> isError mit Pfad /items/0/inhaleSeconds und Ausweg, nichts gespeichert (87.312042ms)
+✔ Ablehnung: ungültiger why (zu lang) -> isError mit Pfad /why und Ausweg, nichts gespeichert (86.146584ms)
+✔ Bezug: Programm mit Übung aus einer früheren, noch wartenden exercise_define-Lieferung ist gültig (87.998666ms)
+✔ Bezug: Programm mit own.*-Übung aus der Abschrift ist gültig (83.612083ms)
+✔ Bezug: Programm mit unbekannter own.*-Übung wird abgelehnt, nichts gespeichert (73.52475ms)
+✔ Bezug: ohne Abschrift ist own.* unbekannt und wird abgelehnt (95.189375ms)
+✔ Bezug: Übung aus der Abschrift (Name vergeben) kann nicht erneut als neue Übung definiert werden (89.8045ms)
+✔ Gleichlauf valid/breath-bounds.json: wird angenommen (96.906ms)
+✔ Gleichlauf valid/breath-minimal.json: wird angenommen (141.7365ms)
+✔ Gleichlauf valid/breath-total-1h.json: wird angenommen (104.204167ms)
+✔ Gleichlauf valid/breath.json: wird angenommen (109.975041ms)
+✔ Gleichlauf valid/created-at-millis.json: wird angenommen (82.660416ms)
+✔ Gleichlauf valid/delivery-id-short.json: wird angenommen (78.188709ms)
+✔ Gleichlauf valid/exercise-minimal.json: wird angenommen (78.524291ms)
+✔ Gleichlauf valid/exercise-with-notes.json: wird angenommen (86.48825ms)
+✔ Gleichlauf valid/number-as-float-integral.json: wird angenommen (72.231042ms)
+✔ Gleichlauf valid/own-exercise-reference.json: wird angenommen (88.128833ms)
+✔ Gleichlauf valid/program-bounds-high.json: wird angenommen (73.048333ms)
+✔ Gleichlauf valid/program-bounds-low.json: wird angenommen (72.420333ms)
+✔ Gleichlauf valid/program-builtin.json: wird angenommen (51.499875ms)
+✔ Gleichlauf valid/program-rounds-99.json: wird angenommen (49.616542ms)
+✔ Gleichlauf valid/program-steps-40.json: wird angenommen (53.682834ms)
+✔ Gleichlauf valid/program-total-4h.json: wird angenommen (57.666375ms)
+✔ Gleichlauf valid/symbol-16.json: wird angenommen (57.444416ms)
+✔ Gleichlauf valid/symbol-zwj.json: wird angenommen (49.228708ms)
+✔ Gleichlauf valid/text-limits.json: wird angenommen (60.883125ms)
+✔ Gleichlauf valid/update-with-context.json: wird angenommen (59.652ms)
+✔ Gleichlauf invalid/breath-exhale-61.json: wird mit erwartetem Pfad abgelehnt (43.581084ms)
+✔ Gleichlauf invalid/breath-exhale-zero.json: wird mit erwartetem Pfad abgelehnt (37.319166ms)
+✔ Gleichlauf invalid/breath-hold-in-61.json: wird mit erwartetem Pfad abgelehnt (38.171666ms)
+✔ Gleichlauf invalid/breath-hold-in-negative.json: wird mit erwartetem Pfad abgelehnt (45.536083ms)
+✔ Gleichlauf invalid/breath-hold-out-61.json: wird mit erwartetem Pfad abgelehnt (36.5515ms)
+✔ Gleichlauf invalid/breath-hold-out-negative.json: wird mit erwartetem Pfad abgelehnt (36.07225ms)
+✔ Gleichlauf invalid/breath-inhale-61.json: wird mit erwartetem Pfad abgelehnt (24.864333ms)
+✔ Gleichlauf invalid/breath-inhale-zero.json: wird mit erwartetem Pfad abgelehnt (42.000541ms)
+✔ Gleichlauf invalid/breath-rounds-100.json: wird mit erwartetem Pfad abgelehnt (34.291209ms)
+✔ Gleichlauf invalid/breath-rounds-zero.json: wird mit erwartetem Pfad abgelehnt (30.947542ms)
+✔ Gleichlauf invalid/breath-symbol-missing.json: wird mit erwartetem Pfad abgelehnt (50.396125ms)
+✔ Gleichlauf invalid/breath-unknown-field.json: wird mit erwartetem Pfad abgelehnt (57.515459ms)
+✔ Gleichlauf invalid/exercise-category-german.json: wird mit erwartetem Pfad abgelehnt (53.516042ms)
+✔ Gleichlauf invalid/exercise-category-unknown.json: wird mit erwartetem Pfad abgelehnt (42.494125ms)
+✔ Gleichlauf invalid/exercise-effect-missing.json: wird mit erwartetem Pfad abgelehnt (59.502542ms)
+✔ Gleichlauf invalid/exercise-effect-too-long.json: wird mit erwartetem Pfad abgelehnt (42.656083ms)
+✔ Gleichlauf invalid/exercise-instructions-blank.json: wird mit erwartetem Pfad abgelehnt (46.452875ms)
+✔ Gleichlauf invalid/exercise-instructions-missing.json: wird mit erwartetem Pfad abgelehnt (45.515833ms)
+✔ Gleichlauf invalid/exercise-instructions-too-long.json: wird mit erwartetem Pfad abgelehnt (43.174125ms)
+✔ Gleichlauf invalid/exercise-name-en-too-long.json: wird mit erwartetem Pfad abgelehnt (28.416959ms)
+✔ Gleichlauf invalid/exercise-name-taken-builtin.json: wird mit erwartetem Pfad abgelehnt (58.83025ms)
+✔ Gleichlauf invalid/exercise-name-taken-context.json: wird mit erwartetem Pfad abgelehnt (55.780667ms)
+✔ Gleichlauf invalid/exercise-notes-tab.json: wird mit erwartetem Pfad abgelehnt (51.209875ms)
+✔ Gleichlauf invalid/exercise-notes-too-long.json: wird mit erwartetem Pfad abgelehnt (47.858084ms)
+✔ Gleichlauf invalid/number-too-large.json: wird mit erwartetem Pfad abgelehnt (33.157042ms)
+✔ Gleichlauf invalid/program-description-too-long.json: wird mit erwartetem Pfad abgelehnt (39.191166ms)
+✔ Gleichlauf invalid/program-name-bidi.json: wird mit erwartetem Pfad abgelehnt (40.286666ms)
+✔ Gleichlauf invalid/program-name-empty.json: wird mit erwartetem Pfad abgelehnt (28.098042ms)
+✔ Gleichlauf invalid/program-name-missing.json: wird mit erwartetem Pfad abgelehnt (57.755917ms)
+✔ Gleichlauf invalid/program-name-nul.json: wird mit erwartetem Pfad abgelehnt (40.974292ms)
+✔ Gleichlauf invalid/program-name-too-long.json: wird mit erwartetem Pfad abgelehnt (25.198792ms)
+✔ Gleichlauf invalid/program-rounds-100.json: wird mit erwartetem Pfad abgelehnt (22.439542ms)
+✔ Gleichlauf invalid/program-rounds-bool.json: wird mit erwartetem Pfad abgelehnt (22.040834ms)
+✔ Gleichlauf invalid/program-rounds-text.json: wird mit erwartetem Pfad abgelehnt (24.673875ms)
+✔ Gleichlauf invalid/program-rounds-zero.json: wird mit erwartetem Pfad abgelehnt (23.269125ms)
+✔ Gleichlauf invalid/program-steps-41.json: wird mit erwartetem Pfad abgelehnt (25.639708ms)
+✔ Gleichlauf invalid/program-steps-empty.json: wird mit erwartetem Pfad abgelehnt (24.201667ms)
+✔ Gleichlauf invalid/program-symbol-17.json: wird mit erwartetem Pfad abgelehnt (23.825333ms)
+✔ Gleichlauf invalid/program-symbol-empty.json: wird mit erwartetem Pfad abgelehnt (22.992542ms)
+✔ Gleichlauf invalid/program-symbol-letters.json: wird mit erwartetem Pfad abgelehnt (25.0595ms)
+✔ Gleichlauf invalid/program-symbol-space.json: wird mit erwartetem Pfad abgelehnt (24.427166ms)
+✔ Gleichlauf invalid/step-exercise-builtin-unknown.json: wird mit erwartetem Pfad abgelehnt (27.759916ms)
+✔ Gleichlauf invalid/step-exercise-claude-unknown.json: wird mit erwartetem Pfad abgelehnt (21.7975ms)
+✔ Gleichlauf invalid/step-exercise-id-invalid.json: wird mit erwartetem Pfad abgelehnt (21.396459ms)
+✔ Gleichlauf invalid/step-exercise-own-unknown.json: wird mit erwartetem Pfad abgelehnt (21.842083ms)
+✔ Gleichlauf invalid/step-hint-blank.json: wird mit erwartetem Pfad abgelehnt (22.053917ms)
+✔ Gleichlauf invalid/step-hint-newline.json: wird mit erwartetem Pfad abgelehnt (22.215042ms)
+✔ Gleichlauf invalid/step-hint-too-long.json: wird mit erwartetem Pfad abgelehnt (28.8005ms)
+✔ Gleichlauf invalid/step-rest-601.json: wird mit erwartetem Pfad abgelehnt (38.533292ms)
+✔ Gleichlauf invalid/step-rest-missing.json: wird mit erwartetem Pfad abgelehnt (21.364458ms)
+✔ Gleichlauf invalid/step-rest-negative.json: wird mit erwartetem Pfad abgelehnt (21.70025ms)
+✔ Gleichlauf invalid/step-work-601.json: wird mit erwartetem Pfad abgelehnt (21.758042ms)
+✔ Gleichlauf invalid/step-work-fraction.json: wird mit erwartetem Pfad abgelehnt (22.211875ms)
+✔ Gleichlauf invalid/step-work-zero.json: wird mit erwartetem Pfad abgelehnt (22.418291ms)
+✔ Gleichlauf invalid/unknown-field-step.json: wird mit erwartetem Pfad abgelehnt (25.419917ms)
+✔ Gleichlauf: mindestens 30 Dateien werden geprüft (geprüft 75, übersprungen 1) (0.079958ms)
+✔ item_update: mit richtiger basedOnRevision entsteht eine neue Lieferung mit Revision + 1 (23.292916ms)
+✔ item_update: die höchste Fassung darf nur in einer wartenden Lieferung stehen (25.513083ms)
+✔ item_update: falsche basedOnRevision -> isError „neu lesen“, nichts Neues gespeichert (23.637167ms)
+✔ item_update: Baustein aus der Abschrift (active) wird fortgeschrieben, das Paket bleibt erhalten (25.748584ms)
+✔ item_update: Paket einer wartenden Lieferung bleibt erhalten (23.916292ms)
+✔ item_update: von Henning angepasster Baustein (adapted) darf geändert werden; das iPhone entscheidet beim Anwenden (26.51125ms)
+✔ item_update: zurückgenommener Baustein (withdrawn) -> isError (23.974833ms)
+✔ item_update: own.* und builtin.* -> isError „Nur eigene“ (23.967375ms)
+✔ item_update: unbekannte claude.*-Kennung -> isError (22.717708ms)
+✔ item_update: ungültige neue Fassung wird mit Pfad abgelehnt, nichts gespeichert (23.549917ms)
+✔ item_withdraw: Baustein nur wartend -> Lieferung superseded, keine neue Lieferung, Antwort nennt sie (27.430416ms)
+✔ item_withdraw: Baustein in der Abschrift (aktiv) -> neue Rücknahme-Lieferung {kind: withdrawal, itemId} (23.383083ms)
+✔ item_withdraw: Baustein, den ein Gerät schon abgeholt hat (claimed), bekommt eine Rücknahme-Lieferung (24.2945ms)
+✔ item_withdraw: Paket mit Teil in der App -> Rücknahme mit packageId, wartende Teile werden überholt (25.821459ms)
+✔ item_withdraw: Paket, das nur aus wartenden Teilen besteht -> alle überholt, keine neue Lieferung (25.240875ms)
+✔ item_withdraw: beides oder keins von itemId/package -> isError, nichts gespeichert (23.098916ms)
+✔ item_withdraw: own.*, builtin.* und unbekannte claude.* -> isError, nichts gespeichert (24.827417ms)
+✔ item_withdraw: unbekanntes Paket -> isError, nichts gespeichert (24.322125ms)
+✔ item_withdraw: Paket, dessen Teile alle schon zurückgenommen sind -> isError (25.199791ms)
+✔ item_withdraw: schon zurückgenommener Baustein (Abschrift withdrawn) -> isError (25.021042ms)
+✔ wish_report: wird in wishes gespeichert, Antwort {wishId} (23.965125ms)
+✔ wish_report: context ist optional, Grenzen 1000 und 300 sind erlaubt (22.630583ms)
+✔ wish_report: leerer Text, Text über 1000 und context über 300 -> isError, nichts gespeichert (22.418083ms)
+✔ Konten getrennt: Konto B kann Bausteine von A weder ändern noch zurücknehmen noch einbinden (25.785583ms)
+✔ Konten getrennt: Lieferungen und Wünsche landen im Konto des Aufrufers (38.79725ms)
+✔ AC-1: applies migrations in number order and returns their names in that order (107.356417ms)
+✔ AC-2: a second run applies nothing, a new file alone is applied (295.392083ms)
+✔ AC-3: a broken migration rolls back completely and rethrows the Postgres error (102.883459ms)
+✔ AC-4: a gap in the numbers is refused before anything is applied (5.117708ms)
+✔ AC-4: a duplicate number is refused before anything is applied (9.721583ms)
+✔ AC-4: a misnamed .sql file is refused before anything is applied, README.md is ignored (5.837417ms)
+✔ AC-4: a README.md beside the migrations does not disturb the run (91.50425ms)
+✔ AC-4: number 000 is refused as invalid, not as a duplicate (5.788333ms)
+✔ AC-2: two runs at once apply every migration exactly once (S3) (541.757458ms)
+✔ AC-2: three runs at once apply every migration exactly once (S3) (407.560375ms)
+✔ AC-3: after a failed run the lock is free and a repaired run finishes (S3) (4071.879375ms)
+✔ AC-3: a failed ROLLBACK keeps the original error, discards the connection and skips the unlock (S3) (2.893958ms)
+✔ AC-4: a gap is refused without ever connecting to the database (S3) (1.203792ms)
+✔ AC-5: without DATABASE_URL the test run fails and names the variable (293.804875ms)
+✔ oauth-adapter: upsert und find (114.281ms)
+✔ oauth-adapter: unbekannt und modelle getrennt (107.578166ms)
+✔ oauth-adapter: find by uid (537.189833ms)
+✔ oauth-adapter: destroy (409.603292ms)
+✔ oauth-adapter: revoke by grant id (76.259542ms)
+✔ oauth-adapter: ids nur als hash (57.119542ms)
+✔ oauth-adapter: abgelaufenes verborgen (59.508708ms)
+✔ oauth-adapter: ohne ablauf bleibt (50.750542ms)
+✔ oauth-adapter: consume einmal (41.997459ms)
+✔ oauth-adapter: zwei gleichzeitige consume (85.959625ms)
+✔ oauth-adapter: replay detection atomar (92.038375ms)
+✔ oauth-adapter: find by user code nicht unterstuetzt (0.317417ms)
+✔ oauth-adapter: aufraeumen hoechstens alle 10 minuten (61.605667ms)
+✔ oauth-adapter: unbekanntes konto wirft (38.164791ms)
+✔ oauth-adapter: nichts im log (60.087458ms)
+✔ protokoll: pruefer laesst nur feste ereignisse durch (0.370417ms)
+2026-11-15T14:46:23.036Z listening
+2026-11-15T14:46:23.148Z migrated
+✔ hinweg: login leitet mit allen parametern zu apple (139.769041ms)
+2026-11-15T14:46:23.168Z listening
+2026-11-15T14:46:23.542Z migrated
+✔ hinweg: zustand gehasht, mit ablauf, einmal einlösbar (388.941083ms)
+2026-11-15T14:46:23.558Z listening
+2026-11-15T14:46:23.602Z migrated
+2026-11-15T14:46:23.610Z oauth interaction refused
+✔ hinweg: ttl folgt der restlaufzeit (60.619708ms)
+2026-11-15T14:46:23.618Z listening
+2026-11-15T14:46:23.666Z migrated
+✔ hinweg: state und nonce je versuch verschieden (69.00775ms)
+2026-11-15T14:46:23.688Z listening
+2026-11-15T14:46:23.707Z migrated
+✔ hinweg: consent bleibt feste 501 (39.851875ms)
+2026-11-15T14:46:23.727Z listening
+2026-11-15T14:46:23.762Z migrated
+2026-11-15T14:46:23.769Z listening
+2026-11-15T14:46:23.822Z migrated
+✔ hinweg: ohne apple-konfiguration oder web-id feste 501 (112.549833ms)
+2026-11-15T14:46:23.840Z listening
+2026-11-15T14:46:23.932Z migrated
+2026-11-15T14:46:23.939Z oauth interaction refused
+2026-11-15T14:46:23.939Z oauth interaction refused
+2026-11-15T14:46:23.940Z oauth interaction refused
+✔ hinweg: ohne passendes cookie feste 400 (110.856875ms)
+2026-11-15T14:46:23.950Z listening
+2026-11-15T14:46:23.994Z migrated
+✔ hinweg: ablagefehler ergibt 400 ohne weiterleitung (56.568834ms)
+2026-11-15T14:46:24.008Z listening
+2026-11-15T14:46:24.037Z migrated
+✔ hinweg: protokoll ohne werte (45.798542ms)
+2026-11-15T14:46:24.054Z listening
+2026-11-15T14:46:24.079Z migrated
+2026-11-15T14:46:24.122Z oauth error
+2026-11-15T14:46:24.122Z oauth error
+2026-11-15T14:46:24.122Z oauth error
+2026-11-15T14:46:24.123Z oauth error
+2026-11-15T14:46:24.123Z oauth error
+2026-11-15T14:46:24.123Z oauth error
+2026-11-15T14:46:24.123Z oauth error
+2026-11-15T14:46:24.123Z oauth error
+2026-11-15T14:46:24.123Z oauth error
+2026-11-15T14:46:24.124Z oauth error
+2026-11-15T14:46:24.124Z oauth error
+2026-11-15T14:46:24.124Z oauth error
+2026-11-15T14:46:24.124Z oauth error
+2026-11-15T14:46:24.124Z oauth error
+2026-11-15T14:46:24.124Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.125Z oauth error
+2026-11-15T14:46:24.126Z oauth error
+2026-11-15T14:46:24.126Z oauth error
+✔ hinweg: fehlerfenster unberuehrt (83.388125ms)
+2026-11-15T14:46:24.137Z listening
+2026-11-15T14:46:24.218Z migrated
+✔ einhaengen: gesetzte interaktion hat vorrang (96.502792ms)
+2026-11-15T14:46:24.233Z listening
+2026-11-15T14:46:24.315Z migrated
+✔ einhaengen: eine jwks-instanz je start (124.257625ms)
+2026-11-15T14:46:23.438Z listening
+2026-11-15T14:46:23.558Z migrated
+✔ oauth-provider: metadaten unter beiden pfaden (140.733709ms)
+✔ oauth-provider: voller durchlauf bis delivery_status (119.84075ms)
+2026-11-15T14:46:23.694Z listening
+2026-11-15T14:46:23.727Z migrated
+✔ oauth-provider: code nur einmal (63.976ms)
+2026-11-15T14:46:23.757Z listening
+2026-11-15T14:46:23.805Z migrated
+✔ oauth-provider: ohne pkce abgelehnt (60.37925ms)
+2026-11-15T14:46:23.818Z listening
+2026-11-15T14:46:23.915Z migrated
+✔ oauth-provider: cimd und resource streng (127.375917ms)
+2026-11-15T14:46:23.945Z listening
+2026-11-15T14:46:23.975Z migrated
+2026-11-15T14:46:24.010Z oauth server error
+2026-11-15T14:46:24.013Z oauth server error
+2026-11-15T14:46:24.016Z oauth server error
+2026-11-15T14:46:24.018Z oauth server error
+2026-11-15T14:46:24.022Z oauth server error
+2026-11-15T14:46:24.026Z oauth server error
+2026-11-15T14:46:24.029Z oauth server error
+2026-11-15T14:46:24.031Z oauth server error
+2026-11-15T14:46:24.033Z oauth server error
+2026-11-15T14:46:24.036Z oauth server error
+2026-11-15T14:46:24.038Z oauth server error
+2026-11-15T14:46:24.040Z oauth server error
+2026-11-15T14:46:24.045Z oauth server error
+2026-11-15T14:46:24.049Z oauth server error
+2026-11-15T14:46:24.051Z oauth server error
+2026-11-15T14:46:24.054Z oauth server error
+2026-11-15T14:46:24.057Z oauth server error
+2026-11-15T14:46:24.059Z oauth server error
+2026-11-15T14:46:24.061Z oauth server error
+2026-11-15T14:46:24.063Z oauth server error
+✔ oauth-provider: vor bridge und im fehlerfenster (129.444959ms)
+2026-11-15T14:46:24.074Z listening
+2026-11-15T14:46:24.135Z migrated
+✔ oauth-provider: refresh rotiert, altes invalid_grant (148.612833ms)
+2026-11-15T14:46:24.224Z listening
+2026-11-15T14:46:24.293Z migrated
+✔ oauth-provider: verifizierer streng (184.882958ms)
+2026-11-15T14:46:24.410Z listening
+2026-11-15T14:46:24.449Z migrated
+✔ oauth-provider: app-sitzung an mcp weiter 401 (56.227875ms)
+2026-11-15T14:46:24.466Z listening
+2026-11-15T14:46:24.536Z migrated
+✔ oauth-provider: produkt-interaction meldet niemanden an (90.540625ms)
+✔ oauth-provider: dev interactions aus (77.736667ms)
+✔ oauth-provider: schluessel aus der umgebung (62.760625ms)
+2026-11-15T14:46:24.696Z listening
+2026-11-15T14:46:24.780Z migrated
+2026-11-15T14:46:24.790Z listening
+2026-11-15T14:46:24.847Z migrated
+2026-11-15T14:46:24.861Z listening
+✔ oauth-provider: ohne schluessel 503 und mcp bleibt zu (167.537834ms)
+2026-11-15T14:46:24.936Z migrated
+✔ oauth-provider: 503 vor migrate (91.640291ms)
+✔ oauth-provider: nichts im log, auch nicht beim fk fehler (85.583291ms)
+✔ oauth-provider: abhaengigkeit exakt gepinnt (0.202458ms)
+2026-11-15T14:46:24.059Z listening
+2026-11-15T14:46:24.096Z migrated
+✔ oauth-resource: metadaten dokument (57.952333ms)
+2026-11-15T14:46:24.111Z listening
+2026-11-15T14:46:24.156Z migrated
+✔ oauth-resource: metadaten nur get (58.812708ms)
+2026-11-15T14:46:24.168Z listening
+2026-11-15T14:46:24.172Z migrate failed, retrying (1/20)
+2026-11-15T14:46:24.225Z migrate failed, retrying (2/20)
+2026-11-15T14:46:24.277Z migrate failed, retrying (3/20)
+2026-11-15T14:46:24.330Z migrate failed, retrying (4/20)
+2026-11-15T14:46:24.383Z migrate failed, retrying (5/20)
+2026-11-15T14:46:24.436Z migrate failed, retrying (6/20)
+2026-11-15T14:46:24.488Z migrate failed, retrying (7/20)
+2026-11-15T14:46:24.540Z migrate failed, retrying (8/20)
+2026-11-15T14:46:24.598Z migrate failed, retrying (9/20)
+2026-11-15T14:46:24.651Z migrate failed, retrying (10/20)
+2026-11-15T14:46:24.703Z migrate failed, retrying (11/20)
+2026-11-15T14:46:24.754Z migrate failed, retrying (12/20)
+2026-11-15T14:46:24.806Z migrate failed, retrying (13/20)
+2026-11-15T14:46:24.858Z migrate failed, retrying (14/20)
+2026-11-15T14:46:24.910Z migrate failed, retrying (15/20)
+2026-11-15T14:46:24.962Z migrate failed, retrying (16/20)
+2026-11-15T14:46:25.015Z migrate failed, retrying (17/20)
+2026-11-15T14:46:25.067Z migrate failed, retrying (18/20)
+2026-11-15T14:46:25.120Z migrate failed, retrying (19/20)
+2026-11-15T14:46:25.174Z listening
+2026-11-15T14:46:25.279Z migrated
+✔ oauth-resource: metadaten vor migrate (1118.486083ms)
+2026-11-15T14:46:25.289Z listening
+2026-11-15T14:46:25.380Z migrated
+✔ oauth-resource: mcp ohne token 401 (99.612208ms)
+2026-11-15T14:46:25.388Z listening
+2026-11-15T14:46:25.483Z migrated
+✔ oauth-resource: ablehnungstabelle (105.214167ms)
+✔ oauth-resource: verifizierer wirft 500 (99.127666ms)
+2026-11-15T14:46:25.592Z listening
+2026-11-15T14:46:25.656Z migrated
+2026-11-15T14:46:25.662Z listening
+2026-11-15T14:46:25.736Z migrated
+✔ oauth-resource: app-sitzung abgelehnt (157.910625ms)
+2026-11-15T14:46:25.751Z listening
+2026-11-15T14:46:25.811Z migrated
+✔ oauth-resource: konto durchgereicht (116.274458ms)
+2026-11-15T14:46:25.868Z listening
+2026-11-15T14:46:25.944Z migrated
+✔ oauth-resource: konten getrennt (101.283417ms)
+2026-11-15T14:46:25.966Z listening
+2026-11-15T14:46:25.968Z migrate failed, retrying (1/20)
+2026-11-15T14:46:26.019Z migrate failed, retrying (2/20)
+2026-11-15T14:46:26.071Z migrate failed, retrying (3/20)
+2026-11-15T14:46:26.125Z migrate failed, retrying (4/20)
+2026-11-15T14:46:26.177Z migrate failed, retrying (5/20)
+2026-11-15T14:46:26.228Z migrate failed, retrying (6/20)
+2026-11-15T14:46:26.280Z migrate failed, retrying (7/20)
+2026-11-15T14:46:26.332Z migrate failed, retrying (8/20)
+2026-11-15T14:46:26.384Z migrate failed, retrying (9/20)
+2026-11-15T14:46:26.436Z migrate failed, retrying (10/20)
+2026-11-15T14:46:26.487Z migrate failed, retrying (11/20)
+2026-11-15T14:46:26.540Z migrate failed, retrying (12/20)
+2026-11-15T14:46:26.593Z migrate failed, retrying (13/20)
+2026-11-15T14:46:26.644Z migrate failed, retrying (14/20)
+2026-11-15T14:46:26.695Z migrate failed, retrying (15/20)
+2026-11-15T14:46:26.747Z migrate failed, retrying (16/20)
+2026-11-15T14:46:26.799Z migrate failed, retrying (17/20)
+2026-11-15T14:46:26.851Z migrate failed, retrying (18/20)
+2026-11-15T14:46:26.903Z migrate failed, retrying (19/20)
+2026-11-15T14:46:26.956Z listening
+2026-11-15T14:46:26.990Z migrated
+✔ oauth-resource: mcp vor migrate 503 (1029.893083ms)
+2026-11-15T14:46:26.998Z listening
+2026-11-15T14:46:27.039Z migrated
+✔ oauth-resource: ressource folgt public url (50.781083ms)
+✔ oauth-resource: public url aus env (0.504167ms)
+✔ oauth-resource: prozess bricht bei falscher public url ab (787.006041ms)
+2026-11-15T14:46:27.837Z listening
+2026-11-15T14:46:27.868Z migrated
+✔ oauth-resource: nicht ueberschreibbar (39.183625ms)
+✔ oauth-resource: prozess ohne public url, mit oauth schluesseln, endet mit 1 (320.655875ms)
+✔ oauth-resource: grenze (0.188458ms)
+2026-11-15T14:46:24.655Z listening
+2026-11-15T14:46:24.699Z migrated
+✔ rueckweg: erfolg ergibt 303 auf finish mit ticket und legt konto an (102.560458ms)
+2026-11-15T14:46:24.746Z listening
+2026-11-15T14:46:24.833Z migrated
+✔ rueckweg: ticket gehasht, gebunden, 60 sekunden, einmalig (109.647791ms)
+2026-11-15T14:46:24.856Z listening
+2026-11-15T14:46:24.907Z migrated
+2026-11-15T14:46:24.916Z oauth return refused
+✔ rueckweg: replay desselben state wird abgelehnt (80.461708ms)
+2026-11-15T14:46:24.936Z listening
+2026-11-15T14:46:25.004Z migrated
+2026-11-15T14:46:25.015Z oauth return refused
+2026-11-15T14:46:25.016Z oauth return refused
+2026-11-15T14:46:25.018Z oauth return refused
+✔ rueckweg: unbekanntes fremdes oder abgelaufenes state wird abgelehnt (91.413334ms)
+2026-11-15T14:46:25.028Z listening
+2026-11-15T14:46:25.112Z migrated
+2026-11-15T14:46:25.123Z oauth return refused
+✔ rueckweg: uebergroesse wird beim lesen gezaehlt abgelehnt (106.342167ms)
+2026-11-15T14:46:25.134Z listening
+2026-11-15T14:46:25.193Z migrated
+✔ rueckweg: falsche methode und falscher inhaltstyp (75.372542ms)
+2026-11-15T14:46:25.210Z listening
+2026-11-15T14:46:25.333Z migrated
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.339Z oauth return refused
+2026-11-15T14:46:25.340Z oauth return refused
+✔ rueckweg: fehlende und doppelte felder ergeben 400 (139.8795ms)
+2026-11-15T14:46:25.350Z listening
+2026-11-15T14:46:25.436Z migrated
+✔ rueckweg: feld user wird ignoriert (108.734708ms)
+2026-11-15T14:46:25.459Z listening
+2026-11-15T14:46:25.547Z migrated
+✔ rueckweg: apple-fehler ergibt ticket access_denied (104.866042ms)
+2026-11-15T14:46:25.564Z listening
+2026-11-15T14:46:25.628Z migrated
+✔ rueckweg: abgelehnte einloesung ergibt access_denied (88.545958ms)
+2026-11-15T14:46:25.652Z listening
+2026-11-15T14:46:25.721Z migrated
+✔ rueckweg: ungueltiges identity-token ergibt access_denied (98.868167ms)
+2026-11-15T14:46:25.751Z listening
+2026-11-15T14:46:25.797Z migrated
+✔ rueckweg: apple nicht erreichbar ergibt temporarily_unavailable (66.698042ms)
+2026-11-15T14:46:25.819Z listening
+2026-11-15T14:46:25.895Z migrated
+✔ rueckweg: geloeschtes konto ergibt 400 und raeumt tickets mit ab (103.911417ms)
+2026-11-15T14:46:25.922Z listening
+2026-11-15T14:46:25.995Z migrated
+✔ rueckweg: web-token wird verschluesselt mit webClientId abgelegt (96.438375ms)
+2026-11-15T14:46:26.019Z listening
+2026-11-15T14:46:26.073Z migrated
+✔ rueckweg: app-zeile desselben kontos bleibt neben der web-zeile (72.825375ms)
+2026-11-15T14:46:26.091Z listening
+2026-11-15T14:46:26.149Z migrated
+✔ rueckweg: zweite anmeldung ersetzt die web-zeile (74.949916ms)
+2026-11-15T14:46:26.166Z listening
+2026-11-15T14:46:26.201Z migrated
+2026-11-15T14:46:26.210Z account refused
+✔ rueckweg: fremde sub ergibt access_denied ohne konto und ohne token (53.196375ms)
+2026-11-15T14:46:26.219Z listening
+2026-11-15T14:46:26.250Z migrated
+✔ rueckweg: fremde sub auf der liste kommt bis zum ticket mit konto und web-token (48.082542ms)
+2026-11-15T14:46:26.267Z listening
+2026-11-15T14:46:26.297Z migrated
+✔ rueckweg: konto beim ablegen geloescht ergibt access_denied ohne konto-id (52.537708ms)
+2026-11-15T14:46:26.320Z listening
+2026-11-15T14:46:26.358Z migrated
+✔ rueckweg: datenbankfehler beim ablegen ergibt feste 400 ohne ticket (55.9455ms)
+2026-11-15T14:46:26.376Z listening
+2026-11-15T14:46:26.408Z migrated
+✔ rueckweg: loeschen widerruft das abgelegte web-token mit der web-id (63.872583ms)
+2026-11-15T14:46:26.441Z listening
+2026-11-15T14:46:26.467Z migrated
+2026-11-15T14:46:26.473Z listening
+2026-11-15T14:46:26.512Z migrated
+2026-11-15T14:46:26.518Z listening
+2026-11-15T14:46:26.581Z migrated
+2026-11-15T14:46:26.589Z listening
+2026-11-15T14:46:26.620Z migrated
+✔ rueckweg: ohne rueckweg und bei fremden pfaden 404 des ausstellers (213.196542ms)
+2026-11-15T14:46:26.653Z listening
+2026-11-15T14:46:26.669Z migrated
+✔ finish: erfolg legt sitzung des kontos an und endet bei der zustimmung (37.695542ms)
+2026-11-15T14:46:26.691Z listening
+2026-11-15T14:46:26.707Z migrated
+✔ zustimmung: die seite nennt den client, sagt was geht und was nicht, und hat die schutzkoepfe (35.116792ms)
+2026-11-15T14:46:26.726Z listening
+2026-11-15T14:46:26.743Z migrated
+✔ zustimmung: nennt den host der client_id, nie den selbst gewaehlten client_name (44.851125ms)
+2026-11-15T14:46:26.771Z listening
+2026-11-15T14:46:26.786Z migrated
+✔ zustimmung: zulassen erteilt das recht und fuehrt mit code zu claude zurueck (38.537583ms)
+2026-11-15T14:46:26.809Z listening
+2026-11-15T14:46:26.825Z migrated
+✔ zustimmung: ablehnen endet mit access_denied ohne recht und ohne code (42.066875ms)
+2026-11-15T14:46:26.851Z listening
+2026-11-15T14:46:26.882Z migrated
+2026-11-15T14:46:26.919Z oauth interaction refused
+2026-11-15T14:46:26.920Z oauth interaction refused
+2026-11-15T14:46:26.921Z oauth interaction refused
+2026-11-15T14:46:26.921Z oauth interaction refused
+2026-11-15T14:46:26.922Z oauth interaction refused
+2026-11-15T14:46:26.922Z oauth interaction refused
+2026-11-15T14:46:26.923Z oauth interaction refused
+2026-11-15T14:46:26.923Z oauth interaction refused
+✔ zustimmung: fremder oder fehlender origin, get, fremder cookie und fremde uid ergeben nichts (81.911292ms)
+2026-11-15T14:46:26.934Z listening
+2026-11-15T14:46:26.958Z migrated
+2026-11-15T14:46:26.968Z oauth interaction refused
+2026-11-15T14:46:26.968Z oauth interaction refused
+✔ zustimmung: confirm und abort gelten nur im prompt consent (41.918167ms)
+2026-11-15T14:46:26.975Z listening
+2026-11-15T14:46:27.005Z migrated
+✔ zustimmung: abgeschaltet sind userinfo und die abmeldeseite, jwks und token-weg bleiben (38.803ms)
+2026-11-15T14:46:27.015Z listening
+2026-11-15T14:46:27.055Z migrated
+✔ finish: fehler-tickets enden als oauth-fehler beim client ohne beschreibung (67.593375ms)
+2026-11-15T14:46:27.083Z listening
+2026-11-15T14:46:27.109Z migrated
+2026-11-15T14:46:27.128Z oauth interaction refused
+2026-11-15T14:46:27.129Z oauth interaction refused
+2026-11-15T14:46:27.130Z oauth interaction refused
+✔ finish: ohne cookie und mit fremdem cookie 400 und ticket bleibt (57.849958ms)
+2026-11-15T14:46:27.140Z listening
+2026-11-15T14:46:27.158Z migrated
+2026-11-15T14:46:27.169Z oauth interaction refused
+2026-11-15T14:46:27.170Z oauth interaction refused
+✔ finish: ticket einer anderen interaktion 400 und ticket bleibt (41.658125ms)
+2026-11-15T14:46:27.182Z listening
+2026-11-15T14:46:27.206Z migrated
+2026-11-15T14:46:27.223Z oauth interaction refused
+2026-11-15T14:46:27.237Z oauth interaction refused
+2026-11-15T14:46:27.248Z oauth interaction refused
+2026-11-15T14:46:27.252Z oauth interaction refused
+✔ finish: replay abgelaufen unbekannt und fremdes modell 400 (78.5475ms)
+2026-11-15T14:46:27.261Z listening
+2026-11-15T14:46:27.296Z migrated
+2026-11-15T14:46:27.304Z oauth interaction refused
+2026-11-15T14:46:27.305Z oauth interaction refused
+2026-11-15T14:46:27.306Z oauth interaction refused
+2026-11-15T14:46:27.307Z oauth interaction refused
+✔ finish: ticket genau einmal und nicht leer (58.967958ms)
+2026-11-15T14:46:27.321Z listening
+2026-11-15T14:46:27.349Z migrated
+2026-11-15T14:46:27.356Z oauth interaction refused
+2026-11-15T14:46:27.357Z oauth interaction refused
+2026-11-15T14:46:27.358Z oauth interaction refused
+2026-11-15T14:46:27.360Z oauth interaction refused
+2026-11-15T14:46:27.362Z oauth interaction refused
+2026-11-15T14:46:27.365Z oauth interaction refused
+✔ finish: ticket in falscher form wird abgelehnt und nicht verbraucht (53.705917ms)
+2026-11-15T14:46:27.373Z listening
+2026-11-15T14:46:27.397Z migrated
+2026-11-15T14:46:27.408Z oauth interaction refused
+2026-11-15T14:46:27.408Z oauth interaction refused
+2026-11-15T14:46:27.409Z oauth interaction refused
+2026-11-15T14:46:27.409Z oauth interaction refused
+2026-11-15T14:46:27.409Z oauth interaction refused
+2026-11-15T14:46:27.410Z oauth interaction refused
+2026-11-15T14:46:27.410Z oauth interaction refused
+2026-11-15T14:46:27.410Z oauth interaction refused
+2026-11-15T14:46:27.418Z oauth interaction refused
+✔ finish: anderer pfadrest falsche methode und anderer prompt 400 (55.675084ms)
+2026-11-15T14:46:27.429Z listening
+2026-11-15T14:46:27.468Z migrated
+2026-11-15T14:46:27.487Z oauth interaction refused
+✔ finish: geloeschtes konto raeumt das ticket ab und ergibt 400 (71.374167ms)
+2026-11-15T14:46:27.501Z listening
+2026-11-15T14:46:27.526Z migrated
+✔ finish: speicherfehler 400 store failed ohne werte (68.386708ms)
+2026-11-15T14:46:27.570Z listening
+2026-11-15T14:46:27.627Z migrated
+2026-11-15T14:46:27.671Z oauth interaction refused
+2026-11-15T14:46:27.671Z oauth interaction refused
+2026-11-15T14:46:27.671Z oauth interaction refused
+2026-11-15T14:46:27.671Z oauth interaction refused
+2026-11-15T14:46:27.672Z oauth interaction refused
+2026-11-15T14:46:27.672Z oauth interaction refused
+2026-11-15T14:46:27.672Z oauth interaction refused
+2026-11-15T14:46:27.672Z oauth interaction refused
+2026-11-15T14:46:27.672Z oauth interaction refused
+2026-11-15T14:46:27.672Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.673Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.674Z oauth interaction refused
+2026-11-15T14:46:27.679Z listening
+2026-11-15T14:46:27.708Z migrated
+2026-11-15T14:46:27.709Z oauth error
+2026-11-15T14:46:27.709Z oauth error
+2026-11-15T14:46:27.710Z oauth error
+2026-11-15T14:46:27.710Z oauth error
+2026-11-15T14:46:27.710Z oauth error
+2026-11-15T14:46:27.711Z oauth error
+2026-11-15T14:46:27.711Z oauth error
+2026-11-15T14:46:27.711Z oauth error
+2026-11-15T14:46:27.711Z oauth error
+2026-11-15T14:46:27.712Z oauth error
+2026-11-15T14:46:27.712Z oauth error
+2026-11-15T14:46:27.712Z oauth error
+2026-11-15T14:46:27.712Z oauth error
+2026-11-15T14:46:27.712Z oauth error
+2026-11-15T14:46:27.713Z oauth error
+2026-11-15T14:46:27.713Z oauth error
+2026-11-15T14:46:27.713Z oauth error
+2026-11-15T14:46:27.713Z oauth error
+2026-11-15T14:46:27.713Z oauth error
+2026-11-15T14:46:27.714Z oauth error
+2026-11-15T14:46:27.714Z oauth error
+2026-11-15T14:46:27.714Z oauth error
+2026-11-15T14:46:27.714Z oauth error
+2026-11-15T14:46:27.714Z oauth error
+2026-11-15T14:46:27.715Z oauth error
+✔ finish: fehlerfenster zaehlt weder 400 noch 303 (162.263458ms)
+2026-11-15T14:46:27.731Z listening
+2026-11-15T14:46:27.753Z migrated
+2026-11-15T14:46:27.797Z oauth return refused
+2026-11-15T14:46:27.797Z oauth return refused
+2026-11-15T14:46:27.797Z oauth return refused
+2026-11-15T14:46:27.798Z oauth return refused
+2026-11-15T14:46:27.798Z oauth return refused
+2026-11-15T14:46:27.801Z listening
+2026-11-15T14:46:27.839Z migrated
+2026-11-15T14:46:27.840Z oauth error
+2026-11-15T14:46:27.840Z oauth error
+2026-11-15T14:46:27.840Z oauth error
+2026-11-15T14:46:27.840Z oauth error
+2026-11-15T14:46:27.840Z oauth error
+2026-11-15T14:46:27.840Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.841Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+2026-11-15T14:46:27.842Z oauth error
+✔ rueckweg: fehlerfenster zaehlt 5xx und nicht die 303 (124.225833ms)
+2026-11-15T14:46:27.855Z listening
+2026-11-15T14:46:27.881Z migrated
+✔ rueckweg: eine jwks-instanz je start fuer rueckweg und app-weg (48.959292ms)
+✔ rueckweg: protokoll nur feste ereignisse ohne werte (2.23075ms)
+✔ finish: protokoll nur feste ereignisse ohne werte (6.870209ms)
+✔ v2-Beispiele: es gibt gültige und ungültige Dateien (34.633375ms)
+✔ v2-Beispiele: checkTranscript nimmt genau an, was expected.accepted erlaubt (16.80225ms)
+✔ v1-Beispiele: bleiben wie bisher (gültige angenommen, ungültige abgelehnt) (6.202417ms)
+✔ Ablage v2: wird gespeichert und unverändert zurückgelesen (86.495042ms)
+✔ Ablage: Fassung 2 löst Fassung 1 ab, wenn generatedAt neuer ist (85.637917ms)
+✔ Ablage: Fassung 1 löst Fassung 2 ab, wenn generatedAt neuer ist (86.652917ms)
+✔ Ablage: ältere Fassung 1 ersetzt keine neuere Fassung 2 (stale) (96.857834ms)
+✔ Datenschutz DB: history ist in Fassung 2 erlaubt, in Fassung 1 nicht (89.009083ms)
+✔ Datenschutz DB: trackers als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514) (103.526042ms)
+✔ Datenschutz DB: reminders als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514) (109.658459ms)
+✔ Datenschutz DB: challenges als oberstes Feld ist in Fassung 2 erlaubt, in Fassung 1 nicht (23514) (102.31325ms)
+✔ Kalenderdatum: generatedAt 30. Februar 2026 wird in Fassung 1 und 2 abgelehnt (0.218208ms)
+✔ Kalenderdatum: generatedAt 29. Februar 2027 (kein Schaltjahr) wird in Fassung 1 und 2 abgelehnt (0.067042ms)
+✔ Kalenderdatum: Gegenprobe, 29. Februar 2028 (Schaltjahr) bleibt als generatedAt gültig (0.049959ms)
+✔ Kalenderdatum: startedAt am 31. April wird in Fassung 2 abgelehnt (0.070417ms)
+✔ Kalenderdatum: deliveredAt am 30. Februar an einem Claude-Baustein wird in Fassung 1 abgelehnt (0.49825ms)
+✔ Beispiele: es gibt gueltige und ungueltige Beispieldateien (4.454333ms)
+✔ Beispiele: checkTranscript nimmt an, was expected.accepted erlaubt, und nennt sonst einen Grund (6.20125ms)
+✔ checkTranscript lehnt Nicht-Objekte ab (0.117ms)
+✔ Groesse: 501 Uebungen sind ungueltig, 500 sind in Ordnung (1.548208ms)
+✔ Ablage: gueltige Abschrift wird gespeichert und unveraendert zurueckgelesen (128.08675ms)
+✔ Ablage: ohne Abschrift liefert getTranscript undefined (104.090208ms)
+✔ Ablage: ungueltige Abschrift ergibt invalid und nichts wird gespeichert (80.488792ms)
+✔ Ablage: alle ungueltigen Beispiele ergeben invalid und hinterlassen nichts (85.187083ms)
+✔ Ablage: ungueltige Abschrift ersetzt keine gespeicherte (77.174167ms)
+✔ Ablage: neuere generatedAt ersetzt die gespeicherte (79.413792ms)
+✔ Ablage: aeltere generatedAt ergibt stale, die gespeicherte bleibt (76.678375ms)
+✔ Ablage: gleich alte generatedAt ergibt stale, die gespeicherte bleibt (69.04875ms)
+✔ Ablage: Konten sind getrennt (76.186ms)
+✔ Datenschutz: direktes INSERT mit Feld ausserhalb der Liste scheitert am CHECK, ein gueltiges geht durch (73.537791ms)
+ℹ tests 709
+ℹ suites 0
+ℹ pass 709
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13565.685292

@@ -1,0 +1,32 @@
+test_hintField_localized_german exit 0
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_german]' passed (100.015 seconds).
+test_hintField_localized_english exit 0
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_english]' passed (80.884 seconds).
+test_hintField_limitsLengthAndLines exit 1
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:294: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines] : XCTAssertLessThanOrEqual failed: ("81") is greater than ("80") - Hinweis ueber 80 Zeichen
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:80: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines] : XCTAssertTrue failed - Schrittzeile 0 fehlt
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (100.636 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (129.114 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (157.140 seconds).
+test_exercisePicker_showsOnlyCatalogNames_german exit 1
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:328: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german] : XCTAssertTrue failed - 'Eigene Übung…' fehlt
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' failed (51.476 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' failed (56.308 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' failed (93.876 seconds).
+test_exercisePickerOption_isTappableById exit 0
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' passed (114.085 seconds).
+test_pickedExercise_persistsAfterRelaunch exit 1
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:154: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertTrue failed - Option workout.exercisePicker.option.builtin.planke fehlt
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (138.365 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (151.755 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (176.478 seconds).
+test_hintEnteredInEditor_visibleUnderRingInTraining exit 1
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:204: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining] : Failed to tap "Start" Button: Find single matching element. Multiple matching elements found for <XCUIElementQuery: 0x106db88c0>.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:204: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining] : Failed to tap "Start" Button: Find single matching element. Multiple matching elements found for <XCUIElementQuery: 0x106db8aa0>.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/wobbly-beaming-nygaard/LeanHealthTimerUITests/WorkoutHintUITests.swift:204: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining] : Failed to tap "Start" Button: Find single matching element. Multiple matching elements found for <XCUIElementQuery: 0x106db8dc0>.
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' failed (157.304 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' failed (164.316 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' failed (558.762 seconds).
+test_infoButton_forPresetPlanke_showsContent exit 0
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_infoButton_forPresetPlanke_showsContent]' passed (60.140 seconds).
+FINISHED

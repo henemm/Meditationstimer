@@ -1,0 +1,19 @@
+# GREEN Runde A2b (Nachbesserung Hinweisfeld-Kappung: Binding-Setter + async Nachziehen), iOS 27.2, iPhone 17 Pro
+## UI-Tests dieser Nachbesserung (Einzelläufe; Xcode 27 druckt hier keine Executed-Zeile, je ein Test Case)
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' passed (180.148 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' passed (170.664 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' passed (174.255 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_german]' passed (90.921 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_english]' passed (70.440 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' passed (211.806 seconds).
+## UI-Tests aus test-red2-output-ui.txt (übrige vier, unverändert gültig)
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' passed (61.036 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' passed (262.196 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' passed (368.319 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' passed (191.141 seconds).
+## Unit-Suite (LeanHealthTimerTests)
+passed: 261, failed: 2
+Test case 'WorkoutPhaseMigrationTests.test_existingUserStore_unchangedAfterPresetMigration()' failed on 'Clone 1 of iPhone 17 Pro - Lean Hea
+Test case 'ExerciseCatalogTests.test_defaultPrograms_referenceExistingCatalogIds()' failed on 'Clone 1 of iPhone 17 Pro - Lean Health Timer 
+Erwartet rot (A2c-1, Standardprogramme/Migration noch nicht umgesetzt): test_existingUserStore_unchangedAfterPresetMigration, test_defaultPrograms_referenceExistingCatalogIds
+Hinweis: erste zwei Unit-Läufe scheiterten am Simulator-Start (nicht am Code), dritter Lauf nach Boot ok.

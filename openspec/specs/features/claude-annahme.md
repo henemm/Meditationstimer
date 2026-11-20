@@ -34,7 +34,7 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
 
 ## Voraussetzung aus A2 (#48), nur das Nötigste
 
-- Übungen haben eine Kennung: `builtin.*` aus `Contracts/catalog/builtin-exercises.json` (Name ↔ Kennung), gelieferte `claude.*`.
+- Übungen haben eine Kennung: `builtin.*` aus `Contracts/catalog/builtin-exercises.json` (Name ↔ Kennung), gelieferte `claude.*`, eigene `own.<slug>`. `claudeId` wird in #51 auf die Schema-Namen umgestellt.
 - Programmschritte können eine Übung per Kennung auflösen und tragen ein optionales `hint`. Anzeige und Ansage des Hinweises sind A2.
 
 ## Tests (am Mac, zuerst rot)

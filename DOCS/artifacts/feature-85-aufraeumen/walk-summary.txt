@@ -1,0 +1,1 @@
+Test Case '-[LeanHealthTimerUITests.WalkHintUITests test_walk]' passed (110.525 seconds).

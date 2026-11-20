@@ -306,6 +306,131 @@
         }
       }
     },
+    "Seilspringen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seilspringen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jump Rope"
+          }
+        }
+      }
+    },
+    "exercise.box-jumps.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Box Jumps exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Oberschenkel, Gesäß und Waden und trainiert Sprungkraft und Koordination. Anders als Jump-Kniebeugen springst du auf eine Erhöhung und landest oben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens thighs, glutes and calves and trains jumping power and coordination. Unlike jump squats, you jump onto a raised surface and land on top."
+          }
+        }
+      }
+    },
+    "exercise.box-jumps.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Box Jumps exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stelle dich vor eine stabile, rutschfeste Box oder Bank, Füße hüftbreit 2) Schwinge die Arme nach hinten, springe aus dem Stand auf die Erhöhung und lande weich in leichter Hocke 3) Richte dich oben ganz auf 4) Steige gehend (nicht springend) wieder ab, das schont die Achillessehne. Wähle die Höhe so, dass die Landung sicher gelingt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand in front of a sturdy, non-slip box or bench, feet hip-width apart 2) Swing your arms back, jump from standing onto the surface and land softly in a slight squat 3) Stand up fully on top 4) Step back down (do not jump), which protects the Achilles tendon. Choose a height you can land on safely."
+          }
+        }
+      }
+    },
+    "exercise.seilspringen.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Jump Rope exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbessert Ausdauer und Koordination und kräftigt die Waden. Braucht ein Springseil, anders als die übrigen Cardio-Übungen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Improves endurance and coordination and strengthens the calves. Needs a jump rope, unlike the other cardio exercises."
+          }
+        }
+      }
+    },
+    "exercise.seilspringen.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Jump Rope exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Nimm ein Springseil, Ellbogen nah am Körper 2) Drehe das Seil aus den Handgelenken, nicht aus den Schultern 3) Springe mit kleinen, flachen Sprüngen auf den Fußballen 4) Springe 30 bis 60 Sekunden und atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Take a jump rope, elbows close to your body 2) Turn the rope from your wrists, not your shoulders 3) Jump with small, low hops on the balls of your feet 4) Keep going for 30 to 60 seconds and keep breathing calmly."
+          }
+        }
+      }
+    },
+    "exercise.skater-hops.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Skater Hops exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Gesäß (außen), Oberschenkel und Hüfte und schult Gleichgewicht und seitliche Kniestabilität. Bringt zugleich den Puls nach oben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the outer glutes, thighs and hips and trains balance and lateral knee stability. Also raises your heart rate."
+          }
+        }
+      }
+    },
+    "exercise.skater-hops.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Skater Hops exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stehe auf einem Bein, leicht gebeugt 2) Springe seitlich auf das andere Bein und lande weich auf nur diesem Bein 3) Das hintere Bein kreuzt diagonal hinter dir, die Arme schwingen mit 4) Springe zurück zur anderen Seite. Lass das Knie nicht nach innen knicken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand on one leg with a slight bend 2) Hop sideways onto the other leg and land softly on that leg only 3) The trailing leg crosses diagonally behind you, arms swing along 4) Hop back to the other side. Do not let the knee collapse inward."
+          }
+        }
+      }
+    },
     "•" : {
       "comment" : "A separator between time and duration/calories.",
       "isCommentAutoGenerated" : true
@@ -2190,6 +2315,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Created"
+          }
+        }
+      }
+    },
+    "Hinweis (optional)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinweis (optional)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hint (optional)"
+          }
+        }
+      }
+    },
+    "z. B. 12 Wiederholungen, langsam" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "z. B. 12 Wiederholungen, langsam"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. 12 reps, slow"
           }
         }
       }
@@ -11438,6 +11597,983 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Summary"
+          }
+        }
+      }
+    },
+    "Beinpendel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beinpendel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leg Swing"
+          }
+        }
+      }
+    },
+    "exercise.hollow-hold.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Hollow Hold exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert die gesamte vordere Rumpfmuskulatur, besonders den geraden Bauchmuskel, und die Hüftbeuger. Verbessert Körperspannung und Rumpfstabilität, die Basis für Turnen, Klimmzüge und Liegestütze."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trains the entire front trunk musculature, especially the rectus abdominis, and the hip flexors. Improves body tension and core stability, the foundation for gymnastics, pull-ups and push-ups."
+          }
+        }
+      }
+    },
+    "exercise.hollow-hold.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Hollow Hold exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf 2) Hebe Schultern, Arme und gestreckte Beine einige Zentimeter vom Boden 3) Presse den unteren Rücken fest in den Boden 4) Halte die Position und atme ruhig weiter. Wird der Rücken hohl, Beine höher halten oder Knie beugen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with arms extended overhead 2) Lift shoulders, arms and straight legs a few centimeters off the floor 3) Press your lower back firmly into the floor 4) Hold the position and keep breathing calmly. If your back arches, raise your legs higher or bend your knees."
+          }
+        }
+      }
+    },
+    "exercise.dead-bug.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Dead Bug exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert tiefe Bauchmuskulatur und Rumpfstabilität bei gleichzeitiger Arm- und Beinbewegung. Schult Koordination und schützt den unteren Rücken, da dieser stabil am Boden bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trains deep abdominal muscles and core stability while arms and legs move. Improves coordination and protects the lower back, since it stays pressed to the floor."
+          }
+        }
+      }
+    },
+    "exercise.dead-bug.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Dead Bug exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Arme senkrecht nach oben, Knie im 90-Grad-Winkel über der Hüfte 2) Senke gegengleich einen Arm nach hinten und das gegenüberliegende Bein nach vorn, ohne den Boden zu berühren 3) Kehre kontrolliert zurück und wechsle die Seite. Der untere Rücken bleibt die ganze Zeit am Boden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with arms pointing straight up and knees bent at 90 degrees above your hips 2) Lower one arm backward and the opposite leg forward without touching the floor 3) Return with control and switch sides. Keep your lower back on the floor throughout."
+          }
+        }
+      }
+    },
+    "exercise.flutter-kicks.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Flutter Kicks exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den unteren geraden Bauchmuskel und die Hüftbeuger. Verbessert Ausdauer der Rumpfmuskulatur und Kontrolle der Beine bei stabilem Rumpf."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the lower rectus abdominis and the hip flexors. Improves core endurance and leg control with a stable trunk."
+          }
+        }
+      }
+    },
+    "exercise.flutter-kicks.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Flutter Kicks exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Hände unter das Gesäß 2) Hebe beide gestreckten Beine leicht vom Boden 3) Bewege die Beine abwechselnd schnell und klein auf und ab 4) Halte den unteren Rücken am Boden und atme gleichmäßig. Je tiefer die Beine, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with your hands under your glutes 2) Lift both straight legs slightly off the floor 3) Alternate quick, small up-and-down kicks with your legs 4) Keep your lower back on the floor and breathe evenly. The lower the legs, the harder the exercise."
+          }
+        }
+      }
+    },
+    "exercise.v-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for V-Ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert den geraden Bauchmuskel und die Hüftbeuger gleichzeitig. Fördert Rumpfkraft, Koordination und Beweglichkeit der Hüfte und der Beinrückseite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trains the rectus abdominis and hip flexors at the same time. Builds core strength, coordination and flexibility of the hips and hamstrings."
+          }
+        }
+      }
+    },
+    "exercise.v-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for V-Ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Arme gestreckt über den Kopf, Beine gestreckt 2) Hebe Oberkörper und gestreckte Beine gleichzeitig an, bis dein Körper ein V bildet 3) Berühre mit den Händen die Füße oder Schienbeine 4) Senke dich kontrolliert ab, ohne Beine und Schultern abzulegen. Bei Schwierigkeiten Knie leicht beugen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with arms extended overhead and legs straight 2) Raise your torso and straight legs at the same time until your body forms a V 3) Touch your feet or shins with your hands 4) Lower with control without resting legs and shoulders on the floor. If this is hard, bend your knees slightly."
+          }
+        }
+      }
+    },
+    "Archer-Liegestütze" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archer-Liegestütze"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archer Push-ups"
+          }
+        }
+      }
+    },
+    "Decline-Liegestütze" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decline-Liegestütze"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decline Push-ups"
+          }
+        }
+      }
+    },
+    "exercise.sit-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Sit-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den geraden Bauchmuskel und die Hüftbeuger über die volle Bewegung vom Liegen zum Sitzen. Verbessert Rumpfkraft und Kraftausdauer für Alltag und Sport."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the rectus abdominis and hip flexors through the full range from lying to sitting. Improves core strength and muscular endurance for daily life and sport."
+          }
+        }
+      }
+    },
+    "exercise.sit-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Sit-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Knie gebeugt, Füße flach am Boden 2) Lege die Hände an die Schläfen oder verschränke die Arme vor der Brust 3) Rolle den Oberkörper Wirbel für Wirbel auf, bis du aufrecht sitzt 4) Senke dich kontrolliert wieder ab. Nicht am Kopf ziehen und ruhig weiteratmen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with knees bent and feet flat on the floor 2) Place your hands at your temples or cross your arms over your chest 3) Roll your torso up vertebra by vertebra until you sit upright 4) Lower back down with control. Do not pull on your head and keep breathing steadily."
+          }
+        }
+      }
+    },
+    "exercise.crunches.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Crunches exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainiert gezielt den oberen Teil des geraden Bauchmuskels mit kleiner Bewegung. Schont die Hüftbeuger und den unteren Rücken, da dieser am Boden bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specifically trains the upper part of the rectus abdominis with a small range of motion. Spares the hip flexors and the lower back, which stays on the floor."
+          }
+        }
+      }
+    },
+    "exercise.crunches.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Crunches exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Rücken, Knie gebeugt, Füße flach am Boden 2) Lege die Hände an die Schläfen, Ellbogen zeigen nach außen 3) Hebe Kopf und Schulterblätter mit Kraft aus dem Bauch einige Zentimeter an 4) Senke dich langsam ab. Der untere Rücken bleibt am Boden, Blick schräg nach oben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back with knees bent and feet flat on the floor 2) Place your hands at your temples, elbows pointing outward 3) Use your abs to lift head and shoulder blades a few centimeters 4) Lower slowly. Your lower back stays on the floor, gaze angled upward."
+          }
+        }
+      }
+    },
+    "exercise.archer-liegestuetze.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Archer Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlagert die Last bei jeder Wiederholung überwiegend auf einen Arm. Kräftigt Brust, Schultern und Trizeps einseitig und ist eine Vorstufe zum einarmigen Liegestütz."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shifts most of the load onto one arm with each repetition. Strengthens chest, shoulders and triceps one side at a time and is a progression toward the one-arm push-up."
+          }
+        }
+      }
+    },
+    "exercise.archer-liegestuetze.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Archer Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Gehe in die Liegestützposition, Hände deutlich weiter als schulterbreit 2) Senke dich zu einer Seite ab und beuge nur diesen Arm 3) Der andere Arm bleibt gestreckt und stützt nur leicht 4) Drücke dich zurück in die Mitte und wechsle die Seite. Körper bleibt in einer Linie, Hüfte nicht absenken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Get into push-up position with hands much wider than shoulder width 2) Lower toward one side, bending only that arm 3) The other arm stays straight and supports only lightly 4) Push back to the center and switch sides. Keep your body in one line and do not let your hips sag."
+          }
+        }
+      }
+    },
+    "exercise.decline-liegestuetze.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Decline Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erhöht durch die hochgelegten Füße die Last auf Oberkörper und Arme. Betont den oberen Brustmuskel und die vorderen Schultern stärker als der normale Liegestütz."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increases the load on the upper body and arms by elevating the feet. Emphasizes the upper chest and front shoulders more than the regular push-up."
+          }
+        }
+      }
+    },
+    "exercise.decline-liegestuetze.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Decline Push-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege die Füße auf eine Bank oder Stufe, Hände schulterbreit am Boden 2) Spanne Bauch und Gesäß an, Körper bildet eine gerade Linie 3) Senke die Brust kontrolliert Richtung Boden 4) Drücke dich wieder hoch. Je höher die Füße, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Place your feet on a bench or step, hands shoulder-width apart on the floor 2) Brace your abs and glutes so your body forms a straight line 3) Lower your chest toward the floor with control 4) Push back up. The higher your feet, the harder the exercise."
+          }
+        }
+      }
+    },
+    "Klimmzüge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klimmzüge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pull-ups"
+          }
+        }
+      }
+    },
+    "Australische Klimmzüge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Australische Klimmzüge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Australian Pull-ups"
+          }
+        }
+      }
+    },
+    "exercise.dips.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Dips exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Trizeps, unteren Brustmuskel und vordere Schulter mit dem eigenen Körpergewicht. Fördert Druckkraft im Oberkörper und Stabilität im Schultergürtel."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the triceps, lower chest and front shoulders using your own body weight. Builds pressing strength in the upper body and stability in the shoulder girdle."
+          }
+        }
+      }
+    },
+    "exercise.dips.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Dips exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stütze dich auf Barren oder die Kante einer stabilen Bank, Arme gestreckt 2) Beuge die Ellbogen und senke den Körper kontrolliert ab, bis die Oberarme etwa waagerecht sind 3) Drücke dich wieder nach oben 4) Schultern bleiben tief, Ellbogen zeigen nach hinten. Bei Schulterproblemen weniger tief absenken."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Support yourself on parallel bars or the edge of a sturdy bench, arms straight 2) Bend your elbows and lower your body with control until your upper arms are roughly parallel to the floor 3) Push back up 4) Keep your shoulders down and your elbows pointing back. With shoulder issues, lower less deeply."
+          }
+        }
+      }
+    },
+    "exercise.klimmzuege.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den breiten Rückenmuskel, den oberen Rücken und die Arme. Eine der besten Übungen für Zugkraft im Oberkörper."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the latissimus, upper back and arms. One of the best exercises for pulling strength in the upper body."
+          }
+        }
+      }
+    },
+    "exercise.klimmzuege.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Greife eine Stange im Obergriff (Handflächen zeigen weg), etwa schulterbreit, und hänge mit gestreckten Armen 2) Ziehe die Schulterblätter nach unten und den Körper nach oben, bis das Kinn über der Stange ist 3) Senke dich kontrolliert wieder ab 4) Kein Schwung aus den Beinen, Rumpf angespannt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Grip a bar with an overhand grip (palms facing away), about shoulder-width, and hang with straight arms 2) Pull your shoulder blades down and your body up until your chin is above the bar 3) Lower yourself with control 4) No swinging from the legs, keep your core tight."
+          }
+        }
+      }
+    },
+    "exercise.chin-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Chin-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den breiten Rückenmuskel und den oberen Rücken, beansprucht durch den Untergriff den Bizeps stärker als der Klimmzug im Obergriff."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the latissimus and upper back and, thanks to the underhand grip, works the biceps harder than the overhand pull-up."
+          }
+        }
+      }
+    },
+    "exercise.chin-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Chin-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Greife eine Stange im Untergriff (Handflächen zeigen zu dir), etwa schulterbreit, und hänge mit gestreckten Armen 2) Ziehe den Körper nach oben, bis das Kinn über der Stange ist 3) Senke dich kontrolliert wieder ab 4) Ellbogen nah am Körper, kein Schwung aus den Beinen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Grip a bar with an underhand grip (palms facing you), about shoulder-width, and hang with straight arms 2) Pull your body up until your chin is above the bar 3) Lower yourself with control 4) Keep your elbows close to your body, no swinging from the legs."
+          }
+        }
+      }
+    },
+    "exercise.australische-klimmzuege.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Australian Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt oberen Rücken, hintere Schulter und Arme im Zug mit geringerer Last als der Klimmzug. Ein guter Einstieg auf dem Weg zum ersten Klimmzug."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the upper back, rear shoulders and arms in a pulling motion with less load than the pull-up. A good stepping stone on the way to your first pull-up."
+          }
+        }
+      }
+    },
+    "exercise.australische-klimmzuege.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Australian Pull-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich rücklings unter eine niedrige Stange und greife sie etwas weiter als schulterbreit, Arme gestreckt 2) Fersen bleiben am Boden, Körper ist von Kopf bis Fuß gestreckt 3) Ziehe die Brust zur Stange 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back under a low bar and grip it slightly wider than shoulder-width, arms straight 2) Keep your heels on the floor and your body straight from head to toe 3) Pull your chest to the bar 4) Lower yourself with control. The flatter your body, the harder the exercise."
+          }
+        }
+      }
+    },
+    "Umgekehrtes Rudern" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umgekehrtes Rudern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverted Rows"
+          }
+        }
+      }
+    },
+    "Wandsitzen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wandsitzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wall-Sit"
+          }
+        }
+      }
+    },
+    "exercise.umgekehrtes-rudern.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Inverted Rows exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt den mittleren Rücken, die hintere Schulter und den Bizeps. Trainiert das Zusammenziehen der Schulterblätter und wirkt Rundrücken und Bildschirmhaltung entgegen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the middle back, rear shoulders and biceps. Trains pulling the shoulder blades together and counteracts a rounded upper back and desk posture."
+          }
+        }
+      }
+    },
+    "exercise.umgekehrtes-rudern.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Inverted Rows exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich rücklings unter einen stabilen Tisch, greife die Kante oder nutze Ringe bzw. ein Band, Arme gestreckt 2) Körper bleibt von Kopf bis Fuß gerade, Fersen am Boden 3) Ziehe die Schulterblätter zusammen und die Brust zur Tischkante, Ellbogen nah am Körper 4) Senke dich kontrolliert ab. Je flacher der Körper liegt, desto schwerer die Übung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your back under a sturdy table and grip the edge, or use rings or a band, arms straight 2) Keep your body straight from head to toe, heels on the floor 3) Squeeze your shoulder blades together and pull your chest to the table edge, elbows close to your body 4) Lower yourself with control. The flatter your body, the harder the exercise."
+          }
+        }
+      }
+    },
+    "exercise.step-ups.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Step-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Oberschenkel, Gesäß und Hüfte und verbessert Gleichgewicht und Stabilität auf einem Bein. Eine alltagsnahe Übung, die dem Treppensteigen entspricht."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the thighs, glutes and hips and improves balance and single-leg stability. An everyday movement that mirrors climbing stairs."
+          }
+        }
+      }
+    },
+    "exercise.step-ups.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Step-ups exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stelle dich vor eine stabile Stufe oder Bank 2) Setze einen Fuß ganz auf die Stufe 3) Drücke dich mit Kraft aus dem vorderen Bein nach oben, bis du aufrecht auf der Stufe stehst 4) Setze den Fuß kontrolliert wieder ab. Wechsle nach den Wiederholungen die Seite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand in front of a sturdy step or bench 2) Place one foot fully on the step 3) Drive up through the front leg until you stand upright on the step 4) Lower back down with control. Switch sides after your reps."
+          }
+        }
+      }
+    },
+    "exercise.wandsitzen.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Wall-Sit exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kräftigt Oberschenkel und Gesäß durch statisches Halten und stärkt die Kraftausdauer der Beine. Wirkt ohne Bewegung und schont die Gelenke."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strengthens the thighs and glutes through a static hold and builds muscular endurance in the legs. Works without movement and is easy on the joints."
+          }
+        }
+      }
+    },
+    "exercise.wandsitzen.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Wall-Sit exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lehne den Rücken an eine Wand, Füße etwa schulterbreit und einen großen Schritt von der Wand entfernt 2) Rutsche nach unten, bis die Knie etwa 90° gebeugt sind und die Oberschenkel waagerecht sind 3) Halte die Position 30 bis 60 Sekunden, Rücken bleibt an der Wand 4) Knie bleiben über den Füßen. Atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lean your back against a wall, feet about shoulder-width apart and a big step away from the wall 2) Slide down until your knees are bent about 90° and your thighs are parallel to the floor 3) Hold the position for 30 to 60 seconds, keeping your back against the wall 4) Keep your knees above your feet. Keep breathing calmly."
+          }
+        }
+      }
+    },
+    "Herabschauender Hund" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herabschauender Hund"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downward Dog"
+          }
+        }
+      }
+    },
+    "Kobra-Dehnung" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kobra-Dehnung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cobra Stretch"
+          }
+        }
+      }
+    },
+    "Katze-Kuh" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katze-Kuh"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cat-Cow"
+          }
+        }
+      }
+    },
+    "exercise.herabschauender-hund.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Downward Dog exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt Waden, Beinrückseite und Schultern als gehaltene Position. Gemeint ist die ruhige Dehnung, nicht die Bewegungsübung „Planke zu Herabschauender Hund“."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches calves, hamstrings and shoulders as a held position. This is the calm stretch, not the movement exercise “Plank to Downward Dog”."
+          }
+        }
+      }
+    },
+    "exercise.herabschauender-hund.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Downward Dog exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Beginne im Vierfüßlerstand, Hände schulterbreit, Knie unter der Hüfte 2) Schiebe die Hüfte nach oben und hinten, bis dein Körper ein umgekehrtes V bildet 3) Drücke die Fersen Richtung Boden, die Knie dürfen leicht gebeugt bleiben 4) Halte die Dehnung 20 bis 30 Sekunden, Kopf locker zwischen den Armen, und atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Start on all fours, hands shoulder-width apart, knees under your hips 2) Push your hips up and back until your body forms an upside-down V 3) Press your heels toward the floor, your knees may stay slightly bent 4) Hold the stretch for 20 to 30 seconds, head relaxed between your arms, and keep breathing calmly."
+          }
+        }
+      }
+    },
+    "exercise.cobra-dehnung.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Cobra Stretch exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt Bauch und Hüftbeuger und mobilisiert die Brustwirbelsäule. Ein sanfter Ausgleich zu viel Sitzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the abdomen and hip flexors and mobilizes the upper back. A gentle counterbalance to a lot of sitting."
+          }
+        }
+      }
+    },
+    "exercise.cobra-dehnung.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Cobra Stretch exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lege dich auf den Bauch, Hände unter den Schultern, Ellbogen nah am Körper 2) Hebe den Oberkörper mit den Armen sanft an, die Hüfte bleibt am Boden 3) Schultern weg von den Ohren, Blick nach vorn 4) Halte 15 bis 30 Sekunden und atme ruhig weiter. Geh nur so weit, wie der untere Rücken schmerzfrei bleibt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Lie on your stomach, hands under your shoulders, elbows close to your body 2) Gently lift your upper body with your arms, your hips stay on the floor 3) Shoulders away from your ears, gaze forward 4) Hold for 15 to 30 seconds and keep breathing calmly. Only go as far as your lower back stays pain-free."
+          }
+        }
+      }
+    },
+    "exercise.cat-cow.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Cat-Cow exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilisiert die ganze Wirbelsäule und lockert Rücken und Nacken. Eine fließende Bewegung im Atemrhythmus, keine Haltedehnung."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilizes the whole spine and loosens the back and neck. A flowing movement in rhythm with your breath, not a held stretch."
+          }
+        }
+      }
+    },
+    "exercise.cat-cow.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Cat-Cow exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Gehe in den Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte 2) Beim Ausatmen den Rücken rund machen, Kinn Richtung Brust (Katze) 3) Beim Einatmen ins leichte Hohlkreuz gehen, Brust nach vorn, Blick leicht nach oben (Kuh) 4) Wechsle 8 bis 10 Mal langsam im Atemrhythmus."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Get on all fours, hands under your shoulders, knees under your hips 2) As you breathe out, round your back, chin toward your chest (cat) 3) As you breathe in, let your back sink into a slight arch, chest forward, gaze slightly up (cow) 4) Alternate slowly 8 to 10 times in rhythm with your breath."
+          }
+        }
+      }
+    },
+    "Vorbeuge im Sitzen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorbeuge im Sitzen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seated Forward Bend"
+          }
+        }
+      }
+    },
+    "Schulter-Dehnung links" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulter-Dehnung links"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shoulder Stretch Left"
+          }
+        }
+      }
+    },
+    "Schulter-Dehnung rechts" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulter-Dehnung rechts"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shoulder Stretch Right"
+          }
+        }
+      }
+    },
+    "exercise.sitzende-vorbeuge.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Seated Forward Bend exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt Beinrückseite und unteren Rücken im Sitzen. Anders als die Hamstring-Dehnung im Stehen sitzt du mit beiden Beinen gestreckt am Boden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the back of your legs and lower back while seated. Unlike the standing hamstring stretch, you sit on the floor with both legs extended."
+          }
+        }
+      }
+    },
+    "exercise.sitzende-vorbeuge.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Seated Forward Bend exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Setze dich aufrecht auf den Boden, beide Beine nach vorn gestreckt 2) Beuge dich aus der Hüfte mit langem Rücken nach vorn, nicht aus dem Rundrücken 3) Lege die Hände auf Schienbeine oder Füße, die Knie dürfen leicht gebeugt sein 4) Halte 20 bis 30 Sekunden und atme ruhig weiter."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Sit up tall on the floor with both legs stretched out in front of you 2) Fold forward from your hips with a long back, not by rounding it 3) Rest your hands on your shins or feet, knees may stay slightly bent 4) Hold for 20 to 30 seconds and keep breathing calmly."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-links.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Shoulder Stretch Left exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt die hintere Schulter und den oberen Rücken der linken Seite. Ideal gegen verspannte Schultern nach langem Sitzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the back of the left shoulder and the upper back. Great for tense shoulders after long periods of sitting."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-links.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Shoulder Stretch Left exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stehe oder sitze aufrecht und führe den linken Arm quer vor die Brust 2) Ziehe ihn mit der rechten Hand sanft am Oberarm näher heran 3) Halte die linke Schulter tief, weg vom Ohr 4) Halte 20 bis 30 Sekunden und atme ruhig weiter, dann wechsle zur rechten Seite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand or sit tall and bring your left arm across your chest 2) Gently pull it closer with your right hand on the upper arm 3) Keep the left shoulder low, away from your ear 4) Hold for 20 to 30 seconds and keep breathing calmly, then switch to the right side."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-rechts.effect" : {
+      "extractionState" : "manual",
+      "comment" : "Effect description for Shoulder Stretch Right exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnt die hintere Schulter und den oberen Rücken der rechten Seite. Ideal gegen verspannte Schultern nach langem Sitzen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretches the back of the right shoulder and the upper back. Great for tense shoulders after long periods of sitting."
+          }
+        }
+      }
+    },
+    "exercise.schulter-dehnung-rechts.instructions" : {
+      "extractionState" : "manual",
+      "comment" : "Instructions for Shoulder Stretch Right exercise",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stehe oder sitze aufrecht und führe den rechten Arm quer vor die Brust 2) Ziehe ihn mit der linken Hand sanft am Oberarm näher heran 3) Halte die rechte Schulter tief, weg vom Ohr 4) Halte 20 bis 30 Sekunden und atme ruhig weiter, dann wechsle zur linken Seite."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1) Stand or sit tall and bring your right arm across your chest 2) Gently pull it closer with your left hand on the upper arm 3) Keep the right shoulder low, away from your ear 4) Hold for 20 to 30 seconds and keep breathing calmly, then switch to the left side."
           }
         }
       }

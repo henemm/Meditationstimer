@@ -1,0 +1,10 @@
+# Writes workoutProgramSets directly into the app container plist (simulator must be shut down).
+import plistlib, glob, os, sys
+DEV = "5206610E-E223-4D21-AF91-4418C0BEC4EA"
+BID = "henemm.Meditationstimer-iOS"
+f = glob.glob(os.path.expanduser(f"~/Library/Developer/CoreSimulator/Devices/{DEV}/data/Containers/Data/Application/*/Library/Preferences/{BID}.plist"))[0]
+d = plistlib.load(open(f, "rb"))
+if sys.argv[1] == "corrupt":
+    d["workoutProgramSets"] = b'{"kaputt": [1,2,'
+plistlib.dump(d, open(f, "wb"), fmt=plistlib.FMT_BINARY)
+print("geschrieben:", len(d["workoutProgramSets"]), "Bytes")

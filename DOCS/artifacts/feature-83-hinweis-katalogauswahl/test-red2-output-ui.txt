@@ -1,0 +1,30 @@
+== test_exercisePickerOption_isTappableById
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' passed (61.036 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 61.036 (61.048) seconds
+== test_pickedExercise_persistsAfterRelaunch
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' passed (262.196 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 262.196 (262.211) seconds
+== test_exercisePicker_showsOnlyCatalogNames_german
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' passed (368.319 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 368.319 (368.341) seconds
+DONE
+== test_hintEnteredInEditor_visibleUnderRingInTraining
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' passed (191.141 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 191.141 (191.148) seconds
+== test_hintField_limitsLengthAndLines
+WorkoutHintUITests.swift:80: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines] : XCTAssertTrue failed - Schrittzeile 0 fehlt
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (114.834 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 114.834 (114.842) seconds
+== test_hintField_limitsLengthAndLines Lauf 1
+WorkoutHintUITests.swift:338: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines] : XCTAssertLessThanOrEqual failed: ("84") is greater than ("80") - Hinweis ueber 80 Zeichen
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (101.602 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 101.602 (101.618) seconds
+== test_hintField_limitsLengthAndLines Lauf 2
+WorkoutHintUITests.swift:338: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines] : XCTAssertLessThanOrEqual failed: ("84") is greater than ("80") - Hinweis ueber 80 Zeichen
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (98.633 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 98.633 (98.638) seconds
+== test_hintField_limitsLengthAndLines Lauf 3
+WorkoutHintUITests.swift:338: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines] : XCTAssertLessThanOrEqual failed: ("81") is greater than ("80") - Hinweis ueber 80 Zeichen
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' failed (99.099 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 99.099 (99.109) seconds
+DONE4

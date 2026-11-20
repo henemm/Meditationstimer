@@ -91,7 +91,6 @@ test("overview ohne Abschrift: Meldung no_transcript, eingebaute Übungen aus de
   const doc = await json(client, "overview");
   assert.equal(doc.messages[0].kind, "no_transcript");
   assert.equal(doc.counts.exercise.builtin, (await catalogFile()).length);
-  assert.equal(doc.counts.exercise.builtin, 43);
   for (const [kind, origin] of [["exercise", "own"], ["exercise", "claude"], ["program", "builtin"], ["program", "own"],
     ["program", "claude"], ["breath", "builtin"], ["breath", "own"], ["breath", "claude"]]) {
     assert.equal(doc.counts[kind][origin], 0, `${kind}/${origin}`);
@@ -187,11 +186,11 @@ test("overview: Reihenfolge der Meldungen ist abgelehnt, lange wartend, Abschrif
 
 // 4. catalog
 
-test("catalog ohne Abschrift: 43 eingebaute Übungen mit Kategorie und Hinweis, Programme leer", async (t) => {
+test("catalog ohne Abschrift: eingebaute Übungen mit Kategorie und Hinweis, Programme leer", async (t) => {
   const client = await connect(t, await migrated(t), HENNING);
   const doc = await json(client, "catalog", { kind: "exercise" });
   assert.equal(doc.kind, "exercise");
-  assert.equal(doc.items.length, 43);
+  assert.equal(doc.items.length, (await catalogFile()).length);
   for (const item of doc.items) {
     assert.equal(item.origin, "builtin");
     assert.equal(typeof item.category, "string");

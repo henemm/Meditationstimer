@@ -1,0 +1,21 @@
+import subprocess, plistlib, glob, os, json, hashlib
+DEV = "5206610E-E223-4D21-AF91-4418C0BEC4EA"
+BID = "henemm.Meditationstimer-iOS"
+pat = os.path.expanduser(f"~/Library/Developer/CoreSimulator/Devices/{DEV}/data/Containers/Data/Application/*/Library/Preferences/{BID}.plist")
+files = glob.glob(pat)
+if not files:
+    print("keine Einstellungsdatei"); raise SystemExit
+d = plistlib.load(open(files[0], "rb"))
+for k in sorted(d):
+    if not k.startswith("workoutProgramSets"):
+        continue
+    v = d[k]
+    print(f"{k}: {len(v)} Bytes, sha1 {hashlib.sha1(v).hexdigest()[:10]}")
+    if k == "workoutProgramSets":
+        try:
+            for s in json.loads(v):
+                if s["name"] == "Altprogramm Test":
+                    for p in s["phases"]:
+                        print("   ", p["id"][:8], p["name"], p["workDuration"], p["restDuration"], p.get("exerciseId"), p.get("hint"))
+        except Exception as e:
+            print("   nicht lesbar:", type(e).__name__)

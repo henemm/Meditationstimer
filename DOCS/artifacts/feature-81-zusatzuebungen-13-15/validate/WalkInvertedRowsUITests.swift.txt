@@ -1,0 +1,105 @@
+// Wegwerf-Durchlauf #81 (nur Scratchpad-Kopie, nie im Repo): Inverted Rows im Schritt-Editor wählen,
+// Info-Blatt in Deutsch und Englisch öffnen, Bildschirmfotos ablegen.
+// Wegen Altfehler #90 (erstes Blatt leer) wird zuerst Burpees geöffnet, dann Inverted Rows.
+import XCTest
+
+final class WalkInvertedRowsUITests: XCTestCase {
+    let shots = "/private/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-glistening-jingling-rivest/5265ddb3-1a9d-48f5-af58-d83c3e45c5ba/scratchpad/shots"
+    var app: XCUIApplication!
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        app = XCUIApplication()
+    }
+
+    private func launch(_ lang: String, _ locale: String) {
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(\(lang))", "-AppleLocale", locale]
+        app.launch()
+        for label in ["OK", "Nicht erlauben", "Don’t Allow", "Don't Allow"] {
+            let b = app.buttons[label]
+            if b.waitForExistence(timeout: 1), b.isHittable { b.tap() }
+        }
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        // Health-Zugriff-Blatt kommt auf frischem Simulator verzögert
+        let deny = app.buttons.matching(NSPredicate(format: "label == 'Nicht erlauben' OR label == 'Don’t Allow' OR label == \"Don't Allow\"")).firstMatch
+        if deny.waitForExistence(timeout: 8) { deny.tap(); sleep(2) }
+        for label in ["OK", "Nicht erlauben", "Don’t Allow"] {
+            let b = app.buttons[label]
+            if b.waitForExistence(timeout: 2), b.isHittable { b.tap() }
+        }
+        sleep(1); shot("after-launch-\(lang)"); dump("after-launch-\(lang)")
+    }
+
+    private func shot(_ name: String) {
+        let png = XCUIScreen.main.screenshot().pngRepresentation
+        try? png.write(to: URL(fileURLWithPath: "\(shots)/\(name).png"))
+        let a = XCTAttachment(data: png, uniformTypeIdentifier: "public.png")
+        a.name = name; a.lifetime = .keepAlways; add(a)
+    }
+
+    private func dump(_ name: String) {
+        try? app.debugDescription.write(toFile: "\(shots)/\(name).txt", atomically: true, encoding: .utf8)
+    }
+
+    private func openInfoSheet(lang: String) {
+        let tabata = app.staticTexts["Tabata Classic"].firstMatch
+        XCTAssertTrue(tabata.waitForExistence(timeout: 20)); dump("workout-\(lang)")
+        let info = app.buttons.matching(NSPredicate(format: "label == 'Info' OR identifier == 'info.circle'"))
+            .allElementsBoundByIndex
+            .filter { $0.frame.minY > tabata.frame.minY }.min { $0.frame.minY < $1.frame.minY }!
+        info.tap()
+        let row = app.staticTexts.matching(NSPredicate(format: "label == 'Inverted Rows' OR label == 'Umgekehrtes Rudern'")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10), "Übung fehlt im Programm-Info"); dump("proginfo-\(lang)")
+        shot("proginfo-\(lang)")
+        let burpees = app.staticTexts["Burpees"].firstMatch
+        tapRowInfo(burpees); sleep(2); shot("burpees-\(lang)")
+        closeSheet()
+        tapRowInfo(row); sleep(2); dump("invertedrows-\(lang)"); shot("invertedrows-\(lang)")
+        closeSheet()
+    }
+
+    private func tapRowInfo(_ text: XCUIElement) {
+        let target = app.buttons.matching(identifier: "info.circle").allElementsBoundByIndex
+            .filter { abs($0.frame.midY - text.frame.midY) < 20 && $0.frame.minX > 250 }.last
+        XCTAssertNotNil(target, "Info-Knopf neben \(text.label) fehlt")
+        target!.tap()
+    }
+
+    private func closeSheet() {
+        let done = app.buttons.matching(NSPredicate(format: "label == 'Fertig' OR label == 'Done'")).allElementsBoundByIndex.last!
+        done.tap(); sleep(1)
+    }
+
+    private func save() {
+        app.navigationBars.buttons.matching(NSPredicate(format: "label == 'Sichern' OR label == 'Speichern' OR label == 'Save'")).firstMatch.tap()
+        sleep(1)
+    }
+
+    func test_walk() throws {
+        launch("de", "de_DE")
+        app.buttons.matching(NSPredicate(format: "label == 'Bearbeiten'")).firstMatch.tap()
+        let firstPhase = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Belastung:'")).firstMatch
+        let ok = firstPhase.waitForExistence(timeout: 10)
+        if !ok { shot("no-phase"); dump("no-phase") }
+        XCTAssertTrue(ok)
+        firstPhase.tap()
+        let picker = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Name'")).firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        picker.tap()
+        sleep(2); dump("menu")
+        let opt = app.descendants(matching: .any).matching(NSPredicate(format: "label == 'Inverted Rows'")).firstMatch
+        let menu = app.collectionViews.allElementsBoundByIndex.last { $0.frame.minX > 50 }!
+        var tries = 0
+        while !(opt.exists && opt.isHittable) && tries < 25 { menu.swipeUp(velocity: .slow); tries += 1 }
+        dump("menu-end"); shot("menu-end")
+        XCTAssertTrue(opt.exists, "Inverted Rows nicht in der Vorschlagsliste")
+        opt.tap()
+        shot("editor-invertedrows-de")
+        save(); save()
+        openInfoSheet(lang: "de")
+        app.terminate()
+        launch("en", "en_US")
+        openInfoSheet(lang: "en")
+    }
+}

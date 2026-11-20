@@ -1,0 +1,1 @@
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_explicitStop_endsSession]' passed (37.446 seconds).

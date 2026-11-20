@@ -38,7 +38,8 @@ The system SHALL provide structured workout programs with work/rest intervals.
 #### Scenario: Program Selection
 - GIVEN user is on Workout Programs tab
 - WHEN user views program list
-- THEN 10+ default programs are available
+- THEN 4 default programs are available (Tabata Classic, Core Circuit, Full Body Burn, Quick Burn; `defaultWorkoutSets` in `WorkoutTab.swift`)
+- AND each step of a default program carries an explicit catalog exercise identifier (`builtin.*`)
 - AND custom programs are listed if created
 - AND each shows name, duration, exercise count
 
@@ -57,6 +58,16 @@ The system SHALL provide structured workout programs with work/rest intervals.
 - AND countdown timer shows remaining work time
 - AND flame icon indicates work phase
 - AND info button available for exercise details
+
+#### Scenario: Exercise Hint Line
+- GIVEN a step has a hint (entered in the step editor, field "Hint (optional)")
+- AND workout program is running
+- WHEN the current phase is WORK (running or paused)
+- THEN the hint shows as a text line directly under the progress ring (`workout.training.hint`), between ring and exercise counter
+- AND the hint is not shown in the REST phase and not in the "Als nächstes" preview of the next exercise
+- AND a step without hint (empty or whitespace-only input is stored as no hint) shows no hint line
+- AND the stored hint is a single line of at most 80 UTF-16 units (line breaks, control characters and repeated spaces are normalized to single spaces; longer input is cut at 80)
+- AND the training view shows the hint in at most two lines
 
 #### Scenario: Work Phase Countdown Cues
 - GIVEN work phase is active
@@ -121,6 +132,17 @@ The system SHALL include a library of exercises with details.
 - AND exercise info sheet displays
 - AND workout resumes when sheet dismisses
 
+#### Scenario: Exercise Catalog Identifiers
+- GIVEN the exercise catalog (`ExerciseDatabase`, mirrored in `Contracts/catalog/builtin-exercises.json`, `catalogVersion` 2)
+- WHEN the catalog is read
+- THEN it contains 67 exercises, each with a unique identifier of the form `builtin.<slug>`
+- AND identifiers of user-defined exercises start with `own.`, those added by Claude with `claude.` (the origin is derived from the prefix)
+- AND a workout step stores its exercise identifier next to the display name
+- AND a stored step without identifier (older data) gets one derived from its name: German catalog name, earlier English name, or a name with suffix "links"/"rechts" of a catalog exercise resolve to the `builtin.*` identifier, any other name to `own.<slug>`
+- AND an identifier that is stored is kept as is and not recomputed
+- AND the info button looks up the exercise by identifier (falling back to the identifier derived from the name), so stored English names still show the info sheet
+- AND the displayed name of a `builtin.*` exercise is the catalog name in the app language, of an `own.*` exercise the stored name
+
 ### Requirement: Audio Cues
 The system SHALL play audio cues during workouts.
 
@@ -158,10 +180,23 @@ The system SHALL play audio cues during workouts.
 #### Scenario: Exercise Name TTS (Workout Programs)
 - GIVEN "Speak Exercise Names" is enabled in Settings
 - AND workout program is running
-- WHEN transitioning from REST to WORK phase
-- THEN TTS announces next exercise name
-- AND uses localized announcement ("Als nächstes: [Exercise]" / "Up next: [Exercise]")
+- WHEN the first exercise starts after the optional countdown, or when a rest phase begins (the announcement names what comes next)
+- THEN TTS announces one of four sentences with the exercise name
+- AND the German sentences are "Übung %d von %d: [Exercise]", "letzte Übung: [Exercise]", "Runde %d von %d: [Exercise]" and "Letzte Runde: [Exercise]"
+- AND the English sentences are "Exercise %d of %d: [Exercise]", "Last exercise: [Exercise]", "Round %d of %d: [Exercise]" and "Last round: [Exercise]"
+- AND the first exercise is announced as "Übung 1 von N", the next exercise within a round as "Übung n von N" (or "letzte Übung" for the final one), the first exercise of a following round as "Runde n von M" (or "Letzte Runde")
+- AND no announcement is spoken when a step has no rest phase
+- AND the visible rest text "Als nächstes: [Exercise]" is display only and is not spoken
 - AND voice language matches app locale (de-DE or en-US)
+
+#### Scenario: Exercise Hint TTS
+- GIVEN "Speak Exercise Names" is enabled in Settings
+- AND the announced step has a hint
+- WHEN one of the four exercise sentences is spoken (first exercise after countdown, or start of a rest phase)
+- THEN the hint is appended verbatim after ". " (e.g. "Übung 2 von 6: Planke. 12 Wiederholungen, langsam")
+- AND a step without hint is announced word for word as before, without a trailing ". "
+- AND with "Speak Exercise Names" disabled neither name nor hint is spoken
+- AND the spoken text is built in one place (`WorkoutAnnouncement.spokenText`/`textToSpeak`) used by both speaking points
 
 #### Scenario: Exercise Name TTS (Free Workout)
 - GIVEN "Speak Exercise Names" is enabled in Settings

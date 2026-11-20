@@ -1,0 +1,9 @@
+xcresult: Test-Lean Health Timer-2026.11.17_08-16-48-+0100.xcresult
+test_exercisePickerOption_isTappableById() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt
+test_exercisePicker_showsOnlyCatalogNames_german() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt
+test_hintEnteredInEditor_visibleUnderRingInTraining() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt
+test_hintField_limitsLengthAndLines() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt
+test_hintField_localized_english() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt
+test_hintField_localized_german() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt
+test_infoButton_forPresetPlanke_showsContent() | XCTAssertTrue failed - Start-Knopf von Core Circuit fehlt
+test_pickedExercise_persistsAfterRelaunch() | XCTAssertTrue failed - Bearbeiten-Knopf von Core Circuit fehlt

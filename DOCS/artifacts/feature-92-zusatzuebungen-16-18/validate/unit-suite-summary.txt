@@ -1,0 +1,18 @@
+Stand: 560b215, 2026-11-16, Simulator iPhone 17 Pro, xcodebuild test -only-testing:LeanHealthTimerTests
+{'totalTestCount': 264, 'passedTests': 249, 'failedTests': 15}
+Hinweis: ein Eintrag ist kein Testfall, sondern ein Startfehler eines parallelen Simulator-Klons (Runner exit 1 vor Verbindung); 263 echte Testfaelle, 249 gruen, 14 rot
+Lean Health Timer (19542) encountered an error | The test runner exited with code 1 before establishing connection.
+test_announcement_respectsSpeakSetting() | XCTAssertEqual failed: ("Optional("")") is not equal to ("Optional("Übung 2 von 5: Planke. Hüfte hoch halten")")
+test_catalog_has67EntriesAndVersion2() | XCTAssertEqual failed: ("61") is not equal to ("67")
+test_catalog_matchesBuiltinExercisesJson() | XCTAssertEqual failed: ("61") is not equal to ("67") - Endstand: JSON hat 67 Einträge
+test_corruptJson_isBackedUpBeforeFallback() | XCTAssertEqual failed: ("0") is not equal to ("1")
+test_defaultPrograms_referenceExistingCatalogIds() | failed - Schritt Burpees in Tabata Classic ohne exerciseId
+test_existingUserStore_unchangedAfterPresetMigration() | XCTAssertEqual failed: ("4") is not equal to ("5")
+test_hint_normalization() | XCTAssertEqual failed: ("Optional("  langsam  ")") is not equal to ("Optional("langsam")")
+test_idForEnglishName_returnsBuiltinId() | XCTAssertEqual failed: ("own.downward-dog") is not equal to ("builtin.herabschauender-hund") - Englischer Name Downward Dog
+test_missingExerciseId_derivedFromName() | XCTAssertEqual failed: ("nil") is not equal to ("Optional("builtin.planke")") - Planke
+test_newExercises_haveTextsInDeAndEn_andCategory() | XCTUnwrap failed: expected non-nil value of type "ExerciseInfo" - Kennung builtin.herabschauender-hund fehlt
+test_noBackup_whenKeyMissingOrValid() | XCTUnwrap failed: expected non-nil value of type "Array<WorkoutSet>"
+test_oldJson_loadsLossless() | XCTAssertEqual failed: ("nil") is not equal to ("Optional("builtin.planke")")
+test_selectingCatalogOrOwnExercise_setsExerciseId() | XCTAssertEqual failed: ("nil") is not equal to ("Optional("builtin.planke")")
+test_spokenText_withAndWithoutHint() | XCTAssertEqual failed: ("") is not equal to ("Übung 2 von 5: Planke. Hüfte hoch halten")

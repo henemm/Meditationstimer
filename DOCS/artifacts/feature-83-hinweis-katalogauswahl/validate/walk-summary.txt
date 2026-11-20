@@ -1,0 +1,2 @@
+Test Case '-[LeanHealthTimerUITests.WalkHintUITests test_walk]' started.
+Test Case '-[LeanHealthTimerUITests.WalkHintUITests test_walk]' passed (331.734 seconds).

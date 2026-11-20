@@ -1,5 +1,5 @@
 {
-  "catalogVersion": 1,
+  "catalogVersion": 2,
   "note": "Feste Kennungen der eingebauten Übungen (Quelle: Meditationstimer iOS/Services/ExerciseDatabase.swift, Stand 13.11.2026). Kennungen werden nie geändert oder neu vergeben; neue Einträge nur anhängen.",
   "exercises": [
     {
@@ -216,6 +216,126 @@
       "id": "builtin.hueftkreisen",
       "name": "Hüftkreisen",
       "category": "warmup"
+    },
+    {
+      "id": "builtin.hollow-hold",
+      "name": "Hollow Hold",
+      "category": "core"
+    },
+    {
+      "id": "builtin.dead-bug",
+      "name": "Dead Bug",
+      "category": "core"
+    },
+    {
+      "id": "builtin.flutter-kicks",
+      "name": "Flutter Kicks",
+      "category": "core"
+    },
+    {
+      "id": "builtin.v-ups",
+      "name": "V-Ups",
+      "category": "core"
+    },
+    {
+      "id": "builtin.sit-ups",
+      "name": "Sit-ups",
+      "category": "core"
+    },
+    {
+      "id": "builtin.crunches",
+      "name": "Crunches",
+      "category": "core"
+    },
+    {
+      "id": "builtin.archer-liegestuetze",
+      "name": "Archer-Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.decline-liegestuetze",
+      "name": "Decline-Liegestütze",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.dips",
+      "name": "Dips",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.klimmzuege",
+      "name": "Klimmzüge",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.chin-ups",
+      "name": "Chin-ups",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.australische-klimmzuege",
+      "name": "Australische Klimmzüge",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.umgekehrtes-rudern",
+      "name": "Umgekehrtes Rudern",
+      "category": "upperBody"
+    },
+    {
+      "id": "builtin.step-ups",
+      "name": "Step-ups",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.wandsitzen",
+      "name": "Wandsitzen",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.box-jumps",
+      "name": "Box Jumps",
+      "category": "legs"
+    },
+    {
+      "id": "builtin.skater-hops",
+      "name": "Skater Hops",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.seilspringen",
+      "name": "Seilspringen",
+      "category": "cardio"
+    },
+    {
+      "id": "builtin.herabschauender-hund",
+      "name": "Herabschauender Hund",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.cobra-dehnung",
+      "name": "Kobra-Dehnung",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.cat-cow",
+      "name": "Katze-Kuh",
+      "category": "warmup"
+    },
+    {
+      "id": "builtin.sitzende-vorbeuge",
+      "name": "Vorbeuge im Sitzen",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.schulter-dehnung-links",
+      "name": "Schulter-Dehnung links",
+      "category": "stretching"
+    },
+    {
+      "id": "builtin.schulter-dehnung-rechts",
+      "name": "Schulter-Dehnung rechts",
+      "category": "stretching"
     }
   ]
 }

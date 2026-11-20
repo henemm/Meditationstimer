@@ -1,0 +1,110 @@
+//  Wegwerf-Durchlauf #83 (A2b): Hinweis eingeben, Auswahl ansehen, Training mit Hinweis, DE und EN.
+import XCTest
+
+final class WalkHintUITests: XCTestCase {
+    var app: XCUIApplication!
+    let shots = "/private/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-wobbly-beaming-nygaard/6b45742b-4bf6-4236-b273-e819b1310b3a/scratchpad/shots"
+    let hintText = "12 Wiederholungen, langsam"
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        try? FileManager.default.createDirectory(atPath: shots, withIntermediateDirectories: true)
+    }
+
+    private func launch(_ lang: String, _ locale: String) {
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(\(lang))", "-AppleLocale", locale]
+        app.launch()
+        dismissAlerts()
+    }
+
+    private func el(_ id: String) -> XCUIElement { app.descendants(matching: .any).matching(identifier: id).firstMatch }
+
+    private func shot(_ name: String) {
+        let png = XCUIScreen.main.screenshot().pngRepresentation
+        try? png.write(to: URL(fileURLWithPath: "\(shots)/\(name).png"))
+        try? app.debugDescription.write(toFile: "\(shots)/\(name).txt", atomically: true, encoding: .utf8)
+    }
+
+    private func dismissAlerts() {
+        let hosts = [app!, XCUIApplication(bundleIdentifier: "com.apple.HealthPrivacyService"),
+                     XCUIApplication(bundleIdentifier: "com.apple.springboard")]
+        for _ in 0..<6 {
+            var handled = false
+            outer: for h in hosts {
+                for l in ["OK", "Nicht erlauben", "Don’t Allow", "Don't Allow", "Erlauben", "Allow"] {
+                    let b = h.buttons[l]
+                    if b.waitForExistence(timeout: h === app ? 1 : 0.5), b.isHittable { b.tap(); handled = true; break outer }
+                }
+            }
+            if !handled { return }
+        }
+    }
+
+    private func workoutTab() {
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        sleep(1)
+    }
+
+    private func openStep0() {
+        let edit = el("workout.programRow.Core Circuit.edit")
+        XCTAssertTrue(edit.waitForExistence(timeout: 20)); edit.tap()
+        let row = el("workout.setEditor.phaseRow.0")
+        XCTAssertTrue(row.waitForExistence(timeout: 15)); row.tap()
+        XCTAssertTrue(el("workout.phaseEditor.save").waitForExistence(timeout: 10))
+        sleep(1)
+    }
+
+    private func waitRing() {
+        let ring = app.staticTexts.matching(NSPredicate(format: "label == 'Übung' OR label == 'Exercise'")).firstMatch
+        XCTAssertTrue(ring.waitForExistence(timeout: 60), "Ring fehlt")
+    }
+
+    private func endTraining() {
+        for l in ["Beenden", "End", "Stop", "Stopp"] {
+            let b = app.buttons[l]
+            if b.exists && b.isHittable { b.tap(); break }
+        }
+        dismissAlerts()
+    }
+
+    func test_walk() throws {
+        // Deutsch: Schrittdialog, Auswahlmenue, Hinweis eingeben, Training
+        launch("de", "de_DE")
+        workoutTab(); shot("01-workout-liste-de")
+        openStep0(); shot("02-schrittdialog-leer-de")
+        let picker = el("workout.phaseEditor.exercisePicker")
+        XCTAssertTrue(picker.waitForExistence(timeout: 10)); picker.tap()
+        sleep(2); shot("03-auswahlmenue-de")
+        let planke = el("workout.exercisePicker.option.builtin.planke")
+        XCTAssertTrue(planke.waitForExistence(timeout: 5) && planke.isHittable, "Planke im Menue nicht antippbar")
+        planke.tap(); sleep(1)
+        let field = el("workout.phaseEditor.hintField")
+        XCTAssertTrue(field.waitForExistence(timeout: 10)); field.tap(); field.typeText(hintText)
+        sleep(1); shot("04-schrittdialog-hinweis-de")
+        el("workout.phaseEditor.save").tap()
+        let save = el("workout.setEditor.save"); XCTAssertTrue(save.waitForExistence(timeout: 10)); save.tap()
+        let start = el("workout.programRow.Core Circuit.start")
+        XCTAssertTrue(start.waitForExistence(timeout: 20)); start.tap(); dismissAlerts()
+        waitRing()
+        let hint = el("workout.training.hint")
+        XCTAssertTrue(hint.waitForExistence(timeout: 20), "Hinweis fehlt im Training")
+        sleep(1); shot("05-training-hinweis-de")
+        endTraining()
+
+        // Englisch: Hinweisfeld-Beschriftung und Training
+        app.terminate()
+        launch("en", "en_US")
+        workoutTab()
+        openStep0(); shot("06-schrittdialog-en")
+        el("workout.phaseEditor.save").tap()
+        let saveEn = el("workout.setEditor.save"); XCTAssertTrue(saveEn.waitForExistence(timeout: 10)); saveEn.tap()
+        let startEn = el("workout.programRow.Core Circuit.start")
+        XCTAssertTrue(startEn.waitForExistence(timeout: 20)); startEn.tap(); dismissAlerts()
+        waitRing()
+        XCTAssertTrue(el("workout.training.hint").waitForExistence(timeout: 20), "Hinweis fehlt im Training (EN)")
+        sleep(1); shot("07-training-hinweis-en")
+        endTraining()
+    }
+}
