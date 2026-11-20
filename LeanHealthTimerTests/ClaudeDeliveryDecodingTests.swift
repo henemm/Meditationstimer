@@ -79,8 +79,9 @@ final class ClaudeDeliveryDecodingTests: XCTestCase {
         let bad = try loadSamples().filter { isUnsupported($0.delivery) }
         XCTAssertGreaterThanOrEqual(bad.count, 19)
         for s in bad {
+            let data = try bytes(s.delivery)
             do {
-                _ = try ClaudeDelivery.read(try bytes(s.delivery))
+                _ = try ClaudeDelivery.read(data)
                 XCTFail("\(s.name) haette abgelehnt werden muessen")
             } catch {
                 XCTAssertEqual(error.code, "KIND_NOT_SUPPORTED", s.name)
