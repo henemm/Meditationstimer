@@ -50,8 +50,11 @@ enum AtemView {
         var holdOut: Int
         var repetitions: Int
         var description: String?
+        var claude: ClaudeOrigin?
+        var modifiedAt: Date?
 
-        init(id: UUID = UUID(), name: String, emoji: String, inhale: Int, holdIn: Int, exhale: Int, holdOut: Int, repetitions: Int, description: String? = nil) {
+        init(id: UUID = UUID(), name: String, emoji: String, inhale: Int, holdIn: Int, exhale: Int, holdOut: Int, repetitions: Int, description: String? = nil,
+             claude: ClaudeOrigin? = nil, modifiedAt: Date? = nil) {
             self.id = id
             self.name = name
             self.emoji = emoji
@@ -61,6 +64,8 @@ enum AtemView {
             self.holdOut = holdOut
             self.repetitions = repetitions
             self.description = description
+            self.claude = claude
+            self.modifiedAt = modifiedAt
         }
 
         var rhythmString: String { "\(inhale)-\(holdIn)-\(exhale)-\(holdOut)" }

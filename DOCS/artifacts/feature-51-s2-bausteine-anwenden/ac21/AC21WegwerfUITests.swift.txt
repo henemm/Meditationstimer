@@ -1,0 +1,85 @@
+//  Wegwerf-Test fuer den Start-Nachweis AC-21 (#51 Runde 2a-1). Nur in Scratch-Kopien, nie im Repo.
+//  Ohne "enable-testing": echte UserDefaults. Steuerung ueber TEST_RUNNER_AC21_TAG / _OUT / _SAVE.
+
+import XCTest
+
+final class AC21WegwerfUITests: XCTestCase {
+    var app: XCUIApplication!
+    var tag = "x"
+    var out = "/tmp"
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        let env = ProcessInfo.processInfo.environment
+        tag = env["AC21_TAG"] ?? "x"
+        out = env["AC21_OUT"] ?? "/tmp"
+    }
+
+    private func dismissSystemAlertsIfAny() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let hosts: [XCUIApplication] = [app!, XCUIApplication(bundleIdentifier: "com.apple.HealthPrivacyService"), springboard]
+        let labels = ["OK", "Nicht erlauben", "Don’t Allow", "Don't Allow", "Erlauben"]
+        for _ in 0..<6 {
+            var handled = false
+            for host in hosts {
+                for label in labels {
+                    let b = host.buttons[label]
+                    if b.waitForExistence(timeout: host === app ? 1 : 0.5), b.isHittable {
+                        b.tap(); handled = true; break
+                    }
+                }
+                if handled { break }
+            }
+            if !handled { return }
+        }
+    }
+
+    private func openTab(_ index: Int) {
+        let bar = app.tabBars.firstMatch
+        XCTAssertTrue(bar.waitForExistence(timeout: 30), "Tab-Leiste erscheint nicht")
+        app.tabBars.buttons.element(boundBy: index).tap()
+        sleep(2)
+    }
+
+    private func record(_ name: String) {
+        let png = app.screenshot().pngRepresentation
+        try? png.write(to: URL(fileURLWithPath: "\(out)/\(tag)-\(name).png"))
+        let texts = app.staticTexts.allElementsBoundByIndex.map(\.label).filter { !$0.isEmpty }
+        let edits = app.buttons.matching(identifier: "Bearbeiten").count
+        let body = "Bearbeiten-Knoepfe: \(edits)\n" + texts.joined(separator: "\n") + "\n"
+        try? body.write(toFile: "\(out)/\(tag)-\(name).txt", atomically: true, encoding: .utf8)
+    }
+
+    private func editAndSaveFirst() {
+        let edit = app.buttons["Bearbeiten"].firstMatch
+        XCTAssertTrue(edit.waitForExistence(timeout: 20), "Kein Bearbeiten-Knopf")
+        edit.tap()
+        let save = app.buttons["Speichern"].firstMatch
+        XCTAssertTrue(save.waitForExistence(timeout: 15), "Speichern fehlt im Editor")
+        XCTAssertTrue(save.isEnabled, "Speichern deaktiviert")
+        save.tap()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 15))
+        sleep(2)
+    }
+
+    func testAC21() throws {
+        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+        dismissSystemAlertsIfAny()
+
+        openTab(1)
+        XCTAssertTrue(app.buttons["Bearbeiten"].firstMatch.waitForExistence(timeout: 20), "Workout-Tab ohne Programme")
+        record("workout")
+        openTab(0)
+        XCTAssertTrue(app.buttons["Bearbeiten"].firstMatch.waitForExistence(timeout: 20), "Atem-Bereich ohne Atemuebungen")
+        record("atem")
+
+        openTab(1)
+        editAndSaveFirst()
+        record("workout-nach-speichern")
+        openTab(0)
+        editAndSaveFirst()
+        record("atem-nach-speichern")
+    }
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "description": "Navy SEAL-Technik zur Stressreduktion. Nachweislich effektiv zur Senkung des Cortisolspiegels.",
+    "emoji": "🧘",
+    "exhale": 4,
+    "holdIn": 4,
+    "holdOut": 4,
+    "id": "3BEF88E4-427A-4BCF-93F3-0F805A1E4434",
+    "inhale": 4,
+    "name": "Box Breathing",
+    "repetitions": 10
+  },
+  {
+    "description": "Aktiviert das parasympathische Nervensystem durch verlängerte Ausatmung. Ideal zur Entspannung.",
+    "emoji": "🌬️",
+    "exhale": 6,
+    "holdIn": 0,
+    "holdOut": 0,
+    "id": "F6AD4EF5-D221-47FE-876A-36A14CAB07E6",
+    "inhale": 4,
+    "name": "Calming Breath",
+    "repetitions": 10
+  },
+  {
+    "description": "Optimiert die Herzkohärenz (HRV). Wissenschaftlich am besten untersucht für kardiovaskuläre Gesundheit. 6 Atemzüge/Min.",
+    "emoji": "💠",
+    "exhale": 5,
+    "holdIn": 0,
+    "holdOut": 0,
+    "id": "520815F0-6EBB-4F09-AD48-F3112EDB716C",
+    "inhale": 5,
+    "name": "Coherent Breathing",
+    "repetitions": 12
+  },
+  {
+    "description": "Tiefe Beruhigung durch sanften Rhythmus. Fördert mentale Klarheit.",
+    "emoji": "🪷",
+    "exhale": 5,
+    "holdIn": 0,
+    "holdOut": 0,
+    "id": "0D47419B-15D7-4B00-AEC2-6D5339D64481",
+    "inhale": 7,
+    "name": "Deep Calm",
+    "repetitions": 8
+  },
+  {
+    "description": "Dr. Andrew Weils Schlaftechnik. Basiert auf Pranayama, beruhigend bei Stress und Angst.",
+    "emoji": "🌿",
+    "exhale": 8,
+    "holdIn": 7,
+    "holdOut": 0,
+    "id": "B6133A21-CBB6-4113-AD1C-786E32340FC9",
+    "inhale": 4,
+    "name": "Relaxing Breath",
+    "repetitions": 10
+  },
+  {
+    "description": "Ausgewogener Rhythmus mit kurzen Haltephasen. Balance zwischen Aktivierung und Entspannung.",
+    "emoji": "🫁",
+    "exhale": 6,
+    "holdIn": 3,
+    "holdOut": 3,
+    "id": "57E84CDF-F6C0-4814-821F-12812DE37359",
+    "inhale": 6,
+    "name": "Rhythmic Breath",
+    "repetitions": 8
+  }
+]
