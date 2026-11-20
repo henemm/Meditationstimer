@@ -28,7 +28,7 @@ Offen und in der Analyse zu entscheiden: Speicherort, Sicherung von `atemPresets
 ## Dependencies
 - Upstream: `ClaudeDelivery.read`, `ExerciseDatabase` (Kennung ↔ Name, Kategorie), `WorkoutSet`/`WorkoutPhase`, `AtemView.Preset`, `UserDefaults`.
 - Downstream: Schnitt 3 (Kennzeichen „von Claude", Info mit Datum/Paket/Warum, Wiederherstellen, UI-Test), #57 (Abgleich mit dem Dienst ruft Anwenden auf, liefert Ergebnis zurück, setzt „Zeitpunkt der letzten Abschrift"), #59 (Tagebuch).
-- Watch/Widget: teilen keine der betroffenen Dateien (geprüft, `project.pbxproj:118-145`).
+- Watch/Widget: Der Ordner `Meditationstimer iOS` ist für beide Ziele synchronisiert (Ausnahmelisten in `project.pbxproj:121-145`), neue Dateien werden dort mit übersetzt; korrigiert in der Spec (Risiken), Build aller drei Ziele ist Teil der Definition of Done.
 
 ## Existing Specs
 - `openspec/specs/features/claude-annahme.md` — übergeordnete Spec, Verhalten 1–9, Schnitt-Zuschnitt
