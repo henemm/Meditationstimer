@@ -1,0 +1,6 @@
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' passed (333.366 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' passed (444.992 seconds).
+** TEST SUCCEEDED **

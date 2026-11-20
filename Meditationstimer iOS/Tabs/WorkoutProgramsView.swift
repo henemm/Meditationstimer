@@ -170,14 +170,19 @@ struct WorkoutSet: Identifiable, Hashable, Codable {
     var phases: [WorkoutPhase]       // Array of exercise phases
     var repetitions: Int             // How many times to repeat the entire set (1-99)
     var description: String?         // Scientific rationale (optional)
+    var claude: ClaudeOrigin?        // #51: origin if delivered by Claude
+    var modifiedAt: Date?            // #51: last change by the user
 
-    init(id: UUID = UUID(), name: String, emoji: String, phases: [WorkoutPhase], repetitions: Int, description: String? = nil) {
+    init(id: UUID = UUID(), name: String, emoji: String, phases: [WorkoutPhase], repetitions: Int, description: String? = nil,
+         claude: ClaudeOrigin? = nil, modifiedAt: Date? = nil) {
         self.id = id
         self.name = name
         self.emoji = emoji
         self.phases = phases
         self.repetitions = repetitions
         self.description = description
+        self.claude = claude
+        self.modifiedAt = modifiedAt
     }
 
     /// Total duration in seconds (all phases × repetitions)

@@ -1,0 +1,135 @@
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeFelderUITests/testProgrammeUndAtemuebungenUeberstehenNeustart
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-20 18:13:37 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-20 18:13:39 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-20 18:13:39 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-20 18:13:39 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-20 18:13:40 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' started (Iteration 1 of 3).
+2026-11-20 19:14:33.607 xcodebuild[38169:27321973] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:16:22.014 xcodebuild[38169:27321973] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' passed (230.867 seconds).
+Test Suite 'ClaudeFelderUITests' passed at 2026-11-20 19:18:23.846.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-20 19:18:23.867.
+Test Suite 'Selected tests' passed at 2026-11-20 19:18:23.867.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_pickedExercise_persistsAfterRelaunch
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-20 18:18:42 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-20 18:18:43 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-20 18:18:43 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-20 18:18:43 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-20 18:18:44 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 1 of 3).
+2026-11-20 19:19:17.396 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:21:34.381 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 19:22:54.936 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (321.865 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 2 of 3).
+2026-11-20 19:24:39.769 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:26:31.178 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 19:27:50.261 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (296.846 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 3 of 3).
+2026-11-20 19:29:36.600 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:31:28.057 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 19:32:46.326 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (294.015 seconds).
+Test Suite 'WorkoutHintUITests' failed at 2026-11-20 19:34:29.455.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-20 19:34:29.462.
+Test Suite 'Selected tests' failed at 2026-11-20 19:34:29.463.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-20 19:19:17.396 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:21:34.381 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 19:22:54.936 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (321.865 seconds).
+2026-11-20 19:24:39.769 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:26:31.178 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 19:27:50.261 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (296.846 seconds).
+2026-11-20 19:29:36.600 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-20 19:31:28.057 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 19:32:46.326 xcodebuild[40094:27338800] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (294.015 seconds).
+Test Suite 'WorkoutHintUITests' failed at 2026-11-20 19:34:29.455.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-20 19:34:29.462.
+Test Suite 'Selected tests' failed at 2026-11-20 19:34:29.463.
+

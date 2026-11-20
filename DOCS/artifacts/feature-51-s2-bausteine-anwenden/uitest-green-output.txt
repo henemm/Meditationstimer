@@ -1,0 +1,13 @@
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' passed (230.848 seconds).
+Test Suite 'ClaudeFelderUITests' passed at 2026-11-20 19:48:05.551.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-20 19:48:05.566.
+Test Suite 'Selected tests' passed at 2026-11-20 19:48:05.567.
+** TEST SUCCEEDED **
+  ✅ ALLE TESTS BESTANDEN
+----
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/starry-nibbling-patterson/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-20 20:01:44.238 xcodebuild[51309:27436995] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (289.274 seconds).
+Test Suite 'WorkoutHintUITests' failed at 2026-11-20 20:03:26.764.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-20 20:03:26.771.
+Test Suite 'Selected tests' failed at 2026-11-20 20:03:26.772.

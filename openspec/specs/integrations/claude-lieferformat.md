@@ -113,7 +113,7 @@ Ein- und Ausatmen sind strenger als der App-Editor (dort 0–60), weil 0 Sekunde
 ### 3.4 Rücknahme (`kind: "withdrawal"`)
 
 Genau eines der Felder `itemId` (ein Baustein) oder `packageId` (ein ganzes Paket), beide im Muster aus 2. Beide oder keins:
-`WITHDRAWAL_TARGET` am Eintrag. Keine weiteren Felder. Zurückgenommenes bleibt in der App wiederherstellbar (Konzept 9).
+`WITHDRAWAL_TARGET` am Eintrag. Keine weiteren Felder. Zurückgenommenes verschwindet aus der App wie ein von Henning gelöschter Baustein, ohne Papierkorb (PO 13.11.2026, Konzept 9).
 
 ## 4. Text- und Zahlenregeln
 

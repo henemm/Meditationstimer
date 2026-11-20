@@ -1,0 +1,206 @@
+[
+  {
+    "description": "Original Tabata-Protokoll (Izumi Tabata, 1996): 8 Runden mit 20s maximaler Intensität / 10s Pause.",
+    "emoji": "🔥",
+    "id": "90D42EB4-145E-4866-AB0F-5A8815488EE4",
+    "name": "Tabata Classic",
+    "phases": [
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "46FDDE99-513C-46C0-B79D-41717E4884EE",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "D2EE78CD-0231-41C0-B18B-22670D750597",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "B1463148-7BAB-44DE-B34B-F2992C51BA6F",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "2FF8F5DA-C190-4EA0-A67A-0FCEE1799A13",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "18067E0C-2F15-4215-925A-CCDFF4FE91CE",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "17A560FD-2F3A-4981-A9B6-A2C0BB45B8ED",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "1CD15C15-C758-4468-B27F-D437BA95CF42",
+        "name": "Burpees",
+        "restDuration": 10,
+        "workDuration": 20
+      },
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "F993AE86-DEEB-4E5A-B478-807CCD694A1B",
+        "name": "Burpees",
+        "restDuration": 0,
+        "workDuration": 20
+      }
+    ],
+    "repetitions": 1
+  },
+  {
+    "description": "Fokus auf Rumpfstabilität und Rotationskraft.",
+    "emoji": "💪",
+    "id": "5C2EA26E-5D10-4E26-A461-3A815AF2E6E4",
+    "name": "Core Circuit",
+    "phases": [
+      {
+        "exerciseId": "builtin.planke",
+        "id": "EE43D9CA-63D8-4D35-B31F-E76A831DDDE0",
+        "name": "Planke",
+        "restDuration": 15,
+        "workDuration": 45
+      },
+      {
+        "exerciseId": "builtin.seitliche-planke-links",
+        "id": "59AD7E37-1723-42CA-BE5D-1CBFABE004DE",
+        "name": "Seitliche Planke links",
+        "restDuration": 15,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.seitliche-planke-rechts",
+        "id": "8F85084F-793F-41E3-9DA7-9872734623FA",
+        "name": "Seitliche Planke rechts",
+        "restDuration": 15,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.fahrrad-crunches",
+        "id": "C2DF36FB-C2B7-4915-8843-F4AB244570AC",
+        "name": "Fahrrad-Crunches",
+        "restDuration": 15,
+        "workDuration": 40
+      },
+      {
+        "exerciseId": "builtin.beinheben",
+        "id": "9E4D6419-E329-4C04-8126-B64AA7D31245",
+        "name": "Beinheben",
+        "restDuration": 15,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.russian-twists",
+        "id": "181F9B8A-7551-4D55-9061-98E6ACA12D0E",
+        "name": "Russian Twists",
+        "restDuration": 10,
+        "workDuration": 40
+      }
+    ],
+    "repetitions": 3
+  },
+  {
+    "description": "Ganzkörper-HIIT mit Fokus auf funktionelle Bewegungsmuster.",
+    "emoji": "🏃",
+    "id": "A5A38F32-AF32-43F6-861B-59F05A801E81",
+    "name": "Full Body Burn",
+    "phases": [
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "A3011E7D-D5C8-4A8D-919D-DC423E1A7EA0",
+        "name": "Burpees",
+        "restDuration": 20,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.kniebeugen",
+        "id": "E365DDC6-2130-43EB-AD77-398EE0F6C6D3",
+        "name": "Kniebeugen",
+        "restDuration": 20,
+        "workDuration": 40
+      },
+      {
+        "exerciseId": "builtin.liegestuetze",
+        "id": "2BF07611-3C7E-4A13-91E5-21003F5FF29A",
+        "name": "Liegestütze",
+        "restDuration": 20,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.mountain-climbers",
+        "id": "063C9DBB-C75E-4725-A812-AD77DFBD42B0",
+        "name": "Mountain Climbers",
+        "restDuration": 20,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.ausfallschritte",
+        "id": "D87C6FAE-F654-425A-AE4D-F131E3DEB386",
+        "name": "Ausfallschritte",
+        "restDuration": 20,
+        "workDuration": 40
+      },
+      {
+        "exerciseId": "builtin.planke",
+        "id": "560469EE-36F2-40ED-BE7C-138CBE6CB2AC",
+        "name": "Planke",
+        "restDuration": 10,
+        "workDuration": 45
+      }
+    ],
+    "repetitions": 3
+  },
+  {
+    "description": "Kompaktes 6-Minuten-Workout für maximale Effizienz.",
+    "emoji": "🔥",
+    "id": "C9AEE7BD-5215-49A3-B367-8795B18CDCAD",
+    "name": "Quick Burn",
+    "phases": [
+      {
+        "exerciseId": "builtin.burpees",
+        "id": "7157FEF9-936E-4879-9664-41D57A828096",
+        "name": "Burpees",
+        "restDuration": 15,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.mountain-climbers",
+        "id": "22C5747E-EF82-4024-B3E5-2E56DCC2CD41",
+        "name": "Mountain Climbers",
+        "restDuration": 15,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.hampelmaenner",
+        "id": "2AB735D6-06A7-47A7-8E8B-7701C488478D",
+        "name": "Hampelmänner",
+        "restDuration": 15,
+        "workDuration": 30
+      },
+      {
+        "exerciseId": "builtin.planke",
+        "id": "195C2E08-F2A5-4D5B-B046-F75A36C95D00",
+        "name": "Planke",
+        "restDuration": 0,
+        "workDuration": 30
+      }
+    ],
+    "repetitions": 3
+  }
+]
