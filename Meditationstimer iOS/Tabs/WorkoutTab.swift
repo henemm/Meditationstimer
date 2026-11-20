@@ -369,22 +369,11 @@ struct WorkoutTab: View {
     }
 
     private func migrateSets() {
-        var needsSave = false
-        for defaultSet in defaultWorkoutSets {
-            if !sets.contains(where: { $0.name == defaultSet.name }) {
-                sets.append(defaultSet)
-                needsSave = true
-            }
+        let migrated = WorkoutSet.migratingPresets(sets, presets: defaultWorkoutSets)
+        if migrated != sets {
+            sets = migrated
+            saveSets()
         }
-        for i in 0..<sets.count {
-            if let defaultSet = defaultWorkoutSets.first(where: { $0.name == sets[i].name }) {
-                if sets[i].description == nil && defaultSet.description != nil {
-                    sets[i].description = defaultSet.description
-                    needsSave = true
-                }
-            }
-        }
-        if needsSave { saveSets() }
     }
 
     private func saveSets() {
@@ -814,14 +803,14 @@ let defaultWorkoutSets: [WorkoutSet] = [
         name: "Tabata Classic",
         emoji: "🔥",
         phases: [
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10),
-            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 0),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 10, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Burpees", workDuration: 20, restDuration: 0, exerciseId: "builtin.burpees"),
         ],
         repetitions: 1,
         description: NSLocalizedString("Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest.", comment: "")
@@ -830,12 +819,12 @@ let defaultWorkoutSets: [WorkoutSet] = [
         name: "Core Circuit",
         emoji: "💪",
         phases: [
-            WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 15),
-            WorkoutPhase(name: "Seitliche Planke links", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Seitliche Planke rechts", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Fahrrad-Crunches", workDuration: 40, restDuration: 15),
-            WorkoutPhase(name: "Beinheben", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Russian Twists", workDuration: 40, restDuration: 10),
+            WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 15, exerciseId: "builtin.planke"),
+            WorkoutPhase(name: "Seitliche Planke links", workDuration: 30, restDuration: 15, exerciseId: "builtin.seitliche-planke-links"),
+            WorkoutPhase(name: "Seitliche Planke rechts", workDuration: 30, restDuration: 15, exerciseId: "builtin.seitliche-planke-rechts"),
+            WorkoutPhase(name: "Fahrrad-Crunches", workDuration: 40, restDuration: 15, exerciseId: "builtin.fahrrad-crunches"),
+            WorkoutPhase(name: "Beinheben", workDuration: 30, restDuration: 15, exerciseId: "builtin.beinheben"),
+            WorkoutPhase(name: "Russian Twists", workDuration: 40, restDuration: 10, exerciseId: "builtin.russian-twists"),
         ],
         repetitions: 3,
         description: NSLocalizedString("Focuses on core stability and rotational strength.", comment: "")
@@ -844,12 +833,12 @@ let defaultWorkoutSets: [WorkoutSet] = [
         name: "Full Body Burn",
         emoji: "🏃",
         phases: [
-            WorkoutPhase(name: "Burpees", workDuration: 30, restDuration: 20),
-            WorkoutPhase(name: "Kniebeugen", workDuration: 40, restDuration: 20),
-            WorkoutPhase(name: "Liegestütze", workDuration: 30, restDuration: 20),
-            WorkoutPhase(name: "Mountain Climbers", workDuration: 30, restDuration: 20),
-            WorkoutPhase(name: "Ausfallschritte", workDuration: 40, restDuration: 20),
-            WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 10),
+            WorkoutPhase(name: "Burpees", workDuration: 30, restDuration: 20, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Kniebeugen", workDuration: 40, restDuration: 20, exerciseId: "builtin.kniebeugen"),
+            WorkoutPhase(name: "Liegestütze", workDuration: 30, restDuration: 20, exerciseId: "builtin.liegestuetze"),
+            WorkoutPhase(name: "Mountain Climbers", workDuration: 30, restDuration: 20, exerciseId: "builtin.mountain-climbers"),
+            WorkoutPhase(name: "Ausfallschritte", workDuration: 40, restDuration: 20, exerciseId: "builtin.ausfallschritte"),
+            WorkoutPhase(name: "Planke", workDuration: 45, restDuration: 10, exerciseId: "builtin.planke"),
         ],
         repetitions: 3,
         description: NSLocalizedString("Full-body HIIT focused on functional movement patterns.", comment: "")
@@ -858,10 +847,10 @@ let defaultWorkoutSets: [WorkoutSet] = [
         name: "Quick Burn",
         emoji: "🔥",
         phases: [
-            WorkoutPhase(name: "Burpees", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Mountain Climbers", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Hampelmänner", workDuration: 30, restDuration: 15),
-            WorkoutPhase(name: "Planke", workDuration: 30, restDuration: 0),
+            WorkoutPhase(name: "Burpees", workDuration: 30, restDuration: 15, exerciseId: "builtin.burpees"),
+            WorkoutPhase(name: "Mountain Climbers", workDuration: 30, restDuration: 15, exerciseId: "builtin.mountain-climbers"),
+            WorkoutPhase(name: "Hampelmänner", workDuration: 30, restDuration: 15, exerciseId: "builtin.hampelmaenner"),
+            WorkoutPhase(name: "Planke", workDuration: 30, restDuration: 0, exerciseId: "builtin.planke"),
         ],
         repetitions: 3,
         description: NSLocalizedString("Compact 6-minute workout for maximum efficiency.", comment: "")

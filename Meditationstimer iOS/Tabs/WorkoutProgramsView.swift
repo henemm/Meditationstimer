@@ -335,7 +335,21 @@ extension WorkoutSet {
         while keys.contains(candidate) { candidate = "\(base)-\(n)"; n += 1 }
         defaults.set(data, forKey: candidate)
     }
-    static func migratingPresets(_ stored: [WorkoutSet], presets: [WorkoutSet]) -> [WorkoutSet] { stored }  // A2b-0
+
+    /// Pure preset migration (A2c-1): appends missing presets (by name, preset order) and
+    /// back-fills a missing description of same-named programs. Nothing else is touched.
+    static func migratingPresets(_ stored: [WorkoutSet], presets: [WorkoutSet]) -> [WorkoutSet] {
+        var result = stored
+        for preset in presets where !result.contains(where: { $0.name == preset.name }) {
+            result.append(preset)
+        }
+        for i in result.indices where result[i].description == nil {
+            if let preset = presets.first(where: { $0.name == result[i].name }), preset.description != nil {
+                result[i].description = preset.description
+            }
+        }
+        return result
+    }
 }
 
 enum ExerciseSelection { case catalog(id: String), own(name: String) }
