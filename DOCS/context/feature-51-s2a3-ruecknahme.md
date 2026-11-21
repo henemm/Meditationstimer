@@ -64,3 +64,11 @@ RED: Zwischen-Test löschen, neue Tests rot → GREEN: `applyWithdrawal` + Ansch
 ### Open Questions
 - Notiert, nicht Teil dieser Runde: `applyProgram` löst `own.*` gegen den Eingangszustand (`state.sets`) statt gegen `work` auf (ClaudeApply.swift:63). Regel 10 sagt „Phase eines Programms im Zustand“, das deckt den Eingangszustand; frühere Positionen derselben Lieferung braucht nur `claude.*` (Regel 1, gelöst). In 2a-2 vom Adversary verifiziert; kein Handlungsbedarf, solange Regel 10 so gilt.
 - `ClaudeStoredExercise` ist `Hashable` statt `Equatable` (Spec) — schließt `Equatable` ein, harmlos.
+
+### Nachprüfung 2026-11-21 (Wiedereinstieg nach /clear)
+Analyse oben gegen Code und Vertrag geprüft, Zeilenangaben stimmen (`apply`-`switch` Z. 59–68, `default` → `KIND_NOT_SUPPORTED`; Zwischen-Test Z. 474–486). Ergänzungen:
+- **Vertrag §3.4 (`claude-lieferformat.md` Z. 113–116):** Genau eines von `itemId`/`packageId`; beide oder keins ist `WITHDRAWAL_TARGET` (Beispiele `invalid/withdrawal-both.json`, `withdrawal-none.json`). Der Dienst weist solche Lieferungen vor der App ab; `read` in der App prüft das nicht (Z. 129–130). Tech-Lead-Festlegungen 1 (keins → `noEffect`) und 2 (beide → Vereinigung) sind damit reines Schutzverhalten für Eingaben, die nach Vertrag nie ankommen. Kein Eingriff in `read` in dieser Runde.
+- **Treffer nur auf Gelieferte:** Abgleich per `claude?.itemId` bzw. `claude?.packageId`; Hennings eigene Programme/Atemübungen (`claude == nil`) sind nie Ziel einer Rücknahme.
+- **Reihenfolge innerhalb einer Lieferung:** `package-with-withdrawal.json` legt `claude.ruecken-a2` an und nimmt `claude.ruecken-a` zurück; Positionen laufen der Reihe nach auf `work`, Rücknahme sieht also auch in derselben Lieferung neu Angelegtes. Für den Beispielsatz ohne Belang (andere Kennungen).
+- **Regel 8 nur bei Wirkung:** leere Treffermenge → `noEffect` ohne Sperrprüfung; Übungen nie gesperrt.
+- Unterstützte Arten nach dieser Runde vollständig: `exercise`, `program`, `breath`, `withdrawal`; `.unsupported` bleibt als einziger Fall im Schutzzweig.
