@@ -3,6 +3,8 @@
 //  LeanHealthTimerTests
 //
 //  TDD RED #51 Schnitt 2a, Runde 2a-1: Anwende-Logik fuer Lieferungen von Claude (Programme, Atemuebungen).
+//  Runde 2a-2: Uebungen (exercise) anwenden, own./claude.-Verweise aufloesen, Kategorie-Abbildung.
+//  Rundenspec: DOCS/specs/features/feature-51-s2a2-uebungen.md
 //  Spec: DOCS/specs/features/feature-51-s2-bausteine-anwenden.md (Regeln 1-14, AC-1a bis AC-22).
 //  Reine Funktion `apply`: kein Speicher, keine Echtzeit (Zeit nur ueber `now`).
 //
@@ -19,7 +21,7 @@ final class ClaudeApplyTests: XCTestCase {
     private func t(_ seconds: TimeInterval) -> Date { Date(timeIntervalSince1970: seconds) }
     private let now = Date(timeIntervalSince1970: 1_800_000_000)
 
-    private func empty() -> ClaudeApplyState { ClaudeApplyState(sets: [], presets: [], log: []) }
+    private func empty() -> ClaudeApplyState { ClaudeApplyState(sets: [], presets: [], exercises: [], log: []) }
 
     private func sampleDelivery(_ name: String, file: StaticString = #filePath) throws -> ClaudeDelivery {
         let dir = URL(fileURLWithPath: "\(file)").deletingLastPathComponent()
@@ -41,8 +43,9 @@ final class ClaudeApplyTests: XCTestCase {
          "steps": steps.map { ["exerciseId": $0, "workSeconds": 30, "restSeconds": 10, "hint": "Hinweis"] as Json }]
     }
 
-    private func exerciseItem(_ id: String) -> Json {
-        ["kind": "exercise", "itemId": id, "revision": 1, "name": "Vierfuessler", "category": "core",
+    private func exerciseItem(_ id: String, rev: Int = 1, name: String = "Vierfuessler",
+                              category: String = "core") -> Json {
+        ["kind": "exercise", "itemId": id, "revision": rev, "name": name, "category": category,
          "effect": "Rumpf", "instructions": "Langsam"]
     }
 
@@ -351,21 +354,6 @@ final class ClaudeApplyTests: XCTestCase {
         XCTAssertNotEqual(planke, "builtin.planke")
     }
 
-    /// Verhalten: In dieser Runde ist ein eigener oder von Claude gelieferter Verweis nicht aufloesbar und lehnt ab.
-    func testProgrammMitOwnOderClaudeVerweisLehntMitExerciseUnknownAb() throws {
-        var base = empty()
-        base.sets = [WorkoutSet(name: "Vorhanden", emoji: "💪", phases: [
-            WorkoutPhase(name: "Eigene", workDuration: 30, restDuration: 10, exerciseId: "own.x")], repetitions: 1)]
-        for ref in ["own.x", "claude.y"] {
-            let d = try delivery("ref-\(ref)", items: [programItem("claude.p", rev: 1, steps: ["builtin.planke", ref])])
-            let (after, result) = apply(d, to: base, lastSnapshotAt: nil, now: now)
-            assertRejected(result, "EXERCISE_UNKNOWN", ref)
-            XCTAssertEqual(after.sets, base.sets)
-            XCTAssertEqual(after.presets, base.presets)
-            XCTAssertEqual(after.log.last?.result, result)
-        }
-    }
-
     // MARK: - AC-14 Von Henning geloescht
 
     /// Verhalten: Hat Henning einen gelieferten Baustein geloescht, legt eine hoehere Fassung ihn neu an.
@@ -481,19 +469,7 @@ final class ClaudeApplyTests: XCTestCase {
         XCTAssertEqual(afterB.presets, before.presets)
     }
 
-    // MARK: - AC-20 Zwischenstand (befristet)
-
-    /// Verhalten (befristet, entfaellt in 2a-2): Eine Uebungslieferung wird als ganze abgelehnt, KIND_NOT_SUPPORTED.
-    func testUebungslieferungNochNichtUnterstuetzt() throws {
-        let d = try delivery("kind-ex", items: [breathItem("claude.neu", rev: 1), exerciseItem("claude.ex")])
-        let (after, result) = apply(d, to: empty(), lastSnapshotAt: nil, now: now)
-        assertRejected(result, "KIND_NOT_SUPPORTED")
-        XCTAssertTrue(after.presets.isEmpty)
-        XCTAssertTrue(after.sets.isEmpty)
-        XCTAssertEqual(after.log.count, 1)
-        XCTAssertEqual(after.log.first?.deliveryId, "kind-ex")
-        XCTAssertEqual(after.log.first?.result, result)
-    }
+    // MARK: - AC-20 Zwischenstand (befristet, nur Ruecknahme)
 
     /// Verhalten (befristet, entfaellt in 2a-3): Eine Ruecknahme wird als ganze Lieferung abgelehnt, KIND_NOT_SUPPORTED.
     func testRuecknahmeNochNichtUnterstuetzt() throws {
@@ -507,5 +483,207 @@ final class ClaudeApplyTests: XCTestCase {
         XCTAssertEqual(after.log.count, before.log.count + 1)
         XCTAssertEqual(after.log.last?.deliveryId, "kind-wd")
         XCTAssertEqual(after.log.last?.result, result)
+    }
+
+    // MARK: - Runde 2a-2: Uebungen
+
+    /// Zustand mit einer von Claude gelieferten Uebung (ueber eine fruehere Lieferung angelegt).
+    private func stateWithExercise(_ id: String = "claude.ex", rev: Int = 1, name: String = "Aus Zustand",
+                                   category: String = "core", base: ClaudeApplyState? = nil) throws -> ClaudeApplyState {
+        let d = try delivery("ex-seed-\(id)-\(rev)", items: [exerciseItem(id, rev: rev, name: name, category: category)])
+        let (state, result) = apply(d, to: base ?? empty(), lastSnapshotAt: nil, now: t(100))
+        XCTAssertEqual(result, .applied)
+        _ = try first(state.exercises, "Uebung im Ausgangszustand")
+        return state
+    }
+
+    /// Verhalten: Eine neue Uebung samt Programm, das sie verwendet, wird angelegt; die Phase traegt Namen und Hinweis.
+    func testAnlegenUebungUndProgrammAusBeispielsatz() throws {
+        let d = try sampleDelivery("exercise-and-program.json")
+        let (state, result) = apply(d, to: empty(), lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(result, .applied)
+        XCTAssertEqual(state.exercises.count, 1)
+        let ex = try first(state.exercises, "Uebung")
+        XCTAssertEqual(ex.name, "Vierfüßler diagonal")
+        XCTAssertEqual(ex.nameEn, "Bird Dog")
+        XCTAssertEqual(ex.category, "core", "gespeichert wird der englische Text")
+        XCTAssertEqual(ex.claude.itemId, "claude.vierfuessler-diagonal")
+        XCTAssertEqual(ex.claude.revision, 1)
+        XCTAssertEqual(ex.claude.why, d.why)
+        XCTAssertEqual(ex.claude.deliveredAt, d.createdAt)
+        XCTAssertTrue(ex.effect.hasPrefix("Stärkt die tiefe Rückenmuskulatur"))
+        XCTAssertTrue(ex.instructions.hasPrefix("1) Vierfüßlerstand"))
+        XCTAssertEqual(state.sets.count, 1)
+        let set = try first(state.sets, "Programm")
+        XCTAssertEqual(set.phases.count, 2)
+        let p0 = try first(set.phases, "erste Phase")
+        XCTAssertEqual(p0.exerciseId, "claude.vierfuessler-diagonal")
+        XCTAssertEqual(p0.name, "Vierfüßler diagonal")
+        XCTAssertEqual(p0.hint, "Je Seite 8 Mal")
+        let p1 = try XCTUnwrap(set.phases.dropFirst().first, "zweite Phase fehlt")
+        XCTAssertEqual(p1.exerciseId, "builtin.glute-bridges")
+        XCTAssertEqual(p1.name, ExerciseDatabase.info(forId: "builtin.glute-bridges")?.name)
+        XCTAssertEqual(state.log.map(\.deliveryId), [d.deliveryId])
+        XCTAssertEqual(state.log.first?.result, .applied)
+    }
+
+    /// Verhalten: Eine hoehere Fassung ersetzt die Uebung; die Anzahl bleibt, die Revision steigt.
+    func testHoehereRevisionErsetztUebung() throws {
+        let before = try stateWithExercise("claude.ex", rev: 1, name: "Erst")
+        var item = exerciseItem("claude.ex", rev: 2, name: "Zweit")
+        item["effect"] = "Neuer Effekt"
+        let d = try delivery("ex-upd", items: [item])
+        let (after, result) = apply(d, to: before, lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(result, .applied)
+        XCTAssertEqual(after.exercises.count, 1)
+        let ex = try first(after.exercises, "Uebung")
+        XCTAssertEqual(ex.name, "Zweit")
+        XCTAssertEqual(ex.effect, "Neuer Effekt")
+        XCTAssertEqual(ex.claude.revision, 2)
+        XCTAssertEqual(ex.claude.itemId, "claude.ex")
+    }
+
+    /// Verhalten: Gleiche oder niedrigere Fassung aendert an der Uebung nichts; das Ergebnis wird gemerkt.
+    func testUebungGleicheOderNiedrigereRevisionOhneWirkung() throws {
+        let before = try stateWithExercise("claude.ex", rev: 2, name: "Bleibt", base: try seeded())
+        for rev in [2, 1] {
+            let d = try delivery("ex-same-\(rev)", items: [exerciseItem("claude.ex", rev: rev, name: "Anders")])
+            let (after, result) = apply(d, to: before, lastSnapshotAt: nil, now: now)
+            XCTAssertEqual(result, .noEffect, "revision \(rev)")
+            XCTAssertEqual(after.exercises, before.exercises)
+            XCTAssertEqual(after.sets, before.sets)
+            XCTAssertEqual(after.presets, before.presets)
+            XCTAssertEqual(after.log.last?.deliveryId, "ex-same-\(rev)")
+            XCTAssertEqual(after.log.last?.result, .noEffect)
+        }
+    }
+
+    /// Verhalten: Ein own.-Verweis bekommt den Namen der gleichen Phase aus einem vorhandenen Programm.
+    func testOwnVerweisLoestNamenAusVorhandenerPhaseAuf() throws {
+        var base = empty()
+        base.sets = [WorkoutSet(name: "Vorhanden", emoji: "💪", phases: [
+            WorkoutPhase(name: "Eigene", workDuration: 30, restDuration: 10, exerciseId: "own.x")], repetitions: 1)]
+        let d = try delivery("own-1", items: [programItem("claude.p", rev: 1, steps: ["own.x"])])
+        let (after, result) = apply(d, to: base, lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(result, .applied)
+        let created = try XCTUnwrap(after.sets.first { $0.claude?.itemId == "claude.p" }, "neues Programm fehlt")
+        XCTAssertEqual(created.phases.map(\.name), ["Eigene"])
+        XCTAssertEqual(created.phases.map(\.exerciseId), ["own.x"])
+
+        // Beleg ueber den Beispielsatz.
+        var base2 = empty()
+        base2.sets = [WorkoutSet(name: "Vorhanden", emoji: "💪", phases: [
+            WorkoutPhase(name: "Schulterkreisen", workDuration: 30, restDuration: 10,
+                         exerciseId: "own.7d3e9c1a-52b4-4f08-8e6a-0c9b1d2e3f45")], repetitions: 1)]
+        let sample = try sampleDelivery("own-exercise-reference.json")
+        let (after2, result2) = apply(sample, to: base2, lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(result2, .applied)
+        let prog = try XCTUnwrap(after2.sets.first { $0.claude?.itemId == "claude.ruecken-a" }, "Programm Ruecken A fehlt")
+        XCTAssertEqual(prog.name, "Rücken A")
+        XCTAssertEqual(prog.phases.map(\.name), ["Schulterkreisen"])
+    }
+
+    /// Verhalten: Ein own.-Verweis ohne passende Phase im Zustand lehnt die Lieferung ab; nichts aendert sich.
+    func testOwnVerweisOhnePhaseLehntMitExerciseUnknownAb() throws {
+        let before = try stateWithExercise(base: try seeded())
+        let d = try delivery("own-2", items: [programItem("claude.p", rev: 1, steps: ["builtin.planke", "own.gibt-es-nicht"])])
+        let (after, result) = apply(d, to: before, lastSnapshotAt: nil, now: now)
+        assertRejected(result, "EXERCISE_UNKNOWN")
+        XCTAssertEqual(after.sets, before.sets)
+        XCTAssertEqual(after.presets, before.presets)
+        XCTAssertEqual(after.exercises, before.exercises)
+        XCTAssertEqual(after.log.count, before.log.count + 1)
+        XCTAssertEqual(after.log.last?.deliveryId, "own-2")
+        XCTAssertEqual(after.log.last?.result, result)
+    }
+
+    /// Verhalten: Ein claude.-Verweis nimmt den Namen aus der Lieferung (auch wenn die Uebung nach dem Programm steht), sonst aus dem Zustand.
+    func testClaudeVerweisNutztLieferungOderZustand() throws {
+        // (a) Uebung steht in der Lieferung erst nach dem Programm.
+        let sample = try sampleDelivery("program-before-exercise.json")
+        let (stateA, resultA) = apply(sample, to: empty(), lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(resultA, .applied)
+        XCTAssertEqual(try first(stateA.sets, "Programm").phases.map(\.name), ["Vierfüßler diagonal"])
+        XCTAssertEqual(stateA.exercises.count, 1)
+        XCTAssertEqual(try first(stateA.exercises, "Uebung").claude.itemId, "claude.vierfuessler-diagonal")
+
+        // (b) Uebung stammt aus einer frueheren Lieferung im Zustand.
+        let beforeB = try stateWithExercise("claude.ex", rev: 1, name: "Aus Zustand")
+        let dB = try delivery("claude-ref-b", items: [programItem("claude.p", rev: 1, steps: ["claude.ex"])])
+        let (stateB, resultB) = apply(dB, to: beforeB, lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(resultB, .applied)
+        XCTAssertEqual(try first(stateB.sets, "Programm").phases.map(\.name), ["Aus Zustand"])
+        XCTAssertEqual(stateB.exercises, beforeB.exercises)
+
+        // (c) Randfall: Uebung der Lieferung ohne Wirkung (gleiche Revision), Name aus der Lieferung fuer die Phase.
+        let beforeC = try stateWithExercise("claude.ex", rev: 2, name: "Alt")
+        let dC = try delivery("claude-ref-c", items: [exerciseItem("claude.ex", rev: 2, name: "Neu"),
+                                                      programItem("claude.p", rev: 1, steps: ["claude.ex"])])
+        let (stateC, resultC) = apply(dC, to: beforeC, lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(resultC, .applied)
+        let exC = try first(stateC.exercises, "Uebung")
+        XCTAssertEqual(exC.name, "Alt")
+        XCTAssertEqual(exC.claude.revision, 2)
+        XCTAssertEqual(try first(stateC.sets, "Programm").phases.map(\.name), ["Neu"])
+    }
+
+    /// Verhalten: Ein claude.-Verweis, den weder Lieferung noch Zustand kennt, lehnt ab; Bausteine bleiben.
+    func testClaudeVerweisUnbekanntLehntAb() throws {
+        let before = try stateWithExercise(base: try seeded())
+        let d = try delivery("claude-unk", items: [breathItem("claude.neu", rev: 1),
+                                                   programItem("claude.p", rev: 1, steps: ["claude.gibt-es-nicht"])])
+        let (after, result) = apply(d, to: before, lastSnapshotAt: nil, now: now)
+        assertRejected(result, "EXERCISE_UNKNOWN")
+        XCTAssertEqual(after.sets, before.sets)
+        XCTAssertEqual(after.presets, before.presets)
+        XCTAssertEqual(after.exercises, before.exercises)
+        XCTAssertEqual(after.log.last?.deliveryId, "claude-unk")
+        XCTAssertEqual(after.log.last?.result, result)
+    }
+
+    /// Verhalten: Alle neun englischen Kategorien werden auf den deutschen Fall abgebildet; gespeichert wird der englische Text.
+    func testAlleNeunKategorienWerdenAbgebildet() throws {
+        let table: [(en: String, de: String, expected: ExerciseCategory)] = [
+            ("strength", "Kraft", .strength), ("stretching", "Dehnung", .stretching), ("core", "Core", .core),
+            ("cardio", "Cardio", .cardio), ("legs", "Beine", .legs), ("upperBody", "Oberkörper", .upperBody),
+            ("fullBody", "Ganzkörper", .fullBody), ("warmup", "Aufwärmen", .warmup), ("cooldown", "Cool-Down", .cooldown)]
+        XCTAssertEqual(table.count, ExerciseCategory.allCases.count, "Tabelle muss alle Kategorien abdecken")
+        XCTAssertEqual(Set(table.map(\.de)), Set(ExerciseCategory.allCases.map(\.rawValue)))
+        for row in table {
+            let mapped = mapCategory(row.en)
+            XCTAssertEqual(mapped, row.expected, row.en)
+            XCTAssertEqual(mapped?.rawValue, row.de, row.en)
+
+            let d = try delivery("cat-\(row.en)", items: [exerciseItem("claude.cat", category: row.en)])
+            let (state, result) = apply(d, to: empty(), lastSnapshotAt: nil, now: now)
+            XCTAssertEqual(result, .applied, row.en)
+            XCTAssertEqual(state.exercises.first?.category, row.en, row.en)
+        }
+        XCTAssertNil(mapCategory("Kraft"))
+        XCTAssertNil(mapCategory("unbekannt"))
+    }
+
+    /// Verhalten: Eine unbekannte Kategorie lehnt die ganze Lieferung ab, auch wenn die Position sonst ohne Wirkung waere.
+    func testUnbekannteKategorieLehntMitCategoryUnknownAb() throws {
+        // (a) ganze Lieferung wird abgelehnt, nichts uebernommen.
+        let before = try seeded()
+        let d = try delivery("cat-unk", items: [breathItem("claude.neu", rev: 1),
+                                                exerciseItem("claude.ex", category: "unbekannt")])
+        let (after, result) = apply(d, to: before, lastSnapshotAt: nil, now: now)
+        assertRejected(result, "CATEGORY_UNKNOWN")
+        XCTAssertEqual(after.presets, before.presets)
+        XCTAssertEqual(after.sets, before.sets)
+        XCTAssertEqual(after.exercises, before.exercises)
+        XCTAssertEqual(after.log.count, before.log.count + 1)
+        XCTAssertEqual(after.log.last?.deliveryId, "cat-unk")
+        XCTAssertEqual(after.log.last?.result, result)
+
+        // (b) gleiche Revision wie gespeichert: trotzdem Ablehnung, nicht noEffect.
+        let stored = try stateWithExercise("claude.ex", rev: 1, name: "Gespeichert", category: "core")
+        let d2 = try delivery("cat-unk-same", items: [exerciseItem("claude.ex", rev: 1, category: "unbekannt")])
+        let (after2, result2) = apply(d2, to: stored, lastSnapshotAt: nil, now: now)
+        assertRejected(result2, "CATEGORY_UNKNOWN", "gleiche Revision")
+        XCTAssertEqual(after2.exercises, stored.exercises)
+        XCTAssertEqual(after2.log.last?.result, result2)
     }
 }
