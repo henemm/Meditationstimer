@@ -469,22 +469,6 @@ final class ClaudeApplyTests: XCTestCase {
         XCTAssertEqual(afterB.presets, before.presets)
     }
 
-    // MARK: - AC-20 Zwischenstand (befristet, nur Ruecknahme)
-
-    /// Verhalten (befristet, entfaellt in 2a-3): Eine Ruecknahme wird als ganze Lieferung abgelehnt, KIND_NOT_SUPPORTED.
-    func testRuecknahmeNochNichtUnterstuetzt() throws {
-        let before = try seeded()
-        let d = try delivery("kind-wd", items: [breathItem("claude.neu", rev: 1),
-                                                ["kind": "withdrawal", "itemId": "claude.atem"]])
-        let (after, result) = apply(d, to: before, lastSnapshotAt: nil, now: now)
-        assertRejected(result, "KIND_NOT_SUPPORTED")
-        XCTAssertEqual(after.sets, before.sets)
-        XCTAssertEqual(after.presets, before.presets)
-        XCTAssertEqual(after.log.count, before.log.count + 1)
-        XCTAssertEqual(after.log.last?.deliveryId, "kind-wd")
-        XCTAssertEqual(after.log.last?.result, result)
-    }
-
     // MARK: - Runde 2a-2: Uebungen
 
     /// Zustand mit einer von Claude gelieferten Uebung (ueber eine fruehere Lieferung angelegt).
@@ -685,5 +669,299 @@ final class ClaudeApplyTests: XCTestCase {
         assertRejected(result2, "CATEGORY_UNKNOWN", "gleiche Revision")
         XCTAssertEqual(after2.exercises, stored.exercises)
         XCTAssertEqual(after2.log.last?.result, result2)
+    }
+
+    // MARK: - Runde 2a-3: Ruecknahme
+
+    private func withdrawal(item: String? = nil, package: String? = nil) -> Json {
+        var j: Json = ["kind": "withdrawal"]
+        if let item { j["itemId"] = item }
+        if let package { j["packageId"] = package }
+        return j
+    }
+
+    /// Wendet eine Vorbereitungs-Lieferung an und prueft, dass sie wirkt.
+    private func applied(_ items: [Json], to state: ClaudeApplyState, id: String,
+                         package: (String, String)? = nil) throws -> ClaudeApplyState {
+        let d = try delivery(id, items: items, package: package)
+        let (next, result) = apply(d, to: state, lastSnapshotAt: nil, now: t(100))
+        XCTAssertEqual(result, .applied, "Vorbereitung \(id)")
+        return next
+    }
+
+    private func ownSet(_ name: String = "Eigenes", exerciseId: String? = nil, modifiedAt: Date? = nil) -> WorkoutSet {
+        var s = WorkoutSet(name: name, emoji: "💪", phases: [
+            WorkoutPhase(name: "Phase", workDuration: 30, restDuration: 10, exerciseId: exerciseId)], repetitions: 1)
+        s.modifiedAt = modifiedAt
+        return s
+    }
+
+    private func ownPreset(_ name: String = "Eigener Atem", modifiedAt: Date? = nil) -> AtemView.Preset {
+        AtemView.Preset(name: name, emoji: "🧘", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 5,
+                        modifiedAt: modifiedAt)
+    }
+
+    private struct RawSample { let name: String; let delivery: Json; let context: Json? }
+
+    private func rawSamples(file: StaticString = #filePath) throws -> [RawSample] {
+        let dir = URL(fileURLWithPath: "\(file)").deletingLastPathComponent()
+            .appendingPathComponent("../Contracts/deliveries/valid").standardized
+        let names = try FileManager.default.contentsOfDirectory(atPath: dir.path).filter { $0.hasSuffix(".json") }.sorted()
+        return try names.map { name in
+            let data = try Data(contentsOf: dir.appendingPathComponent(name))
+            let root = try XCTUnwrap(try JSONSerialization.jsonObject(with: data) as? Json, name)
+            let delivery = try XCTUnwrap(root["delivery"] as? Json, "\(name): delivery fehlt")
+            return RawSample(name: name, delivery: delivery, context: root["context"] as? Json)
+        }
+    }
+
+    /// Verhalten: Jede lesbare Beispiellieferung laesst sich anwenden, ohne Absturz und nie abgelehnt (auch keine Ruecknahme).
+    func testAlleLesbarenBeispieleLassenSichAnwenden() throws {
+        var count = 0
+        for s in try rawSamples() {
+            guard let d = try? ClaudeDelivery.read(try JSONSerialization.data(withJSONObject: s.delivery)) else { continue }
+            count += 1
+            var state = empty()
+            let known = (s.context?["knownExercises"] as? [Json]) ?? []
+            for k in known {
+                guard let id = k["id"] as? String, let name = k["name"] as? String else { continue }
+                if id.hasPrefix("claude.") {
+                    state.exercises.append(ClaudeStoredExercise(
+                        id: UUID(), name: name, nameEn: nil, category: "core", effect: "Effekt", instructions: "Anleitung",
+                        notes: nil, claude: ClaudeOrigin(itemId: id, revision: 1, why: "Test", packageId: nil,
+                                                         packageName: nil, deliveredAt: t(50))))
+                } else if id.hasPrefix("own.") {
+                    state.sets.append(WorkoutSet(name: "Eigenes \(id)", emoji: "💪", phases: [
+                        WorkoutPhase(name: name, workDuration: 30, restDuration: 10, exerciseId: id)], repetitions: 1))
+                }
+            }
+            let (_, result) = apply(d, to: state, lastSnapshotAt: nil, now: now)
+            if case .rejected(let code, let reason) = result {
+                XCTFail("\(s.name) abgelehnt: \(code) \(reason)")
+            }
+        }
+        XCTAssertGreaterThanOrEqual(count, 32, "mindestens 32 lesbare Beispiele muessen angewendet werden")
+    }
+
+    /// Verhalten: Der Beispielsatz ist vollstaendig (mindestens 51 Dateien, davon mindestens 32 lesbar).
+    func testApplyBeispielsatzMindestanzahl() throws {
+        let all = try rawSamples()
+        XCTAssertGreaterThanOrEqual(all.count, 51)
+        let readable = all.filter { (try? ClaudeDelivery.read(try JSONSerialization.data(withJSONObject: $0.delivery))) != nil }
+        XCTAssertGreaterThanOrEqual(readable.count, 32)
+    }
+
+    /// Verhalten: Ein nach der Abschrift geaendertes Programm bzw. eine geaenderte Atemuebung wird nicht zurueckgenommen.
+    func testRuecknahmeEinzelnGeaendertesProgrammAbgelehnt() throws {
+        let cases: [(modified: Date?, snapshot: Date?, blocked: Bool)] = [
+            (t(1000), t(500), true), (t(1000), nil, true),
+            (nil, t(500), false), (nil, nil, false), (t(1000), t(1000), false), (t(1000), t(2000), false)]
+        for (index, c) in cases.enumerated() {
+            for id in ["claude.prog", "claude.atem"] {
+                var before = try seeded()
+                before.sets[0].modifiedAt = c.modified
+                before.presets[0].modifiedAt = c.modified
+                let deliveryId = "wd-chg-\(id)-\(index)"
+                let d = try delivery(deliveryId, items: [withdrawal(item: id)])
+                let (after, result) = apply(d, to: before, lastSnapshotAt: c.snapshot, now: now)
+                let ctx = "\(id) Fall \(index)"
+                if c.blocked {
+                    assertRejected(result, "CHANGED_ON_IPHONE", ctx)
+                    XCTAssertEqual(after.sets, before.sets, ctx)
+                    XCTAssertEqual(after.presets, before.presets, ctx)
+                } else {
+                    XCTAssertEqual(result, .applied, ctx)
+                    XCTAssertEqual(id == "claude.prog" ? after.sets.count : after.presets.count, 0, ctx)
+                    XCTAssertEqual(id == "claude.prog" ? after.presets.count : after.sets.count, 1,
+                                   "der andere Baustein bleibt: \(ctx)")
+                }
+                XCTAssertEqual(after.log.last?.deliveryId, deliveryId)
+                XCTAssertEqual(after.log.last?.result, result)
+            }
+        }
+    }
+
+    /// Verhalten: Die Ruecknahme per itemId entfernt genau diesen Baustein, der andere bleibt; sind beide Kennungen gesetzt, gilt die Vereinigung.
+    func testRuecknahmeEinzelnEntferntBaustein() throws {
+        let base = try stateWithExercise("claude.ex", base: try seeded())
+        let (s1, r1) = apply(try delivery("wd-1", items: [withdrawal(item: "claude.prog")]), to: base,
+                             lastSnapshotAt: t(5), now: now)
+        XCTAssertEqual(r1, .applied)
+        XCTAssertTrue(s1.sets.isEmpty)
+        XCTAssertEqual(s1.presets, base.presets)
+        XCTAssertEqual(s1.exercises, base.exercises)
+        XCTAssertEqual(s1.log.last?.result, .applied)
+
+        let (s2, r2) = apply(try delivery("wd-2", items: [withdrawal(item: "claude.atem")]), to: base,
+                             lastSnapshotAt: t(5), now: now)
+        XCTAssertEqual(r2, .applied)
+        XCTAssertTrue(s2.presets.isEmpty)
+        XCTAssertEqual(s2.sets, base.sets)
+        XCTAssertEqual(s2.exercises, base.exercises)
+
+        let (s3, r3) = apply(try delivery("wd-3", items: [withdrawal(item: "claude.ex")]), to: base,
+                             lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(r3, .applied)
+        XCTAssertTrue(s3.exercises.isEmpty)
+        XCTAssertEqual(s3.sets, base.sets)
+        XCTAssertEqual(s3.presets, base.presets)
+
+        // Beide Kennungen: itemId trifft das Programm, packageId die Atemuebung eines anderen Pakets; die Uebung bleibt.
+        var both = empty()
+        both = try applied([programItem("claude.a", rev: 1)], to: both, id: "b-1")
+        both = try applied([breathItem("claude.b", rev: 1)], to: both, id: "b-2", package: ("pkg-b", "Paket B"))
+        both = try applied([exerciseItem("claude.c")], to: both, id: "b-3")
+        let (s4, r4) = apply(try delivery("wd-4", items: [withdrawal(item: "claude.a", package: "pkg-b")]),
+                             to: both, lastSnapshotAt: t(5), now: now)
+        XCTAssertEqual(r4, .applied)
+        XCTAssertTrue(s4.sets.isEmpty)
+        XCTAssertTrue(s4.presets.isEmpty)
+        XCTAssertEqual(s4.exercises, both.exercises)
+    }
+
+    /// Verhalten: Eine unbekannte Kennung, eine Ruecknahme ganz ohne Kennung und eigene Bausteine bleiben ohne Wirkung.
+    func testRuecknahmeUnbekannterKennungOhneWirkung() throws {
+        let before = try stateWithExercise(base: try seeded())
+        let items: [Json] = [withdrawal(item: "claude.gibt-es-nicht"), withdrawal(package: "pkg-gibt-es-nicht"), withdrawal()]
+        for (index, item) in items.enumerated() {
+            let (after, result) = apply(try delivery("wd-unk-\(index)", items: [item]), to: before,
+                                        lastSnapshotAt: t(5), now: now)
+            XCTAssertEqual(result, .noEffect, "Fall \(index)")
+            XCTAssertEqual(after.sets, before.sets)
+            XCTAssertEqual(after.presets, before.presets)
+            XCTAssertEqual(after.exercises, before.exercises)
+            XCTAssertEqual(after.log.last?.deliveryId, "wd-unk-\(index)")
+            XCTAssertEqual(after.log.last?.result, .noEffect)
+        }
+        // Eigene Bausteine (claude == nil) werden nie getroffen, auch nicht bei gleichem Text; keine Sperrpruefung.
+        var own = empty()
+        own.sets = [ownSet("claude.prog", exerciseId: "claude.prog", modifiedAt: t(9000))]
+        own.presets = [ownPreset("claude.atem", modifiedAt: t(9000))]
+        let d = try delivery("wd-own", items: [withdrawal(item: "claude.prog"), withdrawal(item: "claude.atem"),
+                                               withdrawal(package: "claude.prog")])
+        let (after, result) = apply(d, to: own, lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(result, .noEffect)
+        XCTAssertEqual(after.sets, own.sets)
+        XCTAssertEqual(after.presets, own.presets)
+    }
+
+    /// Zustand mit einem Paket aus Programm, Atemuebung und Uebung, dazu Bausteine ohne Paket, aus anderem Paket und eigene.
+    private func packageState() throws -> ClaudeApplyState {
+        var state = empty()
+        state = try applied([programItem("claude.p-pkg", rev: 1), breathItem("claude.a-pkg", rev: 1),
+                             exerciseItem("claude.e-pkg")], to: state, id: "pk-1", package: ("pkg-1", "Paket 1"))
+        state = try applied([programItem("claude.p-solo", rev: 1), breathItem("claude.a-solo", rev: 1)],
+                            to: state, id: "pk-2")
+        state = try applied([programItem("claude.p-other", rev: 1)], to: state, id: "pk-3", package: ("pkg-2", "Paket 2"))
+        state.sets.append(ownSet())
+        state.presets.append(ownPreset())
+        return state
+    }
+
+    /// Verhalten: Die Ruecknahme eines Pakets entfernt alle Bausteine des Pakets; der Rest bleibt.
+    func testRuecknahmePaketEntferntAlleBausteine() throws {
+        let before = try packageState()
+        XCTAssertEqual(before.sets.count, 4)
+        XCTAssertEqual(before.presets.count, 3)
+        XCTAssertEqual(before.exercises.count, 1)
+        let (after, result) = apply(try delivery("wd-pkg", items: [withdrawal(package: "pkg-1")]), to: before,
+                                    lastSnapshotAt: t(5), now: now)
+        XCTAssertEqual(result, .applied)
+        XCTAssertEqual(after.sets.compactMap { $0.claude?.itemId }.sorted(), ["claude.p-other", "claude.p-solo"])
+        XCTAssertEqual(after.sets.count, 3, "eigenes Programm bleibt")
+        XCTAssertEqual(after.presets.compactMap { $0.claude?.itemId }, ["claude.a-solo"])
+        XCTAssertEqual(after.presets.count, 2, "eigene Atemuebung bleibt")
+        XCTAssertTrue(after.exercises.isEmpty)
+        XCTAssertEqual(after.log.last?.result, .applied)
+
+        // Beispielsatz: neues Programm anlegen und altes im selben Zug zuruecknehmen (Positionen der Reihe nach).
+        let seedState = try applied([programItem("claude.ruecken-a", rev: 1)], to: empty(), id: "pk-seed")
+        let sample = try sampleDelivery("package-with-withdrawal.json")
+        let (s2, r2) = apply(sample, to: seedState, lastSnapshotAt: t(5), now: now)
+        XCTAssertEqual(r2, .applied)
+        XCTAssertEqual(s2.sets.compactMap { $0.claude?.itemId }, ["claude.ruecken-a2"])
+    }
+
+    /// Verhalten: Ist ein Baustein des Pakets nach der Abschrift geaendert, wird alles abgelehnt; nichts wird entfernt.
+    func testRuecknahmePaketMitGeaendertemBausteinAbgelehnt() throws {
+        var before = try packageState()
+        let i = try XCTUnwrap(before.presets.firstIndex { $0.claude?.itemId == "claude.a-pkg" })
+        before.presets[i].modifiedAt = t(2000)
+        let d = try delivery("wd-pkg-chg", items: [withdrawal(package: "pkg-1")])
+        let (after, result) = apply(d, to: before, lastSnapshotAt: t(1000), now: now)
+        assertRejected(result, "CHANGED_ON_IPHONE")
+        XCTAssertEqual(after.sets, before.sets)
+        XCTAssertEqual(after.presets, before.presets)
+        XCTAssertEqual(after.exercises, before.exercises)
+        XCTAssertEqual(after.log.last?.deliveryId, "wd-pkg-chg")
+        XCTAssertEqual(after.log.last?.result, result)
+
+        // Ohne Abschrift gilt ein gesetztes modifiedAt ebenfalls als geaendert.
+        let (after2, result2) = apply(try delivery("wd-pkg-chg2", items: [withdrawal(package: "pkg-1")]), to: before,
+                                      lastSnapshotAt: nil, now: now)
+        assertRejected(result2, "CHANGED_ON_IPHONE", "ohne Abschrift")
+        XCTAssertEqual(after2.sets, before.sets)
+        XCTAssertEqual(after2.presets, before.presets)
+
+        // Ein geaenderter Baustein ausserhalb des Pakets blockiert nicht.
+        var other = try packageState()
+        let j = try XCTUnwrap(other.presets.firstIndex { $0.claude?.itemId == "claude.a-solo" })
+        other.presets[j].modifiedAt = t(2000)
+        let (after3, result3) = apply(try delivery("wd-pkg-ok", items: [withdrawal(package: "pkg-1")]), to: other,
+                                      lastSnapshotAt: t(1000), now: now)
+        XCTAssertEqual(result3, .applied)
+        XCTAssertEqual(after3.presets.compactMap { $0.claude?.itemId }, ["claude.a-solo"])
+    }
+
+    /// Verhalten: Wird eine Uebung zurueckgenommen, bleibt das Programm mit seinen Phasen unveraendert; Uebungen sind nie gesperrt.
+    func testRuecknahmeUebungLaesstProgrammphasenStehen() throws {
+        var state = try stateWithExercise("claude.ex", name: "Meine Uebung")
+        state = try applied([programItem("claude.p", rev: 1, steps: ["claude.ex", "builtin.planke"])], to: state, id: "ue-1")
+        let phasesBefore = try first(state.sets, "Programm").phases
+        XCTAssertEqual(phasesBefore.map(\.exerciseId), ["claude.ex", "builtin.planke"])
+        let (after, result) = apply(try delivery("wd-ex", items: [withdrawal(item: "claude.ex")]), to: state,
+                                    lastSnapshotAt: nil, now: now)
+        XCTAssertEqual(result, .applied)
+        XCTAssertTrue(after.exercises.isEmpty)
+        XCTAssertEqual(after.sets, state.sets)
+        let phasesAfter = try first(after.sets, "Programm").phases
+        XCTAssertEqual(phasesAfter.map(\.name), phasesBefore.map(\.name))
+        XCTAssertEqual(phasesAfter.map(\.exerciseId), ["claude.ex", "builtin.planke"])
+        XCTAssertEqual(phasesAfter.first?.name, "Meine Uebung")
+    }
+
+    /// Verhalten: Ergebnis und Zustand lassen sich speichern und unveraendert wieder lesen.
+    func testResultUndStateRoundTrip() throws {
+        let results: [ClaudeApplyResult] = [.applied, .noEffect, .rejected(code: "CHANGED_ON_IPHONE", reason: "Grund")]
+        for r in results {
+            let back = try JSONDecoder().decode(ClaudeApplyResult.self, from: try JSONEncoder().encode(r))
+            XCTAssertEqual(back, r)
+        }
+        var state = try stateWithExercise("claude.ex", name: "Uebung")
+        state = try applied([programItem("claude.p", rev: 1, steps: ["claude.ex"]), breathItem("claude.a", rev: 1)],
+                            to: state, id: "rt-1", package: ("pkg", "Paket"))
+        let bad = try delivery("rt-bad", items: [programItem("claude.x", rev: 1, steps: ["builtin.gibt-es-nicht"])])
+        state = apply(bad, to: state, lastSnapshotAt: nil, now: t(200)).0
+        XCTAssertTrue(state.log.contains { if case .rejected = $0.result { return true } else { return false } })
+        _ = try first(state.sets); _ = try first(state.presets); _ = try first(state.exercises)
+        let back = try JSONDecoder().decode(ClaudeApplyState.self, from: try JSONEncoder().encode(state))
+        XCTAssertEqual(back, state)
+    }
+
+    /// Verhalten: Die Anwende-Datei importiert nur Foundation und hat keine Seiteneffekte (kein Speicher, keine Benachrichtigung, keine Echtzeit).
+    func testApplyDateiIstFoundationOnlyUndOhneSeiteneffekte() throws {
+        let file = #filePath
+        let url = URL(fileURLWithPath: "\(file)").deletingLastPathComponent()
+            .appendingPathComponent("../Meditationstimer iOS/Models/ClaudeApply.swift").standardized
+        let text = try String(contentsOf: url, encoding: .utf8)
+        let code = text.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.hasPrefix("//") }
+        let imports = code.filter { $0.hasPrefix("import ") }
+        XCTAssertFalse(imports.isEmpty, "mindestens ein import erwartet")
+        for line in imports { XCTAssertEqual(line, "import Foundation") }
+        let joined = code.joined(separator: "\n")
+        for forbidden in ["UserDefaults", "NotificationCenter", "Date()"] {
+            XCTAssertFalse(joined.contains(forbidden), "\(forbidden) darf nicht vorkommen")
+        }
     }
 }
