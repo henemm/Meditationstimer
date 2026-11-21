@@ -325,16 +325,16 @@ extension WorkoutSet {
                            now: Date = Date()) -> [WorkoutSet]? {
         guard let data = defaults.data(forKey: key) else { return nil }
         if let decoded = try? JSONDecoder().decode([WorkoutSet].self, from: data) { return decoded }
-        backUpUnreadable(data, in: defaults, now: now)
+        backUpUnreadable(data, prefix: backupKeyPrefix, in: defaults, now: now)
         return nil
     }
 
     /// Keeps unreadable raw data under a new backup key (never overwrites, no duplicate of identical bytes).
-    private static func backUpUnreadable(_ data: Data, in defaults: UserDefaults, now: Date) {
+    static func backUpUnreadable(_ data: Data, prefix: String, in defaults: UserDefaults, now: Date) {
         let keys = defaults.dictionaryRepresentation().keys
-        let existing = keys.filter { $0.hasPrefix(backupKeyPrefix) }
+        let existing = keys.filter { $0.hasPrefix(prefix) }
         if existing.contains(where: { defaults.data(forKey: $0) == data }) { return }
-        let base = backupKeyPrefix + String(Int(now.timeIntervalSince1970))
+        let base = prefix + String(Int(now.timeIntervalSince1970))
         var candidate = base
         var n = 2
         while keys.contains(candidate) { candidate = "\(base)-\(n)"; n += 1 }

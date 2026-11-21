@@ -66,7 +66,7 @@ struct MeditationTab: View {
     private let emojiChoices: [String] = ["🧘","🪷","🌬️","🫁","🌿","🌀","✨","🔷","🔶","💠"]
 
     // Default presets (same as AtemView)
-    private static let defaultPresets: [AtemView.Preset] = [
+    static let defaultPresets: [AtemView.Preset] = [
         .init(name: "Box Breathing", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
               description: NSLocalizedString("Navy SEAL technique for stress reduction. Proven effective at lowering cortisol levels.", comment: "")),
         .init(name: "Calming Breath", emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
@@ -196,6 +196,9 @@ struct MeditationTab: View {
                     // Fix invalid stored values
                     if phase1Minutes < 1 { phase1Minutes = 10 }
                     if phase2Minutes < 1 { phase2Minutes = 5 }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: .claudeStoreDidChange)) { _ in
+                    loadPresets()
                 }
                 .onChange(of: engine.state) { _, newValue in
                     handleEngineStateChange(newValue)
@@ -460,32 +463,26 @@ struct MeditationTab: View {
     // MARK: - Preset Persistence
 
     private func loadPresets() {
-        if let data = UserDefaults.standard.data(forKey: presetsKey),
-           let decoded = try? JSONDecoder().decode([AtemView.Preset].self, from: data) {
-            presets = decoded
-            migratePresets()
-        } else {
-            presets = Self.defaultPresets
+        let loaded = ClaudeStore.loadPresets(from: .standard)
+        presets = loaded.list
+        if loaded.state == .stored,
+           let data = UserDefaults.standard.data(forKey: presetsKey),
+           let stored = try? JSONDecoder().decode([AtemView.Preset].self, from: data),
+           stored != presets {
+            savePresets()
         }
     }
 
-    private func migratePresets() {
-        var needsSave = false
-        for i in 0..<presets.count {
-            if let defaultPreset = Self.defaultPresets.first(where: { $0.name == presets[i].name }) {
-                if presets[i].description == nil && defaultPreset.description != nil {
-                    presets[i].description = defaultPreset.description
-                    needsSave = true
-                }
+    /// Pure migration: back-fills missing descriptions of default presets, appends missing defaults (by name).
+    static func migratingPresets(_ stored: [AtemView.Preset]) -> [AtemView.Preset] {
+        var result = stored
+        for i in result.indices where result[i].description == nil {
+            if let d = defaultPresets.first(where: { $0.name == result[i].name }), d.description != nil {
+                result[i].description = d.description
             }
         }
-        for defaultPreset in Self.defaultPresets {
-            if !presets.contains(where: { $0.name == defaultPreset.name }) {
-                presets.append(defaultPreset)
-                needsSave = true
-            }
-        }
-        if needsSave { savePresets() }
+        for d in defaultPresets where !result.contains(where: { $0.name == d.name }) { result.append(d) }
+        return result
     }
 
     private func savePresets() {

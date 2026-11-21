@@ -19,7 +19,7 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
    Geliefertes trägt zusätzliche, optionale Felder: `itemId` (`claude.*`, Schema-Name), `revision`, `why`, `packageId`, `packageName`,
    `deliveredAt`, `modifiedAt` (letzte Änderung durch Henning). Alte gespeicherte Daten lesen sich unverändert (alle Felder optional).
    **Abweichung (Schnitt 2a):** Gelieferte Übungen liegen nicht im Übungskatalog, sondern im eigenen Speicher `claudeState`
-   (`state.exercises` als `ClaudeStoredExercise`, Schlüssel erst in 2b); der eingebaute Katalog bleibt unverändert.
+   (`state.exercises` als `ClaudeStoredExercise`, seit 2b-1 unter dem Schlüssel `claudeState`); der eingebaute Katalog bleibt unverändert.
 3. **Ganz oder gar nicht, nur einmal:** Eine Lieferung wird vollständig angewendet oder gar nicht. Die App merkt sich die
    `deliveryId`s der letzten 50 Lieferungen mit Ergebnis; dieselbe Lieferung ein zweites Mal ändert nichts und liefert das gemerkte Ergebnis.
 4. **Änderung durch Claude** (höhere `revision`) ersetzt den Baustein. **Das iPhone gewinnt:** Hat Henning den Baustein geändert,
@@ -61,5 +61,11 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
      mit Modell-Feldern an den App-Typen, ganz oder gar nicht, Gedächtnis der `deliveryId`s, Fassungen, „iPhone gewinnt“ und
      Rücknahme einzeln und als Paket (erst Treffermenge, dann Sperrprüfung, dann entfernen); Unit-Tests über alle lesbaren Beispiele.
      `apply` hat noch keinen Aufrufer.
-   - **2b, offen:** Speicherort, Laden und Schreiben, Neu-Laden der offenen Listen, `modifiedAt` beim Bearbeiten im Editor.
-3. Kennzeichen und Info-Ansicht, DE/EN-Texte, UI-Test (vorher Entwurf zum Ansehen).
+   - **2b-1, erledigt (21.11.2026, Spec `DOCS/specs/features/feature-51-s2b-speichern.md`):** `ClaudeStore.apply` in
+     `Meditationstimer iOS/Models/ClaudeStore.swift` als Hülle um `apply`: Listen unter `workoutProgramSets`/`atemPresets`,
+     Gedächtnis (`exercises`, `log`) unter `claudeState`, zuletzt geschrieben; fehlende Listen ergeben die Vorgaben, unlesbare
+     werden gesichert (`…Backup.<Sekunden>`) und führen zu `LIST_UNREADABLE`; Benachrichtigung `claudeStoreDidChange` lädt
+     Workout- und Meditation-Tab neu. DEBUG-Testeinstieg `uitest-claude-apply` bis #57. Noch kein Aufrufer im Betrieb.
+   - **2b-2, offen:** `modifiedAt` beim Bearbeiten im Editor, Schritt-Editor behält `claude.*`, offener Editor + Anwenden.
+3. Kennzeichen und Info-Ansicht, DE/EN-Texte, UI-Test (vorher Entwurf zum Ansehen). Aus 2b hierher verschoben:
+   `claude.*` in `ExerciseDatabase.info(forId:)` auflösen (einziger Verbraucher ist das Info-Blatt).

@@ -32,6 +32,9 @@ struct Meditationstimer_iOSApp: App {
     init() {
         modelContainer = Self.makeModelContainer()
         Self.sharedModelContainer = modelContainer
+        #if DEBUG
+        Self.applyUITestDeliveryAtStart()
+        #endif
     }
 
     /// Builds the SwiftData container. DEBUG-only UI-test switches:
@@ -74,6 +77,9 @@ struct Meditationstimer_iOSApp: App {
                 .environmentObject(sharedLiveActivity)
                 .environmentObject(streakManager)
                 .modelContainer(modelContainer)
+                #if DEBUG
+                .task { await Self.applyUITestDeliveryDelayed() }
+                #endif
                 .task {
                     // Generic Tracker System: Create default trackers on first launch
                     await runTrackerMigration()
@@ -81,6 +87,29 @@ struct Meditationstimer_iOSApp: App {
         }
         // Live Activity background cleanup removed
     }
+
+    #if DEBUG
+    /// DEBUG-only test entry (until #57): `uitest-claude-apply` applies the delivery in `UITEST_CLAUDE_DELIVERY`;
+    /// delay 0 (default) at app start before the first frame, otherwise after `UITEST_CLAUDE_DELAY` seconds.
+    /// Unreadable input is ignored.
+    private static func uitestDelivery() -> (delivery: ClaudeDelivery, delay: Double)? {
+        guard CommandLine.arguments.contains("uitest-claude-apply") else { return nil }
+        let env = ProcessInfo.processInfo.environment
+        guard let text = env["UITEST_CLAUDE_DELIVERY"], let d = try? ClaudeDelivery.read(Data(text.utf8)) else { return nil }
+        return (d, env["UITEST_CLAUDE_DELAY"].flatMap(Double.init) ?? 0)
+    }
+
+    private static func applyUITestDeliveryAtStart() {
+        if let t = uitestDelivery(), t.delay <= 0 { _ = ClaudeStore.apply(t.delivery, lastSnapshotAt: nil, now: Date()) }
+    }
+
+    @MainActor
+    private static func applyUITestDeliveryDelayed() async {
+        guard let t = uitestDelivery(), t.delay > 0 else { return }
+        try? await Task.sleep(for: .seconds(t.delay))
+        _ = ClaudeStore.apply(t.delivery, lastSnapshotAt: nil, now: Date())
+    }
+    #endif
 
     /// Runs the Generic Tracker System migration on app launch
     @MainActor
