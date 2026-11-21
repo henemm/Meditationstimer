@@ -1,0 +1,63 @@
+FAILED testAlleLesbarenBeispieleLassenSichAnwenden()
+  failed - items-20.json abgelehnt: KIND_NOT_SUPPORTED Diese Art von Baustein kann die App noch nicht annehmen.
+  failed - package-with-withdrawal.json abgelehnt: KIND_NOT_SUPPORTED Diese Art von Baustein kann die App noch nicht annehmen.
+  failed - withdraw-item.json abgelehnt: KIND_NOT_SUPPORTED Diese Art von Baustein kann die App noch nicht annehmen.
+  failed - withdraw-package.json abgelehnt: KIND_NOT_SUPPORTED Diese Art von Baustein kann die App noch nicht annehmen.
+FAILED testRuecknahmeEinzelnEntferntBaustein()
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertTrue failed
+  XCTAssertEqual failed: ("Optional(Lean_Health_Timer.ClaudeApplyResult.rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen."))") is not equal to ("Optional(Lean_Health_Timer.ClaudeApplyResult.applied)")
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertTrue failed
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertTrue failed
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertTrue failed
+  XCTAssertTrue failed
+FAILED testRuecknahmeEinzelnGeaendertesProgrammAbgelehnt()
+  XCTAssertEqual failed: ("KIND_NOT_SUPPORTED") is not equal to ("CHANGED_ON_IPHONE") - claude.prog Fall 0
+  XCTAssertEqual failed: ("KIND_NOT_SUPPORTED") is not equal to ("CHANGED_ON_IPHONE") - claude.atem Fall 0
+  XCTAssertEqual failed: ("KIND_NOT_SUPPORTED") is not equal to ("CHANGED_ON_IPHONE") - claude.prog Fall 1
+  XCTAssertEqual failed: ("KIND_NOT_SUPPORTED") is not equal to ("CHANGED_ON_IPHONE") - claude.atem Fall 1
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.prog Fall 2
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.prog Fall 2
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.atem Fall 2
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.atem Fall 2
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.prog Fall 3
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.prog Fall 3
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.atem Fall 3
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.atem Fall 3
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.prog Fall 4
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.prog Fall 4
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.atem Fall 4
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.atem Fall 4
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.prog Fall 5
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.prog Fall 5
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied") - claude.atem Fall 5
+  XCTAssertEqual failed: ("1") is not equal to ("0") - claude.atem Fall 5
+FAILED testRuecknahmePaketEntferntAlleBausteine()
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertEqual failed: ("["claude.p-other", "claude.p-pkg", "claude.p-solo"]") is not equal to ("["claude.p-other", "claude.p-solo"]")
+  XCTAssertEqual failed: ("4") is not equal to ("3") - eigenes Programm bleibt
+  XCTAssertEqual failed: ("["claude.a-pkg", "claude.a-solo"]") is not equal to ("["claude.a-solo"]")
+  XCTAssertEqual failed: ("3") is not equal to ("2") - eigene Atemuebung bleibt
+  XCTAssertTrue failed
+  XCTAssertEqual failed: ("Optional(Lean_Health_Timer.ClaudeApplyResult.rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen."))") is not equal to ("Optional(Lean_Health_Timer.ClaudeApplyResult.applied)")
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertEqual failed: ("["claude.ruecken-a"]") is not equal to ("["claude.ruecken-a2"]")
+FAILED testRuecknahmePaketMitGeaendertemBausteinAbgelehnt()
+  XCTAssertEqual failed: ("KIND_NOT_SUPPORTED") is not equal to ("CHANGED_ON_IPHONE")
+  XCTAssertEqual failed: ("KIND_NOT_SUPPORTED") is not equal to ("CHANGED_ON_IPHONE") - ohne Abschrift
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertEqual failed: ("["claude.a-pkg", "claude.a-solo"]") is not equal to ("["claude.a-solo"]")
+FAILED testRuecknahmeUebungLaesstProgrammphasenStehen()
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("applied")
+  XCTAssertTrue failed
+FAILED testRuecknahmeUnbekannterKennungOhneWirkung()
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("noEffect") - Fall 0
+  XCTAssertEqual failed: ("Optional(Lean_Health_Timer.ClaudeApplyResult.rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen."))") is not equal to ("Optional(Lean_Health_Timer.ClaudeApplyResult.noEffect)")
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("noEffect") - Fall 1
+  XCTAssertEqual failed: ("Optional(Lean_Health_Timer.ClaudeApplyResult.rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen."))") is not equal to ("Optional(Lean_Health_Timer.ClaudeApplyResult.noEffect)")
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("noEffect") - Fall 2
+  XCTAssertEqual failed: ("Optional(Lean_Health_Timer.ClaudeApplyResult.rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen."))") is not equal to ("Optional(Lean_Health_Timer.ClaudeApplyResult.noEffect)")
+  XCTAssertEqual failed: ("rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")") is not equal to ("noEffect")
