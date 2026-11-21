@@ -163,7 +163,9 @@ final class ClaudeStoreTests: XCTestCase {
         XCTAssertEqual(result, .applied)
 
         let writtenSets = try sets(defaults)
-        XCTAssertEqual(Array(writtenSets.prefix(2)), seededSets, "eigene Programme unveraendert und in gleicher Reihenfolge")
+        // Vergleichswert so, wie eine gespeicherte Liste beim Lesen aussieht (Decoder leitet exerciseId aus dem Namen ab, #48).
+        let seededAsRead = try JSONDecoder().decode([WorkoutSet].self, from: JSONEncoder().encode(seededSets))
+        XCTAssertEqual(Array(writtenSets.prefix(2)), seededAsRead, "eigene Programme unveraendert und in gleicher Reihenfolge")
         XCTAssertEqual(Array(try presets(defaults).prefix(2)), seededPresets, "eigene Atemuebungen unveraendert")
         XCTAssertEqual(writtenSets.prefix(2).map(\.name), ["Eigen Eins", "Eigen Zwei"])
         XCTAssertEqual(writtenSets.prefix(2).map(\.emoji), ["💪", "🔥"])

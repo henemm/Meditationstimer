@@ -297,6 +297,7 @@ final class ClaudeSpeichernUITests: XCTestCase {
         let workoutDelivered = workoutNames()
         XCTAssertTrue(workoutDelivered.contains(names.program), "Programm nach Lieferung nicht in der Liste")
         XCTAssertEqual(workoutDelivered.filter { $0 != names.program }, workoutBaseline, "Vorgaben/Eigenes veraendert")
+        openTab(0)
         assertBreathVisible(names.breath, "nach Lieferung")
         let breathCountDelivered = breathEditCount()
         XCTAssertEqual(breathCountDelivered, breathCountBaseline + 1)
@@ -306,6 +307,7 @@ final class ClaudeSpeichernUITests: XCTestCase {
         launch()
         let workoutRestart = workoutNames()
         XCTAssertEqual(workoutRestart, workoutDelivered, "Programme nach Neustart nicht gleich")
+        openTab(0)
         assertBreathVisible(names.breath, "nach Neustart")
         XCTAssertEqual(breathEditCount(), breathCountDelivered, "Anzahl der Atemuebungen nach Neustart nicht gleich")
 

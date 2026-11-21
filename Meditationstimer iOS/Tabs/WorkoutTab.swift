@@ -166,6 +166,9 @@ struct WorkoutTab: View {
                     loadSets()
                     if repeats < 1 { repeats = 10 }
                 }
+                .onReceive(NotificationCenter.default.publisher(for: .claudeStoreDidChange)) { _ in
+                    loadSets()
+                }
                 .alert("Health Access", isPresented: $showHealthAlert) {
                     Button("Cancel", role: .cancel) {}
                     Button("Allow") {
@@ -360,18 +363,12 @@ struct WorkoutTab: View {
     // MARK: - Persistence
 
     private func loadSets() {
-        if let decoded = WorkoutSet.loadStored(from: .standard, key: setsKey) {
-            sets = decoded
-            migrateSets()
-        } else {
-            sets = defaultWorkoutSets
-        }
-    }
-
-    private func migrateSets() {
-        let migrated = WorkoutSet.migratingPresets(sets, presets: defaultWorkoutSets)
-        if migrated != sets {
-            sets = migrated
+        let loaded = ClaudeStore.loadSets(from: .standard)
+        sets = loaded.list
+        if loaded.state == .stored,
+           let data = UserDefaults.standard.data(forKey: setsKey),
+           let stored = try? JSONDecoder().decode([WorkoutSet].self, from: data),
+           stored != sets {
             saveSets()
         }
     }

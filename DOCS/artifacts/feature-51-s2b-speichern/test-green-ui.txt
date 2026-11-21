@@ -1,0 +1,18 @@
+GREEN UI-Tests #51 Runde 2b-1 (2026-11-21), je einzeln als Klasse/Methode über Scripts/run-uitests.sh
+
+Lauf 1 (Developer-Agent, nach Implementierung):
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab]' passed (104.376 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab]' passed (139.783 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags]' passed (138.456 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags]' passed (125.553 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt]' passed (149.982 seconds).
+testAC13_AC14 scheiterte zweimal an einem Testfehler (assertBreathVisible ohne Wechsel in den Meditation-Tab);
+Test in Phase TDD RED korrigiert (openTab(0) vor beiden assertBreathVisible), App-Code unverändert.
+
+Lauf 2 (nach Testkorrektur):
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf]' passed (260.905 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' passed (233.044 seconds).
+** TEST SUCCEEDED **
+
+Ergebnis: 7 von 7 UI-Tests passed (6 ClaudeSpeichernUITests + Wächter ClaudeFelderUITests).
