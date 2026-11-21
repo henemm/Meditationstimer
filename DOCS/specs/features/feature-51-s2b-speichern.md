@@ -123,5 +123,7 @@ Alle als Given/When/Then; „Unit“ = isolierte `UserDefaults(suiteName:)` mit 
 
 ## Changelog
 
+- 2026-11-21: RED-Bericht, Namen zu Festlegung 4 festgelegt durch die Tests: `enum ClaudeListState { case missing, stored, unreadable }`, `ClaudeStore.loadSets(from:now:) -> (list: [WorkoutSet], state: ClaudeListState)`, `ClaudeStore.loadPresets(from:now:) -> (list: [AtemView.Preset], state: ClaudeListState)`; `ClaudeStoredState` mit Standard-`JSONDecoder`. UI-Test AC-11 nutzt `UITEST_CLAUDE_DELAY` = 8 statt 3 (Tab sicher sichtbar vor der Lieferung). AC-15 und der Import-Wächter aus AC-17 zusätzlich als Quelltext-Wächter in `ClaudeStoreTests`.
+
 - 2026-11-21: Nach Validierung: `Preset.loadStored` als Erweiterung in `ClaudeStore.swift` (AtemView unverändert), Benachrichtigung nur bei echtem Schreiben, Ausnahme von Regel 2 benannt, Mitkompilierung Watch/Widget geklärt.
 - 2026-11-21: Angelegt als Rundenspec 2b-1 (Elternspec eingefroren); Festlegungen zu Benachrichtigung, Testeinstieg, `LIST_UNREADABLE` und Verschiebung von `info(forId:)` nach Schnitt 3.
