@@ -63,6 +63,7 @@ func apply(_ delivery: ClaudeDelivery, to state: ClaudeApplyState,
             one = applyProgram(p, from: delivery, to: &work, lastSnapshotAt: lastSnapshotAt, initialSets: state.sets)
         case .exercise(let e): one = applyExercise(e, from: delivery, to: &work)
         case .breath(let b): one = applyBreath(b, from: delivery, to: &work, lastSnapshotAt: lastSnapshotAt)
+        case .withdrawal(let w): one = applyWithdrawal(w, to: &work, lastSnapshotAt: lastSnapshotAt)
         default:
             one = .rejected(code: "KIND_NOT_SUPPORTED", reason: "Diese Art von Baustein kann die App noch nicht annehmen.")
         }
@@ -163,5 +164,24 @@ func applyBreath(_ b: ClaudeBreath, from d: ClaudeDelivery, to state: inout Clau
                                  holdOut: b.holdOutSeconds, repetitions: b.rounds, description: b.description)
     preset.claude = origin(b.itemId, b.revision, d)
     if let i = index { state.presets[i] = preset } else { state.presets.append(preset) }
+    return .applied
+}
+
+/// Regel 8 und 9: Treffer nur ueber `claude` (itemId und/oder packageId); erst Treffermenge, dann Sperrpruefung, dann entfernen.
+func applyWithdrawal(_ w: ClaudeWithdrawal, to state: inout ClaudeApplyState, lastSnapshotAt: Date?) -> ClaudeApplyResult {
+    func hit(_ o: ClaudeOrigin?) -> Bool {
+        guard let o else { return false }
+        return (w.itemId != nil && o.itemId == w.itemId) || (w.packageId != nil && o.packageId == w.packageId)
+    }
+    let sets = state.sets.filter { hit($0.claude) }
+    let presets = state.presets.filter { hit($0.claude) }
+    let exercises = state.exercises.filter { hit($0.claude) }
+    if sets.isEmpty && presets.isEmpty && exercises.isEmpty { return .noEffect }
+    let blocked = sets.contains { isBlockedByIphone(modifiedAt: $0.modifiedAt, lastSnapshotAt: lastSnapshotAt) }
+        || presets.contains { isBlockedByIphone(modifiedAt: $0.modifiedAt, lastSnapshotAt: lastSnapshotAt) }
+    if blocked { return changedOnIphone }
+    state.sets.removeAll { hit($0.claude) }
+    state.presets.removeAll { hit($0.claude) }
+    state.exercises.removeAll { hit($0.claude) }
     return .applied
 }
