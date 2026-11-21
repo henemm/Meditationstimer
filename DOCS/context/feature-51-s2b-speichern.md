@@ -53,3 +53,86 @@ Nicht in 2b: Aufrufer von `apply` aus dem Dienst und `lastSnapshotAt` (#57); jed
 - **Schritt-Editor** zerstört `claude.*`-Kennungen beim Speichern (wird `own.*`).
 - **Zwei Tabs halten eigene Kopien** der Listen (`@State`); Anwenden im Hintergrund braucht Neu-Laden, sonst überschreibt das nächste
   `saveSets()` die gelieferte Fassung.
+
+## Analysis
+
+### Type
+Feature (Schnitt 2b von #51, ohne sichtbare Oberfläche; Grundlage für #57 und Schnitt 3)
+
+### Befunde aus dem Code (2026-11-21)
+1. **Fehlende Liste = Vorgaben, nicht leer.** `WorkoutTab.loadSets` (:362) und `MeditationTab.loadPresets` (:462) zeigen bei
+   fehlendem Key die Code-Vorgaben (`defaultWorkoutSets` :801, `MeditationTab.defaultPresets` :69, privat) plus Migration.
+   Würde das Anwenden bei fehlendem Key mit leerer Liste starten und sie schreiben, verschwänden alle Vorgaben aus der Anzeige
+   bis zur nächsten Migration (und deren Reihenfolge). → Anwenden und Tab müssen **denselben** Lader benutzen.
+2. **Migration der Atemübungen ist Instanzcode** (`migratePresets` :472, mutiert `@State`); `migratingPresets` für Programme ist
+   schon rein (`WorkoutProgramsView.swift:346`). → Atem-Migration als reine statische Funktion herausziehen (gleiches Muster).
+3. **`atemPresets` ohne Sicherung:** `try?` → Vorgaben → nächstes `savePresets` überschreibt die Rohdaten. `backUpUnreadable`
+   (:333) ist `private` und an das Präfix `workoutProgramSetsBackup.` gebunden → Präfix als Parameter, eigene Präfix
+   `atemPresetsBackup.`.
+4. **Zwei Besitzer der Listen:** nur `WorkoutTab` (`setsKey` :44) und `MeditationTab` (`presetsKey` :65) lesen/schreiben die Keys;
+   sonst niemand (grep 2026-11-21). Beide halten `@State`-Kopien, laden nur in `onAppear`, schreiben die ganze Liste.
+5. **`displayName` löst `claude.*` bereits richtig auf** (gibt den gespeicherten Namen zurück, `ExerciseDatabase.swift:756`).
+   `info(forId:)` für `claude.*` braucht nur das Info-Blatt, dessen Fehler (:1424 leitet Kennung aus dem Namen ab) laut
+   Elternanalyse Schnitt 3 ist. Zweiter Nutzer: `PhaseEditorView.init` (:1660) entscheidet „eigene Übung“ über `info(forId:)`.
+6. **Schritt-Editor zerstört `claude.*`:** `isCustom` = alles außer gültigem `builtin.*` (:1669); Speichern ruft dann
+   `apply(.own(name:))` (:1771) → `own.<slug>`. Passiert schon, wenn Henning nur die Dauer ändert.
+7. **`modifiedAt` wird nirgends gesetzt.** Beide Editoren geben über `onSave` den Entwurf an den Tab zurück
+   (`WorkoutTab.swift:145`, `MeditationTab.swift:173`); dort ist alter und neuer Stand bekannt → Vergleich ohne `modifiedAt`.
+8. **`claudeState` ≠ `ClaudeApplyState`:** Der Typ enthält die vollen Listen. Gespeichert unter `claudeState` werden nur
+   `exercises` + `log`; der Zustand fürs Anwenden wird aus drei Keys zusammengesetzt.
+9. **UI-Tests nutzen die echten `UserDefaults` der App im Simulator** (`ClaudeFelderUITests`, Aufräumen über die Oberfläche).
+   Es gibt bis #57 keinen Aufrufer; Startargumente liegen in `Meditationstimer_iOSApp.swift:38-50` (nur DEBUG).
+
+### Recherche (2026-11-21)
+- `UserDefaults` kennt keine Transaktion über mehrere Keys; einzelne `set`-Aufrufe sind der vorgesehene Weg, `synchronize()` ist
+  überflüssig (Apple-Doku `synchronize()`, Foundation Release Notes). → Reihenfolge „Listen zuerst, `claudeState` zuletzt“ plus
+  `revision`-Prüfung ist die richtige Absicherung; kein `synchronize`.
+- Benachrichtigungen in nicht sichtbaren Tabs: Forenberichte, dass Tabs außerhalb des Bildschirms nicht neu zeichnen
+  (developer.apple.com/forums/thread/705110, /782755). `@State` wird trotzdem gesetzt; zusätzlich bleibt `onAppear`-Laden. Der
+  Nachweis gehört in einen UI-Test (Anwenden, während der Tab sichtbar ist, und Tabwechsel).
+
+### Zuschnitt (Tech-Lead-Entscheidung)
+Alles zusammen ≈ 260–300 Zeilen App-Code in 6–7 Dateien → zwei Runden.
+
+**Runde 2b-1 „Speichern, Laden, Neu-Laden“** (≈ 170 Zeilen, 5 Dateien)
+| File | Change | Beschreibung |
+|------|--------|--------------|
+| `Meditationstimer iOS/Models/ClaudeStore.swift` | CREATE | Zustand aus drei Keys laden (gleicher Lader wie Tabs), `apply` aufrufen, Listen zuerst, `claudeState` (`exercises`+`log`) zuletzt schreiben, Benachrichtigung senden; unlesbare Liste → `rejected(LIST_UNREADABLE)`, nichts schreiben, nicht ins Gedächtnis; unlesbarer `claudeState` → sichern, leer weiter; generische `backUpUnreadable(prefix:)`, `Preset.loadStored`. Nur Foundation |
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | MODIFY | `backUpUnreadable` auf generische Funktion umstellen; Lader „gespeichert oder Vorgaben + Migration“ als statische Funktion |
+| `Meditationstimer iOS/Tabs/WorkoutTab.swift` | MODIFY | `loadSets` nutzt den gemeinsamen Lader; `.onReceive` der Benachrichtigung → neu laden |
+| `Meditationstimer iOS/Tabs/MeditationTab.swift` | MODIFY | Vorgaben + Migration rein/statisch; Laden über `Preset.loadStored` (mit Sicherung); `.onReceive` → neu laden |
+| `Meditationstimer iOS/Meditationstimer_iOSApp.swift` | MODIFY | nur DEBUG: Startargument wendet eine per Umgebung übergebene Lieferung über `ClaudeStore` an (Testeinstieg bis #57) |
+Tests: Unit (isolierte `UserDefaults(suiteName:)`: Laden fehlend/gültig/unlesbar, Schreibreihenfolge, Idempotenz über Neustart,
+unlesbare Liste nicht gemerkt, Sicherung `atemPresets`), UI (Lieferung per Startargument erscheint in der Liste, übersteht
+Neustart; Rücknahme per Paket räumt auf). Quelltext-Wächter `ClaudeApply.swift` bleibt unverändert grün.
+
+**Runde 2b-2 „Bearbeiten erkennt Claude-Bausteine“** (≈ 60–70 Zeilen, 3–4 Dateien)
+- `modifiedAt` = jetzt in beiden `onSave`, nur wenn sich der Inhalt (ohne `modifiedAt`) wirklich geändert hat.
+- Schritt-Editor behält `claude.*`, solange Henning die Übung nicht wechselt.
+- Test `migratingPresets` + Claude-Programm (ergänzt nur Beschreibung, setzt kein `modifiedAt`).
+- Festgehalten (Test): offener Editor + Anwenden → Hennings Speichern gewinnt, `modifiedAt` gesetzt.
+
+**Verschoben nach Schnitt 3:** `ExerciseDatabase.info(forId:)` für `claude.*` (Laufzeit-Katalog). Einziger echter Verbraucher ist
+das Info-Blatt (Schnitt 3); `displayName` funktioniert schon; der Schritt-Editor braucht es mit der Lösung in 2b-2 nicht.
+Kippt die Zuordnung aus der Elternspec („Nicht in Scope (2b)“, Punkt 5).
+
+### Alternativen
+- **Gemeinsamer Listen-Besitzer** (ein `ObservableObject` für beide Listen statt `@State` + Benachrichtigung): beseitigt doppelte
+  Kopien grundsätzlich, aber Umbau beider Tabs und aller Editor-Aufrufe (> 250 Zeilen). Verworfen für 2b (Elternanalyse
+  „zu groß für diese Runden“), Kandidat, falls der UI-Test zeigt, dass `onReceive` im Hintergrund-Tab nicht greift.
+- **Alles in einer Datei statt `UserDefaults`** (ein Schreibvorgang, echte Atomarität): ändert den Speicherort bestehender
+  Nutzerdaten, braucht Umzug → widerspricht „Einfach statt kompliziert“; die `revision`-Absicherung reicht.
+- **`info(forId:)` doch in 2b:** möglich in 2b-2 (+30 Zeilen, 1 Datei), ohne Verbraucher aber unbelegt.
+
+### Scope Assessment
+- Runde 2b-1: 5 Dateien, ≈ +170/−30 App-Code; Risiko MITTEL (berührt Laden der Listen beim Start, Datenverlust-Pfad).
+- Runde 2b-2: 3–4 Dateien, ≈ +60/−5; Risiko NIEDRIG.
+
+### Risiken
+- Laden umgebaut: Altdaten müssen genau wie heute erscheinen (bestehende Migrationstests + `ClaudeFelderUITests` als Wächter).
+- Stale Tab überschreibt Lieferung, wenn `onReceive` nicht greift → UI-Test mit sichtbarem Tab und Tabwechsel.
+- Neuer Code `LIST_UNREADABLE` steht in keinem Bezugsdokument (wie Lücke 2 der Elternspec vorgesehen); Wortlaut legt Spec fest.
+- Watch/Widget kompilieren den Ordner mit: `ClaudeStore.swift` nur Foundation; Watch- und Widget-Build in DoD.
+
+### Open Questions
+- keine PO-Frage (technischer Zuschnitt; keine sichtbare Änderung in 2b).
