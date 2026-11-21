@@ -138,4 +138,5 @@ Alle als Given/When/Then; „Unit“ = `LeanHealthTimerTests`, „UI“ = `LeanH
 
 ## Changelog
 
+- 2026-11-21 (RED): Tests angelegt. Abweichungen mit Begründung: AC-12 ändert den Schritt über das Hinweisfeld (`workout.phaseEditor.hintField`) statt über die Dauer, weil das Dauer-Rad keine Kennung hat (gleichwertig: Schritt geändert → Programm geändert). AC-11/12 starten mit dem vorhandenen Helfer (`enable-testing` + `uitest-claude-apply`) ohne `uitest-disk-store`, weil Programme in `UserDefaults` liegen, nicht in SwiftData. Der Teardown löscht von Henning geänderte Programme über den Editor, weil die Rücknahme sie mit `CHANGED_ON_IPHONE` ablehnt. „Revision 2 erscheint nicht“ wird nach 5 s Wartezeit geprüft (invertierte Erwartung). `testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert` ist schon vor der Umsetzung grün (Bestandsverhalten, muss grün bleiben).
 - 2026-11-21: Angelegt als Rundenspec 2b-2 (Elternspec und 2b-1 eingefroren); Alternativen B, C, D verworfen; Fall „veralteter Editor ohne Änderung“ durch „unverändert → nichts schreiben“ gelöst.
