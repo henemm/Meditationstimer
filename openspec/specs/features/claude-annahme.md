@@ -66,6 +66,10 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
      Gedächtnis (`exercises`, `log`) unter `claudeState`, zuletzt geschrieben; fehlende Listen ergeben die Vorgaben, unlesbare
      werden gesichert (`…Backup.<Sekunden>`) und führen zu `LIST_UNREADABLE`; Benachrichtigung `claudeStoreDidChange` lädt
      Workout- und Meditation-Tab neu. DEBUG-Testeinstieg `uitest-claude-apply` bis #57. Noch kein Aufrufer im Betrieb.
-   - **2b-2, offen:** `modifiedAt` beim Bearbeiten im Editor, Schritt-Editor behält `claude.*`, offener Editor + Anwenden.
+   - **2b-2, erledigt (22.11.2026, Spec `DOCS/specs/features/feature-51-s2b2-editor.md`):** Editoren für Programm und
+     Atemübung speichern über `ClaudeStore.savingEdit` und setzen `modifiedAt` nur bei echter Änderung (neu Angelegtes wird
+     auch unverändert übernommen); der Schritt-Editor behält die `claude.*`-Kennung bei unverändertem Übungsnamen
+     (`applyKeepingClaudeId`). Damit lehnt das iPhone neue Revisionen für von Henning Bearbeitetes ab. Schnitt 2b ist
+     vollständig; offen sind Schnitt 3 und #57.
 3. Kennzeichen und Info-Ansicht, DE/EN-Texte, UI-Test (vorher Entwurf zum Ansehen). Aus 2b hierher verschoben:
    `claude.*` in `ExerciseDatabase.info(forId:)` auflösen (einziger Verbraucher ist das Info-Blatt).
