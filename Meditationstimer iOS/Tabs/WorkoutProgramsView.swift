@@ -296,6 +296,12 @@ extension WorkoutPhase {
         }
     }
 
+    /// #51 2b-2: Schritt mit `claude.*`-Kennung behaelt sie, solange der Name unveraendert ist; sonst wie `apply(.own)`.
+    mutating func applyKeepingClaudeId(ownName: String) {
+        if exerciseId?.hasPrefix("claude.") == true, ownName == name { return }
+        apply(.own(name: ownName))
+    }
+
     /// The 67 catalog exercises with localized names, alphabetical by localized name.
     static func pickerCatalog(bundle: Bundle = .main) -> [(id: String, name: String)] {
         ExerciseDatabase.catalog
@@ -1768,7 +1774,7 @@ enum WorkoutProgramsView {
                     ToolbarItem(placement: .confirmationAction) {
                         Button(NSLocalizedString("Save", comment: "Button")) {
                             if useCustomExercise {
-                                draft.apply(.own(name: customExerciseName))
+                                draft.applyKeepingClaudeId(ownName: customExerciseName)
                             }
 
                             onSave(draft)

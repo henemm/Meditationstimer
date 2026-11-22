@@ -25,6 +25,7 @@ struct MeditationTab: View {
     // Breathing preset state (from AtemView)
     @State private var presets: [AtemView.Preset] = []
     @State private var showingEditor: AtemView.Preset? = nil
+    @State private var newDraftId: UUID? = nil
     @State private var showingInfo: AtemView.Preset? = nil
     @State private var runningPreset: AtemView.Preset? = nil
     @State private var showSettings = false
@@ -129,11 +130,13 @@ struct MeditationTab: View {
 
                         // MARK: - Add Preset Card
                         AtemView.AddPresetCard {
-                            showingEditor = AtemView.Preset(
+                            let fresh = AtemView.Preset(
                                 name: "New Preset",
                                 emoji: emojiChoices.randomElement() ?? "🧘",
                                 inhale: 4, holdIn: 0, exhale: 4, holdOut: 0, repetitions: 10
                             )
+                            newDraftId = fresh.id
+                            showingEditor = fresh
                         }
                         .padding(.horizontal, 16)
                         .padding(.bottom, 100) // Space for tab bar
@@ -172,11 +175,10 @@ struct MeditationTab: View {
                         preset: preset,
                         isNew: !presets.contains(where: { $0.id == preset.id }),
                         onSave: { edited in
-                            if let i = presets.firstIndex(where: { $0.id == edited.id }) {
-                                presets[i] = edited
-                            } else {
-                                presets.append(edited)
-                            }
+                            guard let updated = ClaudeStore.savingEdit(edited, original: preset, in: presets,
+                                                                       modifiedAt: \.modifiedAt, now: Date(),
+                                                                       isNew: preset.id == newDraftId) else { return }
+                            presets = updated
                             savePresets()
                         },
                         onDelete: { id in

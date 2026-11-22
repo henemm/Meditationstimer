@@ -25,3 +25,12 @@ strict_code_gate:
 scope_guard:
   loc_exclude_patterns:
     - '\.xcstrings$'
+    # PO 2026-11-20 („Nur App-Code"): Doku und Werkzeug-Dateien zählen nicht (#51, Gate zählte 341 statt 32 Zeilen).
+    - '^DOCS/'
+    - '^\.claude/'
+  # Die Test-Targets heißen nach Xcode-Konvention `LeanHealthTimerTests/` bzw. `…UITests/`;
+  # die Plugin-Vorgabe `(^|/)tests?/` trifft sie nicht, sie zählten als App-Code. Liste ersetzt die Vorgabe.
+  test_path_patterns:
+    - '(^|/)tests?/'
+    - '(^|/)Tests/'
+    - '(^|/)LeanHealthTimer(UI)?Tests/'
