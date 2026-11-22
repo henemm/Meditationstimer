@@ -1,0 +1,122 @@
+RED-Lauf UI-Tests #51 Schnitt 3, 2026-11-22. Lauf in Wegwerfkopie ohne LeanHealthTimerTests/ClaudeKennzeichenTests.swift (sonst bricht der Bau des gemeinsamen Schemas am Unit-RED ab).
+Vorbedingung assertDelivered (Baustein steht in der Liste) in allen 7 Tests bestanden; Fehlgrund jeweils fehlende Kapsel bzw. fehlender Info-Knopf.
+
+=== testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' failed (114.169 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' failed (100.069 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' failed (99.603 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' failed (114.169 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' failed (100.069 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' failed (99.603 seconds).
+=== testBuiltinProgramHasNoClaudeBadge
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertTrue failed - Kapsel des gelieferten Programms fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (103.626 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertTrue failed - Kapsel des gelieferten Programms fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (99.702 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertTrue failed - Kapsel des gelieferten Programms fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (98.309 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertTrue failed - Kapsel des gelieferten Programms fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (103.626 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertTrue failed - Kapsel des gelieferten Programms fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (99.702 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertTrue failed - Kapsel des gelieferten Programms fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (98.309 seconds).
+=== testBreathRowShowsClaudeBadgeAndInfo
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo] : XCTAssertTrue failed - Kapsel der Atem-Zeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' failed (89.536 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo] : XCTAssertTrue failed - Kapsel der Atem-Zeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' failed (82.553 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo] : XCTAssertTrue failed - Kapsel der Atem-Zeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' failed (82.302 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo] : XCTAssertTrue failed - Kapsel der Atem-Zeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' failed (89.536 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo] : XCTAssertTrue failed - Kapsel der Atem-Zeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' failed (82.553 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo] : XCTAssertTrue failed - Kapsel der Atem-Zeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' failed (82.302 seconds).
+=== testBreathMinimalDeliveryStillHasInfoButton
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton] : XCTAssertTrue failed - Info-Knopf der Atem-Zeile ohne Beschreibung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' failed (86.422 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton] : XCTAssertTrue failed - Info-Knopf der Atem-Zeile ohne Beschreibung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' failed (81.099 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton] : XCTAssertTrue failed - Info-Knopf der Atem-Zeile ohne Beschreibung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' failed (79.127 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton] : XCTAssertTrue failed - Info-Knopf der Atem-Zeile ohne Beschreibung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' failed (86.422 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton] : XCTAssertTrue failed - Info-Knopf der Atem-Zeile ohne Beschreibung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' failed (81.099 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton] : XCTAssertTrue failed - Info-Knopf der Atem-Zeile ohne Beschreibung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' failed (79.127 seconds).
+=== testClaudeExerciseInfoShowsTextsOnFirstTap
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap] : XCTAssertTrue failed - Info-Knopf der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' failed (107.679 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap] : XCTAssertTrue failed - Info-Knopf der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' failed (101.013 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap] : XCTAssertTrue failed - Info-Knopf der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' failed (98.591 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap] : XCTAssertTrue failed - Info-Knopf der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' failed (107.679 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap] : XCTAssertTrue failed - Info-Knopf der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' failed (101.013 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap] : XCTAssertTrue failed - Info-Knopf der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' failed (98.591 seconds).
+=== testEditedClaudeProgramShowsAngepasst
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst] : XCTAssertTrue failed - Kapsel vor dem Bearbeiten fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' failed (145.422 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst] : XCTAssertTrue failed - Kapsel vor dem Bearbeiten fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' failed (134.393 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst] : XCTAssertTrue failed - Kapsel vor dem Bearbeiten fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' failed (132.894 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst] : XCTAssertTrue failed - Kapsel vor dem Bearbeiten fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' failed (145.422 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst] : XCTAssertTrue failed - Kapsel vor dem Bearbeiten fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' failed (134.393 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst] : XCTAssertTrue failed - Kapsel vor dem Bearbeiten fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' failed (132.894 seconds).
+=== testClaudeBadgeIsLocalizedInEnglish
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' started (Iteration 1 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' failed (111.289 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' started (Iteration 2 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' failed (99.782 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' started (Iteration 3 of 3).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' failed (101.117 seconds).
+** TEST FAILED **
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' failed (111.289 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' failed (99.782 seconds).
+LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:168: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish] : XCTAssertTrue failed - Kapsel der Programmzeile fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' failed (101.117 seconds).
