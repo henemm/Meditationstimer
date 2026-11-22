@@ -34,6 +34,7 @@ struct WorkoutTab: View {
     // Workout Programs state (from WorkoutProgramsView)
     @State private var sets: [WorkoutSet] = []
     @State private var showingEditor: WorkoutSet? = nil
+    @State private var newDraftId: UUID? = nil
     @State private var showingInfo: WorkoutSet? = nil
     @State private var runningSet: WorkoutSet? = nil
 
@@ -100,12 +101,14 @@ struct WorkoutTab: View {
 
                         // MARK: - Add Set Card
                         WorkoutProgramsView.AddSetCard {
-                            showingEditor = WorkoutSet(
+                            let fresh = WorkoutSet(
                                 name: NSLocalizedString("New Workout", comment: "Default workout name"),
                                 emoji: emojiChoices.randomElement() ?? "💪",
                                 phases: [],
                                 repetitions: 3
                             )
+                            newDraftId = fresh.id
+                            showingEditor = fresh
                         }
                         .padding(.horizontal, 16)
                         .padding(.bottom, 100) // Space for tab bar
@@ -144,11 +147,10 @@ struct WorkoutTab: View {
                         set: set,
                         isNew: !sets.contains(where: { $0.id == set.id }),
                         onSave: { edited in
-                            if let i = sets.firstIndex(where: { $0.id == edited.id }) {
-                                sets[i] = edited
-                            } else {
-                                sets.append(edited)
-                            }
+                            guard let updated = ClaudeStore.savingEdit(edited, original: set, in: sets,
+                                                                       modifiedAt: \.modifiedAt, now: Date(),
+                                                                       isNew: set.id == newDraftId) else { return }
+                            sets = updated
                             saveSets()
                         },
                         onDelete: { id in

@@ -257,4 +257,21 @@ final class ClaudeEditorSpeichernTests: XCTestCase {
         XCTAssertEqual(migrated.claude, set.claude)
         XCTAssertEqual(migrated.name, set.name)
     }
+
+    // MARK: - AC-14
+
+    /// Verhalten: Ein ueber die Neu-Karte angelegter, unveraendert gespeicherter Baustein wird hinten angehaengt (`modifiedAt = now`);
+    /// ohne `isNew` bleibt es bei nil.
+    func testSavingEditNeuUnveraendertWirdAngelegt() throws {
+        let a = breath("Erste", itemId: "claude.a")
+        let fresh = breath("New Preset", itemId: "claude.neu")
+        let result = try XCTUnwrap(ClaudeStore.savingEdit(fresh, original: fresh, in: [a],
+                                                          modifiedAt: \.modifiedAt, now: now, isNew: true))
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result[0], a)
+        XCTAssertEqual(result[1].id, fresh.id)
+        XCTAssertEqual(result[1].modifiedAt, now)
+        XCTAssertNil(ClaudeStore.savingEdit(fresh, original: fresh, in: [a],
+                                            modifiedAt: \.modifiedAt, now: now, isNew: false))
+    }
 }

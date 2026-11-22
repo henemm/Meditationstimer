@@ -438,6 +438,7 @@ final class ClaudeSpeichernUITests: XCTestCase {
         app.terminate()
         let rev2Name = "Revision Zwei \(names.suffix.uppercased())"
         launch(delivery: programDelivery(names, revision: 2, programName: rev2Name))
+        openTab(1)
         assertProgramVisible(henning, "nach Revision 2")
         wait(seconds: 5)
         XCTAssertFalse(element(programEditId(rev2Name)).exists, "Revision 2 hat Hennings Aenderung ueberschrieben")
@@ -447,6 +448,7 @@ final class ClaudeSpeichernUITests: XCTestCase {
         // Ruecknahme per itemId wird ebenfalls abgelehnt.
         app.terminate()
         launch(delivery: withdrawalJSON(itemId: "claude.uitest-prog-\(names.suffix)"))
+        openTab(1)
         assertProgramVisible(henning, "nach Ruecknahme")
         wait(seconds: 5)
         assertProgramVisible(henning, "nach Wartezeit nach Ruecknahme")
@@ -507,6 +509,7 @@ final class ClaudeSpeichernUITests: XCTestCase {
         app.terminate()
         let rev2Name = "Revision Zwei \(names.suffix.uppercased())"
         launch(delivery: programDelivery(names, revision: 2, programName: rev2Name, withClaudeExercise: true))
+        openTab(1)
         assertProgramVisible(names.program, "nach Revision 2")
         wait(seconds: 5)
         XCTAssertFalse(element(programEditId(rev2Name)).exists, "Revision 2 hat Hennings Aenderung ueberschrieben")
@@ -514,5 +517,36 @@ final class ClaudeSpeichernUITests: XCTestCase {
         let reopened = element("workout.setEditor.phaseRow.0")
         XCTAssertTrue(reopened.waitForExistence(timeout: 10), "Schrittzeile nach Neustart fehlt")
         XCTAssertTrue(reopened.label.contains(exercise), "Schritt nach Neustart ohne gelieferte Uebung: \(reopened.label)")
+    }
+
+    /// Verhalten (AC-14): Neu-Karte im Atem-Tab, sofort Speichern ohne Aenderung: die neue Atemuebung steht in der Liste.
+    func testNeueAtemuebungOhneAenderungWirdAngelegt() throws {
+        launch()
+        openTab(0)
+        let add = app.buttons["Neues Preset hinzufügen"]
+        scrollUntilHittable(add)
+        let before = app.staticTexts.matching(identifier: "New Preset").count
+        add.tap()
+        let save = app.buttons["Speichern"]
+        XCTAssertTrue(save.waitForExistence(timeout: 10), "Atem-Editor oeffnet nicht")
+        save.tap()
+        XCTAssertTrue(waitUntilGone(save), "Atem-Editor schliesst nicht")
+
+        let created = app.staticTexts.matching(identifier: "New Preset")
+        let appeared = NSPredicate(format: "count == %d", before + 1)
+        XCTAssertEqual(XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: appeared, object: created)], timeout: 10),
+                       .completed, "Neue Atemuebung steht nicht in der Liste")
+
+        // Aufraeumen: die neue Uebung ist die letzte Zeile; ueber den Editor loeschen.
+        let edits = app.buttons.matching(identifier: "Bearbeiten")
+        let last = edits.element(boundBy: edits.count - 1)
+        scrollUntilHittable(last)
+        last.tap()
+        let delete = app.buttons["Löschen"]
+        XCTAssertTrue(app.buttons["Speichern"].waitForExistence(timeout: 10), "Atem-Editor oeffnet nicht")
+        // Der Loeschen-Knopf liegt am Ende des Formulars (Lazy-Liste): bis zum Erscheinen scrollen.
+        for _ in 0..<6 where !(delete.exists && delete.isHittable) { app.swipeUp() }
+        XCTAssertTrue(delete.waitForExistence(timeout: 10), "Loeschen im Atem-Editor fehlt")
+        delete.tap()
     }
 }

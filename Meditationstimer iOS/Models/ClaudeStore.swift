@@ -43,6 +43,17 @@ enum ClaudeStore {
     static let stateKey = "claudeState"
     static let stateBackupPrefix = "claudeStateBackup."
 
+    /// #51 2b-2: Unveraendert -> nil (nichts schreiben), ausser `isNew` (ueber die Neu-Karte angelegt, AC-14). Sonst `modifiedAt = now`, per id ersetzen, sonst anhaengen.
+    static func savingEdit<T: Identifiable & Equatable>(_ edited: T, original: T, in list: [T],
+                                                        modifiedAt: WritableKeyPath<T, Date?>, now: Date, isNew: Bool = false) -> [T]? {
+        if edited == original && !isNew { return nil }
+        var stamped = edited
+        stamped[keyPath: modifiedAt] = now
+        var result = list
+        if let i = result.firstIndex(where: { $0.id == stamped.id }) { result[i] = stamped } else { result.append(stamped) }
+        return result
+    }
+
     static let unreadableResult = ClaudeApplyResult.rejected(
         code: "LIST_UNREADABLE",
         reason: "Die gespeicherten Programme oder Atemübungen sind nicht lesbar; bitte später neu lesen.")
