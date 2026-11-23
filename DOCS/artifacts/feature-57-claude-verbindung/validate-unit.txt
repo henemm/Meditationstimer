@@ -1,0 +1,52 @@
+	 Executed 10 tests, with 0 failures (0 unexpected) in 1.146 (1.152) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.225 (0.232) seconds
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.033 (0.042) seconds
+	 Executed 13 tests, with 0 failures (0 unexpected) in 0.076 (0.116) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.022 (0.029) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.025 (0.079) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.014 (0.049) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.166 (0.174) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 14.798 (14.811) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.019 (0.029) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.009 (0.011) seconds
+	 Executed 20 tests, with 0 failures (0 unexpected) in 0.048 (0.061) seconds
+	 Executed 22 tests, with 0 failures (0 unexpected) in 0.051 (0.070) seconds
+	 Executed 24 tests, with 0 failures (0 unexpected) in 0.035 (0.052) seconds
+	 Executed 25 tests, with 0 failures (0 unexpected) in 0.336 (0.351) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4.044 (4.046) seconds
+	 Executed 35 tests, with 0 failures (0 unexpected) in 0.639 (0.676) seconds
+	 Executed 365 tests, with 0 failures (0 unexpected) in 24.141 (24.540) seconds
+	 Executed 365 tests, with 0 failures (0 unexpected) in 24.141 (24.542) seconds
+	 Executed 46 tests, with 0 failures (0 unexpected) in 0.359 (0.393) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.019 (0.022) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.031 (0.034) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.080 (0.084) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.112 (0.118) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.209 (0.212) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 1.559 (1.562) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.011 (0.015) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.010 (0.016) seconds
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.064 (0.080) seconds
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testDienstadresseFehlendOderKaputtFaelltAufVorgabe]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testDienstadresseHttpNurLocalhostImDebug]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testDienstadresseHttpsWirdUebernommen]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testGeraeteUuidAbfragenTragenKennungenUndZugriffsklasse]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testGeraeteUuidDuplikatBeimAnlegenLiestErneut]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testGeraeteUuidKaputteDatenSindFehlerUndWerdenNieErsetzt]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testGeraeteUuidStatusFehlerWirdGeworfenNichtAngelegt]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testGeraeteUuidWirdEinmalErzeugtUndWiedergelesen]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testNonceHashEntsprichtSha256Vektor]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testNonceHatDreiundvierzigZeichenBase64UrlUndIstEinmalig]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSchalterDebugBauIstAn]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSchalterInfoWertNurEchtesBoolTrueSchaltetEin]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSchalterReleaseOhneEintragIstAus]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSchalterStartargumentEnableTestingIstAn]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungAbfragenTragenKennungenUndZugriffsklasse]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungDuplikatAktualisiertNurDenWert]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungFehlerBeschreibungEnthaeltTokenNie]' passed (0.025 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungLeereOderKaputteDatenSindCorruptData]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungNichtGefundenIstNilUndKeinFehler]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungSpeichernLesenLoeschen]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungStatusMinus34018IstFehlerNieStillAbgemeldet]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeVerbindungBausteineTests testSitzungUpdateOhneTrefferIstFehler]' passed (0.001 seconds).
+Test Suite 'ClaudeVerbindungBausteineTests' passed at 2026-11-23 18:12:01.930.
