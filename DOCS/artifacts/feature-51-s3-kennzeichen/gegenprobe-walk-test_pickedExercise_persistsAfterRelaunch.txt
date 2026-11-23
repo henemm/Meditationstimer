@@ -1,0 +1,5 @@
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started.
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' passed (297.403 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 297.403 (297.409) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 297.403 (297.428) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 297.403 (297.430) seconds

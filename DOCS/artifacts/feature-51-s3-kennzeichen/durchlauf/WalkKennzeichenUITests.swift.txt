@@ -1,0 +1,106 @@
+// Wegwerf-Durchlauf #51 Schnitt 3 (nur Scratch-Kopie, nicht im Repo): Nutzerweg mit Screenshots.
+import XCTest
+
+final class WalkKennzeichenUITests: XCTestCase {
+    var app: XCUIApplication!
+    let dir = ProcessInfo.processInfo.environment["WALK_DIR"] ?? "/tmp"
+    let mode = ProcessInfo.processInfo.environment["WALK_MODE"] ?? "x"
+    let suffix = String(UUID().uuidString.prefix(6)).lowercased()
+    let program = "Rücken-Routine Abend"
+    let edited = "Rücken-Routine Abend (meine)"
+    let breath = "Abendruhe 4-2-6"
+    let exercise = "Vierfüßler diagonal"
+
+    override func setUpWithError() throws { continueAfterFailure = true; app = XCUIApplication() }
+
+    func json(_ o: [String: Any]) -> String { String(decoding: try! JSONSerialization.data(withJSONObject: o), as: UTF8.self) }
+
+    func delivery() -> String {
+        let exId = "claude.walk-ex-\(suffix)"
+        let items: [[String: Any]] = [
+            ["kind": "exercise", "itemId": exId, "revision": 1, "name": exercise, "category": "core",
+             "effect": "Stärkt die tiefe Rumpfmuskulatur und stabilisiert die Lendenwirbelsäule.",
+             "instructions": "Im Vierfüßlerstand rechten Arm und linkes Bein strecken, kurz halten, Seite wechseln.",
+             "notes": "Rücken gerade halten, nicht ins Hohlkreuz fallen."],
+            ["kind": "program", "itemId": "claude.walk-prog-\(suffix)", "revision": 1, "name": program, "symbol": "🌙",
+             "rounds": 2, "steps": [["exerciseId": exId, "workSeconds": 40, "restSeconds": 15],
+                                    ["exerciseId": "builtin.planke", "workSeconds": 30, "restSeconds": 15]]],
+            ["kind": "breath", "itemId": "claude.walk-atem-\(suffix)", "revision": 1, "name": breath, "symbol": "🌙",
+             "inhaleSeconds": 4, "holdInSeconds": 2, "exhaleSeconds": 6, "holdOutSeconds": 0, "rounds": 10,
+             "description": "Ruhige Atmung zum Runterkommen am Abend."]]
+        return json(["format": "hhhaven.delivery/1", "deliveryId": UUID().uuidString.lowercased(), "source": "claude",
+                     "createdAt": "2026-11-13T10:15:00Z",
+                     "why": "Du wolltest abends etwas Kurzes für den Rücken und zum Runterkommen.", "items": items,
+                     "package": ["packageId": "claude.walk-\(suffix)", "name": "Rücken & Ruhe"]])
+    }
+
+    func withdrawal() -> String {
+        json(["format": "hhhaven.delivery/1", "deliveryId": UUID().uuidString.lowercased(), "source": "claude",
+              "createdAt": "2026-11-14T10:15:00Z", "why": "Walk Ruecknahme",
+              "items": [["kind": "withdrawal", "packageId": "claude.walk-\(suffix)"]]])
+    }
+
+    func launch(_ delivery: String? = nil, extra: [String] = []) {
+        if app.state != .notRunning { app.terminate() }
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"] + extra
+        app.launchEnvironment = [:]
+        if let delivery { app.launchArguments.append("uitest-claude-apply"); app.launchEnvironment["UITEST_CLAUDE_DELIVERY"] = delivery }
+        app.launch()
+        let sb = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        for _ in 0..<4 { for l in ["OK", "Nicht erlauben", "Erlauben"] where sb.buttons[l].waitForExistence(timeout: 1) { sb.buttons[l].tap() } }
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+    }
+
+    func el(_ id: String) -> XCUIElement { app.descendants(matching: .any).matching(identifier: id).firstMatch }
+    func show(_ e: XCUIElement) {
+        _ = e.waitForExistence(timeout: 15)
+        for _ in 0..<10 where !e.isHittable { app.swipeUp() }
+        for _ in 0..<10 where !e.isHittable { app.swipeDown() }
+    }
+    func shot(_ name: String) {
+        sleep(1)
+        try? XCUIScreen.main.screenshot().pngRepresentation.write(to: URL(fileURLWithPath: "\(dir)/\(mode)-\(name).png"))
+    }
+
+    func testWalk() throws {
+        launch(delivery())
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        show(el("workout.programRow.\(program).claudeBadge")); shot("01-workout-zeile")
+        el("workout.programRow.\(program).info").tap()
+        sleep(1); shot("02-programm-info-oben")
+        show(el("claudeOrigin.why")); shot("03-programm-info-herkunft")
+        let step = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", exercise)).firstMatch
+        show(step); step.tap()
+        XCTAssertTrue(el("exerciseDetail.effect").waitForExistence(timeout: 10), "Erst-Tipp ohne Texte")
+        shot("04-uebung-info")
+        show(el("exerciseDetail.claudeOrigin")); shot("05-uebung-info-unten")
+
+        launch()
+        app.tabBars.buttons.element(boundBy: 0).tap()
+        show(el("atem.row.\(breath).claudeBadge")); shot("06-atem-zeile")
+        el("atem.row.\(breath).info").tap()
+        show(el("claudeOrigin.why")); shot("07-atem-info")
+
+        launch()
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        let edit = el("workout.programRow.\(program).edit"); show(edit); edit.tap()
+        let field = app.textFields["Name"].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 10)); field.tap()
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: ((field.value as? String) ?? "").count))
+        field.typeText(edited)
+        el("workout.setEditor.save").tap(); sleep(1)
+        show(el("workout.programRow.\(edited).claudeBadge")); shot("08-angepasst")
+
+        launch(extra: ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"])
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        show(el("workout.programRow.\(edited).claudeBadge")); shot("09-grosse-schrift")
+
+        // Aufräumen: bearbeitetes Programm im Editor löschen, Rest per Paket zurücknehmen.
+        launch()
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        let e2 = el("workout.programRow.\(edited).edit"); show(e2); e2.tap()
+        if app.buttons["Löschen"].waitForExistence(timeout: 8) { app.buttons["Löschen"].tap() }
+        launch(withdrawal())
+        app.terminate()
+    }
+}

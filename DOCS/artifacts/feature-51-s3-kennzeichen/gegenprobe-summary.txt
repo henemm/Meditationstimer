@@ -1,0 +1,5 @@
+walk test_pickedExercise_persistsAfterRelaunch EXIT 0 	 Executed 1 test, with 0 failures (0 unexpected) in 297.403 (297.430) seconds
+walk test_exercisePicker_showsOnlyCatalogNames_german EXIT 0 	 Executed 1 test, with 0 failures (0 unexpected) in 332.690 (332.763) seconds
+main test_pickedExercise_persistsAfterRelaunch EXIT 0 	 Executed 1 test, with 0 failures (0 unexpected) in 365.376 (365.395) seconds
+main test_exercisePicker_showsOnlyCatalogNames_german EXIT 0 	 Executed 1 test, with 0 failures (0 unexpected) in 671.545 (671.610) seconds
+HINTDONE

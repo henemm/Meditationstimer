@@ -1,0 +1,50 @@
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testBreathMinimalDeliveryStillHasInfoButton
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 07:07:20 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-23 07:07:21 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 07:07:21 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 07:07:22 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 07:07:23 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' started (Iteration 1 of 3).
+2026-11-23 08:08:30.880 xcodebuild[10243:37188089] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 08:09:21.554 xcodebuild[10243:37188089] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' passed (77.620 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 08:09:47.407.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 08:09:47.412.
+Test Suite 'Selected tests' passed at 2026-11-23 08:09:47.415.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════

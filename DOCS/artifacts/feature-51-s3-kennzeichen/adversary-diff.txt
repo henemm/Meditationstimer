@@ -1,0 +1,287 @@
+diff --git a/Meditationstimer iOS/Models/ClaudeStore.swift b/Meditationstimer iOS/Models/ClaudeStore.swift
+index 76f3f2f..d8b3112 100644
+--- a/Meditationstimer iOS/Models/ClaudeStore.swift	
++++ b/Meditationstimer iOS/Models/ClaudeStore.swift	
+@@ -82,6 +82,28 @@ enum ClaudeStore {
+         return ClaudeStoredState()
+     }
+ 
++    /// #51 S3: Gelieferte Uebung (`claude.*`) aus dem Zustand; Katalog bleibt Sache von `ExerciseDatabase`.
++    private static func storedExerciseEntry(id: String, defaults: UserDefaults) -> ClaudeStoredExercise? {
++        guard id.hasPrefix("claude.") else { return nil }
++        return loadState(from: defaults, now: Date()).exercises.first { $0.claude.itemId == id }
++    }
++
++    static func storedExercise(id: String, defaults: UserDefaults = .standard) -> ExerciseInfo? {
++        guard let e = storedExerciseEntry(id: id, defaults: defaults) else { return nil }
++        return ExerciseInfo(id: id, name: e.name, category: mapCategory(e.category) ?? .fullBody,
++                            effect: e.effect, instructions: e.instructions, notes: e.notes)
++    }
++
++    static func storedExerciseOrigin(id: String, defaults: UserDefaults = .standard) -> ClaudeOrigin? {
++        storedExerciseEntry(id: id, defaults: defaults)?.claude
++    }
++
++    /// Kapseltext in der Liste: "von Claude", nach Bearbeitung "von Claude · angepasst".
++    static func badgeText(modifiedAt: Date?) -> String {
++        modifiedAt == nil ? NSLocalizedString("von Claude", comment: "Badge on delivered items")
++                          : NSLocalizedString("von Claude · angepasst", comment: "Badge on delivered items edited by the user")
++    }
++
+     /// Liest, wendet an, schreibt (Listen zuerst, `claudeState` zuletzt) und meldet nach dem Schreiben.
+     static func apply(_ delivery: ClaudeDelivery, in defaults: UserDefaults = .standard, lastSnapshotAt: Date?,
+                       now: Date = Date(), center: NotificationCenter? = .default) -> ClaudeApplyResult {
+diff --git a/Meditationstimer iOS/Tabs/AtemView.swift b/Meditationstimer iOS/Tabs/AtemView.swift
+index 7073992..8e71ae2 100644
+--- a/Meditationstimer iOS/Tabs/AtemView.swift	
++++ b/Meditationstimer iOS/Tabs/AtemView.swift	
+@@ -180,8 +180,14 @@ enum AtemView {
+                     HStack(alignment: .center, spacing: 14) {
+                         Text(preset.emoji)
+                             .font(.system(size: 42))
+-                        Text(preset.name)
+-                            .font(.system(size: 22, weight: .bold))
++                        VStack(alignment: .leading, spacing: 4) {
++                            Text(preset.name)
++                                .font(.system(size: 22, weight: .bold))
++                            if preset.claude != nil {
++                                ClaudeOriginBadge(modifiedAt: preset.modifiedAt,
++                                                  identifier: "atem.row.\(preset.name).claudeBadge")
++                            }
++                        }
+                         Spacer()
+                         Button(action: play) {
+                             Image(systemName: "play.fill")
+@@ -207,7 +213,7 @@ enum AtemView {
+                         Spacer()
+ 
+                         // Info button (only if description exists)
+-                        if preset.description != nil, let showInfo = showInfo {
++                        if preset.description != nil || preset.claude != nil, let showInfo = showInfo {
+                             Button(action: showInfo) {
+                                 Image(systemName: "info.circle")
+                                     .font(.system(size: 18, weight: .regular))
+@@ -215,6 +221,7 @@ enum AtemView {
+                             }
+                             .buttonStyle(.plain)
+                             .accessibilityLabel("Info")
++                            .accessibilityIdentifier("atem.row.\(preset.name).info")
+                         }
+ 
+                         Button(action: edit) {
+@@ -317,13 +324,17 @@ enum AtemView {
+                             }
+                         }
+ 
+-                        // Recommended Usage Section
+-                        VStack(alignment: .leading, spacing: 8) {
+-                            Text(NSLocalizedString("Recommended Application", comment: "Section header in preset info"))
+-                                .font(.headline)
+-                                .foregroundStyle(.secondary)
+-                            Text(recommendedUsage)
+-                                .font(.body)
++                        // Recommended Usage Section (not for Claude items)
++                        if let origin = preset.claude {
++                            ClaudeOriginSection(origin: origin)
++                        } else {
++                            VStack(alignment: .leading, spacing: 8) {
++                                Text(NSLocalizedString("Recommended Application", comment: "Section header in preset info"))
++                                    .font(.headline)
++                                    .foregroundStyle(.secondary)
++                                Text(recommendedUsage)
++                                    .font(.body)
++                            }
+                         }
+                     }
+                     .padding()
+diff --git a/Meditationstimer iOS/Tabs/WorkoutProgramsView.swift b/Meditationstimer iOS/Tabs/WorkoutProgramsView.swift
+index 0a44155..ba2942e 100644
+--- a/Meditationstimer iOS/Tabs/WorkoutProgramsView.swift	
++++ b/Meditationstimer iOS/Tabs/WorkoutProgramsView.swift	
+@@ -1248,8 +1248,14 @@ enum WorkoutProgramsView {
+                     HStack(alignment: .center, spacing: 14) {
+                         Text(set.emoji)
+                             .font(.system(size: 42))
+-                        Text(LocalizedStringKey(set.name))
+-                            .font(.system(size: 22, weight: .bold))
++                        VStack(alignment: .leading, spacing: 4) {
++                            Text(LocalizedStringKey(set.name))
++                                .font(.system(size: 22, weight: .bold))
++                            if set.claude != nil {
++                                ClaudeOriginBadge(modifiedAt: set.modifiedAt,
++                                                  identifier: "workout.programRow.\(set.name).claudeBadge")
++                            }
++                        }
+                         Spacer()
+                         Button(action: play) {
+                             Image(systemName: "play.fill")
+@@ -1276,7 +1282,7 @@ enum WorkoutProgramsView {
+                         Spacer()
+ 
+                         // Info button (only if description exists)
+-                        if set.description != nil, let showInfo = showInfo {
++                        if set.description != nil || set.claude != nil, let showInfo = showInfo {
+                             Button(action: showInfo) {
+                                 Image(systemName: "info.circle")
+                                     .font(.system(size: 18, weight: .regular))
+@@ -1284,6 +1290,7 @@ enum WorkoutProgramsView {
+                             }
+                             .buttonStyle(.plain)
+                             .accessibilityLabel("Info")
++                            .accessibilityIdentifier("workout.programRow.\(set.name).info")
+                         }
+ 
+                         Button(action: edit) {
+@@ -1330,8 +1337,7 @@ enum WorkoutProgramsView {
+     struct PresetInfoSheet: View {
+         let set: WorkoutSet
+         @Environment(\.dismiss) private var dismiss
+-        @State private var showExerciseSheet = false  // For exercise detail sheet
+-        @State private var selectedExerciseName: String = ""  // Exercise name for sheet
++        @State private var exerciseSheet: ExerciseSheetWrapper?  // #90: item-based, first tap works
+ 
+         private var recommendedUsage: String {
+             // Extract recommended usage based on set name
+@@ -1411,13 +1417,17 @@ enum WorkoutProgramsView {
+                             }
+                         }
+ 
+-                        // Recommended Usage Section
+-                        VStack(alignment: .leading, spacing: 8) {
+-                            Text(NSLocalizedString("Recommended Application", comment: ""))
+-                                .font(.headline)
+-                                .foregroundStyle(.secondary)
+-                            Text(recommendedUsage)
+-                                .font(.body)
++                        // Recommended Usage Section (not for Claude items)
++                        if let origin = set.claude {
++                            ClaudeOriginSection(origin: origin)
++                        } else {
++                            VStack(alignment: .leading, spacing: 8) {
++                                Text(NSLocalizedString("Recommended Application", comment: ""))
++                                    .font(.headline)
++                                    .foregroundStyle(.secondary)
++                                Text(recommendedUsage)
++                                    .font(.body)
++                            }
+                         }
+                     }
+                     .padding()
+@@ -1431,8 +1441,8 @@ enum WorkoutProgramsView {
+                         }
+                     }
+                 }
+-                .sheet(isPresented: $showExerciseSheet) {
+-                    ExerciseDetailSheet(exerciseName: selectedExerciseName, exerciseId: ExerciseDatabase.exerciseId(forName: selectedExerciseName))
++                .sheet(item: $exerciseSheet) { item in
++                    ExerciseDetailSheet(exerciseName: item.name, exerciseId: item.exerciseId)
+                 }
+             }
+         }
+@@ -1450,8 +1460,7 @@ enum WorkoutProgramsView {
+                     .font(.body)
+                 Spacer()
+                 Button {
+-                    selectedExerciseName = phase.name
+-                    showExerciseSheet = true
++                    exerciseSheet = ExerciseSheetWrapper(name: phase.name, exerciseId: phase.exerciseId)
+                 } label: {
+                     Image(systemName: "info.circle")
+                         .foregroundStyle(Color.workoutViolet)
+@@ -1466,6 +1475,7 @@ enum WorkoutProgramsView {
+             .frame(minHeight: 44)  // Apple HIG minimum touch target
+             .padding(.vertical, 4)
+             .contentShape(Rectangle())  // Make entire row tappable
++            .onTapGesture { exerciseSheet = ExerciseSheetWrapper(name: phase.name, exerciseId: phase.exerciseId) }
+         }
+     }
+ 
+@@ -1473,6 +1483,7 @@ enum WorkoutProgramsView {
+     struct ExerciseSheetWrapper: Identifiable {
+         let id = UUID()
+         let name: String
++        var exerciseId: String? = nil
+     }
+ 
+     // MARK: - SetEditorView (create/edit workout set)
+diff --git a/Meditationstimer iOS/Views/ExerciseDetailSheet.swift b/Meditationstimer iOS/Views/ExerciseDetailSheet.swift
+index c421dbf..a79a95e 100644
+--- a/Meditationstimer iOS/Views/ExerciseDetailSheet.swift	
++++ b/Meditationstimer iOS/Views/ExerciseDetailSheet.swift	
+@@ -14,13 +14,16 @@ struct ExerciseDetailSheet: View {
+     @Environment(\.dismiss) private var dismiss
+ 
+     private var exerciseInfo: ExerciseInfo? {
+-        let id = exerciseId ?? ExerciseDatabase.exerciseId(forName: exerciseName)
++        let id = resolvedId
+         print("[ExerciseDetailSheet] Looking up: '\(exerciseName)' as \(id)")
+-        let result = ExerciseDatabase.info(forId: id)
++        let result = id.hasPrefix("claude.") ? ClaudeStore.storedExercise(id: id) : ExerciseDatabase.info(forId: id)
+         print("[ExerciseDetailSheet] Found: \(result != nil)")
+         return result
+     }
+ 
++    private var resolvedId: String { exerciseId ?? ExerciseDatabase.exerciseId(forName: exerciseName) }
++    private var claudeOrigin: ClaudeOrigin? { ClaudeStore.storedExerciseOrigin(id: resolvedId) }
++
+     var body: some View {
+         NavigationView {
+             ScrollView {
+@@ -88,6 +91,15 @@ struct ExerciseDetailSheet: View {
+                             .padding(.horizontal)
+                         }
+ 
++                        if let origin = claudeOrigin {
++                            Text(String(format: NSLocalizedString("Von Claude geliefert am %@", comment: ""),
++                                        origin.deliveredAt.formatted(date: .numeric, time: .omitted)))
++                                .font(.footnote)
++                                .foregroundStyle(.secondary)
++                                .padding(.horizontal)
++                                .accessibilityIdentifier("exerciseDetail.claudeOrigin")
++                        }
++
+                         Spacer(minLength: 40)
+ 
+                     } else {
+@@ -128,6 +140,41 @@ struct ExerciseDetailSheet: View {
+     }
+ }
+ 
++/// #51 S3: Kapsel "von Claude" unter dem Namen in der Listenzeile.
++struct ClaudeOriginBadge: View {
++    let modifiedAt: Date?
++    let identifier: String
++
++    var body: some View {
++        Text(ClaudeStore.badgeText(modifiedAt: modifiedAt))
++            .font(.caption.weight(.medium))
++            .padding(.horizontal, 10)
++            .padding(.vertical, 3)
++            .background(.ultraThinMaterial, in: Capsule())
++            .accessibilityIdentifier(identifier)
++    }
++}
++
++/// #51 S3: Abschnitt "Von Claude" am Ende der Info-Ansicht (Datum, Paket, Warum).
++struct ClaudeOriginSection: View {
++    let origin: ClaudeOrigin
++
++    var body: some View {
++        VStack(alignment: .leading, spacing: 8) {
++            Text("Von Claude").font(.headline).foregroundStyle(.secondary)
++            Text(String(format: NSLocalizedString("Geliefert am %@", comment: ""),
++                        origin.deliveredAt.formatted(date: .numeric, time: .omitted)))
++                .accessibilityIdentifier("claudeOrigin.deliveredAt")
++            if let name = origin.packageName {
++                Text(String(format: NSLocalizedString("Paket „%@“", comment: ""), name))
++                    .accessibilityIdentifier("claudeOrigin.package")
++            }
++            Text("Warum").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
++            Text(origin.why).font(.body).accessibilityIdentifier("claudeOrigin.why")
++        }
++    }
++}
++
+ #Preview {
+     ExerciseDetailSheet(exerciseName: "Burpees")
+ }

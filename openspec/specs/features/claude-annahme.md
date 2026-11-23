@@ -71,5 +71,10 @@ Lieferung** mit dem Referenz-Prüfer (B0); die App liest sie nur sauber ein und 
      auch unverändert übernommen); der Schritt-Editor behält die `claude.*`-Kennung bei unverändertem Übungsnamen
      (`applyKeepingClaudeId`). Damit lehnt das iPhone neue Revisionen für von Henning Bearbeitetes ab. Schnitt 2b ist
      vollständig; offen sind Schnitt 3 und #57.
-3. Kennzeichen und Info-Ansicht, DE/EN-Texte, UI-Test (vorher Entwurf zum Ansehen). Aus 2b hierher verschoben:
-   `claude.*` in `ExerciseDatabase.info(forId:)` auflösen (einziger Verbraucher ist das Info-Blatt).
+3. **Erledigt (23.11.2026, Spec `DOCS/specs/features/feature-51-s3-kennzeichen.md`):** Kapsel „von Claude“ (nach
+   Bearbeitung „von Claude · angepasst“) an gelieferten Programmen und Atemübungen; Info-Ansicht mit Abschnitt „Von Claude“
+   (Lieferdatum, Paket, Warum), ohne „Empfohlene Anwendung“ und ohne Gesundheitshinweis (PO 22.11.2026); Info-Knopf auch
+   ohne Beschreibung; DE/EN-Texte. **Präzisierung:** `claude.*` wird **nicht** in `ExerciseDatabase.info(forId:)` aufgelöst
+   (drei Katalog-Aufrufer setzen „nur Katalog“ voraus), sondern über `ClaudeStore.storedExercise(id:)` mit einem Zweig im
+   `ExerciseDetailSheet`. Das Übungs-Info im Programm-Info-Blatt öffnet über `.sheet(item:)` und zeigt schon beim ersten
+   Tippen Texte (#90 mitgelöst). Offen ist #57.

@@ -1,0 +1,1527 @@
+HEAD 4b668a9 2026-11-23T10:24:44Z
+##### ClaudeKennzeichenUITests/testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 10:24:54 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 10:24:56 +0000] Status=2, isTerminal=NO, Elapsed=00:04.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 10:24:57 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:24:57 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:24:58 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:24:59 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:25:00 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 10:25:01 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' started (Iteration 1 of 3).
+2026-11-23 11:27:23.925 xcodebuild[84432:37734754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 11:30:49.606 xcodebuild[84432:37734754] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' passed (265.878 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 11:31:47.054.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 11:31:47.063.
+Test Suite 'Selected tests' passed at 2026-11-23 11:31:47.063.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeKennzeichenUITests/testBuiltinProgramHasNoClaudeBadge
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testBuiltinProgramHasNoClaudeBadge
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 10:32:01 +0000] Status=1, isTerminal=NO, Elapsed=00:04.
+	Waiting on BackBoard
+
+[2026-11-23 10:32:04 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:32:04 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:32:05 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:32:06 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 10:32:07 +0000] Status=4, isTerminal=NO, Elapsed=00:09.
+	Waiting on System App
+
+[2026-11-23 10:32:08 +0000] Status=4, isTerminal=NO, Elapsed=00:10.
+	Waiting on System App
+
+[2026-11-23 10:32:09 +0000] Status=4, isTerminal=NO, Elapsed=00:11.
+	Waiting on System App
+
+[2026-11-23 10:32:10 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:12.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 1 of 3).
+2026-11-23 11:34:14.201 xcodebuild[88689:37764922] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 11:37:30.515 xcodebuild[88689:37764922] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' passed (241.593 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 11:38:14.092.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 11:38:14.099.
+Test Suite 'Selected tests' passed at 2026-11-23 11:38:14.100.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeKennzeichenUITests/testBreathRowShowsClaudeBadgeAndInfo
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testBreathRowShowsClaudeBadgeAndInfo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 10:38:29 +0000] Status=1, isTerminal=NO, Elapsed=00:03.
+	Waiting on BackBoard
+
+[2026-11-23 10:38:31 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:38:31 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:38:32 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:38:33 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:38:34 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 10:38:35 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' started (Iteration 1 of 3).
+2026-11-23 11:40:55.823 xcodebuild[90911:37786173] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 11:43:11.228 xcodebuild[90911:37786173] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' passed (195.924 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 11:44:09.852.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 11:44:09.869.
+Test Suite 'Selected tests' passed at 2026-11-23 11:44:09.878.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeKennzeichenUITests/testBreathMinimalDeliveryStillHasInfoButton
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testBreathMinimalDeliveryStillHasInfoButton
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 10:44:23 +0000] Status=1, isTerminal=NO, Elapsed=00:03.
+	Waiting on BackBoard
+
+[2026-11-23 10:44:25 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:44:25 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:44:26 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:44:27 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:44:28 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 10:44:29 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' started (Iteration 1 of 3).
+2026-11-23 11:46:05.657 xcodebuild[92851:37804777] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 11:48:01.157 xcodebuild[92851:37804777] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' passed (159.867 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 11:48:44.139.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 11:48:44.140.
+Test Suite 'Selected tests' passed at 2026-11-23 11:48:44.141.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeKennzeichenUITests/testClaudeExerciseInfoShowsTextsOnFirstTap
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testClaudeExerciseInfoShowsTextsOnFirstTap
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 10:48:57 +0000] Status=1, isTerminal=NO, Elapsed=00:03.
+	Waiting on BackBoard
+
+[2026-11-23 10:49:00 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:49:00 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:49:00 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:49:01 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:49:02 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 10:49:03 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' started (Iteration 1 of 3).
+2026-11-23 11:50:43.689 xcodebuild[94474:37820860] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 11:53:52.643 xcodebuild[94474:37820860] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' passed (236.267 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 11:54:37.719.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 11:54:37.723.
+Test Suite 'Selected tests' passed at 2026-11-23 11:54:37.724.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeKennzeichenUITests/testEditedClaudeProgramShowsAngepasst
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testEditedClaudeProgramShowsAngepasst
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 10:54:50 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 10:54:52 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 10:54:52 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 10:54:53 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 10:54:54 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 10:54:55 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 10:54:56 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:08.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' started (Iteration 1 of 3).
+2026-11-23 11:57:26.745 xcodebuild[96630:37842182] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:00:21.560 xcodebuild[96630:37842182] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:01:39.704 xcodebuild[96630:37842182] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' passed (288.688 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 12:02:12.350.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:02:12.357.
+Test Suite 'Selected tests' passed at 2026-11-23 12:02:12.357.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeKennzeichenUITests/testClaudeBadgeIsLocalizedInEnglish
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testClaudeBadgeIsLocalizedInEnglish
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:02:21 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 11:02:24 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:02:24 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:02:24 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:02:25 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:02:26 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 11:02:27 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:08.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' started (Iteration 1 of 3).
+2026-11-23 12:05:12.242 xcodebuild[99126:37866147] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:07:29.175 xcodebuild[99126:37866147] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' passed (175.919 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-23 12:08:06.489.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:08:06.497.
+Test Suite 'Selected tests' passed at 2026-11-23 12:08:06.497.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:08:18 +0000] Status=1, isTerminal=NO, Elapsed=00:03.
+	Waiting on BackBoard
+
+[2026-11-23 11:08:21 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:08:21 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:08:21 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:08:22 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 11:08:23 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 11:08:24 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab]' started (Iteration 1 of 3).
+2026-11-23 12:10:53.513 xcodebuild[2096:37887924] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:12:29.125 xcodebuild[2096:37887924] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab]' passed (131.310 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 12:13:03.543.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:13:03.552.
+Test Suite 'Selected tests' passed at 2026-11-23 12:13:03.552.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:13:21 +0000] Status=1, isTerminal=NO, Elapsed=00:08.
+	Waiting on BackBoard
+
+[2026-11-23 11:13:28 +0000] Status=2, isTerminal=NO, Elapsed=00:15.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 11:13:29 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:16.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab]' started (Iteration 1 of 3).
+2026-11-23 12:15:48.390 xcodebuild[3982:37905539] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:17:49.020 xcodebuild[3982:37905539] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab]' passed (182.628 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 12:18:49.283.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:18:49.456.
+Test Suite 'Selected tests' passed at 2026-11-23 12:18:49.456.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:19:01 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 11:19:04 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:19:04 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:19:05 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:19:06 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 11:19:07 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 11:19:08 +0000] Status=4, isTerminal=NO, Elapsed=00:09.
+	Waiting on System App
+
+[2026-11-23 11:19:09 +0000] Status=4, isTerminal=NO, Elapsed=00:10.
+	Waiting on System App
+
+[2026-11-23 11:19:10 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:11.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags]' started (Iteration 1 of 3).
+2026-11-23 12:22:04.303 xcodebuild[5911:37927129] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:26:08.075 xcodebuild[5911:37927129] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags]' passed (312.860 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 12:27:08.610.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:27:08.618.
+Test Suite 'Selected tests' passed at 2026-11-23 12:27:08.619.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:27:25 +0000] Status=1, isTerminal=NO, Elapsed=00:04.
+	Waiting on BackBoard
+
+[2026-11-23 11:27:29 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 11:27:29 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 11:27:29 +0000] Status=4, isTerminal=NO, Elapsed=00:09.
+	Waiting on System App
+
+[2026-11-23 11:27:30 +0000] Status=4, isTerminal=NO, Elapsed=00:10.
+	Waiting on System App
+
+[2026-11-23 11:27:31 +0000] Status=4, isTerminal=NO, Elapsed=00:11.
+	Waiting on System App
+
+[2026-11-23 11:27:32 +0000] Status=4, isTerminal=NO, Elapsed=00:12.
+	Waiting on System App
+
+[2026-11-23 11:27:33 +0000] Status=4, isTerminal=NO, Elapsed=00:13.
+	Waiting on System App
+
+[2026-11-23 11:27:34 +0000] Status=4, isTerminal=NO, Elapsed=00:14.
+	Waiting on System App
+
+[2026-11-23 11:27:35 +0000] Status=4, isTerminal=NO, Elapsed=00:15.
+	Waiting on System App
+
+[2026-11-23 11:27:36 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:16.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags]' started (Iteration 1 of 3).
+2026-11-23 12:31:54.686 xcodebuild[9123:37957478] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:35:45.125 xcodebuild[9123:37957478] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags]' passed (275.263 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 12:36:26.638.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:36:26.646.
+Test Suite 'Selected tests' passed at 2026-11-23 12:36:26.647.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:36:39 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 11:36:42 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:36:42 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:36:42 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:36:43 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:36:44 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 11:36:45 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 11:36:46 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf]' started (Iteration 1 of 3).
+2026-11-23 12:40:46.448 xcodebuild[14690:37996158] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:44:15.102 xcodebuild[14690:37996158] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:46:29.035 xcodebuild[14690:37996158] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:47:38.969 xcodebuild[14690:37996158] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:48:53.827 xcodebuild[14690:37996158] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:49:51.225 xcodebuild[14690:37996158] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf]' passed (586.420 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 12:50:30.839.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:50:30.855.
+Test Suite 'Selected tests' passed at 2026-11-23 12:50:30.881.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:50:40 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 11:50:43 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:50:43 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:50:43 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 11:50:44 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 11:50:45 +0000] Status=4, isTerminal=NO, Elapsed=00:08.
+	Waiting on System App
+
+[2026-11-23 11:50:46 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:09.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt]' started (Iteration 1 of 3).
+2026-11-23 12:52:27.810 xcodebuild[25444:38062085] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:53:22.906 xcodebuild[25444:38062085] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:54:03.370 xcodebuild[25444:38062085] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:54:43.806 xcodebuild[25444:38062085] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt]' passed (168.061 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 12:55:14.115.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 12:55:14.119.
+Test Suite 'Selected tests' passed at 2026-11-23 12:55:14.120.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testBearbeitetesClaudeProgrammBleibtBeiNeuerRevision
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testBearbeitetesClaudeProgrammBleibtBeiNeuerRevision
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 11:55:21 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 11:55:23 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 11:55:23 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 11:55:23 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 11:55:24 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 11:55:25 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:06.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testBearbeitetesClaudeProgrammBleibtBeiNeuerRevision]' started (Iteration 1 of 3).
+2026-11-23 12:56:20.942 xcodebuild[33879:38100894] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:57:54.305 xcodebuild[33879:38100894] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 12:58:58.775 xcodebuild[33879:38100894] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:00:03.536 xcodebuild[33879:38100894] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:01:06.080 xcodebuild[33879:38100894] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testBearbeitetesClaudeProgrammBleibtBeiNeuerRevision]' passed (325.091 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 13:01:44.831.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:01:44.835.
+Test Suite 'Selected tests' passed at 2026-11-23 13:01:44.835.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:01:51 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-23 12:01:52 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:01:53 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:01:53 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 12:01:54 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert]' started (Iteration 1 of 3).
+2026-11-23 13:02:43.415 xcodebuild[53236:38159840] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:03:51.674 xcodebuild[53236:38159840] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:05:24.337 xcodebuild[53236:38159840] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert]' passed (215.611 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 13:06:17.718.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:06:17.734.
+Test Suite 'Selected tests' passed at 2026-11-23 13:06:17.810.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testSchrittEditorBehaeltClaudeUebung
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testSchrittEditorBehaeltClaudeUebung
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:06:35 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 12:06:36 +0000] Status=2, isTerminal=NO, Elapsed=00:03.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 12:06:36 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 12:06:37 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 12:06:38 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:06.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testSchrittEditorBehaeltClaudeUebung]' started (Iteration 1 of 3).
+2026-11-23 13:07:39.825 xcodebuild[60414:38199066] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:10:28.474 xcodebuild[60414:38199066] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:11:31.365 xcodebuild[60414:38199066] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:12:45.194 xcodebuild[60414:38199066] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testSchrittEditorBehaeltClaudeUebung]' passed (340.456 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 13:13:19.355.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:13:19.356.
+Test Suite 'Selected tests' passed at 2026-11-23 13:13:19.356.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeSpeichernUITests/testNeueAtemuebungOhneAenderungWirdAngelegt
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeSpeichernUITests/testNeueAtemuebungOhneAenderungWirdAngelegt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:13:28 +0000] Status=2, isTerminal=NO, Elapsed=00:01.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 12:13:29 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:13:29 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:13:30 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 12:13:31 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testNeueAtemuebungOhneAenderungWirdAngelegt]' started (Iteration 1 of 3).
+2026-11-23 13:15:06.176 xcodebuild[83585:38274559] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testNeueAtemuebungOhneAenderungWirdAngelegt]' passed (69.609 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-23 13:16:14.249.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:16:14.255.
+Test Suite 'Selected tests' passed at 2026-11-23 13:16:14.255.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ClaudeFelderUITests/testProgrammeUndAtemuebungenUeberstehenNeustart
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeFelderUITests/testProgrammeUndAtemuebungenUeberstehenNeustart
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:16:24 +0000] Status=2, isTerminal=NO, Elapsed=00:01.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 12:16:25 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:16:25 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:16:26 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 12:16:27 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' started (Iteration 1 of 3).
+2026-11-23 13:17:32.991 xcodebuild[86255:38294334] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:19:43.350 xcodebuild[86255:38294334] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' passed (286.690 seconds).
+Test Suite 'ClaudeFelderUITests' passed at 2026-11-23 13:22:18.486.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:22:18.496.
+Test Suite 'Selected tests' passed at 2026-11-23 13:22:18.497.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_hintEnteredInEditor_visibleUnderRingInTraining
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_hintEnteredInEditor_visibleUnderRingInTraining
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:22:28 +0000] Status=2, isTerminal=NO, Elapsed=00:01.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 12:22:29 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:22:29 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:22:30 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:03.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' started (Iteration 1 of 3).
+2026-11-23 13:23:37.393 xcodebuild[90195:38325143] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' passed (215.452 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-23 13:27:11.527.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:27:11.527.
+Test Suite 'Selected tests' passed at 2026-11-23 13:27:11.528.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_exercisePickerOption_isTappableById
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_exercisePickerOption_isTappableById
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:27:52 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-23 12:27:53 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:27:53 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 12:27:54 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 12:27:55 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' started (Iteration 1 of 3).
+2026-11-23 13:29:02.211 xcodebuild[94177:38356015] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' passed (231.777 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-23 13:32:51.666.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 13:32:51.670.
+Test Suite 'Selected tests' passed at 2026-11-23 13:32:51.671.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_pickedExercise_persistsAfterRelaunch
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_pickedExercise_persistsAfterRelaunch
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:33:02 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-23 12:33:04 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 12:33:04 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 12:33:05 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 12:33:06 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 12:33:07 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:06.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 1 of 3).
+2026-11-23 13:34:48.034 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:39:21.996 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-23 13:41:40.752 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (567.539 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 2 of 3).
+2026-11-23 13:44:15.520 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:46:40.904 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-23 13:48:11.885 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (359.753 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 3 of 3).
+2026-11-23 13:50:15.251 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:52:10.522 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-23 13:53:35.875 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (344.409 seconds).
+Test Suite 'WorkoutHintUITests' failed at 2026-11-23 13:55:58.474.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-23 13:55:58.506.
+Test Suite 'Selected tests' failed at 2026-11-23 13:55:58.506.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-23 13:34:48.034 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:39:21.996 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-23 13:41:40.752 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (567.539 seconds).
+2026-11-23 13:44:15.520 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:46:40.904 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-23 13:48:11.885 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (359.753 seconds).
+2026-11-23 13:50:15.251 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-23 13:52:10.522 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:319: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch] : XCTAssertFalse failed - Schritt ohne Hinweis darf keine Hinweiszeile zeigen
+2026-11-23 13:53:35.875 xcodebuild[97273:38384634] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' failed (344.409 seconds).
+Test Suite 'WorkoutHintUITests' failed at 2026-11-23 13:55:58.474.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-23 13:55:58.506.
+Test Suite 'Selected tests' failed at 2026-11-23 13:55:58.506.
+
+##### EXIT 1
+##### WorkoutHintUITests/test_hintField_limitsLengthAndLines
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_hintField_limitsLengthAndLines
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 12:56:35 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 12:56:38 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 12:56:38 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 12:56:39 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 12:56:39 +0000] Status=4, isTerminal=NO, Elapsed=00:07.
+	Waiting on System App
+
+[2026-11-23 12:56:41 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:08.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' started (Iteration 1 of 3).
+2026-11-23 13:58:11.690 xcodebuild[41125:38551371] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' passed (311.504 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-23 14:03:15.821.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 14:03:15.833.
+Test Suite 'Selected tests' passed at 2026-11-23 14:03:15.856.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_exercisePicker_showsOnlyCatalogNames_german
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_exercisePicker_showsOnlyCatalogNames_german
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 13:04:08 +0000] Status=1, isTerminal=NO, Elapsed=00:07.
+	Waiting on BackBoard
+
+[2026-11-23 13:04:12 +0000] Status=4, isTerminal=NO, Elapsed=00:12.
+	Waiting on System App
+
+[2026-11-23 13:04:12 +0000] Status=4, isTerminal=NO, Elapsed=00:12.
+	Waiting on System App
+
+[2026-11-23 13:04:13 +0000] Status=4, isTerminal=NO, Elapsed=00:12.
+	Waiting on System App
+
+[2026-11-23 13:04:14 +0000] Status=4, isTerminal=NO, Elapsed=00:13.
+	Waiting on System App
+
+[2026-11-23 13:04:15 +0000] Status=4, isTerminal=NO, Elapsed=00:14.
+	Waiting on System App
+
+[2026-11-23 13:04:16 +0000] Status=4, isTerminal=NO, Elapsed=00:15.
+	Waiting on System App
+
+[2026-11-23 13:04:17 +0000] Status=4, isTerminal=NO, Elapsed=00:16.
+	Waiting on System App
+
+[2026-11-23 13:04:18 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:17.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' started (Iteration 1 of 3).
+2026-11-23 14:06:50.203 xcodebuild[77917:38669612] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/WorkoutHintUITests.swift:400: error: -[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german] : XCTAssertTrue failed - 'Eigene Übung…' fehlt
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' failed (238.825 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' started (Iteration 2 of 3).
+2026-11-23 14:10:48.935 xcodebuild[77917:38669612] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' passed (415.270 seconds).
+Test Suite 'WorkoutHintUITests' failed at 2026-11-23 14:17:43.013.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-23 14:17:43.055.
+Test Suite 'Selected tests' failed at 2026-11-23 14:17:43.055.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_infoButton_forPresetPlanke_showsContent
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_infoButton_forPresetPlanke_showsContent
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 13:18:14 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 13:18:18 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 13:18:18 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 13:18:18 +0000] Status=4, isTerminal=NO, Elapsed=00:06.
+	Waiting on System App
+
+[2026-11-23 13:18:19 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:07.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_infoButton_forPresetPlanke_showsContent]' started (Iteration 1 of 3).
+2026-11-23 14:19:22.543 xcodebuild[21531:38789332] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_infoButton_forPresetPlanke_showsContent]' passed (83.905 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-23 14:20:45.242.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 14:20:45.260.
+Test Suite 'Selected tests' passed at 2026-11-23 14:20:45.261.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_hintField_localized_german
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_hintField_localized_german
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 13:21:22 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-11-23 13:21:24 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 13:21:24 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 13:21:25 +0000] Status=4, isTerminal=NO, Elapsed=00:05.
+	Waiting on System App
+
+[2026-11-23 13:21:26 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:06.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_german]' started (Iteration 1 of 3).
+2026-11-23 14:23:00.405 xcodebuild[23102:38803526] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_german]' passed (68.390 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-23 14:24:05.396.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 14:24:05.404.
+Test Suite 'Selected tests' passed at 2026-11-23 14:24:05.405.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### WorkoutHintUITests/test_hintField_localized_english
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: WorkoutHintUITests/test_hintField_localized_english
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 13:24:15 +0000] Status=1, isTerminal=NO, Elapsed=00:01.
+	Waiting on BackBoard
+
+[2026-11-23 13:24:17 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 13:24:17 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 13:24:17 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 13:24:18 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 13:24:19 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:05.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_english]' started (Iteration 1 of 3).
+2026-11-23 14:25:14.087 xcodebuild[24558:38816899] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_english]' passed (84.055 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-23 14:26:36.785.
+Test Suite 'LeanHealthTimerUITests.xctest' passed at 2026-11-23 14:26:36.803.
+Test Suite 'Selected tests' passed at 2026-11-23 14:26:36.804.
+** TEST SUCCEEDED **
+
+═══════════════════════════════════════════════════════════════════════
+  ✅ ALLE TESTS BESTANDEN
+═══════════════════════════════════════════════════════════════════════
+##### EXIT 0
+##### ALLDONE

@@ -1,0 +1,88 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-22T21:20:00Z"
+ },
+ "title": "Entwurf: Kennzeichen „von Claude“ (#51 Schnitt 3)",
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 876,
+   "h": 640,
+   "title": "Heute: Liste"
+  },
+  "Heute-Uebung.dc.html": {
+   "x": 956,
+   "y": 0,
+   "w": 876,
+   "h": 520,
+   "title": "Heute: Übungs-Info"
+  },
+  "Entwurf-Liste.dc.html": {
+   "x": 0,
+   "y": 1000,
+   "w": 876,
+   "h": 700,
+   "title": "Entwurf: Liste"
+  },
+  "Entwurf-Info.dc.html": {
+   "x": 956,
+   "y": 1000,
+   "w": 876,
+   "h": 1020,
+   "title": "Entwurf: Info-Ansicht"
+  },
+  "Entwurf-Uebung.dc.html": {
+   "x": 1912,
+   "y": 1000,
+   "w": 876,
+   "h": 720,
+   "title": "Entwurf: Übungs-Info"
+  },
+  "Alternative.dc.html": {
+   "x": 0,
+   "y": 2380,
+   "w": 876,
+   "h": 1340,
+   "title": "Alternative"
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Heute-Uebung.dc.html",
+  "Entwurf-Liste.dc.html",
+  "Entwurf-Info.dc.html",
+  "Entwurf-Uebung.dc.html",
+  "Alternative.dc.html"
+ ],
+ "notes": {
+  "t1": {
+   "x": 0,
+   "y": -300,
+   "text": "Heute",
+   "kind": "title1",
+   "maxW": 1832
+  },
+  "t2": {
+   "x": 0,
+   "y": 700,
+   "text": "Entwurf (empfohlen)",
+   "kind": "title1",
+   "maxW": 2788
+  },
+  "t3": {
+   "x": 0,
+   "y": 2080,
+   "text": "Alternative",
+   "kind": "title1",
+   "maxW": 876
+  }
+ },
+ "designSystems": []
+}
