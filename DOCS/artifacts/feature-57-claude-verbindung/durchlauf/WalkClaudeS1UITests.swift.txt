@@ -1,0 +1,69 @@
+// Wegwerf-Durchlauf #57 Schnitt 1 (nur Scratch-Kopie): App unverändert, Einstellungen ohne Claude-Verbindung.
+import XCTest
+
+final class WalkClaudeS1UITests: XCTestCase {
+    let dir = ProcessInfo.processInfo.environment["WALK_DIR"] ?? "/tmp"
+
+    func shot(_ name: String) {
+        sleep(1)
+        try? XCUIScreen.main.screenshot().pngRepresentation.write(to: URL(fileURLWithPath: "\(dir)/\(name).png"))
+    }
+
+    /// Health-Abfrage bei Neuinstallation: protokollieren und ablehnen.
+    func dismissHealth(_ step: String, _ app: XCUIApplication) {
+        sleep(2)
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let health = XCUIApplication(bundleIdentifier: "com.apple.HealthPrivacyService")
+        for (name, source) in [("app", app), ("springboard", springboard), ("health", health)] {
+            let deny = source.buttons["Nicht erlauben"]
+            if deny.exists {
+                print("WALK health-dialog at \(step) via \(name)")
+                // Fernansicht: Knopf lässt sich nicht auflösen, daher Bildschirm-Gesten (Blatt hochschieben, dann Knopfposition).
+                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.7)).press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2)))
+                sleep(1)
+                shot("\(step)-health-hochgeschoben")
+                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.846)).tap()
+                sleep(2)
+                shot("\(step)-health-hinweis")
+                app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.58)).tap()
+                sleep(1)
+                shot("\(step)-nach-health")
+                return
+            }
+        }
+    }
+
+    func testWalk() throws {
+        continueAfterFailure = true
+        let app = XCUIApplication()
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+        let tabs = app.tabBars.buttons
+        XCTAssertTrue(tabs.firstMatch.waitForExistence(timeout: 10))
+        let count = tabs.count
+        print("WALK tabs=\(count) labels=\((0..<count).map { tabs.element(boundBy: $0).label })")
+        for i in 0..<min(count, 3) { // Erfolge-Tab fragt eine lange Health-Liste ab; bereits in Vorläufen gesehen
+            tabs.element(boundBy: i).tap()
+            shot("tab-\(i)")
+            dismissHealth("tab-\(i)", app)
+        }
+        tabs.element(boundBy: 0).tap()
+        let gear = app.buttons.matching(NSPredicate(format: "label IN {'Settings', 'Einstellungen', 'gearshape'}")).firstMatch
+        XCTAssertTrue(gear.waitForExistence(timeout: 5), "Zahnrad fehlt")
+        gear.tap()
+        sleep(2)
+        dismissHealth("einstellungen", app)
+        shot("einstellungen-1")
+        let anyOther = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS[c] 'Health' OR label CONTAINS[c] 'Gong' OR label CONTAINS[c] 'Einstellungen'"))
+        print("WALK settings-marker=\(anyOther.count)")
+        let claude = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS[c] 'Claude'"))
+        XCTAssertEqual(claude.count, 0, "Claude-Eintrag sichtbar")
+        app.swipeUp()
+        app.swipeUp()
+        shot("einstellungen-2")
+        XCTAssertEqual(claude.count, 0, "Claude-Eintrag sichtbar (unten)")
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        XCTAssertEqual(app.alerts.count + springboard.alerts.count, 0, "Systemdialog")
+        print("WALK done, appAlerts=\(app.alerts.count) springboardAlerts=\(springboard.alerts.count)")
+    }
+}

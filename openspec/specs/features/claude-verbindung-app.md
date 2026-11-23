@@ -41,8 +41,12 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
 
 ## Schnitte (je ≤ 4–5 Dateien, ~250 Zeilen)
 
-1. Schalter, Nonce, Schlüsselbund, Geräte-UUID (übernommen aus Loose Ends).
-2. `ServiceClient` und `AccountState` (übernommen, Pfade angepasst).
+1. Schalter, Nonce, Schlüsselbund, Geräte-UUID (übernommen aus Loose Ends). **Erledigt 23.11.2026**
+   (`docs/specs/features/feature-57-s1-bausteine.md`, noch nicht verdrahtet). Abweichungen: Der Schalter braucht keinen
+   Info-Plist-Eintrag (an im Debug-Bau und unter `enable-testing`, im Release nur bei echtem Bool `HHClaudeEnabled`);
+   `InMemorySessionStore` und das Entitlement Sign in with Apple wandern nach Schnitt 2; Sitzung und Geräte-UUID teilen
+   die Abfrage-Hilfe `KeychainEntry`.
+2. `ServiceClient` und `AccountState` (übernommen, Pfade angepasst), dazu `InMemorySessionStore` und das Entitlement.
 3. Abschrift Fassung 1 + Goldendateien + CI-Schritt.
 4. Abgleich und Auslöser, in den App-Start eingehängt.
 5. Einstellungsseite mit Texten DE/EN und UI-Test.
