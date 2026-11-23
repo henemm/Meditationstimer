@@ -82,6 +82,28 @@ enum ClaudeStore {
         return ClaudeStoredState()
     }
 
+    /// #51 S3: Gelieferte Uebung (`claude.*`) aus dem Zustand; Katalog bleibt Sache von `ExerciseDatabase`.
+    private static func storedExerciseEntry(id: String, defaults: UserDefaults) -> ClaudeStoredExercise? {
+        guard id.hasPrefix("claude.") else { return nil }
+        return loadState(from: defaults, now: Date()).exercises.first { $0.claude.itemId == id }
+    }
+
+    static func storedExercise(id: String, defaults: UserDefaults = .standard) -> ExerciseInfo? {
+        guard let e = storedExerciseEntry(id: id, defaults: defaults) else { return nil }
+        return ExerciseInfo(id: id, name: e.name, category: mapCategory(e.category) ?? .fullBody,
+                            effect: e.effect, instructions: e.instructions, notes: e.notes)
+    }
+
+    static func storedExerciseOrigin(id: String, defaults: UserDefaults = .standard) -> ClaudeOrigin? {
+        storedExerciseEntry(id: id, defaults: defaults)?.claude
+    }
+
+    /// Kapseltext in der Liste: "von Claude", nach Bearbeitung "von Claude · angepasst".
+    static func badgeText(modifiedAt: Date?) -> String {
+        modifiedAt == nil ? NSLocalizedString("von Claude", comment: "Badge on delivered items")
+                          : NSLocalizedString("von Claude · angepasst", comment: "Badge on delivered items edited by the user")
+    }
+
     /// Liest, wendet an, schreibt (Listen zuerst, `claudeState` zuletzt) und meldet nach dem Schreiben.
     static func apply(_ delivery: ClaudeDelivery, in defaults: UserDefaults = .standard, lastSnapshotAt: Date?,
                       now: Date = Date(), center: NotificationCenter? = .default) -> ClaudeApplyResult {

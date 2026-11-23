@@ -1,0 +1,6 @@
+Test Case '-[LeanHealthTimerUITests.WalkKennzeichenUITests testWalk]' started.
+Test Case '-[LeanHealthTimerUITests.WalkKennzeichenUITests testWalk]' passed (248.330 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 248.330 (248.334) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 248.330 (248.346) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 248.330 (248.349) seconds
+** TEST SUCCEEDED **

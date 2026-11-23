@@ -1,0 +1,1378 @@
+HEAD 4b668a9 2026-11-23T10:21:10Z
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project Meditationstimer.xcodeproj -scheme "Lean Health Timer" -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=27.2" -parallel-testing-enabled NO "-only-testing:LeanHealthTimerTests"
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (4 targets)
+    Target 'LeanHealthTimerUITests' in project 'Meditationstimer'
+        ➜ Explicit dependency on target 'Lean Health Timer' in project 'Meditationstimer'
+    Target 'LeanHealthTimerTests' in project 'Meditationstimer'
+        ➜ Explicit dependency on target 'Lean Health Timer' in project 'Meditationstimer'
+    Target 'Lean Health Timer' in project 'Meditationstimer'
+        ➜ Explicit dependency on target 'MeditationstimerWidgetExtension' in project 'Meditationstimer'
+    Target 'MeditationstimerWidgetExtension' in project 'Meditationstimer' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/xcstringstool compile --dry-run --output-directory /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/Meditationstimer iOS/Localizable.xcstrings
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/Meditationstimer iOS/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/xcstringstool compile --dry-run --output-directory /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/Lean Health Timer.build /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/Meditationstimer iOS/Localizable.xcstrings
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 41dcc5cf60dbe63e7c6406002d6b21e3
+Build description path: /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/XCBuildData/41dcc5cf60dbe63e7c6406002d6b21e3.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk /Users/hem/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator27.2-24B8118-cc78df9d8a9de6526dea716b1c70fd8e.sdkstatcache
+    cd /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/Meditationstimer.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk -o /Users/hem/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator27.2-24B8118-cc78df9d8a9de6526dea716b1c70fd8e.sdkstatcache
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/Info.plist /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/MeditationstimerWidget/Info.plist (in target 'MeditationstimerWidgetExtension' from project 'Meditationstimer')
+    cd /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele
+    builtin-infoPlistUtility /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/MeditationstimerWidget/Info.plist -producttype com.apple.product-type.app-extension -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/MeditationstimerWidgetExtension.build/assetcatalog_generated_info.plist -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/MeditationstimerWidgetExtension.appex/Info.plist
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Info.plist /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/Meditationstimer-iOS-Info.plist (in target 'Lean Health Timer' from project 'Meditationstimer')
+    cd /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele
+    builtin-infoPlistUtility /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/Meditationstimer-iOS-Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/Lean\ Health\ Timer.build/assetcatalog_generated_info.plist -scanforprivacyfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/MeditationstimerWidgetExtension.appex -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/Info.plist
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Info.plist /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerTests.build/empty-LeanHealthTimerTests.plist (in target 'LeanHealthTimerTests' from project 'Meditationstimer')
+    cd /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele
+    builtin-infoPlistUtility /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerTests.build/empty-LeanHealthTimerTests.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Info.plist
+
+CopySwiftLibs /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest (in target 'LeanHealthTimerTests' from project 'Meditationstimer')
+    cd /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/LeanHealthTimerTests --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Frameworks --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/PlugIns --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/SystemExtensions --scan-folder /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Extensions --scan-folder /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk/System/Library/Frameworks/SwiftUI.framework --scan-folder /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk/System/Library/Frameworks/WidgetKit.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/Lean\ Health\ Timer.app/PlugIns/LeanHealthTimerTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ProcessInfoPlistFile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Info.plist /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/empty-LeanHealthTimerUITests.plist (in target 'LeanHealthTimerUITests' from project 'Meditationstimer')
+    cd /Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele
+    builtin-infoPlistUtility /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/empty-LeanHealthTimerUITests.plist -producttype com.apple.product-type.bundle.ui-testing -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/Meditationstimer.build/Debug-iphonesimulator/LeanHealthTimerUITests.build/ProductTypeInfoPlistAdditions.plist -o /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Products/Debug-iphonesimulator/LeanHealthTimerUITests-Runner.app/PlugIns/LeanHealthTimerUITests.xctest/Info.plist
+
+PruneExplicitPrecompiledModules /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/hem/Library/Developer/Xcode/DerivedData/SDKExplicitPrecompiledModules
+
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+[TrackerMigration] Creating default trackers (NoAlc + Mood)...
+[TrackerMigration] ✓ NoAlc tracker created
+[TrackerMigration] ✓ Mood tracker created
+[TrackerMigration] Default trackers created successfully
+2026-11-23 11:23:24.934014+0100 Lean Health Timer[83120:37726503] [WC] -[WCSession onqueue_handleUpdateSessionState:]_block_invoke dropping as pairingIDs no longer match. pairingID (null), client pairingID: (null)
+2026-11-23 11:23:28.856797+0100 Lean Health Timer[83120:37726503] [WC] WCSession is not paired
+2026-11-23 11:23:28.871075+0100 Lean Health Timer[83120:37726503] [WC] -[WCSession onqueue_handleUpdateSessionState:]_block_invoke dropping as pairingIDs no longer match. pairingID (null), client pairingID: (null)
+2026-11-23 11:23:28.876875+0100 Lean Health Timer[83120:37726503] [WC] WCSession is not paired
+2026-11-23 11:23:28.877454+0100 Lean Health Timer[83120:37726503] [WC] -[WCSession onqueue_handleUpdateSessionState:]_block_invoke dropping as pairingIDs no longer match. pairingID (null), client pairingID: (null)
+2026-11-23 11:23:28.911471+0100 Lean Health Timer[83120:37726503] [WC] WCSession is not paired
+2026-11-23 11:23:28.914001+0100 Lean Health Timer[83120:37726496] [WC] -[WCSession onqueue_handleUpdateSessionState:]_block_invoke dropping as pairingIDs no longer match. pairingID (null), client pairingID: (null)
+2026-11-23 11:23:28.922059+0100 Lean Health Timer[83120:37726496] [WC] WCSession is not paired
+2026-11-23 11:23:30.238685+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:30.249021+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:30.288383+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:30.289412+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:30.289744+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:31.015685+0100 Lean Health Timer[83120:37725039] [XPCErrors] non-launching port is incompatible with service identifier "com.apple.PointerUI.pointeruid.default-service"
+2026-11-23 11:23:31.174063+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:31.174351+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:31.174516+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+2026-11-23 11:23:31.174593+0100 Lean Health Timer[83120:37725039] [API] cannot add handler to 0 from 0 - dropping
+Error updating streaks: Error Domain=com.apple.healthkit Code=5 "Authorization not determined" UserInfo={NSLocalizedDescription=Authorization not determined}
+Test Suite 'All tests' started at 2026-11-23 11:23:40.217.
+Test Suite 'LeanHealthTimerTests.xctest' started at 2026-11-23 11:23:40.221.
+Test Suite 'CalendarViewStreakMigrationTests' started at 2026-11-23 11:23:40.221.
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testGapWithoutJoker_BothLogicsBreakStreak]' started.
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testGapWithoutJoker_BothLogicsBreakStreak]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testJokerHealsGap_OldLogicFails_NewLogicSucceeds]' started.
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testJokerHealsGap_OldLogicFails_NewLogicSucceeds]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testLongStreak56Days_DataTruncationBug]' started.
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testLongStreak56Days_DataTruncationBug]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testLongStreakWith90DaysData_NoTruncation]' started.
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testLongStreakWith90DaysData_NoTruncation]' passed (0.887 seconds).
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testNoGap_BothLogicsAgree]' started.
+Test Case '-[LeanHealthTimerTests.CalendarViewStreakMigrationTests testNoGap_BothLogicsAgree]' passed (0.002 seconds).
+Test Suite 'CalendarViewStreakMigrationTests' passed at 2026-11-23 11:23:41.133.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.904 (0.912) seconds
+Test Suite 'ClaudeApplyTests' started at 2026-11-23 11:23:41.137.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAblehnungLaesstBausteineUnveraendertChangedOnIphone]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAblehnungLaesstBausteineUnveraendertChangedOnIphone]' passed (0.064 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAblehnungLaesstBausteineUnveraendertUnbekannterBuiltinVerweis]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAblehnungLaesstBausteineUnveraendertUnbekannterBuiltinVerweis]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAlleLesbarenBeispieleLassenSichAnwenden]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAlleLesbarenBeispieleLassenSichAnwenden]' passed (0.127 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAlleNeunKategorienWerdenAbgebildet]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAlleNeunKategorienWerdenAbgebildet]' passed (0.023 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAltJsonWorkoutSetUndPresetLiestSichOhneNeueFelderUndRoundTrip]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAltJsonWorkoutSetUndPresetLiestSichOhneNeueFelderUndRoundTrip]' passed (0.018 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAnlegenAtemuebungAusBeispielsatz]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAnlegenAtemuebungAusBeispielsatz]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAnlegenProgrammMitBuiltinAusBeispielsatz]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAnlegenProgrammMitBuiltinAusBeispielsatz]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAnlegenUebungUndProgrammAusBeispielsatz]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testAnlegenUebungUndProgrammAusBeispielsatz]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testApplyBeispielsatzMindestanzahl]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testApplyBeispielsatzMindestanzahl]' passed (0.098 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testApplyDateiIstFoundationOnlyUndOhneSeiteneffekte]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testApplyDateiIstFoundationOnlyUndOhneSeiteneffekte]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testBuiltinVerweisNutztKatalogNamen]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testBuiltinVerweisNutztKatalogNamen]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testChangedOnIphoneBeiModifiedAtNachAbschriftOderAbschriftNil]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testChangedOnIphoneBeiModifiedAtNachAbschriftOderAbschriftNil]' passed (0.022 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testClaudeVerweisNutztLieferungOderZustand]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testClaudeVerweisNutztLieferungOderZustand]' passed (0.019 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testClaudeVerweisUnbekanntLehntAb]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testClaudeVerweisUnbekanntLehntAb]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testErsteAblehnendePositionBestimmtDenCode]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testErsteAblehnendePositionBestimmtDenCode]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGedaechtnisBehaelt50UndVerwirftAelteste]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGedaechtnisBehaelt50UndVerwirftAelteste]' passed (0.108 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGeloeschterBausteinWirdBeiGleicherFassungUndNeuerLieferungNeuAngelegt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGeloeschterBausteinWirdBeiGleicherFassungUndNeuerLieferungNeuAngelegt]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGeloeschterBausteinWirdBeiHoehererFassungNeuAngelegt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGeloeschterBausteinWirdBeiHoehererFassungNeuAngelegt]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGleicheOderNiedrigereRevisionOhneWirkungUndWirdGemerkt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testGleicheOderNiedrigereRevisionOhneWirkungUndWirdGemerkt]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testHoehereRevisionErsetztMitGleicherUUID]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testHoehereRevisionErsetztMitGleicherUUID]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testHoehereRevisionErsetztUebung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testHoehereRevisionErsetztUebung]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testModifiedAtVorOderGleichAbschriftOderNilBlockiertNicht]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testModifiedAtVorOderGleichAbschriftOderNilBlockiertNicht]' passed (0.031 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testOwnVerweisLoestNamenAusVorhandenerPhaseAuf]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testOwnVerweisLoestNamenAusVorhandenerPhaseAuf]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testOwnVerweisOhnePhaseLehntMitExerciseUnknownAb]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testOwnVerweisOhnePhaseLehntMitExerciseUnknownAb]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testResultUndStateRoundTrip]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testResultUndStateRoundTrip]' passed (0.028 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeEinzelnEntferntBaustein]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeEinzelnEntferntBaustein]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeEinzelnGeaendertesProgrammAbgelehnt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeEinzelnGeaendertesProgrammAbgelehnt]' passed (0.040 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmePaketEntferntAlleBausteine]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmePaketEntferntAlleBausteine]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmePaketMitGeaendertemBausteinAbgelehnt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmePaketMitGeaendertemBausteinAbgelehnt]' passed (0.019 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeUebungLaesstProgrammphasenStehen]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeUebungLaesstProgrammphasenStehen]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeUnbekannterKennungOhneWirkung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testRuecknahmeUnbekannterKennungOhneWirkung]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testUebungGleicheOderNiedrigereRevisionOhneWirkung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testUebungGleicheOderNiedrigereRevisionOhneWirkung]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testUnbekannteKategorieLehntMitCategoryUnknownAb]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testUnbekannteKategorieLehntMitCategoryUnknownAb]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testZweiteAnwendungEinerAbgelehntenLieferungLiefertGemerktesRejected]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testZweiteAnwendungEinerAbgelehntenLieferungLiefertGemerktesRejected]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testZweiteAnwendungLiefertGemerktesErgebnisUndAendertNichts]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeApplyTests testZweiteAnwendungLiefertGemerktesErgebnisUndAendertNichts]' passed (0.003 seconds).
+Test Suite 'ClaudeApplyTests' passed at 2026-11-23 11:23:41.940.
+	 Executed 35 tests, with 0 failures (0 unexpected) in 0.771 (0.802) seconds
+Test Suite 'ClaudeDeliveryDecodingTests' started at 2026-11-23 11:23:41.940.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testAlleLesbarenBeispieleWerdenGelesen]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testAlleLesbarenBeispieleWerdenGelesen]' passed (0.058 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testBeispielsatzMindestanzahl]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testBeispielsatzMindestanzahl]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testCreatedAtMitMillisekundenAufDieMillisekunde]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testCreatedAtMitMillisekundenAufDieMillisekunde]' passed (0.013 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testCreatedAtOhneMillisekunden]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testCreatedAtOhneMillisekunden]' passed (0.013 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testFehlendesPflichtfeldIstAppCannotRead]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testFehlendesPflichtfeldIstAppCannotRead]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testFelderStimmenMitRohJsonUeberein]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testFelderStimmenMitRohJsonUeberein]' passed (0.079 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testJedeArtMindestensEinmalGelesen]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testJedeArtMindestensEinmalGelesen]' passed (0.076 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testKaputtesJsonIstAppCannotRead]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testKaputtesJsonIstAppCannotRead]' passed (0.028 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testModellImportiertNurFoundation]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testModellImportiertNurFoundation]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testNichtUnterstuetzteArtenLehnenGanzeLieferungAb]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testNichtUnterstuetzteArtenLehnenGanzeLieferungAb]' passed (0.049 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testUnbekannterZusatzschluesselWirdToleriert]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeDeliveryDecodingTests testUnbekannterZusatzschluesselWirdToleriert]' passed (0.016 seconds).
+Test Suite 'ClaudeDeliveryDecodingTests' passed at 2026-11-23 11:23:42.305.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.353 (0.365) seconds
+Test Suite 'ClaudeEditorSpeichernTests' started at 2026-11-23 11:23:42.306.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testGeaenderterClaudeBausteinLehntLieferungAb_Atemuebung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testGeaenderterClaudeBausteinLehntLieferungAb_Atemuebung]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testGeaenderterClaudeBausteinLehntLieferungAb_Programm]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testGeaenderterClaudeBausteinLehntLieferungAb_Programm]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testMigratingPresetsLaesstClaudeProgrammUnberuehrt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testMigratingPresetsLaesstClaudeProgrammUnberuehrt]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testPhaseBehaeltClaudeIdBeiUnveraendertemNamen]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testPhaseBehaeltClaudeIdBeiUnveraendertemNamen]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testPhaseKatalogwechselErsetztClaudeId]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testPhaseKatalogwechselErsetztClaudeId]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testPhaseWechseltAufOwnBeiNamensaenderung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testPhaseWechseltAufOwnBeiNamensaenderung]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditGeaendertErsetztUndSetztModifiedAt_Atemuebung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditGeaendertErsetztUndSetztModifiedAt_Atemuebung]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditGeaendertErsetztUndSetztModifiedAt_Programm]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditGeaendertErsetztUndSetztModifiedAt_Programm]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditNeuerBausteinWirdAngehaengt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditNeuerBausteinWirdAngehaengt]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditNeuUnveraendertWirdAngelegt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditNeuUnveraendertWirdAngelegt]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditUnveraendertLaesstNeuereRevisionStehen]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditUnveraendertLaesstNeuereRevisionStehen]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditUnveraendertLiefertNil_Atemuebung]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditUnveraendertLiefertNil_Atemuebung]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditUnveraendertLiefertNil_Programm]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditUnveraendertLiefertNil_Programm]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditZurueckgenommenerBausteinWirdWiederAngelegt]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeEditorSpeichernTests testSavingEditZurueckgenommenerBausteinWirdWiederAngelegt]' passed (0.001 seconds).
+Test Suite 'ClaudeEditorSpeichernTests' passed at 2026-11-23 11:23:42.345.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.032 (0.039) seconds
+Test Suite 'ClaudeKennzeichenTests' started at 2026-11-23 11:23:42.345.
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testBadgeTextPlainWhenNotModified]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testBadgeTextPlainWhenNotModified]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testBadgeTextShowsAngepasstWhenModified]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testBadgeTextShowsAngepasstWhenModified]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testExerciseInfoMapsCategoryEffectInstructions]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testExerciseInfoMapsCategoryEffectInstructions]' passed (0.015 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testStoredExerciseResolvesClaudeIdFromState]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testStoredExerciseResolvesClaudeIdFromState]' passed (0.013 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testStoredExerciseReturnsNilForUnknownOrBuiltinId]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeKennzeichenTests testStoredExerciseReturnsNilForUnknownOrBuiltinId]' passed (0.022 seconds).
+Test Suite 'ClaudeKennzeichenTests' passed at 2026-11-23 11:23:42.405.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.054 (0.060) seconds
+Test Suite 'ClaudeStoreTests' started at 2026-11-23 11:23:42.406.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC10_KeineMeldungBeiNoEffectAblehnungUndUnlesbar]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC10_KeineMeldungBeiNoEffectAblehnungUndUnlesbar]' passed (0.066 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC10_MeldungNachDemSchreibenGenauEinmal]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC10_MeldungNachDemSchreibenGenauEinmal]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC15_TesteinstiegStehtNurInDebug]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC15_TesteinstiegStehtNurInDebug]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC17_ClaudeStoreImportiertNurFoundation]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC17_ClaudeStoreImportiertNurFoundation]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC1_FehlendeListenErgebenVorgabenPlusGeliefertes]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC1_FehlendeListenErgebenVorgabenPlusGeliefertes]' passed (0.014 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC2_GespeicherteListenBleibenErhalten]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC2_GespeicherteListenBleibenErhalten]' passed (0.018 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC3_SchreibreihenfolgeUndInhaltVonClaudeState]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC3_SchreibreihenfolgeUndInhaltVonClaudeState]' passed (0.019 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC4_AbgelehnteLieferungSchreibtListenNichtUndMeldetNichts]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC4_AbgelehnteLieferungSchreibtListenNichtUndMeldetNichts]' passed (0.015 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC4_NoEffectSchreibtListenNichtUndMeldetNichts]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC4_NoEffectSchreibtListenNichtUndMeldetNichts]' passed (0.023 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC5_IdempotenzUeberNeustart]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC5_IdempotenzUeberNeustart]' passed (0.020 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC6_UnlesbareAtemlisteLehntAb]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC6_UnlesbareAtemlisteLehntAb]' passed (0.024 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC6_UnlesbareProgrammlisteLehntAb]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC6_UnlesbareProgrammlisteLehntAb]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC7_UnlesbarerClaudeStateWirdGesichert]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC7_UnlesbarerClaudeStateWirdGesichert]' passed (0.017 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC8_SicherungUnlesbarerAtemlisteBeimLaden]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testAC8_SicherungUnlesbarerAtemlisteBeimLaden]' passed (0.018 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testLaderMitVorgabenMeldetFehlendGespeichertUnlesbar]' started.
+Test Case '-[LeanHealthTimerTests.ClaudeStoreTests testLaderMitVorgabenMeldetFehlendGespeichertUnlesbar]' passed (0.024 seconds).
+Test Suite 'ClaudeStoreTests' passed at 2026-11-23 11:23:42.720.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.299 (0.314) seconds
+Test Suite 'ExerciseCatalogTests' started at 2026-11-23 11:23:42.721.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalog_has67EntriesAndVersion2]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalog_has67EntriesAndVersion2]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalog_matchesBuiltinExercisesJson]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalog_matchesBuiltinExercisesJson]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalogIds_matchRegexAndAreUnique]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_catalogIds_matchRegexAndAreUnique]' passed (0.022 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_defaultPrograms_referenceExistingCatalogIds]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_defaultPrograms_referenceExistingCatalogIds]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_first43Entries_unchanged]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_first43Entries_unchanged]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForEnglishName_returnsBuiltinId]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForEnglishName_returnsBuiltinId]' passed (0.029 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForGermanName_returnsBuiltinId]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForGermanName_returnsBuiltinId]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForNameWithLeftRightSuffix_resolvesBase]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForNameWithLeftRightSuffix_resolvesBase]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForUnknownSuffixName_isOwn]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_idForUnknownSuffixName_isOwn]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_infoForEnglishName_findsCatalogEntry]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_infoForEnglishName_findsCatalogEntry]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_newExercises_haveTextsInDeAndEn_andCategory]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_newExercises_haveTextsInDeAndEn_andCategory]' passed (0.013 seconds).
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_origin_derivedFromPrefix]' started.
+Test Case '-[LeanHealthTimerTests.ExerciseCatalogTests test_origin_derivedFromPrefix]' passed (0.002 seconds).
+Test Suite 'ExerciseCatalogTests' passed at 2026-11-23 11:23:42.826.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.094 (0.105) seconds
+Test Suite 'GongVsWorkoutSoundTests' started at 2026-11-23 11:23:42.826.
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testAllWorkoutSoundsExist]' started.
+[DEBUG] auftakt.caf gefunden ✅
+[DEBUG] ausklang.caf gefunden ✅
+[DEBUG] countdown-transition.caf gefunden ✅
+[DEBUG] last-round.caf gefunden ✅
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testAllWorkoutSoundsExist]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testAudioSessionConfigurationDifference]' started.
+2026-11-23 11:23:43.057005+0100 Lean Health Timer[83120:37725039] [plugin] AddInstanceForFactory: No factory registered for id <CFUUID 0x11aa6cf00> F8BB1C28-BAE8-11D6-9C31-00039315CD46
+2026-11-23 11:23:43.136189+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:43.246478+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:43.247365+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:96: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testAudioSessionConfigurationDifference] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:104: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testAudioSessionConfigurationDifference] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testAudioSessionConfigurationDifference]' passed (1.334 seconds).
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testBothPlayersCanWorkSequentially]' started.
+2026-11-23 11:23:44.169574+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:44.170584+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:44.238893+0100 Lean Health Timer[83120:37726719] [carc] Invalidation handler: Connection cannot be formed.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:127: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testBothPlayersCanWorkSequentially] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:128: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testBothPlayersCanWorkSequentially] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testBothPlayersCanWorkSequentially]' passed (0.421 seconds).
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testGongPlayerCanFindAndPlayGongEnde]' started.
+2026-11-23 11:23:44.587766+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:44.588827+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:44.590343+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:44.651213+0100 Lean Health Timer[83120:37727837] [EnhanceDialogueProcessor] EnhanceDialogueProcessor.cpp:658   EnhanceDialogueProcessor has no tuning for unrecognized device type
+2026-11-23 11:23:44.656753+0100 Lean Health Timer[83120:37727837] [EnhanceDialogueProcessor] EnhanceDialogueProcessor.cpp:268   EnhanceDialogueProcessor() - Product does not have valid tuning at ''
+2026-11-23 11:23:44.657403+0100 Lean Health Timer[83120:37727837] [EnhanceDialogueProcessor] EnhanceDialogueProcessor.cpp:658   EnhanceDialogueProcessor has no tuning for unrecognized device type
+2026-11-23 11:23:44.657597+0100 Lean Health Timer[83120:37727837] [EnhanceDialogueProcessor] EnhanceDialogueProcessor.cpp:268   EnhanceDialogueProcessor() - Product does not have valid tuning at ''
+2026-11-23 11:23:44.745081+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:2258  [static] ReadPListFile: unable to open stream for LoudnessManager plist
+2026-11-23 11:23:44.745474+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1719  [static] GetHardwarePlatformKey: cannot get acoustic ID
+2026-11-23 11:23:44.745679+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+2026-11-23 11:23:44.746936+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:40: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testGongPlayerCanFindAndPlayGongEnde] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:41: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testGongPlayerCanFindAndPlayGongEnde] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testGongPlayerCanFindAndPlayGongEnde]' passed (0.181 seconds).
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testWorkoutSoundPlayerCanFindAndPlayAuftakt]' started.
+2026-11-23 11:23:44.786025+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:44.787292+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:44.789067+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:44.811881+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+2026-11-23 11:23:44.812813+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+2026-11-23 11:23:44.797034+0100 Lean Health Timer[83120:37726719] [AMCP]          HALC_ProxyIOContext.cpp:1676  HALC_ProxyIOContext::IOWorkLoop: skipping cycle due to overload
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:74: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testWorkoutSoundPlayerCanFindAndPlayAuftakt] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/GongVsWorkoutSoundTests.swift:75: warning: -[LeanHealthTimerTests.GongVsWorkoutSoundTests testWorkoutSoundPlayerCanFindAndPlayAuftakt] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.GongVsWorkoutSoundTests testWorkoutSoundPlayerCanFindAndPlayAuftakt]' passed (0.077 seconds).
+Test Suite 'GongVsWorkoutSoundTests' passed at 2026-11-23 11:23:44.844.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 2.014 (2.018) seconds
+Test Suite 'HealthKitManagerTests' started at 2026-11-23 11:23:44.851.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testActivityTypeEnum]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testActivityTypeEnum]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testActivityTypePriorityLogic]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testActivityTypePriorityLogic]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testActivityTypeWorkoutOnly]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testActivityTypeWorkoutOnly]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testAllErrorsCatchable]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testAllErrorsCatchable]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testAppSourceConcept]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testAppSourceConcept]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testDailyMinutesAcrossMultipleDays]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testDailyMinutesAcrossMultipleDays]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testDailyMinutesAggregation]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testDailyMinutesAggregation]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testDateRangePredicate]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testDateRangePredicate]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testEmptyActivityDictionary]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testEmptyActivityDictionary]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testErrorHandlingPath]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testErrorHandlingPath]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testFebruaryLeapYear]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testFebruaryLeapYear]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testHealthKitErrorCases]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testHealthKitErrorCases]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMindfulnessAndWorkoutCombination]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMindfulnessAndWorkoutCombination]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMinimumSessionThreshold]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMinimumSessionThreshold]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMinimumSessionThresholdConstant]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMinimumSessionThresholdConstant]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMonthBoundaryTransition]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMonthBoundaryTransition]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMonthStartEndCalculation]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMonthStartEndCalculation]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMultipleDaysDistinct]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testMultipleDaysDistinct]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testNegativeDurationSession]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testNegativeDurationSession]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testSessionDurationCalculation]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testSessionDurationCalculation]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testStartOfDayFiltering]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testStartOfDayFiltering]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testVeryLongSession]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testVeryLongSession]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testYearBoundaryTransition]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testYearBoundaryTransition]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testZeroDurationSession]' started.
+Test Case '-[LeanHealthTimerTests.HealthKitManagerTests testZeroDurationSession]' passed (0.002 seconds).
+Test Suite 'HealthKitManagerTests' passed at 2026-11-23 11:23:44.963.
+	 Executed 24 tests, with 0 failures (0 unexpected) in 0.063 (0.112) seconds
+Test Suite 'LiveActivityContentStateTests' started at 2026-11-23 11:23:44.963.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_decode_withoutPhaseEndDate_backwardCompatible]' started.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_decode_withoutPhaseEndDate_backwardCompatible]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_encodeDecode_withPhaseEndDate]' started.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_encodeDecode_withPhaseEndDate]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_hashable_bothNilPhaseEndDate]' started.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_hashable_bothNilPhaseEndDate]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_hashable_differentPhaseEndDate]' started.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_hashable_differentPhaseEndDate]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_hasPhaseEndDate]' started.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_hasPhaseEndDate]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_phaseEndDate_nilForMeditation]' started.
+Test Case '-[LeanHealthTimerTests.LiveActivityContentStateTests testContentState_phaseEndDate_nilForMeditation]' passed (0.001 seconds).
+Test Suite 'LiveActivityContentStateTests' passed at 2026-11-23 11:23:44.985.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.014 (0.022) seconds
+Test Suite 'LocalizationTests' started at 2026-11-23 11:23:44.985.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testAllPhaseStringsAreLocalized]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testAllPhaseStringsAreLocalized]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testClosingLocalizedToAusklang]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testClosingLocalizedToAusklang]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testContemplationLocalizedToBesinnung]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testContemplationLocalizedToBesinnung]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testDurationLocalizedToDauer]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testDurationLocalizedToDauer]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testMeditationIsLocalized]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testMeditationIsLocalized]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testMoodLevelLabelsLocalizedInGerman]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testMoodLevelLabelsLocalizedInGerman]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testNoAlcLevelLabelsLocalizedInGerman]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testNoAlcLevelLabelsLocalizedInGerman]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.LocalizationTests testNotificationStringsAreLocalized]' started.
+Test Case '-[LeanHealthTimerTests.LocalizationTests testNotificationStringsAreLocalized]' passed (0.001 seconds).
+Test Suite 'LocalizationTests' passed at 2026-11-23 11:23:45.010.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.021 (0.025) seconds
+Test Suite 'MockHealthKitManagerTests' started at 2026-11-23 11:23:45.010.
+Test Case '-[LeanHealthTimerTests.MockHealthKitManagerTests testMockReturnsData]' started.
+Test Case '-[LeanHealthTimerTests.MockHealthKitManagerTests testMockReturnsData]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.MockHealthKitManagerTests testMockThrowsError]' started.
+Test Case '-[LeanHealthTimerTests.MockHealthKitManagerTests testMockThrowsError]' passed (0.010 seconds).
+Test Suite 'MockHealthKitManagerTests' passed at 2026-11-23 11:23:45.034.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.018 (0.024) seconds
+Test Suite 'NoAlcStreakTests' started at 2026-11-23 11:23:45.034.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testEarnJokerBeforeConsume]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testEarnJokerBeforeConsume]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testEmptyAlcoholDays]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testEmptyAlcoholDays]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testGapRequiresJoker]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testGapRequiresJoker]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerCapResetsAfterUse]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerCapResetsAfterUse]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerHealsEasyDay]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerHealsEasyDay]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerHealsGap]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerHealsGap]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerHealsWildDay]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testJokerHealsWildDay]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testMaxThreeJokersOnHand]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testMaxThreeJokersOnHand]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testMultipleGapsNeedMultipleJokers]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testMultipleGapsNeedMultipleJokers]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testOnlyTodayLogged]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testOnlyTodayLogged]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testStreakBreaksOnEasyWithoutJoker]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testStreakBreaksOnEasyWithoutJoker]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testStreakBreaksOnWildWithoutJoker]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testStreakBreaksOnWildWithoutJoker]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testStreakWithAllSteadyDays]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testStreakWithAllSteadyDays]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testTodayLoggedCounts]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testTodayLoggedCounts]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testTodayNotLoggedIsIgnored]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testTodayNotLoggedIsIgnored]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testTooManyGapsBreaksStreak]' started.
+Test Case '-[LeanHealthTimerTests.NoAlcStreakTests testTooManyGapsBreaksStreak]' passed (0.001 seconds).
+Test Suite 'NoAlcStreakTests' passed at 2026-11-23 11:23:45.079.
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.024 (0.045) seconds
+Test Suite 'SessionDurationTests' started at 2026-11-23 11:23:45.080.
+Test Case '-[LeanHealthTimerTests.SessionDurationTests test_sessionEndIsFixedAtStart_notShiftedByElapsedTime]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.SessionDurationTests test_sessionEndIsFixedAtStart_notShiftedByElapsedTime]' passed (2.114 seconds).
+Test Case '-[LeanHealthTimerTests.SessionDurationTests test_sessionRunningToItsEnd_spansFullConfiguredDuration]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.SessionDurationTests test_sessionRunningToItsEnd_spansFullConfiguredDuration]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.SessionDurationTests test_stoppingEarly_spansOnlyTheTimeActuallyRun]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.SessionDurationTests test_stoppingEarly_spansOnlyTheTimeActuallyRun]' passed (2.037 seconds).
+Test Suite 'SessionDurationTests' passed at 2026-11-23 11:23:49.263.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4.160 (4.183) seconds
+Test Suite 'ShortcutHandlerTests' started at 2026-11-23 11:23:49.264.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_AllValidPresets]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_AllValidPresets]' passed (0.088 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_InvalidPreset]' started.
+[ShortcutHandler] Invalid preset name: InvalidPreset
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_InvalidPreset]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_MissingPreset]' started.
+[ShortcutHandler] Missing 'preset' parameter
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_MissingPreset]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_ValidPreset]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseAtemURL_ValidPreset]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseInvalidScheme]' started.
+[ShortcutHandler] Invalid scheme: https
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseInvalidScheme]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseInvalidTab]' started.
+[ShortcutHandler] Invalid 'tab' parameter: invalid
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseInvalidTab]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseMeditationURL_ValidParameters]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseMeditationURL_ValidParameters]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseMissingTab]' started.
+[ShortcutHandler] Missing 'tab' parameter
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseMissingTab]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseNoQueryParameters]' started.
+[ShortcutHandler] No query parameters found
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseNoQueryParameters]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_DefaultPhase2]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_DefaultPhase2]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_MissingPhase1]' started.
+[ShortcutHandler] Missing or invalid 'phase1' parameter
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_MissingPhase1]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_OutOfRangePhase1]' started.
+[ShortcutHandler] phase1 out of range (1-120): 150
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_OutOfRangePhase1]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_OutOfRangePhase2]' started.
+[ShortcutHandler] phase2 out of range (0-30): 50
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_OutOfRangePhase2]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_ValidParameters]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseOffenURL_ValidParameters]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_LegacyWorkoutsTab]' started.
+[ShortcutHandler] Workout programs shortcuts not yet implemented (Phase 6)
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_LegacyWorkoutsTab]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_MissingParameters]' started.
+[ShortcutHandler] Missing or invalid workout parameters
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_MissingParameters]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_NewTabName]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_NewTabName]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_OutOfRangeInterval]' started.
+[ShortcutHandler] interval out of range (5-600): 700
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_OutOfRangeInterval]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_OutOfRangeRepeats]' started.
+[ShortcutHandler] repeats out of range (1-200): 300
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_OutOfRangeRepeats]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_ValidParameters]' started.
+Test Case '-[LeanHealthTimerTests.ShortcutHandlerTests testParseWorkoutURL_ValidParameters]' passed (0.001 seconds).
+Test Suite 'ShortcutHandlerTests' passed at 2026-11-23 11:23:49.395.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 0.120 (0.132) seconds
+Test Suite 'SmartReminderEngineTests' started at 2026-11-23 11:23:49.396.
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testAddReminder]' started.
+2026-11-23 11:23:49.446043+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🚀 SmartReminderEngine initializing...
+2026-11-23 11:23:49.555904+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Failed to load reminders: Die Daten konnten nicht gelesen werden, da sie nicht das korrekte Format haben.
+2026-11-23 11:23:49.556704+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 State after load: 0 reminders, 0 cancelled, isPaused: false
+2026-11-23 11:23:49.556899+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:49.557933+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+2026-11-23 11:23:49.647019+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] ✅ SmartReminderEngine initialization complete
+2026-11-23 11:23:49.760136+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:49.760388+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:49.760569+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:49.777968+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:49.778156+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:49.778268+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testAddReminder]' passed (0.385 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelledNotificationCodable]' started.
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelledNotificationCodable]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelledNotificationEquality]' started.
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelledNotificationEquality]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_24hLookAheadWindow]' started.
+2026-11-23 11:23:49.797948+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:49.798125+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:49.798245+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:49.800597+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:49.800789+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:49.801009+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 10:23:49 +0000
+2026-11-23 11:23:49.801134+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:49 +0000
+2026-11-23 11:23:49.817322+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:49 +0000
+2026-11-23 11:23:49.817636+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 1
+2026-11-23 11:23:49.827173+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:49.828224+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Tomorrow Reminder' (type: mindfulness, days: 1)
+2026-11-23 11:23:49.832254+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Tomorrow Reminder' (lookback: 12h, days: Dienstag)
+2026-11-23 11:23:49.833982+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Dienstag: next trigger = 2026-11-24 09:00:00 +0000
+2026-11-23 11:23:49.834124+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 21:00:00 +0000 to 2026-11-24 09:00:00 +0000
+2026-11-23 11:23:49.835937+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? false
+2026-11-23 11:23:49.836232+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ⏭️ completedAt not in look-back window, skipping
+2026-11-23 11:23:49.836404+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] ℹ️ No matching reminders found to cancel
+2026-11-23 11:23:49.838614+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:49.838882+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:49.844442+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_24hLookAheadWindow]' passed (0.051 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_ActivityInsideWindow_ShouldCancel]' started.
+2026-11-23 11:23:49.864595+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:49.864845+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:49.864997+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:49.868107+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:49.868346+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:49.868557+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:49.868728+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:49 +0000
+2026-11-23 11:23:49.869350+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:49 +0000
+2026-11-23 11:23:49.869692+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 1
+2026-11-23 11:23:49.891753+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:49.927641+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:49.927765+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Evening Meditation' (lookback: 12h, days: Montag)
+2026-11-23 11:23:49.927780+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:49.928019+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:49.928105+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 05:00:00 +0000 to 2026-11-23 17:00:00 +0000
+2026-11-232026-11-23 11:23:49.928508+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+ 11:23:49.928241+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? true
+2026-11-23 11:23:49.937578+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:49.937900+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:49.938182+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ⏭️ Skipping 'Evening Meditation' for Montag (cancelled)
+2026-11-23 11:23:49.938259+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:49.938674+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:49.938778+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:49.944579+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ⏭️ Skipping 'Evening Meditation' for Montag (cancelled)
+2026-11-23 11:23:49.944859+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:49.945031+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:49.945105+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:49.945254+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ⏭️ Skipping 'Evening Meditation' for Montag (cancelled)
+2026-11-23 11:23:49.945330+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.167765+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ✅ CANCELLED reminder 'Evening Meditation' for Montag (notification removed)
+2026-11-23 11:23:52.168149+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ❌ Failed to schedule 'Tomorrow Reminder' for Dienstag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.171325+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 💾 Saving 1 new cancellation(s), total cancelled: 1
+2026-11-23 11:23:52.176542+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.177071+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.177737+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ⏭️ Skipping 'Evening Meditation' for Montag (cancelled)
+2026-11-23 11:23:52.178005+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.178189+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ❌ Failed to schedule 'Evening Meditation' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.186480+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 cancelled notifications
+2026-11-23 11:23:52.186689+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🎯 Cancelled 1 reminder(s) based on activity completion
+2026-11-23 11:23:52.195285+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.195466+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.195590+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_ActivityInsideWindow_ShouldCancel]' passed (2.360 seconds).
+2026-11-23 11:23:52.209768+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.210070+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_ActivityOutsideWindow_ShouldNotCancel]' started.
+2026-11-23 11:23:52.225803+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.226029+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.226172+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.227845+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.227974+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:52.228115+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.228197+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.228276+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.228354+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 1
+2026-11-23 11:23:52.228843+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.246485+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.246626+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Evening Meditation' (lookback: 1h, days: Montag)
+2026-11-23 11:23:52.246887+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.247061+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 16:00:00 +0000 to 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.247148+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? false
+2026-11-23 11:23:52.247365+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ⏭️ completedAt not in look-back window, skipping
+2026-11-23 11:23:52.247427+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.260472+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] ℹ️ No matching reminders found to cancel
+2026-11-23 11:23:52.260837+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ❌ Failed to schedule 'Evening Meditation' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.261985+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.262059+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.262121+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_ActivityOutsideWindow_ShouldNotCancel]' passed (0.055 seconds).
+2026-11-23 11:23:52.264509+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.267317+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_DisabledReminder_ShouldNotCancel]' started.
+2026-11-23 11:23:52.272856+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.273097+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.273261+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 0, Disabled: 1
+2026-11-23 11:23:52.275207+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.275379+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:52.276400+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.279233+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.279266+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.279407+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.279502+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.279599+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 0
+2026-11-23 11:23:52.279689+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] ℹ️ No matching reminders found to cancel
+2026-11-23 11:23:52.283713+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.283898+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.284005+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_DisabledReminder_ShouldNotCancel]' passed (0.018 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_DuplicateCancellation_OnlyAddOnce]' started.
+2026-11-23 11:23:52.287264+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.287535+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.290839+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.291041+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.291163+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.293384+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.293578+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:52.293692+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.293781+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.293842+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.293914+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 1
+2026-11-23 11:23:52.294068+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Test Reminder' (lookback: 12h, days: Montag)
+2026-11-23 11:23:52.294172+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.294218+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.295436+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 05:00:00 +0000 to 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.295512+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? true
+2026-11-23 11:23:52.295518+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine]   → Processing 'Test Reminder' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.295806+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ⏭️ Skipping 'Test Reminder' for Montag (cancelled)
+2026-11-23 11:23:52.295907+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.296336+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ✅ CANCELLED reminder 'Test Reminder' for Montag (notification removed)
+2026-11-23 11:23:52.296715+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 💾 Saving 1 new cancellation(s), total cancelled: 2
+2026-11-23 11:23:52.297622+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 2 cancelled notifications
+2026-11-23 11:23:52.297695+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🎯 Cancelled 1 reminder(s) based on activity completion
+2026-11-23 11:23:52.297756+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.297862+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:52.298082+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.298193+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.298332+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.298467+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 1
+2026-11-23 11:23:52.298634+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Test Reminder' (lookback: 12h, days: Montag)
+2026-11-23 11:23:52.299457+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.299543+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 05:00:00 +0000 to 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.299638+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? true
+2026-11-23 11:23:52.299715+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ℹ️ Already cancelled
+2026-11-23 11:23:52.299776+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] ℹ️ No matching reminders found to cancel
+2026-11-23 11:23:52.301074+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.301157+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.301410+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_DuplicateCancellation_OnlyAddOnce]' passed (0.016 seconds).
+2026-11-23 11:23:52.303541+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.303631+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_ExactBoundary_AtTriggerTime]' started.
+2026-11-23 11:23:52.309704+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.310044+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.310201+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.312078+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.312303+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:52.312491+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 11:00:00 +0000
+2026-11-23 11:23:52.312617+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.312712+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.312811+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 1
+2026-11-23 11:23:52.313392+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.313562+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine]   → Processing 'Noon Reminder' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.313640+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Noon Reminder' (lookback: 1h, days: Montag)
+2026-11-23 11:23:52.313773+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 11:00:00 +0000
+2026-11-23 11:23:52.313853+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 10:00:00 +0000 to 2026-11-23 11:00:00 +0000
+2026-11-23 11:23:52.313914+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? true
+2026-11-23 11:23:52.313942+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.315654+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ✅ CANCELLED reminder 'Noon Reminder' for Montag (notification removed)
+2026-11-23 11:23:52.318310+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ❌ Failed to schedule 'Noon Reminder' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.320401+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 💾 Saving 1 new cancellation(s), total cancelled: 3
+2026-11-23 11:23:52.321549+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 3 cancelled notifications
+2026-11-23 11:23:52.321649+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🎯 Cancelled 1 reminder(s) based on activity completion
+2026-11-23 11:23:52.322552+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.322621+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.322699+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_ExactBoundary_AtTriggerTime]' passed (0.020 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_MultipleReminders_SelectiveCancellation]' started.
+2026-11-23 11:23:52.325293+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.325494+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.330834+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.331072+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.331194+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.333448+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 2 smart reminders
+2026-11-23 11:23:52.333546+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.333628+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 2, Enabled: 2, Disabled: 0
+2026-11-23 11:23:52.333834+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 2 enabled reminder(s)...
+2026-11-23 11:23:52.333952+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine]   → Processing 'Noon Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.334600+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.334977+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.335077+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: mindfulness
+2026-11-23 11:23:52.335134+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.335210+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.335303+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.335416+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.335501+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'mindfulness': 2
+2026-11-23 11:23:52.337383+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Noon Meditation' (lookback: 1h, days: Montag)
+2026-11-23 11:23:52.337778+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 11:00:00 +0000
+2026-11-23 11:23:52.337963+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ❌ Failed to schedule 'Noon Meditation' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.338076+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 10:00:00 +0000 to 2026-11-23 11:00:00 +0000
+2026-11-23 11:23:52.338180+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? false
+2026-11-23 11:23:52.338266+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ⏭️ completedAt not in look-back window, skipping
+2026-11-23 11:23:52.338316+0100 Lean H2026-11-23 11:23:52.338387+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'Evening Meditation' (lookback: 12h, days: Montag)
+ealth Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 2 enabled reminder(s)...
+2026-11-23 11:23:52.339656+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Noon Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.339715+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.339797+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-23 05:00:00 +0000 to 2026-11-23 17:00:00 +0000
+2026-11-23 11:23:52.339852+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? true
+2026-11-23 11:23:52.340318+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Evening Meditation' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.342026-11-23 11:23:52.341907+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ✅ CANCELLED reminder 'Evening Meditation' for Montag (notification removed)
+0536+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ⏭️ Skipping 'Evening Meditation' for Montag (cancelled)
+2026-11-23 11:23:52.342071+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 💾 Saving 1 new cancellation(s), total cancelled: 4
+2026-11-23 11:23:52.342077+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.342349+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ❌ Failed to schedule 'Evening Meditation' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.343824+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 4 cancelled notifications
+2026-11-23 11:23:52.343944+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🎯 Cancelled 1 reminder(s) based on activity completion
+2026-11-23 11:23:52.343948+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ❌ Failed to schedule 'Noon Meditation' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.345313+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.345509+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.345705+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.348300+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.348493+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.348625+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+2026-11-23 11:23:52.348914+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.349012+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_MultipleReminders_SelectiveCancellation]' passed (0.027 seconds).
+2026-11-23 11:23:52.352431+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.352650+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_NoAlcActivityType]' started.
+2026-11-23 11:23:52.358098+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.358241+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.358317+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.360079+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.360232+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: noalc
+2026-11-23 11:23:52.360349+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.360480+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.360612+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.360703+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'noalc': 1
+2026-11-23 11:23:52.360816+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   🔎 Processing reminder 'NoAlc Check-In' (lookback: 24h, days: Montag)
+2026-11-23 11:23:52.360944+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Montag: next trigger = 2026-11-23 19:00:00 +0000
+2026-11-23 11:23:52.361056+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.361556+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → Look-back window: 2026-11-22 19:00:00 +0000 to 2026-11-23 19:00:00 +0000
+2026-11-23 11:23:52.361596+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine]   → Processing 'NoAlc Check-In' (type: noalc, days: 1)
+2026-11-23 11:23:52.361666+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     → completedAt in window? true
+2026-11-23 11:23:52.361915+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.363032+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]     ✅ CANCELLED reminder 'NoAlc Check-In' for Montag (notification removed)
+2026-11-23 11:23:52.363132+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 💾 Saving 1 new cancellation(s), total cancelled: 5
+2026-11-23 11:23:52.363883+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 5 cancelled notifications
+2026-11-23 11:23:52.363952+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🎯 Cancelled 1 reminder(s) based on activity completion
+2026-11-23 11:23:52.364036+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ❌ Failed to schedule 'NoAlc Check-In' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.364568+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.364637+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.364698+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_NoAlcActivityType]' passed (0.013 seconds).
+2026-11-23 11:23:52.366339+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.366443+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_WrongActivityType_ShouldNotCancel]' started.
+2026-11-23 11:23:52.371543+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.371669+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.371745+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.372677+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingReminders called:
+2026-11-23 11:23:52.372747+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → activityType: workout
+2026-11-23 11:23:52.372829+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → completedAt: 2026-11-23 09:00:00 +0000
+2026-11-23 11:23:52.372907+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → now: 2026-11-23 10:23:52 +0000
+2026-11-23 11:23:52.372977+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → lookAheadEnd: 2026-11-24 10:23:52 +0000
+2026-11-23 11:23:52.373043+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled reminders for type 'workout': 0
+2026-11-23 11:23:52.373224+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] ℹ️ No matching reminders found to cancel
+2026-11-23 11:23:52.373332+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.373419+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine]   → Processing 'Meditation Reminder' (type: mindfulness, days: 1)
+2026-11-23 11:23:52.373819+0100 Lean Health Timer[83120:37726719] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.373975+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.374039+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.374095+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testCancelMatchingReminders_WrongActivityType_ShouldNotCancel]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testRemindersPersistence]' started.
+2026-11-23 11:23:52.377005+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ❌ Failed to schedule 'Meditation Reminder' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.377323+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.377416+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.380676+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.380782+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.380864+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.383726+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.383876+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine]   → Processing 'Persistent Reminder' (type: workout, days: 7)
+2026-11-23 11:23:52.385338+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.417689+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Loaded 1 smart reminders
+2026-11-23 11:23:52.421720+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.422170+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.422269+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.422335+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testRemindersPersistence]' passed (0.048 seconds).
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testRemoveReminder]' started.
+2026-11-23 11:23:52.427203+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Mittwoch: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.428202+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Freitag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.428374+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.428441+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.428519+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.428746+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Dienstag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.429918+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.429971+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Donnerstag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.429983+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.430170+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+2026-11-23 11:23:52.430972+0100 Lean Health Timer[83120:37729095] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Sonntag: Repository could not save notification. Source is not authorized.
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testRemoveReminder]' passed (0.007 seconds).
+2026-11-23 11:23:52.432220+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ❌ Failed to schedule 'Persistent Reminder' for Samstag: Repository could not save notification. Source is not authorized.
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testUpdateReminder]' started.
+2026-11-23 11:23:52.432365+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.432433+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.432502+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.432550+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.432681+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.432795+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.434813+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.434904+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.435215+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.436692+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 1 smart reminders
+2026-11-23 11:23:52.436875+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.436988+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 1, Enabled: 1, Disabled: 0
+2026-11-23 11:23:52.436988+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] 🔄 Scheduling 1 enabled reminder(s)...
+2026-11-23 11:23:52.437110+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine]   → Processing 'Updated' (type: mindfulness, days: 7)
+2026-11-23 11:23:52.438391+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] Saved 0 smart reminders
+2026-11-23 11:23:52.438463+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📅 Scheduling smart reminders...
+2026-11-23 11:23:52.438532+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 📊 Total reminders: 0, Enabled: 0, Disabled: 0
+Test Case '-[LeanHealthTimerTests.SmartReminderEngineTests testUpdateReminder]' passed (0.101 seconds).
+Test Suite 'SmartReminderEngineTests' passed at 2026-11-23 11:23:52.538.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 3.123 (3.143) seconds
+Test Suite 'StreakManagerJokerTests' started at 2026-11-23 11:23:52.539.
+2026-11-23 11:23:52.546357+0100 Lean Health Timer[83120:37726496] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testDay7IsGapWithEarnBeforeConsume]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testDay7IsGapWithEarnBeforeConsume]' passed (0.051 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testEarnJokerBeforeConsume]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testEarnJokerBeforeConsume]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testEmptyDailyMinutes]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testEmptyDailyMinutes]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testJokerHealsGap]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testJokerHealsGap]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testMaxThreeJokersOnHand]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testMaxThreeJokersOnHand]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testMinimumThreshold]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testMinimumThreshold]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testMultipleGapsNeedMultipleJokers]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testMultipleGapsNeedMultipleJokers]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testOnlyTodayLogged]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testOnlyTodayLogged]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testRoundingToThreshold]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testRoundingToThreshold]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testScreenshotScenario_33DaysGapThen8Days]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testScreenshotScenario_33DaysGapThen8Days]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testStreakBreaksOnGapWithoutJoker]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testStreakBreaksOnGapWithoutJoker]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testStreakWithAllGoodDays]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testStreakWithAllGoodDays]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testTodayLoggedCounts]' started.
+Test Case 2026-11-23 11:23:52.629360+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Mittwoch: Repository could not save notification. Source is not authorized.
+'-[LeanHealthTimerTests.StreakManagerJokerTests testTodayLoggedCounts]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testTodayNotLoggedIsIgnored]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testTodayNotLoggedIsIgnored]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testTooManyGapsBreaksStreak]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerJokerTests testTooManyGapsBreaksStreak]' passed (0.001 seconds).
+Test Suite 'StreakManagerJokerTests' passed at 2026-11-23 11:23:52.652.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.071 (0.113) seconds
+Test Suite 'StreakManagerTests' started at 2026-11-23 11:23:52.652.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testConsecutiveDaysStreak]' started.
+2026-11-23 11:23:52.405921+0100 Lean Health Timer[83120:37729182] [AMCP]          HALC_ProxyIOContext.cpp:1676  HALC_ProxyIOContext::IOWorkLoop: skipping cycle due to overload
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testConsecutiveDaysStreak]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testEmptyDailyMinutes]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testEmptyDailyMinutes]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testLoadWithNoSavedData]' started.
+2026-11-23 11:23:52.671291+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.674778+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.676902+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] 🔄 Scheduling 0 enabled reminder(s)...
+2026-11-23 11:23:52.677131+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ✅ Smart reminder scheduling complete
+2026-11-23 11:23:52.677333+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Freitag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.677572+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Dienstag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.677830+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Samstag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.677973+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Sonntag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.684950+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Montag: Repository could not save notification. Source is not authorized.
+2026-11-23 11:23:52.685156+0100 Lean Health Timer[83120:37727820] [SmartReminderEngine] ❌ Failed to schedule 'Updated' for Donnerstag: Repository could not save notification. Source is not authorized.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testLoadWithNoSavedData]' passed (0.054 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testLongStreak]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testLongStreak]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testManagerInitialization]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testManagerInitialization]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testMinimumMinutesThreshold]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testMinimumMinutesThreshold]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testNoActivityToday]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testNoActivityToday]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testRewardCalculation]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testRewardCalculation]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testRewardDecayLogic]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testRewardDecayLogic]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testRoundingBehavior]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testRoundingBehavior]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testSaveAndLoadStreaks]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testSaveAndLoadStreaks]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testStreakDataCodable]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testStreakDataCodable]' passed (0.018 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testStreakDataInitialization]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testStreakDataInitialization]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testStreakWithGap]' started.
+Test Case '-[LeanHealthTimerTests.StreakManagerTests testStreakWithGap]' passed (0.001 seconds).
+Test Suite 'StreakManagerTests' passed at 2026-11-23 11:23:52.768.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.104 (0.116) seconds
+Test Suite 'TrackerDayEntriesTests' started at 2026-11-23 11:23:52.769.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_boolean_showsCheckmark]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_boolean_showsCheckmark]' passed (1.618 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_counter_nilValueCountsAsOne]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_counter_nilValueCountsAsOne]' passed (0.037 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_counter_sumsValuesOfDay]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_counter_sumsValuesOfDay]' passed (0.022 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_counter_withDailyGoal_showsSumOfGoal]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_counter_withDailyGoal_showsSumOfGoal]' passed (0.021 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_cutoff18_logAfterMidnight_shiftedOnlyOnce]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_cutoff18_logAfterMidnight_shiftedOnlyOnce]' passed (0.020 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_cutoff18_logAt17_belongsToPreviousDay]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_cutoff18_logAt17_belongsToPreviousDay]' passed (0.038 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_cutoff18_logAt18_belongsToSameDay]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_cutoff18_logAt18_belongsToSameDay]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_dayWithOneLog_inResult]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_dayWithOneLog_inResult]' passed (0.036 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_dayWithoutAnyLog_notInResult]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_dayWithoutAnyLog_notInResult]' passed (0.013 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_emptyOrMissingNote_isNil]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_emptyOrMissingNote_isNil]' passed (0.017 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_hasActivity_existingConditionsUnchanged]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_hasActivity_existingConditionsUnchanged]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_hasActivity_nothing_false]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_hasActivity_nothing_false]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_hasActivity_onlyTrackerEntries_true]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_hasActivity_onlyTrackerEntries_true]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_inactiveTracker_notIncluded]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_inactiveTracker_notIncluded]' passed (0.014 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_levelTracker_noteEqualToLevelLabel_isNotShownAsNote]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_levelTracker_noteEqualToLevelLabel_isNotShownAsNote]' passed (0.032 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_levelTracker_showsLocalizedLevelLabel]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_levelTracker_showsLocalizedLevelLabel]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_levelTracker_unknownLevelId_showsNumber]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_levelTracker_unknownLevelId_showsNumber]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_localization_habitsAndNoEntry_DEandEN]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_localization_habitsAndNoEntry_DEandEN]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noAlcOnlyDay_notInResult]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noAlcOnlyDay_notInResult]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noAlcTracker_excluded]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noAlcTracker_excluded]' passed (0.022 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noteAndLatestTime_ofLatestLog]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noteAndLatestTime_ofLatestLog]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noTrackers_emptyResult]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_noTrackers_emptyResult]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_rowsSortedByDisplayOrder]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_rowsSortedByDisplayOrder]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_timestampAssignment_logAt17_belongsToSameDay]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_timestampAssignment_logAt17_belongsToSameDay]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_trackerWithoutLog_emptyRowWhenOtherTrackerHasEntry]' started.
+Test Case '-[LeanHealthTimerTests.TrackerDayEntriesTests test_trackerWithoutLog_emptyRowWhenOtherTrackerHasEntry]' passed (0.021 seconds).
+Test Suite 'TrackerDayEntriesTests' passed at 2026-11-23 11:23:54.846.
+	 Executed 25 tests, with 0 failures (0 unexpected) in 2.031 (2.078) seconds
+Test Suite 'TrackerMigrationTests' started at 2026-11-23 11:23:54.851.
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testCreateDefaultTrackers]' started.
+[TrackerMigration] Creating default trackers (NoAlc + Mood)...
+[TrackerMigration] ✓ NoAlc tracker created
+[TrackerMigration] ✓ Mood tracker created
+[TrackerMigration] Default trackers created successfully
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testCreateDefaultTrackers]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testMigrateEmptyNoAlcData]' started.
+2026-11-23 11:23:54.888124+0100 Lean Health Timer[83120:37726719] [ModelContext] SwiftData.ModelContext: Unbinding from the main queue. This context was instantiated on the main queue but is being used off it. ModelContexts are not Sendable, consider using a ModelActor.
+[TrackerMigration] Starting NoAlc migration...
+[TrackerMigration] NoAlc Tracker created successfully
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testMigrateEmptyNoAlcData]' passed (0.077 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testMigrateNoAlcWithHistoricalData]' started.
+2026-11-23 11:23:54.949310+0100 Lean Health Timer[83120:37729182] [ModelContext] SwiftData.ModelContext: Unbinding from the main queue. This context was instantiated on the main queue but is being used off it. ModelContexts are not Sendable, consider using a ModelActor.
+[TrackerMigration] Starting NoAlc migration...
+[TrackerMigration] NoAlc Tracker created successfully
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testMigrateNoAlcWithHistoricalData]' passed (0.033 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testSkipMigrationIfTrackerExists]' started.
+2026-11-23 11:23:54.983827+0100 Lean Health Timer[83120:37727837] [ModelContext] SwiftData.ModelContext: Unbinding from the main queue. This context was instantiated on the main queue but is being used off it. ModelContexts are not Sendable, consider using a ModelActor.
+[TrackerMigration] NoAlc Tracker already exists, skipping migration
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testSkipMigrationIfTrackerExists]' passed (0.015 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testStreakCalculationAfterMigration]' started.
+Test Case '-[LeanHealthTimerTests.TrackerMigrationTests testStreakCalculationAfterMigration]' passed (0.053 seconds).
+Test Suite 'TrackerMigrationTests' passed at 2026-11-23 11:23:55.045.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.189 (0.194) seconds
+Test Suite 'TrackerModelTests' started at 2026-11-23 11:23:55.046.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testActiveStreakConsecutiveDays]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testActiveStreakConsecutiveDays]' passed (0.015 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testActiveStreakNoLogs]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testActiveStreakNoLogs]' passed (0.017 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testActiveStreakWithTodayLog]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testActiveStreakWithTodayLog]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testAllPresetsExist]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testAllPresetsExist]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testAvoidanceStreakAfterRelapse]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testAvoidanceStreakAfterRelapse]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testAvoidanceStreakNoLogs]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testAvoidanceStreakNoLogs]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testCreateSaboteurTracker]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testCreateSaboteurTracker]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testCreateTracker]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testCreateTracker]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentCutoffHourAfterCutoff]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentCutoffHourAfterCutoff]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentCutoffHourAtCutoff]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentCutoffHourAtCutoff]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentCutoffHourBeforeCutoff]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentCutoffHourBeforeCutoff]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentTimestamp]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDayAssignmentTimestamp]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDeleteTrackerCascadesLogs]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testDeleteTrackerCascadesLogs]' passed (0.019 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogEntry]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogEntry]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogEntryDefaultsToNow]' started.
+2026-11-23 11:23:55.219136+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingTrackerReminders called for tracker: F3D4A72D-4F89-43F3-A8E7-C13EE5202E0C
+2026-11-23 11:23:55.219417+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled tracker reminders: 0
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogEntryDefaultsToNow]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogEntryWithCustomTimestamp]' started.
+2026-11-23 11:23:55.228422+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingTrackerReminders called for tracker: 8CF1FA0B-71BB-423B-B2F7-77A339747702
+2026-11-23 11:23:55.228617+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled tracker reminders: 0
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogEntryWithCustomTimestamp]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogWithNote]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogWithNote]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogWithTrigger]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testLogWithTrigger]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testMapNotificationActionInvalid]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testMapNotificationActionInvalid]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testMapNotificationActionToLevelId]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testMapNotificationActionToLevelId]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testMoodPresetExists]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testMoodPresetExists]' passed (0.033 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testNoAlcLabelsLocalized]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testNoAlcLabelsLocalized]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testNoAlcTrackerCanLogAllLevels]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testNoAlcTrackerCanLogAllLevels]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testPresetCreation]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testPresetCreation]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueEasy]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueEasy]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueFallbackNoLevels]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueFallbackNoLevels]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueSteady]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueSteady]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueWild]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testResolveHealthKitValueWild]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerDayBoundaryCanBeModified]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerDayBoundaryCanBeModified]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerDayBoundaryCanBeSetToMidnight]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerDayBoundaryCanBeSetToMidnight]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerDisplayOrderCanBeModified]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerDisplayOrderCanBeModified]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerEffectiveDayAssignmentParsesCorrectly]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerEffectiveDayAssignmentParsesCorrectly]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerHasDisplayOrderProperty]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerHasDisplayOrderProperty]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerHasLogLevelMethod]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerHasLogLevelMethod]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerJokerConfigCanBeDisabled]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerJokerConfigCanBeDisabled]' passed (0.019 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerJokerConfigCanBeModified]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerJokerConfigCanBeModified]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelHealthKitValueEasy]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelHealthKitValueEasy]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelHealthKitValueSteady]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelHealthKitValueSteady]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelHealthKitValueWild]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelHealthKitValueWild]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelsCanBeModified]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerLevelsCanBeModified]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerCreateFromPreset]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerCreateFromPreset]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerIsLoggedToday]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerIsLoggedToday]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerQuickLog]' started.
+2026-11-23 11:23:55.505299+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine] 🔍 cancelMatchingTrackerReminders called for tracker: B6391A61-3FB7-41BB-83EB-82EC46F296D6
+2026-11-23 11:23:55.505604+0100 Lean Health Timer[83120:37725039] [SmartReminderEngine]   → Enabled tracker reminders: 0
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerQuickLog]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerTodayLogs]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerManagerTodayLogs]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackersSortByDisplayOrder]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackersSortByDisplayOrder]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerTodayLogProperty]' started.
+Test Case '-[LeanHealthTimerTests.TrackerModelTests testTrackerTodayLogProperty]' passed (0.015 seconds).
+Test Suite 'TrackerModelTests' passed at 2026-11-23 11:23:55.549.
+	 Executed 46 tests, with 0 failures (0 unexpected) in 0.464 (0.504) seconds
+Test Suite 'TwoPhaseTimerTests' started at 2026-11-23 11:23:55.550.
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testBothPhases_OneMinute_NotSkipped]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testBothPhases_OneMinute_NotSkipped]' passed (0.022 seconds).
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase1_OneMinute_NotSkipped]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase1_OneMinute_NotSkipped]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase1_TwoMinutes_Works]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase1_TwoMinutes_Works]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase1_ZeroMinutes_IsSkipped]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase1_ZeroMinutes_IsSkipped]' passed (0.203 seconds).
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase2_OneMinute_NotSkipped]' started.
+🔔 TwoPhaseTimerEngine: App termination detection enabled
+Test Case '-[LeanHealthTimerTests.TwoPhaseTimerTests testPhase2_OneMinute_NotSkipped]' passed (0.001 seconds).
+Test Suite 'TwoPhaseTimerTests' passed at 2026-11-23 11:23:55.783.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.228 (0.233) seconds
+Test Suite 'WorkoutAudioTests' started at 2026-11-23 11:23:55.783.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeConfigured]' started.
+2026-11-23 11:23:55.798112+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:55.831418+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutAudioTests.swift:88: warning: -[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeConfigured] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutAudioTests.swift:89: warning: -[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeConfigured] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeConfigured]' passed (0.110 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeReactivated]' started.
+2026-11-23 11:23:55.895535+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:55.896485+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:55.896938+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:55.897767+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutAudioTests.swift:102: warning: -[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeReactivated] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutAudioTests.swift:103: warning: -[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeReactivated] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAudioSessionCanBeReactivated]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAuftaktAudioFileExists]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAuftaktAudioFileExists]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAusklangAudioFileExists]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testAusklangAudioFileExists]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testCanCreateAudioPlayerForAuftakt]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testCanCreateAudioPlayerForAuftakt]' passed (0.248 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testCanCreateAudioPlayerForCountdownTransition]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testCanCreateAudioPlayerForCountdownTransition]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testCountdownTransitionAudioFileExists]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testCountdownTransitionAudioFileExists]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testGongAudioFilesExist]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testGongAudioFilesExist]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testLastRoundAudioFileExists]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutAudioTests testLastRoundAudioFileExists]' passed (0.001 seconds).
+Test Suite 'WorkoutAudioTests' passed at 2026-11-23 11:23:56.169.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.379 (0.386) seconds
+Test Suite 'WorkoutEffortScoreTests' started at 2026-11-23 11:23:56.177.
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testDefaultEffortScoreForHIIT]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testDefaultEffortScoreForHIIT]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreInvalidRange]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreInvalidRange]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreQuantityCreation]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreQuantityCreation]' passed (0.020 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreSampleCreation]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreSampleCreation]' passed (0.056 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreValidRange]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutEffortScoreTests testEffortScoreValidRange]' passed (0.002 seconds).
+Test Suite 'WorkoutEffortScoreTests' passed at 2026-11-23 11:23:56.261.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.080 (0.083) seconds
+Test Suite 'WorkoutPhaseMigrationTests' started at 2026-11-23 11:23:56.261.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_announcement_respectsSpeakSetting]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_announcement_respectsSpeakSetting]' passed (0.028 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_corruptJson_isBackedUpBeforeFallback]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_corruptJson_isBackedUpBeforeFallback]' passed (0.080 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_existingUserStore_unchangedAfterPresetMigration]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_existingUserStore_unchangedAfterPresetMigration]' passed (0.014 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_hint_normalization]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_hint_normalization]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_missingExerciseId_derivedFromName]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_missingExerciseId_derivedFromName]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_noBackup_whenKeyMissingOrValid]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_noBackup_whenKeyMissingOrValid]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_oldJson_loadsLossless]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_oldJson_loadsLossless]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_ownSlug_rules]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_ownSlug_rules]' passed (0.028 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_pickerCatalog_has67DistinctLocalizedNames]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_pickerCatalog_has67DistinctLocalizedNames]' passed (0.043 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_roundTrip_keepsExerciseIdAndHint]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_roundTrip_keepsExerciseIdAndHint]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_selectingCatalogOrOwnExercise_setsExerciseId]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_selectingCatalogOrOwnExercise_setsExerciseId]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_spokenText_withAndWithoutHint]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_spokenText_withAndWithoutHint]' passed (0.009 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_storedExerciseId_notRecomputed]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutPhaseMigrationTests test_storedExerciseId_notRecomputed]' passed (0.001 seconds).
+Test Suite 'WorkoutPhaseMigrationTests' passed at 2026-11-23 11:23:56.501.
+	 Executed 13 tests, with 0 failures (0 unexpected) in 0.232 (0.239) seconds
+Test Suite 'WorkoutSoundPlayerTests' started at 2026-11-23 11:23:56.501.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testAudioSessionConfigurationMatchesGongPlayer]' started.
+2026-11-23 11:23:56.503101+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:56.512980+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:121: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testAudioSessionConfigurationMatchesGongPlayer] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:122: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testAudioSessionConfigurationMatchesGongPlayer] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testAudioSessionConfigurationMatchesGongPlayer]' passed (0.029 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testBug32_ComparePlayersDirectly]' started.
+2026-11-23 11:23:56.788180+0100 Lean Health Timer[83120:37729095] [as_client] AVAudioSessionImpl_Simulator.mm:139   Unsupported property: SupportsInterruptionEndedAfterActivationError
+2026-11-23 11:23:56.957578+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:56.959064+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+[WorkoutSound] Audio session configured successfully
+[WorkoutSound] found countdown-transition.caf
+[WorkoutSound] found auftakt.caf
+[WorkoutSound] found ausklang.caf
+[WorkoutSound] found last-round.caf
+[TEST] WorkoutSoundPlayer - auftakt: true, ausklang: true
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:98: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testBug32_ComparePlayersDirectly] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:98: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testBug32_ComparePlayersDirectly] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testBug32_ComparePlayersDirectly]' passed (0.440 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testDurationReturnsPositiveValue]' started.
+2026-11-23 11:23:56.978427+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:56.979311+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+[WorkoutSound] Audio session configured successfully
+[WorkoutSound] found countdown-transition.caf
+[WorkoutSound] found auftakt.caf
+[WorkoutSound] found ausklang.caf
+[WorkoutSound] found last-round.caf
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:40: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testDurationReturnsPositiveValue] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:40: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testDurationReturnsPositiveValue] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testDurationReturnsPositiveValue]' passed (0.011 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayCreatesActivePlayer]' started.
+2026-11-23 11:23:56.986451+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:56.987121+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+[WorkoutSound] Audio session configured successfully
+[WorkoutSound] found countdown-transition.caf
+[WorkoutSound] found auftakt.caf
+[WorkoutSound] found ausklang.caf
+[WorkoutSound] found last-round.caf
+2026-11-23 11:23:56.987645+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:56.988792+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:56.989781+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:57.102861+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+2026-11-23 11:23:57.103342+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+[WorkoutSound] play auftakt (active: 1)
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:49: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayCreatesActivePlayer] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:49: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayCreatesActivePlayer] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayCreatesActivePlayer]' passed (0.681 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayRoundWithTotalParameter]' started.
+2026-11-23 11:23:57.683730+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:57.684795+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+[WorkoutSound] Audio session configured successfully
+[WorkoutSound] found countdown-transition.caf
+[WorkoutSound] found auftakt.caf
+[WorkoutSound] found ausklang.caf
+[WorkoutSound] found last-round.caf
+2026-11-23 11:23:57.685551+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:57.685945+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:57.686287+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:57.686648+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:58.259454+0100 Lean Health Timer[83120:37726719] [VoiceDBClient] Error fetching voices: DecodingError.dataCorrupted: Data was corrupted. Debug description: Invalid container metadata for _UnkeyedDecodingContainer, found keyedGraphEncodingNodeID. Using fallback voices.
+2026-11-23 11:23:58.554695+0100 Lean Health Timer[83120:37726719] [VoiceDBClient] Error fetching voices: DecodingError.dataCorrupted: Data was corrupted. Debug description: Invalid container metadata for _UnkeyedDecodingContainer, found keyedGraphEncodingNodeID. Using fallback voices.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:136: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayRoundWithTotalParameter] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:136: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayRoundWithTotalParameter] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayRoundWithTotalParameter]' passed (0.900 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayWorksWithoutDurationCheck]' started.
+2026-11-23 11:23:58.594669+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:58.595349+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+[WorkoutSound] Audio session configured successfully
+[WorkoutSound] found countdown-transition.caf
+[WorkoutSound] found auftakt.caf
+[WorkoutSound] found ausklang.caf
+[WorkoutSound] found last-round.caf
+2026-11-23 11:23:58.607866+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:58.608621+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:58.610151+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+2026-11-23 11:23:58.699334+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+2026-11-23 11:23:58.699797+0100 Lean Health Timer[83120:37725039] [AQ]        LoudnessManager.mm:1673  [static] IsHardwareSupported: no plist loaded, disallowing hardware
+[WorkoutSound] play auftakt (active: 1)
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:73: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayWorksWithoutDurationCheck] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:73: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayWorksWithoutDurationCheck] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPlayWorksWithoutDurationCheck]' passed (0.636 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPrepareFindsAllCues]' started.
+2026-11-23 11:23:59.206340+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]            SessionCore.mm:631   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+2026-11-23 11:23:59.207565+0100 Lean Health Timer[83120:37725039] [AVAudioSession Hang Risk]     AVAudioSession_iOS.mm:978   __delegate_identifier__:Performance Diagnostics__:::____message__:This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+[WorkoutSound] Audio session configured successfully
+[WorkoutSound] found countdown-transition.caf
+[WorkoutSound] found auftakt.caf
+[WorkoutSound] found ausklang.caf
+[WorkoutSound] found last-round.caf
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:27: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPrepareFindsAllCues] : This method can lead to UI unresponsiveness if called on the main thread while the audio session is active.
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerTests/WorkoutSoundPlayerTests.swift:27: warning: -[LeanHealthTimerTests.WorkoutSoundPlayerTests testPrepareFindsAllCues] : This method can lead to UI unresponsiveness if called on the main thread. Consider using the asynchronous activate/deactivate API instead for calls from the main thread.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testPrepareFindsAllCues]' passed (0.031 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testRoundAnnouncementFormatEN]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testRoundAnnouncementFormatEN]' passed (0.018 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testRoundAnnouncementFormatVariousValues]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testRoundAnnouncementFormatVariousValues]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testWorkoutSoundPlayerExists]' started.
+Test Case '-[LeanHealthTimerTests.WorkoutSoundPlayerTests testWorkoutSoundPlayerExists]' passed (0.004 seconds).
+Test Suite 'WorkoutSoundPlayerTests' passed at 2026-11-23 11:23:59.263.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 2.753 (2.761) seconds
+Test Suite 'LeanHealthTimerTests.xctest' passed at 2026-11-23 11:23:59.264.
+	 Executed 343 tests, with 0 failures (0 unexpected) in 18.593 (19.042) seconds
+Test Suite 'All tests' passed at 2026-11-23 11:23:59.264.
+	 Executed 343 tests, with 0 failures (0 unexpected) in 18.593 (19.048) seconds
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64-apple-ios17.0-simulator
+2026-11-23 11:24:01.419901+0100 Lean Health Timer[83120:37726496] [AMCP]          HALC_ProxyIOContext.cpp:1676  HALC_ProxyIOContext::IOWorkLoop: skipping cycle due to overload
+◇ Suite LeanHealthTimerTests started.
+◇ Test example() started.
+✔ Test example() passed after 0.012 seconds.
+✔ Suite LeanHealthTimerTests passed after 0.074 seconds.
+✔ Test run with 1 test in 1 suite passed after 1.528 seconds.
+2026-11-23 11:24:41.935 xcodebuild[82040:37718457] [MT] IDETestOperationsObserverDebug: 201.397 elapsed -- Testing started completed.
+2026-11-23 11:24:41.935 xcodebuild[82040:37718457] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-23 11:24:41.935 xcodebuild[82040:37718457] [MT] IDETestOperationsObserverDebug: 201.398 sec, +201.398 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-fmxuerhaktlgplcuvabrdwgkptxh/Logs/Test/Test-Lean Health Timer-2026.11.23_11-21-14-+0100.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started
+EXIT 0

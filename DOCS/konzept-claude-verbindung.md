@@ -304,7 +304,7 @@ Grundregeln, die der Dienst Claude zu Beginn jedes Gesprächs mitgibt:
 - **Apple Health.** Der Rückblick speist sich aus dem eigenen Tagebuch der App und nicht aus Apple Health. Die Serien-Zahlen stammen heute aus Health-Minuten; vor einer Öffnung für andere ist zu prüfen, ob sie anders berechnet oder weggelassen werden.
 - **Trennen.** „Verbindung trennen" löscht Konto, Abschrift und Lieferungen beim Dienst. Geliefertes bleibt auf dem Gerät.
 - **Claude kann wenig Schaden anrichten.** Es kann nur Bausteine liefern, nichts starten, nichts eintragen, nichts löschen, Eigenes nicht ändern. Längen- und Mengengrenzen gelten für alles, was angezeigt oder vorgelesen wird.
-- **Gesundheit.** Gelieferte Trainings tragen den Hinweis, dass sie von Claude zusammengestellt und kein medizinischer Rat sind.
+- **Gesundheit.** Gelieferte Trainings tragen den Hinweis, dass sie von Claude zusammengestellt und kein medizinischer Rat sind. *(PO 2026-11-22, #51 Schnitt 3: in der App entfällt dieser Hinweis — Henning erzeugt die Bausteine selbst mit Claude, der Hinweis ist übertrieben. Das Kennzeichen „von Claude“ bleibt.)*
 
 ## 13. Stufenplan
 

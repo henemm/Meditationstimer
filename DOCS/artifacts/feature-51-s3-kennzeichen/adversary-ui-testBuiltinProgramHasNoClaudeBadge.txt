@@ -1,0 +1,81 @@
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeKennzeichenUITests/testBuiltinProgramHasNoClaudeBadge
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-23 06:58:13 +0000] Status=2, isTerminal=NO, Elapsed=00:02.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-23 06:58:14 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-23 06:58:14 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-23 06:58:15 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-11-23 06:58:16 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:05.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 1 of 3).
+2026-11-23 07:59:03.433 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:238: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertEqual failed: ("3") is not equal to ("1") - Nur das gelieferte Programm darf eine Kapsel tragen
+2026-11-23 08:00:18.520 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (102.276 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 2 of 3).
+2026-11-23 08:00:44.688 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:238: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertEqual failed: ("3") is not equal to ("1") - Nur das gelieferte Programm darf eine Kapsel tragen
+2026-11-23 08:01:43.684 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (89.259 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 3 of 3).
+2026-11-23 08:02:13.986 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:238: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertEqual failed: ("3") is not equal to ("1") - Nur das gelieferte Programm darf eine Kapsel tragen
+2026-11-23 08:03:21.496 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (95.760 seconds).
+Test Suite 'ClaudeKennzeichenUITests' failed at 2026-11-23 08:03:49.663.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-23 08:03:49.669.
+Test Suite 'Selected tests' failed at 2026-11-23 08:03:49.669.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-23 07:59:03.433 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:238: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertEqual failed: ("3") is not equal to ("1") - Nur das gelieferte Programm darf eine Kapsel tragen
+2026-11-23 08:00:18.520 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (102.276 seconds).
+2026-11-23 08:00:44.688 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:238: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertEqual failed: ("3") is not equal to ("1") - Nur das gelieferte Programm darf eine Kapsel tragen
+2026-11-23 08:01:43.684 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (89.259 seconds).
+2026-11-23 08:02:13.986 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/cosmic-humming-steele/LeanHealthTimerUITests/ClaudeKennzeichenUITests.swift:238: error: -[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge] : XCTAssertEqual failed: ("3") is not equal to ("1") - Nur das gelieferte Programm darf eine Kapsel tragen
+2026-11-23 08:03:21.496 xcodebuild[81199:37092285] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' failed (95.760 seconds).
+Test Suite 'ClaudeKennzeichenUITests' failed at 2026-11-23 08:03:49.663.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-23 08:03:49.669.
+Test Suite 'Selected tests' failed at 2026-11-23 08:03:49.669.
+
