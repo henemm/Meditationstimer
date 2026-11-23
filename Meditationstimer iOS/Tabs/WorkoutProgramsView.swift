@@ -1248,8 +1248,14 @@ enum WorkoutProgramsView {
                     HStack(alignment: .center, spacing: 14) {
                         Text(set.emoji)
                             .font(.system(size: 42))
-                        Text(LocalizedStringKey(set.name))
-                            .font(.system(size: 22, weight: .bold))
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(LocalizedStringKey(set.name))
+                                .font(.system(size: 22, weight: .bold))
+                            if set.claude != nil {
+                                ClaudeOriginBadge(modifiedAt: set.modifiedAt,
+                                                  identifier: "workout.programRow.\(set.name).claudeBadge")
+                            }
+                        }
                         Spacer()
                         Button(action: play) {
                             Image(systemName: "play.fill")
@@ -1276,7 +1282,7 @@ enum WorkoutProgramsView {
                         Spacer()
 
                         // Info button (only if description exists)
-                        if set.description != nil, let showInfo = showInfo {
+                        if set.description != nil || set.claude != nil, let showInfo = showInfo {
                             Button(action: showInfo) {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 18, weight: .regular))
@@ -1284,6 +1290,7 @@ enum WorkoutProgramsView {
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel("Info")
+                            .accessibilityIdentifier("workout.programRow.\(set.name).info")
                         }
 
                         Button(action: edit) {
@@ -1330,8 +1337,7 @@ enum WorkoutProgramsView {
     struct PresetInfoSheet: View {
         let set: WorkoutSet
         @Environment(\.dismiss) private var dismiss
-        @State private var showExerciseSheet = false  // For exercise detail sheet
-        @State private var selectedExerciseName: String = ""  // Exercise name for sheet
+        @State private var exerciseSheet: ExerciseSheetWrapper?  // #90: item-based, first tap works
 
         private var recommendedUsage: String {
             // Extract recommended usage based on set name
@@ -1411,13 +1417,17 @@ enum WorkoutProgramsView {
                             }
                         }
 
-                        // Recommended Usage Section
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(NSLocalizedString("Recommended Application", comment: ""))
-                                .font(.headline)
-                                .foregroundStyle(.secondary)
-                            Text(recommendedUsage)
-                                .font(.body)
+                        // Recommended Usage Section (not for Claude items)
+                        if let origin = set.claude {
+                            ClaudeOriginSection(origin: origin)
+                        } else {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(NSLocalizedString("Recommended Application", comment: ""))
+                                    .font(.headline)
+                                    .foregroundStyle(.secondary)
+                                Text(recommendedUsage)
+                                    .font(.body)
+                            }
                         }
                     }
                     .padding()
@@ -1431,8 +1441,8 @@ enum WorkoutProgramsView {
                         }
                     }
                 }
-                .sheet(isPresented: $showExerciseSheet) {
-                    ExerciseDetailSheet(exerciseName: selectedExerciseName, exerciseId: ExerciseDatabase.exerciseId(forName: selectedExerciseName))
+                .sheet(item: $exerciseSheet) { item in
+                    ExerciseDetailSheet(exerciseName: item.name, exerciseId: item.exerciseId)
                 }
             }
         }
@@ -1450,8 +1460,7 @@ enum WorkoutProgramsView {
                     .font(.body)
                 Spacer()
                 Button {
-                    selectedExerciseName = phase.name
-                    showExerciseSheet = true
+                    exerciseSheet = ExerciseSheetWrapper(name: phase.name, exerciseId: phase.exerciseId)
                 } label: {
                     Image(systemName: "info.circle")
                         .foregroundStyle(Color.workoutViolet)
@@ -1466,6 +1475,7 @@ enum WorkoutProgramsView {
             .frame(minHeight: 44)  // Apple HIG minimum touch target
             .padding(.vertical, 4)
             .contentShape(Rectangle())  // Make entire row tappable
+            .onTapGesture { exerciseSheet = ExerciseSheetWrapper(name: phase.name, exerciseId: phase.exerciseId) }
         }
     }
 
@@ -1473,6 +1483,7 @@ enum WorkoutProgramsView {
     struct ExerciseSheetWrapper: Identifiable {
         let id = UUID()
         let name: String
+        var exerciseId: String? = nil
     }
 
     // MARK: - SetEditorView (create/edit workout set)

@@ -1,6 +1,13 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "von Claude" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "von Claude"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "from Claude"}}}},
+    "von Claude · angepasst" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "von Claude · angepasst"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "from Claude · edited"}}}},
+    "Von Claude" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Von Claude"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "From Claude"}}}},
+    "Geliefert am %@" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Geliefert am %@"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Delivered on %@"}}}},
+    "Paket „%@“" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Paket „%@“"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Package “%@”"}}}},
+    "Warum" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Warum"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Why"}}}},
+    "Von Claude geliefert am %@" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Von Claude geliefert am %@"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Delivered by Claude on %@"}}}},
     "" : {
 
     },

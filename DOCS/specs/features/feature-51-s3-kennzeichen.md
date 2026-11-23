@@ -182,6 +182,15 @@ Alle als Given/When/Then; „Unit“ = `LeanHealthTimerTests/ClaudeKennzeichenTe
 - [ ] RED-Beleg: Die neuen Tests scheitern zuerst, weil Lesefunktion, `badgeText`, Kapsel, Abschnitt und Kennungen fehlen und die Claude-Übungs-Info „nicht verfügbar“ zeigt
 - [ ] Durchlauf als Nutzer im Simulator vor Übergabe: Paket liefern, Kapsel sehen, Info öffnen, Übungs-Info beim ersten Tippen, Programm bearbeiten und „angepasst“ sehen, Screenshots Dunkel und Hell (kein Gerät von Henning)
 
+## Implementation Details
+
+Hinweise aus TDD RED (2026-11-22):
+
+- **Schritt-Zeile im Programm-Info (AC-10):** Der UI-Test sucht das erste Element, dessen `label` den Übungsnamen enthält, und tippt es an. Die Schritt-Zeile muss ein antippbares Element mit dem Übungsnamen im Label sein (wie heute `phaseRow`).
+- **Kapseltext (AC-4/5, Unit):** geprüft wird die Form (enthält „Claude“, nur die bearbeitete Variante enthält „·“ und beginnt mit dem Grundtext, kein Großbuchstaben-Schlüssel); die exakten Texte prüfen die UI-Tests.
+- **RED-Lauf der UI-Tests:** Unit- und UI-Tests bauen im selben Schema; solange die Unit-Datei nicht kompiliert, bauen auch die UI-Tests nicht. Der UI-RED-Beleg entstand deshalb in einer Wegwerfkopie ohne die Unit-Datei. Ab GREEN laufen beide normal.
+- Jeder UI-Test prüft zuerst `assertDelivered(<Name>)` (Baustein steht in der Liste), damit ein Fehler nie an einer abgelehnten Lieferung liegt.
+
 ## Definition of Done
 
 - [ ] Build grün für iOS, Watch und Widget

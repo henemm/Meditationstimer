@@ -226,18 +226,19 @@ final class ClaudeKennzeichenUITests: XCTestCase {
         assertOriginSection(header: "Von Claude", delivered: "13.11.2026", package: names.packageName, why: names.why)
     }
 
-    /// Verhalten: Eingebaute Programme (Tabata Classic) haben keine Kapsel; das gelieferte daneben schon.
+    /// Verhalten: Eingebaute Programme tragen keine Kapsel; das gelieferte daneben schon.
+    /// Unabhaengig vom Vorzustand des Simulators: Reste frueherer Laeufe (andere Claude-Programme)
+    /// duerfen eine Kapsel tragen und werden deshalb nicht mitgezaehlt.
     func testBuiltinProgramHasNoClaudeBadge() throws {
         let names = makeNames()
         launch(delivery: mixedDelivery(names))
         openTab(1)
         assertDelivered(names.program)
         scrollUntilHittable(element("workout.programRow.\(names.program).claudeBadge"), "Kapsel des gelieferten Programms")
-        scrollUntilHittable(element("workout.programRow.Tabata Classic.edit"), "Zeile Tabata Classic")
-        XCTAssertFalse(element("workout.programRow.Tabata Classic.claudeBadge").exists, "Eingebautes Programm darf keine Kapsel tragen")
-        XCTAssertEqual(app.descendants(matching: .any).matching(NSPredicate(
-            format: "identifier ENDSWITH '.claudeBadge' AND identifier BEGINSWITH 'workout.programRow.'")).count, 1,
-            "Nur das gelieferte Programm darf eine Kapsel tragen")
+        for builtin in ["Tabata Classic", "Core Circuit", "Full Body Burn", "Quick Burn"] {
+            scrollUntilHittable(element("workout.programRow.\(builtin).edit"), "Zeile \(builtin)")
+            XCTAssertFalse(element("workout.programRow.\(builtin).claudeBadge").exists, "Eingebautes Programm \(builtin) darf keine Kapsel tragen")
+        }
     }
 
     // MARK: - AC-8 und AC-9

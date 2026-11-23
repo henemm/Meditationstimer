@@ -180,8 +180,14 @@ enum AtemView {
                     HStack(alignment: .center, spacing: 14) {
                         Text(preset.emoji)
                             .font(.system(size: 42))
-                        Text(preset.name)
-                            .font(.system(size: 22, weight: .bold))
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(preset.name)
+                                .font(.system(size: 22, weight: .bold))
+                            if preset.claude != nil {
+                                ClaudeOriginBadge(modifiedAt: preset.modifiedAt,
+                                                  identifier: "atem.row.\(preset.name).claudeBadge")
+                            }
+                        }
                         Spacer()
                         Button(action: play) {
                             Image(systemName: "play.fill")
@@ -207,7 +213,7 @@ enum AtemView {
                         Spacer()
 
                         // Info button (only if description exists)
-                        if preset.description != nil, let showInfo = showInfo {
+                        if preset.description != nil || preset.claude != nil, let showInfo = showInfo {
                             Button(action: showInfo) {
                                 Image(systemName: "info.circle")
                                     .font(.system(size: 18, weight: .regular))
@@ -215,6 +221,7 @@ enum AtemView {
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel("Info")
+                            .accessibilityIdentifier("atem.row.\(preset.name).info")
                         }
 
                         Button(action: edit) {
@@ -317,13 +324,17 @@ enum AtemView {
                             }
                         }
 
-                        // Recommended Usage Section
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(NSLocalizedString("Recommended Application", comment: "Section header in preset info"))
-                                .font(.headline)
-                                .foregroundStyle(.secondary)
-                            Text(recommendedUsage)
-                                .font(.body)
+                        // Recommended Usage Section (not for Claude items)
+                        if let origin = preset.claude {
+                            ClaudeOriginSection(origin: origin)
+                        } else {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(NSLocalizedString("Recommended Application", comment: "Section header in preset info"))
+                                    .font(.headline)
+                                    .foregroundStyle(.secondary)
+                                Text(recommendedUsage)
+                                    .font(.body)
+                            }
                         }
                     }
                     .padding()
