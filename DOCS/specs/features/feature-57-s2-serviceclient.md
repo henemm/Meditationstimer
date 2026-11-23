@@ -162,6 +162,11 @@ Durchlauf-Nachweis („App benutzen“): Da nichts verdrahtet ist, besteht er au
 - **Watch und Widget.** Kompilieren `Meditationstimer iOS` nicht; der Build-Wächter bleibt in der Abschlussprüfung.
 - **Entitlement fehlt bis Schnitt 4.** Bewusst. Wer in Schnitt 4 die Verdrahtung beginnt, muss zuerst den Portal-Schritt aus #56 prüfen; das steht im Schnitt-4-Eintrag der Elternspec.
 
+## Implementation Details
+
+- **Lesart AC-10 (RED, 2026-11-23):** `.ephemeral` setzt `urlCache`, `httpCookieStorage` und `urlCredentialStorage` nicht auf `nil`, sondern auf eigene Speicher im Arbeitsspeicher (Probe: ephemeral Plattenkapazität 0, Cookie- und Zugangsspeicher nicht die geteilten; default 20000000 und beide geteilt). „Ohne“ in AC-10 heißt deshalb: kein Plattencache (`diskCapacity` 0 oder kein Cache) und nicht `HTTPCookieStorage.shared` / `URLCredentialStorage.shared`. So prüft der Test.
+- **API-Vertrag der Tests** (vom Vorbild Loose Ends): `protocol HTTPTransport: Sendable { func send(_:) async throws -> (Data, HTTPURLResponse) }`; `struct URLSessionTransport` mit `let session` (internal) und `init()`; `enum ServiceError: Error, Equatable`; `struct ServiceClient: Sendable` mit `init(baseURL:transport:)` (Standard `URLSessionTransport()`); `final class InMemorySessionStore: SessionStoring` mit `init(token: String? = nil)`, `var token`, `failNext(load:save:clear:)`.
+
 ## Definition of Done
 
 - [ ] ACs AC-1 bis AC-14 nachgewiesen, im Protokoll `Executed N tests` mit N ≥ 1
@@ -175,4 +180,5 @@ Durchlauf-Nachweis („App benutzen“): Da nichts verdrahtet ist, besteht er au
 
 ## Changelog
 
+- 2026-11-23 (RED): Lesart von AC-10 unter „Implementation Details“ festgehalten (Wortlaut der freigegebenen ACs unverändert).
 - 2026-11-23: Angelegt als Rundenspec für Schnitt 2, Runde 2a (`ServiceClient` mit Auth-Routen, `InMemorySessionStore`, `SessionStoreError.injected`). Schnitt 2 wegen der Zeilengrenze in 2a und 2b geteilt (PO-Regel #48); Entitlement Sign in with Apple von Schnitt 2 nach Schnitt 4 verschoben (Portal #56 offen, eine Entitlements-Datei für alle Konfigurationen).
