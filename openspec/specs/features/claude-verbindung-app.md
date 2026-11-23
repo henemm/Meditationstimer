@@ -46,7 +46,12 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
    Info-Plist-Eintrag (an im Debug-Bau und unter `enable-testing`, im Release nur bei echtem Bool `HHClaudeEnabled`);
    `InMemorySessionStore` und das Entitlement Sign in with Apple wandern nach Schnitt 2; Sitzung und Geräte-UUID teilen
    die Abfrage-Hilfe `KeychainEntry`.
-2. `ServiceClient` und `AccountState` (übernommen, Pfade angepasst), dazu `InMemorySessionStore` und das Entitlement.
+2. `ServiceClient` und `AccountState` (übernommen, Pfade angepasst), dazu `InMemorySessionStore`. Wegen der
+   Zeilengrenze in zwei Runden: **2a** `ServiceClient` (nur Auth-Routen `/auth/apple`, `/auth/logout`, `/auth/delete`)
+   und `InMemorySessionStore` (`docs/specs/features/feature-57-s2-serviceclient.md`), **2b** `AccountState` ohne
+   `withSession` (das kommt mit Schnitt 4). Das Entitlement Sign in with Apple wandert nach Schnitt 4.
 3. Abschrift Fassung 1 + Goldendateien + CI-Schritt.
-4. Abgleich und Auslöser, in den App-Start eingehängt.
+4. Abgleich und Auslöser, in den App-Start eingehängt; dazu `withSession`, die Lieferungs-Routen des `ServiceClient`
+   und das Entitlement Sign in with Apple, zusammen mit dem Portal-Schritt aus #56 (Fähigkeit an der App-ID), damit
+   Gerätebauten aus Xcode nicht an einem Profil ohne die Fähigkeit scheitern.
 5. Einstellungsseite mit Texten DE/EN und UI-Test.
