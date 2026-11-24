@@ -3,7 +3,7 @@
 //  LeanHealthTimerTests
 //
 //  TDD RED #117: Die 10 mitgelieferten Vorgaben (4 Programme, 6 Atemuebungen) tragen feste Kennungen.
-//  Spec: DOCS/specs/features/feature-117-stabile-kennungen.md (AC-1 bis AC-8; AC-9 = bestehende Suite).
+//  Spec: DOCS/specs/features/feature-117-stabile-kennungen.md (AC-1 bis AC-8 und AC-10; AC-9 = bestehende Suite).
 //
 //  Die erwarteten UUIDs stehen als Literale hier im Test. Jeder Testlauf ist ein neuer Prozess; eine je Prozess
 //  neu erzeugte Zufallskennung faellt daher sofort durch. Verglichen wird nur ueber id/name.
@@ -213,5 +213,47 @@ final class StableDefaultIdsTests: XCTestCase {
         for g in goldenPresets {
             XCTAssertEqual(presets.first { $0.name == g.name }?.id.uuidString.lowercased(), g.id, "geschriebene Kennung \(g.name)")
         }
+    }
+
+    // MARK: - AC-10: umbenannte Vorgabe
+
+    /// Verhalten: Ein umbenanntes Programm mit Golden-Kennung wird nicht unter dem Originalnamen erneut angehaengt.
+    func testAC10_UmbenanntesProgrammWirdNichtErneutAngehaengt() {
+        let stored = goldenSets.map { g in
+            program(g.name == "Quick Burn" ? "Mein Burn" : g.name, id: UUID(uuidString: g.id)!)
+        }
+        let quickId = UUID(uuidString: "2b86f1e7-04ca-4d92-a5e3-7c18d9b36f04")!
+        let before = stored.first { $0.id == quickId }!
+
+        let result = WorkoutSet.migratingPresets(stored, presets: defaultWorkoutSets)
+
+        XCTAssertEqual(result.count, 4, "Liste muss 4 Eintraege behalten, nicht 5")
+        XCTAssertEqual(Set(result.map(\.id)).count, result.count, "jede Kennung genau einmal")
+        XCTAssertNil(result.first { $0.name == "Quick Burn" }, "Originalname darf nicht erneut angehaengt werden")
+        let kept = result.first { $0.id == quickId }
+        XCTAssertEqual(kept?.name, "Mein Burn", "umbenannte Vorgabe behaelt ihren Namen")
+        XCTAssertEqual(kept?.emoji, before.emoji, "Emoji unveraendert")
+        XCTAssertEqual(kept?.repetitions, before.repetitions, "Wiederholungen unveraendert")
+        XCTAssertEqual(kept?.phases.count, before.phases.count, "Phasen unveraendert")
+    }
+
+    /// Verhalten: Eine umbenannte Atemuebung mit Golden-Kennung wird nicht unter dem Originalnamen erneut angehaengt.
+    func testAC10_UmbenannteAtemuebungWirdNichtErneutAngehaengt() {
+        let stored = goldenPresets.map { g in
+            breath(g.name == "Box Breathing" ? "Mein Atem" : g.name, id: UUID(uuidString: g.id)!)
+        }
+        let boxId = UUID(uuidString: "e1d5a3c9-6f28-47b0-9d14-b5a07e8c2f65")!
+        let before = stored.first { $0.id == boxId }!
+
+        let result = MeditationTab.migratingPresets(stored)
+
+        XCTAssertEqual(result.count, 6, "Liste muss 6 Eintraege behalten, nicht 7")
+        XCTAssertEqual(Set(result.map(\.id)).count, result.count, "jede Kennung genau einmal")
+        XCTAssertNil(result.first { $0.name == "Box Breathing" }, "Originalname darf nicht erneut angehaengt werden")
+        let kept = result.first { $0.id == boxId }
+        XCTAssertEqual(kept?.name, "Mein Atem", "umbenannte Vorgabe behaelt ihren Namen")
+        XCTAssertEqual(kept?.emoji, before.emoji, "Emoji unveraendert")
+        XCTAssertEqual(kept?.inhale, before.inhale, "Einatmen unveraendert")
+        XCTAssertEqual(kept?.repetitions, before.repetitions, "Wiederholungen unveraendert")
     }
 }
