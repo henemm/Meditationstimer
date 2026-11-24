@@ -50,6 +50,8 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
    Zeilengrenze in zwei Runden: **2a** `ServiceClient` (nur Auth-Routen `/auth/apple`, `/auth/logout`, `/auth/delete`)
    und `InMemorySessionStore` (`docs/specs/features/feature-57-s2-serviceclient.md`), **2b** `AccountState` ohne
    `withSession` (das kommt mit Schnitt 4). Das Entitlement Sign in with Apple wandert nach Schnitt 4.
+   **Erledigt 24.11.2026** (2a: `feature-57-s2-serviceclient.md`; 2b: `docs/specs/features/feature-57-s2b-accountstate.md`,
+   157 Zeilen statt Zielwert 125–140, noch nicht verdrahtet).
 3. Abschrift Fassung 1 + Goldendateien + CI-Schritt.
 4. Abgleich und Auslöser, in den App-Start eingehängt; dazu `withSession`, die Lieferungs-Routen des `ServiceClient`
    und das Entitlement Sign in with Apple, zusammen mit dem Portal-Schritt aus #56 (Fähigkeit an der App-ID), damit
