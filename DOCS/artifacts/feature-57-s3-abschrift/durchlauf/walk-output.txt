@@ -1,0 +1,4 @@
+Test Case '-[LeanHealthTimerUITests.WalkS3UITests testWalk]' passed (231.289 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 231.289 (231.327) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 231.289 (231.336) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 231.289 (231.369) seconds
