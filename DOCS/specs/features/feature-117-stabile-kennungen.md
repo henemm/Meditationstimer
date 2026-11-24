@@ -43,7 +43,9 @@ App-Code (Grenze 250 Zeilen):
 | `Meditationstimer iOS/Tabs/WorkoutTab.swift` | ändern | `defaultWorkoutSets`: je Programm `id: UUID(uuidString: "…")!` (4), Kommentar „Kennungen nie ändern“ | +6 |
 | `Meditationstimer iOS/Tabs/MeditationTab.swift` | ändern | `defaultPresets`: je Atemübung `id: UUID(uuidString: "…")!` (6), Kommentar | +7 |
 
-Summe App-Code etwa 13 Zeilen. Nicht zum Budget:
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | ändern | `migratingPresets`: Anhängen nur, wenn weder Name noch Kennung vorhanden (AC-10) | ±1 |
+
+`MeditationTab.migratingPresets` bekommt dieselbe Bedingung (±1 Zeile). Summe App-Code etwa 15 Zeilen. Nicht zum Budget:
 
 | Datei | Änderung |
 |---|---|
@@ -100,7 +102,7 @@ Verworfene Alternativen:
 
 - Input: Die App liest Vorgaben aus dem Code (kein Schlüssel, Schlüssel unlesbar, oder Anhängen einer fehlenden Vorgabe durch `migratingPresets`).
 - Output: Jede Vorgabe trägt ihre feste Kennung aus der Tabelle; die Abschrift zeigt `own.<kennung>` identisch über App-Starts.
-- Side effects: `ClaudeStore.apply` schreibt bei `.missing` künftig die festen Kennungen in den Speicher. Gespeicherte Listen bleiben unverändert, auch Vorgaben darin mit zufälliger alter Kennung. Hat Henning eine Vorgabe aus seiner gespeicherten Liste gelöscht, hängt `migratingPresets` sie wie bisher wieder an, jetzt mit fester Kennung. Doppelte Kennungen sind ausgeschlossen, weil nur angehängt wird, wenn der Name fehlt.
+- Side effects: `ClaudeStore.apply` schreibt bei `.missing` künftig die festen Kennungen in den Speicher. Gespeicherte Listen bleiben unverändert, auch Vorgaben darin mit zufälliger alter Kennung. Hat Henning eine Vorgabe aus seiner gespeicherten Liste gelöscht, hängt `migratingPresets` sie wie bisher wieder an, jetzt mit fester Kennung. Doppelte Kennungen sind ausgeschlossen: `migratingPresets` (Programme und Atemübungen) hängt eine Vorgabe nur an, wenn weder ihr Name noch ihre Kennung in der Liste vorkommt. Eine umbenannte Vorgabe zählt damit als vorhanden und wird nicht erneut angehängt (PO-Entscheidung 2026-11-24, aus Adversary-Befund F001).
 
 ## Acceptance Criteria
 
@@ -112,6 +114,7 @@ Verworfene Alternativen:
 - **AC-6 (Abschrift, Anhängen):** Given eine gespeicherte Liste, der eine Vorgabe fehlt, und `migratingPresets` hängt sie an, When die Abschrift gebaut wird, Then steht für die angehängte Vorgabe `own.<golden-uuid>`.
 - **AC-7 (gespeichert bleibt):** Given eine gespeicherte Liste mit zufälligen Kennungen (auch für Vorgaben mit Standardnamen), When sie geladen und in die Abschrift übernommen wird, Then bleiben diese Kennungen unverändert, nichts wird auf Golden-Werte umgeschrieben und es entsteht kein Duplikat.
 - **AC-8 (apply bei .missing):** Given Zustand `.missing`, When `ClaudeStore.apply` etwas anwendet, Then enthält die geschriebene Liste die Vorgaben mit den Golden-Kennungen.
+- **AC-10 (umbenannte Vorgabe):** Given eine gespeicherte Liste, in der eine Vorgabe ihre Golden-Kennung trägt, aber umbenannt ist (z. B. „Mein Burn“ mit der Kennung von „Quick Burn“), When `migratingPresets` (Programme bzw. Atemübungen) läuft, Then wird die Vorgabe mit dem Originalnamen nicht erneut angehängt, die Liste enthält jede Kennung genau einmal und die umbenannte Vorgabe bleibt unverändert.
 - **AC-9 (Regression):** Alle bestehenden Unit-Tests (u. a. `ClaudeStoreTests`, `TranscriptBuilderTests`, `WorkoutPhaseMigrationTests`) bleiben grün.
 
 ## Test Plan
@@ -127,6 +130,7 @@ Nachweis „über zwei Starts gleich“: Ein `static let` wird je Prozess einmal
 - [ ] Unit Test AC-6: gespeicherte Liste mit fehlender Vorgabe, Abschrift zeigt für die angehängte `own.<golden>`
 - [ ] Unit Test AC-7: gespeicherte Liste mit zufälligen Kennungen bleibt unverändert, kein Duplikat
 - [ ] Unit Test AC-8: `apply` bei `.missing` schreibt feste Kennungen
+- [ ] Unit Test AC-10: umbenannte Vorgabe mit Golden-Kennung (je ein Programm und eine Atemübung) wird von `migratingPresets` nicht erneut angehängt, Kennungen eindeutig
 - [ ] Bestehende Unit-Suite komplett grün (AC-9)
 - UI-Test: nicht nötig. Es gibt keine sichtbare Änderung; Kennungen erscheinen nirgends in der Oberfläche, nur in der Abschrift, die Unit-Tests auf Datenebene prüfen. Die Abschrift selbst wird ohne Sitzung nicht gesendet (#57 S4).
 
@@ -141,14 +145,15 @@ Zusätzlich nach Implementierung der übliche Durchlauf der App im Simulator (Vo
 
 ## Definition of Done
 
-- [ ] AC-1 bis AC-9 nachgewiesen, im Protokoll `Executed N tests` mit N ≥ 1
+- [ ] AC-1 bis AC-10 nachgewiesen, im Protokoll `Executed N tests` mit N ≥ 1
 - [ ] Vollständige Unit-Suite und UI-Suite grün
 - [ ] Build grün für iOS (Simulator `iPhone 17 Pro`, iOS 27.2), Watch und Widget
-- [ ] Produktiv-Diff nur in `WorkoutTab.swift` und `MeditationTab.swift`, ≤ 250 Zeilen
+- [ ] Produktiv-Diff nur in `WorkoutTab.swift`, `MeditationTab.swift` und `WorkoutProgramsView.swift`, ≤ 250 Zeilen
 - [ ] Durchlauf im Simulator: Programm- und Atemliste zeigen dieselben Vorgaben wie vorher, mit Screenshot
 - [ ] Adversary-Prüfung: Verdict VERIFIED
 
 ## Changelog
 
 - 2026-11-24: Initial spec created
+- 2026-11-24: Adversary-Befund F001 (doppelte Kennung nach Umbenennen einer Vorgabe): PO entscheidet „umbenannte Vorgabe zählt als vorhanden“; AC-10, `migratingPresets` prüft Name und Kennung, Scope um `WorkoutProgramsView.swift` erweitert
 - 2026-11-24: Abschnitte Dependencies, Definition of Done und ADR-Zeile nach Validierung ergänzt

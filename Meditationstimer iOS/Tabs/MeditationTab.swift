@@ -67,18 +67,19 @@ struct MeditationTab: View {
     private let emojiChoices: [String] = ["🧘","🪷","🌬️","🫁","🌿","🌀","✨","🔷","🔶","💠"]
 
     // Default presets (same as AtemView)
+    // Feste Kennungen (#117) — nie ändern, Claude erkennt Vorgaben daran wieder.
     static let defaultPresets: [AtemView.Preset] = [
-        .init(name: "Box Breathing", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
+        .init(id: UUID(uuidString: "e1d5a3c9-6f28-47b0-9d14-b5a07e8c2f65")!, name: "Box Breathing", emoji: "🧘", inhale: 4, holdIn: 4, exhale: 4, holdOut: 4, repetitions: 10,
               description: NSLocalizedString("Navy SEAL technique for stress reduction. Proven effective at lowering cortisol levels.", comment: "")),
-        .init(name: "Calming Breath", emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
+        .init(id: UUID(uuidString: "73c9b0f4-8a2e-4e61-bf05-1d6c4a97e836")!, name: "Calming Breath", emoji: "🌬️", inhale: 4, holdIn: 0, exhale: 6, holdOut: 0, repetitions: 10,
               description: NSLocalizedString("Activates the parasympathetic nervous system through extended exhalation. Ideal for relaxation.", comment: "")),
-        .init(name: "Coherent Breathing", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
+        .init(id: UUID(uuidString: "a8f24d61-3b97-4c0a-8e72-f40b6d1359c7")!, name: "Coherent Breathing", emoji: "💠", inhale: 5, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 12,
               description: NSLocalizedString("Optimizes heart coherence (HRV). Most scientifically studied for cardiovascular health. 6 breaths/min.", comment: "")),
-        .init(name: "Deep Calm", emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
+        .init(id: UUID(uuidString: "0d6e9b35-c7a1-4f83-a248-8b9e31f5d078")!, name: "Deep Calm", emoji: "🪷", inhale: 7, holdIn: 0, exhale: 5, holdOut: 0, repetitions: 8,
               description: NSLocalizedString("Deep calming through gentle rhythm. Promotes mental clarity.", comment: "")),
-        .init(name: "Relaxing Breath", emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
+        .init(id: UUID(uuidString: "4f91c7e8-52d0-4b3a-9c86-a2e7d0481b59")!, name: "Relaxing Breath", emoji: "🌿", inhale: 4, holdIn: 7, exhale: 8, holdOut: 0, repetitions: 10,
               description: NSLocalizedString("Dr. Andrew Weil's sleep technique. Based on Pranayama, calming for stress and anxiety.", comment: "")),
-        .init(name: "Rhythmic Breath", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
+        .init(id: UUID(uuidString: "b3a07f52-9e64-4d1c-85f9-3c5d82e6a41a")!, name: "Rhythmic Breath", emoji: "🫁", inhale: 6, holdIn: 3, exhale: 6, holdOut: 3, repetitions: 8,
               description: NSLocalizedString("Balanced rhythm with brief holds. Balance between activation and relaxation.", comment: ""))
     ]
 
