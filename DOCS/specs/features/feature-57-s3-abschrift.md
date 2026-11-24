@@ -217,3 +217,4 @@ Durchlauf-Nachweis („App benutzen“): Da nichts verdrahtet ist, besteht er au
 ## Changelog
 
 - 2026-11-24: Angelegt als Schnittspec für #57 Schnitt 3 (Abschrift Fassung 1, Goldendateien `empty`, `full`, `limits`, Validator-Test). Entscheidungen aus der Analyse übernommen: Variante B (Übungen), P1 (Programme und Atemübungen), Klemmen und Kürzen, `noEffect` wird `accepted`, Determinismus, `readCurrent` ohne Seiteneffekt.
+- 2026-11-24 (GREEN, PO-Freigabe): AC-8 ging von neun Katalog-Kategorien aus; der Katalog (67 Übungen) hat keine Übung „Kraft“. `testKategorienAbbildung` prüft für den Katalog nur noch, dass jede vorkommende Kategorie richtig abgebildet wird; „strength“ ist über den Claude-Teil abgedeckt. Kein App-Code geändert.

@@ -393,7 +393,11 @@ final class TranscriptBuilderTests: XCTestCase {
             XCTAssertEqual(byId(ex, info.id)["category"] as? String, expected, info.id)
             seen.insert(info.category.rawValue)
         }
-        XCTAssertEqual(seen, Set(catalogCategoryTable.keys), "Katalog deckt nicht alle neun Kategorien ab")
+        // Der Katalog enthält keine Übung der Kategorie „Kraft“ (Stand 67 Übungen); geprüft wird daher nur,
+        // dass jede vorkommende Kategorie in der Tabelle steht. „strength“ deckt der Claude-Teil unten ab.
+        // Berichtigt in GREEN mit PO-Freigabe 2026-11-24 (#57 S3).
+        XCTAssertTrue(seen.isSubset(of: Set(catalogCategoryTable.keys)), "Unbekannte Katalog-Kategorie")
+        XCTAssertFalse(seen.isEmpty, "Katalog leer")
         for c in english { XCTAssertEqual(byId(ex, "claude.kat-\(c.lowercased())")["category"] as? String, c) }
     }
 

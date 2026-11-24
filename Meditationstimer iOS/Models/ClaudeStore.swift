@@ -82,6 +82,13 @@ enum ClaudeStore {
         return ClaudeStoredState()
     }
 
+    /// #57 S3: Liest `claudeState` ohne Sicherung und ohne Schreiben; unlesbar -> leer und `unreadable`.
+    static func readState(from defaults: UserDefaults) -> (state: ClaudeStoredState, unreadable: Bool) {
+        guard let data = defaults.data(forKey: stateKey) else { return (ClaudeStoredState(), false) }
+        guard let state = try? JSONDecoder().decode(ClaudeStoredState.self, from: data) else { return (ClaudeStoredState(), true) }
+        return (state, false)
+    }
+
     /// #51 S3: Gelieferte Uebung (`claude.*`) aus dem Zustand; Katalog bleibt Sache von `ExerciseDatabase`.
     private static func storedExerciseEntry(id: String, defaults: UserDefaults) -> ClaudeStoredExercise? {
         guard id.hasPrefix("claude.") else { return nil }

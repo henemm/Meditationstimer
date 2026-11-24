@@ -52,7 +52,7 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
    `withSession` (das kommt mit Schnitt 4). Das Entitlement Sign in with Apple wandert nach Schnitt 4.
    **Erledigt 24.11.2026** (2a: `feature-57-s2-serviceclient.md`; 2b: `docs/specs/features/feature-57-s2b-accountstate.md`,
    157 Zeilen statt Zielwert 125–140, noch nicht verdrahtet).
-3. Abschrift Fassung 1 + Goldendateien + CI-Schritt.
+3. Abschrift Fassung 1 + Goldendateien + CI-Schritt. **Erledigt 24.11.2026** (`DOCS/specs/features/feature-57-s3-abschrift.md`, noch nicht verdrahtet).
 4. Abgleich und Auslöser, in den App-Start eingehängt; dazu `withSession`, die Lieferungs-Routen des `ServiceClient`
    und das Entitlement Sign in with Apple, zusammen mit dem Portal-Schritt aus #56 (Fähigkeit an der App-ID), damit
    Gerätebauten aus Xcode nicht an einem Profil ohne die Fähigkeit scheitern.

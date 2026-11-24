@@ -1,0 +1,564 @@
+{
+  "breaths" : [
+    {
+      "description" : "Zum Runterkommen.",
+      "exhaleSeconds" : 6,
+      "holdInSeconds" : 2,
+      "holdOutSeconds" : 1,
+      "id" : "own.b1b2c3d4-0000-4000-8000-00000000000b",
+      "inhaleSeconds" : 4,
+      "name" : "Meine Ruhe",
+      "origin" : "own",
+      "rounds" : 8,
+      "symbol" : "🪷"
+    },
+    {
+      "deliveredAt" : "2026-11-12T18:00:00Z",
+      "description" : "Verlängerte Ausatmung.",
+      "exhaleSeconds" : 6,
+      "holdInSeconds" : 0,
+      "holdOutSeconds" : 0,
+      "id" : "claude.abendatem-k2m9",
+      "inhaleSeconds" : 4,
+      "name" : "Abendatem",
+      "origin" : "claude",
+      "packageId" : "claude.ruecken-november",
+      "packageName" : "Rücken November",
+      "revision" : 1,
+      "rounds" : 10,
+      "state" : "active",
+      "symbol" : "✨",
+      "why" : "Gegen Anspannung am Abend."
+    },
+    {
+      "deliveredAt" : "2026-11-14T06:00:00Z",
+      "exhaleSeconds" : 5,
+      "holdInSeconds" : 5,
+      "holdOutSeconds" : 5,
+      "id" : "claude.morgenatem-p4r8",
+      "inhaleSeconds" : 5,
+      "name" : "Morgenatem",
+      "origin" : "claude",
+      "revision" : 2,
+      "rounds" : 6,
+      "state" : "adapted",
+      "symbol" : "🌀",
+      "why" : "Wach werden."
+    }
+  ],
+  "deliveries" : [
+    {
+      "deliveryId" : "lieferung-0001",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-0002",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-0003",
+      "outcome" : "rejected"
+    }
+  ],
+  "exercises" : [
+    {
+      "category" : "fullBody",
+      "id" : "builtin.burpees",
+      "name" : "Burpees",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.mountain-climbers",
+      "name" : "Mountain Climbers",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.high-knees",
+      "name" : "High Knees",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.hampelmaenner",
+      "name" : "Hampelmänner",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.butt-kicks",
+      "name" : "Butt Kicks",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.marschieren-auf-der-stelle",
+      "name" : "Marschieren auf der Stelle",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.jump-kniebeugen",
+      "name" : "Jump-Kniebeugen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.planke",
+      "name" : "Planke",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.planke-knie",
+      "name" : "Planke (Knie)",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.seitliche-planke-links",
+      "name" : "Seitliche Planke links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.seitliche-planke-rechts",
+      "name" : "Seitliche Planke rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.fahrrad-crunches",
+      "name" : "Fahrrad-Crunches",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.beinheben",
+      "name" : "Beinheben",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.russian-twists",
+      "name" : "Russian Twists",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.kniebeugen",
+      "name" : "Kniebeugen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.ausfallschritte",
+      "name" : "Ausfallschritte",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.reverse-ausfallschritte",
+      "name" : "Reverse-Ausfallschritte",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.ausfallschritte-gehend",
+      "name" : "Ausfallschritte gehend",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.glute-bridges",
+      "name" : "Glute Bridges",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.einbeiniges-kreuzheben-links",
+      "name" : "Einbeiniges Kreuzheben links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.einbeiniges-kreuzheben-rechts",
+      "name" : "Einbeiniges Kreuzheben rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.bulgarische-split-kniebeugen-links",
+      "name" : "Bulgarische Split-Kniebeugen links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.bulgarische-split-kniebeugen-rechts",
+      "name" : "Bulgarische Split-Kniebeugen rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.wadenheben",
+      "name" : "Wadenheben",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.knieheben-stehend",
+      "name" : "Knieheben stehend",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.liegestuetze",
+      "name" : "Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.wandliegestuetze",
+      "name" : "Wandliegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.diamond-liegestuetze",
+      "name" : "Diamond-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.breite-liegestuetze",
+      "name" : "Breite Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.pike-liegestuetze",
+      "name" : "Pike-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "fullBody",
+      "id" : "builtin.planke-zu-herabschauender-hund",
+      "name" : "Planke zu Herabschauender Hund",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.quadrizeps-dehnung-links",
+      "name" : "Quadrizeps-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.quadrizeps-dehnung-rechts",
+      "name" : "Quadrizeps-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hamstring-dehnung-links",
+      "name" : "Hamstring-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hamstring-dehnung-rechts",
+      "name" : "Hamstring-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hueftbeuger-dehnung-links",
+      "name" : "Hüftbeuger-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hueftbeuger-dehnung-rechts",
+      "name" : "Hüftbeuger-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.waden-dehnung-links",
+      "name" : "Waden-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.waden-dehnung-rechts",
+      "name" : "Waden-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.schmetterlings-dehnung",
+      "name" : "Schmetterlings-Dehnung",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cooldown",
+      "id" : "builtin.kindspose",
+      "name" : "Kindspose",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.beinpendel",
+      "name" : "Beinpendel",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.hueftkreisen",
+      "name" : "Hüftkreisen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.hollow-hold",
+      "name" : "Hollow Hold",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.dead-bug",
+      "name" : "Dead Bug",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.flutter-kicks",
+      "name" : "Flutter Kicks",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.v-ups",
+      "name" : "V-Ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.sit-ups",
+      "name" : "Sit-ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.crunches",
+      "name" : "Crunches",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.archer-liegestuetze",
+      "name" : "Archer-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.decline-liegestuetze",
+      "name" : "Decline-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.dips",
+      "name" : "Dips",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.klimmzuege",
+      "name" : "Klimmzüge",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.chin-ups",
+      "name" : "Chin-ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.australische-klimmzuege",
+      "name" : "Australische Klimmzüge",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.umgekehrtes-rudern",
+      "name" : "Umgekehrtes Rudern",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.step-ups",
+      "name" : "Step-ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.wandsitzen",
+      "name" : "Wandsitzen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.box-jumps",
+      "name" : "Box Jumps",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.skater-hops",
+      "name" : "Skater Hops",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.seilspringen",
+      "name" : "Seilspringen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.herabschauender-hund",
+      "name" : "Herabschauender Hund",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.cobra-dehnung",
+      "name" : "Kobra-Dehnung",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.cat-cow",
+      "name" : "Katze-Kuh",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.sitzende-vorbeuge",
+      "name" : "Vorbeuge im Sitzen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.schulter-dehnung-links",
+      "name" : "Schulter-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.schulter-dehnung-rechts",
+      "name" : "Schulter-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "deliveredAt" : "2026-11-12T18:00:00Z",
+      "effect" : "Stärkt Rücken und Rumpf.",
+      "id" : "claude.vierfuessler-diagonal-x3f9k2",
+      "instructions" : "Arm und Bein diagonal strecken.",
+      "name" : "Vierfüßler diagonal",
+      "nameEn" : "Bird Dog",
+      "notes" : "Langsam bleiben.",
+      "origin" : "claude",
+      "packageId" : "claude.ruecken-november",
+      "packageName" : "Rücken November",
+      "revision" : 1,
+      "state" : "active",
+      "why" : "Fehlte für Rücken A."
+    },
+    {
+      "category" : "upperBody",
+      "deliveredAt" : "2026-11-13T10:00:00Z",
+      "effect" : "Kräftigt die seitliche Rumpfmuskulatur.",
+      "id" : "claude.seitstuetz-k8m2",
+      "instructions" : "Auf den Unterarm stützen.",
+      "name" : "Seitstütz",
+      "origin" : "claude",
+      "revision" : 2,
+      "state" : "active"
+    }
+  ],
+  "generatedAt" : "2026-11-24T08:30:00Z",
+  "programs" : [
+    {
+      "description" : "Kurzes Rumpftraining.\nZweite Zeile.",
+      "id" : "own.a1b2c3d4-0000-4000-8000-00000000000a",
+      "name" : "Kern 20",
+      "origin" : "own",
+      "rounds" : 3,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "hint" : "Arm/Bein diagonal, ruhig atmen",
+          "restSeconds" : 15,
+          "workSeconds" : 45
+        },
+        {
+          "exerciseId" : "own.schulterkreisen-1a",
+          "restSeconds" : 0,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "deliveredAt" : "2026-11-12T18:00:00Z",
+      "description" : "Kurz für den Rücken.",
+      "id" : "claude.kern-runde",
+      "name" : "Rücken A",
+      "origin" : "claude",
+      "packageId" : "claude.ruecken-november",
+      "packageName" : "Rücken November",
+      "revision" : 2,
+      "rounds" : 2,
+      "state" : "active",
+      "steps" : [
+        {
+          "exerciseId" : "claude.vierfuessler-diagonal-x3f9k2",
+          "hint" : "Je Seite 8 Mal",
+          "restSeconds" : 15,
+          "workSeconds" : 40
+        },
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 15,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "🧘",
+      "why" : "Zwei kurze Einheiten."
+    },
+    {
+      "deliveredAt" : "2026-11-13T07:15:30Z",
+      "id" : "claude.ruecken-b-7hq2mz",
+      "name" : "Rücken B",
+      "origin" : "claude",
+      "revision" : 3,
+      "rounds" : 1,
+      "state" : "adapted",
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 10,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "🌿",
+      "why" : "Angepasst an dein Training."
+    }
+  ],
+  "version" : 1
+}

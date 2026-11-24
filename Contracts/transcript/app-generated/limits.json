@@ -1,0 +1,1230 @@
+{
+  "breaths" : [
+    {
+      "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "exhaleSeconds" : 60,
+      "holdInSeconds" : 60,
+      "holdOutSeconds" : 60,
+      "id" : "own.00000000-0000-4000-8000-000000000021",
+      "inhaleSeconds" : 60,
+      "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "origin" : "own",
+      "rounds" : 99,
+      "symbol" : "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥"
+    },
+    {
+      "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "exhaleSeconds" : 1,
+      "holdInSeconds" : 0,
+      "holdOutSeconds" : 0,
+      "id" : "own.00000000-0000-4000-8000-000000000022",
+      "inhaleSeconds" : 1,
+      "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "origin" : "own",
+      "rounds" : 1,
+      "symbol" : "🌬️"
+    },
+    {
+      "exhaleSeconds" : 60,
+      "holdInSeconds" : 60,
+      "holdOutSeconds" : 60,
+      "id" : "own.00000000-0000-4000-8000-000000000023",
+      "inhaleSeconds" : 60,
+      "name" : "Oben",
+      "origin" : "own",
+      "rounds" : 99,
+      "symbol" : "🌬️"
+    },
+    {
+      "description" : "AB\nC",
+      "exhaleSeconds" : 4,
+      "holdInSeconds" : 4,
+      "holdOutSeconds" : 4,
+      "id" : "own.00000000-0000-4000-8000-000000000025",
+      "inhaleSeconds" : 4,
+      "name" : "AtemSteuerzeichen",
+      "origin" : "own",
+      "rounds" : 5,
+      "symbol" : "🌬️"
+    }
+  ],
+  "deliveries" : [
+    {
+      "deliveryId" : "lieferung-002",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-003",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-004",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-005",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-006",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-007",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-008",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-009",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-010",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-011",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-012",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-013",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-014",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-015",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-016",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-017",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-018",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-019",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-020",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-021",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-022",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-023",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-024",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-025",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-026",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-027",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-028",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-029",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-030",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-031",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-032",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-033",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-034",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-035",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-036",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-037",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-038",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-039",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-040",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-041",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-042",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-043",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-044",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-045",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-046",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-047",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-048",
+      "outcome" : "rejected"
+    },
+    {
+      "deliveryId" : "lieferung-049",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-050",
+      "outcome" : "accepted"
+    },
+    {
+      "deliveryId" : "lieferung-051",
+      "outcome" : "rejected"
+    }
+  ],
+  "exercises" : [
+    {
+      "category" : "fullBody",
+      "id" : "builtin.burpees",
+      "name" : "Burpees",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.mountain-climbers",
+      "name" : "Mountain Climbers",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.high-knees",
+      "name" : "High Knees",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.hampelmaenner",
+      "name" : "Hampelmänner",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.butt-kicks",
+      "name" : "Butt Kicks",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.marschieren-auf-der-stelle",
+      "name" : "Marschieren auf der Stelle",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.jump-kniebeugen",
+      "name" : "Jump-Kniebeugen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.planke",
+      "name" : "Planke",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.planke-knie",
+      "name" : "Planke (Knie)",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.seitliche-planke-links",
+      "name" : "Seitliche Planke links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.seitliche-planke-rechts",
+      "name" : "Seitliche Planke rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.fahrrad-crunches",
+      "name" : "Fahrrad-Crunches",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.beinheben",
+      "name" : "Beinheben",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.russian-twists",
+      "name" : "Russian Twists",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.kniebeugen",
+      "name" : "Kniebeugen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.ausfallschritte",
+      "name" : "Ausfallschritte",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.reverse-ausfallschritte",
+      "name" : "Reverse-Ausfallschritte",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.ausfallschritte-gehend",
+      "name" : "Ausfallschritte gehend",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.glute-bridges",
+      "name" : "Glute Bridges",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.einbeiniges-kreuzheben-links",
+      "name" : "Einbeiniges Kreuzheben links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.einbeiniges-kreuzheben-rechts",
+      "name" : "Einbeiniges Kreuzheben rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.bulgarische-split-kniebeugen-links",
+      "name" : "Bulgarische Split-Kniebeugen links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.bulgarische-split-kniebeugen-rechts",
+      "name" : "Bulgarische Split-Kniebeugen rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.wadenheben",
+      "name" : "Wadenheben",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.knieheben-stehend",
+      "name" : "Knieheben stehend",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.liegestuetze",
+      "name" : "Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.wandliegestuetze",
+      "name" : "Wandliegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.diamond-liegestuetze",
+      "name" : "Diamond-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.breite-liegestuetze",
+      "name" : "Breite Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.pike-liegestuetze",
+      "name" : "Pike-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "fullBody",
+      "id" : "builtin.planke-zu-herabschauender-hund",
+      "name" : "Planke zu Herabschauender Hund",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.quadrizeps-dehnung-links",
+      "name" : "Quadrizeps-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.quadrizeps-dehnung-rechts",
+      "name" : "Quadrizeps-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hamstring-dehnung-links",
+      "name" : "Hamstring-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hamstring-dehnung-rechts",
+      "name" : "Hamstring-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hueftbeuger-dehnung-links",
+      "name" : "Hüftbeuger-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.hueftbeuger-dehnung-rechts",
+      "name" : "Hüftbeuger-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.waden-dehnung-links",
+      "name" : "Waden-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.waden-dehnung-rechts",
+      "name" : "Waden-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.schmetterlings-dehnung",
+      "name" : "Schmetterlings-Dehnung",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cooldown",
+      "id" : "builtin.kindspose",
+      "name" : "Kindspose",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.beinpendel",
+      "name" : "Beinpendel",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.hueftkreisen",
+      "name" : "Hüftkreisen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.hollow-hold",
+      "name" : "Hollow Hold",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.dead-bug",
+      "name" : "Dead Bug",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.flutter-kicks",
+      "name" : "Flutter Kicks",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.v-ups",
+      "name" : "V-Ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.sit-ups",
+      "name" : "Sit-ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "core",
+      "id" : "builtin.crunches",
+      "name" : "Crunches",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.archer-liegestuetze",
+      "name" : "Archer-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.decline-liegestuetze",
+      "name" : "Decline-Liegestütze",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.dips",
+      "name" : "Dips",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.klimmzuege",
+      "name" : "Klimmzüge",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.chin-ups",
+      "name" : "Chin-ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.australische-klimmzuege",
+      "name" : "Australische Klimmzüge",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "upperBody",
+      "id" : "builtin.umgekehrtes-rudern",
+      "name" : "Umgekehrtes Rudern",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.step-ups",
+      "name" : "Step-ups",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.wandsitzen",
+      "name" : "Wandsitzen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "legs",
+      "id" : "builtin.box-jumps",
+      "name" : "Box Jumps",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.skater-hops",
+      "name" : "Skater Hops",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "cardio",
+      "id" : "builtin.seilspringen",
+      "name" : "Seilspringen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.herabschauender-hund",
+      "name" : "Herabschauender Hund",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.cobra-dehnung",
+      "name" : "Kobra-Dehnung",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "warmup",
+      "id" : "builtin.cat-cow",
+      "name" : "Katze-Kuh",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.sitzende-vorbeuge",
+      "name" : "Vorbeuge im Sitzen",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.schulter-dehnung-links",
+      "name" : "Schulter-Dehnung links",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "stretching",
+      "id" : "builtin.schulter-dehnung-rechts",
+      "name" : "Schulter-Dehnung rechts",
+      "origin" : "builtin"
+    },
+    {
+      "category" : "fullBody",
+      "deliveredAt" : "2026-11-02T12:00:00Z",
+      "effect" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "id" : "claude.grenze-uebung",
+      "instructions" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "nameEn" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "notes" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "origin" : "claude",
+      "packageId" : "claude.paket-grenze",
+      "packageName" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision" : 1000000,
+      "state" : "active",
+      "why" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "category" : "warmup",
+      "deliveredAt" : "2026-11-03T12:00:00Z",
+      "effect" : "Stärkt den Rumpf.",
+      "id" : "claude.zerlegt-e",
+      "instructions" : "Langsam ausführen.",
+      "name" : "éééééééééééééééééééé",
+      "origin" : "claude",
+      "revision" : 1,
+      "state" : "active",
+      "why" : "Passt zu deinem Plan."
+    }
+  ],
+  "generatedAt" : "2026-11-24T08:30:00Z",
+  "programs" : [
+    {
+      "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "id" : "own.00000000-0000-4000-8000-000000000001",
+      "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "origin" : "own",
+      "rounds" : 2,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "hint" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "restSeconds" : 10,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥"
+    },
+    {
+      "description" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "id" : "own.00000000-0000-4000-8000-000000000002",
+      "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "origin" : "own",
+      "rounds" : 2,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "hint" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "restSeconds" : 10,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "id" : "own.00000000-0000-4000-8000-000000000004",
+      "name" : "Schritte40",
+      "origin" : "own",
+      "rounds" : 2,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.schritt-01",
+          "restSeconds" : 5,
+          "workSeconds" : 21
+        },
+        {
+          "exerciseId" : "builtin.schritt-02",
+          "restSeconds" : 5,
+          "workSeconds" : 22
+        },
+        {
+          "exerciseId" : "builtin.schritt-03",
+          "restSeconds" : 5,
+          "workSeconds" : 23
+        },
+        {
+          "exerciseId" : "builtin.schritt-04",
+          "restSeconds" : 5,
+          "workSeconds" : 24
+        },
+        {
+          "exerciseId" : "builtin.schritt-05",
+          "restSeconds" : 5,
+          "workSeconds" : 25
+        },
+        {
+          "exerciseId" : "builtin.schritt-06",
+          "restSeconds" : 5,
+          "workSeconds" : 26
+        },
+        {
+          "exerciseId" : "builtin.schritt-07",
+          "restSeconds" : 5,
+          "workSeconds" : 27
+        },
+        {
+          "exerciseId" : "builtin.schritt-08",
+          "restSeconds" : 5,
+          "workSeconds" : 28
+        },
+        {
+          "exerciseId" : "builtin.schritt-09",
+          "restSeconds" : 5,
+          "workSeconds" : 29
+        },
+        {
+          "exerciseId" : "builtin.schritt-10",
+          "restSeconds" : 5,
+          "workSeconds" : 30
+        },
+        {
+          "exerciseId" : "builtin.schritt-11",
+          "restSeconds" : 5,
+          "workSeconds" : 31
+        },
+        {
+          "exerciseId" : "builtin.schritt-12",
+          "restSeconds" : 5,
+          "workSeconds" : 32
+        },
+        {
+          "exerciseId" : "builtin.schritt-13",
+          "restSeconds" : 5,
+          "workSeconds" : 33
+        },
+        {
+          "exerciseId" : "builtin.schritt-14",
+          "restSeconds" : 5,
+          "workSeconds" : 34
+        },
+        {
+          "exerciseId" : "builtin.schritt-15",
+          "restSeconds" : 5,
+          "workSeconds" : 35
+        },
+        {
+          "exerciseId" : "builtin.schritt-16",
+          "restSeconds" : 5,
+          "workSeconds" : 36
+        },
+        {
+          "exerciseId" : "builtin.schritt-17",
+          "restSeconds" : 5,
+          "workSeconds" : 37
+        },
+        {
+          "exerciseId" : "builtin.schritt-18",
+          "restSeconds" : 5,
+          "workSeconds" : 38
+        },
+        {
+          "exerciseId" : "builtin.schritt-19",
+          "restSeconds" : 5,
+          "workSeconds" : 39
+        },
+        {
+          "exerciseId" : "builtin.schritt-20",
+          "restSeconds" : 5,
+          "workSeconds" : 40
+        },
+        {
+          "exerciseId" : "builtin.schritt-21",
+          "restSeconds" : 5,
+          "workSeconds" : 41
+        },
+        {
+          "exerciseId" : "builtin.schritt-22",
+          "restSeconds" : 5,
+          "workSeconds" : 42
+        },
+        {
+          "exerciseId" : "builtin.schritt-23",
+          "restSeconds" : 5,
+          "workSeconds" : 43
+        },
+        {
+          "exerciseId" : "builtin.schritt-24",
+          "restSeconds" : 5,
+          "workSeconds" : 44
+        },
+        {
+          "exerciseId" : "builtin.schritt-25",
+          "restSeconds" : 5,
+          "workSeconds" : 45
+        },
+        {
+          "exerciseId" : "builtin.schritt-26",
+          "restSeconds" : 5,
+          "workSeconds" : 46
+        },
+        {
+          "exerciseId" : "builtin.schritt-27",
+          "restSeconds" : 5,
+          "workSeconds" : 47
+        },
+        {
+          "exerciseId" : "builtin.schritt-28",
+          "restSeconds" : 5,
+          "workSeconds" : 48
+        },
+        {
+          "exerciseId" : "builtin.schritt-29",
+          "restSeconds" : 5,
+          "workSeconds" : 49
+        },
+        {
+          "exerciseId" : "builtin.schritt-30",
+          "restSeconds" : 5,
+          "workSeconds" : 50
+        },
+        {
+          "exerciseId" : "builtin.schritt-31",
+          "restSeconds" : 5,
+          "workSeconds" : 51
+        },
+        {
+          "exerciseId" : "builtin.schritt-32",
+          "restSeconds" : 5,
+          "workSeconds" : 52
+        },
+        {
+          "exerciseId" : "builtin.schritt-33",
+          "restSeconds" : 5,
+          "workSeconds" : 53
+        },
+        {
+          "exerciseId" : "builtin.schritt-34",
+          "restSeconds" : 5,
+          "workSeconds" : 54
+        },
+        {
+          "exerciseId" : "builtin.schritt-35",
+          "restSeconds" : 5,
+          "workSeconds" : 55
+        },
+        {
+          "exerciseId" : "builtin.schritt-36",
+          "restSeconds" : 5,
+          "workSeconds" : 56
+        },
+        {
+          "exerciseId" : "builtin.schritt-37",
+          "restSeconds" : 5,
+          "workSeconds" : 57
+        },
+        {
+          "exerciseId" : "builtin.schritt-38",
+          "restSeconds" : 5,
+          "workSeconds" : 58
+        },
+        {
+          "exerciseId" : "builtin.schritt-39",
+          "restSeconds" : 5,
+          "workSeconds" : 59
+        },
+        {
+          "exerciseId" : "builtin.schritt-40",
+          "restSeconds" : 5,
+          "workSeconds" : 60
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "id" : "own.00000000-0000-4000-8000-000000000005",
+      "name" : "Schritte41",
+      "origin" : "own",
+      "rounds" : 2,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.schritt-01",
+          "restSeconds" : 5,
+          "workSeconds" : 21
+        },
+        {
+          "exerciseId" : "builtin.schritt-02",
+          "restSeconds" : 5,
+          "workSeconds" : 22
+        },
+        {
+          "exerciseId" : "builtin.schritt-03",
+          "restSeconds" : 5,
+          "workSeconds" : 23
+        },
+        {
+          "exerciseId" : "builtin.schritt-04",
+          "restSeconds" : 5,
+          "workSeconds" : 24
+        },
+        {
+          "exerciseId" : "builtin.schritt-05",
+          "restSeconds" : 5,
+          "workSeconds" : 25
+        },
+        {
+          "exerciseId" : "builtin.schritt-06",
+          "restSeconds" : 5,
+          "workSeconds" : 26
+        },
+        {
+          "exerciseId" : "builtin.schritt-07",
+          "restSeconds" : 5,
+          "workSeconds" : 27
+        },
+        {
+          "exerciseId" : "builtin.schritt-08",
+          "restSeconds" : 5,
+          "workSeconds" : 28
+        },
+        {
+          "exerciseId" : "builtin.schritt-09",
+          "restSeconds" : 5,
+          "workSeconds" : 29
+        },
+        {
+          "exerciseId" : "builtin.schritt-10",
+          "restSeconds" : 5,
+          "workSeconds" : 30
+        },
+        {
+          "exerciseId" : "builtin.schritt-11",
+          "restSeconds" : 5,
+          "workSeconds" : 31
+        },
+        {
+          "exerciseId" : "builtin.schritt-12",
+          "restSeconds" : 5,
+          "workSeconds" : 32
+        },
+        {
+          "exerciseId" : "builtin.schritt-13",
+          "restSeconds" : 5,
+          "workSeconds" : 33
+        },
+        {
+          "exerciseId" : "builtin.schritt-14",
+          "restSeconds" : 5,
+          "workSeconds" : 34
+        },
+        {
+          "exerciseId" : "builtin.schritt-15",
+          "restSeconds" : 5,
+          "workSeconds" : 35
+        },
+        {
+          "exerciseId" : "builtin.schritt-16",
+          "restSeconds" : 5,
+          "workSeconds" : 36
+        },
+        {
+          "exerciseId" : "builtin.schritt-17",
+          "restSeconds" : 5,
+          "workSeconds" : 37
+        },
+        {
+          "exerciseId" : "builtin.schritt-18",
+          "restSeconds" : 5,
+          "workSeconds" : 38
+        },
+        {
+          "exerciseId" : "builtin.schritt-19",
+          "restSeconds" : 5,
+          "workSeconds" : 39
+        },
+        {
+          "exerciseId" : "builtin.schritt-20",
+          "restSeconds" : 5,
+          "workSeconds" : 40
+        },
+        {
+          "exerciseId" : "builtin.schritt-21",
+          "restSeconds" : 5,
+          "workSeconds" : 41
+        },
+        {
+          "exerciseId" : "builtin.schritt-22",
+          "restSeconds" : 5,
+          "workSeconds" : 42
+        },
+        {
+          "exerciseId" : "builtin.schritt-23",
+          "restSeconds" : 5,
+          "workSeconds" : 43
+        },
+        {
+          "exerciseId" : "builtin.schritt-24",
+          "restSeconds" : 5,
+          "workSeconds" : 44
+        },
+        {
+          "exerciseId" : "builtin.schritt-25",
+          "restSeconds" : 5,
+          "workSeconds" : 45
+        },
+        {
+          "exerciseId" : "builtin.schritt-26",
+          "restSeconds" : 5,
+          "workSeconds" : 46
+        },
+        {
+          "exerciseId" : "builtin.schritt-27",
+          "restSeconds" : 5,
+          "workSeconds" : 47
+        },
+        {
+          "exerciseId" : "builtin.schritt-28",
+          "restSeconds" : 5,
+          "workSeconds" : 48
+        },
+        {
+          "exerciseId" : "builtin.schritt-29",
+          "restSeconds" : 5,
+          "workSeconds" : 49
+        },
+        {
+          "exerciseId" : "builtin.schritt-30",
+          "restSeconds" : 5,
+          "workSeconds" : 50
+        },
+        {
+          "exerciseId" : "builtin.schritt-31",
+          "restSeconds" : 5,
+          "workSeconds" : 51
+        },
+        {
+          "exerciseId" : "builtin.schritt-32",
+          "restSeconds" : 5,
+          "workSeconds" : 52
+        },
+        {
+          "exerciseId" : "builtin.schritt-33",
+          "restSeconds" : 5,
+          "workSeconds" : 53
+        },
+        {
+          "exerciseId" : "builtin.schritt-34",
+          "restSeconds" : 5,
+          "workSeconds" : 54
+        },
+        {
+          "exerciseId" : "builtin.schritt-35",
+          "restSeconds" : 5,
+          "workSeconds" : 55
+        },
+        {
+          "exerciseId" : "builtin.schritt-36",
+          "restSeconds" : 5,
+          "workSeconds" : 56
+        },
+        {
+          "exerciseId" : "builtin.schritt-37",
+          "restSeconds" : 5,
+          "workSeconds" : 57
+        },
+        {
+          "exerciseId" : "builtin.schritt-38",
+          "restSeconds" : 5,
+          "workSeconds" : 58
+        },
+        {
+          "exerciseId" : "builtin.schritt-39",
+          "restSeconds" : 5,
+          "workSeconds" : 59
+        },
+        {
+          "exerciseId" : "builtin.schritt-40",
+          "restSeconds" : 5,
+          "workSeconds" : 60
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "id" : "own.00000000-0000-4000-8000-000000000006",
+      "name" : "Zahlen unten",
+      "origin" : "own",
+      "rounds" : 1,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 0,
+          "workSeconds" : 1
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "id" : "own.00000000-0000-4000-8000-000000000007",
+      "name" : "Zahlen oben",
+      "origin" : "own",
+      "rounds" : 99,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 600,
+          "workSeconds" : 600
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "id" : "own.00000000-0000-4000-8000-000000000008",
+      "name" : "Zahlen an der Grenze",
+      "origin" : "own",
+      "rounds" : 99,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 0,
+          "workSeconds" : 600
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "description" : "Zeile1\nZeile2Ende",
+      "id" : "own.00000000-0000-4000-8000-000000000009",
+      "name" : "SteuerzeichenName",
+      "origin" : "own",
+      "rounds" : 2,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 10,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "💪"
+    },
+    {
+      "id" : "own.00000000-0000-4000-8000-000000000010",
+      "name" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa👨",
+      "origin" : "own",
+      "rounds" : 2,
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 10,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "👨‍👩‍👧‍👦🏳️‍🌈"
+    },
+    {
+      "deliveredAt" : "2026-11-01T00:00:00Z",
+      "id" : "claude.gekuerzt-programm",
+      "name" : "Gekürzt Claude",
+      "origin" : "claude",
+      "packageId" : "claude.paket-grenze",
+      "packageName" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "revision" : 1,
+      "rounds" : 2,
+      "state" : "active",
+      "steps" : [
+        {
+          "exerciseId" : "builtin.planke",
+          "restSeconds" : 10,
+          "workSeconds" : 30
+        }
+      ],
+      "symbol" : "💪",
+      "why" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "version" : 1
+}
