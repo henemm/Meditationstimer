@@ -484,7 +484,7 @@ struct MeditationTab: View {
                 result[i].description = d.description
             }
         }
-        for d in defaultPresets where !result.contains(where: { $0.name == d.name }) { result.append(d) }
+        for d in defaultPresets where !result.contains(where: { $0.name == d.name || $0.id == d.id }) { result.append(d) }
         return result
     }
 

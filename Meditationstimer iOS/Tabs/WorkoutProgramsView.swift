@@ -351,7 +351,7 @@ extension WorkoutSet {
     /// back-fills a missing description of same-named programs. Nothing else is touched.
     static func migratingPresets(_ stored: [WorkoutSet], presets: [WorkoutSet]) -> [WorkoutSet] {
         var result = stored
-        for preset in presets where !result.contains(where: { $0.name == preset.name }) {
+        for preset in presets where !result.contains(where: { $0.name == preset.name || $0.id == preset.id }) {
             result.append(preset)
         }
         for i in result.indices where result[i].description == nil {
