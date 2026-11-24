@@ -1,0 +1,31 @@
+	 Executed 27 tests, with 0 failures (0 unexpected) in 0.643 (0.657) seconds
+	 Executed 27 tests, with 0 failures (0 unexpected) in 0.643 (0.661) seconds
+	 Executed 27 tests, with 0 failures (0 unexpected) in 0.643 (0.671) seconds
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testAbschriftIstDeterministisch]' passed (0.060 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testDatumsformatUtcUndEchteKalenderdaten]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testGoldendateiDecktFelderVonValidFullAb]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testGrenzfaelleGleichGoldendatei]' passed (0.022 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testHoechstzahlenWerdenEingehalten]' passed (0.375 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testHuelleHatGenauDieSchemafelder]' passed (0.036 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testKategorienAbbildung]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testKeineDoppeltenKennungen]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testKennungenUndHerkunftsfelder]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testLeereAbschriftGleichGoldendatei]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testLeereOptionaleFelderEntfallen]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testLesenUndBauenSchreibenNichts]' passed (0.034 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testLieferergebnisseAbbildung]' passed (0.020 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testReadCurrentFehlendZeigtVorgaben]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testReadCurrentLiestGespeicherteWerte]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testReadCurrentUnlesbarIstLeerUndMarkiert]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testReadStateUnterscheidetFehlendLesbarUnlesbar]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testReihenfolgeIstFest]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testSchritteWerdenAuf40GekuerztUndKleingeschrieben]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testTexteWerdenGekuerzt]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testUnbekannteKategorieLaesstUebungAus]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testUngueltigeBausteineWerdenAusgelassen]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testUngueltigePackageIdEntfaelltNurAlsFeld]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testVerboteneZeichenWerdenEntfernt]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testVollstaendigeAbschriftGleichGoldendatei]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testZahlenWerdenGeklemmt]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.TranscriptBuilderTests testZustandActiveUndAdapted]' passed (0.006 seconds).
