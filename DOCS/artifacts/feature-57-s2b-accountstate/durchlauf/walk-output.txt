@@ -1,0 +1,5 @@
+Test Case '-[LeanHealthTimerUITests.WalkS2bUITests testWalk]' started.
+Test Case '-[LeanHealthTimerUITests.WalkS2bUITests testWalk]' passed (153.908 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 153.908 (153.914) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 153.908 (153.929) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 153.908 (153.941) seconds

@@ -1,0 +1,45 @@
+import XCTest
+
+final class WalkS2bUITests: XCTestCase {
+    let dir = "/private/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-cosmic-humming-steele/29bbddd1-3700-4368-859c-4f42c500c17d/scratchpad/shots"
+
+    func shot(_ name: String) {
+        let data = XCUIScreen.main.screenshot().pngRepresentation
+        try? data.write(to: URL(fileURLWithPath: "\(dir)/\(name).png"))
+    }
+
+    /// The first-run Health permission sheets are existing behaviour, not part of this round; deny them away.
+    func dismissHealth(_ app: XCUIApplication) {
+        let deny = app.buttons["Nicht erlauben"]
+        for _ in 0..<3 where deny.waitForExistence(timeout: 4) {
+            for _ in 0..<4 where !deny.isHittable { app.swipeUp(); sleep(1) }
+            if deny.isHittable { deny.tap() }
+            sleep(3)
+        }
+    }
+
+    func testWalk() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch()
+        dismissHealth(app)
+        let tabs = app.tabBars.buttons
+        XCTAssertTrue(tabs.firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(tabs.count, 4)
+        for i in [3, 1, 2, 0] {
+            tabs.element(boundBy: i).tap()
+            sleep(2)
+            dismissHealth(app)
+            shot("tab\(i)")
+        }
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.904, dy: 0.096)).tap()
+        sleep(2)
+        dismissHealth(app)
+        shot("settings")
+        app.swipeUp(); sleep(1); shot("settings2")
+        app.swipeUp(); sleep(1); shot("settings3")
+        app.swipeUp(); sleep(1); shot("settings4")
+        XCTAssertFalse(app.staticTexts["Claude-Verbindung"].exists)
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+}
