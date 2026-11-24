@@ -1,7 +1,7 @@
 ---
 spec_file: DOCS/specs/features/feature-57-s4-abgleich.md
-spec_sha256: 9866c74fd93f2a95e555c36ac2b49a2af7263ca29cc998de481e6997d86c7947
-spec_frozen_sha256: e3a370ba218ff841a7753f2be3baf15d4580ec31644653f1695759ddaaf47489
+spec_sha256: 083bb43268dc97bc2e1dce541e9730733addf945fc87fabe217384523b9a3c5f
+spec_frozen_sha256: e1b0d430268a8eb88446695b9eb0a3df4a6a19ab24bb88479c70b7e364ef2f23
 ---
 
 # PO-Briefing: feature-57-s4-abgleich
