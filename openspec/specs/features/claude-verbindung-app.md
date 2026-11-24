@@ -49,11 +49,14 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
 2. `ServiceClient` und `AccountState` (übernommen, Pfade angepasst), dazu `InMemorySessionStore`. Wegen der
    Zeilengrenze in zwei Runden: **2a** `ServiceClient` (nur Auth-Routen `/auth/apple`, `/auth/logout`, `/auth/delete`)
    und `InMemorySessionStore` (`docs/specs/features/feature-57-s2-serviceclient.md`), **2b** `AccountState` ohne
-   `withSession` (das kommt mit Schnitt 4). Das Entitlement Sign in with Apple wandert nach Schnitt 4.
+   `withSession` (das kommt mit Schnitt 4). Das Entitlement Sign in with Apple wandert nach Schnitt 5.
    **Erledigt 24.11.2026** (2a: `feature-57-s2-serviceclient.md`; 2b: `docs/specs/features/feature-57-s2b-accountstate.md`,
    157 Zeilen statt Zielwert 125–140, noch nicht verdrahtet).
 3. Abschrift Fassung 1 + Goldendateien + CI-Schritt. **Erledigt 24.11.2026** (`DOCS/specs/features/feature-57-s3-abschrift.md`, noch nicht verdrahtet).
-4. Abgleich und Auslöser, in den App-Start eingehängt; dazu `withSession`, die Lieferungs-Routen des `ServiceClient`
-   und das Entitlement Sign in with Apple, zusammen mit dem Portal-Schritt aus #56 (Fähigkeit an der App-ID), damit
-   Gerätebauten aus Xcode nicht an einem Profil ohne die Fähigkeit scheitern.
-5. Einstellungsseite mit Texten DE/EN und UI-Test.
+4. Abgleich und Auslöser (Start und Vordergrund), in den App-Start eingehängt; dazu `withSession` und die
+   Lieferungs-Routen des `ServiceClient`. **Erledigt 24.11.2026** (`DOCS/specs/features/feature-57-s4-abgleich.md`,
+   ohne Sitzung stumm, unter Tests aus). Abweichungen: Das Entitlement Sign in with Apple wandert nach Schnitt 5
+   (der Abgleich braucht es nicht); `lastSnapshotAt` beim Abmelden löschen ebenfalls Schnitt 5.
+5. Einstellungsseite mit Texten DE/EN und UI-Test; dazu das Entitlement Sign in with Apple, zusammen mit dem
+   Portal-Schritt aus #56 (Fähigkeit an der App-ID), damit Gerätebauten aus Xcode nicht an einem Profil ohne die
+   Fähigkeit scheitern, und das Löschen von `lastSnapshotAt` bei Abmelden und Konto löschen.

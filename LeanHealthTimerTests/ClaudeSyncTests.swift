@@ -255,6 +255,26 @@ final class ClaudeSyncTests: XCTestCase {
         XCTAssertEqual(sent, expected, "gesendet wird genau, was TranscriptBuilder fuer diesen Bestand und dieses now baut")
     }
 
+    /// Verhalten (R8): Nur 204 heisst "nichts offen". Eine 200 mit leerem Koerper ist eine ungueltige Antwort:
+    /// kein Abschrift-Versand, lastSnapshotAt unveraendert, Durchlauf endet `.stopped`.
+    func testLeere200BeimAbholenIstUngueltigeAntwort() async throws {
+        let client = ServiceClient(baseURL: ClaudeSyncTests.base, transport: SyncWire(claim: [.answer(200, Data())]))
+        do {
+            _ = try await client.claimDelivery(token: "T1", device: UUID())
+            XCTFail("leere 200 muss .invalidResponse werfen")
+        } catch {
+            XCTAssertEqual(error as? ServiceError, .invalidResponse)
+        }
+
+        let wire = SyncWire(claim: [.answer(200, Data())])
+        let rig = makeRig(wire)
+        let ending = await rig.sync.run()
+        XCTAssertEqual(ending, .stopped)
+        let paths = await wire.paths
+        XCTAssertEqual(paths, ["claim"], "keine Abschrift nach kaputter Antwort")
+        XCTAssertNil(rig.sync.lastSnapshotAt)
+    }
+
     // MARK: AC-4
 
     /// Verhalten: 409 beim Melden (Dienst kennt die Lieferung nicht mehr) wird verworfen; die zweite Lieferung folgt.

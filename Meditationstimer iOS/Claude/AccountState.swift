@@ -6,8 +6,8 @@ enum AccountError: Error, Equatable {
     case notPossibleNow
 }
 
-/// Whether this device is signed in to the service for Claude, and the steps of signing in, out and deleting
-///. `signingIn` and `deleting` are also the lock against a second request: everything runs on the
+/// Whether this device is signed in to the service for Claude, and the steps of signing in, out and deleting.
+/// `signingIn` and `deleting` are also the lock against a second request: everything runs on the
 /// main actor. Neither the state, an error nor a log line ever names a token or a nonce. Nothing in the app calls it yet.
 @MainActor @Observable final class AccountState {
     enum Status: Equatable, Sendable { case signedOut, signingIn, signedIn, deleting, notAllowed, retryLater }
@@ -108,6 +108,17 @@ enum AccountError: Error, Equatable {
             Self.logger.error("delete failed: \(Self.caseName(error), privacy: .public)")
             status = .signedIn
             lastProblem = .retryLater
+        }
+    }
+
+    /// Runs `action` with the stored token; nil without a session. On 401 drops exactly that token and rethrows.
+    func withSession<T>(_ action: (String) async throws -> T) async throws -> T? {
+        guard let token = Self.storedToken(in: store) else { return nil }
+        do {
+            return try await action(token)
+        } catch ServiceError.unauthorized {
+            status = dropSession(token, during: "sync")
+            throw ServiceError.unauthorized
         }
     }
 
