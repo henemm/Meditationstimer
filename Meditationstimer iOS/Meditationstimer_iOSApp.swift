@@ -26,6 +26,9 @@ struct Meditationstimer_iOSApp: App {
     // SwiftData ModelContainer for Custom Trackers
     let modelContainer: ModelContainer
 
+    // Abgleich mit dem Claude-Dienst (#57); nil unter Tests oder wenn abgeschaltet
+    let claudeSync: ClaudeSync? = Meditationstimer_iOSApp.makeClaudeSync()
+
     // Static access for notification action handler (AppDelegate needs SwiftData access)
     static var sharedModelContainer: ModelContainer!
 
@@ -35,6 +38,15 @@ struct Meditationstimer_iOSApp: App {
         #if DEBUG
         Self.applyUITestDeliveryAtStart()
         #endif
+    }
+
+    private static func makeClaudeSync() -> ClaudeSync? {
+        let args = CommandLine.arguments, info = Bundle.main.infoDictionary
+        guard ClaudeWiring.isEnabled(info: info, arguments: args),
+              !ClaudeSync.isSilent(arguments: args, environment: ProcessInfo.processInfo.environment) else { return nil }
+        let client = ServiceClient(baseURL: ClaudeWiring.serviceURL(info: info))
+        let account = AccountState(client: client, store: KeychainSessionStore())
+        return ClaudeSync(account: account, client: client, device: { try DeviceIdentity().current() })
     }
 
     /// Builds the SwiftData container. DEBUG-only UI-test switches:
@@ -80,6 +92,10 @@ struct Meditationstimer_iOSApp: App {
                 #if DEBUG
                 .task { await Self.applyUITestDeliveryDelayed() }
                 #endif
+                .task { _ = await claudeSync?.run() }
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .active { Task { _ = await claudeSync?.run() } }
+                }
                 .task {
                     // Generic Tracker System: Create default trackers on first launch
                     await runTrackerMigration()

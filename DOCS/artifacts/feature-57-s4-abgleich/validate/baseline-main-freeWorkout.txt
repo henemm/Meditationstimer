@@ -1,0 +1,2 @@
+LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed

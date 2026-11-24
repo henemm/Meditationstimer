@@ -2,16 +2,16 @@
 //  TranscriptBuilderTests.swift
 //  LeanHealthTimerTests
 //
-//  TDD RED #57 Schnitt 3: Abschrift Fassung 1 (Regeln R1 bis R14, AC-1 bis AC-21 und AC-25).
+//  #57 Schnitt 3: Abschrift Fassung 1 (Regeln R1 bis R14, AC-1 bis AC-21 und AC-25), umgesetzt in TranscriptBuilder.swift.
 //  Spec: DOCS/specs/features/feature-57-s3-abschrift.md
 //
-//  Erwartete API (laut Spec):
+//  Getestete API:
 //    TranscriptBuilder.build(sets:presets:claudeExercises:log:now:) -> Data
 //    TranscriptBuilder.readCurrent(defaults:) -> TranscriptInput   (sets, presets, claudeExercises, log, unreadable)
 //    ClaudeStore.readState(from:) -> (state: ClaudeStoredState, unreadable: Bool)
 //
-//  Goldendateien: Contracts/transcript/app-generated/{empty,full,limits}.json. Der Developer erzeugt sie EINMALIG
-//  aus `emptyFixture()`, `fullFixture()` und `limitsFixture()` (mit `goldenNow`) und prueft sie von Hand im Diff.
+//  Goldendateien: Contracts/transcript/app-generated/{empty,full,limits}.json. Sie wurden einmalig aus `emptyFixture()`,
+//  `fullFixture()` und `limitsFixture()` (mit `goldenNow`) erzeugt und von Hand im Diff geprueft.
 //  Kein Test schreibt eine Goldendatei.
 //
 
