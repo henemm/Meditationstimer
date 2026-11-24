@@ -11,4 +11,6 @@ protocol SessionStoring: Sendable {
 enum SessionStoreError: Error, Equatable {
     case keychain(OSStatus)
     case corruptData
+    /// Nur für Tests: von `InMemorySessionStore.failNext` eingespeist.
+    case injected
 }
