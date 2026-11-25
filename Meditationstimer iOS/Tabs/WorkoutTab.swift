@@ -797,8 +797,10 @@ private struct OverlayBackgroundEffect: ViewModifier {
 }
 
 // MARK: - Default Workout Sets (same as WorkoutProgramsView)
+// Feste Kennungen (#117) — nie ändern, Claude erkennt Vorgaben daran wieder.
 let defaultWorkoutSets: [WorkoutSet] = [
     WorkoutSet(
+        id: UUID(uuidString: "5a1e8c32-7b4d-4f19-9c60-2d3e8a41b701")!,
         name: "Tabata Classic",
         emoji: "🔥",
         phases: [
@@ -815,6 +817,7 @@ let defaultWorkoutSets: [WorkoutSet] = [
         description: NSLocalizedString("Original Tabata protocol (Izumi Tabata, 1996): 8 rounds of 20s maximum intensity / 10s rest.", comment: "")
     ),
     WorkoutSet(
+        id: UUID(uuidString: "9f3b72d4-1c85-4a6e-b2f7-6e0d54c8a912")!,
         name: "Core Circuit",
         emoji: "💪",
         phases: [
@@ -829,6 +832,7 @@ let defaultWorkoutSets: [WorkoutSet] = [
         description: NSLocalizedString("Focuses on core stability and rotational strength.", comment: "")
     ),
     WorkoutSet(
+        id: UUID(uuidString: "c47d09ab-e2f6-4358-8a1b-93b7f5d20c43")!,
         name: "Full Body Burn",
         emoji: "🏃",
         phases: [
@@ -843,6 +847,7 @@ let defaultWorkoutSets: [WorkoutSet] = [
         description: NSLocalizedString("Full-body HIIT focused on functional movement patterns.", comment: "")
     ),
     WorkoutSet(
+        id: UUID(uuidString: "2b86f1e7-04ca-4d92-a5e3-7c18d9b36f04")!,
         name: "Quick Burn",
         emoji: "🔥",
         phases: [
