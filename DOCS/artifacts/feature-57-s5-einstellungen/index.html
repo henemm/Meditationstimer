@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude-Verbindung Entwurf</title>
+<style>
+/* VOICE everyday: ruhiger Vorher/Nachher-Vergleich für eine Einstellungsseite
+   IDEA die echten iPhone-Bildschirme nebeneinander, wie auf einem Tisch ausgelegt
+   PICTURE Heute-Screenshot neben dem Entwurf in Dunkel und Hell, darunter die Alternative
+   COLOUR iOS-Systemfarben der App: Grau-Grund, weiße/dunkle Gruppen, Systemblau, Rot für Trennen
+   TYPE SF/System für die Mockups, Inter für den Begleittext
+   LAYOUT Titel oben, Telefone in einer umbrechenden Reihe, Erklärung je Telefon darunter; Phone: gestapelt */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0c0c0e);--ink:light-dark(#111114,#f2f2f5);--mute:light-dark(#5b5b63,#a3a3ad);--rule:light-dark(#e3e3e8,#26262b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,-apple-system,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px);max-width:1340px;margin:0 auto}
+h1{font-size:clamp(30px,4vw,44px);line-height:1.08;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+h2{font-size:24px;line-height:1.2;margin:40px 0 6px;letter-spacing:-.01em}
+p.lead{max-width:68ch;color:var(--mute);margin:0}
+.row{display:flex;flex-wrap:wrap;gap:28px;margin-top:22px;align-items:flex-start}
+figure{margin:0;width:300px;flex:0 1 300px}
+figcaption{font-size:15px;color:var(--mute);margin-top:10px;max-width:300px}
+figcaption b{color:var(--ink)}
+.shot{width:300px;max-width:100%;border-radius:38px;border:8px solid #1c1c1e;display:block;background:#000}
+/* Telefon-Mockup in iOS-Farben */
+.ph{width:300px;max-width:100%;height:650px;border-radius:38px;border:8px solid #1c1c1e;overflow:hidden;font:14px/1.3 -apple-system,"SF Pro Text",system-ui,sans-serif;display:flex;flex-direction:column}
+.ph.d{--g:#000;--c:#1c1c1e;--t:#fff;--s:#8e8e93;--l:#38383a;--b:#0a84ff;--r:#ff453a;background:var(--g);color:var(--t)}
+.ph.l{--g:#f2f2f7;--c:#fff;--t:#000;--s:#6c6c70;--l:#e5e5ea;--b:#007aff;--r:#ff3b30;background:var(--g);color:var(--t)}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;font-weight:600}
+.bar .bk{color:var(--b);font-weight:400}
+.bar .tt{flex:1;text-align:center;margin-right:46px}
+.sc{flex:1;overflow:hidden;padding:4px 12px 12px}
+.hd{font-size:12px;color:var(--s);margin:14px 14px 5px}
+.ft{font-size:11.5px;color:var(--s);margin:5px 14px 0;line-height:1.35}
+.grp{background:var(--c);border-radius:14px;overflow:hidden}
+.it{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:.5px solid var(--l);min-height:40px}
+.it:first-child{border-top:0}
+.it .v{margin-left:auto;color:var(--s);white-space:nowrap;font-size:13px}
+.it .chev{color:var(--s);margin-left:6px}
+.ico{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#fff;font-size:13px;flex:none}
+.blue{color:var(--b)}.red{color:var(--r)}
+.ok{color:#30d158}.no{color:var(--r)}
+.small{font-size:12px;color:var(--s)}
+.apple{background:var(--t);color:var(--g);border-radius:10px;height:40px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600;margin:10px 14px}
+.txt{padding:10px 14px;font-size:13px;line-height:1.4}
+.sheet{margin-top:auto;background:var(--c);border-radius:14px 14px 0 0;padding:14px;text-align:center;font-size:13px}
+.sheet .b{border-top:.5px solid var(--l);padding:11px 0;font-size:16px}
+.note{border-top:1px solid var(--rule);margin-top:40px;padding-top:18px;color:var(--mute);font-size:15px;max-width:75ch}
+@media(max-width:600px){figure{flex-basis:100%;width:100%}.ph,.shot{margin:0 auto}figcaption{max-width:none}}
+</style>
+</head>
+<body>
+<main class="band">
+<h1>Claude-Verbindung in den Einstellungen</h1>
+<p class="lead">Ganz unten in den Einstellungen kommt eine Zeile „Claude-Verbindung“ dazu. Sie führt auf eine eigene Seite: anmelden, sehen, wann zuletzt abgeglichen wurde, was Claude geliefert hat und was Claude von der App sieht, und die Verbindung trennen. In der App-Store-Version ist nichts davon zu sehen.</p>
+
+<h2>Heute und Entwurf</h2>
+<div class="row">
+  <figure>
+    <img class="shot" src="heute-dunkel.png" alt="Einstellungen heute, dunkel: unten Smart Reminders und System-Einstellungen öffnen">
+    <figcaption><b>Heute.</b> Unten stehen „Smart Reminders“ und „System-Einstellungen öffnen“, von Claude ist nichts zu sehen.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="ph d">
+      <div class="bar"><span></span><span class="tt">Einstellungen</span><span class="bk">Fertig</span></div>
+      <div class="sc">
+        <div class="grp" style="margin-top:8px"><div class="it"><span class="ico" style="background:#0a84ff">🔔︎</span>Smart Reminders<span class="v"></span><span class="chev">›</span></div></div>
+        <div class="hd">Claude</div>
+        <div class="grp"><div class="it"><span class="ico" style="background:#d97757">✳︎</span>Claude-Verbindung<span class="v">Angemeldet</span><span class="chev">›</span></div></div>
+        <div class="ft">Claude kann dir Übungen und Programme in die App liefern.</div>
+        <div class="grp" style="margin-top:22px"><div class="it blue"><span class="ico" style="background:#8e8e93">⚙︎</span>System-Einstellungen öffnen</div></div>
+      </div>
+    </div>
+    <figcaption><b>Entwurf, Einstieg.</b> Eine neue Gruppe „Claude“ vor „System-Einstellungen öffnen“. Rechts steht der Stand: „Angemeldet“ oder „Nicht angemeldet“.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="ph d">
+      <div class="bar"><span class="bk">‹ Einstellungen</span><span class="tt" style="margin-right:60px">Claude</span><span></span></div>
+      <div class="sc">
+        <div class="grp" style="margin-top:6px">
+          <div class="it">Angemeldet mit Apple<span class="v">Dieses iPhone</span></div>
+          <div class="it">Letzter Abgleich<span class="v">heute, 08:14</span></div>
+        </div>
+        <div class="hd">Letzte Lieferungen</div>
+        <div class="grp">
+          <div class="it"><span>24.11., 21:02</span><span class="v ok">Übernommen</span></div>
+          <div class="it"><span>23.11., 19:40</span><span class="v no">Abgelehnt</span></div>
+          <div class="it"><span>22.11., 07:55</span><span class="v ok">Übernommen</span></div>
+        </div>
+        <div class="ft">Abgelehnt: Die Lieferung war älter als der Stand der App.</div>
+        <div class="hd">Was Claude sieht</div>
+        <div class="grp"><div class="txt">Deine Übungen (48, davon 3 von Claude), 6 Workout-Programme, 4 Atemübungen und die Ergebnisse der letzten Lieferungen. Nicht: Verlauf, Gesundheitsdaten, Tracker.</div></div>
+        <div class="grp" style="margin-top:16px">
+          <div class="it blue">Abmelden</div>
+          <div class="it red">Verbindung trennen …</div>
+        </div>
+      </div>
+    </div>
+    <figcaption><b>Entwurf, angemeldet (dunkel).</b> Oben Anmeldung und letzter Abgleich, dann die letzten Lieferungen mit Ergebnis, dann „Was Claude sieht“ als kurzer Satz, unten Abmelden und Trennen.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="ph l">
+      <div class="bar"><span class="bk">‹ Einstellungen</span><span class="tt" style="margin-right:60px">Claude</span><span></span></div>
+      <div class="sc">
+        <div class="grp" style="margin-top:6px">
+          <div class="it">Angemeldet mit Apple<span class="v">Dieses iPhone</span></div>
+          <div class="it">Letzter Abgleich<span class="v">heute, 08:14</span></div>
+        </div>
+        <div class="hd">Letzte Lieferungen</div>
+        <div class="grp">
+          <div class="it"><span>24.11., 21:02</span><span class="v ok" style="color:#248a3d">Übernommen</span></div>
+          <div class="it"><span>23.11., 19:40</span><span class="v no">Abgelehnt</span></div>
+          <div class="it"><span>22.11., 07:55</span><span class="v ok" style="color:#248a3d">Übernommen</span></div>
+        </div>
+        <div class="ft">Abgelehnt: Die Lieferung war älter als der Stand der App.</div>
+        <div class="hd">Was Claude sieht</div>
+        <div class="grp"><div class="txt">Deine Übungen (48, davon 3 von Claude), 6 Workout-Programme, 4 Atemübungen und die Ergebnisse der letzten Lieferungen. Nicht: Verlauf, Gesundheitsdaten, Tracker.</div></div>
+        <div class="grp" style="margin-top:16px">
+          <div class="it blue">Abmelden</div>
+          <div class="it red">Verbindung trennen …</div>
+        </div>
+      </div>
+    </div>
+    <figcaption><b>Dieselbe Seite hell.</b></figcaption>
+  </figure>
+</div>
+
+<h2>Die anderen Zustände</h2>
+<div class="row">
+  <figure>
+    <div class="ph l">
+      <div class="bar"><span class="bk">‹ Einstellungen</span><span class="tt" style="margin-right:60px">Claude</span><span></span></div>
+      <div class="sc">
+        <div class="grp" style="margin-top:6px"><div class="txt">Melde dich mit Apple an, dann kann Claude dir Übungen und Programme liefern. Ohne Anmeldung verlässt nichts dieses iPhone.</div></div>
+        <div class="apple"> Mit Apple anmelden</div>
+        <div class="hd">Letzte Lieferungen</div>
+        <div class="grp"><div class="it small">Noch keine Lieferung</div></div>
+      </div>
+    </div>
+    <figcaption><b>Nicht angemeldet.</b> Erklärung und Apples eigener Anmeldeknopf. Kommt die Anmeldung nicht durch, steht darunter „Dieses Apple-Konto ist nicht zugelassen“ oder „Dienst gerade nicht erreichbar, später erneut“.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="ph d">
+      <div class="bar"><span class="bk">‹ Einstellungen</span><span class="tt" style="margin-right:60px">Claude</span><span></span></div>
+      <div class="sc" style="display:flex;flex-direction:column;opacity:.45"><div class="grp" style="margin-top:6px"><div class="it">Angemeldet mit Apple<span class="v">Dieses iPhone</span></div><div class="it">Letzter Abgleich<span class="v">heute, 08:14</span></div></div></div>
+      <div class="sheet" style="margin:0 8px 8px;border-radius:14px">
+        <div style="font-weight:600;margin-bottom:4px">Verbindung trennen?</div>
+        <div class="small" style="margin-bottom:8px">Claude sieht danach nichts mehr von dieser App. Was Claude schon geliefert hat, bleibt auf dem iPhone.</div>
+        <div class="b red">Verbindung trennen</div>
+        <div class="b blue" style="font-weight:600">Abbrechen</div>
+      </div>
+    </div>
+    <figcaption><b>Trennen mit Rückfrage.</b> Erst nach „Verbindung trennen“ geht die Löschung an den Dienst. Geliefertes bleibt in der App.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="ph l">
+      <div class="bar"><span></span><span class="tt">Einstellungen</span><span class="bk">Fertig</span></div>
+      <div class="sc">
+        <div class="hd" style="margin-top:8px">Claude</div>
+        <div class="grp">
+          <div class="it">Angemeldet mit Apple<span class="v">Dieses iPhone</span></div>
+          <div class="it">Letzter Abgleich<span class="v">heute, 08:14</span></div>
+          <div class="it blue">Abmelden</div>
+          <div class="it red">Verbindung trennen …</div>
+        </div>
+        <div class="ft">Claude sieht deine Übungen, Programme und Atemübungen, keinen Verlauf und keine Gesundheitsdaten.</div>
+        <div class="grp" style="margin-top:22px"><div class="it blue"><span class="ico" style="background:#8e8e93">⚙︎</span>System-Einstellungen öffnen</div></div>
+      </div>
+    </div>
+    <figcaption><b>Alternative: ohne eigene Seite.</b> Wie bei Loose Ends stehen Anmeldung, Abgleich und Trennen direkt in den Einstellungen. Kürzer, aber die Liste der Lieferungen hätte keinen Platz.</figcaption>
+  </figure>
+</div>
+
+<p class="note">Zahlen und Zeiten sind Beispiele. Farben, Schrift und Abstände folgen der App (iOS-Systemfarben, gruppierte Liste). Empfehlung: eigene Seite, weil die Lieferliste und „Was Claude sieht“ sonst die Einstellungen sprengen.</p>
+</main>
+</body>
+</html>

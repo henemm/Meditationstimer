@@ -1,0 +1,70 @@
+Test Case '-[LeanHealthTimerTests.AccountStateTests testAnmeldenFehlerabbildung]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testAnmeldenSpeichertUndIstAngemeldet]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testBeginSignInNurAusErlaubtenZustaenden]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testCancelSignInNurVorDerAnfrage]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testCompleteSignInBrauchtOffeneNonceUndVerbrauchtSie]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testDoppelaufruefeWaehrendAnfrageSindWirkungslos]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testKoerperTraegtRoheNonceZumHash]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testKontoLoeschenFehlerabbildung]' passed (0.021 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testKontoLoeschenNurAusAngemeldetUndErfolg]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testSignOutOhneTokenUndBeiLoeschfehler]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testSignOutRaeumtLokalZuerstUndDienstAntwortAendertNichts]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testSpeicherfehlerBeiAnmeldungErgibtAbgemeldet]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testStartMitTokenIstAngemeldet]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testStartOhneTokenOderBeiLesefehlerIstAbgemeldet]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testVeraltete401LoeschtKeineNeueSitzung]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.AccountStateTests testZustandEnthaeltWederTokenNochNonce]' passed (0.009 seconds).
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.065 (0.070) seconds
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testAbmeldenLoeschtLastSnapshotAt]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testAnmeldefehlerLoeschtNichts]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testHinweisUndBeschaeftigtJeStatus]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testLetzterAbgleichTextNochNichtUndDatum]' passed (0.008 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testMakeAccountNilBeiAusgeschaltetemSchalter]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testMakeAccountUnterEnableTestingHatKontoAberKeinenAbgleich]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testOhneRueckrufVerhaeltSichWieBisher]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testStandInAusgaengeZugelassenNichtZugelassenSpaeter]' passed (0.002 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testTrennenFehlerLoeschtNichts]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testTrennenLoeschtLastSnapshotAt]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testUnauthorizedLoeschtLastSnapshotAt]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeEinstellungenTests testVeraltete401LoeschtKeinenSchluessel]' passed (0.003 seconds).
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.044 (0.047) seconds
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testAblaufReihenfolgeClaimResultClaimTranscript]' passed (0.031 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testDoppellaufLiefertBusy]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testErgebnisKoerperAcceptedFuerAppliedUndNoEffect]' passed (0.005 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testErgebnisKoerperGrenzenKlemmenKuerzenErsatzwert]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testErgebnisKoerperRejectedMitFehlerliste]' passed (0.004 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testGeraeteKennungEinmalJeDurchlauf]' passed (0.010 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testHoechstens15LieferungenDanachAbschrift]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testKonflikt409BeimMeldenWirdVerworfen]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testLastSnapshotAtBeiFehlerUnveraendert]' passed (0.012 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testLastSnapshotAtErstNachAbschrift204Gesetzt]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testLastSnapshotAtWirdAnApplyUebergeben]' passed (0.007 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testLeere200BeimAbholenIstUngueltigeAntwort]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testNichtsOffenBeendetSchleifeUndSendetAbschrift]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testOhneSitzungKeinNetzverkehr]' passed (0.003 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testServiceClientLieferungsRouten]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testSonstigerFehlerBeendetStillOhneAbschrift]' passed (0.016 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testUnauthorizedMeldetAbUeberWithSession]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testUnlesbarerBestandSendetKeineAbschrift]' passed (0.006 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testVeraltete401LoeschtKeineNeuereSitzung]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testWaechterIstStummUnterTests]' passed (0.000 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testWithSessionTokenOhneSitzungUnd401]' passed (0.001 seconds).
+Test Case '-[LeanHealthTimerTests.ClaudeSyncTests testZweiterDurchlaufMitGleicherLieferungIstIdempotent]' passed (0.005 seconds).
+	 Executed 22 tests, with 0 failures (0 unexpected) in 0.154 (0.158) seconds
+	 Executed 50 tests, with 0 failures (0 unexpected) in 0.263 (0.278) seconds
+	 Executed 50 tests, with 0 failures (0 unexpected) in 0.263 (0.280) seconds
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' passed (67.544 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' passed (56.011 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' passed (52.930 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' passed (57.281 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' passed (111.894 seconds).
+** TEST SUCCEEDED **
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' passed (40.253 seconds).
+** TEST SUCCEEDED **
+** BUILD SUCCEEDED **
+** BUILD SUCCEEDED **

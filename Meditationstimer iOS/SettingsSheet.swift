@@ -13,6 +13,7 @@ import UIKit
 /// Gemeinsames Einstellungs‑Sheet für alle Tabs.
 struct SettingsSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.claudeAccount) private var claudeAccount
     @AppStorage("logWorkoutsAsMindfulness") private var logWorkoutsAsMindfulness: Bool = false
     @AppStorage("logMeditationAsYogaWorkout") private var logMeditationAsYogaWorkout: Bool = false
     @AppStorage("meditationGoalMinutes") private var meditationGoalMinutes: Int = 10
@@ -197,6 +198,22 @@ struct SettingsSheet: View {
                             .help("Configure smart reminders that are automatically cancelled when you've already completed the activity.")
                     }
 
+                }
+
+                if let claudeAccount {
+                    Section {
+                        NavigationLink(destination: ClaudeSettingsView(account: claudeAccount)) {
+                            LabeledContent(NSLocalizedString("Claude connection", comment: "Settings row"),
+                                           value: ClaudeSettingsView.isSignedIn(claudeAccount.status)
+                                               ? NSLocalizedString("Signed in", comment: "Claude status")
+                                               : NSLocalizedString("Not signed in", comment: "Claude status"))
+                        }
+                        .accessibilityIdentifier("claudeSettings.link")
+                    } header: {
+                        Text(NSLocalizedString("Claude", comment: "Settings section header"))
+                    } footer: {
+                        Text(NSLocalizedString("Claude can deliver exercises and programs to this app.", comment: "Claude section footer"))
+                    }
                 }
 
                 #if os(iOS)

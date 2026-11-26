@@ -1,0 +1,21 @@
+# Lauf 1: Original-Tests, ./Scripts/run-uitests.sh ClaudeEinstellungenUITests/testZeileClaudeVerbindungSichtbarNichtAngemeldet (danach abgebrochen)
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (45.516 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (56.079 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (40.226 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (42.312 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (49.452 seconds).
+
+# Lauf 2: Wegwerf-Kopie, nur openSettings() scrollt vor der Pruefung zur Zeile (Testdatei im Repo unveraendert), alle 6 Methoden
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' passed (65.238 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' passed (72.954 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' passed (61.417 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' passed (65.539 seconds).
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/dc19858b-637c-4eb7-b2fe-bc3d2e65fecf/scratchpad/uicheck/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:200: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Abbrechen fehlt in der Rueckfrage
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (88.220 seconds).
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/dc19858b-637c-4eb7-b2fe-bc3d2e65fecf/scratchpad/uicheck/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:145: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile 'System-Einstellungen oeffnen' nicht gefunden
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (111.451 seconds).
+	 Executed 6 tests, with 2 failures (0 unexpected) in 464.820 (464.847) seconds
+	 Executed 6 tests, with 2 failures (0 unexpected) in 464.820 (464.856) seconds
+	 Executed 6 tests, with 2 failures (0 unexpected) in 464.820 (464.859) seconds

@@ -8,7 +8,8 @@ enum AccountError: Error, Equatable {
 
 /// Whether this device is signed in to the service for Claude, and the steps of signing in, out and deleting.
 /// `signingIn` and `deleting` are also the lock against a second request: everything runs on the
-/// main actor. Neither the state, an error nor a log line ever names a token or a nonce. Nothing in the app calls it yet.
+/// main actor. Neither the state, an error nor a log line ever names a token or a nonce. The app holds one instance
+/// (`ClaudeWiring.makeAccount`), shared by the settings page and the sync.
 @MainActor @Observable final class AccountState {
     enum Status: Equatable, Sendable { case signedOut, signingIn, signedIn, deleting, notAllowed, retryLater }
     enum Problem: Equatable, Sendable { case retryLater }
@@ -19,6 +20,8 @@ enum AccountError: Error, Equatable {
     @ObservationIgnored private let store: any SessionStoring
     /// Open between `beginSignIn` and the request of `completeSignIn`, which uses it up.
     @ObservationIgnored private var nonce: Nonce?
+    /// Runs when the session ends here (sign-out, deletion, 401); the wiring clears `lastSnapshotAt` with it.
+    @ObservationIgnored var onSessionEnded: (() -> Void)?
 
     private static let logger = Logger(subsystem: "com.henemm.Meditationstimer", category: "account")
 
@@ -71,6 +74,7 @@ enum AccountError: Error, Equatable {
         guard status != .signingIn, status != .deleting else { return }
         guard let token = Self.storedToken(in: store) else {
             status = .signedOut
+            onSessionEnded?()
             return
         }
         do {
@@ -80,6 +84,7 @@ enum AccountError: Error, Equatable {
         }
         status = .signedOut
         lastProblem = nil
+        onSessionEnded?()
         do {
             try await client.logout(sessionToken: token)
         } catch {
@@ -100,6 +105,7 @@ enum AccountError: Error, Equatable {
             try await client.deleteAccount(sessionToken: token)
             clearStore()
             status = .signedOut
+            onSessionEnded?()
         } catch ServiceError.unauthorized {
             status = dropSession(token, during: "delete")
         } catch is CancellationError {
@@ -125,9 +131,13 @@ enum AccountError: Error, Equatable {
     /// The service no longer knows `token`: clear the store only if it still holds that one (a newer session stays).
     private func dropSession(_ token: String, during reason: StaticString) -> Status {
         Self.logger.info("\(reason.description, privacy: .public): session unknown at service")
-        guard let stored = Self.storedToken(in: store) else { return .signedOut }
+        guard let stored = Self.storedToken(in: store) else {
+            onSessionEnded?()
+            return .signedOut
+        }
         guard stored == token else { return .signedIn }
         clearStore()
+        onSessionEnded?()
         return .signedOut
     }
 

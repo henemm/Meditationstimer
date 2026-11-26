@@ -1,0 +1,624 @@
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Alle UI Tests
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 20:20:17 +0000] Status=2, isTerminal=NO, Elapsed=00:01.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-11-25 20:20:17 +0000] Status=4, isTerminal=NO, Elapsed=00:01.
+	Waiting on System App
+
+[2026-11-25 20:20:18 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-11-25 20:20:19 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-11-25 20:20:20 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_backgroundForeground_sessionStillRunning]' started (Iteration 1 of 3).
+2026-11-25 21:22:03.190 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_backgroundForeground_sessionStillRunning]' passed (130.677 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' started (Iteration 1 of 3).
+2026-11-25 21:24:11.311 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:200: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning] : failed - Kein Atem-Preset gefunden
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' failed (29.417 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' started (Iteration 2 of 3).
+2026-11-25 21:24:40.674 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:200: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning] : failed - Kein Atem-Preset gefunden
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' failed (26.618 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' started (Iteration 3 of 3).
+2026-11-25 21:25:07.259 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:200: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning] : failed - Kein Atem-Preset gefunden
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' failed (24.096 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_explicitStop_endsSession]' started (Iteration 1 of 3).
+2026-11-25 21:25:31.338 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_explicitStop_endsSession]' passed (20.952 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeMeditation_backgroundForeground_sessionStillRunning]' started (Iteration 1 of 3).
+2026-11-25 21:25:52.315 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeMeditation_backgroundForeground_sessionStillRunning]' skipped (26.569 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' started (Iteration 1 of 3).
+2026-11-25 21:26:18.840 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed (29.551 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' started (Iteration 2 of 3).
+2026-11-25 21:26:48.478 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed (33.955 seconds).
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' started (Iteration 3 of 3).
+2026-11-25 21:27:22.403 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed (28.394 seconds).
+Test Suite 'BackgroundMeditationUITests' failed at 2026-11-25 21:27:49.657.
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' started (Iteration 1 of 3).
+2026-11-25 21:27:50.764 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' passed (52.354 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' started (Iteration 1 of 3).
+2026-11-25 21:28:43.116 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' passed (46.561 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' started (Iteration 1 of 3).
+2026-11-25 21:29:29.658 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' passed (46.599 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' started (Iteration 1 of 3).
+2026-11-25 21:30:16.256 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' passed (43.164 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' started (Iteration 1 of 3).
+2026-11-25 21:30:59.538 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' passed (80.076 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' started (Iteration 1 of 3).
+2026-11-25 21:32:19.600 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' passed (43.805 seconds).
+Test Suite 'ClaudeEinstellungenUITests' passed at 2026-11-25 21:33:02.238.
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' started (Iteration 1 of 3).
+2026-11-25 21:33:03.346 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:35:52.212 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeFelderUITests testProgrammeUndAtemuebungenUeberstehenNeustart]' passed (332.025 seconds).
+Test Suite 'ClaudeFelderUITests' passed at 2026-11-25 21:38:34.277.
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' started (Iteration 1 of 3).
+2026-11-25 21:38:35.493 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:39:31.255 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathMinimalDeliveryStillHasInfoButton]' passed (83.428 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' started (Iteration 1 of 3).
+2026-11-25 21:39:57.747 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:40:56.004 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBreathRowShowsClaudeBadgeAndInfo]' passed (90.446 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' started (Iteration 1 of 3).
+2026-11-25 21:41:28.201 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:43:13.397 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testBuiltinProgramHasNoClaudeBadge]' passed (134.975 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' started (Iteration 1 of 3).
+2026-11-25 21:43:43.169 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:44:55.766 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeBadgeIsLocalizedInEnglish]' passed (100.758 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' started (Iteration 1 of 3).
+2026-11-25 21:45:23.989 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:46:29.555 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testClaudeExerciseInfoShowsTextsOnFirstTap]' passed (92.857 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' started (Iteration 1 of 3).
+2026-11-25 21:46:56.788 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:48:15.804 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:49:24.479 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testEditedClaudeProgramShowsAngepasst]' passed (199.428 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' started (Iteration 1 of 3).
+2026-11-25 21:50:16.324 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:51:57.144 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeKennzeichenUITests testWorkoutRowShowsClaudeBadgeAndInfoShowsPackageAndWhy]' passed (133.437 seconds).
+Test Suite 'ClaudeKennzeichenUITests' passed at 2026-11-25 21:52:29.628.
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab]' started (Iteration 1 of 3).
+2026-11-25 21:52:29.722 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:53:11.307 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GelieferteAtemuebungErscheintImSichtbarenMeditationTab]' passed (68.657 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab]' started (Iteration 1 of 3).
+2026-11-25 21:53:38.323 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:54:41.175 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC11_GeliefertesProgrammErscheintImSichtbarenWorkoutTab]' passed (93.053 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags]' started (Iteration 1 of 3).
+2026-11-25 21:55:11.428 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:57:07.545 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GelieferteAtemuebungNachTabwechselUndSpeichernEinesAnderenEintrags]' passed (151.391 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags]' started (Iteration 1 of 3).
+2026-11-25 21:57:42.863 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:59:48.501 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC12_GeliefertesProgrammNachTabwechselUndSpeichernEinesAnderenEintrags]' passed (162.127 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf]' started (Iteration 1 of 3).
+2026-11-25 22:00:24.934 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:01:10.156 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:02:16.171 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:03:17.068 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:04:16.302 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:05:09.523 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC13_AC14_LieferungUebersteht_NeustartUndRuecknahmeRaeumtAuf]' passed (337.222 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt]' started (Iteration 1 of 3).
+2026-11-25 22:06:03.245 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:07:02.508 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:07:53.291 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:08:34.746 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testAC15_UnlesbareLieferungBrichtNichtsUndGueltigeWirkt]' passed (179.926 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testBearbeitetesClaudeProgrammBleibtBeiNeuerRevision]' started (Iteration 1 of 3).
+2026-11-25 22:09:02.129 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:10:52.560 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:12:21.671 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:13:30.745 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:14:42.566 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testBearbeitetesClaudeProgrammBleibtBeiNeuerRevision]' passed (374.278 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testNeueAtemuebungOhneAenderungWirdAngelegt]' started (Iteration 1 of 3).
+2026-11-25 22:15:16.410 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testNeueAtemuebungOhneAenderungWirdAngelegt]' passed (56.167 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testSchrittEditorBehaeltClaudeUebung]' started (Iteration 1 of 3).
+2026-11-25 22:16:13.596 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:17:42.244 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:18:44.825 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:19:49.110 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testSchrittEditorBehaeltClaudeUebung]' passed (246.701 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert]' started (Iteration 1 of 3).
+2026-11-25 22:20:19.292 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:21:27.159 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:22:26.551 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.ClaudeSpeichernUITests testUnveraendertBestaetigtesClaudeProgrammWirdAktualisiert]' passed (154.414 seconds).
+Test Suite 'ClaudeSpeichernUITests' passed at 2026-11-25 22:22:53.620.
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_calendarFilterEnabled_dayWithTrackerEntry_opensSheet]' started (Iteration 1 of 3).
+2026-11-25 22:22:53.723 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_calendarFilterEnabled_dayWithTrackerEntry_opensSheet]' passed (86.584 seconds).
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_dayWithOnlyEmptyTrackers_doesNotOpenSheet]' started (Iteration 1 of 3).
+2026-11-25 22:24:21.396 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_dayWithOnlyEmptyTrackers_doesNotOpenSheet]' passed (94.635 seconds).
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_dayWithOnlyTrackerEntry_opensSheet_showsFilledAndEmptyRow]' started (Iteration 1 of 3).
+2026-11-25 22:25:55.961 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.DayDetailHabitsUITests test_dayWithOnlyTrackerEntry_opensSheet_showsFilledAndEmptyRow]' passed (94.455 seconds).
+Test Suite 'DayDetailHabitsUITests' passed at 2026-11-25 22:27:29.324.
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests test_tabBar_hasExactlyFourTabsWithDistinctLabels]' started (Iteration 1 of 3).
+2026-11-25 22:27:30.686 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests test_tabBar_hasExactlyFourTabsWithDistinctLabels]' passed (14.982 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests test_tabIndex3_onEnglish_isAchievements]' started (Iteration 1 of 3).
+2026-11-25 22:27:45.393 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests test_tabIndex3_onEnglish_isAchievements]' passed (11.484 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests test_tabIndex3_onGerman_isErfolge]' started (Iteration 1 of 3).
+2026-11-25 22:27:56.887 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests test_tabIndex3_onGerman_isErfolge]' passed (11.060 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testAddTrackerShowsNoAlcPreset]' started (Iteration 1 of 3).
+2026-11-25 22:28:07.938 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testAddTrackerShowsNoAlcPreset]' passed (39.532 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testAllFourTabsExist]' started (Iteration 1 of 3).
+2026-11-25 22:28:47.503 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testAllFourTabsExist]' passed (10.188 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testCounterTrackerShowsCorrectCountFormat]' started (Iteration 1 of 3).
+2026-11-25 22:28:57.678 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testCounterTrackerShowsCorrectCountFormat]' passed (25.173 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testCustomTrackerShowsLevelsMode]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testCustomTrackerShowsLevelsMode]' skipped (0.065 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testDatePickerButtonOpensLevelSelectionViewWithDatePicker]' started (Iteration 1 of 3).
+2026-11-25 22:29:22.906 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testDatePickerButtonOpensLevelSelectionViewWithDatePicker]' passed (24.103 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testDatePickerSheetCloseDoesNotShowCompactSheet]' started (Iteration 1 of 3).
+2026-11-25 22:29:47.046 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testDatePickerSheetCloseDoesNotShowCompactSheet]' passed (24.359 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditButtonOpensTrackerEditorSheet]' started (Iteration 1 of 3).
+2026-11-25 22:30:11.371 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditButtonOpensTrackerEditorSheet]' passed (15.901 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsHealthKitToggleForCompatibleTracker]' started (Iteration 1 of 3).
+2026-11-25 22:30:27.313 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsHealthKitToggleForCompatibleTracker]' passed (23.157 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsHistoryLink]' started (Iteration 1 of 3).
+2026-11-25 22:30:50.428 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsHistoryLink]' passed (28.184 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsIntegrationToggles]' started (Iteration 1 of 3).
+2026-11-25 22:31:18.625 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testEditorSheetShowsIntegrationToggles]' passed (23.962 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testErfolgeTabHasCleanLayoutWithoutSheetNavigation]' started (Iteration 1 of 3).
+2026-11-25 22:31:42.561 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testErfolgeTabHasCleanLayoutWithoutSheetNavigation]' passed (16.884 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testErfolgeTabShowsContent]' started (Iteration 1 of 3).
+2026-11-25 22:31:59.467 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testErfolgeTabShowsContent]' passed (16.218 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testErfolgeTabShowsEmbeddedCalendar]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testErfolgeTabShowsEmbeddedCalendar]' skipped (0.054 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFeelingsTrackerOpensFeelingsSelectionSheet]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFeelingsTrackerOpensFeelingsSelectionSheet]' skipped (0.048 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFreeWorkoutHeaderIsAboveCardContent]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFreeWorkoutHeaderIsAboveCardContent]' skipped (0.049 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFreeWorkoutHeaderStyle]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFreeWorkoutHeaderStyle]' skipped (0.050 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFreeWorkoutReachesRestPhaseForRoundAnnouncement]' started (Iteration 1 of 3).
+2026-11-25 22:32:15.880 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testFreeWorkoutReachesRestPhaseForRoundAnnouncement]' passed (37.016 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGenericNoAlcTrackerAllLevelsDisplayInErfolge]' started (Iteration 1 of 3).
+2026-11-25 22:32:52.936 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+    t =    46.26s                 Retrying failed scroll-to-visible with containing cell Cell
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGenericNoAlcTrackerAllLevelsDisplayInErfolge]' passed (102.587 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGratitudeTrackerOpensGratitudeLogSheet]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGratitudeTrackerOpensGratitudeLogSheet]' skipped (0.117 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGuidedWorkoutPauseButtonIsBelowProgressRing]' started (Iteration 1 of 3).
+2026-11-25 22:34:35.608 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGuidedWorkoutPauseButtonIsBelowProgressRing]' passed (45.571 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testInfoSheetOpensAndShowsContent]' started (Iteration 1 of 3).
+2026-11-25 22:35:21.198 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testInfoSheetOpensAndShowsContent]' passed (18.874 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLaunchPerformance]' started (Iteration 1 of 3).
+2026-11-25 22:35:40.752 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:35:49.837 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:35:58.070 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:06.002 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:14.278 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:22.425 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:1341: Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLaunchPerformance]' measured [Duration (AppLaunch), s] average: 4.432, relative standard deviation: 1.604%, values: [4.492296, 4.298707, 4.442408, 4.431229, 4.493224], performanceMetricID:com.apple.dt.XCTMetric_ApplicationLaunch-AppLaunch.duration, baselineName: "", baselineAverage: , polarity: prefers smaller, maxPercentRegression: 10.000%, maxPercentRelativeStandardDeviation: 10.000%, maxRegression: 0.000, maxStandardDeviation: 0.000
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLaunchPerformance]' passed (52.919 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLegacyJokerDisplayRemoved]' started (Iteration 1 of 3).
+2026-11-25 22:36:33.543 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLegacyJokerDisplayRemoved]' passed (23.278 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelSelectionViewShowsAdvancedButton]' started (Iteration 1 of 3).
+2026-11-25 22:36:56.287 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelSelectionViewShowsAdvancedButton]' passed (21.280 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelsModeShowsEditorSections]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelsModeShowsEditorSections]' skipped (0.064 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsDatePickerButton]' started (Iteration 1 of 3).
+2026-11-25 22:37:17.652 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsDatePickerButton]' passed (18.325 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsInlineButtons]' started (Iteration 1 of 3).
+2026-11-25 22:37:35.959 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsInlineButtons]' passed (56.233 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsLargeIconsInSeparateRow]' started (Iteration 1 of 3).
+2026-11-25 22:38:32.201 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsLargeIconsInSeparateRow]' passed (39.549 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsStreakInfo]' started (Iteration 1 of 3).
+2026-11-25 22:39:11.744 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testLevelTrackerShowsStreakInfo]' passed (15.658 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testManualTrackerTabVisualInspection]' started (Iteration 1 of 3).
+2026-11-25 22:39:27.418 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testManualTrackerTabVisualInspection]' passed (25.189 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationEndButtonStopsSession]' started (Iteration 1 of 3).
+2026-11-25 22:39:52.609 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationEndButtonStopsSession]' passed (23.322 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationLabelsNotUppercase]' started (Iteration 1 of 3).
+2026-11-25 22:40:15.923 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationLabelsNotUppercase]' passed (13.478 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationPlayButtonStartsSession]' started (Iteration 1 of 3).
+2026-11-25 22:40:29.393 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationPlayButtonStartsSession]' passed (19.064 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabIsDefaultSelected]' started (Iteration 1 of 3).
+2026-11-25 22:40:48.485 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabIsDefaultSelected]' passed (11.681 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabScrollsToAllPresets]' started (Iteration 1 of 3).
+2026-11-25 22:41:00.206 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabScrollsToAllPresets]' passed (15.719 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabShowsAllCardsFlat]' started (Iteration 1 of 3).
+2026-11-25 22:41:15.871 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabShowsAllCardsFlat]' passed (18.384 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabShowsTimerUI]' started (Iteration 1 of 3).
+2026-11-25 22:41:34.256 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabShowsTimerUI]' passed (12.511 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabToolbarHasOnlySettings]' started (Iteration 1 of 3).
+2026-11-25 22:41:46.768 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationTabToolbarHasOnlySettings]' passed (12.613 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsAusklangLabelInGerman]' started (Iteration 1 of 3).
+2026-11-25 22:41:59.378 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsAusklangLabelInGerman]' passed (12.471 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsClosingLabelInEnglish]' started (Iteration 1 of 3).
+2026-11-25 22:42:11.852 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsClosingLabelInEnglish]' passed (12.365 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsDauerLabelInGerman]' started (Iteration 1 of 3).
+2026-11-25 22:42:24.206 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsDauerLabelInGerman]' passed (12.273 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsDurationLabelInEnglish]' started (Iteration 1 of 3).
+2026-11-25 22:42:36.486 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMeditationViewShowsDurationLabelInEnglish]' passed (12.557 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMoodSelectionIsSingleSelect]' started (Iteration 1 of 3).
+2026-11-25 22:42:49.078 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMoodSelectionIsSingleSelect]' passed (24.029 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMoodTrackerOpensMoodSelectionSheet]' started (Iteration 1 of 3).
+2026-11-25 22:43:13.079 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testMoodTrackerOpensMoodSelectionSheet]' passed (42.126 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap]' started (Iteration 1 of 3).
+2026-11-25 22:43:55.384 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:1884: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap] : XCTAssertTrue failed - Checkmark feedback should appear after logging NoAlc level
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap]' failed (41.467 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap]' started (Iteration 2 of 3).
+2026-11-25 22:44:36.925 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap]' passed (36.437 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcCardShowsJokerIcons]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcCardShowsJokerIcons]' skipped (0.106 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcHistoryButtonOpensHistorySheet]' started (Iteration 1 of 3).
+2026-11-25 22:45:14.504 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcHistoryButtonOpensHistorySheet]' passed (56.396 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcLevelButtonsHaveIdentifiers]' started (Iteration 1 of 3).
+2026-11-25 22:46:09.625 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcLevelButtonsHaveIdentifiers]' passed (34.758 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcQuickLogButtonsExist]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcQuickLogButtonsExist]' skipped (0.056 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testOnlyOneNoAlcTrackerVisible]' started (Iteration 1 of 3).
+2026-11-25 22:46:44.422 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testOnlyOneNoAlcTrackerVisible]' passed (16.060 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testOpenMeditationHeaderIsAboveCardContent]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testOpenMeditationHeaderIsAboveCardContent]' skipped (0.086 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testOpenMeditationHeaderStyle]' started (Iteration 1 of 3).
+2026-11-25 22:47:00.596 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testOpenMeditationHeaderStyle]' passed (9.719 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' started (Iteration 1 of 3).
+2026-11-25 22:47:10.288 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testPresetTapCreatesVisibleTracker]' passed (19.938 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTabSwitching]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTabSwitching]' skipped (0.070 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTabSwitchingPreservesState]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTabSwitchingPreservesState]' skipped (0.049 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' started (Iteration 1 of 3).
+2026-11-25 22:47:30.341 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:47:52.855 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerCreationFromPresetPersistsAfterRestart]' passed (33.419 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerHeaderNotUppercase]' started (Iteration 1 of 3).
+2026-11-25 22:48:03.822 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerHeaderNotUppercase]' passed (11.788 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerListShowsGermanPresetNames]' started (Iteration 1 of 3).
+2026-11-25 22:48:15.576 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerListShowsGermanPresetNames]' passed (22.946 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerShowsStreakBadgeAfterLogging]' started (Iteration 1 of 3).
+2026-11-25 22:48:38.537 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerShowsStreakBadgeAfterLogging]' passed (18.674 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerTabEditButtonVisibility]' started (Iteration 1 of 3).
+2026-11-25 22:48:57.190 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerTabEditButtonVisibility]' passed (13.062 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerTabNoHorizontalWobbleDuringVerticalScroll]' started (Iteration 1 of 3).
+2026-11-25 22:49:10.273 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerTabNoHorizontalWobbleDuringVerticalScroll]' passed (37.423 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerTabShowsAddTrackerButton]' started (Iteration 1 of 3).
+2026-11-25 22:49:47.738 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testTrackerTabShowsAddTrackerButton]' passed (14.328 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutCloseButtonEndsSession]' started (Iteration 1 of 3).
+2026-11-25 22:50:01.988 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutCloseButtonEndsSession]' passed (21.177 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLabelsNotUppercase]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLabelsNotUppercase]' skipped (0.049 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLiveActivityDualTimerOnLockScreen]' started (Iteration 1 of 3).
+2026-11-25 22:50:23.223 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLiveActivityDualTimerOnLockScreen]' passed (41.996 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLiveActivityDynamicIslandExpanded]' started (Iteration 1 of 3).
+2026-11-25 22:51:05.314 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLiveActivityDynamicIslandExpanded]' passed (46.135 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutPlayButtonStartsSession]' started (Iteration 1 of 3).
+2026-11-25 22:51:51.465 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutPlayButtonStartsSession]' passed (24.818 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutProgramShowsRoundCounter]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutProgramShowsRoundCounter]' skipped (0.073 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutShowsSetCounter]' started (Iteration 1 of 3).
+2026-11-25 22:52:16.265 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutShowsSetCounter]' passed (24.125 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabScrollsToAllPrograms]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabScrollsToAllPrograms]' skipped (0.087 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabShowsAllCardsFlat]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabShowsAllCardsFlat]' skipped (0.048 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabShowsFreeWorkoutTitle]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabShowsFreeWorkoutTitle]' skipped (0.045 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabShowsTimerUI]' started (Iteration 1 of 3).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabShowsTimerUI]' skipped (0.044 seconds).
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabToolbarHasOnlySettings]' started (Iteration 1 of 3).
+2026-11-25 22:52:40.637 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutTabToolbarHasOnlySettings]' passed (17.162 seconds).
+Test Suite 'LeanHealthTimerUITests' failed at 2026-11-25 22:52:56.704.
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' started (Iteration 1 of 3).
+2026-11-25 22:52:57.890 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePicker_showsOnlyCatalogNames_german]' passed (332.084 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' started (Iteration 1 of 3).
+2026-11-25 22:58:29.953 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_exercisePickerOption_isTappableById]' passed (57.956 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' started (Iteration 1 of 3).
+2026-11-25 22:59:27.873 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' passed (189.816 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' started (Iteration 1 of 3).
+2026-11-25 23:02:37.740 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_limitsLengthAndLines]' passed (175.145 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_english]' started (Iteration 1 of 3).
+2026-11-25 23:05:32.831 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_english]' passed (42.728 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_german]' started (Iteration 1 of 3).
+2026-11-25 23:06:15.492 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintField_localized_german]' passed (40.853 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_infoButton_forPresetPlanke_showsContent]' started (Iteration 1 of 3).
+2026-11-25 23:06:56.442 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_infoButton_forPresetPlanke_showsContent]' passed (58.045 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' started (Iteration 1 of 3).
+2026-11-25 23:07:54.393 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:09:53.616 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:11:22.011 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_pickedExercise_persistsAfterRelaunch]' passed (313.542 seconds).
+Test Suite 'WorkoutHintUITests' passed at 2026-11-25 23:13:06.899.
+Test Case '-[LeanHealthTimerUITests.WorkoutSoundUITests testWorkoutStartFlow]' started (Iteration 1 of 3).
+2026-11-25 23:13:08.097 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutSoundUITests testWorkoutStartFlow]' passed (27.607 seconds).
+Test Case '-[LeanHealthTimerUITests.WorkoutSoundUITests testWorkoutStartsWithAuftakt]' started (Iteration 1 of 3).
+2026-11-25 23:13:35.619 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Case '-[LeanHealthTimerUITests.WorkoutSoundUITests testWorkoutStartsWithAuftakt]' passed (22.956 seconds).
+Test Suite 'WorkoutSoundUITests' passed at 2026-11-25 23:13:57.476.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 23:13:57.477.
+Test Suite 'All tests' failed at 2026-11-25 23:13:57.478.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 21:22:03.190 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:24:11.311 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:200: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning] : failed - Kein Atem-Preset gefunden
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' failed (29.417 seconds).
+2026-11-25 21:24:40.674 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:200: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning] : failed - Kein Atem-Preset gefunden
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' failed (26.618 seconds).
+2026-11-25 21:25:07.259 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:200: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning] : failed - Kein Atem-Preset gefunden
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_breathingExercise_backgroundForeground_sessionStillRunning]' failed (24.096 seconds).
+2026-11-25 21:25:31.338 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:25:52.315 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:26:18.840 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed (29.551 seconds).
+2026-11-25 21:26:48.478 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed (33.955 seconds).
+2026-11-25 21:27:22.403 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/BackgroundMeditationUITests.swift:369: error: -[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning] : XCTAssertFalse failed - Freies Workout wurde beim Hintergrund-Wechsel beendet
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_freeWorkout_backgroundForeground_sessionStillRunning]' failed (28.394 seconds).
+Test Suite 'BackgroundMeditationUITests' failed at 2026-11-25 21:27:49.657.
+2026-11-25 21:27:50.764 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:28:43.116 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:29:29.658 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:30:16.256 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:30:59.538 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:32:19.600 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:33:03.346 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:35:52.212 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:38:35.493 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:39:31.255 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:39:57.747 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:40:56.004 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:41:28.201 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:43:13.397 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:43:43.169 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:44:55.766 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:45:23.989 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:46:29.555 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:46:56.788 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:48:15.804 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:49:24.479 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:50:16.324 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:51:57.144 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:52:29.722 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:53:11.307 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:53:38.323 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:54:41.175 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:55:11.428 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:57:07.545 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:57:42.863 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 21:59:48.501 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:00:24.934 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:01:10.156 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:02:16.171 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:03:17.068 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:04:16.302 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:05:09.523 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:06:03.245 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:07:02.508 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:07:53.291 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:08:34.746 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:09:02.129 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:10:52.560 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:12:21.671 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:13:30.745 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:14:42.566 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:15:16.410 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:16:13.596 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:17:42.244 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:18:44.825 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:19:49.110 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:20:19.292 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:21:27.159 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:22:26.551 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:22:53.723 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:24:21.396 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:25:55.961 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:27:30.686 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:27:45.393 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:27:56.887 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:28:07.938 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:28:47.503 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:28:57.678 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:29:22.906 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:29:47.046 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:30:11.371 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:30:27.313 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:30:50.428 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:31:18.625 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:31:42.561 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:31:59.467 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:32:15.880 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:32:52.936 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+    t =    46.26s                 Retrying failed scroll-to-visible with containing cell Cell
+2026-11-25 22:34:35.608 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:35:21.198 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:35:40.752 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:35:49.837 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:35:58.070 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:06.002 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:14.278 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:22.425 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:33.543 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:36:56.287 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:37:17.652 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:37:35.959 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:38:32.201 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:39:11.744 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:39:27.418 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:39:52.609 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:40:15.923 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:40:29.393 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:40:48.485 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:41:00.206 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:41:15.871 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:41:34.256 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:41:46.768 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:41:59.378 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:42:11.852 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:42:24.206 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:42:36.486 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:42:49.078 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:43:13.079 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:43:55.384 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/Users/hem/Developer/Meditationstimer/Meditationstimer/.claude/worktrees/jaunty-knitting-floyd/LeanHealthTimerUITests/LeanHealthTimerUITests.swift:1884: error: -[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap] : XCTAssertTrue failed - Checkmark feedback should appear after logging NoAlc level
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testNoAlcButtonShowsFeedbackAfterTap]' failed (41.467 seconds).
+2026-11-25 22:44:36.925 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:45:14.504 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:46:09.625 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:46:44.422 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:47:00.596 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:47:10.288 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:47:30.341 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:47:52.855 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:48:03.822 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:48:15.576 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:48:38.537 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:48:57.190 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:49:10.273 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:49:47.738 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:50:01.988 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:50:23.223 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:51:05.314 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:51:51.465 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:52:16.265 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:52:40.637 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Suite 'LeanHealthTimerUITests' failed at 2026-11-25 22:52:56.704.
+2026-11-25 22:52:57.890 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:58:29.953 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 22:59:27.873 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:02:37.740 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:05:32.831 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:06:15.492 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:06:56.442 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:07:54.393 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:09:53.616 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:11:22.011 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:13:08.097 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-11-25 23:13:35.619 xcodebuild[55650:6125698] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 23:13:57.477.
+Test Suite 'All tests' failed at 2026-11-25 23:13:57.478.
+
+EXIT=1
