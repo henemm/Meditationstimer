@@ -84,4 +84,4 @@ Standard und in 5a schon im Einsatz. Keine Modellnutzung — „Was Claude sieht
 (Heute-Screenshot dunkel, Entwurf dunkel/hell mit Liste + „Was Claude sieht“, Alternative C Unterseite, Sonderfall leer.)
 
 ### Open Questions
-- [ ] PO: Entwurf freigeben — Empfehlung: Liste direkt auf der Seite (10 neueste) mit Titel (Log um Art/Name erweitert).
+- [x] PO 2026-11-26: **Schnitt 5b gestrichen** (Lieferliste und „Was Claude sieht“). Wortlaut: „Ich möchte keine Entscheidung. Ich als User bediene ja Claude. Und ich sage Claude: Leg das jetzt an. Dann möchte ich nicht noch einmal auf der anderen Seite entscheiden müssen. Das ist viel zu kompliziert gedacht. Löschen ja, ganz normal, wie ich andere Workouts auch löschen kann. Aber nicht mehr.“ Rückfrage zu „Was Claude sieht“: ebenfalls streichen. Kein Bau, Workflow per abandon.

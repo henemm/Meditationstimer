@@ -25,8 +25,7 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
       Fassung 2 (Verlauf) kommt mit #59.
    Jeder Fehler beendet den Durchlauf still; 401 meldet ab.
 4. **Einstellungsseite „Claude-Verbindung“** (Link in den Einstellungen, nur bei eingeschaltetem Schalter): Anmelden/Abmelden,
-   Zeitpunkt des letzten Abgleichs, Liste der letzten Lieferungen mit Ergebnis, „Was Claude sieht“ als kurzer Klartext,
-   „Verbindung trennen“ mit Rückfrage (`POST /auth/delete`; Geliefertes bleibt auf dem iPhone).
+   Zeitpunkt des letzten Abgleichs, „Verbindung trennen“ mit Rückfrage (`POST /auth/delete`; Geliefertes bleibt auf dem iPhone).
 5. **Entitlement:** Sign in with Apple für `henemm.Meditationstimer-iOS` (Portal und Datei, siehe Runbook Schritt 2 in henemm-infra).
 
 ## Tests (am Mac, zuerst rot)
@@ -64,4 +63,5 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
    in zwei Runden: **5a** eigene Seite „Claude-Verbindung“ (Anmelden mit Apple bzw. Stand-in unter Tests, letzter
    Abgleich, Abmelden, Verbindung trennen mit Rückfrage), ein gemeinsames `AccountState` im App-Struct, `lastSnapshotAt`
    löschen bei Sitzungsende (Abmelden, Trennen, 401), Entitlement (`DOCS/specs/features/feature-57-s5-einstellungen.md`);
-   **5b** (offen) Liste der letzten Lieferungen und „Was Claude sieht“ als Klartext auf derselben Seite.
+   **5b** gestrichen (PO 2026-11-26): keine Lieferliste und kein „Was Claude sieht“ in der App. Bestätigt wird im
+   Gespräch mit Claude; Geliefertes erscheint und wird gelöscht wie jeder andere Baustein, mehr nicht.
