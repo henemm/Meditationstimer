@@ -204,8 +204,8 @@ Neu in der App: ein kleines Tagebuch der Einheiten, das festhält, welches Progr
 - **Kennzeichnung:** Geliefertes trägt ein kleines Zeichen „von Claude". In der Detailansicht stehen Datum, Paket und Warum.
 - **Zurücknehmen und Löschen (PO 13.11.2026):** Henning löscht Geliefertes wie jeden anderen Baustein (kein Papierkorb). Zieht Claude etwas zurück, verschwindet es ebenso aus der App, einzeln oder als Paket. Absolvierte Einheiten in Apple Health bleiben erhalten.
 - **Selbst ändern:** Henning kann Geliefertes bearbeiten wie Eigenes. Claude darf es danach weiter ändern oder zurückziehen; das iPhone lehnt nur ab, was Claude nicht kennen konnte (Änderung nach der letzten Abschrift).
-- **Einstellungen:** Abschnitt „Claude-Verbindung" mit Anmelden, Zeitpunkt des letzten Abgleichs, Liste der Lieferungen samt Stand, „Was Claude sieht" als Klartext und „Verbindung trennen" (löscht alles beim Dienst).
-- **Abgelehntes:** Was die App nicht annehmen konnte, steht mit Grund in der Liste und geht als Meldung an Claude zurück.
+- **Einstellungen:** Abschnitt „Claude-Verbindung" mit Anmelden, Zeitpunkt des letzten Abgleichs und „Verbindung trennen" (löscht alles beim Dienst). Keine Lieferliste und kein „Was Claude sieht" in der App (PO 26.11.2026: „Ich sage Claude: Leg das jetzt an. Dann möchte ich nicht noch einmal auf der anderen Seite entscheiden müssen. Löschen ja, ganz normal … Aber nicht mehr.“).
+- **Abgelehntes:** Was die App nicht annehmen konnte, geht mit Grund als Meldung an Claude zurück; Claude sagt es im Gespräch.
 
 ### 9.1 Kalender (Reiter Erfolge)
 

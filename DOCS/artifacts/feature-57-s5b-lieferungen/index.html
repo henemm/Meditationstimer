@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude-Lieferungen Entwurf</title>
+<style>
+/* VOICE everyday: ruhiger Vorher/Nachher-Vergleich derselben Einstellungsseite
+   IDEA die echten iPhone-Bildschirme nebeneinander ausgelegt, wie Probedrucke auf einem Tisch
+   PICTURE Heute-Screenshot neben dem Entwurf in Dunkel und Hell, darunter Alternative und Sonderfälle
+   COLOUR iOS-Systemfarben der App: Grau-Grund, weiße/dunkle Gruppen, Systemblau, Grün/Rot für Ergebnisse
+   TYPE SF/System für die Mockups, Inter für den Begleittext
+   LAYOUT Titel oben, Telefone in einer umbrechenden Reihe, Erklärung je Telefon darunter; Phone: gestapelt */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0c0c0e);--ink:light-dark(#111114,#f2f2f5);--mute:light-dark(#5b5b63,#a3a3ad);--rule:light-dark(#e3e3e8,#26262b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,-apple-system,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px);max-width:1340px;margin:0 auto}
+h1{font-size:clamp(30px,4vw,44px);line-height:1.08;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+h2{font-size:24px;line-height:1.2;margin:44px 0 6px;letter-spacing:-.01em}
+p.lead{max-width:70ch;color:var(--mute);margin:0}
+.row{display:flex;flex-wrap:wrap;gap:28px;margin-top:22px;align-items:flex-start}
+figure{margin:0;width:300px;flex:0 1 300px}
+figcaption{font-size:15px;color:var(--mute);margin-top:10px;max-width:300px}
+figcaption b{color:var(--ink)}
+.shot{width:300px;max-width:100%;border-radius:38px;border:8px solid #1c1c1e;display:block;background:#000}
+.ph{width:300px;max-width:100%;height:650px;border-radius:38px;border:8px solid #1c1c1e;overflow:hidden;font:14px/1.3 -apple-system,"SF Pro Text",system-ui,sans-serif;display:flex;flex-direction:column}
+.ph.d{--g:#000;--c:#1c1c1e;--t:#fff;--s:#8e8e93;--l:#38383a;--b:#0a84ff;--r:#ff453a;--ok:#30d158;background:var(--g);color:var(--t)}
+.ph.l{--g:#f2f2f7;--c:#fff;--t:#000;--s:#6c6c70;--l:#e5e5ea;--b:#007aff;--r:#ff3b30;--ok:#248a3d;background:var(--g);color:var(--t)}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;font-weight:600}
+.bar .bk{width:32px;height:32px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:var(--t);font-weight:400}
+.bar .tt{flex:1;text-align:center;margin-right:32px}
+.sc{flex:1;overflow:hidden;padding:4px 12px 12px}
+.hd{font-size:12px;color:var(--s);margin:14px 14px 5px}
+.grp{background:var(--c);border-radius:14px;overflow:hidden}
+.it{display:flex;align-items:center;gap:8px;padding:9px 14px;border-top:.5px solid var(--l);min-height:38px}
+.it:first-child{border-top:0}
+.it .v{margin-left:auto;color:var(--s);white-space:nowrap;font-size:13px}
+.chev{color:var(--s);margin-left:6px}
+.lv{display:block;padding:8px 14px;border-top:.5px solid var(--l)}
+.lv:first-child{border-top:0}
+.lv .t{display:flex;gap:8px;align-items:baseline}
+.lv .t span:first-child{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lv .t .when{color:var(--s);font-size:12px;white-space:nowrap}
+.lv .r{font-size:12.5px;margin-top:2px}
+.ok{color:var(--ok)}.no{color:var(--r)}.same{color:var(--s)}
+.why{color:var(--s)}
+.blue{color:var(--b)}.red{color:var(--r)}
+.txt{padding:10px 14px;font-size:13px;line-height:1.4}
+.txt p{margin:0 0 6px}.txt p:last-child{margin:0}
+.txt b{font-weight:600}
+.empty{padding:11px 14px;color:var(--s);font-size:13px}
+.note{border-top:1px solid var(--rule);margin-top:44px;padding-top:18px;color:var(--mute);font-size:15px;max-width:75ch}
+.note p{margin:0 0 10px}
+@media(max-width:600px){figure{flex-basis:100%;width:100%}.ph,.shot{margin:0 auto}figcaption{max-width:none}}
+</style>
+</head>
+<body>
+<main class="band">
+<h1>Lieferungen und „Was Claude sieht“</h1>
+<p class="lead">Auf der Seite „Claude“ kommen zwei Abschnitte dazu, zwischen dem Anmeldestand und den Knöpfen zum Abmelden und Trennen. Der erste zeigt, was Claude zuletzt geliefert hat und ob es angekommen ist. Der zweite sagt in zwei Sätzen, was Claude von der App sieht und was nicht. Beides erscheint nur, wenn du angemeldet bist.</p>
+
+<h2>Heute und Entwurf</h2>
+<div class="row" id="main"></div>
+
+<h2>Alternative: Lieferungen auf eigener Unterseite</h2>
+<p class="lead">Die Seite bleibt kurz. Statt der Liste steht dort eine Zeile „Lieferungen“ mit der Anzahl; ein Tipp öffnet die Liste.</p>
+<div class="row" id="alt"></div>
+
+<h2>Sonderfälle</h2>
+<div class="row" id="edge"></div>
+
+<div class="note">
+<p><b>Woher der Titel kommt.</b> Heute merkt sich die App zu jeder Lieferung nur Zeitpunkt und Ergebnis, nicht, was es war. Damit die Liste „Programm Rücken A“ zeigen kann, merkt sie sich künftig beim Annehmen auch Art und Name. Lieferungen, die schon vor dieser Änderung kamen, erscheinen als „Lieferung“ ohne Namen. Was an Claude geht, ändert sich dadurch nicht.</p>
+<p><b>Ohne Titel ginge es auch</b>, dann zeigt jede Zeile nur „Lieferung“, Datum und Ergebnis. Das spart etwas Arbeit, sagt dir aber nicht, worum es ging. Ich empfehle die Fassung mit Titel.</p>
+<p><b>Wie viele Zeilen.</b> Die App behält die letzten 50 Ergebnisse. Die Seite zeigt die neuesten zehn, die neueste oben.</p>
+<p>Namen, Zahlen und Uhrzeiten in den Entwürfen sind Beispiele.</p>
+</div>
+</main>
+<script>
+{
+const items=[
+ {t:'Programm „Rücken A“',w:'Heute, 07:12',r:'ok',x:'Übernommen'},
+ {t:'Übung „Katzenbuckel“',w:'Heute, 07:12',r:'ok',x:'Übernommen'},
+ {t:'Programm „Rücken B“',w:'24.11.',r:'no',x:'Abgelehnt',why:'Auf dem iPhone geändert'},
+ {t:'Atemübung „4-7-8 kurz“',w:'22.11.',r:'same',x:'Ohne Änderung'},
+ {t:'Lieferung',w:'18.11.',r:'ok',x:'Übernommen'}
+];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bar=t=>`<div class="bar"><span class="bk">‹</span><span class="tt">${t}</span></div>`;
+const head=`<div class="grp"><div class="it">Angemeldet mit Apple<span class="v">Dieses iPhone</span></div><div class="it">Letzter Abgleich<span class="v">Heute, 07:12</span></div></div>`;
+const list=n=>`<div class="hd">Letzte Lieferungen</div><div class="grp">${items.slice(0,n).map(i=>`<div class="lv"><div class="t"><span>${esc(i.t)}</span><span class="when">${esc(i.w)}</span></div><div class="r ${i.r}">${esc(i.x)}${i.why?` <span class="why">· ${esc(i.why)}</span>`:''}</div></div>`).join('')}</div>`;
+const sees=`<div class="hd">Was Claude sieht</div><div class="grp"><div class="txt"><p><b>Claude sieht</b> deine 48 Übungen (3 davon von Claude), 7 Programme und 5 Atemübungen mit ihrer Herkunft sowie die Ergebnisse der letzten 12 Lieferungen.</p><p><b>Claude sieht nicht</b> deine Tracker-Einträge wie Alkohol, Stimmung oder Dankbarkeit, keine Daten aus Apple Health und keine Notizen.</p></div></div>`;
+const acts=`<div class="hd">&nbsp;</div><div class="grp"><div class="it blue">Abmelden</div><div class="it red">Verbindung trennen …</div></div>`;
+const phone=(m,body)=>`<div class="ph ${m}">${bar('Claude')}<div class="sc">${body}</div></div>`;
+const fig=(inner,cap)=>`<figure>${inner}<figcaption>${cap}</figcaption></figure>`;
+const shot=(f,alt)=>`<img class="shot" src="${f}" alt="${alt}">`;
+
+document.getElementById('main').innerHTML=[
+ fig(shot('heute-dunkel.png','Seite Claude heute, dunkel: Anmeldestand, letzter Abgleich, Abmelden, Verbindung trennen'),'<b>Heute.</b> Anmeldestand, letzter Abgleich, darunter Abmelden und Trennen. Was Claude geliefert hat, ist nicht zu sehen.'),
+ fig(phone('d',head+list(4)+sees+acts),'<b>Entwurf, dunkel.</b> Die Lieferungen mit Art, Name, Zeitpunkt und Ergebnis, neueste oben. Bei einer Ablehnung steht der Grund daneben. Darunter, was Claude sieht.'),
+ fig(phone('l',head+list(4)+sees+acts),'<b>Entwurf, hell.</b> Derselbe Aufbau. Grün heißt angekommen, Rot abgelehnt, Grau „ohne Änderung“ (die Lieferung war schon da).')
+].join('');
+
+const altMain=head+`<div class="hd">&nbsp;</div><div class="grp"><div class="it">Lieferungen<span class="v">12</span><span class="chev">›</span></div></div>`+sees+acts;
+const altSub=`<div class="hd">Neueste oben</div><div class="grp">${items.map(i=>`<div class="lv"><div class="t"><span>${esc(i.t)}</span><span class="when">${esc(i.w)}</span></div><div class="r ${i.r}">${esc(i.x)}${i.why?` <span class="why">· ${esc(i.why)}</span>`:''}</div></div>`).join('')}</div>`;
+document.getElementById('alt').innerHTML=[
+ fig(phone('d',altMain),'<b>Seite „Claude“.</b> Eine Zeile „Lieferungen“ mit der Anzahl, sonst wie im Entwurf.'),
+ fig(`<div class="ph d">${bar('Lieferungen')}<div class="sc">${altSub}</div></div>`,'<b>Unterseite.</b> Die Liste allein. Ein Tipp mehr, dafür bleibt die Hauptseite übersichtlich.')
+].join('');
+
+const emptySees=`<div class="hd">Was Claude sieht</div><div class="grp"><div class="txt"><p><b>Claude sieht</b> deine 45 Übungen, 7 Programme und 5 Atemübungen mit ihrer Herkunft.</p><p><b>Claude sieht nicht</b> deine Tracker-Einträge wie Alkohol, Stimmung oder Dankbarkeit, keine Daten aus Apple Health und keine Notizen.</p></div></div>`;
+const emptyHead=`<div class="grp"><div class="it">Angemeldet mit Apple<span class="v">Dieses iPhone</span></div><div class="it">Letzter Abgleich<span class="v">Noch nicht</span></div></div>`;
+document.getElementById('edge').innerHTML=[
+ fig(phone('l',emptyHead+`<div class="hd">Letzte Lieferungen</div><div class="grp"><div class="empty">Noch keine Lieferungen</div></div>`+emptySees+acts),'<b>Gerade angemeldet.</b> Noch nichts geliefert: Die Liste sagt das in einer Zeile. Die Zählung nennt dann keine Lieferergebnisse.')
+].join('');
+}
+</script>
+</body>
+</html>
