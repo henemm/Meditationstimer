@@ -16,7 +16,8 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
 2. **Anmelden mit Apple** (wie Loose Ends `AccountState`, `Nonce`): ohne Scopes; Apple bekommt den SHA-256 der Nonce, der Dienst den
    Rohwert; `POST /auth/apple {identityToken, nonce, code}` → `sessionToken`, im Schlüsselbund dieses Geräts (`KeychainSessionStore`).
    Antworten: 401 „Dieses Apple-Konto ist nicht zugelassen“, 503 „Dienst gerade nicht erreichbar, später erneut“.
-3. **Abgleich** beim Start und beim Wechsel in den Vordergrund, nur mit Sitzung (wie `ClaudeSync`/`ClaudeSyncTrigger`, unter Tests stumm):
+3. **Abgleich** (`ClaudeSync`) beim Start und beim Wechsel in den Vordergrund, ausgelöst im App-Struct über `.task` und
+   `scenePhase` (kein eigener Auslöser-Typ), nur mit Sitzung, unter Tests stumm:
    1. Lieferungen abholen (`POST /app/deliveries/claim`, Kopf `X-Device` = Geräte-UUID aus dem Schlüsselbund), jede mit #51 anwenden
       und das Ergebnis melden (`POST /app/deliveries/result`); höchstens 15 je Durchlauf.
    2. Danach die Abschrift senden (`POST /app/transcript`), **Fassung 1** (`Contracts/transcript/transcript-v1.schema.json`):
@@ -59,4 +60,8 @@ Claudes Lieferungen ab. Die Bausteine von Loose Ends werden übernommen und nur 
    (der Abgleich braucht es nicht); `lastSnapshotAt` beim Abmelden löschen ebenfalls Schnitt 5.
 5. Einstellungsseite mit Texten DE/EN und UI-Test; dazu das Entitlement Sign in with Apple, zusammen mit dem
    Portal-Schritt aus #56 (Fähigkeit an der App-ID), damit Gerätebauten aus Xcode nicht an einem Profil ohne die
-   Fähigkeit scheitern, und das Löschen von `lastSnapshotAt` bei Abmelden und Konto löschen.
+   Fähigkeit scheitern, und das Löschen von `lastSnapshotAt` bei Abmelden und Konto löschen. Wegen der Zeilengrenze
+   in zwei Runden: **5a** eigene Seite „Claude-Verbindung“ (Anmelden mit Apple bzw. Stand-in unter Tests, letzter
+   Abgleich, Abmelden, Verbindung trennen mit Rückfrage), ein gemeinsames `AccountState` im App-Struct, `lastSnapshotAt`
+   löschen bei Sitzungsende (Abmelden, Trennen, 401), Entitlement (`DOCS/specs/features/feature-57-s5-einstellungen.md`);
+   **5b** (offen) Liste der letzten Lieferungen und „Was Claude sieht“ als Klartext auf derselben Seite.

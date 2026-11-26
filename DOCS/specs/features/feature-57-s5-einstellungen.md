@@ -219,6 +219,11 @@ Der Stand-in-Knopf „Mit Apple anmelden (Test)“ ist ein DEBUG-Text ohne Über
 - **`lastSnapshotAt` löschen.** Nach Abmelden gilt jede von Henning geänderte Programm- oder Atemübung wieder als blockiert (erster Lauf, Regel 8); gewollt, Fehlerrichtung „zu vorsichtig“.
 - **Release mit `enable-testing`.** Das Stand-in ist nur im Debug-Bau enthalten; in Release erzeugt `makeAccount` immer das echte Konto, und nur bei `HHClaudeEnabled` überhaupt eines.
 
+## Known Limitations
+
+- **Rückfrage ohne sichtbares „Abbrechen“ (PO-Wahl 2026-11-25).** Seit iOS 26 erscheint `confirmationDialog` (R8) als Sprechblase am Knopf; das System blendet den Knopf mit Rolle `.cancel` aus, Abbrechen geschieht durch Tippen neben die Blase (`PopoverDismissRegion`). Der PO hat diese Apple-Darstellung gewählt, statt auf ein `.alert` mit sichtbarem „Abbrechen“ auszuweichen. Der `.cancel`-Knopf mit Kennung `claudeSettings.disconnectCancel` bleibt im Code. AC-12 bricht daher über Tippen neben die Blase ab (oder `disconnectCancel`, falls vorhanden). Quellen: hackingwithswift.com/forums/swiftui/confirmationdialog-and-cancel/30885, developer.apple.com/forums/thread/802906.
+- **Testkorrekturen vor GREEN.** Der Einstellungs-Helfer der UI-Tests scrollt vor der Zeilenprüfung (das `Form` lädt Zellen außerhalb des Bildschirms erst beim Scrollen); AC-9 sucht „System‑Einstellungen“ mit dem geschützten Bindestrich U+2011 des bestehenden Katalogtexts.
+
 ## Definition of Done
 
 - [ ] ACs AC-1 bis AC-16 nachgewiesen, im Protokoll `Executed N tests` mit N ≥ 1
@@ -233,4 +238,5 @@ Der Stand-in-Knopf „Mit Apple anmelden (Test)“ ist ein DEBUG-Text ohne Über
 
 ## Changelog
 
+- 2026-11-25 (GREEN): Testkorrekturen vor GREEN: Einstellungs-Helfer scrollt vor der Zeilenprüfung (Form lädt Zellen träge), AC-9 findet „System‑Einstellungen“ mit geschütztem Bindestrich (U+2011), AC-12 bricht über Tippen neben die Sprechblase ab (PO-Wahl Apple-Darstellung, Quellen: hackingwithswift.com/forums/swiftui/confirmationdialog-and-cancel/30885, developer.apple.com/forums/thread/802906).
 - 2026-11-25: Angelegt als Schnittspec für #57 Schnitt 5a (Grundgerüst der Einstellungsseite). Entscheidungen aus der Analyse übernommen: eigene Seite (PO 2026-11-25), eine `AccountState`-Instanz per Environment, Stand-in gegen `UITestTransport`, `lastSnapshotAt` per Rückruf (Variante A), Entitlement. Teilung 5a/5b; Abweichung zur Elternspec (`ClaudeSyncTrigger` existiert nicht).

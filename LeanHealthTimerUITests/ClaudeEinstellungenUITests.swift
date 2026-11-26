@@ -78,7 +78,9 @@ final class ClaudeEinstellungenUITests: XCTestCase {
         let button = app.buttons["gearshape"]
         XCTAssertTrue(button.waitForExistence(timeout: 30), "Einstellungen-Knopf fehlt")
         button.tap()
-        XCTAssertTrue(element("claudeSettings.link").waitForExistence(timeout: 15), "Zeile Claude-Verbindung fehlt")
+        let link = element("claudeSettings.link")
+        for _ in 0..<10 where !link.exists { app.swipeUp() }
+        XCTAssertTrue(link.waitForExistence(timeout: 15), "Zeile Claude-Verbindung fehlt")
     }
 
     private func scrollUntilHittable(_ el: XCUIElement) {
@@ -138,7 +140,7 @@ final class ClaudeEinstellungenUITests: XCTestCase {
         openSettings()
         let link = element("claudeSettings.link")
         XCTAssertTrue(waitForText(link, containing: "Nicht angemeldet"), "Zeile zeigt nicht 'Nicht angemeldet': \(text(of: link))")
-        let system = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'System-Einstellungen'")).firstMatch
+        let system = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'Einstellungen öffnen'")).firstMatch
         for _ in 0..<8 where !system.exists { app.swipeUp() }
         XCTAssertTrue(system.exists, "Zeile 'System-Einstellungen oeffnen' nicht gefunden")
         XCTAssertLessThan(link.frame.maxY, system.frame.minY, "Claude-Zeile steht nicht oberhalb von System-Einstellungen")
@@ -194,9 +196,25 @@ final class ClaudeEinstellungenUITests: XCTestCase {
         XCTAssertTrue(element("claudeSettings.status").exists, "vor der Bestaetigung ist noch nichts getrennt")
         XCTAssertFalse(element("claudeSettings.signInStandIn").isHittable, "Anmeldeknopf darf noch nicht bedienbar sein")
 
-        let cancel = dialogButton(id: "claudeSettings.disconnectCancel", label: "Abbrechen")
-        XCTAssertTrue(cancel.exists, "Abbrechen fehlt in der Rueckfrage")
-        cancel.tap()
+        // Unter iOS 26+ ist der Dialog eine Sprechblase ohne sichtbaren Abbrechen-Knopf:
+        // dann ueber die Dismiss-Region schliessen.
+        let cancelById = element("claudeSettings.disconnectCancel")
+        let cancelByLabel = app.buttons["Abbrechen"].firstMatch
+        if cancelById.exists {
+            cancelById.tap()
+        } else if cancelByLabel.exists {
+            cancelByLabel.tap()
+        } else {
+            let region = app.descendants(matching: .any)["PopoverDismissRegion"].firstMatch
+            let byLabel = app.descendants(matching: .any).matching(NSPredicate(format: "label == 'Einblendmenü schließen'")).firstMatch
+            if region.exists {
+                region.tap()
+            } else if byLabel.exists {
+                byLabel.tap()
+            } else {
+                app.coordinate(withNormalizedOffset: CGVector(dx: 0.05, dy: 0.1)).tap()
+            }
+        }
         XCTAssertTrue(waitUntilGone(app.staticTexts["Verbindung trennen?"]), "Rueckfrage bleibt nach Abbrechen")
         assertSignedInPage()
 

@@ -26,8 +26,9 @@ struct Meditationstimer_iOSApp: App {
     // SwiftData ModelContainer for Custom Trackers
     let modelContainer: ModelContainer
 
-    // Abgleich mit dem Claude-Dienst (#57); nil unter Tests oder wenn abgeschaltet
-    let claudeSync: ClaudeSync? = Meditationstimer_iOSApp.makeClaudeSync()
+    // Konto der Claude-Verbindung (#57), nil wenn abgeschaltet; der Abgleich nutzt dasselbe Konto, nil auch unter Tests
+    let claudeAccount: AccountState?
+    let claudeSync: ClaudeSync?
 
     // Static access for notification action handler (AppDelegate needs SwiftData access)
     static var sharedModelContainer: ModelContainer!
@@ -35,17 +36,17 @@ struct Meditationstimer_iOSApp: App {
     init() {
         modelContainer = Self.makeModelContainer()
         Self.sharedModelContainer = modelContainer
+        claudeAccount = ClaudeWiring.makeAccount(info: Bundle.main.infoDictionary, arguments: CommandLine.arguments)
+        claudeSync = Self.makeClaudeSync(account: claudeAccount)
         #if DEBUG
         Self.applyUITestDeliveryAtStart()
         #endif
     }
 
-    private static func makeClaudeSync() -> ClaudeSync? {
-        let args = CommandLine.arguments, info = Bundle.main.infoDictionary
-        guard ClaudeWiring.isEnabled(info: info, arguments: args),
-              !ClaudeSync.isSilent(arguments: args, environment: ProcessInfo.processInfo.environment) else { return nil }
-        let client = ServiceClient(baseURL: ClaudeWiring.serviceURL(info: info))
-        let account = AccountState(client: client, store: KeychainSessionStore())
+    private static func makeClaudeSync(account: AccountState?) -> ClaudeSync? {
+        guard let account, !ClaudeSync.isSilent(arguments: CommandLine.arguments,
+                                                environment: ProcessInfo.processInfo.environment) else { return nil }
+        let client = ServiceClient(baseURL: ClaudeWiring.serviceURL(info: Bundle.main.infoDictionary))
         return ClaudeSync(account: account, client: client, device: { try DeviceIdentity().current() })
     }
 
@@ -89,6 +90,7 @@ struct Meditationstimer_iOSApp: App {
                 .environmentObject(sharedLiveActivity)
                 .environmentObject(streakManager)
                 .modelContainer(modelContainer)
+                .environment(\.claudeAccount, claudeAccount)
                 #if DEBUG
                 .task { await Self.applyUITestDeliveryDelayed() }
                 #endif
