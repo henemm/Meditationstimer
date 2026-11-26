@@ -1,0 +1,810 @@
+RED-Lauf der UI-Tests in Wegwerf-Kopie ohne ClaudeEinstellungenTests.swift (die Unit-Datei bricht sonst den Build vor dem ersten UI-Test ab)
+=== testZeileClaudeVerbindungSichtbarNichtAngemeldet
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeEinstellungenUITests/testZeileClaudeVerbindungSichtbarNichtAngemeldet
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 16:51:30 +0000] Status=1, isTerminal=NO, Elapsed=00:09.
+	Waiting on BackBoard
+
+[2026-11-25 16:51:36 +0000] Status=4, isTerminal=NO, Elapsed=00:15.
+	Waiting on System App
+
+[2026-11-25 16:51:37 +0000] Status=4, isTerminal=NO, Elapsed=00:15.
+	Waiting on System App
+
+[2026-11-25 16:51:37 +0000] Status=4, isTerminal=NO, Elapsed=00:15.
+	Waiting on System App
+
+[2026-11-25 16:51:38 +0000] Status=4, isTerminal=NO, Elapsed=00:16.
+	Waiting on System App
+
+[2026-11-25 16:51:39 +0000] Status=4, isTerminal=NO, Elapsed=00:17.
+	Waiting on System App
+
+[2026-11-25 16:51:40 +0000] Status=4, isTerminal=NO, Elapsed=00:18.
+	Waiting on System App
+
+[2026-11-25 16:51:41 +0000] Status=4, isTerminal=NO, Elapsed=00:19.
+	Waiting on System App
+
+[2026-11-25 16:51:42 +0000] Status=4, isTerminal=NO, Elapsed=00:20.
+	Waiting on System App
+
+[2026-11-25 16:51:43 +0000] Status=4, isTerminal=NO, Elapsed=00:21.
+	Waiting on System App
+
+[2026-11-25 16:51:44 +0000] Status=4, isTerminal=NO, Elapsed=00:22.
+	Waiting on System App
+
+[2026-11-25 16:51:45 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 16:51:46 +0000] Status=4, isTerminal=NO, Elapsed=00:24.
+	Waiting on System App
+
+[2026-11-25 16:51:47 +0000] Status=4, isTerminal=NO, Elapsed=00:25.
+	Waiting on System App
+
+[2026-11-25 16:51:48 +0000] Status=4, isTerminal=NO, Elapsed=00:26.
+	Waiting on System App
+
+[2026-11-25 16:51:49 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:27.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' started (Iteration 1 of 3).
+2026-11-25 18:02:03.769 xcodebuild[54010:5435486] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (142.931 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' started (Iteration 2 of 3).
+2026-11-25 18:04:24.690 xcodebuild[54010:5435486] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (123.376 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' started (Iteration 3 of 3).
+2026-11-25 18:06:31.331 xcodebuild[54010:5435486] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (203.524 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 18:09:50.425.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 18:09:50.628.
+Test Suite 'Selected tests' failed at 2026-11-25 18:09:50.629.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 18:02:03.769 xcodebuild[54010:5435486] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (142.931 seconds).
+2026-11-25 18:04:24.690 xcodebuild[54010:5435486] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (123.376 seconds).
+2026-11-25 18:06:31.331 xcodebuild[54010:5435486] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testZeileClaudeVerbindungSichtbarNichtAngemeldet]' failed (203.524 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 18:09:50.425.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 18:09:50.628.
+Test Suite 'Selected tests' failed at 2026-11-25 18:09:50.629.
+
+=== testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeEinstellungenUITests/testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 17:13:03 +0000] Status=1, isTerminal=NO, Elapsed=00:11.
+	Waiting on BackBoard
+
+[2026-11-25 17:13:10 +0000] Status=4, isTerminal=NO, Elapsed=00:19.
+	Waiting on System App
+
+[2026-11-25 17:13:10 +0000] Status=4, isTerminal=NO, Elapsed=00:19.
+	Waiting on System App
+
+[2026-11-25 17:13:11 +0000] Status=4, isTerminal=NO, Elapsed=00:20.
+	Waiting on System App
+
+[2026-11-25 17:13:12 +0000] Status=4, isTerminal=NO, Elapsed=00:21.
+	Waiting on System App
+
+[2026-11-25 17:13:13 +0000] Status=4, isTerminal=NO, Elapsed=00:22.
+	Waiting on System App
+
+[2026-11-25 17:13:14 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 17:13:15 +0000] Status=4, isTerminal=NO, Elapsed=00:24.
+	Waiting on System App
+
+[2026-11-25 17:13:16 +0000] Status=4, isTerminal=NO, Elapsed=00:25.
+	Waiting on System App
+
+[2026-11-25 17:13:17 +0000] Status=4, isTerminal=NO, Elapsed=00:26.
+	Waiting on System App
+
+[2026-11-25 17:13:18 +0000] Status=4, isTerminal=NO, Elapsed=00:27.
+	Waiting on System App
+
+[2026-11-25 17:13:19 +0000] Status=4, isTerminal=NO, Elapsed=00:28.
+	Waiting on System App
+
+[2026-11-25 17:13:20 +0000] Status=4, isTerminal=NO, Elapsed=00:29.
+	Waiting on System App
+
+[2026-11-25 17:13:21 +0000] Status=4, isTerminal=NO, Elapsed=00:30.
+	Waiting on System App
+
+[2026-11-25 17:13:22 +0000] Status=4, isTerminal=NO, Elapsed=00:31.
+	Waiting on System App
+
+[2026-11-25 17:13:23 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:32.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' started (Iteration 1 of 3).
+2026-11-25 18:20:53.660 xcodebuild[59414:5492126] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (159.573 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' started (Iteration 2 of 3).
+2026-11-25 18:23:32.994 xcodebuild[59414:5492126] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (99.682 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' started (Iteration 3 of 3).
+2026-11-25 18:25:10.607 xcodebuild[59414:5492126] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (150.209 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 18:27:39.330.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 18:27:39.349.
+Test Suite 'Selected tests' failed at 2026-11-25 18:27:39.351.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 18:20:53.660 xcodebuild[59414:5492126] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (159.573 seconds).
+2026-11-25 18:23:32.994 xcodebuild[59414:5492126] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (99.682 seconds).
+2026-11-25 18:25:10.607 xcodebuild[59414:5492126] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAnmeldenMitStandInZeigtAngemeldetUndNochNichtAbgeglichen]' failed (150.209 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 18:27:39.330.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 18:27:39.349.
+Test Suite 'Selected tests' failed at 2026-11-25 18:27:39.351.
+
+=== testAbmeldenZeigtWiederNichtAngemeldet
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeEinstellungenUITests/testAbmeldenZeigtWiederNichtAngemeldet
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 17:30:13 +0000] Status=1, isTerminal=NO, Elapsed=00:13.
+	Waiting on BackBoard
+
+[2026-11-25 17:30:22 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 17:30:23 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 17:30:23 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 17:30:24 +0000] Status=4, isTerminal=NO, Elapsed=00:24.
+	Waiting on System App
+
+[2026-11-25 17:30:25 +0000] Status=4, isTerminal=NO, Elapsed=00:25.
+	Waiting on System App
+
+[2026-11-25 17:30:26 +0000] Status=4, isTerminal=NO, Elapsed=00:26.
+	Waiting on System App
+
+[2026-11-25 17:30:27 +0000] Status=4, isTerminal=NO, Elapsed=00:27.
+	Waiting on System App
+
+[2026-11-25 17:30:28 +0000] Status=4, isTerminal=NO, Elapsed=00:28.
+	Waiting on System App
+
+[2026-11-25 17:30:29 +0000] Status=4, isTerminal=NO, Elapsed=00:29.
+	Waiting on System App
+
+[2026-11-25 17:30:30 +0000] Status=4, isTerminal=NO, Elapsed=00:30.
+	Waiting on System App
+
+[2026-11-25 17:30:31 +0000] Status=4, isTerminal=NO, Elapsed=00:31.
+	Waiting on System App
+
+[2026-11-25 17:30:32 +0000] Status=4, isTerminal=NO, Elapsed=00:32.
+	Waiting on System App
+
+[2026-11-25 17:30:33 +0000] Status=4, isTerminal=NO, Elapsed=00:33.
+	Waiting on System App
+
+[2026-11-25 17:30:34 +0000] Status=4, isTerminal=NO, Elapsed=00:34.
+	Waiting on System App
+
+[2026-11-25 17:30:35 +0000] Status=4, isTerminal=NO, Elapsed=00:35.
+	Waiting on System App
+
+[2026-11-25 17:30:37 +0000] Status=4, isTerminal=NO, Elapsed=00:37.
+	Waiting on System App
+
+[2026-11-25 17:30:37 +0000] Status=4, isTerminal=NO, Elapsed=00:38.
+	Waiting on System App
+
+[2026-11-25 17:30:38 +0000] Status=4, isTerminal=NO, Elapsed=00:38.
+	Waiting on System App
+
+[2026-11-25 17:30:40 +0000] Status=4, isTerminal=NO, Elapsed=00:40.
+	Waiting on System App
+
+[2026-11-25 17:30:40 +0000] Status=4, isTerminal=NO, Elapsed=00:40.
+	Waiting on System App
+
+[2026-11-25 17:30:41 +0000] Status=4, isTerminal=NO, Elapsed=00:41.
+	Waiting on System App
+
+[2026-11-25 17:30:42 +0000] Status=4, isTerminal=NO, Elapsed=00:42.
+	Waiting on System App
+
+[2026-11-25 17:30:43 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:43.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' started (Iteration 1 of 3).
+2026-11-25 18:37:18.941 xcodebuild[66194:5542672] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' failed (100.171 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' started (Iteration 2 of 3).
+2026-11-25 18:38:58.159 xcodebuild[66194:5542672] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' failed (116.111 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' started (Iteration 3 of 3).
+2026-11-25 18:40:54.078 xcodebuild[66194:5542672] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' failed (92.638 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 18:42:25.458.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 18:42:25.478.
+Test Suite 'Selected tests' failed at 2026-11-25 18:42:25.479.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 18:37:18.941 xcodebuild[66194:5542672] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' failed (100.171 seconds).
+2026-11-25 18:38:58.159 xcodebuild[66194:5542672] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' failed (116.111 seconds).
+2026-11-25 18:40:54.078 xcodebuild[66194:5542672] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testAbmeldenZeigtWiederNichtAngemeldet]' failed (92.638 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 18:42:25.458.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 18:42:25.478.
+Test Suite 'Selected tests' failed at 2026-11-25 18:42:25.479.
+
+=== testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeEinstellungenUITests/testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 17:47:41 +0000] Status=4, isTerminal=NO, Elapsed=00:41.
+	Waiting on System App
+
+[2026-11-25 17:47:41 +0000] Status=4, isTerminal=NO, Elapsed=00:41.
+	Waiting on System App
+
+[2026-11-25 17:47:41 +0000] Status=4, isTerminal=NO, Elapsed=00:41.
+	Waiting on System App
+
+[2026-11-25 17:47:42 +0000] Status=4, isTerminal=NO, Elapsed=00:42.
+	Waiting on System App
+
+[2026-11-25 17:47:43 +0000] Status=4, isTerminal=NO, Elapsed=00:43.
+	Waiting on System App
+
+[2026-11-25 17:47:44 +0000] Status=4, isTerminal=NO, Elapsed=00:44.
+	Waiting on System App
+
+[2026-11-25 17:47:45 +0000] Status=4, isTerminal=NO, Elapsed=00:45.
+	Waiting on System App
+
+[2026-11-25 17:47:47 +0000] Status=4, isTerminal=NO, Elapsed=00:46.
+	Waiting on System App
+
+[2026-11-25 17:47:47 +0000] Status=4, isTerminal=NO, Elapsed=00:47.
+	Waiting on System App
+
+[2026-11-25 17:47:48 +0000] Status=4, isTerminal=NO, Elapsed=00:48.
+	Waiting on System App
+
+[2026-11-25 17:47:49 +0000] Status=4, isTerminal=NO, Elapsed=00:49.
+	Waiting on System App
+
+[2026-11-25 17:47:50 +0000] Status=4, isTerminal=NO, Elapsed=00:50.
+	Waiting on System App
+
+[2026-11-25 17:47:51 +0000] Status=4, isTerminal=NO, Elapsed=00:51.
+	Waiting on System App
+
+[2026-11-25 17:47:52 +0000] Status=4, isTerminal=NO, Elapsed=00:52.
+	Waiting on System App
+
+[2026-11-25 17:47:53 +0000] Status=4, isTerminal=NO, Elapsed=00:53.
+	Waiting on System App
+
+[2026-11-25 17:47:54 +0000] Status=4, isTerminal=NO, Elapsed=00:54.
+	Waiting on System App
+
+[2026-11-25 17:47:56 +0000] Status=4, isTerminal=NO, Elapsed=00:56.
+	Waiting on System App
+
+[2026-11-25 17:47:56 +0000] Status=4, isTerminal=NO, Elapsed=00:56.
+	Waiting on System App
+
+[2026-11-25 17:47:58 +0000] Status=4, isTerminal=NO, Elapsed=00:58.
+	Waiting on System App
+
+[2026-11-25 17:47:58 +0000] Status=4, isTerminal=NO, Elapsed=00:58.
+	Waiting on System App
+
+[2026-11-25 17:48:00 +0000] Status=4, isTerminal=NO, Elapsed=01:00.
+	Waiting on System App
+
+[2026-11-25 17:48:01 +0000] Status=4, isTerminal=NO, Elapsed=01:00.
+	Waiting on System App
+
+[2026-11-25 17:48:02 +0000] Status=4, isTerminal=NO, Elapsed=01:01.
+	Waiting on System App
+
+[2026-11-25 17:48:03 +0000] Status=4, isTerminal=NO, Elapsed=01:02.
+	Waiting on System App
+
+[2026-11-25 17:48:03 +0000] Status=4, isTerminal=NO, Elapsed=01:03.
+	Waiting on System App
+
+[2026-11-25 17:48:04 +0000] Status=4, isTerminal=NO, Elapsed=01:04.
+	Waiting on System App
+
+[2026-11-25 17:48:05 +0000] Status=4, isTerminal=NO, Elapsed=01:05.
+	Waiting on System App
+
+[2026-11-25 17:48:06 +0000] Status=4, isTerminal=NO, Elapsed=01:06.
+	Waiting on System App
+
+[2026-11-25 17:48:08 +0000] Status=4, isTerminal=NO, Elapsed=01:08.
+	Waiting on System App
+
+[2026-11-25 17:48:08 +0000] Status=4, isTerminal=NO, Elapsed=01:08.
+	Waiting on System App
+
+[2026-11-25 17:48:10 +0000] Status=4, isTerminal=NO, Elapsed=01:10.
+	Waiting on System App
+
+[2026-11-25 17:48:11 +0000] Status=4, isTerminal=NO, Elapsed=01:11.
+	Waiting on System App
+
+[2026-11-25 17:48:12 +0000] Status=4, isTerminal=NO, Elapsed=01:12.
+	Waiting on System App
+
+[2026-11-25 17:48:13 +0000] Status=4, isTerminal=NO, Elapsed=01:13.
+	Waiting on System App
+
+[2026-11-25 17:48:13 +0000] Status=4, isTerminal=NO, Elapsed=01:13.
+	Waiting on System App
+
+[2026-11-25 17:48:15 +0000] Status=4, isTerminal=NO, Elapsed=01:15.
+	Waiting on System App
+
+[2026-11-25 17:48:16 +0000] Status=4, isTerminal=NO, Elapsed=01:15.
+	Waiting on System App
+
+[2026-11-25 17:48:17 +0000] Status=4, isTerminal=NO, Elapsed=01:17.
+	Waiting on System App
+
+[2026-11-25 17:48:18 +0000] Status=4, isTerminal=NO, Elapsed=01:18.
+	Waiting on System App
+
+[2026-11-25 17:48:19 +0000] Status=4, isTerminal=NO, Elapsed=01:19.
+	Waiting on System App
+
+[2026-11-25 17:48:20 +0000] Status=4, isTerminal=NO, Elapsed=01:19.
+	Waiting on System App
+
+[2026-11-25 17:48:21 +0000] Status=4, isTerminal=NO, Elapsed=01:20.
+	Waiting on System App
+
+[2026-11-25 17:48:22 +0000] Status=4, isTerminal=NO, Elapsed=01:22.
+	Waiting on System App
+
+[2026-11-25 17:48:23 +0000] Status=4, isTerminal=NO, Elapsed=01:23.
+	Waiting on System App
+
+[2026-11-25 17:48:24 +0000] Status=4, isTerminal=NO, Elapsed=01:24.
+	Waiting on System App
+
+[2026-11-25 17:48:25 +0000] Status=4, isTerminal=NO, Elapsed=01:24.
+	Waiting on System App
+
+[2026-11-25 17:48:26 +0000] Status=4, isTerminal=NO, Elapsed=01:25.
+	Waiting on System App
+
+[2026-11-25 17:48:27 +0000] Status=4, isTerminal=NO, Elapsed=01:27.
+	Waiting on System App
+
+[2026-11-25 17:48:28 +0000] Status=4, isTerminal=NO, Elapsed=01:27.
+	Waiting on System App
+
+[2026-11-25 17:48:29 +0000] Status=4, isTerminal=NO, Elapsed=01:28.
+	Waiting on System App
+
+[2026-11-25 17:48:30 +0000] Status=4, isTerminal=NO, Elapsed=01:29.
+	Waiting on System App
+
+[2026-11-25 17:48:30 +0000] Status=4, isTerminal=NO, Elapsed=01:30.
+	Waiting on System App
+
+[2026-11-25 17:48:31 +0000] Status=4, isTerminal=NO, Elapsed=01:31.
+	Waiting on System App
+
+[2026-11-25 17:48:33 +0000] Status=4, isTerminal=NO, Elapsed=01:33.
+	Waiting on System App
+
+[2026-11-25 17:48:34 +0000] Status=4294967295, isTerminal=YES, Elapsed=01:33.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' started (Iteration 1 of 3).
+2026-11-25 18:57:47.793 xcodebuild[72566:5593838] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (153.797 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' started (Iteration 2 of 3).
+2026-11-25 19:00:33.495 xcodebuild[72566:5593838] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (130.223 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' started (Iteration 3 of 3).
+2026-11-25 19:02:33.572 xcodebuild[72566:5593838] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (93.816 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 19:04:02.924.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 19:04:02.935.
+Test Suite 'Selected tests' failed at 2026-11-25 19:04:02.935.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 18:57:47.793 xcodebuild[72566:5593838] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (153.797 seconds).
+2026-11-25 19:00:33.495 xcodebuild[72566:5593838] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (130.223 seconds).
+2026-11-25 19:02:33.572 xcodebuild[72566:5593838] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testTrennenFragtNachAbbrechenBehaeltBestaetigenTrennt]' failed (93.816 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 19:04:02.924.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 19:04:02.935.
+Test Suite 'Selected tests' failed at 2026-11-25 19:04:02.935.
+
+=== testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeEinstellungenUITests/testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 18:07:58 +0000] Status=1, isTerminal=NO, Elapsed=00:11.
+	Waiting on BackBoard
+
+[2026-11-25 18:08:03 +0000] Status=4, isTerminal=NO, Elapsed=00:16.
+	Waiting on System App
+
+[2026-11-25 18:08:04 +0000] Status=4, isTerminal=NO, Elapsed=00:16.
+	Waiting on System App
+
+[2026-11-25 18:08:04 +0000] Status=4, isTerminal=NO, Elapsed=00:16.
+	Waiting on System App
+
+[2026-11-25 18:08:05 +0000] Status=4, isTerminal=NO, Elapsed=00:17.
+	Waiting on System App
+
+[2026-11-25 18:08:06 +0000] Status=4, isTerminal=NO, Elapsed=00:18.
+	Waiting on System App
+
+[2026-11-25 18:08:07 +0000] Status=4, isTerminal=NO, Elapsed=00:19.
+	Waiting on System App
+
+[2026-11-25 18:08:08 +0000] Status=4, isTerminal=NO, Elapsed=00:20.
+	Waiting on System App
+
+[2026-11-25 18:08:09 +0000] Status=4, isTerminal=NO, Elapsed=00:21.
+	Waiting on System App
+
+[2026-11-25 18:08:10 +0000] Status=4, isTerminal=NO, Elapsed=00:22.
+	Waiting on System App
+
+[2026-11-25 18:08:11 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 18:08:12 +0000] Status=4, isTerminal=NO, Elapsed=00:24.
+	Waiting on System App
+
+[2026-11-25 18:08:13 +0000] Status=4, isTerminal=NO, Elapsed=00:25.
+	Waiting on System App
+
+[2026-11-25 18:08:14 +0000] Status=4, isTerminal=NO, Elapsed=00:26.
+	Waiting on System App
+
+[2026-11-25 18:08:15 +0000] Status=4, isTerminal=NO, Elapsed=00:27.
+	Waiting on System App
+
+[2026-11-25 18:08:16 +0000] Status=4, isTerminal=NO, Elapsed=00:28.
+	Waiting on System App
+
+[2026-11-25 18:08:17 +0000] Status=4, isTerminal=NO, Elapsed=00:29.
+	Waiting on System App
+
+[2026-11-25 18:08:18 +0000] Status=4, isTerminal=NO, Elapsed=00:30.
+	Waiting on System App
+
+[2026-11-25 18:08:19 +0000] Status=4, isTerminal=NO, Elapsed=00:31.
+	Waiting on System App
+
+[2026-11-25 18:08:20 +0000] Status=4, isTerminal=NO, Elapsed=00:32.
+	Waiting on System App
+
+[2026-11-25 18:08:21 +0000] Status=4, isTerminal=NO, Elapsed=00:33.
+	Waiting on System App
+
+[2026-11-25 18:08:22 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:34.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' started (Iteration 1 of 3).
+2026-11-25 19:15:40.220 xcodebuild[79664:5649141] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' failed (147.347 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' started (Iteration 2 of 3).
+2026-11-25 19:18:08.806 xcodebuild[79664:5649141] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' failed (143.599 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' started (Iteration 3 of 3).
+2026-11-25 19:20:29.565 xcodebuild[79664:5649141] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' failed (106.928 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 19:22:15.016.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 19:22:15.039.
+Test Suite 'Selected tests' failed at 2026-11-25 19:22:15.040.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 19:15:40.220 xcodebuild[79664:5649141] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' failed (147.347 seconds).
+2026-11-25 19:18:08.806 xcodebuild[79664:5649141] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' failed (143.599 seconds).
+2026-11-25 19:20:29.565 xcodebuild[79664:5649141] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testNichtZugelassenZeigtHinweisUndErlaubtNeuenVersuch]' failed (106.928 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 19:22:15.016.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 19:22:15.039.
+Test Suite 'Selected tests' failed at 2026-11-25 19:22:15.040.
+
+=== testSpaeterErneutZeigtHinweis
+═══════════════════════════════════════════════════════════════════════
+  🧪 XCUITest Runner - Automatische Vorbereitung + Auto-Repair
+═══════════════════════════════════════════════════════════════════════
+
+📋 Einzelner Test: ClaudeEinstellungenUITests/testSpaeterErneutZeigtHinweis
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VERSUCH 1/2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 Simulator vorbereiten...
+
+   → Stoppe alle Simulatoren...
+   → Starte CoreSimulator Service neu...
+   → Boote Simulator iPhone 17 Pro (iOS 27.2, 9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B)...
+   → Warte auf Simulator...
+Monitoring boot status for iPhone 17 Pro (9892DDA6-6C8E-4EF7-8C8E-59F2AB5BE34B).
+[2026-11-25 18:25:38 +0000] Status=2, isTerminal=NO, Elapsed=00:11.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:01 seconds
+
+[2026-11-25 18:25:40 +0000] Status=4, isTerminal=NO, Elapsed=00:13.
+	Waiting on System App
+
+[2026-11-25 18:25:40 +0000] Status=4, isTerminal=NO, Elapsed=00:13.
+	Waiting on System App
+
+[2026-11-25 18:25:41 +0000] Status=4, isTerminal=NO, Elapsed=00:14.
+	Waiting on System App
+
+[2026-11-25 18:25:42 +0000] Status=4, isTerminal=NO, Elapsed=00:15.
+	Waiting on System App
+
+[2026-11-25 18:25:43 +0000] Status=4, isTerminal=NO, Elapsed=00:16.
+	Waiting on System App
+
+[2026-11-25 18:25:44 +0000] Status=4, isTerminal=NO, Elapsed=00:17.
+	Waiting on System App
+
+[2026-11-25 18:25:45 +0000] Status=4, isTerminal=NO, Elapsed=00:18.
+	Waiting on System App
+
+[2026-11-25 18:25:46 +0000] Status=4, isTerminal=NO, Elapsed=00:19.
+	Waiting on System App
+
+[2026-11-25 18:25:47 +0000] Status=4, isTerminal=NO, Elapsed=00:20.
+	Waiting on System App
+
+[2026-11-25 18:25:48 +0000] Status=4, isTerminal=NO, Elapsed=00:21.
+	Waiting on System App
+
+[2026-11-25 18:25:49 +0000] Status=4, isTerminal=NO, Elapsed=00:22.
+	Waiting on System App
+
+[2026-11-25 18:25:50 +0000] Status=4, isTerminal=NO, Elapsed=00:23.
+	Waiting on System App
+
+[2026-11-25 18:25:51 +0000] Status=4, isTerminal=NO, Elapsed=00:24.
+	Waiting on System App
+
+[2026-11-25 18:25:52 +0000] Status=4, isTerminal=NO, Elapsed=00:25.
+	Waiting on System App
+
+[2026-11-25 18:25:53 +0000] Status=4, isTerminal=NO, Elapsed=00:26.
+	Waiting on System App
+
+[2026-11-25 18:25:54 +0000] Status=4, isTerminal=NO, Elapsed=00:27.
+	Waiting on System App
+
+[2026-11-25 18:25:55 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:28.
+	Finished
+
+
+✅ Simulator bereit!
+
+═══════════════════════════════════════════════════════════════════════
+  🧪 Tests ausführen
+═══════════════════════════════════════════════════════════════════════
+
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' started (Iteration 1 of 3).
+2026-11-25 19:27:45.358 xcodebuild[91953:5713768] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' failed (95.731 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' started (Iteration 2 of 3).
+2026-11-25 19:29:22.160 xcodebuild[91953:5713768] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' failed (73.032 seconds).
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' started (Iteration 3 of 3).
+2026-11-25 19:30:33.677 xcodebuild[91953:5713768] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' failed (49.169 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 19:31:21.728.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 19:31:21.731.
+Test Suite 'Selected tests' failed at 2026-11-25 19:31:21.732.
+** TEST FAILED **
+
+═══════════════════════════════════════════════════════════════════════
+  ❌ TESTS FEHLGESCHLAGEN
+═══════════════════════════════════════════════════════════════════════
+
+Fehlgeschlagene Tests:
+2026-11-25 19:27:45.358 xcodebuild[91953:5713768] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' failed (95.731 seconds).
+2026-11-25 19:29:22.160 xcodebuild[91953:5713768] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' failed (73.032 seconds).
+2026-11-25 19:30:33.677 xcodebuild[91953:5713768] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/4ff02977-0595-4802-a7eb-2b752e8eee41/scratchpad/redcopy/LeanHealthTimerUITests/ClaudeEinstellungenUITests.swift:81: error: -[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis] : XCTAssertTrue failed - Zeile Claude-Verbindung fehlt
+Test Case '-[LeanHealthTimerUITests.ClaudeEinstellungenUITests testSpaeterErneutZeigtHinweis]' failed (49.169 seconds).
+Test Suite 'ClaudeEinstellungenUITests' failed at 2026-11-25 19:31:21.728.
+Test Suite 'LeanHealthTimerUITests.xctest' failed at 2026-11-25 19:31:21.731.
+Test Suite 'Selected tests' failed at 2026-11-25 19:31:21.732.
+

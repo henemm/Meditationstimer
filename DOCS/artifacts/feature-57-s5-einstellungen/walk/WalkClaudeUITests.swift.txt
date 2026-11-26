@@ -1,0 +1,70 @@
+import XCTest
+
+final class WalkClaudeUITests: XCTestCase {
+    var app: XCUIApplication!
+    let dir = "/private/tmp/claude-501/-Users-hem-Developer-Meditationstimer-Meditationstimer--claude-worktrees-jaunty-knitting-floyd/dc19858b-637c-4eb7-b2fe-bc3d2e65fecf/scratchpad/shots/"
+    var prefix: String { (try? String(contentsOfFile: dir + "prefix.txt", encoding: .utf8))?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "x" }
+    var n = 0
+
+    override func setUpWithError() throws { continueAfterFailure = false; app = XCUIApplication() }
+
+    func shot(_ name: String) {
+        n += 1
+        sleep(1)
+        let data = XCUIScreen.main.screenshot().pngRepresentation
+        try? data.write(to: URL(fileURLWithPath: dir + "\(prefix)-\(n)-\(name).png"))
+    }
+    func el(_ id: String) -> XCUIElement { app.descendants(matching: .any).matching(identifier: id).firstMatch }
+
+    func dismissAlerts() {
+        let sb = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        for _ in 0..<4 {
+            var h = false
+            for host in [app!, XCUIApplication(bundleIdentifier: "com.apple.HealthPrivacyService"), sb] {
+                for l in ["OK", "Nicht erlauben", "Don’t Allow", "Don't Allow"] {
+                    let b = host.buttons[l]
+                    if b.waitForExistence(timeout: host === app ? 1 : 0.5), b.isHittable { b.tap(); h = true; break }
+                }
+                if h { break }
+            }
+            if !h { return }
+        }
+    }
+    func openSettingsAndScroll() {
+        let g = app.buttons["gearshape"]
+        XCTAssertTrue(g.waitForExistence(timeout: 30)); g.tap()
+        let link = el("claudeSettings.link")
+        for _ in 0..<10 where !link.exists { app.swipeUp() }
+        XCTAssertTrue(link.waitForExistence(timeout: 15))
+        for _ in 0..<8 where !link.isHittable { app.swipeUp() }
+    }
+
+    func testLaufA() {
+        app.launchArguments = ["enable-testing", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch(); dismissAlerts()
+        openSettingsAndScroll(); shot("einstellungen-gruppe-claude")
+        el("claudeSettings.link").tap()
+        let si = el("claudeSettings.signInStandIn")
+        XCTAssertTrue(si.waitForExistence(timeout: 10)); shot("seite-nicht-angemeldet")
+        si.tap()
+        XCTAssertTrue(el("claudeSettings.status").waitForExistence(timeout: 15)); shot("seite-angemeldet")
+        let d = el("claudeSettings.disconnect")
+        XCTAssertTrue(d.isHittable); d.tap()
+        sleep(1); shot("rueckfrage-offen")
+        let cancel = el("claudeSettings.disconnectCancel")
+        if cancel.waitForExistence(timeout: 3) && cancel.isHittable { cancel.tap() }
+        else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.05, dy: 0.1)).tap() }
+        sleep(1)
+        XCTAssertTrue(el("claudeSettings.status").exists); shot("nach-abbruch-angemeldet")
+        el("claudeSettings.signOut").tap()
+        XCTAssertTrue(el("claudeSettings.signInStandIn").waitForExistence(timeout: 15)); shot("nach-abmelden")
+    }
+
+    func testLaufB() {
+        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
+        app.launch(); dismissAlerts()
+        openSettingsAndScroll(); shot("einstellungen-gruppe-claude")
+        el("claudeSettings.link").tap()
+        XCTAssertTrue(el("claudeSettings.appleButton").waitForExistence(timeout: 10)); shot("seite-apple-knopf")
+    }
+}

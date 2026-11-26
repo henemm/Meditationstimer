@@ -1,0 +1,23 @@
+$ codesign -d --entitlements :- "Lean Health Timer.app"   (Debug-iphonesimulator, 2026-11-25T18:46:42Z)
+Executable=/Users/hem/Library/Developer/Xcode/DerivedData/Meditationstimer-clzmzdhvigecamepdrsjwubblbwo/Build/Products/Debug-iphonesimulator/Lean Health Timer.app/Lean Health Timer
+warning: Specifying ':' in the path is deprecated and will not work in a future release
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict></dict></plist>
+
+# Hinweis: Simulator-Bauten tragen die Entitlements nicht in der (ad-hoc) Signatur - oben leer -, sondern
+# eingebettet im Abschnitt __TEXT,__entitlements der ausfuehrbaren Datei. Ausgelesen mit:
+$ xcrun otool -X -s __TEXT __entitlements "Lean Health Timer.app/Lean Health Timer"  (Hex als Text)
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>application-identifier</key>
+	<string>XK87E2B3VR.henemm.Meditationstimer-iOS</string>
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
+	<key>com.apple.developer.healthkit</key>
+	<true/>
+</dict>
+</plist>
+
