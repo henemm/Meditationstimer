@@ -27,13 +27,11 @@ import XCTest
 /// `OffenView`, `AtemView`). Kein HealthKit, keine Systemberechtigung, kein Testdoppel nötig —
 /// die Zeitstempel sind öffentlich am Produktivtyp ablesbar.
 ///
-/// **Was hier NICHT geprüft werden kann.** Der Pfad des *geführten* Workout-Programms
-/// (`WorkoutProgramsView`) berechnet seine Eckpunkte inline in einer SwiftUI-View und schreibt
-/// direkt in HealthKit. Für diesen Pfad gibt es keinen Ansatzpunkt aus einem Unit-Test heraus:
-/// Es gibt weder einen herauslösbaren Typ noch eine einspeisbare Schnittstelle für den
-/// Schreibvorgang. Ein Beweis dafür würde eine Produktivcode-Änderung erfordern (Logik aus der
-/// View in einen eigenen Typ heben ODER `HealthKitManager` eine einspeisbare Schreib-
-/// Schnittstelle geben). Beides wurde hier bewusst NICHT getan.
+/// **Programm-Weg (#35 Schnitt 1).** Der Pfad des *geführten* Workout-Programms
+/// (`WorkoutProgramsView`) ist über `WorkoutSessionClock` und `WorkoutSessionLog` prüfbar:
+/// siehe `WorkoutSessionClockTests` (Zeiten, Dauer, Mindestdauer, Schreibweg mit Fake-Logger).
+/// Weiterhin NICHT unit-geprüft ist das Verbindungsstück zwischen View und Live Activity.
+/// Die geänderte Semantik (Pausen, Countdown, Endzeit) folgt in #35 Schnitt 2.
 final class SessionDurationTests: XCTestCase {
 
     private var engine: TwoPhaseTimerEngine!

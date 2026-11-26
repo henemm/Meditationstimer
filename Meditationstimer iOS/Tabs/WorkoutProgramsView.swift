@@ -417,6 +417,7 @@ enum WorkoutProgramsView {
     struct WorkoutProgramSessionCard: View {
         let set: WorkoutSet
         var close: () -> Void
+        var logger: any WorkoutLogging = HealthKitManager.shared
 
         @Environment(\.scenePhase) private var scenePhase
         @State private var isInBackground = false
@@ -428,7 +429,8 @@ enum WorkoutProgramsView {
 
         @StateObject private var sounds = SoundPlayer()
 
-        @State private var sessionStart: Date = .now
+        @State private var clock = WorkoutSessionClock(start: .now)
+        private var sessionStart: Date { clock.start }
         @State private var currentPhase: SessionPhase = .work(phaseIndex: 0)
         @State private var currentRound: Int = 1
         @State private var phaseStart: Date = .now
@@ -719,16 +721,18 @@ enum WorkoutProgramsView {
             }
 
             // 5. HealthKit Logging if session > 3s
-            let endDate = Date()
-            if sessionStart.distance(to: endDate) > 3 {
+            clock.end(at: Date(), reason: manual ? .manual : .natural)
+            if clock.meetsMinimum {
                 sessionEnded = true
 
                 do {
-                    let workout = try await HealthKitManager.shared.logWorkout(
-                        start: sessionStart,
-                        end: endDate,
-                        activity: .highIntensityIntervalTraining
+                    let result = try await WorkoutSessionLog.write(
+                        clock: clock,
+                        activity: .highIntensityIntervalTraining,
+                        logger: logger
                     )
+                    var workout: HKWorkout?
+                    if case .written(let written) = result { workout = written }
                     print("[WorkoutPrograms] HealthKit workout logged")
 
                     // Update streaks
@@ -757,7 +761,9 @@ enum WorkoutProgramsView {
             if !isPaused {
                 // PAUSE
                 isPaused = true
-                pausedAt = Date()
+                let pauseStart = Date()
+                pausedAt = pauseStart
+                clock.pause(at: pauseStart)
                 sounds.stopAll()
                 // Scheduled sounds cancelled by ProgressRingsView's checkProgress guard
                 print("[WorkoutPrograms] Session PAUSED")
@@ -777,9 +783,11 @@ enum WorkoutProgramsView {
             } else {
                 // RESUME
                 if let p = pausedAt {
-                    let delta = Date().timeIntervalSince(p)
+                    let resumedAt = Date()
+                    let delta = resumedAt.timeIntervalSince(p)
                     pausedSessionAccum += delta
                     pausedPhaseAccum += delta
+                    clock.resume(at: resumedAt)
                 }
                 pausedAt = nil
                 isPaused = false
