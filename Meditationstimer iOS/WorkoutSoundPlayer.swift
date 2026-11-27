@@ -99,6 +99,8 @@ public final class WorkoutSoundPlayer: NSObject, ObservableObject, AVAudioPlayer
         do {
             let p = try AVAudioPlayer(contentsOf: url)
             p.delegate = self
+            p.volume = AudioTestMode.volumeFactor()
+            AudioTestMode.logVolume("WorkoutSound", p.volume)
             p.prepareToPlay()
             p.play()
             activePlayers.append(p)
@@ -136,6 +138,8 @@ public final class WorkoutSoundPlayer: NSObject, ObservableObject, AVAudioPlayer
         let u = AVSpeechUtterance(string: text)
         u.voice = AVSpeechSynthesisVoice(language: language ?? currentTTSLanguage)
         u.rate = AVSpeechUtteranceDefaultSpeechRate
+        u.volume *= AudioTestMode.volumeFactor()
+        AudioTestMode.logVolume("WorkoutSpeech", u.volume)
         speech.speak(u)
     }
 

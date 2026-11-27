@@ -47,10 +47,20 @@
 //
 
 import AVFoundation
+import os
 
 /// Kleiner Gong/Sound-Player: spielt benannte Audio-Dateien (caf/wav/mp3) vollständig aus.
 final class GongPlayer: NSObject, AVAudioPlayerDelegate {
     private var activePlayers: [AVAudioPlayer] = []  // hält Referenzen, damit Sounds ausklingen
+    private let volumeFactor: Float
+
+    init(volumeFactor: Float = AudioTestMode.volumeFactor()) {
+        self.volumeFactor = volumeFactor
+        super.init()
+    }
+
+    /// Lesender Zugriff auf die Lautstärke der aktiven Player (für Tests).
+    var currentVolumes: [Float] { activePlayers.map(\.volume) }
 
     private func activateSession() {
         let session = AVAudioSession.sharedInstance()
@@ -67,6 +77,8 @@ final class GongPlayer: NSObject, AVAudioPlayerDelegate {
                 do {
                     let p = try AVAudioPlayer(contentsOf: url)
                     p.delegate = self
+                    p.volume = volumeFactor
+                    AudioTestMode.logVolume("Gong", p.volume)
                     p.prepareToPlay()
                     p.play()
                     self.activePlayers.append(p)
@@ -99,5 +111,19 @@ final class GongPlayer: NSObject, AVAudioPlayerDelegate {
         if let idx = activePlayers.firstIndex(where: { $0 === player }) {
             activePlayers.remove(at: idx)
         }
+    }
+}
+
+/// Stummschaltung im Testmodus (#131): Launch-Argument `enable-testing` setzt alle Klänge auf Lautstärke 0.
+enum AudioTestMode {
+    static func volumeFactor(arguments: [String] = ProcessInfo.processInfo.arguments) -> Float {
+        arguments.contains("enable-testing") ? 0 : 1
+    }
+
+    static func logVolume(_ site: String, _ volume: Float) {
+        #if DEBUG
+        Logger(subsystem: Bundle.main.bundleIdentifier ?? "app", category: "AudioTestMode")
+            .debug("\(site, privacy: .public) volume=\(volume, privacy: .public)")
+        #endif
     }
 }

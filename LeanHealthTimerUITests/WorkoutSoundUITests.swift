@@ -21,6 +21,7 @@ final class WorkoutSoundUITests: XCTestCase {
     /// 3. Der WorkoutRunnerView erscheint
     func testWorkoutStartFlow() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["enable-testing"]
         app.launch()
 
         // Warte auf App-Start
@@ -75,6 +76,7 @@ final class WorkoutSoundUITests: XCTestCase {
     /// nicht ob tatsächlich Sound abgespielt wird
     func testWorkoutStartsWithAuftakt() throws {
         let app = XCUIApplication()
+        app.launchArguments = ["enable-testing"]
         app.launch()
 
         sleep(2)

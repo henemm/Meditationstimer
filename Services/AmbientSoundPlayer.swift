@@ -66,7 +66,8 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
 
     // MARK: - Configuration
 
-    private var targetVolume: Float = 0.45  // Default 45% volume (balance with gongs)
+    private let volumeFactor: Float
+    private var targetVolume: Float  // Default 45% volume (balance with gongs) × volumeFactor
     private let fadeInDuration: TimeInterval = 3.0
     private let fadeOutDuration: TimeInterval = 3.0
     private let crossFadeDuration: TimeInterval = 9.0  // Overlap duration for seamless loop (increased by 2s)
@@ -82,13 +83,22 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
 
     private(set) var isPlaying: Bool = false
 
+    init(volumeFactor: Float = AudioTestMode.volumeFactor()) {
+        self.volumeFactor = volumeFactor
+        self.targetVolume = 0.45 * volumeFactor
+        super.init()
+    }
+
+    /// Lesender Zugriff auf die tatsächliche Lautstärke beider Player (für Tests).
+    var currentVolumes: (a: Float, b: Float) { (playerA?.volume ?? 0, playerB?.volume ?? 0) }
+
     // MARK: - Volume Control
 
     /// Sets the target volume (relative to gong, 0-100%)
     /// - Parameter percent: Volume percentage (0-100)
     func setVolume(percent: Int) {
         let clampedPercent = max(0, min(100, percent))
-        targetVolume = Float(clampedPercent) / 100.0
+        targetVolume = Float(clampedPercent) / 100.0 * volumeFactor
 
         // Update active players immediately if playing
         if isPlaying {
@@ -124,7 +134,8 @@ final class AmbientSoundPlayer: NSObject, AVAudioPlayerDelegate {
         do {
             let pA = try AVAudioPlayer(contentsOf: url)
             pA.delegate = self
-            pA.volume = 0.0  // Start silent for fade-in
+            pA.volume = 0.0 * volumeFactor  // Start silent, fade-in to targetVolume (includes volumeFactor)
+            AudioTestMode.logVolume("Ambient", targetVolume)
             pA.numberOfLoops = 0  // Manual loop control for cross-fade
             pA.prepareToPlay()
 

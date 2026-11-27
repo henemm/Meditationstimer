@@ -34,3 +34,10 @@ scope_guard:
     - '(^|/)tests?/'
     - '(^|/)Tests/'
     - '(^|/)LeanHealthTimer(UI)?Tests/'
+
+# qa_gate.py --run (#404) führt diesen Befehl selbst aus und stempelt den Lauf.
+# Nachgetragen 2026-11-27 (#131): fehlte bisher, das Gate brach mit „Kein Testbefehl konfiguriert“ ab.
+# Unit-Suite; Simulator per Name + OS (#19); ohne Parallel-Klone (Gedächtnis „Simulator-Klone starten App nicht“).
+qa_gate:
+  test_command: "xcodebuild test -project Meditationstimer.xcodeproj -scheme 'Lean Health Timer' -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=27.2' -parallel-testing-enabled NO -only-testing:LeanHealthTimerTests"
+  run_timeout: 1800
