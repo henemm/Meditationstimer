@@ -2067,6 +2067,8 @@ final class LeanHealthTimerUITests: XCTestCase {
             return
         }
         playButton.tap()
+        // #122 (AC-9): optionaler Health-Alert vor dem Programmstart
+        app.handleProgramStartHealthPrompts()
 
         // Handle Health Access alert if needed
         let allowButton = app.buttons["Allow"]

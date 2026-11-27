@@ -70,8 +70,10 @@ final class WorkoutCountdownUITests: XCTestCase {
         let start = element("workout.programRow.\(presetName).start")
         XCTAssertTrue(start.waitForExistence(timeout: 20), "Start-Knopf von \(presetName) fehlt")
         // Kein Alert-Abfangen nach dem Tippen: Schnappschuesse waehrend des laufenden Countdowns
-        // sind langsam und wuerden den kurzen Countdown aufbrauchen.
+        // sind langsam und wuerden den kurzen Countdown aufbrauchen. Nur der optionale Health-Alert
+        // des Programmstarts (#122, AC-9) wird kurz bedient; der Countdown ist 20 s lang.
         start.tap()
+        app.handleProgramStartHealthPrompts()
     }
 
     private var countdownText: XCUIElement { app.staticTexts["Get ready..."] }
