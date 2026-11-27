@@ -26,6 +26,8 @@ final class ProgrammFreigabeUITests: XCTestCase {
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
                                "-countdownBeforeStart", "<integer>20</integer>"]
         app.launch()
+        // Nach dem Reset fragt der App-Start nach "Minuten der Achtsamkeit" (nicht Workout): ablehnen.
+        app.dismissStartHealthSheetIfAny()
         let bar = app.tabBars.firstMatch
         XCTAssertTrue(bar.waitForExistence(timeout: 30), "Tab-Leiste erscheint nicht")
         // Tabs haben keine Kennung: positionsbasiert (1 = Workout).
@@ -51,9 +53,8 @@ final class ProgrammFreigabeUITests: XCTestCase {
 
     /// Programm laeuft: Countdown oder Rundenzaehler sichtbar.
     private func assertProgramRuns(_ message: String, file: StaticString = #filePath, line: UInt = #line) {
-        let running = NSPredicate { _, _ in self.countdownText.exists || self.roundLabel.exists }
-        let exp = XCTNSPredicateExpectation(predicate: running, object: nil)
-        XCTAssertEqual(XCTWaiter().wait(for: [exp], timeout: 15), .completed, message, file: file, line: line)
+        let seen = countdownText.waitForExistence(timeout: 20) || roundLabel.waitForExistence(timeout: 5)
+        XCTAssertTrue(seen, message, file: file, line: line)
     }
 
     /// Programm laeuft nicht: auch nach einigen Sekunden weder Countdown noch Rundenzaehler.
@@ -94,7 +95,7 @@ final class ProgrammFreigabeUITests: XCTestCase {
         let alert = app.healthAccessAlert
         XCTAssertTrue(alert.waitForExistence(timeout: 10), "Alert 'Health Access' erscheint nicht")
         alert.buttons["Allow"].tap()
-        XCTAssertTrue(app.allowHealthSheetCompletely(), "Health-Blatt (Turn On All / Allow) erscheint nicht")
+        XCTAssertTrue(app.allowHealthSheetCompletely(), "Health-Blatt (Alle auswaehlen / Erlauben) erscheint nicht")
         assertProgramRuns("Nach 'Allow' und Freigabe muss das Programm laufen")
     }
 
@@ -141,7 +142,7 @@ final class ProgrammFreigabeUITests: XCTestCase {
         tapStart()
         XCTAssertTrue(app.healthAccessAlert.waitForExistence(timeout: 10), "Health Access fehlt beim ersten Start")
         app.healthAccessAlert.buttons["Allow"].tap()
-        XCTAssertTrue(app.allowHealthSheetCompletely(), "Health-Blatt (Turn On All / Allow) erscheint nicht")
+        XCTAssertTrue(app.allowHealthSheetCompletely(), "Health-Blatt (Alle auswaehlen / Erlauben) erscheint nicht")
         cancelRunningProgram()
 
         tapStart()

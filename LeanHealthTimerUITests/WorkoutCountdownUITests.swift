@@ -27,6 +27,7 @@ final class WorkoutCountdownUITests: XCTestCase {
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
                                "-countdownBeforeStart", "<integer>20</integer>"]
         app.launch()
+        app.dismissStartHealthSheetIfAny()
         dismissSystemAlertsIfAny()
     }
 

@@ -92,33 +92,81 @@ extension XCUIApplication {
             .withOffset(CGVector(dx: frame.midX, dy: frame.midY)).tap()
     }
 
-    /// Erlaubt im System-Blatt alle Themen: "Turn On All" / "Alle aktivieren", danach "Allow" / "Erlauben".
-    /// Gibt false zurueck, wenn das Blatt nicht erscheint.
+    /// Das Start-Blatt (nur "Minuten der Achtsamkeit") erscheint kurz nach dem App-Start, auch nach
+    /// `resetAuthorizationStatus(for: .health)`. Es entscheidet NICHT ueber Workouts und wird abgelehnt.
+    /// Wartet bis 10 s auf das Blatt; ohne Blatt kehrt die Funktion zurueck.
+    func dismissStartHealthSheetIfAny() {
+        let deny = NSPredicate(format: "identifier == 'UIA.Health.DoNotAllow.Button'")
+        let deadline = Date().addingTimeInterval(10)
+        while Date() < deadline {
+            for host in healthSheetHosts {
+                if host.buttons.matching(deny).firstMatch.waitForExistence(timeout: 1) {
+                    dismissHealthSheetIfAny()
+                    return
+                }
+            }
+        }
+    }
+
+    /// Erlaubt im System-Blatt alle Themen: "Alle 10 Themen auswaehlen" (Kennung
+    /// `UIA.Health.AuthSheet.AllCategoryButton`), danach "Erlauben" (`UIA.Health.Allow.Button`).
+    /// Labels (DE/EN) nur als Rueckfall. Gibt false zurueck, wenn das Blatt nicht erscheint.
     @discardableResult
     func allowHealthSheetCompletely(timeout: TimeInterval = 15) -> Bool {
-        let turnOnAllPredicate = NSPredicate(format: "label == 'Turn On All' OR label == 'Alle aktivieren'")
-        var turnedOn = false
+        let selectAll = NSPredicate(format: """
+            identifier == 'UIA.Health.AuthSheet.AllCategoryButton' OR label BEGINSWITH 'Alle ' \
+            OR label == 'Turn On All'
+            """)
+        var selected = false
         let deadline = Date().addingTimeInterval(timeout)
-        while Date() < deadline, !turnedOn {
+        while Date() < deadline, !selected {
             for host in healthSheetHosts {
-                let all = host.descendants(matching: .any).matching(turnOnAllPredicate).firstMatch
+                let all = host.descendants(matching: .any).matching(selectAll).firstMatch
                 if all.waitForExistence(timeout: 1) {
                     tapByCoordinate(all)
-                    turnedOn = true
+                    selected = true
                     break
                 }
             }
         }
-        guard turnedOn else { return false }
-        let allowPredicate = NSPredicate(format: "label == 'Allow' OR label == 'Erlauben'")
-        for host in healthSheetHosts {
-            let allow = host.buttons.matching(allowPredicate).firstMatch
-            if allow.waitForExistence(timeout: 3) {
-                tapByCoordinate(allow)
-                return true
+        guard selected else { return false }
+        let allowPredicate = NSPredicate(
+            format: "identifier == 'UIA.Health.Allow.Button' OR label == 'Allow' OR label == 'Erlauben'"
+        )
+        // Langes Blatt: "Erlauben" liegt unterhalb des sichtbaren Bereichs, erst nach dem Scrollen
+        // hat der Knopf eine absolute Position und ist aktiv.
+        for _ in 0..<8 {
+            for host in healthSheetHosts {
+                let allow = host.buttons.matching(allowPredicate).firstMatch
+                if allow.exists, allow.isEnabled, allow.isHittable {
+                    tapByCoordinate(allow)
+                    confirmTimeBoundedPageIfAny()
+                    return true
+                }
             }
+            let table = tables.firstMatch
+            if table.exists { table.swipeUp() } else { swipeUp() }
         }
         return false
+    }
+
+    /// Zweite Seite des Blatts (Lesetypen): "Wie viele Daten ...". Kennung der Leiste
+    /// `HealthUI.HKAuthorizationTimeBoundedView`. Waehlt "Alle Dateneinträge ..." und bestaetigt mit "Erlauben".
+    /// Erscheint die Seite nicht (nur Schreibtypen), kehrt die Funktion nach kurzer Wartezeit zurueck.
+    private func confirmTimeBoundedPageIfAny() {
+        let bar = NSPredicate(format: "identifier == 'HealthUI.HKAuthorizationTimeBoundedView'")
+        let allEntries = NSPredicate(format: "label BEGINSWITH 'Alle Dateneintr' OR label BEGINSWITH 'All data'")
+        let allowPredicate = NSPredicate(format: "label == 'Erlauben' OR label == 'Allow'")
+        for host in healthSheetHosts {
+            guard host.navigationBars.matching(bar).firstMatch.waitForExistence(timeout: 4) else { continue }
+            let entry = host.staticTexts.matching(allEntries).firstMatch
+            if entry.waitForExistence(timeout: 3) { tapByCoordinate(entry) }
+            let allow = host.buttons.matching(allowPredicate).firstMatch
+            let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isEnabled == true"), object: allow)
+            _ = XCTWaiter().wait(for: [enabled], timeout: 5)
+            if allow.exists { tapByCoordinate(allow) }
+            return
+        }
     }
 
     /// Fuer Bestandstests, die ein Programm starten und die Freigabe nicht pruefen (AC-9):
