@@ -108,3 +108,9 @@ Sichtbare Folgen für den Nutzer: Ringe starten nach dem Countdown bei 0 (heute 
 - Signaturen, die die Tests erwarten: `WorkoutSessionClock.pauses: [DateInterval]`; `WorkoutLogging.logWorkout(start:end:activity:pauses:)`; `static HealthKitManager.workoutEvents(pauses:in:)`; `static HealthKitManager.estimatedCalories(activity: HKWorkoutActivityType, activeSeconds: TimeInterval) -> Double` (HIIT 12 kcal/min — von QA angenommen, Spec nennt keine Signatur).
 - UI-Test `WorkoutCountdownUITests/testWorkoutProgramStartetErstNachCountdown`: „Tabata Classic“, Launch-Argument `-countdownBeforeStart` als Plist-Integer `<integer>20</integer>`; lastempfindlich (3-s-Timeout nach Countdown).
 - Simulator: iPhone 17 Pro, iOS 27.2.
+
+## Befund Phase 6 (2026-11-27, 00:10 MEZ)
+
+- Umsetzung im Worktree (nicht committet, Commit-Sperre bis Adversary): 3 App-Dateien +104/−78; Unit-Suite 503/0, Watch-Build grün.
+- UI `WorkoutCountdownUITests/testWorkoutProgramStartetErstNachCountdown` scheitert an :132 auch bei ruhigem Host und auch mit Stand bc16962. Ursache (Video + App-Log): Countdown läuft korrekt ab, danach blockiert der Main-Thread ~22 s in `sounds.play(.auftakt)` → `AVAudioSession.setActive` (`[AVAudioSession Hang Risk]`, `HALC … overload`, `[aqme] AQMEIO timed out after 15.000s`). Vorbestehend, nicht durch den Diff. Bekanntes Simulator-Muster: https://developer.apple.com/forums/thread/655326 ; Main-Thread-Risiko: https://developer.apple.com/forums/thread/697861
+- Belege: scratchpad att1/ (Video), diag1/ (App-Log) der Sitzung 8be699a7.

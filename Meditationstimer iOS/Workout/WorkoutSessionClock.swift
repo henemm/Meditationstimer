@@ -20,7 +20,7 @@ struct WorkoutSessionClock: Sendable, Equatable {
     private(set) var reason: EndReason?
     private var end: Date?
     private var pausedAt: Date?
-    private var pausedTotal: TimeInterval = 0
+    private var closed: [DateInterval] = []
 
     init(start: Date) {
         self.start = start
@@ -35,22 +35,26 @@ struct WorkoutSessionClock: Sendable, Equatable {
     /// Nur wirksam, wenn pausiert und nicht beendet.
     mutating func resume(at date: Date) {
         guard let p = pausedAt, end == nil else { return }
-        pausedTotal += max(0, date.timeIntervalSince(p))
+        closePause(from: p, at: date)
+    }
+
+    private mutating func closePause(from p: Date, at date: Date) {
+        if date > p { closed.append(DateInterval(start: p, end: date)) }
         pausedAt = nil
     }
 
     /// Nur der erste Aufruf wirkt. Eine offene Pause zaehlt bis zum Ende.
     mutating func end(at date: Date, reason: EndReason) {
         guard end == nil else { return }
-        if let p = pausedAt {
-            pausedTotal += max(0, date.timeIntervalSince(p))
-            pausedAt = nil
-        }
+        if let p = pausedAt { closePause(from: p, at: date) }
         end = date
         self.reason = reason
     }
 
-    /// Heutige Semantik: Start der Sitzung, Countdown eingeschlossen.
+    /// Abgeschlossene Pausen (eine beim Ende offene Pause reicht bis zum Ende).
+    var pauses: [DateInterval] { closed }
+
+    /// Start der Sitzung (nach dem Countdown).
     var writtenStart: Date { start }
 
     /// Heutige Semantik: Ende ohne Abzug von Pausen; `nil` solange nicht beendet.
@@ -64,16 +68,16 @@ struct WorkoutSessionClock: Sendable, Equatable {
     /// Wandzeit minus Pausen. In Schnitt 1 nur berechnet, nicht verwendet.
     var activeDuration: TimeInterval {
         guard end != nil else { return 0 }
-        return wallDuration - pausedTotal
+        return wallDuration - closed.reduce(0) { $0 + $1.duration }
     }
 
-    /// Heutige Semantik: Wandzeit strikt groesser als 3 s.
-    var meetsMinimum: Bool { wallDuration > 3 }
+    /// Aktive Zeit strikt groesser als 3 s.
+    var meetsMinimum: Bool { activeDuration > 3 }
 }
 
 /// Schreib-Schnittstelle fuer Workouts (injizierbar fuer Tests).
 protocol WorkoutLogging {
-    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType) async throws -> HKWorkout?
+    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType, pauses: [DateInterval]) async throws -> HKWorkout?
 }
 
 extension HealthKitManager: WorkoutLogging {}
@@ -91,7 +95,7 @@ enum WorkoutSessionLog {
         logger: any WorkoutLogging
     ) async throws -> Result {
         guard let end = clock.writtenEnd, clock.meetsMinimum else { return .skipped }
-        let workout = try await logger.logWorkout(start: clock.writtenStart, end: end, activity: activity)
+        let workout = try await logger.logWorkout(start: clock.writtenStart, end: end, activity: activity, pauses: clock.pauses)
         return .written(workout)
     }
 }

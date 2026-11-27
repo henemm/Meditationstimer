@@ -55,13 +55,13 @@ Tech-Lead-Folgen: Die 3-Sekunden-Schwelle gilt auf aktive Zeit. Der Doppelaufruf
 
 ## Affected Files
 
-App-Code (3 Dateien, ca. 90 bis 110 Zeilen, Grenze 250, Funktionen höchstens 50 Zeilen):
+App-Code (3 Dateien, ca. 100 bis 120 Zeilen, Grenze 250, Funktionen höchstens 50 Zeilen):
 
 | Datei | Änderung | Inhalt | ca. Zeilen |
 |---|---|---|---|
 | `Meditationstimer iOS/Workout/WorkoutSessionClock.swift` | geändert | `pausedTotal` wird zu `closed: [DateInterval]` plus offene Pause; `pauses`; `activeDuration` aus Intervallen; `meetsMinimum` = `activeDuration > 3`; Protokoll `logWorkout(start:end:activity:pauses:)`; `WorkoutSessionLog.write` reicht `clock.pauses` durch | +25 |
 | `Services/HealthKitManager.swift` | geändert | `logWorkout(…, pauses: [DateInterval] = [])`; reine statische Funktion `workoutEvents(pauses:in:)`; `addWorkoutEvents` nach `beginCollection`, nur bei nicht leerer Liste; Kalorien aus aktiven Sekunden; Helfer im `#if os(iOS)`-Block | +30 |
-| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | geändert | Uhr optional; `beginSessionAfterCountdown` mit Wächter `clock == nil`; Ringe nur bei Uhr; `endSession` geteilt in Hauptteil, `playClosingSound(manual:)`, `logSession()`; `sessionEnded = true` sofort nach dem Wächter; `clock?.end(at: Date())` vor Live-Activity-Ende und Gong | +35 netto |
+| `Meditationstimer iOS/Tabs/WorkoutProgramsView.swift` | geändert | Uhr optional; `beginSessionAfterCountdown` mit Wächter `clock == nil`; Ringe nur bei Uhr; `endSession` geteilt in Hauptteil, `playClosingSound(manual:)`, `logSession()`; `sessionEnded = true` sofort nach dem Wächter; `clock?.end(at: Date())` vor Live-Activity-Ende und Gong; der Klangspieler dieser Datei (`activateSession` :59, `play`) meldet den Ton nicht mehr auf dem Hauptablauf an und spielt von einer eigenen seriellen Warteschlange (AC-16) | +45 netto |
 
 Tests (zählen nicht zum Budget):
 
@@ -129,6 +129,8 @@ Kein Eingriff in `WorkoutTab.swift`, `MeditationTab.swift`, `AtemView.swift`, Wa
 - **AC-14 (Struktur): Umfang und Ziele.** Der Diff berührt nur die drei App-Dateien oben (plus Tests); `endSession` und alle neuen Funktionen haben höchstens 50 Zeilen; App-Diff höchstens 250 Zeilen; Build grün für iOS, Watch und Widget (Watch-Build prüft, dass `HealthKitManager.swift` dort weiter kompiliert).
 - **AC-15 (Regression): Bestehende Tests grün.** Vollständige Unit-Suite und die UI-Tests `BackgroundMeditationUITests` (`test_backgroundForeground_sessionStillRunning`, `test_explicitStop_endsSession`), `LeanHealthTimerUITests` (`testWorkoutProgramShowsRoundCounter`, `testGuidedWorkoutPauseButtonIsBelowProgressRing`, Live-Activity-Tests :3204/:3284), `WorkoutHintUITests` (:218), `WorkoutSoundUITests` (:22/:76); Aufruf nur über `./Scripts/run-uitests.sh Klasse/Methode`, Nachweis nur mit `Executed N tests`, N ≥ 1.
 
+- **AC-16 (benannter Fix, nachgetragen 2026-11-27): Auftakt-Klang blockiert den Start nicht.** Given ein geführtes Workout mit Countdown, When der Countdown endet und der Auftakt-Klang startet, Then bleibt die App ansprechbar: Ton-Anmeldung (`AVAudioSession.setCategory`/`setActive`) und Abspielen laufen nicht auf dem Hauptablauf; im App-Protokoll erscheint nach dem Countdown kein `[AVAudioSession Hang Risk]`. Anlass: In Phase 6 blockierte der Hauptablauf im Simulator ~22 s in `activateSession` (Belege: `[aqme] AQMEIO timed out after 15.000s`, Video), vorbestehend auch in bc16962; dadurch war AC-9 nicht prüfbar. Quellen: https://developer.apple.com/forums/thread/655326 , https://developer.apple.com/forums/thread/697861 . Nur der Klangspieler in `WorkoutProgramsView.swift`; `WorkoutSoundPlayer.swift`, `GongPlayer.swift`, `AtemView.swift` bleiben unberührt.
+
 ## Test Plan
 
 Geplante Tests je AC:
@@ -147,6 +149,7 @@ Geplante Tests je AC:
 | AC-12 | Unit-Anteil in `WorkoutSessionClockTests`, Rest Simulator | Unit plus Simulator |
 | AC-14 | Diff- und Zeilenzählung, Builds iOS, Watch, Widget | Struktur |
 | AC-15 | Regression UI und vollständige Unit-Suite | Regression |
+| AC-16 | `WorkoutCountdownUITests/testWorkoutProgramStartetErstNachCountdown` grün (scheitert heute an :132 durch den Hänger) + App-Protokoll ohne `Hang Risk` nach dem Countdown | UI + Protokoll |
 
 Umstellung der vier Charakterisierungstests aus Schnitt 1 in `WorkoutSessionClockTests.swift` (Kommentar „dokumentiert heutiges Verhalten, Änderung in #35 Schnitt 2“ entfällt, stattdessen neue Aussage):
 
@@ -193,7 +196,7 @@ Umstellung der vier Charakterisierungstests aus Schnitt 1 in `WorkoutSessionCloc
 
 ## Definition of Done
 
-- [ ] AC-1 bis AC-15 nachgewiesen, im Protokoll `Executed N tests` mit N ≥ 1
+- [ ] AC-1 bis AC-16 nachgewiesen, im Protokoll `Executed N tests` mit N ≥ 1
 - [ ] Vollständige Unit-Suite und die Regression-UI-Tests grün
 - [ ] Neuer UI-Test für den Countdown grün und vor Implementation RED belegt
 - [ ] Build grün für iOS, Watch und Widget
@@ -205,3 +208,4 @@ Umstellung der vier Charakterisierungstests aus Schnitt 1 in `WorkoutSessionCloc
 ## Changelog
 
 - 2026-11-26: Angelegt als Rundenspec für #35 Schnitt 2 (Pausen als HealthKit-Events, Countdown zählt nicht, Ende vor Schlussgong, Schwelle auf aktive Zeit, Doppelaufruf-Wächter).
+- 2026-11-27: AC-16 nachgetragen (Auftakt-Klang blockierte den Hauptablauf, Befund Phase 6).

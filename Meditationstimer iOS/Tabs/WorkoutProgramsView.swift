@@ -49,13 +49,17 @@ fileprivate enum Cue: String {
     case ausklang   // final chime at end of last work
 }
 
-fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
+/// Audio-Session-Anmeldung und Abspielen laufen auf `audioQueue` (AC-16): Im Simulator blockierte
+/// `setActive` den Hauptablauf ~22 s. `activePlayers` wird nur auf der Warteschlange angefasst.
+fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, @unchecked Sendable {
+    private let audioQueue = DispatchQueue(label: "workout.soundplayer.audio")
     private var urls: [Cue: URL] = [:]  // Cache URLs, not players
     private var activePlayers: [AVAudioPlayer] = []  // Currently playing sounds
     private var prepared = false
     private let speech = AVSpeechSynthesizer()
 
-    /// Aktiviert die Audio-Session vor jeder Wiedergabe (EXAKT wie GongPlayer!)
+    /// Aktiviert die Audio-Session vor jeder Wiedergabe (EXAKT wie GongPlayer!).
+    /// Nur auf `audioQueue` aufrufen.
     private func activateSession() {
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
@@ -67,7 +71,7 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
 
     func prepare() {
         guard !prepared else { return }
-        activateSession()
+        audioQueue.async { [self] in activateSession() }
         print("[Sound] Audio session configured successfully")
         // Cache URLs for each cue (check .caff, .caf, .wav, .mp3, .aiff)
         for cue in [Cue.countdownTransition, .auftakt, .ausklang] {
@@ -92,30 +96,33 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
 
     func play(_ cue: Cue) {
         prepare()
-        activateSession()  // Reaktiviere Audio-Session vor jeder Wiedergabe
         guard let url = urls[cue] else {
             print("[Sound] cannot play \(cue.rawValue): URL not found")
             return
         }
-
-        // Create NEW player for each playback (allows parallel sounds)
-        do {
-            let p = try AVAudioPlayer(contentsOf: url)
-            p.delegate = self
-            p.prepareToPlay()
-            p.play()
-            activePlayers.append(p)
-            print("[Sound] play \(cue.rawValue) (active players: \(activePlayers.count))")
-        } catch {
-            print("[Sound] failed to create player for \(cue.rawValue): \(error)")
+        audioQueue.async { [self] in
+            activateSession()  // Reaktiviere Audio-Session vor jeder Wiedergabe
+            // Create NEW player for each playback (allows parallel sounds)
+            do {
+                let p = try AVAudioPlayer(contentsOf: url)
+                p.delegate = self
+                p.prepareToPlay()
+                p.play()
+                activePlayers.append(p)
+                print("[Sound] play \(cue.rawValue) (active players: \(activePlayers.count))")
+            } catch {
+                print("[Sound] failed to create player for \(cue.rawValue): \(error)")
+            }
         }
     }
 
     // MARK: - AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if let idx = activePlayers.firstIndex(where: { $0 === player }) {
-            activePlayers.remove(at: idx)
-            print("[Sound] removed finished player (remaining: \(activePlayers.count))")
+        audioQueue.async { [self] in
+            if let idx = activePlayers.firstIndex(where: { $0 === player }) {
+                activePlayers.remove(at: idx)
+                print("[Sound] removed finished player (remaining: \(activePlayers.count))")
+            }
         }
     }
 
@@ -127,7 +134,7 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
 
     func speak(_ text: String) {
         prepare()
-        activateSession()  // Reaktiviere Audio-Session vor jeder Wiedergabe
+        audioQueue.async { [self] in activateSession() }  // Reaktiviere Audio-Session
         let u = AVSpeechUtterance(string: text)
         // Sprache automatisch aus App-Locale ermitteln
         let languageCode = Locale.current.language.languageCode?.identifier ?? "de"
@@ -144,10 +151,10 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
     }
 
     func stopAll() {
-        for p in activePlayers {
-            p.stop()
+        audioQueue.async { [self] in
+            for p in activePlayers { p.stop() }
+            activePlayers.removeAll()
         }
-        activePlayers.removeAll()
         speech.stopSpeaking(at: .immediate)
     }
 
@@ -429,8 +436,9 @@ enum WorkoutProgramsView {
 
         @StateObject private var sounds = SoundPlayer()
 
-        @State private var clock = WorkoutSessionClock(start: .now)
-        private var sessionStart: Date { clock.start }
+        /// `nil` bis zum Ende des Countdowns (#35 S2: Countdown zaehlt nicht zum Training).
+        @State private var clock: WorkoutSessionClock?
+        private var sessionStart: Date { clock?.start ?? phaseStart }
         @State private var currentPhase: SessionPhase = .work(phaseIndex: 0)
         @State private var currentRound: Int = 1
         @State private var phaseStart: Date = .now
@@ -452,7 +460,7 @@ enum WorkoutProgramsView {
             ZStack {
                 Color(.systemGray6).ignoresSafeArea()
                 VStack(spacing: 12) {
-                    if !finished {
+                    if !finished, let clock {
                         Text(LocalizedStringKey(set.name)).font(.headline)
 
                         // Dual Ring Progress + Timer
@@ -462,7 +470,7 @@ enum WorkoutProgramsView {
                             currentRound: $currentRound,
                             phaseStart: $phaseStart,
                             finished: $finished,
-                            sessionStart: sessionStart,
+                            sessionStart: clock.start,
                             sounds: sounds,
                             speakExerciseNames: speakExerciseNames,
                             isPaused: $isPaused,
@@ -479,7 +487,7 @@ enum WorkoutProgramsView {
                         .controlSize(.large)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 4)
-                    } else {
+                    } else if finished {
                         VStack {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 40))
@@ -668,6 +676,10 @@ enum WorkoutProgramsView {
 
         /// Starts the actual workout session (called after optional countdown)
         private func beginSessionAfterCountdown() {
+            guard clock == nil else { return }
+            let startedAt = Date()
+            clock = WorkoutSessionClock(start: startedAt)
+            phaseStart = startedAt
             // 1. Announce first exercise (if TTS enabled)
             if let text = WorkoutAnnouncement.textToSpeak(.exercise(number: 1, total: set.phases.count), phase: set.phases[0],
                                                           speakExerciseNames: speakExerciseNames) {
@@ -693,68 +705,61 @@ enum WorkoutProgramsView {
         func endSession(manual: Bool) async {
             print("[WorkoutPrograms] endSession(manual: \(manual)) called")
 
-            // Guard: Prevent double execution (callback + onDisappear)
+            // Guard: Prevent double execution (callback + onDisappear); Flag vor jedem await
             if sessionEnded {
                 print("[WorkoutPrograms] endSession already executed, skipping duplicate call")
                 return
             }
+            sessionEnded = true
 
-            // 1. Re-enable idle timer
             setIdleTimer(false)
 
-            // 2. Stop all sounds
-            // GongPlayer handles cleanup automatically via delegate
-            // Scheduled sounds cancelled by ProgressRingsView.onDisappear
+            // Ende der Uhr VOR Live-Activity-Ende und Schlussgong (#35 S2)
+            clock?.end(at: Date(), reason: manual ? .manual : .natural)
 
-            // 3. End Live Activity
             await liveActivity.end(immediate: true)
-            print("[WorkoutPrograms] LiveActivity ended")
+            await playClosingSound(manual: manual)
 
-            // 4. Play end sound if session completed naturally
+            if await logSession() { return }  // Effort-Sheet ruft close()
+
+            print("[WorkoutPrograms] close() called")
+            close()
+        }
+
+        private func playClosingSound(manual: Bool) async {
             if !manual {
                 let soundDuration = sounds.duration(of: .ausklang)
                 sounds.play(.ausklang)
-                let waitNanoseconds = UInt64((soundDuration + 0.3) * 1_000_000_000)
-                try? await Task.sleep(nanoseconds: waitNanoseconds)
+                try? await Task.sleep(nanoseconds: UInt64((soundDuration + 0.3) * 1_000_000_000))
             } else {
                 try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
             }
+        }
 
-            // 5. HealthKit Logging if session > 3s
-            clock.end(at: Date(), reason: manual ? .manual : .natural)
-            if clock.meetsMinimum {
-                sessionEnded = true
+        /// Schreibt die Sitzung nach HealthKit. Liefert `true`, wenn das Effort-Sheet erscheint.
+        private func logSession() async -> Bool {
+            guard let clock, clock.meetsMinimum else { return false }
+            do {
+                let result = try await WorkoutSessionLog.write(
+                    clock: clock,
+                    activity: .highIntensityIntervalTraining,
+                    logger: logger
+                )
+                var workout: HKWorkout?
+                if case .written(let written) = result { workout = written }
+                print("[WorkoutPrograms] HealthKit workout logged")
 
-                do {
-                    let result = try await WorkoutSessionLog.write(
-                        clock: clock,
-                        activity: .highIntensityIntervalTraining,
-                        logger: logger
-                    )
-                    var workout: HKWorkout?
-                    if case .written(let written) = result { workout = written }
-                    print("[WorkoutPrograms] HealthKit workout logged")
+                await streakManager.updateStreaks()
 
-                    // Update streaks
-                    await streakManager.updateStreaks()
-
-                    // iOS 18+: Show Effort Score Sheet
-                    if #available(iOS 18.0, *), let workout = workout {
-                        lastWorkout = workout
-                        showEffortSheet = true
-                        // close() wird vom Sheet aufgerufen
-                        return
-                    }
-                } catch {
-                    print("[WorkoutPrograms] HealthKit logging failed: \(error)")
+                if #available(iOS 18.0, *), let workout = workout {
+                    lastWorkout = workout
+                    showEffortSheet = true
+                    return true
                 }
-            } else {
-                sessionEnded = true
+            } catch {
+                print("[WorkoutPrograms] HealthKit logging failed: \(error)")
             }
-
-            // 6. Close the view (wenn kein Sheet angezeigt wird)
-            print("[WorkoutPrograms] close() called")
-            close()
+            return false
         }
 
         private func togglePause() {
@@ -763,7 +768,7 @@ enum WorkoutProgramsView {
                 isPaused = true
                 let pauseStart = Date()
                 pausedAt = pauseStart
-                clock.pause(at: pauseStart)
+                clock?.pause(at: pauseStart)
                 sounds.stopAll()
                 // Scheduled sounds cancelled by ProgressRingsView's checkProgress guard
                 print("[WorkoutPrograms] Session PAUSED")
@@ -787,7 +792,7 @@ enum WorkoutProgramsView {
                     let delta = resumedAt.timeIntervalSince(p)
                     pausedSessionAccum += delta
                     pausedPhaseAccum += delta
-                    clock.resume(at: resumedAt)
+                    clock?.resume(at: resumedAt)
                 }
                 pausedAt = nil
                 isPaused = false
