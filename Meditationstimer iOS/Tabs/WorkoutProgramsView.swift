@@ -106,6 +106,8 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
             do {
                 let p = try AVAudioPlayer(contentsOf: url)
                 p.delegate = self
+                p.volume = AudioTestMode.volumeFactor()
+                AudioTestMode.logVolume("ProgramSound", p.volume)
                 p.prepareToPlay()
                 p.play()
                 activePlayers.append(p)
@@ -141,6 +143,8 @@ fileprivate final class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDe
         let voiceLanguage = languageCode == "en" ? "en-US" : "de-DE"
         u.voice = AVSpeechSynthesisVoice(language: voiceLanguage)
         u.rate = AVSpeechUtteranceDefaultSpeechRate
+        u.volume *= AudioTestMode.volumeFactor()
+        AudioTestMode.logVolume("ProgramSpeech", u.volume)
         speech.speak(u)
     }
 

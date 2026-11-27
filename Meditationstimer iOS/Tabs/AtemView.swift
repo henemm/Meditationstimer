@@ -144,6 +144,8 @@ enum AtemView {
                 if let url = Bundle.main.url(forResource: name, withExtension: ext),
                    let p = try? AVAudioPlayer(contentsOf: url) {
                     p.delegate = self
+                    p.volume = AudioTestMode.volumeFactor()
+                    AudioTestMode.logVolume("AtemGong", p.volume)
                     p.prepareToPlay()
                     p.play()
                     active.append(p)
