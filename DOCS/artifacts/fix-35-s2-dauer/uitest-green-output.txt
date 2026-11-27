@@ -1,0 +1,31 @@
+== WorkoutCountdownUITests/testWorkoutProgramStartetErstNachCountdown
+	 Executed 1 test, with 0 failures (0 unexpected) in 62.642 (62.659) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 62.642 (62.669) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 62.642 (62.672) seconds
+** TEST EXECUTE SUCCEEDED **
+	 Executed 1 test, with 0 failures (0 unexpected) in 65.790 (65.796) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 65.790 (65.801) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 65.790 (65.804) seconds
+== BackgroundMeditationUITests/test_backgroundForeground_sessionStillRunning
+	 Executed 1 test, with 0 failures (0 unexpected) in 45.692 (45.703) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 45.692 (45.704) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 45.692 (45.705) seconds
+== BackgroundMeditationUITests/test_explicitStop_endsSession
+	 Executed 1 test, with 0 failures (0 unexpected) in 21.022 (21.026) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 21.022 (21.030) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 21.022 (21.031) seconds
+== WorkoutSoundUITests/testWorkoutStartFlow
+	 Executed 1 test, with 0 failures (0 unexpected) in 26.854 (26.856) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 26.854 (26.857) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 26.854 (26.858) seconds
+== WorkoutSoundUITests/testWorkoutStartsWithAuftakt
+	 Executed 1 test, with 0 failures (0 unexpected) in 23.276 (23.278) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 23.276 (23.279) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 23.276 (23.280) seconds
+== WorkoutHintUITests/test_hintEnteredInEditor_visibleUnderRingInTraining
+	 Executed 1 test, with 0 failures (0 unexpected) in 174.842 (174.849) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 174.842 (174.856) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 174.842 (174.859) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 62.570 (62.573) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 62.570 (62.581) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 62.570 (62.583) seconds

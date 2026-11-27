@@ -1,0 +1,5 @@
+1263:    |                         |- error: type 'WorkoutSessionClockTests.FakeWorkoutLogger' does not conform to protocol 'WorkoutLogging'
+1271:  |      `- note: protocol requires function 'logWorkout(start:end:activity:)' with type '@concurrent (Date, Date, HKWorkoutActivityType) async throws -> HKWorkout?'
+1268:Lean_Health_Timer.WorkoutLogging.logWorkout:2:6: note: protocol requires function 'logWorkout(start:end:activity:)' with type '@concurrent (Date, Date, HKWorkoutActivityType) async throws -> HKWorkout?'
+1259:LeanHealthTimerTests/WorkoutSessionClockTests.swift:26:25: error: type 'WorkoutSessionClockTests.FakeWorkoutLogger' does not conform to protocol 'WorkoutLogging'
+Befehl: xcodebuild test ... OS=27.2 (26.5 existiert nicht) -only-testing WorkoutSessionClockTests + HealthKitWorkoutEventsTests; Ergebnis: BUILD FAILED (exit 65), Testziel kompiliert nicht

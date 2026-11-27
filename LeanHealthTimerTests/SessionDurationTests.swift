@@ -31,7 +31,12 @@ import XCTest
 /// (`WorkoutProgramsView`) ist über `WorkoutSessionClock` und `WorkoutSessionLog` prüfbar:
 /// siehe `WorkoutSessionClockTests` (Zeiten, Dauer, Mindestdauer, Schreibweg mit Fake-Logger).
 /// Weiterhin NICHT unit-geprüft ist das Verbindungsstück zwischen View und Live Activity.
-/// Die geänderte Semantik (Pausen, Countdown, Endzeit) folgt in #35 Schnitt 2.
+///
+/// **Programm-Weg (#35 Schnitt 2).** Die geänderte Semantik ist umgesetzt: Pausen gehen als
+/// Pausen-Intervalle an Health (`WorkoutSessionClock.pauses`, `HealthKitManager.workoutEvents`),
+/// der Countdown zählt nicht (die Uhr entsteht erst danach), das Ende liegt vor dem Schlussgong,
+/// und die Mindestdauer gilt auf aktive Zeit. Geprüft in `WorkoutSessionClockTests` und
+/// `HealthKitWorkoutEventsTests`; die Reihenfolge in der View ist nur im Simulator belegt.
 final class SessionDurationTests: XCTestCase {
 
     private var engine: TwoPhaseTimerEngine!

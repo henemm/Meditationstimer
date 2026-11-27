@@ -173,24 +173,12 @@ final class HealthKitManager {
     /// Verwendet HKWorkoutBuilder (moderne API seit iOS 17.0).
     /// WICHTIG: Fügt activeEnergyBurned hinzu für MOVE Ring und Fitness App Integration.
     @discardableResult
-    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining) async throws -> HKWorkout? {
+    func logWorkout(start: Date, end: Date, activity: HKWorkoutActivityType = .highIntensityIntervalTraining, pauses: [DateInterval] = []) async throws -> HKWorkout? {
         #if os(iOS)
-        // Calculate workout duration in minutes
-        let durationMinutes = end.timeIntervalSince(start) / 60.0
-
-        // Estimate calories based on activity type (MET-based approximation)
-        // HIIT: ~12 kcal/min, Yoga: ~4 kcal/min (conservative estimates)
-        let caloriesPerMinute: Double
-        switch activity {
-        case .highIntensityIntervalTraining:
-            caloriesPerMinute = 12.0
-        case .yoga:
-            caloriesPerMinute = 4.0
-        default:
-            caloriesPerMinute = 8.0  // Generic moderate activity
-        }
-
-        let estimatedCalories = durationMinutes * caloriesPerMinute
+        // Kalorien aus aktiven Sekunden (Pausen nicht eingerechnet)
+        let span = DateInterval(start: start, end: max(start, end))
+        let pausedSeconds = Self.clampedPauses(pauses, in: span).reduce(0) { $0 + $1.duration }
+        let estimatedCalories = Self.estimatedCalories(activity: activity, activeSeconds: span.duration - pausedSeconds)
 
         // Create workout configuration
         let configuration = HKWorkoutConfiguration()
@@ -201,6 +189,10 @@ final class HealthKitManager {
 
         // Begin collection at start time (retrospective workout)
         try await builder.beginCollection(at: start)
+
+        // Pausen als .pause/.resume-Events (nur wenn vorhanden)
+        let events = Self.workoutEvents(pauses: pauses, in: span)
+        if !events.isEmpty { try await builder.addWorkoutEvents(events) }
 
         // End collection at end time
         try await builder.endCollection(at: end)
@@ -239,6 +231,38 @@ final class HealthKitManager {
         #endif
     }
     
+    #if os(iOS)
+    /// Kalorienschaetzung je Aktivitaet (HIIT 12, Yoga 4, sonst 8 kcal/min) aus aktiven Sekunden.
+    static func estimatedCalories(activity: HKWorkoutActivityType, activeSeconds: TimeInterval) -> Double {
+        let perMinute: Double
+        switch activity {
+        case .highIntensityIntervalTraining: perMinute = 12.0
+        case .yoga: perMinute = 4.0
+        default: perMinute = 8.0
+        }
+        return max(0, activeSeconds) / 60.0 * perMinute
+    }
+
+    /// Klemmt Pausen auf die Spanne, verwirft Laenge 0, sortiert nach Beginn.
+    private static func clampedPauses(_ pauses: [DateInterval], in span: DateInterval) -> [DateInterval] {
+        pauses.compactMap { p in
+            let s = max(p.start, span.start), e = min(p.end, span.end)
+            return e > s ? DateInterval(start: s, end: e) : nil
+        }.sorted { $0.start < $1.start }
+    }
+
+    /// Reine Funktion: .pause/.resume je Pausenintervall; reicht eine Pause bis zum Ende, nur .pause.
+    static func workoutEvents(pauses: [DateInterval], in span: DateInterval) -> [HKWorkoutEvent] {
+        clampedPauses(pauses, in: span).flatMap { p -> [HKWorkoutEvent] in
+            var list = [HKWorkoutEvent(type: .pause, dateInterval: DateInterval(start: p.start, duration: 0), metadata: nil)]
+            if p.end < span.end {
+                list.append(HKWorkoutEvent(type: .resume, dateInterval: DateInterval(start: p.end, duration: 0), metadata: nil))
+            }
+            return list
+        }
+    }
+    #endif
+
     /// Legacy wrapper method for compatibility
     func saveMindfulnessSession(start: Date, end: Date) {
         Task {

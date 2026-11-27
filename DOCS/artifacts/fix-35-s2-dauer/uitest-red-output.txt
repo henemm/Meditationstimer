@@ -1,0 +1,12 @@
+345:LeanHealthTimerUITests/WorkoutCountdownUITests.swift:137: error: -[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown] : XCTAssertTrue failed - Nach dem Countdown muss die erste Arbeitsphase bei null stehen (Ringtext 'Exercise'); die Uhr lief schon waehrend des Countdowns, die Karte steht in der Pause
+347:Test Case '-[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown]' failed (87.750 seconds).
+534:LeanHealthTimerUITests/WorkoutCountdownUITests.swift:137: error: -[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown] : XCTAssertTrue failed - Nach dem Countdown muss die erste Arbeitsphase bei null stehen (Ringtext 'Exercise'); die Uhr lief schon waehrend des Countdowns, die Karte steht in der Pause
+536:Test Case '-[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown]' failed (62.420 seconds).
+723:LeanHealthTimerUITests/WorkoutCountdownUITests.swift:137: error: -[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown] : XCTAssertTrue failed - Nach dem Countdown muss die erste Arbeitsphase bei null stehen (Ringtext 'Exercise'); die Uhr lief schon waehrend des Countdowns, die Karte steht in der Pause
+725:Test Case '-[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown]' failed (63.825 seconds).
+727:	 Executed 3 tests, with 3 failures (0 unexpected) in 213.995 (214.132) seconds
+729:	 Executed 3 tests, with 3 failures (0 unexpected) in 213.995 (214.141) seconds
+731:	 Executed 3 tests, with 3 failures (0 unexpected) in 213.995 (214.144) seconds
+Befehl: ./Scripts/run-uitests.sh WorkoutCountdownUITests/testWorkoutProgramStartetErstNachCountdown (iOS 27.2, 3 Iterationen, alle FAILED)
+Hinweis: waehrend dieses Laufs waren die Unit-Test-Aenderungen voruebergehend auf HEAD zurueckgestellt (sonst bricht der Build des Schemas an der fehlenden Protokoll-API ab); danach wiederhergestellt.
+Abbruch an: Nach dem Countdown (Tabata Classic, 20 s) steht die Karte in der Pause statt bei Arbeitsphase 0 (Ringtext 'Exercise' fehlt). Cancel-Teil, Countdown-Anzeige, Round 1/Exercise 1 sind davor gruen.

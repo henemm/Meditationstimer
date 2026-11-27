@@ -1,0 +1,14 @@
+AC-16 RED — 2026-11-27 00:03 MEZ, ruhiger Host (Load 4–9), vorgewärmter Simulator iPhone 17 Pro iOS 27.2, test-without-building.
+
+WorkoutCountdownUITests.swift:132: error: -[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown] : XCTAssertTrue failed - Countdown endet nicht
+Executed 1 test, with 1 failure (0 unexpected) in 78.433 (78.436) seconds
+
+App-Protokoll (Main-Thread 9890836) am Fehlerpunkt:
+00:02:32.604 [AVAudioSession Hang Risk] AVAudioSession_iOS.mm:978 Performance Diagnostics
+00:02:39.410 [AVAudioSession Hang Risk] SessionCore.mm:631 Performance Diagnostics
+00:02:59.436 [AVAudioSession Hang Risk] SessionCore.mm:631 Performance Diagnostics
+00:02:59.85 XCTPerformOnMainRunLoop wartet (30 s responsiveness timeout), keine Antwort bis 00:03:22.10
+00:03:14.65 [aqme] AQMEIO timed out after 15.000s
+
+Video: Countdown zählt 19 → 1 in Echtzeit, danach keine Bildaktualisierung mehr (Main-Thread blockiert in sounds.play(.auftakt) → activateSession).
+Gleiches Verhalten mit Stand bc16962 (ohne App-Änderung) → vorbestehend.
