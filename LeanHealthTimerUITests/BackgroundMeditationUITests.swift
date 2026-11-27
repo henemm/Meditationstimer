@@ -449,6 +449,8 @@ final class BackgroundMeditationUITests: XCTestCase {
             return
         }
         closeButton.tap()
+        // #122: ohne Health-Freigabe meldet die App den Schreibfehler; die Karte schliesst nach "OK".
+        app.acknowledgeWriteFailedAlertIfAny()
 
         // Assert: Die Sitzungskarte verschwindet vollständig.
         //

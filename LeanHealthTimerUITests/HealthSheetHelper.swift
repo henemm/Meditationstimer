@@ -190,4 +190,13 @@ extension XCUIApplication {
             _ = allow.waitForExistence(timeout: 0.3)
         }
     }
+
+    /// #122: Endet ein Programm nach der Mindestdauer ohne Health-Freigabe, erscheint "Nicht in Health gespeichert";
+    /// die Karte schliesst erst nach "OK". Bestaetigt den Alert, falls er erscheint (bis 3 s), sonst kein Effekt.
+    func acknowledgeWriteFailedAlertIfAny() {
+        let alert = workoutWriteFailedAlert
+        guard alert.waitForExistence(timeout: 3) else { return }
+        let ok = alert.buttons["OK"]
+        if ok.waitForExistence(timeout: 2) { ok.tap() }
+    }
 }
