@@ -1,0 +1,19 @@
+UI-Regression AC-15, 2026-11-27 08:30 MEZ, Commit 0d9df0f, iPhone 17 Pro iOS 27.2. Je Test ein Lauf mit 'Executed 1 test, with 0 failures'; 0 skipped.
+== BackgroundMeditationUITests/test_backgroundForeground_sessionStillRunning
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_backgroundForeground_sessionStillRunning]' passed (47.995 seconds).
+== BackgroundMeditationUITests/test_explicitStop_endsSession
+Test Case '-[LeanHealthTimerUITests.BackgroundMeditationUITests test_explicitStop_endsSession]' passed (21.174 seconds).
+== LeanHealthTimerUITests/testGuidedWorkoutPauseButtonIsBelowProgressRing
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testGuidedWorkoutPauseButtonIsBelowProgressRing]' passed (33.055 seconds).
+== LeanHealthTimerUITests/testWorkoutLiveActivityDualTimerOnLockScreen
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLiveActivityDualTimerOnLockScreen]' passed (41.753 seconds).
+== LeanHealthTimerUITests/testWorkoutLiveActivityDynamicIslandExpanded
+Test Case '-[LeanHealthTimerUITests.LeanHealthTimerUITests testWorkoutLiveActivityDynamicIslandExpanded]' passed (43.495 seconds).
+== WorkoutHintUITests/test_hintEnteredInEditor_visibleUnderRingInTraining
+Test Case '-[LeanHealthTimerUITests.WorkoutHintUITests test_hintEnteredInEditor_visibleUnderRingInTraining]' passed (192.317 seconds).
+== WorkoutSoundUITests/testWorkoutStartFlow
+Test Case '-[LeanHealthTimerUITests.WorkoutSoundUITests testWorkoutStartFlow]' passed (27.471 seconds).
+== WorkoutSoundUITests/testWorkoutStartsWithAuftakt
+Test Case '-[LeanHealthTimerUITests.WorkoutSoundUITests testWorkoutStartsWithAuftakt]' passed (22.426 seconds).
+== WorkoutCountdownUITests/testWorkoutProgramStartetErstNachCountdown
+Test Case '-[LeanHealthTimerUITests.WorkoutCountdownUITests testWorkoutProgramStartetErstNachCountdown]' passed (71.708 seconds).

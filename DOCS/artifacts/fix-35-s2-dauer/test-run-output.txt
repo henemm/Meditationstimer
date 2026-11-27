@@ -1,0 +1,12 @@
+Unit-Suite LeanHealthTimerTests — 2026-11-27 08:17 MEZ, Stand bc16962 + Arbeitsstand (3 App-Dateien), iPhone 17 Pro iOS 27.2
+Test Suite 'All tests' started at 2026-11-27 08:17:04.128.
+Test Suite 'HealthKitWorkoutEventsTests' started at 2026-11-27 08:17:05.385.
+Test Suite 'HealthKitWorkoutEventsTests' passed at 2026-11-27 08:17:05.392.
+Test Suite 'SessionDurationTests' started at 2026-11-27 08:17:05.441.
+Test Suite 'SessionDurationTests' passed at 2026-11-27 08:17:09.484.
+Test Suite 'WorkoutSessionClockTests' started at 2026-11-27 08:17:10.623.
+Test Suite 'WorkoutSessionClockTests' passed at 2026-11-27 08:17:10.637.
+	 Executed 503 tests, with 0 failures (0 unexpected) in 7.488 (7.597) seconds
+Test Suite 'All tests' passed at 2026-11-27 08:17:11.727.
+	 Executed 503 tests, with 0 failures (0 unexpected) in 7.488 (7.599) seconds
+** TEST SUCCEEDED **
