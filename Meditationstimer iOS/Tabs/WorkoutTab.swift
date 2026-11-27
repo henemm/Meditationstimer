@@ -29,6 +29,8 @@ struct WorkoutTab: View {
     @AppStorage("repeats") private var repeats: Int = 10
     @State private var showFreeWorkoutRunner = false
     @State private var showHealthAlert = false
+    @State private var pendingProgramSet: WorkoutSet? = nil  // #122: Programm wartet auf Health-Freigabe
+    @State private var showProgramSettingsHint = false
     @State private var showFreiInfo = false
 
     // Workout Programs state (from WorkoutProgramsView)
@@ -92,7 +94,7 @@ struct WorkoutTab: View {
                         ForEach(sets) { set in
                             WorkoutProgramsView.WorkoutSetRow(
                                 set: set,
-                                play: { runningSet = set },
+                                play: { startProgram(set) },
                                 edit: { showingEditor = set },
                                 showInfo: { showingInfo = set }
                             )
@@ -172,8 +174,17 @@ struct WorkoutTab: View {
                     loadSets()
                 }
                 .alert("Health Access", isPresented: $showHealthAlert) {
-                    Button("Cancel", role: .cancel) {}
+                    Button("Cancel", role: .cancel) { pendingProgramSet = nil }
                     Button("Allow") {
+                        if let set = pendingProgramSet {
+                            pendingProgramSet = nil
+                            Task {
+                                // Programm wird nie gesperrt: Start auch, wenn die Freigabe scheitert
+                                try? await HealthKitManager.shared.requestAuthorization()
+                                runningSet = set
+                            }
+                            return
+                        }
                         Task {
                             do {
                                 try await HealthKitManager.shared.requestAuthorization()
@@ -189,6 +200,20 @@ struct WorkoutTab: View {
                     }
                 } message: {
                     Text("This app can record your workouts in Apple Health to track your progress. Would you like to allow this?")
+                }
+                .alert("Workout won't be saved", isPresented: $showProgramSettingsHint) {
+                    Button("Settings") {
+                        pendingProgramSet = nil
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                    Button("Start Anyway") {
+                        if let set = pendingProgramSet { runningSet = set }
+                        pendingProgramSet = nil
+                    }
+                } message: {
+                    Text("Health doesn't allow this app to save workouts. You can change this in Settings.")
                 }
                 .fullScreenCover(isPresented: $showCountdown) {
                     CountdownOverlayView(
@@ -348,7 +373,22 @@ struct WorkoutTab: View {
 
     // MARK: - Actions
 
+    /// Startet ein Programm erst nach Prüfung der Health-Schreibfreigabe (#122).
+    private func startProgram(_ set: WorkoutSet) {
+        switch WorkoutHealthGate.startAction(for: HealthKitManager.shared.workoutShareStatus()) {
+        case .start:
+            runningSet = set
+        case .askPermission:
+            pendingProgramSet = set
+            showHealthAlert = true
+        case .showSettingsHint:
+            pendingProgramSet = set
+            showProgramSettingsHint = true
+        }
+    }
+
     private func startFreeWorkout() {
+        pendingProgramSet = nil
         Task {
             if await HealthKitManager.shared.isAuthorized() {
                 if countdownBeforeStart > 0 {

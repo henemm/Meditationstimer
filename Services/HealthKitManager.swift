@@ -286,6 +286,11 @@ final class HealthKitManager {
         #endif
     }
     
+    /// Schreibstatus für Workouts (#122). Anders als `isAuthorized()` erkennt er auch eine Verweigerung.
+    func workoutShareStatus() -> HKAuthorizationStatus {
+        healthStore.authorizationStatus(for: HKObjectType.workoutType())
+    }
+
     /// Prüft, ob HealthKit bereits autorisiert ist (für schreiben: mindfulSession, Workout, Energy, Alcohol).
     func isAuthorized() async -> Bool {
         guard HKHealthStore.isHealthDataAvailable() else { return false }
@@ -883,5 +888,26 @@ final class HealthKitManager {
 
         try await healthStore.relateWorkoutEffortSample(sample, with: workout, activity: nil)
         print("[HealthKit] Effort Score \(score) mit Workout verknüpft")
+    }
+}
+
+// MARK: - Programmstart-Prüfung (#122)
+
+/// Was beim Start eines Workout-Programms zu tun ist.
+enum WorkoutStartAction: Equatable {
+    case askPermission
+    case showSettingsHint
+    case start
+}
+
+/// Reine Entscheidung ohne HealthKit-Zugriff: Schreibstatus -> Aktion.
+enum WorkoutHealthGate {
+    static func startAction(for status: HKAuthorizationStatus) -> WorkoutStartAction {
+        switch status {
+        case .sharingAuthorized: return .start
+        case .sharingDenied: return .showSettingsHint
+        case .notDetermined: return .askPermission
+        @unknown default: return .askPermission  // Unbekannt: lieber fragen als stillschweigend starten
+        }
     }
 }
