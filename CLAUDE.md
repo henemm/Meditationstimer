@@ -144,6 +144,10 @@ Workflows als individuelle JSON-Dateien in `.claude/workflows/`.
 - `uitest-disk-store` (nur DEBUG): eigene Datei `Application Support/uitest.store`, übersteht einen Neustart.
 - `uitest-reset-store` (nur DEBUG, mit `uitest-disk-store`): löscht `uitest.store` samt `-wal`/`-shm` vor dem Öffnen.
 
+### Health-Fenster in UI-Tests
+
+`LeanHealthTimerUITests/HealthSheetHelper.swift` bündelt die Helfer für Health-Blätter (`dismissHealthSheetIfAny(until:)`, `dismissStartHealthSheetIfAny`, `handleProgramStartHealthPrompts`); UI-Tests nutzen sie, statt eigene Taps auf das Health-Fenster zu bauen.
+
 ### Simulator
 
 | Variable | Wert |

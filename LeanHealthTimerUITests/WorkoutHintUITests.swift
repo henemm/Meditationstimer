@@ -114,6 +114,7 @@ final class WorkoutHintUITests: XCTestCase {
         let start = element("workout.programRow.\(presetName).start")
         XCTAssertTrue(start.waitForExistence(timeout: 20), "Start-Knopf von \(presetName) fehlt")
         start.tap()
+        app.handleProgramStartHealthPrompts()
         dismissSystemAlertsIfAny()
     }
 

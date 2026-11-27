@@ -285,8 +285,29 @@ The system SHALL display workout progress on Dynamic Island.
 - THEN elapsed time shows
 - AND "Free Workout" label shows
 
+### Requirement: Health Write Permission for Programs (#122)
+The system SHALL check the Health write permission before a program starts and SHALL never block the program.
+
+#### Scenario: Never asked
+- GIVEN the Health write status for workouts is "not determined"
+- WHEN the user starts a program
+- THEN the "Health Access" request appears first
+
+#### Scenario: Denied
+- GIVEN the Health write status for workouts is "denied"
+- WHEN the user starts a program
+- THEN the alert "Workout won't be saved" offers "Settings" and "Start Anyway"
+- AND "Start Anyway" starts the program
+
+#### Scenario: Write fails
+- GIVEN a program finished and writing to Health fails
+- WHEN the session is logged
+- THEN the alert "Not Saved to Health" appears
+- AND the card closes only after the user confirms
+
 ## Technical Notes
 
+- **Health Gate (#122):** `WorkoutHealthGate.startAction(for:)` (pure decision, `HealthKitManager.swift`) maps `workoutShareStatus()` to an action; used by `WorkoutTab.startProgram`. Write errors surface in `WorkoutProgramsView.logSession`.
 - **Guard Flag Pattern:** `sessionEnded` flag prevents duplicate `endSession()` calls from callbacks + `onDisappear`
 - **MET Values:** HIIT = 12 kcal/min (validated against fitness standards)
 - **Calorie Logging:** Uses `HKQuantitySample` with `.activeEnergyBurned` type

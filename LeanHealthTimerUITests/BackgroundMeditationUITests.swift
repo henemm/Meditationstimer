@@ -49,6 +49,8 @@ final class BackgroundMeditationUITests: XCTestCase {
             return false
         }
         startButton.tap()
+        // #122 (AC-9): optionaler Health-Alert vor dem Programmstart
+        app.handleProgramStartHealthPrompts()
 
         // Die Sitzungskarte gilt als aufgebaut, sobald ihr Abbruch-Knopf da ist.
         guard sessionCloseButton.waitForExistence(timeout: 15) else { return false }
@@ -447,6 +449,8 @@ final class BackgroundMeditationUITests: XCTestCase {
             return
         }
         closeButton.tap()
+        // #122: ohne Health-Freigabe meldet die App den Schreibfehler; die Karte schliesst nach "OK".
+        app.acknowledgeWriteFailedAlertIfAny()
 
         // Assert: Die Sitzungskarte verschwindet vollständig.
         //

@@ -453,6 +453,7 @@ enum WorkoutProgramsView {
 
         // Effort Score (iOS 18+)
         @State private var showEffortSheet = false
+        @State private var showSaveFailedAlert = false  // #122
         @State private var effortScore: Double = 7
         @State private var lastWorkout: HKWorkout?
 
@@ -578,6 +579,17 @@ enum WorkoutProgramsView {
             }
             .sheet(isPresented: $showEffortSheet) {
                 effortScoreSheet
+            }
+            .alert("Not Saved to Health", isPresented: $showSaveFailedAlert) {
+                Button("Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                    close()
+                }
+                Button("OK", role: .cancel) { close() }
+            } message: {
+                Text("This workout couldn't be saved to Apple Health and won't count toward your streak.")
             }
         }
 
@@ -745,6 +757,10 @@ enum WorkoutProgramsView {
                     activity: .highIntensityIntervalTraining,
                     logger: logger
                 )
+                if WorkoutSaveCheck.failed(result) {
+                    showSaveFailedAlert = true  // #122: Karte schliesst nach Bestaetigung
+                    return true
+                }
                 var workout: HKWorkout?
                 if case .written(let written) = result { workout = written }
                 print("[WorkoutPrograms] HealthKit workout logged")
@@ -758,6 +774,10 @@ enum WorkoutProgramsView {
                 }
             } catch {
                 print("[WorkoutPrograms] HealthKit logging failed: \(error)")
+                if WorkoutSaveCheck.failed(nil) {
+                    showSaveFailedAlert = true
+                    return true
+                }
             }
             return false
         }
@@ -1854,3 +1874,18 @@ enum WorkoutProgramsView {
 }
 
 #endif
+
+// MARK: - Schreibfehler-Erkennung (#122)
+
+/// Entscheidet rein, ob nach dem Ende einer Sitzung der Fehler-Hinweis erscheint.
+enum WorkoutSaveCheck {
+    /// `nil` = Logger hat geworfen. `.written(nil)` = HealthKit hat das Workout verworfen.
+    /// `.skipped` (Mindestdauer) und ein gespeichertes Workout sind kein Fehler.
+    static func failed(_ result: WorkoutSessionLog.Result?) -> Bool {
+        guard let result else { return true }
+        switch result {
+        case .skipped: return false
+        case .written(let workout): return workout == nil
+        }
+    }
+}

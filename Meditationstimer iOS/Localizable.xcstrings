@@ -5732,6 +5732,91 @@
         }
       }
     },
+    "Workout won't be saved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Training wird nicht gespeichert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workout won't be saved"
+          }
+        }
+      }
+    },
+    "Health doesn't allow this app to save workouts. You can change this in Settings." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Health darf von dieser App keine Trainings annehmen. Das kannst du in den Einstellungen ändern."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Health doesn't allow this app to save workouts. You can change this in Settings."
+          }
+        }
+      }
+    },
+    "Start Anyway" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trotzdem starten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Anyway"
+          }
+        }
+      }
+    },
+    "Not Saved to Health" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht in Health gespeichert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Saved to Health"
+          }
+        }
+      }
+    },
+    "This workout couldn't be saved to Apple Health and won't count toward your streak." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Training konnte nicht in Apple Health gespeichert werden und zählt daher nicht für deine Serie."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This workout couldn't be saved to Apple Health and won't count toward your streak."
+          }
+        }
+      }
+    },
     "Health Access" : {
       "extractionState" : "manual",
       "localizations" : {

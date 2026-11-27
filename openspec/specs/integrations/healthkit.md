@@ -180,6 +180,7 @@ The system SHALL trigger reminder cancellation when activities are logged.
 - **Source Filtering:** `HKSourceQuery` to get app's source, then filter samples
 - **Async/Await:** All HealthKit methods use modern async patterns
 - **MainActor Safety:** Authorization requests on MainActor
+- **Workout Write Status (#122):** `workoutShareStatus()` returns `HKAuthorizationStatus` for the workout type; unlike `isAuthorized()` it detects "denied". Decision logic lives in `WorkoutHealthGate`.
 
 Reference Standards:
 - `.agent-os/standards/healthkit/date-semantics.md`
