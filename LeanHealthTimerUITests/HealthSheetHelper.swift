@@ -5,7 +5,10 @@ extension XCUIApplication {
     /// einem Health-Dienst-Prozess. Tab-Tipps gehen sonst ins Leere. Fuer die UI-Tests reicht Ablehnen;
     /// Tracker-Eintraege liegen in SwiftData. Mehrfach pruefen, weil je HealthKit-Typ ein eigenes Blatt kommen kann.
     /// Aufruf direkt nach `launch()`.
-    func dismissHealthSheetIfAny() {
+    /// `until`: kehrt sofort zurueck, sobald dieses Element existiert (z. B. der Countdown eines Programms, das nach
+    /// dem Blatt startet). Ohne diese Angabe wartet die letzte Runde ~20 s auf ein weiteres Blatt, und ein
+    /// 20-s-Countdown laeuft in dieser Zeit ab (#122).
+    func dismissHealthSheetIfAny(until: XCUIElement? = nil) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let denyPredicate = NSPredicate(
             format: "identifier == 'UIA.Health.DoNotAllow.Button' OR label == 'Nicht erlauben' OR label == 'Don’t Allow' OR label == \"Don't Allow\""
@@ -25,6 +28,7 @@ extension XCUIApplication {
                 .withOffset(CGVector(dx: frame.midX, dy: frame.midY)).tap()
         }
         for _ in 0..<8 {
+            if let until, until.exists { return }
             var handled = false
             for host in hosts {
                 let ok = host.buttons["OK"]

@@ -24,12 +24,20 @@ final class ProgrammFreigabeUITests: XCTestCase {
         app = XCUIApplication()
         app.resetAuthorizationStatus(for: .health)
         app.launchArguments = ["enable-testing", "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
-                               "-countdownBeforeStart", "<integer>20</integer>"]
+                               "-countdownBeforeStart", "<integer>300</integer>"]
         app.launch()
         // Nach dem Reset fragt der App-Start nach "Minuten der Achtsamkeit" (nicht Workout): ablehnen.
         app.dismissStartHealthSheetIfAny()
         let bar = app.tabBars.firstMatch
         XCTAssertTrue(bar.waitForExistence(timeout: 30), "Tab-Leiste erscheint nicht")
+        // Beim ersten Start nach der Installation ignoriert die App "-AppleLanguages (en)" und startet deutsch
+        // (Beleg: validate/fix-trotzdemStarten-run1.txt, Versuch 1). Dann einmal neu starten: Versuche 2 und 3 sind englisch.
+        if app.descendants(matching: .any)["Erfolge"].exists {
+            app.terminate()
+            app.launch()
+            app.dismissStartHealthSheetIfAny()
+            XCTAssertTrue(bar.waitForExistence(timeout: 30), "Tab-Leiste nach Neustart fehlt")
+        }
         // Tabs haben keine Kennung: positionsbasiert (1 = Workout).
         app.tabBars.buttons.element(boundBy: 1).tap()
     }
@@ -66,6 +74,8 @@ final class ProgrammFreigabeUITests: XCTestCase {
         XCTAssertTrue(startButton.exists, "Programmliste muss weiter sichtbar sein: \(message)", file: file, line: line)
     }
 
+    /// Countdown 300 s statt 20 s: Das Programm startet hinter dem System-Blatt, dessen Bedienung > 60 s dauert;
+    /// bei 20 s waere der Countdown vorher abgelaufen und "Cancel" weg.
     /// Beendet das laufende Programm ueber "Cancel" im Countdown und wartet auf die Programmliste.
     private func cancelRunningProgram() {
         XCTAssertTrue(countdownText.waitForExistence(timeout: 10), "Countdown zum Beenden fehlt")
@@ -79,8 +89,8 @@ final class ProgrammFreigabeUITests: XCTestCase {
     private func makeWriteDenied() {
         tapStart()
         XCTAssertTrue(app.healthAccessAlert.waitForExistence(timeout: 10), "Health Access fehlt beim ersten Start")
-        app.healthAccessAlert.buttons["Allow"].tap()
-        app.dismissHealthSheetIfAny()
+        app.healthAccessAlert.buttons.matching(NSPredicate(format: "label == 'Allow' OR label == 'Erlauben'")).firstMatch.tap()
+        app.dismissHealthSheetIfAny(until: countdownText)
         if countdownText.waitForExistence(timeout: 5) {
             cancelRunningProgram()
         }
