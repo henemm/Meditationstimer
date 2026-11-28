@@ -1,0 +1,1879 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /usr/bin/python3
+rootdir: /home/hem/henemm-infra-wt-habits56
+plugins: anyio-4.13.0
+collecting ... collected 1048 items / 964 deselected / 84 selected
+
+tests/test_backup_habits.py::test_skript_existiert FAILED                [  1%]
+tests/test_backup_habits.py::test_erfolg_legt_plain_sql_mit_rechten_ab FAILED [  2%]
+tests/test_backup_habits.py::test_vorhandener_ordner_bekommt_700 FAILED  [  3%]
+tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[abgeschnitten] FAILED [  4%]
+tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[tabelle_fehlt] FAILED [  5%]
+tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[migrationen_leer] FAILED [  7%]
+tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[docker_exec] FAILED [  8%]
+tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[abgeschnitten] FAILED [  9%]
+tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[tabelle_fehlt] FAILED [ 10%]
+tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[migrationen_leer] FAILED [ 11%]
+tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[docker_exec] FAILED [ 13%]
+tests/test_backup_habits.py::test_backup_sh_sichert_dump_offsite_vor_heartbeat FAILED [ 14%]
+tests/test_backup_habits.py::test_backup_sh_bricht_bei_dump_fehler_ab FAILED [ 15%]
+tests/test_backup_habits.py::test_backup_sh_sichert_habits_nur_wenn_container_laeuft FAILED [ 16%]
+tests/test_backup_habits.py::test_f001_readiness_zaehlt_nur_tabellen_in_public[unlogged] FAILED [ 17%]
+tests/test_backup_habits.py::test_f001_readiness_zaehlt_nur_tabellen_in_public[fremdschema] FAILED [ 19%]
+tests/test_backup_habits.py::test_f001_readiness_zaehlt_nur_tabellen_in_public[copy_zeile] FAILED [ 20%]
+tests/test_backup_habits.py::test_f001_fehlende_tabelle_schlaegt_weiter_an FAILED [ 21%]
+tests/test_habits_betrieb_56.py::test_deploy_baut_den_freigegebenen_stand FAILED [ 22%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-DATABASE_URL] ERROR [ 23%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-PUBLIC_URL] ERROR [ 25%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_TEAM_ID] ERROR [ 26%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_KEY_ID] ERROR [ 27%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_CLIENT_IDS] ERROR [ 28%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_PRIVATE_KEY] ERROR [ 29%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_TOKEN_KEY] ERROR [ 30%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_WEB_CLIENT_ID] ERROR [ 32%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-OAUTH_COOKIE_KEYS] ERROR [ 33%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-OAUTH_SIGNING_JWK] ERROR [ 34%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-DATABASE_URL] ERROR [ 35%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-PUBLIC_URL] ERROR [ 36%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_TEAM_ID] ERROR [ 38%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_KEY_ID] ERROR [ 39%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_CLIENT_IDS] ERROR [ 40%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_PRIVATE_KEY] ERROR [ 41%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_TOKEN_KEY] ERROR [ 42%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_WEB_CLIENT_ID] ERROR [ 44%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-OAUTH_COOKIE_KEYS] ERROR [ 45%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-OAUTH_SIGNING_JWK] ERROR [ 46%]
+tests/test_habits_betrieb_56.py::test_deploy_bricht_ab_wenn_server_env_fehlt ERROR [ 47%]
+tests/test_habits_betrieb_56.py::test_backup_sichert_habits_secrets_vollstaendig FAILED [ 48%]
+tests/test_habits_betrieb_56.py::test_monitor_behaelt_aktuelle_eintraege FAILED [ 50%]
+tests/test_habits_konfiguration.py::test_nginx_erlaubnisliste_genau_diese_pfade FAILED [ 51%]
+tests/test_habits_konfiguration.py::test_nginx_der_rest_ist_404 FAILED   [ 52%]
+tests/test_habits_konfiguration.py::test_nginx_alle_durchgereichten_pfade_setzen_host_und_proto FAILED [ 53%]
+tests/test_habits_konfiguration.py::test_nginx_mcp_streamt FAILED        [ 54%]
+tests/test_habits_konfiguration.py::test_nginx_nur_eigene_zonen_und_kein_loose_ends FAILED [ 55%]
+tests/test_habits_konfiguration.py::test_nginx_fassung_vor_certbot_hat_keine_443_bloecke FAILED [ 57%]
+tests/test_habits_konfiguration.py::test_compose_port_image_und_grenzen FAILED [ 58%]
+tests/test_habits_konfiguration.py::test_compose_enthaelt_keine_geheimnisse_und_keine_loose_ends_namen FAILED [ 59%]
+tests/test_habits_konfiguration.py::test_deploy_fester_commit_build_und_probe FAILED [ 60%]
+tests/test_monitor_habits.py::test_ohne_container_bleiben_die_listen_unveraendert PASSED [ 61%]
+tests/test_monitor_habits.py::test_mit_container_kommen_health_und_db_version_dazu FAILED [ 63%]
+tests/test_monitor_habits.py::test_bestehende_eintraege_bleiben_vor_dem_neuen_block FAILED [ 64%]
+tests/test_restic_prune_habits.py::test_voller_lauf_vergisst_habits_nach_28_tagen_nur_mit_tag_habits FAILED [ 65%]
+tests/test_restic_prune_habits.py::test_allgemeine_regel_bleibt_auf_daily_und_weekly_beschraenkt PASSED [ 66%]
+tests/test_restic_prune_habits.py::test_tageslauf_loose_ends_only_vergisst_habits_vor_prune FAILED [ 67%]
+tests/test_restic_prune_habits.py::test_dry_run_loescht_nichts_und_sperrt_nicht FAILED [ 69%]
+tests/test_restic_prune_habits.py::test_fehler_der_habits_regel_bricht_den_lauf_ab FAILED [ 70%]
+tests/test_restic_prune_habits.py::test_loose_ends_regeln_unveraendert_vor_der_habits_regel FAILED [ 71%]
+tests/test_restore_test_habits.py::test_skript_existiert FAILED          [ 72%]
+tests/test_restore_test_habits.py::test_erfolg_waehlt_juengsten_snapshot_des_le_pfads FAILED [ 73%]
+tests/test_restore_test_habits.py::test_kein_snapshot_des_pfads_ist_befund FAILED [ 75%]
+tests/test_restore_test_habits.py::test_zu_alter_snapshot_ist_befund_rpo FAILED [ 76%]
+tests/test_restore_test_habits.py::test_rpo_grenze_in_sekunden[47.983333333333334-0] FAILED [ 77%]
+tests/test_restore_test_habits.py::test_rpo_grenze_in_sekunden[48.5-1] FAILED [ 78%]
+tests/test_restore_test_habits.py::test_restore_ohne_dump_ist_befund[fehlt] FAILED [ 79%]
+tests/test_restore_test_habits.py::test_restore_ohne_dump_ist_befund[leer] FAILED [ 80%]
+tests/test_restore_test_habits.py::test_image_fehlt_kein_pull_kein_start FAILED [ 82%]
+tests/test_restore_test_habits.py::test_verwaister_container_wird_vorher_entfernt FAILED [ 83%]
+tests/test_restore_test_habits.py::test_container_ohne_netz_und_volume_mit_256mb FAILED [ 84%]
+tests/test_restore_test_habits.py::test_bereit_nach_drei_versuchen FAILED [ 85%]
+tests/test_restore_test_habits.py::test_nie_bereit_endet_nach_zeitlimit FAILED [ 86%]
+tests/test_restore_test_habits.py::test_fehler_beim_einspielen_ist_befund[psql_fail] FAILED [ 88%]
+tests/test_restore_test_habits.py::test_fehler_beim_einspielen_ist_befund[psql_stderr] FAILED [ 89%]
+tests/test_restore_test_habits.py::test_tabellenliste_verschieden_ist_befund FAILED [ 90%]
+tests/test_restore_test_habits.py::test_jungere_zusatzmigration_in_live_besteht FAILED [ 91%]
+tests/test_restore_test_habits.py::test_migration_nur_im_restore_ist_befund FAILED [ 92%]
+tests/test_restore_test_habits.py::test_zusatzmigration_vor_dem_snapshot_ist_befund FAILED [ 94%]
+tests/test_restore_test_habits.py::test_arbeitsordner_700_unter_work_root FAILED [ 95%]
+tests/test_restore_test_habits.py::test_umgebungsdatei_fehlt_exit_2 FAILED [ 96%]
+tests/test_restore_test_habits.py::test_werkzeug_fehlt_exit_2 FAILED     [ 97%]
+tests/test_restore_test_habits.py::test_abbruch_per_signal_raeumt_auf FAILED [ 98%]
+tests/test_restore_test_habits.py::test_backup_sh_ruft_probe_sonntags_nach_loose_ends_vor_heartbeat FAILED [100%]
+
+==================================== ERRORS ====================================
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-DATABASE_URL] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau0')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-PUBLIC_URL] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau1')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_TEAM_ID] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau2')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_KEY_ID] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau3')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_CLIENT_IDS] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau4')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_PRIVATE_KEY] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau5')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_TOKEN_KEY] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau6')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_WEB_CLIENT_ID] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau7')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-OAUTH_COOKIE_KEYS] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau8')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-OAUTH_SIGNING_JWK] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau9')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-DATABASE_URL] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau10')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-PUBLIC_URL] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau11')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_TEAM_ID] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau12')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_KEY_ID] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau13')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_CLIENT_IDS] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau14')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_PRIVATE_KEY] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau15')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_TOKEN_KEY] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau16')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_WEB_CLIENT_ID] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau17')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-OAUTH_COOKIE_KEYS] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau18')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+_ ERROR at setup of test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-OAUTH_SIGNING_JWK] _
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_vor_dem_bau19')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+________ ERROR at setup of test_deploy_bricht_ab_wenn_server_env_fehlt _________
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_deploy_bricht_ab_wenn_ser0')
+
+    @pytest.fixture
+    def sandbox(tmp_path):
+        """Kopie von deploy-habits.sh in einem Wegwerf-Baum mit habits/secrets und Attrappen fuer Systembefehle."""
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:51: AssertionError
+=================================== FAILURES ===================================
+____________________________ test_skript_existiert _____________________________
+
+    def test_skript_existiert():
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:116: AssertionError
+__________________ test_erfolg_legt_plain_sql_mit_rechten_ab ___________________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_legt_plain_sql_mit0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_legt_plain_sql_mit0/out'), ...}
+
+    def test_erfolg_legt_plain_sql_mit_rechten_ab(hh):
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_legt_plain_sql_mit0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_legt_plain_sql_mit0/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+_____________________ test_vorhandener_ordner_bekommt_700 ______________________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_vorhandener_ordner_bekomm0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_vorhandener_ordner_bekomm0/out'), ...}
+
+    def test_vorhandener_ordner_bekommt_700(hh):
+        hh["out"].mkdir(mode=0o755)
+        hh["out"].chmod(0o755)
+>       assert run(hh).returncode == 0
+               ^^^^^^^
+
+tests/test_backup_habits.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_vorhandener_ordner_bekomm0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_vorhandener_ordner_bekomm0/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+_____________ test_fehler_hinterlaesst_keine_datei[abgeschnitten] ______________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine0/out'), ...}
+fall = 'abgeschnitten'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_hinterlaesst_keine_datei(hh, fall):
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine0/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+_____________ test_fehler_hinterlaesst_keine_datei[tabelle_fehlt] ______________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine1/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine1/out'), ...}
+fall = 'tabelle_fehlt'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_hinterlaesst_keine_datei(hh, fall):
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine1/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine1/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+____________ test_fehler_hinterlaesst_keine_datei[migrationen_leer] ____________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine2/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine2/out'), ...}
+fall = 'migrationen_leer'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_hinterlaesst_keine_datei(hh, fall):
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine2/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine2/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+______________ test_fehler_hinterlaesst_keine_datei[docker_exec] _______________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine3/docker'), 'dump': PosixPath('/tmp.../dump.sql'), 'fail': True, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine3/out'), ...}
+fall = 'docker_exec'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_hinterlaesst_keine_datei(hh, fall):
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine3/docker'), 'dump': PosixPath('/tmp.../dump.sql'), 'fail': True, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_hinterlaesst_keine3/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+_________ test_fehler_laesst_aeltere_datei_unveraendert[abgeschnitten] _________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat0/out'), ...}
+fall = 'abgeschnitten'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_laesst_aeltere_datei_unveraendert(hh, fall):
+        hh["out"].mkdir(mode=0o700)
+        old = hh["out"] / "habits.sql"
+        old.write_text("-- aelterer guter Stand\n")
+        old.chmod(0o600)
+        before = hashlib.sha256(old.read_bytes()).hexdigest()
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat0/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+_________ test_fehler_laesst_aeltere_datei_unveraendert[tabelle_fehlt] _________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat1/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat1/out'), ...}
+fall = 'tabelle_fehlt'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_laesst_aeltere_datei_unveraendert(hh, fall):
+        hh["out"].mkdir(mode=0o700)
+        old = hh["out"] / "habits.sql"
+        old.write_text("-- aelterer guter Stand\n")
+        old.chmod(0o600)
+        before = hashlib.sha256(old.read_bytes()).hexdigest()
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat1/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat1/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+_______ test_fehler_laesst_aeltere_datei_unveraendert[migrationen_leer] ________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat2/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat2/out'), ...}
+fall = 'migrationen_leer'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_laesst_aeltere_datei_unveraendert(hh, fall):
+        hh["out"].mkdir(mode=0o700)
+        old = hh["out"] / "habits.sql"
+        old.write_text("-- aelterer guter Stand\n")
+        old.chmod(0o600)
+        before = hashlib.sha256(old.read_bytes()).hexdigest()
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat2/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat2/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+__________ test_fehler_laesst_aeltere_datei_unveraendert[docker_exec] __________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat3/docker'), 'dump': PosixPath('/tmp.../dump.sql'), 'fail': True, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat3/out'), ...}
+fall = 'docker_exec'
+
+    @pytest.mark.parametrize("fall", FEHLER)
+    def test_fehler_laesst_aeltere_datei_unveraendert(hh, fall):
+        hh["out"].mkdir(mode=0o700)
+        old = hh["out"] / "habits.sql"
+        old.write_text("-- aelterer guter Stand\n")
+        old.chmod(0o600)
+        before = hashlib.sha256(old.read_bytes()).hexdigest()
+        FEHLER[fall](hh)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat3/docker'), 'dump': PosixPath('/tmp.../dump.sql'), 'fail': True, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_laesst_aeltere_dat3/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+______________ test_backup_sh_sichert_dump_offsite_vor_heartbeat _______________
+
+    def test_backup_sh_sichert_dump_offsite_vor_heartbeat():
+        text = BACKUP.read_text()
+>       snap = text.index("backup-habits-snapshot.sh")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_backup_habits.py:188: ValueError
+___________________ test_backup_sh_bricht_bei_dump_fehler_ab ___________________
+
+    def test_backup_sh_bricht_bei_dump_fehler_ab():
+        text = BACKUP.read_text()
+>       snap = text.index("backup-habits-snapshot.sh")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_backup_habits.py:202: ValueError
+___________ test_backup_sh_sichert_habits_nur_wenn_container_laeuft ____________
+
+    def test_backup_sh_sichert_habits_nur_wenn_container_laeuft():
+        text = BACKUP.read_text()
+>       guard = text.index('HH_ACTIVE=0')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_backup_habits.py:210: ValueError
+_________ test_f001_readiness_zaehlt_nur_tabellen_in_public[unlogged] __________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur0/out'), ...}
+fall = 'unlogged'
+
+    @pytest.mark.parametrize("fall", ["unlogged", "fremdschema", "copy_zeile"])
+    def test_f001_readiness_zaehlt_nur_tabellen_in_public(hh, fall):
+        {"unlogged": lambda: dump_mit(hh, HEAD, UNLOGGED, tables=3),
+         "fremdschema": lambda: dump_mit(hh, HEAD, FREMDSCHEMA, tables=2),
+         "copy_zeile": lambda: dump_mit(hh, COPY_ZEILE, tables=2)}[fall]()
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:255: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur0/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+________ test_f001_readiness_zaehlt_nur_tabellen_in_public[fremdschema] ________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur1/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur1/out'), ...}
+fall = 'fremdschema'
+
+    @pytest.mark.parametrize("fall", ["unlogged", "fremdschema", "copy_zeile"])
+    def test_f001_readiness_zaehlt_nur_tabellen_in_public(hh, fall):
+        {"unlogged": lambda: dump_mit(hh, HEAD, UNLOGGED, tables=3),
+         "fremdschema": lambda: dump_mit(hh, HEAD, FREMDSCHEMA, tables=2),
+         "copy_zeile": lambda: dump_mit(hh, COPY_ZEILE, tables=2)}[fall]()
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:255: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur1/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur1/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+________ test_f001_readiness_zaehlt_nur_tabellen_in_public[copy_zeile] _________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur2/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur2/out'), ...}
+fall = 'copy_zeile'
+
+    @pytest.mark.parametrize("fall", ["unlogged", "fremdschema", "copy_zeile"])
+    def test_f001_readiness_zaehlt_nur_tabellen_in_public(hh, fall):
+        {"unlogged": lambda: dump_mit(hh, HEAD, UNLOGGED, tables=3),
+         "fremdschema": lambda: dump_mit(hh, HEAD, FREMDSCHEMA, tables=2),
+         "copy_zeile": lambda: dump_mit(hh, COPY_ZEILE, tables=2)}[fall]()
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:255: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur2/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_readiness_zaehlt_nur2/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+________________ test_f001_fehlende_tabelle_schlaegt_weiter_an _________________
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_fehlende_tabelle_sch0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_fehlende_tabelle_sch0/out'), ...}
+
+    def test_f001_fehlende_tabelle_schlaegt_weiter_an(hh):
+        dump_mit(hh, HEAD, UNLOGGED, tables=4)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_backup_habits.py:262: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'docker': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_fehlende_tabelle_sch0/docker'), 'dump': PosixPath('/tmp...dump.sql'), 'fail': False, 'out': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_f001_fehlende_tabelle_sch0/out'), ...}
+
+    def run(hh):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert SNAPSHOT.is_file(), f"{SNAPSHOT} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/backup-habits-snapshot.sh').is_file
+
+tests/test_backup_habits.py:104: AssertionError
+___________________ test_deploy_baut_den_freigegebenen_stand ___________________
+
+    def test_deploy_baut_den_freigegebenen_stand():
+>       assert DEPLOY.is_file(), f"{DEPLOY} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh').is_file
+
+tests/test_habits_betrieb_56.py:37: AssertionError
+_______________ test_backup_sichert_habits_secrets_vollstaendig ________________
+
+    def test_backup_sichert_habits_secrets_vollstaendig():
+        """find ... -name '*.env' erfasst db-password nicht; habits/secrets muss ausdruecklich gesichert werden."""
+        text = BACKUP.read_text()
+>       assert re.search(r"/home/hem/henemm-infra/habits/secrets\b", text), \
+            "habits/secrets fehlt in der Sicherung (db-password wird sonst nicht erfasst)"
+E       AssertionError: habits/secrets fehlt in der Sicherung (db-password wird sonst nicht erfasst)
+E       assert None
+E        +  where None = <function search at 0x79fe10e223e0>('/home/hem/henemm-infra/habits/secrets\\b', '#!/bin/bash\nset -e\n\nBACKUP_DIR="/home/hem/backups"\nDATE=$(date +%Y-%m-%d_%H%M)\nBACKUP_FILE="${BACKUP_DIR}/server-config_${DATE}.tar.gz"\n\nmkdir -p "$BACKUP_DIR"\n\necho "==> Server-Config-Backup: ${BACKUP_FILE}"\n\nsudo tar czf "$BACKUP_FILE" \\\n    /etc/nginx/sites-available/ \\\n    /etc/letsencrypt/ \\\n    /etc/ssh/sshd_config \\\n    /etc/fail2ban/ \\\n    /etc/sysctl.d/ \\\n    /etc/ufw/ \\\n    2>/dev/null\n# 640 root:hem, damit der als hem laufende Off-Site-Push (unten) das Archiv\n# lesen kann. hem hat ohnehin NOPASSWD-sudo -> keine zusaetzliche Exposition.\nsudo chown root:hem "$BACKUP_FILE"\nsudo chmod 640 "$BACKUP_FILE"\n\n# Alte Backups aufräumen (älter als 30 Tage)\nfind "$BACKUP_DIR" -maxdepth 1 -name "server-config_*.tar.gz" -mtime +30 -delete\n\nSIZE=$(du -h "$BACKUP_FILE" | cut -f1)\necho "==> Backup fertig (${SIZE})"\necho "==> Backups im Ordner:"\nls -lh "$BACKUP_DIR"/server-config_*.tar.gz\n\n# Readiness-Check: Backup muss mindestens 50 KB haben.\n# tar 2>/dev/null oben schluckt Teil-Fehler; ein leeres/winziges Backup\n# wuerde sonst trotzdem den Heartbeat pingen (Liveness statt Readiness).\n# Referenz: konsistente Backup-Groesse seit April ~115 KB.\n...home/hem/henemm-infra/scripts/restore-test-frieda.sh; then\n        echo "FEHLER: Rueckspielprobe Frieda fehlgeschlagen — Reisespeicher und Ablage" \\\n             "sind NICHT nachweislich wiederherstellbar. Heartbeat NICHT gepingt." >&2\n        exit 1\n    fi\n\n    # Rueckspielprobe Stalwart (henemm-infra#121): Postfach-Sicherung vom\n    # Heimserver holen, Pruefsummen, Stalwart ohne Netz darauf starten, IMAP-\n    # Ordner mit live vergleichen. Gleicher Heartbeat, gleiche Semantik.\n    echo "==> Rueckspielprobe Stalwart (sonntags)"\n    if ! sudo -n bash /home/hem/henemm-infra/scripts/restore-test-stalwart.sh; then\n        echo "FEHLER: Rueckspielprobe Stalwart fehlgeschlagen — die Postfaecher sind" \\\n             "NICHT nachweislich wiederherstellbar. Heartbeat NICHT gepingt." >&2\n        exit 1\n    fi\nfi\n\nif [ "$FR_SICHERN_FEHLER" -ne 0 ]; then\n    echo "FEHLER: Frieda-Schnappschuss gescheitert (siehe oben). Heartbeat NICHT gepingt." >&2\n    exit 1\nfi\n\n# Heartbeat erst hier: lokales UND off-site Backup waren erfolgreich —\n# sonntags zusaetzlich der Restore-Test.\ncurl -s -o /dev/null https://uptime.betterstack.com/api/v1/heartbeat/fzWfDRKNXer4xmFb39TdZcz7\n')
+E        +    where <function search at 0x79fe10e223e0> = re.search
+
+tests/test_habits_betrieb_56.py:103: AssertionError
+___________________ test_monitor_behaelt_aktuelle_eintraege ____________________
+
+    def test_monitor_behaelt_aktuelle_eintraege():
+        text = MONITOR.read_text()
+>       assert "# Healthy Habits Haven" in text, "Habits-Block fehlt in monitor.sh"
+E       AssertionError: Habits-Block fehlt in monitor.sh
+E       assert '# Healthy Habits Haven' in '#!/bin/bash\n# Server-Monitoring: Services, Ressourcen, Zertifikate.\n#\n# Zwei Modi:\n#   ./monitor.sh          Automatisch (systemd-Timer): Alerts + Agent-Trigger\n#   ./monitor.sh --status Manuell (SSH): Farbige Statusübersicht\n#\nset -uo pipefail\n\nSCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\n# Nicht unter /tmp (world-writable, sticky bit) -- TOCTOU-Symlink-Race,\n# falls der Ordner mal fehlt und root ihm blind folgt (henemm-security#218).\nSTATE_DIR="/var/lib/server-monitor"\nNOTIFY="${SCRIPT_DIR}/notify-telegram.sh"\nLOG_PREFIX="[monitor]"\nSTATUS_MODE=false\n\nif [ "${1:-}" = "--status" ] || [ "${1:-}" = "-s" ]; then\n    STATUS_MODE=true\nfi\n\nmkdir -m 0700 -p "$STATE_DIR"\n\n# Integritätswächter (henemm-infra#282): aktuellen Stand bewusst als Normalzustand\n# setzen, z.B. nach einem gewollten neuen SSH-Schlüssel, Cronjob oder Benutzer.\n#   sudo ./monitor.sh --accept-integrity\nINTEGRITY_BASELINE="${INTEGRITY_BASELINE:-${STATE_DIR}/integrity-baseline.json}"\n#   sudo ./monitor.sh --accept-integrity <Kennung>   (nur wenn der Stand noch dem Alarm\n#   mit dieser Kennung entspricht; so bestätigt der Telegram-Bot nur, was gemeldet wurde)\nif [ "${1:-}" = "--accept-integr...at NICHT gepingt (${MONITOR_ERRORS} kritische Failures)"\n        # Dauer-Erinnerung: solange der Heartbeat blockiert ist, alle\n        # REMINDER_INTERVAL_SECONDS erneut melden (Telegram, Aktionen-Topic).\n        now_ts=$(date +%s)\n        [ -f "$blocked_since_file" ] || echo "$now_ts" > "$blocked_since_file"\n        last_ts=$(cat "$reminder_file" 2>/dev/null || cat "$blocked_since_file" 2>/dev/null || echo "$now_ts")\n        [[ "$last_ts" =~ ^[0-9]+$ ]] || last_ts="$now_ts"\n        if [ $(( now_ts - last_ts )) -ge "$REMINDER_INTERVAL_SECONDS" ]; then\n            since_ts=$(cat "$blocked_since_file" 2>/dev/null || echo "$now_ts")\n            [[ "$since_ts" =~ ^[0-9]+$ ]] || since_ts="$now_ts"\n            hours=$(( (now_ts - since_ts) / 3600 ))\n            "$NOTIFY" --topic actions "🔴 ERINNERUNG: Server-Monitor-Heartbeat ist seit ca. ${hours}h blockiert. Offene kritische Checks: ${MONITOR_FAILED[*]}" \\\n                2>/dev/null || log "Erinnerungs-Telegram fehlgeschlagen"\n            log "ERINNERUNG gesendet (${hours}h blockiert: ${MONITOR_FAILED[*]})"\n            echo "$now_ts" > "$reminder_file"\n        fi\n    fi\nelse\n    log "Monitoring abgeschlossen"\nfi\n'
+
+tests/test_habits_betrieb_56.py:113: AssertionError
+_________________ test_nginx_erlaubnisliste_genau_diese_pfade __________________
+
+    def test_nginx_erlaubnisliste_genau_diese_pfade():
+>       gefunden = {(m.strip(), p) for m, p in locations()}
+                                               ^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_habits_konfiguration.py:30: in locations
+    text = NGINX.read_text()
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_________________________ test_nginx_der_rest_ist_404 __________________________
+
+    def test_nginx_der_rest_ist_404():
+>       text = NGINX.read_text()
+               ^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_________ test_nginx_alle_durchgereichten_pfade_setzen_host_und_proto __________
+
+    def test_nginx_alle_durchgereichten_pfade_setzen_host_und_proto():
+>       text = NGINX.read_text()
+               ^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+____________________________ test_nginx_mcp_streamt ____________________________
+
+    def test_nginx_mcp_streamt():
+>       text = NGINX.read_text()
+               ^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_______________ test_nginx_nur_eigene_zonen_und_kein_loose_ends ________________
+
+    def test_nginx_nur_eigene_zonen_und_kein_loose_ends():
+>       text = NGINX.read_text()
+               ^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_____________ test_nginx_fassung_vor_certbot_hat_keine_443_bloecke _____________
+
+    def test_nginx_fassung_vor_certbot_hat_keine_443_bloecke():
+>       text = NGINX.read_text()
+               ^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/nginx/habits.henemm.com.conf'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_____________________ test_compose_port_image_und_grenzen ______________________
+
+    def test_compose_port_image_und_grenzen():
+        yaml = pytest.importorskip("yaml")
+>       c = yaml.safe_load(COMPOSE.read_text())
+                           ^^^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:83: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/habits/docker-compose.yml')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/habits/docker-compose.yml'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+______ test_compose_enthaelt_keine_geheimnisse_und_keine_loose_ends_namen ______
+
+    def test_compose_enthaelt_keine_geheimnisse_und_keine_loose_ends_namen():
+>       text = COMPOSE.read_text().lower()
+               ^^^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/habits/docker-compose.yml')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/habits/docker-compose.yml'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+__________________ test_deploy_fester_commit_build_und_probe ___________________
+
+    def test_deploy_fester_commit_build_und_probe():
+>       text = DEPLOY.read_text()
+               ^^^^^^^^^^^^^^^^^^
+
+tests/test_habits_konfiguration.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/hem/henemm-infra-wt-habits56/scripts/deploy-habits.sh'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+_____________ test_mit_container_kommen_health_und_db_version_dazu _____________
+
+    def test_mit_container_kommen_health_und_db_version_dazu():
+        zeilen = listen(True)
+>       assert "HTTP https://habits.henemm.com/health|200|Habits" in zeilen
+E       AssertionError: assert 'HTTP https://habits.henemm.com/health|200|Habits' in ['HTTP https://henemm.com/health|200|Website', 'DOCKER n8n|n8nio/n8n|stable']
+
+tests/test_monitor_habits.py:41: AssertionError
+____________ test_bestehende_eintraege_bleiben_vor_dem_neuen_block _____________
+
+    def test_bestehende_eintraege_bleiben_vor_dem_neuen_block():
+        text = MONITOR.read_text()
+>       assert text.index("loose-ends-db|library/postgres|18") < text.index("# Healthy Habits Haven")
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_monitor_habits.py:48: ValueError
+______ test_voller_lauf_vergisst_habits_nach_28_tagen_nur_mit_tag_habits _______
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_voller_lauf_vergisst_habi0')
+
+    def test_voller_lauf_vergisst_habits_nach_28_tagen_nur_mit_tag_habits(tmp_path):
+        r, log = run(tmp_path)
+        assert r.returncode == 0, r.stderr
+        regeln = habits_forget(log)
+>       assert len(regeln) == 1, log
+E       AssertionError: ['restic snapshots --no-lock --host henemm-hetzner --path /home/hem/backups/loose-ends --json', 'restic forget --retry-lock 30m --tag daily --tag weekly --keep-daily 7 --keep-weekly 8 --keep-monthly 12 --keep-yearly 3 --prune']
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_restic_prune_habits.py:58: AssertionError
+___________ test_tageslauf_loose_ends_only_vergisst_habits_vor_prune ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_tageslauf_loose_ends_only0')
+
+    def test_tageslauf_loose_ends_only_vergisst_habits_vor_prune(tmp_path):
+        r, log = run(tmp_path, "--loose-ends-only")
+        assert r.returncode == 0, r.stderr
+        regeln = habits_forget(log)
+>       assert len(regeln) == 1, log
+E       AssertionError: ['restic snapshots --no-lock --host henemm-hetzner --path /home/hem/backups/loose-ends --json', 'restic prune --retry-lock 30m']
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_restic_prune_habits.py:81: AssertionError
+_________________ test_dry_run_loescht_nichts_und_sperrt_nicht _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_dry_run_loescht_nichts_un0')
+
+    def test_dry_run_loescht_nichts_und_sperrt_nicht(tmp_path):
+        r, log = run(tmp_path, "--dry-run")
+        assert r.returncode == 0, r.stderr
+        regeln = habits_forget(log)
+>       assert len(regeln) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_restic_prune_habits.py:92: AssertionError
+_______________ test_fehler_der_habits_regel_bricht_den_lauf_ab ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_der_habits_regel_b0')
+
+    def test_fehler_der_habits_regel_bricht_den_lauf_ab(tmp_path):
+        r, log = run(tmp_path, fail=True)
+        assert r.returncode != 0
+>       assert "Habits" in r.stdout
+E       AssertionError: assert 'Habits' in '==> 2026-11-28T06:42:18Z Retention (dry-run=0, loose-ends-only=0)\n==> 1/4 Loose Ends: eigene Snapshots aelter 28 Tage (0)\n==> 2/4 Loose Ends: Altbestand in gemeinsamen Snapshots (0)\n==> 3/4 Loose Ends: reine Snapshots ohne Tag (0)\n==> 4/4 Allgemeine Regel (nur daily/weekly)\n'
+E        +  where '==> 2026-11-28T06:42:18Z Retention (dry-run=0, loose-ends-only=0)\n==> 1/4 Loose Ends: eigene Snapshots aelter 28 Tage (0)\n==> 2/4 Loose Ends: Altbestand in gemeinsamen Snapshots (0)\n==> 3/4 Loose Ends: reine Snapshots ohne Tag (0)\n==> 4/4 Allgemeine Regel (nur daily/weekly)\n' = CompletedProcess(args=['bash', '/home/hem/henemm-infra-wt-habits56/scripts/restic-prune-heimserver.sh'], returncode=1, stdout='==> 2026-11-28T06:42:18Z Retention (dry-run=0, loose-ends-only=0)\n==> 1/4 Loose Ends: eigene Snapshots aelter 28 Tage (0)\n==> 2/4 Loose Ends: Altbestand in gemeinsamen Snapshots (0)\n==> 3/4 Loose Ends: reine Snapshots ohne Tag (0)\n==> 4/4 Allgemeine Regel (nur daily/weekly)\n', stderr='').stdout
+
+tests/test_restic_prune_habits.py:101: AssertionError
+___________ test_loose_ends_regeln_unveraendert_vor_der_habits_regel ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-hem/pytest-5274/test_loose_ends_regeln_unverae0')
+
+    def test_loose_ends_regeln_unveraendert_vor_der_habits_regel(tmp_path):
+        r, log = run(tmp_path)
+        assert r.returncode == 0, r.stderr
+        assert "1/4 Loose Ends" in r.stdout and "3/4 Loose Ends" in r.stdout
+>       assert r.stdout.index("3/4 Loose Ends") < r.stdout.index("Habits")
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_restic_prune_habits.py:108: ValueError
+____________________________ test_skript_existiert _____________________________
+
+    def test_skript_existiert():
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:185: AssertionError
+______________ test_erfolg_waehlt_juengsten_snapshot_des_le_pfads ______________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_waehlt_juengsten_s0/restic.env'), 'state': PosixPat...erfolg_waehlt_juengsten_s0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_waehlt_juengsten_s0/work')}
+
+    def test_erfolg_waehlt_juengsten_snapshot_des_le_pfads(hh):
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_waehlt_juengsten_s0/restic.env'), 'state': PosixPat...erfolg_waehlt_juengsten_s0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_erfolg_waehlt_juengsten_s0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+___________________ test_kein_snapshot_des_pfads_ist_befund ____________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_kein_snapshot_des_pfads_i0/restic.env'), 'state': PosixPat...kein_snapshot_des_pfads_i0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_kein_snapshot_des_pfads_i0/work')}
+
+    def test_kein_snapshot_des_pfads_ist_befund(hh):
+        (hh["state"] / "snapshots.json").write_text(json.dumps([snap("cccccccc", 1, ["/var/lib/gregor"])]))
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_kein_snapshot_des_pfads_i0/restic.env'), 'state': PosixPat...kein_snapshot_des_pfads_i0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_kein_snapshot_des_pfads_i0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+____________________ test_zu_alter_snapshot_ist_befund_rpo _____________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zu_alter_snapshot_ist_bef0/restic.env'), 'state': PosixPat...zu_alter_snapshot_ist_bef0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zu_alter_snapshot_ist_bef0/work')}
+
+    def test_zu_alter_snapshot_ist_befund_rpo(hh):
+        (hh["state"] / "snapshots.json").write_text(json.dumps([snap("aaaaaaaa", 50, [HH_PATH])]))
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zu_alter_snapshot_ist_bef0/restic.env'), 'state': PosixPat...zu_alter_snapshot_ist_bef0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zu_alter_snapshot_ist_bef0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+______________ test_rpo_grenze_in_sekunden[47.983333333333334-0] _______________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_470/restic.env'), 'state': PosixPat...rpo_grenze_in_sekunden_470'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_470/work')}
+stunden = 47.983333333333334, code = 0
+
+    @pytest.mark.parametrize("stunden,code", [(47 + 59 / 60, 0), (48.5, 1)])
+    def test_rpo_grenze_in_sekunden(hh, stunden, code):
+        # F002: 48 h 30 min darf nicht auf 48 h abgerundet werden.
+        (hh["state"] / "snapshots.json").write_text(json.dumps([snap("aaaaaaaa", stunden, [HH_PATH])]))
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_470/restic.env'), 'state': PosixPat...rpo_grenze_in_sekunden_470'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_470/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_____________________ test_rpo_grenze_in_sekunden[48.5-1] ______________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_480/restic.env'), 'state': PosixPat...rpo_grenze_in_sekunden_480'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_480/work')}
+stunden = 48.5, code = 1
+
+    @pytest.mark.parametrize("stunden,code", [(47 + 59 / 60, 0), (48.5, 1)])
+    def test_rpo_grenze_in_sekunden(hh, stunden, code):
+        # F002: 48 h 30 min darf nicht auf 48 h abgerundet werden.
+        (hh["state"] / "snapshots.json").write_text(json.dumps([snap("aaaaaaaa", stunden, [HH_PATH])]))
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_480/restic.env'), 'state': PosixPat...rpo_grenze_in_sekunden_480'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_rpo_grenze_in_sekunden_480/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+___________________ test_restore_ohne_dump_ist_befund[fehlt] ___________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef0/restic.env'), 'state': PosixPat...restore_ohne_dump_ist_bef0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef0/work')}
+inhalt = 'fehlt'
+
+    @pytest.mark.parametrize("inhalt", ["fehlt", "leer"])
+    def test_restore_ohne_dump_ist_befund(hh, inhalt):
+        if inhalt == "fehlt":
+            flag(hh, "restore_nofile")
+        else:
+            (hh["state"] / "dump.sql").write_text("")
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef0/restic.env'), 'state': PosixPat...restore_ohne_dump_ist_bef0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+___________________ test_restore_ohne_dump_ist_befund[leer] ____________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef1/restic.env'), 'state': PosixPat...restore_ohne_dump_ist_bef1'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef1/work')}
+inhalt = 'leer'
+
+    @pytest.mark.parametrize("inhalt", ["fehlt", "leer"])
+    def test_restore_ohne_dump_ist_befund(hh, inhalt):
+        if inhalt == "fehlt":
+            flag(hh, "restore_nofile")
+        else:
+            (hh["state"] / "dump.sql").write_text("")
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef1/restic.env'), 'state': PosixPat...restore_ohne_dump_ist_bef1'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_restore_ohne_dump_ist_bef1/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+____________________ test_image_fehlt_kein_pull_kein_start _____________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_image_fehlt_kein_pull_kei0/restic.env'), 'state': PosixPat...image_fehlt_kein_pull_kei0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_image_fehlt_kein_pull_kei0/work')}
+
+    def test_image_fehlt_kein_pull_kein_start(hh):
+        flag(hh, "no_image")
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:246: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_image_fehlt_kein_pull_kei0/restic.env'), 'state': PosixPat...image_fehlt_kein_pull_kei0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_image_fehlt_kein_pull_kei0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+________________ test_verwaister_container_wird_vorher_entfernt ________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_verwaister_container_wird0/restic.env'), 'state': PosixPat...verwaister_container_wird0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_verwaister_container_wird0/work')}
+
+    def test_verwaister_container_wird_vorher_entfernt(hh):
+        flag(hh, "orphan")
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:257: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_verwaister_container_wird0/restic.env'), 'state': PosixPat...verwaister_container_wird0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_verwaister_container_wird0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+________________ test_container_ohne_netz_und_volume_mit_256mb _________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_container_ohne_netz_und_v0/restic.env'), 'state': PosixPat...container_ohne_netz_und_v0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_container_ohne_netz_und_v0/work')}
+
+    def test_container_ohne_netz_und_volume_mit_256mb(hh):
+>       assert run(hh).returncode == 0
+               ^^^^^^^
+
+tests/test_restore_test_habits.py:268: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_container_ohne_netz_und_v0/restic.env'), 'state': PosixPat...container_ohne_netz_und_v0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_container_ohne_netz_und_v0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_______________________ test_bereit_nach_drei_versuchen ________________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_bereit_nach_drei_versuche0/restic.env'), 'state': PosixPat...bereit_nach_drei_versuche0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_bereit_nach_drei_versuche0/work')}
+
+    def test_bereit_nach_drei_versuchen(hh):
+        (hh["state"] / "ready_after").write_text("3")
+>       r = run(hh, READY_TIMEOUT="10")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_restore_test_habits.py:285: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_bereit_nach_drei_versuche0/restic.env'), 'state': PosixPat...bereit_nach_drei_versuche0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_bereit_nach_drei_versuche0/work')}
+extra = {'READY_TIMEOUT': '10'}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_____________________ test_nie_bereit_endet_nach_zeitlimit _____________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_nie_bereit_endet_nach_zei0/restic.env'), 'state': PosixPat...nie_bereit_endet_nach_zei0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_nie_bereit_endet_nach_zei0/work')}
+
+    def test_nie_bereit_endet_nach_zeitlimit(hh):
+        (hh["state"] / "ready_after").write_text("never")
+        t0 = time.monotonic()
+>       r = run(hh, READY_TIMEOUT="2")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_restore_test_habits.py:295: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_nie_bereit_endet_nach_zei0/restic.env'), 'state': PosixPat...nie_bereit_endet_nach_zei0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_nie_bereit_endet_nach_zei0/work')}
+extra = {'READY_TIMEOUT': '2'}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+______________ test_fehler_beim_einspielen_ist_befund[psql_fail] _______________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is0/restic.env'), 'state': PosixPat...fehler_beim_einspielen_is0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is0/work')}
+fehler = 'psql_fail'
+
+    @pytest.mark.parametrize("fehler", ["psql_fail", "psql_stderr"])
+    def test_fehler_beim_einspielen_ist_befund(hh, fehler):
+        flag(hh, fehler)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:305: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is0/restic.env'), 'state': PosixPat...fehler_beim_einspielen_is0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_____________ test_fehler_beim_einspielen_ist_befund[psql_stderr] ______________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is1/restic.env'), 'state': PosixPat...fehler_beim_einspielen_is1'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is1/work')}
+fehler = 'psql_stderr'
+
+    @pytest.mark.parametrize("fehler", ["psql_fail", "psql_stderr"])
+    def test_fehler_beim_einspielen_ist_befund(hh, fehler):
+        flag(hh, fehler)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:305: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is1/restic.env'), 'state': PosixPat...fehler_beim_einspielen_is1'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_fehler_beim_einspielen_is1/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+__________________ test_tabellenliste_verschieden_ist_befund ___________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_tabellenliste_verschieden0/restic.env'), 'state': PosixPat...tabellenliste_verschieden0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_tabellenliste_verschieden0/work')}
+
+    def test_tabellenliste_verschieden_ist_befund(hh):
+        (hh["state"] / "tables_probe").write_text("accounts\nschema_migrations")
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:316: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_tabellenliste_verschieden0/restic.env'), 'state': PosixPat...tabellenliste_verschieden0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_tabellenliste_verschieden0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_________________ test_jungere_zusatzmigration_in_live_besteht _________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_jungere_zusatzmigration_i0/restic.env'), 'state': PosixPat...jungere_zusatzmigration_i0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_jungere_zusatzmigration_i0/work')}
+
+    def test_jungere_zusatzmigration_in_live_besteht(hh):
+        live = (hh["state"] / "migr_live").read_text() + f"\n006_transcript_v2.sql|{pg_ts(1)}"
+        (hh["state"] / "migr_live").write_text(live)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_jungere_zusatzmigration_i0/restic.env'), 'state': PosixPat...jungere_zusatzmigration_i0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_jungere_zusatzmigration_i0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+___________________ test_migration_nur_im_restore_ist_befund ___________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_migration_nur_im_restore_0/restic.env'), 'state': PosixPat...migration_nur_im_restore_0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_migration_nur_im_restore_0/work')}
+
+    def test_migration_nur_im_restore_ist_befund(hh):
+        probe = (hh["state"] / "migr_probe").read_text() + f"\n006_transcript_v2.sql|{pg_ts(28)}"
+        (hh["state"] / "migr_probe").write_text(probe)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:332: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_migration_nur_im_restore_0/restic.env'), 'state': PosixPat...migration_nur_im_restore_0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_migration_nur_im_restore_0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_______________ test_zusatzmigration_vor_dem_snapshot_ist_befund _______________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zusatzmigration_vor_dem_s0/restic.env'), 'state': PosixPat...zusatzmigration_vor_dem_s0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zusatzmigration_vor_dem_s0/work')}
+
+    def test_zusatzmigration_vor_dem_snapshot_ist_befund(hh):
+        live = (hh["state"] / "migr_live").read_text() + f"\n006_transcript_v2.sql|{pg_ts(20)}"
+        (hh["state"] / "migr_live").write_text(live)
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:339: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zusatzmigration_vor_dem_s0/restic.env'), 'state': PosixPat...zusatzmigration_vor_dem_s0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_zusatzmigration_vor_dem_s0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+____________________ test_arbeitsordner_700_unter_work_root ____________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_arbeitsordner_700_unter_w0/restic.env'), 'state': PosixPat...arbeitsordner_700_unter_w0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_arbeitsordner_700_unter_w0/work')}
+
+    def test_arbeitsordner_700_unter_work_root(hh):
+>       assert run(hh).returncode == 0
+               ^^^^^^^
+
+tests/test_restore_test_habits.py:346: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_arbeitsordner_700_unter_w0/restic.env'), 'state': PosixPat...arbeitsordner_700_unter_w0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_arbeitsordner_700_unter_w0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+_______________________ test_umgebungsdatei_fehlt_exit_2 _______________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_umgebungsdatei_fehlt_exit0/restic.env'), 'state': PosixPat...umgebungsdatei_fehlt_exit0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_umgebungsdatei_fehlt_exit0/work')}
+
+    def test_umgebungsdatei_fehlt_exit_2(hh):
+        hh["env_file"].unlink()
+>       r = run(hh)
+            ^^^^^^^
+
+tests/test_restore_test_habits.py:356: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_umgebungsdatei_fehlt_exit0/restic.env'), 'state': PosixPat...umgebungsdatei_fehlt_exit0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_umgebungsdatei_fehlt_exit0/work')}
+extra = {}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+__________________________ test_werkzeug_fehlt_exit_2 __________________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_werkzeug_fehlt_exit_20/restic.env'), 'state': PosixPath('/...74/test_werkzeug_fehlt_exit_20'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_werkzeug_fehlt_exit_20/work')}
+
+    def test_werkzeug_fehlt_exit_2(hh):
+>       r = run(hh, RESTIC=str(hh["tmp"] / "gibt-es-nicht"))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_restore_test_habits.py:362: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_werkzeug_fehlt_exit_20/restic.env'), 'state': PosixPath('/...74/test_werkzeug_fehlt_exit_20'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_werkzeug_fehlt_exit_20/work')}
+extra = {'RESTIC': '/tmp/pytest-of-hem/pytest-5274/test_werkzeug_fehlt_exit_20/gibt-es-nicht'}
+@py_assert1 = <bound method Path.is_file of PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh')>
+@py_assert3 = False
+@py_format5 = "/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt\n>assert False\n{False = is_file\n{is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file\n}()\n}"
+
+    def run(hh, **extra):
+        # Ohne Skript endet bash auch mit Exit != 0 — die Fehlerfaelle waeren sonst grundlos gruen.
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:162: AssertionError
+______________________ test_abbruch_per_signal_raeumt_auf ______________________
+
+hh = {'env_file': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_abbruch_per_signal_raeumt0/restic.env'), 'state': PosixPat...abbruch_per_signal_raeumt0'), 'work': PosixPath('/tmp/pytest-of-hem/pytest-5274/test_abbruch_per_signal_raeumt0/work')}
+
+    def test_abbruch_per_signal_raeumt_auf(hh):
+>       assert PROBE.is_file(), f"{PROBE} fehlt"
+E       AssertionError: /home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh fehlt
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/home/hem/henemm-infra-wt-habits56/scripts/restore-test-habits.sh').is_file
+
+tests/test_restore_test_habits.py:368: AssertionError
+_______ test_backup_sh_ruft_probe_sonntags_nach_loose_ends_vor_heartbeat _______
+
+    def test_backup_sh_ruft_probe_sonntags_nach_loose_ends_vor_heartbeat():
+        text = BACKUP.read_text()
+        sunday = text.index('if [ "$(date +%u)" -eq 7 ]')
+        gregor = text.index("restore-test-gregor.sh", sunday)
+        loose_ends = text.index("restore-test-loose-ends.sh", gregor)
+>       probe = text.index("sudo -n bash /home/hem/henemm-infra/scripts/restore-test-habits.sh")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/test_restore_test_habits.py:388: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_backup_habits.py::test_skript_existiert - AssertionError: /...
+FAILED tests/test_backup_habits.py::test_erfolg_legt_plain_sql_mit_rechten_ab
+FAILED tests/test_backup_habits.py::test_vorhandener_ordner_bekommt_700 - Ass...
+FAILED tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[abgeschnitten]
+FAILED tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[tabelle_fehlt]
+FAILED tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[migrationen_leer]
+FAILED tests/test_backup_habits.py::test_fehler_hinterlaesst_keine_datei[docker_exec]
+FAILED tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[abgeschnitten]
+FAILED tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[tabelle_fehlt]
+FAILED tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[migrationen_leer]
+FAILED tests/test_backup_habits.py::test_fehler_laesst_aeltere_datei_unveraendert[docker_exec]
+FAILED tests/test_backup_habits.py::test_backup_sh_sichert_dump_offsite_vor_heartbeat
+FAILED tests/test_backup_habits.py::test_backup_sh_bricht_bei_dump_fehler_ab
+FAILED tests/test_backup_habits.py::test_backup_sh_sichert_habits_nur_wenn_container_laeuft
+FAILED tests/test_backup_habits.py::test_f001_readiness_zaehlt_nur_tabellen_in_public[unlogged]
+FAILED tests/test_backup_habits.py::test_f001_readiness_zaehlt_nur_tabellen_in_public[fremdschema]
+FAILED tests/test_backup_habits.py::test_f001_readiness_zaehlt_nur_tabellen_in_public[copy_zeile]
+FAILED tests/test_backup_habits.py::test_f001_fehlende_tabelle_schlaegt_weiter_an
+FAILED tests/test_habits_betrieb_56.py::test_deploy_baut_den_freigegebenen_stand
+FAILED tests/test_habits_betrieb_56.py::test_backup_sichert_habits_secrets_vollstaendig
+FAILED tests/test_habits_betrieb_56.py::test_monitor_behaelt_aktuelle_eintraege
+FAILED tests/test_habits_konfiguration.py::test_nginx_erlaubnisliste_genau_diese_pfade
+FAILED tests/test_habits_konfiguration.py::test_nginx_der_rest_ist_404 - File...
+FAILED tests/test_habits_konfiguration.py::test_nginx_alle_durchgereichten_pfade_setzen_host_und_proto
+FAILED tests/test_habits_konfiguration.py::test_nginx_mcp_streamt - FileNotFo...
+FAILED tests/test_habits_konfiguration.py::test_nginx_nur_eigene_zonen_und_kein_loose_ends
+FAILED tests/test_habits_konfiguration.py::test_nginx_fassung_vor_certbot_hat_keine_443_bloecke
+FAILED tests/test_habits_konfiguration.py::test_compose_port_image_und_grenzen
+FAILED tests/test_habits_konfiguration.py::test_compose_enthaelt_keine_geheimnisse_und_keine_loose_ends_namen
+FAILED tests/test_habits_konfiguration.py::test_deploy_fester_commit_build_und_probe
+FAILED tests/test_monitor_habits.py::test_mit_container_kommen_health_und_db_version_dazu
+FAILED tests/test_monitor_habits.py::test_bestehende_eintraege_bleiben_vor_dem_neuen_block
+FAILED tests/test_restic_prune_habits.py::test_voller_lauf_vergisst_habits_nach_28_tagen_nur_mit_tag_habits
+FAILED tests/test_restic_prune_habits.py::test_tageslauf_loose_ends_only_vergisst_habits_vor_prune
+FAILED tests/test_restic_prune_habits.py::test_dry_run_loescht_nichts_und_sperrt_nicht
+FAILED tests/test_restic_prune_habits.py::test_fehler_der_habits_regel_bricht_den_lauf_ab
+FAILED tests/test_restic_prune_habits.py::test_loose_ends_regeln_unveraendert_vor_der_habits_regel
+FAILED tests/test_restore_test_habits.py::test_skript_existiert - AssertionEr...
+FAILED tests/test_restore_test_habits.py::test_erfolg_waehlt_juengsten_snapshot_des_le_pfads
+FAILED tests/test_restore_test_habits.py::test_kein_snapshot_des_pfads_ist_befund
+FAILED tests/test_restore_test_habits.py::test_zu_alter_snapshot_ist_befund_rpo
+FAILED tests/test_restore_test_habits.py::test_rpo_grenze_in_sekunden[47.983333333333334-0]
+FAILED tests/test_restore_test_habits.py::test_rpo_grenze_in_sekunden[48.5-1]
+FAILED tests/test_restore_test_habits.py::test_restore_ohne_dump_ist_befund[fehlt]
+FAILED tests/test_restore_test_habits.py::test_restore_ohne_dump_ist_befund[leer]
+FAILED tests/test_restore_test_habits.py::test_image_fehlt_kein_pull_kein_start
+FAILED tests/test_restore_test_habits.py::test_verwaister_container_wird_vorher_entfernt
+FAILED tests/test_restore_test_habits.py::test_container_ohne_netz_und_volume_mit_256mb
+FAILED tests/test_restore_test_habits.py::test_bereit_nach_drei_versuchen - A...
+FAILED tests/test_restore_test_habits.py::test_nie_bereit_endet_nach_zeitlimit
+FAILED tests/test_restore_test_habits.py::test_fehler_beim_einspielen_ist_befund[psql_fail]
+FAILED tests/test_restore_test_habits.py::test_fehler_beim_einspielen_ist_befund[psql_stderr]
+FAILED tests/test_restore_test_habits.py::test_tabellenliste_verschieden_ist_befund
+FAILED tests/test_restore_test_habits.py::test_jungere_zusatzmigration_in_live_besteht
+FAILED tests/test_restore_test_habits.py::test_migration_nur_im_restore_ist_befund
+FAILED tests/test_restore_test_habits.py::test_zusatzmigration_vor_dem_snapshot_ist_befund
+FAILED tests/test_restore_test_habits.py::test_arbeitsordner_700_unter_work_root
+FAILED tests/test_restore_test_habits.py::test_umgebungsdatei_fehlt_exit_2 - ...
+FAILED tests/test_restore_test_habits.py::test_werkzeug_fehlt_exit_2 - Assert...
+FAILED tests/test_restore_test_habits.py::test_abbruch_per_signal_raeumt_auf
+FAILED tests/test_restore_test_habits.py::test_backup_sh_ruft_probe_sonntags_nach_loose_ends_vor_heartbeat
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-DATABASE_URL]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-PUBLIC_URL]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_TEAM_ID]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_KEY_ID]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_CLIENT_IDS]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_PRIVATE_KEY]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_TOKEN_KEY]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-APPLE_WEB_CLIENT_ID]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-OAUTH_COOKIE_KEYS]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[fehlt-OAUTH_SIGNING_JWK]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-DATABASE_URL]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-PUBLIC_URL]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_TEAM_ID]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_KEY_ID]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_CLIENT_IDS]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_PRIVATE_KEY]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_TOKEN_KEY]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-APPLE_WEB_CLIENT_ID]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-OAUTH_COOKIE_KEYS]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_vor_dem_bau_ab_wenn_pflichtname_fehlt[leer-OAUTH_SIGNING_JWK]
+ERROR tests/test_habits_betrieb_56.py::test_deploy_bricht_ab_wenn_server_env_fehlt
+=========== 61 failed, 2 passed, 964 deselected, 21 errors in 2.76s ============
