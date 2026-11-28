@@ -1,0 +1,210 @@
+<title>Innerer Kreis im Kalender</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: Einleitung mit Beispiel-Gewohnheiten, „Heute“ (Screenshot) neben Entwurf A, darunter zwei Alternativen, dann die drei offenen Fragen mit Empfehlung */
+:root {
+  --bg: #f2f4f7; --surface: #ffffff; --fg: #1a1f29; --muted: #5d6878; --line: #dce1e8; --accent: #2f6fdb;
+  --phone: #ffffff; --phone-edge: #cfd5df; --num: #000000;
+  /* App-Farben (Simulator, Hell) */
+  --med: rgba(0,136,255,.8); --wo: rgba(203,48,224,.8);
+  --strong: #10b981;   /* alcoholSteady hell */
+  --light: #8fdcbf;    /* hellgrün: alcoholSteady 50 % */
+  --grey: #b8bec7; --track: rgba(120,128,140,.16);
+  --joker: #ffbf00; --broken: #dc2626; --today: #ff3b30;
+  --f-display: "Space Grotesk", system-ui, sans-serif; --f-body: "Inter", -apple-system, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1217; --surface: #181c24; --fg: #e7ebf1; --muted: #9aa4b3; --line: #2b323e; --accent: #7aa2ff;
+  --phone: #000000; --phone-edge: #333a46; --num: #ffffff;
+  --med: rgba(0,145,255,.8); --wo: rgba(219,52,242,.8);
+  --strong: #05966a; --light: #4f8f75; --grey: #5c636e; --track: rgba(160,168,180,.18);
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1217; --surface: #181c24; --fg: #e7ebf1; --muted: #9aa4b3; --line: #2b323e; --accent: #7aa2ff;
+  --phone: #000000; --phone-edge: #333a46; --num: #ffffff;
+  --med: rgba(0,145,255,.8); --wo: rgba(219,52,242,.8);
+  --strong: #05966a; --light: #4f8f75; --grey: #5c636e; --track: rgba(160,168,180,.18);
+  color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--f-body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 32px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 40px; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: 30px; } h2 { font-size: 21px; } h3 { font-size: 17px; }
+p { margin: 0; }
+.label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+.intro { display: flex; flex-direction: column; gap: 12px; max-width: 72ch; }
+.intro p { color: var(--muted); }
+.habits { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; }
+.alts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; }
+@media (max-width: 860px) { .pair, .alts { grid-template-columns: minmax(0, 1fr); max-width: 520px; } }
+.col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.col > p { color: var(--muted); font-size: 14px; }
+.chosen { display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 1px 10px; margin-left: 8px; vertical-align: middle; }
+.shot { border: 1px solid var(--phone-edge); border-radius: 24px; overflow: hidden; background: #fff; }
+.shot img { display: block; width: 100%; }
+.phone { background: var(--phone); border: 1px solid var(--phone-edge); border-radius: 24px; padding: 14px 8px 18px; }
+.month { text-align: center; font-weight: 700; font-size: 21px; color: var(--num); margin-bottom: 6px; }
+.wd, .grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.wd div { text-align: center; font-size: 12px; color: var(--muted); padding-bottom: 8px; }
+.grid { row-gap: 10px; }
+.cell { display: grid; place-items: center; }
+.ring { position: relative; width: 46px; height: 46px; max-width: 100%; }
+.ring svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.num { position: absolute; inset: 0; display: grid; place-items: center; font-size: 16px; color: var(--num); font-variant-numeric: tabular-nums; }
+.num.b { font-weight: 600; } .num.w { color: #fff; }
+.dot { position: absolute; right: 0; bottom: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--today); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex: none; }
+.pc { display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.pc ul { margin: 2px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+.pc .k { font-weight: 600; font-size: 13px; }
+.qs { display: flex; flex-direction: column; gap: 16px; }
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; max-width: 80ch; }
+.q .rec { color: var(--accent); font-weight: 600; }
+.q p { font-size: 14px; }
+.note { font-size: 13px; color: var(--muted); max-width: 80ch; }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="label">Healthy Habits · Kalender im Reiter Erfolge · Entwurf zu #50</span>
+    <p style="color:var(--fg);font-weight:600">Verworfen am 28.11.2026: Der innere Kreis bleibt NoAlc, die anderen Gewohnheiten kommen in die Leiste über dem Kalender (siehe „Challenges im Kalender“, Weiterführung von Idee 3). Diese Seite bleibt nur als Verlauf.</p>
+    <h1>Innerer Kreis im Kalender</h1>
+    <p>Heute ist die Füllung in der Mitte jedes Tages der NoAlc-Stand: grün, gelb oder rot. Künftig fasst sie alle dauerhaften Gewohnheiten des Tages zusammen. Der blaue Meditationsring und der lila Workoutring bleiben genau wie heute. Alle Bilder zeigen denselben November.</p>
+    <div class="habits"><span><b>Beispiel:</b> vier Gewohnheiten</span><span>NoAlc</span><span>Stimmung</span><span>Dankbarkeit</span><span>Wasser (Ziel 8 Gläser)</span></div>
+  </header>
+
+  <section class="pair">
+    <div class="col">
+      <span class="label">Heute</span>
+      <h2>Füllung = nur NoAlc</h2>
+      <div class="shot"><img src="heute.png" alt="Kalender November 2026 in der App: grüne, gelbe und rote Füllungen für NoAlc, blaue und lila Ringe"></div>
+      <p>Echter Screenshot aus dem Simulator, mit Beispielwerten für Meditation, Workout und NoAlc.</p>
+    </div>
+    <div class="col">
+      <span class="label">Entwurf A <span class="chosen">Empfehlung</span></span>
+      <h2>Wie viel eingetragen, wie gut gelungen</h2>
+      <div class="phone" data-v="A"></div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--strong)"></i>alles gelungen</span>
+        <span><i class="sw" style="background:var(--light)"></i>mindestens die Hälfte</span>
+        <span><i class="sw" style="background:var(--grey)"></i>weniger als die Hälfte</span>
+      </div>
+      <div class="pc">
+        <div><span class="k">So liest man es</span><ul>
+          <li>Wie weit die Scheibe gefüllt ist, zeigt, wie viele Gewohnheiten du eingetragen hast. Alle vier: volle Scheibe.</li>
+          <li>Die Farbe zeigt, wie viele davon gelungen sind.</li>
+          <li>Volle graue Scheibe heißt: schlechter Tag, aber hingeschaut. Kleines Stück heißt: kaum hingeschaut.</li>
+        </ul></div>
+        <div><span class="k">Schwierig</span><ul>
+          <li>Rot und Gelb für einen NoAlc-Ausrutscher sind im Kalender nicht mehr zu sehen, nur beim Antippen des Tages.</li>
+          <li>Bei halb gefüllter Scheibe steht die Zahl teils auf Farbe, teils auf Weiß.</li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alts">
+    <div class="col">
+      <span class="label">Alternative B</span>
+      <h2>Volle Scheibe, nur die Farbe zählt</h2>
+      <div class="phone" data-v="B"></div>
+      <div class="pc">
+        <div><span class="k">Gut</span><ul><li>Am einfachsten, sieht fast aus wie heute.</li><li>Die Zahl steht immer gut lesbar auf Farbe.</li></ul></div>
+        <div><span class="k">Schwierig</span><ul><li>Ein Tag mit einem einzigen Eintrag sieht aus wie ein Tag mit allen vier.</li><li>„Hingeschaut“ und „nicht hingeschaut“ sind nicht zu unterscheiden.</li></ul></div>
+      </div>
+    </div>
+    <div class="col">
+      <span class="label">Alternative C</span>
+      <h2>Ein Stück je Gewohnheit</h2>
+      <div class="phone" data-v="C"></div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--strong)"></i>gelungen</span>
+        <span><i class="sw" style="background:var(--joker)"></i>braucht Joker</span>
+        <span><i class="sw" style="background:var(--broken)"></i>bricht Serie</span>
+        <span><i class="sw" style="background:var(--track)"></i>nichts eingetragen</span>
+      </div>
+      <div class="pc">
+        <div><span class="k">Gut</span><ul><li>Jede Gewohnheit behält ihre eigene Bewertung, auch der NoAlc-Ausrutscher bleibt rot.</li></ul></div>
+        <div><span class="k">Schwierig</span><ul><li>Ab vier, fünf Gewohnheiten werden die Stücke winzig und unruhig.</li><li>Welches Stück welche Gewohnheit ist, sieht man nicht.</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="qs">
+    <h2>Drei Punkte, die vor dem Bau feststehen müssen</h2>
+    <div class="q">
+      <h3>1 · Was Füllung und Farbe bedeuten</h3>
+      <p>Das ist die Wahl zwischen A, B und C oben.</p>
+      <p class="rec">Empfehlung: A. Es ist der Vorschlag aus unserer Diskussion vom 13.11. und als einziger zeigt er beides, ob du hingeschaut hast und wie gut der Tag war.</p>
+    </div>
+    <div class="q">
+      <h3>2 · Gewohnheiten, bei denen „nichts eintragen“ der Erfolg ist</h3>
+      <p>Bei einem Vermeiden-Tracker heißt ein leerer Tag „gelungen“. Die App kann nicht unterscheiden, ob du es vermieden oder vergessen hast. Alle mitgelieferten Vorlagen (Doomscrolling, Snacking …) funktionieren anders herum: Dort trägst du ein, wenn du es bemerkt hast, und das zählt als gelungen. Vermeiden-Tracker gibt es nur, wenn du selbst einen so angelegt hast.</p>
+      <p class="rec">Empfehlung: kein neuer Knopf „heute nicht passiert“. Ein leerer Tag zählt bei einem Vermeiden-Tracker als eingetragen und gelungen, genau wie bei der Serie heute schon.</p>
+    </div>
+    <div class="q">
+      <h3>3 · Alle Gewohnheiten oder nur ausgewählte</h3>
+      <p>Am Tracker gibt es schon einen Schalter „Im Kalender zeigen“, der bisher nichts bewirkt. Neue Tracker haben ihn aus.</p>
+      <p class="rec">Empfehlung: alle aktiven Gewohnheiten zählen, der Schalter bleibt wirkungslos wie heute. Sonst müsstest du ihn erst bei jedem Tracker einschalten, bevor der Kalender überhaupt etwas zeigt.</p>
+    </div>
+    <p class="note">Gilt für alle Varianten: Tage, bevor eine Gewohnheit angelegt wurde, zählen für sie nicht. Ein Tag ganz ohne Eintrag bleibt leer wie heute. Zeitlich begrenzte Challenges zählen nicht mit. Antippen des Tages zeigt wie bisher jede Gewohnheit einzeln. Die Nachzeichnung entspricht der App in Größen und Farben; nur die Füllung ist neu.</p>
+  </section>
+</div>
+
+<script>
+(function () {
+  var TODAY = 28, DAYS = 30, LEAD = 6;
+  var med = {2:12,3:10,4:6,5:10,6:15,7:4,8:10,9:10,10:8,11:12,12:10,13:5,16:10,17:12,18:8,19:10,20:15,23:10,24:6,25:10,26:12,27:10,28:4};
+  var wo = {3:30,5:20,7:30,10:30,12:15,17:30,19:20,24:30,26:15};
+  // Je Tag: [NoAlc, Stimmung, Dankbarkeit, Wasser] mit s=gelungen, j=Joker, x=bricht Serie, -=nichts
+  var H = {1:"ss-s",2:"sss-",3:"ssss",4:"ss--",5:"ssss",6:"js-s",8:"ssss",9:"sss-",10:"ssss",11:"s---",
+    12:"xs--",13:"ss-s",15:"s---",16:"ssss",17:"ssss",18:"ss-s",19:"jsss",20:"ssss",22:"s-s-",23:"ssss",
+    24:"sss-",25:"ssss",26:"ssss",27:"ss-s",7:"-s--",14:"--s-"};
+  var N = 4;
+  function arc(r, frac, col) {
+    var c = 2 * Math.PI * r, len = Math.min(frac, 1) * c;
+    return '<circle cx="23" cy="23" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="5" stroke-dasharray="' + len + ' ' + c + '" transform="rotate(-90 23 23)"/>';
+  }
+  function sector(r, a0, a1, col) {
+    if (a1 - a0 >= 0.9999) return '<circle cx="23" cy="23" r="' + r + '" fill="' + col + '"/>';
+    var p = function (a) { var t = 2 * Math.PI * a - Math.PI / 2; return (23 + r * Math.cos(t)).toFixed(2) + " " + (23 + r * Math.sin(t)).toFixed(2); };
+    return '<path d="M23 23 L' + p(a0) + ' A' + r + ' ' + r + ' 0 ' + (a1 - a0 > 0.5 ? 1 : 0) + ' 1 ' + p(a1) + ' Z" fill="' + col + '"/>';
+  }
+  function quality(s) { return s === N ? "var(--strong)" : (s * 2 >= N ? "var(--light)" : "var(--grey)"); }
+  function cell(d, v) {
+    var h = H[d] || "----", e = 0, s = 0;
+    for (var i = 0; i < N; i++) { if (h[i] !== "-") e++; if (h[i] === "s") s++; }
+    var svg = '<svg viewBox="0 0 46 46" aria-hidden="true">', white = false;
+    if (e > 0) {
+      if (v === "A") { svg += '<circle cx="23" cy="23" r="14" fill="var(--track)"/>' + sector(14, 0, e / N, quality(s)); white = e * 2 >= N; }
+      if (v === "B") { svg += '<circle cx="23" cy="23" r="14" fill="' + quality(s) + '"/>'; white = true; }
+      if (v === "C") {
+        for (var k = 0; k < N; k++) {
+          var col = { s: "var(--strong)", j: "var(--joker)", x: "var(--broken)", "-": "var(--track)" }[h[k]];
+          svg += sector(14, k / N + 0.006, (k + 1) / N - 0.006, col);
+        }
+        white = e * 2 >= N;
+      }
+    }
+    if ((wo[d] || 0) >= 2) svg += arc(16, wo[d] / 30, "var(--wo)");
+    if ((med[d] || 0) >= 2) svg += arc(21, med[d] / 10, "var(--med)");
+    svg += "</svg>";
+    var act = (med[d] >= 2) || (wo[d] >= 2) || e > 0;
+    return '<div class="cell"><div class="ring">' + svg + '<div class="num' + (act ? " b" : "") + (white ? " w" : "") + '">' + d + "</div>" +
+      (d === TODAY ? '<span class="dot"></span>' : "") + "</div></div>";
+  }
+  document.querySelectorAll(".phone").forEach(function (p) {
+    var v = p.getAttribute("data-v");
+    var h = '<div class="month">November 2026</div><div class="wd">' + ["Mo","Di","Mi","Do","Fr","Sa","So"].map(function (x) { return "<div>" + x + "</div>"; }).join("") + '</div><div class="grid">';
+    for (var i = 0; i < LEAD; i++) h += "<div></div>";
+    for (var d = 1; d <= DAYS; d++) h += cell(d, v);
+    p.innerHTML = h + "</div>";
+  });
+})();
+</script>

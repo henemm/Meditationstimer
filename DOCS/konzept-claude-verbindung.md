@@ -219,10 +219,11 @@ Entwürfe: Artefakt „Challenges im Kalender“ (https://claude.ai/artifact/W4p
 |---|---|
 | Äußere Ringe | Meditation und Workout bleiben wie heute, entsprechend den Reitern. |
 | Zeitlich begrenzte Challenges | Leiste über dem Kalender: je Challenge Titel, „Tag 5 von 14“ und ein Punkt je Tag (abgeschlossen, ausgelassen neutral, heute, kommt noch). Antippen hebt den Zeitraum im Kalender hervor. Sie zählen nicht in den inneren Kreis: Er bliebe sonst nicht stabil, und eine Challenge mit Tagesziel auf einem Tracker zählt über diesen Tracker ohnehin schon mit. |
-| Innerer Kreis | Fasst alle dauerhaft laufenden Gewohnheiten zusammen, statt fest NoAlc zu zeigen. Die Qualität bleibt sichtbar (PO). Grundlage ist die gemeinsame Tagesbewertung, die jeder Tracker schon hat: gelungen, braucht Joker, bricht Serie, nichts eingetragen. Dass NoAlc in der Summe an Gewicht verliert, ist ausdrücklich in Ordnung; Einzelheiten zeigt das Antippen des Tages. |
+| Innerer Kreis | **Bleibt NoAlc** (PO 28.11.2026: „so bleibt es, mit dem Alkohol in der Mitte“). Die übrigen dauerhaften Gewohnheiten zählen nicht hinein. |
+| Dauerhafte Gewohnheiten | Stehen in derselben Leiste über dem Kalender wie die Challenges (PO 28.11.2026, Entwurf 13.11. „Weiterführung von Idee 3“): je Gewohnheit Name, „Serie N Tage“, Punkte der letzten sieben Tage; Antippen markiert ihre eingetragenen Tage im Kalender. Auswahl über den Schalter „Im Kalender zeigen“ am Tracker. Umsetzung #50. |
 | Tagesansicht | Zeigt jede Gewohnheit mit ihrem Eintrag und öffnet sich an jedem Tag mit Einträgen. Heute zeigt sie nur Meditation, Workout und NoAlc und öffnet sich nur an Tagen mit diesen dreien. |
 
-**Stand der Diskussion, noch nicht entschieden:**
+**Stand der Diskussion (überholt durch die Entscheidung vom 28.11.2026, nur noch als Verlauf):**
 
 - Vorschlag: Füllung des inneren Kreises = Anteil der Gewohnheiten, die eingetragen wurden (Ansporn, ein schlechter Tag schließt den Kreis trotzdem); Farbe = Anteil „gelungen“ in den gewohnten Stufen kräftig grün, hellgrün, grau. Damit unterscheidet sich „schlechter Tag, aber hingeschaut“ von „nicht hingeschaut“.
 - Vermeiden-Tracker: „nichts eingetragen“ bedeutet dort zugleich „gelungen“; die App kann Vermieden und Vergessen nicht unterscheiden. Für die Füllung bräuchte es ein ausdrückliches „heute nicht passiert“.
