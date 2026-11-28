@@ -110,17 +110,25 @@ Die 60 Habits-Tests der Vorlage in `henemm-infra/tests/test_*habits*.py` sind di
 
 ## Acceptance Criteria
 
+Aufteilung nach PO-Entscheidung 2026-11-28: **Abschnitt 1** (dieser Workflow) = Einbau in henemm-infra, geprüft und übernommen. **Abschnitt 2** = Inbetriebnahme mit PO-Termin und Live-Nachweisen, eigener Workflow am selben Issue #56 direkt danach; Issue #56 bleibt bis zum Ende von Abschnitt 2 offen.
+
+### Abschnitt 1 (dieser Workflow)
+
 - **AC-1:** Given der Einbau in henemm-infra ist auf aktuellem Stand übernommen / When `cd /home/hem/henemm-infra && python3 -m pytest tests` läuft / Then alle Tests grün, darin die 60 Habits-Tests, und `HH_COMMIT` in `scripts/deploy-habits.sh` ist `d7705c320e6a47d9971991635c67960f1b98e745`.
-- **AC-2:** Given der Dienst ist ausgerollt / When `curl -s -w '%{http_code}' https://habits.henemm.com/health` / Then Antwort 200 und der Inhalt enthält `"migrated":true`.
-- **AC-3:** Given keine Anmeldung / When `curl -si -X POST https://habits.henemm.com/mcp` / Then 401 mit Header `WWW-Authenticate`.
-- **AC-4:** Given die nginx-Konfiguration ist live / When `sudo nginx -T | grep habits_` und eine Anfragenserie auf `/health` über die Grenze / Then eigene Zonen `habits_*` je Bereich (Gesundheit, /mcp, OAuth samt Discovery, /auth, /app) sind aktiv und die Serie wird ab der Grenze abgewiesen (429 oder 503); das Netz 160.79.104.0/21 ist nicht gesperrt.
-- **AC-5:** Given der Dienst läuft / When ein `backup.sh`-Lauf erfolgt / Then er endet erfolgreich, `restic snapshots --tag habits` zeigt einen neuen Snapshot und `habits/secrets` (inkl. Wert für `APPLE_TOKEN_KEY`) ist in der Sicherung enthalten (Prüfung per `restic ls`, nur Dateinamen).
-- **AC-6:** Given ein aktueller Habits-Snapshot / When `sudo bash scripts/restore-test-habits.sh` / Then Exit-Code 0.
-- **AC-7:** Given der Dienst läuft / When `bash scripts/monitor.sh` / Then für habits kein Fehler; das BetterStack-Kontingent bleibt bei 7/10.
-- **AC-8:** Given `ALLOWED_APPLE_SUBS` ist mit Hennings Konto gesetzt und neu ausgerollt / When sich ein anderes Konto anmelden will / Then wird es abgelehnt (in Code-Test von B2b belegt und Einstellung live per Namensprüfung bestätigt).
-- **AC-9:** Given der Konnektor ist in Hennings Claude-Konto verbunden / When Claude `overview` und `catalog` liest und ein Beispiel über `exercise_define` liefert / Then `delivery_status` meldet „waiting“; die Ausgabe ist im Issue #56 dokumentiert.
-- **AC-10:** Given alle Werte sind per `curl` bestätigt / When Teil B eingebaut ist / Then `security/expected-exposure.json` enthält habits.henemm.com und der Security-Abgleich bleibt grün.
+- **AC-5a:** Given der Einbau-Stand / When `scripts/backup.sh` gelesen und `tests/test_habits_betrieb_56.py::test_backup_sichert_habits_secrets_vollstaendig` sowie `tests/test_backup_habits.py` laufen / Then `habits/secrets` (auch `db-password`) geht in den restic-Aufruf, ein fehlender Ordner bricht die Sicherung nicht, eine scheiternde Docker-Abfrage nach `habits-db` bricht ohne Heartbeat ab.
 - **AC-11:** Given der Einbau-Stand / When `git grep` nach Geheimniswerten im Einbau sucht / Then keine Geheimniswerte in Repo, Issue oder Nachrichten.
+
+### Abschnitt 2 (Inbetriebnahme, eigener Workflow, Live-Nachweise)
+
+- L-AC-2: Given der Dienst ist ausgerollt / When `curl -s -w '%{http_code}' https://habits.henemm.com/health` / Then Antwort 200 und der Inhalt enthält `"migrated":true`.
+- L-AC-3: Given keine Anmeldung / When `curl -si -X POST https://habits.henemm.com/mcp` / Then 401 mit Header `WWW-Authenticate`.
+- L-AC-4: Given die nginx-Konfiguration ist live / When `sudo nginx -T | grep habits_` und eine Anfragenserie auf `/health` über die Grenze / Then eigene Zonen `habits_*` je Bereich (Gesundheit, /mcp, OAuth samt Discovery, /auth, /app) sind aktiv und die Serie wird ab der Grenze abgewiesen (429 oder 503); das Netz 160.79.104.0/21 ist nicht gesperrt.
+- L-AC-5: Given der Dienst läuft / When ein `backup.sh`-Lauf erfolgt / Then er endet erfolgreich, `restic snapshots --tag habits` zeigt einen neuen Snapshot und `habits/secrets` (inkl. Wert für `APPLE_TOKEN_KEY`) ist in der Sicherung enthalten (Prüfung per `restic ls`, nur Dateinamen).
+- L-AC-6: Given ein aktueller Habits-Snapshot / When `sudo bash scripts/restore-test-habits.sh` / Then Exit-Code 0.
+- L-AC-7: Given der Dienst läuft / When `bash scripts/monitor.sh` / Then für habits kein Fehler; das BetterStack-Kontingent bleibt bei 7/10.
+- L-AC-8: Given `ALLOWED_APPLE_SUBS` ist mit Hennings Konto gesetzt und neu ausgerollt / When sich ein anderes Konto anmelden will / Then wird es abgelehnt (in Code-Test von B2b belegt und Einstellung live per Namensprüfung bestätigt).
+- L-AC-9: Given der Konnektor ist in Hennings Claude-Konto verbunden / When Claude `overview` und `catalog` liest und ein Beispiel über `exercise_define` liefert / Then `delivery_status` meldet „waiting“; die Ausgabe ist im Issue #56 dokumentiert.
+- L-AC-10: Given alle Werte sind per `curl` bestätigt / When Teil B eingebaut ist / Then `security/expected-exposure.json` enthält habits.henemm.com und der Security-Abgleich bleibt grün.
 
 ## Definition of Done
 
@@ -137,3 +145,4 @@ Die 60 Habits-Tests der Vorlage in `henemm-infra/tests/test_*habits*.py` sind di
 ## Changelog
 
 - 2026-11-28: Initial spec created
+- 2026-11-28: Abnahme in Abschnitt 1 (Einbau) und Abschnitt 2 (Inbetriebnahme, Live-Nachweise) geteilt, PO-Entscheidung
