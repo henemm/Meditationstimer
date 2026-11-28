@@ -9,6 +9,9 @@ Kürzel der Fundstellen: **ctx** = `docs/context/feat-621-mcp-anmeldung.md` (Rec
 **S4a/S4b/S4b2/S4b2b** = `docs/context/feat-621-s4a-apple-web.md`, `…-s4b-anmeldung.md`, `…-s4b-2-rueckweg.md`, `…-s4b-2b-finish.md`,
 **S6b** = `docs/context/feat-621-s6b-betrieb.md`, **Betriebsbelege** = `docs/artifacts/feat-621-s6b-betrieb/`.
 
+Die Betriebsschritte (B2c) sind als Bausteine in `henemm/henemm-infra` eingebaut (Issue #56, Abschnitt 1): Ablauf und
+Prüfungen in `docs/habits-runbook.md`, Ausrollen mit `scripts/deploy-habits.sh`. Inbetriebnahme: #56 Abschnitt 2.
+
 | Nr | Eigenheit | Fundstelle in Loose Ends | Hier gesichert |
 |---|---|---|---|
 | 1 | Der Verbinden-Knopf erscheint nur bei 401 mit `WWW-Authenticate`; eine Antwort 200 mit `isError` zeigt keinen. | ctx:42 | Test: `oauth-resource.test.ts` › „oauth-resource: mcp ohne token 401“ (Header mit `resource_metadata`) und › „oauth-resource: ablehnungstabelle“; `main-doors.test.ts` › „Türen im Betrieb: Prozess nach Migration -> /mcp (POST, GET) und /app/deliveries/claim ohne Anmeldung 401, GET /app/transcript 405“ (ohne Konfiguration 401) |
