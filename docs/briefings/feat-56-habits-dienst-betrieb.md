@@ -1,9 +1,3 @@
----
-spec_file: docs/specs/infra/habits-dienst-betrieb.md
-spec_sha256: ec25a790ab78587c6da09b29278e1d81e89367927dd205a259b6fcf5afc40d69
-spec_frozen_sha256: b1a66d94828ec7b39f7abfd1c1abe4f73a6c015a35b2c4b4159ddc0589a6a320
----
-
 # PO-Briefing: feat-56-habits-dienst-betrieb
 
 - **Spec:** docs/specs/infra/habits-dienst-betrieb.md
@@ -12,20 +6,20 @@ spec_frozen_sha256: b1a66d94828ec7b39f7abfd1c1abe4f73a6c015a35b2c4b4159ddc0589a6
 
 ## Was gebaut wird
 
-Der Dienst für die Claude-Verbindung läuft unter eigener Adresse, gesichert und überwacht, und Claude kann über Hennings Konto darauf zugreifen.
+Der Betrieb des Claude-Verbindungsdienstes wird im Server-Projekt eingebaut, gesichert und überwacht; die Inbetriebnahme folgt danach separat.
 
 ## Definition of Done
 
-Der Dienst antwortet unter seiner Adresse, Sicherung und Überwachung sind nachweislich aktiv, und Claude liefert ein Beispiel, das als „wartet“ ankommt.
+Alle automatischen Tests im Server-Projekt sind grün, die Sicherung erfasst auch die Geheimnisse, und der Dienst ist noch nicht live.
 
 ## Wie geprüft wird
 
-Automatische Tests und Prüfbefehle belegen Dienst, Drosselung, Sicherung und Überwachung; die Prüfung in Claude selbst erfolgt einmal live und wird im Issue dokumentiert.
+Automatische Tests belegen Einbau und Sicherung; dass der Dienst erreichbar ist und Claude ihn nutzen kann, zeigt erst die spätere Inbetriebnahme.
 
 ## Kritische Anmerkungen
 
-- Das Issue nennt für Henning nur den Konnektor-Schritt; die Spec bündelt zusätzlich Adresseintrag und Apple-Portal in einem angekündigten Termin.
-- Zusatz: Der bestehende Apple-Schlüssel von Loose Ends wird mitbenutzt; sonst müsste Henning einen neuen anlegen.
+- Das Ticket konnte nicht gelesen werden; Abgleich nur gegen die Spec, nicht gegen die Ursprungsanfrage.
+- Das Ticket bleibt offen; Henning wird erst im zweiten Durchgang gebraucht (Adresseintrag, Apple-Portal, Claude-App).
 
 ## Freigabe-Frage
 
