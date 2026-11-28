@@ -1,6 +1,11 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "ausgewählt" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "ausgewählt"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "selected"}}}},
+    "dauerhaft" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "dauerhaft"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "ongoing"}}}},
+    "markiert" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "markiert"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "marked"}}}},
+    "Serie %lld Tage" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Serie %lld Tage"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Streak %lld days"}}}},
+    "Serie 1 Tag" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Serie 1 Tag"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Streak 1 day"}}}},
     "Claude" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Claude"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Claude"}}}},
     "Claude connection" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Claude-Verbindung"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Claude connection"}}}},
     "Signed in" : {"extractionState" : "manual", "localizations" : {"de" : {"stringUnit" : {"state" : "translated", "value" : "Angemeldet"}}, "en" : {"stringUnit" : {"state" : "translated", "value" : "Signed in"}}}},
