@@ -1,0 +1,36 @@
+---
+spec_file: docs/specs/infra/habits-dienst-betrieb.md
+spec_sha256: 8914e7bd46fbfd840c18ecbe944afcc031d8096f9b4abeea05a9a99a88767324
+spec_frozen_sha256: d23841cdf5e89c87a3ab64bcacfca1fdd4cb275e6d115e68b1a7d448a102173c
+---
+
+# PO-Briefing: feat-56-habits-dienst-betrieb
+
+- **Spec:** docs/specs/infra/habits-dienst-betrieb.md
+- **Issue:** #56
+- **Erstellt:** 2026-11-28
+
+## Was gebaut wird
+
+Der Betrieb des Claude-Verbindungsdienstes wird im Server-Projekt eingebaut, gesichert und überwacht; die Inbetriebnahme folgt danach separat.
+
+## Definition of Done
+
+Alle automatischen Tests im Server-Projekt sind grün, die Sicherung erfasst auch die Geheimnisse, und der Dienst ist noch nicht live.
+
+## Wie geprüft wird
+
+Automatische Tests belegen Einbau und Sicherung; dass der Dienst erreichbar ist und Claude ihn nutzen kann, zeigt erst die spätere Inbetriebnahme.
+
+## Kritische Anmerkungen
+
+- Das Ticket konnte nicht gelesen werden; Abgleich nur gegen die Spec, nicht gegen die Ursprungsanfrage.
+- Das Ticket bleibt offen; Henning wird erst im zweiten Durchgang gebraucht (Adresseintrag, Apple-Portal, Claude-App).
+
+## Freigabe-Frage
+
+Keine – Ampel gruen.
+
+## Ampel
+
+Ampel: gruen
