@@ -237,7 +237,7 @@ The system SHALL show a strip of habit cards above the month list.
 - WHEN its day is determined
 - THEN `effectiveDayAssignment.assignedDay(for:)` is applied exactly once (no second cutoffHour shift)
 
-Habit color: `#d6457a` (light), `#f06d9c` (dark). Accessibility: strip `calendar.habitStrip`, card `calendar.habit.card` (value "selected" when selected), marked day cell value "marked".
+Habit color: `#d6457a` (light), `#f06d9c` (dark). Accessibility: strip `calendar.habitStrip`, card `calendar.habit.card` (accessibilityValue "ausgewählt" when selected, localized), marked day cell accessibilityValue "markiert" (localized).
 
 ---
 
