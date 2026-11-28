@@ -71,3 +71,9 @@ Mittel–hoch: Produktivserver, nginx-Reload (betrifft alle Seiten, abgesichert 
 ### Open Questions
 - Apple-Schlüssel: vorhandenen Loose-Ends-Schlüssel (Team-weit gültig) mitbenutzen vs. neuen anlegen → Empfehlung mitbenutzen (weniger Handarbeit für PO, gleiche Team-ID). Technische Entscheidung, kein PO-Thema, außer der Schlüssel liegt nicht auf dem Server.
 - Ende-zu-Ende-Prüfung: aus einem Claude-Gespräch mit dem Konnektor; kann eine Cloud-/Desktop-Sitzung von Henning sein oder per MCP-Client mit Token. Wird in der Spec festgelegt.
+
+## TDD RED (2026-11-28)
+- Arbeitsort henemm-infra: Worktree `/home/hem/henemm-infra-wt-habits56`, Zweig `feat/habits-56-betrieb` (von origin/main 91727e4, gepusht).
+- Tests: `tests/test_{backup,monitor,restic_prune,restore_test}_habits.py`, `tests/test_habits_konfiguration.py` (Vorlage #454) und neu `tests/test_habits_betrieb_56.py`.
+- Implementierung: Vorlage-Dateien aus `origin/claude/friendly-dirac-b5tg6a` holen (`git show <zweig>:<datei>`), nur Habits-Einfügungen in backup.sh, monitor.sh, restic-prune-heimserver.sh auf aktuellen Stand übertragen (keine Altstände), `HH_COMMIT` auf d7705c320e6a47d9971991635c67960f1b98e745, `habits/secrets` ausdrücklich in die Sicherung (db-password wird von der Endungs-Suche nach Umgebungsdateien nicht erfasst). Gleiche Lücke bei loose-ends/secrets/db-password (nicht Teil dieses Auftrags, eigenes henemm-infra-Issue).
+- Ziel: `python3 -m pytest tests` in dem Worktree komplett grün.
