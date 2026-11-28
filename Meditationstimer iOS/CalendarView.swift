@@ -53,6 +53,8 @@ struct CalendarView: View {
     @State private var showWorkoutInfo = false
     @State private var showNoAlcInfo = false
     @State private var scrollProxy: ScrollViewProxy?
+    /// Ausgewählte Karte der Gewohnheiten-Leiste (#50), nur View-Zustand
+    @State private var selectedHabitID: UUID?
 
     // NoAlc streak calculation: ALWAYS use HealthKit data (alcoholDays)
     // Per spec: "Same HealthKit query for calendar display AND streak calculation"
@@ -111,14 +113,23 @@ struct CalendarView: View {
     private var calendarContent: some View {
         // Einmal je Aufbau gruppieren, nicht je Tageszelle (#47)
         let habitRows = TrackerDayEntries.group(trackers: activeTrackers, calendar: calendar)
+        // Gewohnheiten-Leiste (#50): markierte Tage einmal je Aufbau, nicht je Tageszelle
+        let stripTrackers = HabitStrip.trackers(from: activeTrackers)
+        let highlightedDays = stripTrackers.first { $0.id == selectedHabitID }
+            .map { HabitStrip.entryDays(for: $0, calendar: calendar) } ?? []
         return VStack {
+            if !stripTrackers.isEmpty {
+                HabitStripView(trackers: stripTrackers, selectedID: $selectedHabitID)
+                    .padding(.horizontal)
+            }
+
             // Scrollbare Monatsliste
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 20) {
                         ForEach(-6...6, id: \.self) { monthOffset in
                             let monthDate = calendar.date(byAdding: .month, value: monthOffset, to: Date())!
-                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, alcoholDays: alcoholDays, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes, habitRows: habitRows)
+                            MonthView(month: monthDate, activityDays: activityDays, dailyMinutes: dailyMinutes, alcoholDays: alcoholDays, meditationGoalMinutes: meditationGoalMinutes, workoutGoalMinutes: workoutGoalMinutes, habitRows: habitRows, highlightedDays: highlightedDays)
                                 .id(monthOffset) // Für ScrollViewReader
                         }
                     }
@@ -465,6 +476,8 @@ struct MonthView: View {
     let meditationGoalMinutes: Double
     let workoutGoalMinutes: Double
     var habitRows: [Date: [TrackerDayEntries.Row]] = [:]
+    /// Tage der ausgewählten Gewohnheit (#50), leer ohne Auswahl
+    var highlightedDays: Set<Date> = []
     private let calendar = Calendar.current
 
     @State private var selectedDate: Date? = nil
@@ -536,7 +549,16 @@ struct MonthView: View {
             hasTrackerEntries: !dayHabitRows.isEmpty
         )
 
+        let isHighlighted = highlightedDays.contains(dayKey)
+
         return ZStack {
+            // Markierung der ausgewählten Gewohnheit (#50), hinter Füllung und Ringen
+            if isHighlighted {
+                Circle()
+                    .fill(Color.habitStrip.opacity(0.2))
+                    .frame(width: 48, height: 48)
+            }
+
             // NoAlc background fill
             if let level = alcoholLevel {
                 Circle()
@@ -570,6 +592,7 @@ struct MonthView: View {
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier("calendar.day.\(dayIdentifier(for: date))")
+        .accessibilityValue(isHighlighted ? Text("markiert") : Text(verbatim: ""))
         // Red tiny dot in the bottom-right to indicate TODAY
         .overlay(alignment: .bottomTrailing) {
             if isToday {

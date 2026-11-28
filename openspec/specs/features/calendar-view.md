@@ -7,9 +7,9 @@ Monthly calendar view displaying activity history with concentric ring visualiza
 **Visualization Logic:**
 - **Outer Rings** = Timer-based activities (Meditation, Workout) - show progress toward daily goal
 - **Inner Fill** = NoAlc level (color-coded by consumption level)
-- **Center Segments** = Tracker awareness (did user reflect today?) - segmented by Focus Trackers
+- **Habit Strip** (above the calendar, #50) = one card per ongoing habit (tracker with "Show in Calendar"); tapping a card marks its entry days in the calendar
 
-**Core Insight:** Timer-based activities show HOW MUCH (progress rings), while Awareness Trackers show WHETHER (reflected or not).
+**Core Insight:** Timer-based activities show HOW MUCH (progress rings); habits show WHETHER (entered or not) in the strip, not in the day cell.
 
 ## Requirements
 
@@ -38,7 +38,7 @@ The system SHALL display a monthly calendar grid.
 - AND current day is highlighted
 
 ### Requirement: Activity Ring Visualization
-The system SHALL display concentric rings for timer-based activities and segmented center for awareness trackers.
+The system SHALL display concentric rings for timer-based activities and the NoAlc fill in the center.
 
 #### Scenario: Ring Layering Order
 - GIVEN calendar day has activity data
@@ -47,7 +47,7 @@ The system SHALL display concentric rings for timer-based activities and segment
   1. **Outer Ring:** Mindfulness ring (42x42 points, blue)
   2. **Middle Ring:** Workout ring (32x32 points, purple)
   3. **Inner Fill:** NoAlc level (28x28 points, color by level)
-  4. **Center Segments:** Focus Trackers (20x20 points, segmented)
+  - Behind all layers: habit marking (48x48 points, habit color at 20 % opacity), only while a habit card is selected (see Habit Strip)
 
 #### Scenario: Mindfulness Ring (Outer) - Timer-Based
 - GIVEN day has mindfulness minutes
@@ -74,33 +74,6 @@ The system SHALL display concentric rings for timer-based activities and segment
   - Easy: #89D6B2 (light green)
   - Wild: #B6B6B6 (gray)
 
-#### Scenario: Focus Tracker Segments (Center) - Awareness-Based
-- GIVEN user has configured Focus Trackers (max 2)
-- AND day has tracker logs
-- WHEN rendering center area
-- THEN center is divided into segments (1-2 based on Focus Tracker count)
-- AND each segment shows: filled (reflected) or empty (not reflected)
-- AND segment color matches tracker icon color
-- AND single unified color when reflected (no quality gradient)
-
-#### Scenario: Focus Tracker - Single Tracker
-- GIVEN user has 1 Focus Tracker configured
-- WHEN rendering center
-- THEN center shows single circle (not segmented)
-- AND filled = reflected today, empty = not yet
-
-#### Scenario: Focus Tracker - Two Trackers
-- GIVEN user has 2 Focus Trackers configured
-- WHEN rendering center
-- THEN center is split into 2 half-circles (left/right or top/bottom)
-- AND each half independently shows reflected/not reflected
-
-#### Scenario: No Focus Tracker Configured
-- GIVEN user has NOT configured any Focus Trackers
-- WHEN rendering center
-- THEN center shows only NoAlc fill (if logged)
-- AND no additional segmentation
-
 #### Scenario: No Activity Day
 - GIVEN day has no activity data
 - WHEN rendering day cell
@@ -124,7 +97,7 @@ The system SHALL show details when user taps a day.
 - THEN mindfulness total minutes show (with session list)
 - AND workout total minutes show (with session list)
 - AND NoAlc status shows (if entry exists)
-- AND Tracker awareness logs show (if any Focus Trackers logged)
+- AND tracker entries show (habits section, #47)
 - AND individual session times display
 
 #### Scenario: Day Detail - Tracker Section
@@ -240,27 +213,31 @@ The system SHALL allow quick NoAlc logging from calendar.
 - AND calendar updates to show new entry
 - AND detail sheet closes
 
-### Requirement: Focus Tracker Configuration
-The system SHALL allow users to select which trackers appear as Focus Trackers in the calendar.
+### Requirement: Habit Strip (#50)
+The system SHALL show a strip of habit cards above the month list.
 
-#### Scenario: Focus Tracker Selection
-- GIVEN user is editing a Tracker in app
-- WHEN viewing tracker settings
-- THEN "Show in Calendar" toggle is available
-- AND maximum 2 trackers can be enabled as Focus Trackers
-- AND setting persists to SwiftData
+#### Scenario: Strip Content
+- GIVEN active trackers with "Show in Calendar" on (NoAlc never; it stays the inner fill)
+- WHEN the Achievements tab is shown
+- THEN one card per tracker appears above the month list (order: displayOrder, createdAt, name)
+- AND each card shows icon, name (bold), "ongoing" (small, uppercase, muted), "Streak N days" and seven dots for the last seven days (oldest left, today right): entered = filled, open = grey outline, today without entry = thick outline in habit color
+- AND with more than three cards the strip is limited to the height of three cards and scrolls
+- AND without such a tracker there is no strip and no empty space
+- AND `calendarFilterEnabled` does not affect the strip
 
-#### Scenario: Focus Tracker Limit
-- GIVEN user has 2 Focus Trackers enabled
-- WHEN user tries to enable a 3rd tracker for calendar
-- THEN warning appears: "Maximum 2 Focus Trackers allowed"
-- AND user must disable one before enabling another
+#### Scenario: Selecting a Card
+- GIVEN the strip is visible
+- WHEN the user taps a card
+- THEN it is selected (border in habit color) and every day with an entry of this habit gets a faint circle (habit color, 20 %, 48 pt) behind the day rings
+- AND tapping it again removes selection and marking; tapping another card switches the selection (at most one)
+- AND the selection is view state only (not persisted); rings, fill, day tap and detail sheet stay unchanged
 
-#### Scenario: Default Focus Trackers
-- GIVEN user has created new trackers
-- WHEN "Show in Calendar" default is applied
-- THEN default is OFF
-- AND user explicitly chooses which trackers to focus on
+#### Scenario: Entry Days
+- GIVEN a tracker log
+- WHEN its day is determined
+- THEN `effectiveDayAssignment.assignedDay(for:)` is applied exactly once (no second cutoffHour shift)
+
+Habit color: `#d6457a` (light), `#f06d9c` (dark). Accessibility: strip `calendar.habitStrip`, card `calendar.habit.card` (value "selected" when selected), marked day cell value "marked".
 
 ---
 
@@ -273,33 +250,13 @@ The system SHALL allow users to select which trackers appear as Focus Trackers i
       │  ╱   ╭─────╮   ╲    │  ← Outer: Meditation Ring (blue, progress)
       │ │   ╱ ╭───╮ ╲   │   │  ← Middle: Workout Ring (purple, progress)
       │ │  │ ╱ ╭─╮ ╲ │  │   │  ← Inner: NoAlc Fill (green/gray, level)
-      │ │  │ │ │●│ │ │  │   │  ← Center: Focus Trackers (segmented)
+      │ │  │ │ │ │ │ │  │   │
       │ │  │ ╲ ╰─╯ ╱ │  │   │
       │ │   ╲ ╰───╯ ╱   │   │
       │  ╲   ╰─────╯   ╱    │
       │   ╰───────────╯     │
       │        14           │  ← Day number
       └─────────────────────┘
-```
-
-### Focus Tracker Segmentation
-```
-┌────────────────────────────────────────┐
-│ 0 Focus Trackers    1 Focus Tracker    │
-│                                        │
-│     ╭───╮              ╭───╮           │
-│    │ ○ │             │ ● │           │  ← Single circle
-│     ╰───╯              ╰───╯           │
-│   (just NoAlc)     (filled if logged)  │
-│                                        │
-├────────────────────────────────────────┤
-│ 2 Focus Trackers                       │
-│                                        │
-│     ╭───╮              ╭───╮           │
-│    │◐ │             │● │           │  ← Split: left/right
-│     ╰───╯              ╰───╯           │
-│   (1 of 2 logged)  (both logged)       │
-└────────────────────────────────────────┘
 ```
 
 ---
@@ -309,9 +266,9 @@ The system SHALL allow users to select which trackers appear as Focus Trackers i
 - **Data Sources:** `HealthKitManager.fetchActivityDaysDetailedFiltered(forMonth:)` for rings
 - **NoAlc Data:** Separate `NoAlcManager` query, stored as `alcoholDays` dictionary
 - **Tracker Data:** SwiftData query for TrackerLogs by date
-- **Focus Tracker Config:** SwiftData `Tracker.showInCalendar` field
+- **Habit Strip:** SwiftData `Tracker.showInCalendar` field; logic in `Services/HabitStrip.swift`, view `HabitStripView`
 - **Streak Calculation:** Forward iteration for NoAlc (see noalc-tracker.md)
-- **Ring Sizing:** Hardcoded sizes (42, 32, 28, 20) for consistent appearance
+- **Ring Sizing:** Hardcoded sizes (42, 32, 28; habit marking 48) for consistent appearance
 - **AppStorage Keys:** `meditationGoalMinutes`, `workoutGoalMinutes`, `calendarFilterEnabled`
 
 Reference Standards:
@@ -324,6 +281,7 @@ Reference Standards:
 
 - `openspec/specs/app-vision.md` - Achievements Tab location (4th tab)
 - `openspec/specs/features/app-navigation.md` - Tab structure
-- `openspec/specs/features/trackers.md` - Focus Tracker concept
+- `openspec/specs/features/trackers.md` - Tracker concept
+- `DOCS/specs/features/feature-50-gewohnheiten-leiste.md` - Habit Strip
 - `openspec/specs/features/noalc-tracker.md` - NoAlc visualization
 - `openspec/specs/features/streaks-rewards.md` - Streak calculation

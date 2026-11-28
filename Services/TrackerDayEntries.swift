@@ -67,12 +67,12 @@ enum TrackerDayEntries {
 
     // MARK: - Helpers
 
-    private static func isNoAlc(_ tracker: Tracker) -> Bool {
+    static func isNoAlc(_ tracker: Tracker) -> Bool {
         tracker.name == "NoAlc"
             || tracker.healthKitType == HKQuantityTypeIdentifier.numberOfAlcoholicBeverages.rawValue
     }
 
-    private static func isOrderedBefore(_ a: Tracker, _ b: Tracker) -> Bool {
+    static func isOrderedBefore(_ a: Tracker, _ b: Tracker) -> Bool {
         if a.displayOrder != b.displayOrder { return a.displayOrder < b.displayOrder }
         if a.createdAt != b.createdAt { return a.createdAt < b.createdAt }
         return a.name < b.name
