@@ -1,3 +1,9 @@
+---
+spec_file: docs/specs/infra/habits-dienst-betrieb.md
+spec_sha256: 8914e7bd46fbfd840c18ecbe944afcc031d8096f9b4abeea05a9a99a88767324
+spec_frozen_sha256: d23841cdf5e89c87a3ab64bcacfca1fdd4cb275e6d115e68b1a7d448a102173c
+---
+
 # PO-Briefing: feat-56-habits-dienst-betrieb
 
 - **Spec:** docs/specs/infra/habits-dienst-betrieb.md
